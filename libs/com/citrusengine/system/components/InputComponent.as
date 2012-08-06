@@ -11,6 +11,7 @@ package com.citrusengine.system.components {
 		
 		public var rightKeyIsDown:Boolean = false;
 		public var leftKeyIsDown:Boolean = false;
+		public var downKeyIsDown:Boolean = false;
 		public var spaceKeyIsDown:Boolean = false;
 		public var spaceKeyJustPressed:Boolean = false;
 
@@ -24,6 +25,7 @@ package com.citrusengine.system.components {
 			
 			rightKeyIsDown = _ce.input.isDown(Keyboard.RIGHT);
 			leftKeyIsDown = _ce.input.isDown(Keyboard.LEFT);
+			downKeyIsDown = _ce.input.isDown(Keyboard.DOWN);
 			spaceKeyIsDown = _ce.input.isDown(Keyboard.SPACE);
 			spaceKeyJustPressed = _ce.input.justPressed(Keyboard.SPACE);
 		}

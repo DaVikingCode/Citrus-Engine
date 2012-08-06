@@ -37,8 +37,12 @@ package com.citrusengine.system.components.box2d.hero {
 				
 				if (!_moveComponent.onGround) {
 					_animation = "jump";
+				} else if (_moveComponent.ducking) {
+					_animation = "duck";
 				} else {
+					
 					var walkingSpeed:Number = getWalkingSpeed();
+					
 					if (walkingSpeed < -_moveComponent.acceleration) {
 						_inverted = true;
 						_animation = "walk";

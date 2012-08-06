@@ -69,5 +69,13 @@ package com.citrusengine.system.components.box2d.hero {
 			_fixture.m_reportBeginContact = true;
 			_fixture.m_reportEndContact = true;
 		}
+		
+		public function changeFixtureToZero():void {
+			_fixture.SetFriction(0);
+		}
+		
+		public function changeFixtureToItsInitialValue():void {
+			_fixture.SetFriction(_friction);
+		}
 	}
 }

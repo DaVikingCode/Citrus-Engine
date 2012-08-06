@@ -76,5 +76,9 @@ package com.citrusengine.system.components.box2d.hero {
 			_combinedGroundAngle += angle;
 			_combinedGroundAngle /= _viewComponent.groundContacts.length;
 		}
+
+		public function get combinedGroundAngle():Number {
+			return _combinedGroundAngle;
+		}
 	}
 }
