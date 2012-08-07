@@ -1,11 +1,8 @@
-package {
-
-	import box2dstarling.ALevel;
-	import box2dstarling.MyGameData;
+package box2dstarling {
 
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.IState;
-	import com.citrusengine.utils.LevelManager;	
+	import com.citrusengine.utils.LevelManager;
 
 	[SWF(frameRate="60")]
 	
