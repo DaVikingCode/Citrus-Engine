@@ -53,11 +53,10 @@ package com.citrusengine.objects
 			
 		public function CitrusSprite(name:String, params:Object=null)
 		{
-			super(name, params);
-			
 			_ce = CitrusEngine.getInstance();
-			
 			_view = _ce.starling ? StarlingSpriteDebugArt : SpriteDebugArt;
+			
+			super(name, params);
 		}
 		
 		override public function destroy():void
@@ -66,6 +65,7 @@ package com.citrusengine.objects
 			onPersist.removeAll();
 			onSeparate.removeAll();
 			collisions = null;
+			
 			super.destroy();
 		}
 		
@@ -74,7 +74,6 @@ package com.citrusengine.objects
 			return _x;
 		}
 		
-		[Property(value="0")]
 		public function set x(value:Number):void
 		{
 			_x = value;
@@ -85,7 +84,6 @@ package com.citrusengine.objects
 			return _y;
 		}
 		
-		[Property(value="0")]
 		public function set y(value:Number):void
 		{
 			_y = value;
@@ -96,7 +94,6 @@ package com.citrusengine.objects
 			return _width;
 		}
 		
-		[Property(value="30")]
 		public function set width(value:Number):void
 		{
 			_width = value;
@@ -107,7 +104,6 @@ package com.citrusengine.objects
 			return _height;
 		}
 		
-		[Property(value="30")]
 		public function set height(value:Number):void
 		{
 			_height = value;
@@ -118,7 +114,7 @@ package com.citrusengine.objects
 			return _parallax;
 		}
 		
-		[Property(value="1")]
+		[Inspectable(defaultValue="1")]
 		public function set parallax(value:Number):void
 		{
 			_parallax = value;
@@ -129,7 +125,6 @@ package com.citrusengine.objects
 			return _rotation;
 		}
 		
-		[Property(value="0")]
 		public function set rotation(value:Number):void
 		{
 			_rotation = value;
@@ -140,7 +135,7 @@ package com.citrusengine.objects
 			return _group;
 		}
 		
-		[Property(value="0")]
+		[Inspectable(defaultValue="0")]
 		public function set group(value:Number):void
 		{
 			_group = value;
@@ -161,7 +156,7 @@ package com.citrusengine.objects
 			return _view;
 		}
 		
-		[Property(value="", browse="true")]
+		[Inspectable(defaultValue="",format="File",type="String")]
 		public function set view(value:*):void
 		{
 			_view = value;
@@ -192,7 +187,7 @@ package com.citrusengine.objects
 			return _offsetX;
 		}
 		
-		[Property(value="0")]
+		[Inspectable(defaultValue="0")]
 		public function set offsetX(value:Number):void
 		{
 			_offsetX = value;
@@ -203,7 +198,7 @@ package com.citrusengine.objects
 			return _offsetY;
 		}
 		
-		[Property(value="0")]
+		[Inspectable(defaultValue="0")]
 		public function set offsetY(value:Number):void
 		{
 			_offsetY = value;
@@ -214,7 +209,7 @@ package com.citrusengine.objects
 			return _registration;
 		}
 		
-		[Property(value="topLeft")]
+		[Inspectable(defaultValue="topLeft",enumeration="center,topLeft")]
 		public function set registration(value:String):void
 		{
 			_registration = value;

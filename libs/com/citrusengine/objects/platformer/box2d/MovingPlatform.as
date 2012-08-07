@@ -27,18 +27,19 @@ package com.citrusengine.objects.platformer.box2d
 		/**
 		 * The speed at which the moving platform travels. 
 		 */
-		[Property(value="1")]
+		[Inspectable(defaultValue="1")]
 		public var speed:Number = 1;
 		
 		/**
 		 * Whether or not the MovingPlatform can move, no matter the condition. 
 		 */		
+		[Inspectable(defaultValue="true")]
 		public var enabled:Boolean = true;
 		
 		/**
 		 * If set to true, the MovingPlatform will not move unless there is a passenger. 
 		 */
-		[Property(value="false")]
+		[Inspectable(defaultValue="false")]
 		public var waitForPassenger:Boolean = false;
 		
 		protected var _start:MathVector = new MathVector();
@@ -62,10 +63,10 @@ package com.citrusengine.objects.platformer.box2d
 			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
 			_fixture.removeEventListener(ContactEvent.END_CONTACT, handleEndContact);
 			_passengers.length = 0;
+			
 			super.destroy();
 		}
 		
-		[Property(value="0")]
 		override public function set x(value:Number):void
 		{
 			super.x = value;
@@ -73,7 +74,6 @@ package com.citrusengine.objects.platformer.box2d
 			_start.x = value / _box2D.scale;
 		}
 		
-		[Property(value="0")]
 		override public function set y(value:Number):void
 		{
 			super.y = value;
@@ -90,6 +90,7 @@ package com.citrusengine.objects.platformer.box2d
 			return _start.x * _box2D.scale;
 		}
 		
+		[Inspectable(defaultValue="0")]
 		public function set startX(value:Number):void
 		{
 			_start.x = value / _box2D.scale;
@@ -104,6 +105,7 @@ package com.citrusengine.objects.platformer.box2d
 			return _start.y * _box2D.scale;
 		}
 		
+		[Inspectable(defaultValue="0")]
 		public function set startY(value:Number):void
 		{
 			_start.y = value / _box2D.scale;
@@ -117,7 +119,7 @@ package com.citrusengine.objects.platformer.box2d
 			return _end.x * _box2D.scale;
 		}
 		
-		[Property(value="0")]
+		[Inspectable(defaultValue="0")]
 		public function set endX(value:Number):void
 		{
 			_end.x = value / _box2D.scale;
@@ -131,7 +133,7 @@ package com.citrusengine.objects.platformer.box2d
 			return _end.y * _box2D.scale;
 		}
 		
-		[Property(value="0")]
+		[Inspectable(defaultValue="0")]
 		public function set endY(value:Number):void
 		{
 			_end.y = value / _box2D.scale;

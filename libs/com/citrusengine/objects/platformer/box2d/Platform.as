@@ -32,6 +32,7 @@ package com.citrusengine.objects.platformer.box2d
 		override public function destroy():void
 		{
 			_fixture.removeEventListener(ContactEvent.PRE_SOLVE, handlePreSolve);
+			
 			super.destroy();
 		}
 		
@@ -43,7 +44,7 @@ package com.citrusengine.objects.platformer.box2d
 			return _oneWay;
 		}
 		
-		[Property(value="false")]
+		[Inspectable(defaultValue="false")]
 		public function set oneWay(value:Boolean):void
 		{
 			if (_oneWay == value)
@@ -69,12 +70,14 @@ package com.citrusengine.objects.platformer.box2d
 		override protected function defineBody():void
 		{
 			super.defineBody();
+			
 			_bodyDef.type = b2Body.b2_staticBody;
 		}
 		
 		override protected function defineFixture():void
 		{
 			super.defineFixture();
+			
 			_fixtureDef.restitution = 0;
 		}
 		

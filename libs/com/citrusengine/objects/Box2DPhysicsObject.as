@@ -42,7 +42,7 @@ package com.citrusengine.objects {
 		protected var _rotation:Number = 0;
 		protected var _width:Number = 1;
 		protected var _height:Number = 1;
-		protected var _radius:Number;
+		protected var _radius:Number = 0;
 		
 		private var _group:Number = 0;
 		private var _offsetX:Number = 0;
@@ -114,7 +114,6 @@ package com.citrusengine.objects {
 				return _x * _box2D.scale;
 		}
 		
-		[Property(value="0")]
 		public function set x(value:Number):void
 		{
 			_x = value / _box2D.scale;
@@ -135,7 +134,6 @@ package com.citrusengine.objects {
 				return _y * _box2D.scale;
 		}
 		
-		[Property(value="0")]
 		public function set y(value:Number):void
 		{
 			_y = value / _box2D.scale;
@@ -153,7 +151,7 @@ package com.citrusengine.objects {
 			return _parallax;
 		}
 		
-		[Property(value="1")]
+		[Inspectable(defaultValue="1")]
 		public function set parallax(value:Number):void
 		{
 			_parallax = value;
@@ -167,7 +165,6 @@ package com.citrusengine.objects {
 				return _rotation * 180 / Math.PI;
 		}
 		
-		[Property(value="0")]
 		public function set rotation(value:Number):void
 		{
 			_rotation = value * Math.PI / 180;
@@ -181,7 +178,7 @@ package com.citrusengine.objects {
 			return _group;
 		}
 		
-		[Property(value="0")]
+		[Inspectable(defaultValue="0")]
 		public function set group(value:Number):void
 		{
 			_group = value;
@@ -202,7 +199,7 @@ package com.citrusengine.objects {
 			return _view;
 		}
 		
-		[Property(value="", browse="true")]
+		[Inspectable(defaultValue="",format="File",type="String")]
 		public function set view(value:*):void
 		{
 			_view = value;
@@ -223,7 +220,7 @@ package com.citrusengine.objects {
 			return _offsetX;
 		}
 		
-		[Property(value="0")]
+		[Inspectable(defaultValue="0")]
 		public function set offsetX(value:Number):void
 		{
 			_offsetX = value;
@@ -234,7 +231,7 @@ package com.citrusengine.objects {
 			return _offsetY;
 		}
 		
-		[Property(value="0")]
+		[Inspectable(defaultValue="0")]
 		public function set offsetY(value:Number):void
 		{
 			_offsetY = value;
@@ -245,7 +242,7 @@ package com.citrusengine.objects {
 			return _registration;
 		}
 		
-		[Property(value="center")]
+		[Inspectable(defaultValue="center",enumeration="center,topLeft")]
 		public function set registration(value:String):void
 		{
 			_registration = value;
@@ -259,7 +256,6 @@ package com.citrusengine.objects {
 			return _width * _box2D.scale;
 		}
 		
-		[Property(value="30")]
 		public function set width(value:Number):void
 		{
 			_width = value / _box2D.scale;
@@ -278,7 +274,6 @@ package com.citrusengine.objects {
 			return _height * _box2D.scale;
 		}
 		
-		[Property(value="30")]
 		public function set height(value:Number):void
 		{
 			_height = value / _box2D.scale;
@@ -300,7 +295,7 @@ package com.citrusengine.objects {
 		/**
 		 * The object has a radius or a width & height. It can't have both.
 		 */
-		[Property(value="")]
+		[Inspectable(defaultValue="0")]
 		public function set radius(value:Number):void
 		{
 			_radius = value / _box2D.scale;
@@ -346,7 +341,7 @@ package com.citrusengine.objects {
 		 */	
 		protected function createShape():void
 		{
-			if (_radius) {
+			if (_radius != 0) {
 				_shape = new b2CircleShape();
 				b2CircleShape(_shape).m_radius = _radius;
 			} else {

@@ -1,15 +1,14 @@
 package com.citrusengine.objects.platformer.nape {
 
-	import com.citrusengine.objects.NapePhysicsObject;
+	import nape.callbacks.CbType;
+	import nape.callbacks.InteractionType;
 	import nape.callbacks.PreCallback;
+	import nape.callbacks.PreFlag;
 	import nape.callbacks.PreListener;
 	import nape.geom.Vec2;
-	
-	import nape.callbacks.InteractionCallback;
-	import nape.callbacks.InteractionType;
-	import nape.callbacks.CbType;
-	import nape.callbacks.PreFlag;
 	import nape.phys.BodyType;
+
+	import com.citrusengine.objects.NapePhysicsObject;
 
 	/**
 	 * @author Aymeric / Nick
@@ -17,7 +16,6 @@ package com.citrusengine.objects.platformer.nape {
 	public class Platform extends NapePhysicsObject {
 		
 		public static const ONEWAY_PLATFORM:CbType = new CbType();
-		
 		
 		private var _oneWay:Boolean = false;
 		private var _preListener:PreListener;
@@ -28,6 +26,7 @@ package com.citrusengine.objects.platformer.nape {
 		}
 		
 		override public function destroy():void {
+			
 			if (_body.cbTypes.length > 0) {
 				_body.cbTypes.clear();
 			}
@@ -44,7 +43,7 @@ package com.citrusengine.objects.platformer.nape {
 			return _oneWay;
 		}
 		
-		[Property(value = "false")]
+		[Inspectable(defaultValue="false")]
 		public function set oneWay(value:Boolean):void
 		{
 			if (_oneWay == value)
@@ -54,7 +53,7 @@ package com.citrusengine.objects.platformer.nape {
 			
 			if (_oneWay)
 			{
-				_preListener = new PreListener(InteractionType.ANY, Platform.ONEWAY_PLATFORM, CbType.ANY_BODY, handlePreContact)
+				_preListener = new PreListener(InteractionType.ANY, Platform.ONEWAY_PLATFORM, CbType.ANY_BODY, handlePreContact);
 				_body.space.listeners.add(_preListener);
 				_body.cbTypes.add(ONEWAY_PLATFORM);
 			}

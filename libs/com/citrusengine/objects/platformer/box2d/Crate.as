@@ -34,12 +34,5 @@ package com.citrusengine.objects.platformer.box2d
 			_fixtureDef.density = 0.1;
 			_fixtureDef.restitution = 0;
 		}
-		
-		//This is only used to register the crate with the Level Architect
-		[Property(value="30")]
-		override public function set width(value:Number):void
-		{
-			super.width = value;
-		}
 	}
 }

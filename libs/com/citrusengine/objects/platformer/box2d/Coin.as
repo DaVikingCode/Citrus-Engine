@@ -34,7 +34,7 @@ package com.citrusengine.objects.platformer.box2d
 		 * "com.citrusengine.objects.platformer.Hero" or Hero directly (no quotes). Only String
 		 * form will work when creating objects via a level editor.
 		 */
-		[Property(value="com.citrusengine.objects.platformer.box2d.Hero")]
+		[Inspectable(defaultValue="com.citrusengine.objects.platformer.box2d.Hero")]
 		public function set collectorClass(value:*):void
 		{
 			if (value is String)

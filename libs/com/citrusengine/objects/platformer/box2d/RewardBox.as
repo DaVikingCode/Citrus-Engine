@@ -47,7 +47,7 @@ package com.citrusengine.objects.platformer.box2d
 		 * This is the vector normal that the reward box must be collided with in order for the reward to be created.
 		 * On a box with no rotation, 90 is "from below", 0 is "from the right", -180 is "from the left", and -90 is "from above".
 		 */
-		[Property(value="90")]
+		[Inspectable(defaultValue="90")]
 		public var collisionAngle:Number = 90;
 		
 		/**
@@ -73,6 +73,7 @@ package com.citrusengine.objects.platformer.box2d
 		public function RewardBox(name:String, params:Object = null) 
 		{
 			super(name, params);
+			
 			onUse = new Signal(RewardBox);
 			onRewardCollect = new Signal(RewardBox, Reward);
 		}
@@ -106,7 +107,7 @@ package com.citrusengine.objects.platformer.box2d
 			return _rewardClass;
 		}
 		
-		[Property(value="")]
+		[Inspectable(defaultValue="com.citrusengine.objects.platformer.box2d.Reward",type="String")]
 		public function set rewardClass(value:*):void
 		{
 			if (value is String)

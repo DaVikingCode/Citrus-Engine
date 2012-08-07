@@ -14,6 +14,12 @@ package com.citrusengine.core
 		public var name:String;
 		public var kill:Boolean = false;
 		
+		/**
+		 * used in Flash Pro Level Editor
+		 */
+		[Inspectable(defaultValue="")]
+		public var className:String = "";
+		
 		protected var _initialized:Boolean = false;
 		
 		/**

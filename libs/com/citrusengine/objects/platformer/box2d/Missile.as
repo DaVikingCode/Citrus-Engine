@@ -33,21 +33,29 @@ package com.citrusengine.objects.platformer.box2d
 	public class Missile extends Box2DPhysicsObject 
 	{
 		/**
-		 * In degrees, the angle that the missile will fire at. Right is zero degrees, going clockwise.
-		 */
-		public var speed:Number = 2;
-		/**
 		 * The speed that the missile moves at.
 		 */
+		[Inspectable(defaultValue="2")]
+		public var speed:Number = 2;
+		
+		/**
+		 * In degrees, the angle that the missile will fire at. Right is zero degrees, going clockwise.
+		 */
+		[Inspectable(defaultValue="0")]
 		public var angle:Number = 0;
+		
 		/**
 		 * In milliseconds, how long the explode animation lasts before the missile object is destroyed.
 		 */
+		[Inspectable(defaultValue="1000")]
 		public var explodeDuration:Number = 1000;
+		
 		/**
 		 * In milliseconds, how long the missile lasts before it explodes if it doesn't touch anything.
 		 */
+		[Inspectable(defaultValue="10000")]
 		public var fuseDuration:Number = 10000;
+		
 		/**
 		 * Dispatched when the missile explodes. Passes two parameters:
 		 * 		1. The Missile (Missile)

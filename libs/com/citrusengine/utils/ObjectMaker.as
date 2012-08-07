@@ -73,6 +73,13 @@
 					
 					params.rotation = child.rotation;
 					
+					//Adding properties from the component inspector
+					for (var metatags:Object in child) {
+						if (metatags != "componentInspectorSetting" && metatags != "className") {
+							params[metatags] = child[metatags];
+						}
+					}
+					
 					var object:CitrusObject = new objectClass(child.name, params);
 					a.push(object);
 				}

@@ -45,16 +45,19 @@ package com.citrusengine.objects.platformer.box2d
 		/**
 		 * The speed at which the reward moves. It will turn around when it hits a wall.
 		 */
+		[Inspectable(defaultValue="1")]
 		public var speed:Number = 1;
 		
 		/**
 		 * The speed on the x axis that the reward will fly out of the box.
 		 */
+		[Inspectable(defaultValue="0")]
 		public var impulseX:Number = 0;
 		
 		/**
 		 * The speed on the y axis that the reward will fly out of the box.
 		 */
+		[Inspectable(defaultValue="-10")]
 		public var impulseY:Number = -10;
 		
 		/**
@@ -98,6 +101,7 @@ package com.citrusengine.objects.platformer.box2d
 			return _collectorClass;
 		}
 		
+		[Inspectable(defaultValue="com.citrusengine.objects.platformer.box2d.Hero",type="String")]
 		public function set collectorClass(value:*):void
 		{
 			if (value is String)

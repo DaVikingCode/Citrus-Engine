@@ -53,13 +53,8 @@ package com.citrusengine.objects.platformer.box2d
 			onEndContact.removeAll();
 			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
 			_fixture.removeEventListener(ContactEvent.END_CONTACT, handleEndContact);
+			
 			super.destroy();
-		}
-		
-		[Property(value="30")]
-		override public function set width(value:Number):void
-		{
-			super.width = value;
 		}
 		
 		override protected function defineBody():void

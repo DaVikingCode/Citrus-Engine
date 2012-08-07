@@ -28,31 +28,31 @@ package com.citrusengine.objects.platformer.nape {
 		/**
 		 * This is the rate at which the hero speeds up when you move him left and right. 
 		 */
-		[Property(value="5")]
+		[Inspectable(defaultValue="5")]
 		public var acceleration:Number = 5;
 		
 		/**
 		 * This is the fastest speed that the hero can move left or right. 
 		 */
-		[Property(value="100")]
+		[Inspectable(defaultValue="100")]
 		public var maxVelocity:Number = 100;
 		
 		/**
 		 * This is the initial velocity that the hero will move at when he jumps.
 		 */
-		[Property(value="14")]
+		[Inspectable(defaultValue="60")]
 		public var jumpHeight:Number = 60;
 		
 		/**
 		 * This is the amount of "float" that the hero has when the player holds the jump button while jumping. 
 		 */
-		[Property(value="0.9")]
+		[Inspectable(defaultValue="0.9")]
 		public var jumpAcceleration:Number = 0.9;
 		
 		/**
 		 * Determines whether or not the hero's ducking ability is enabled.
 		 */
-		[Property(value="true")]
+		[Inspectable(defaultValue="true")]
 		public var canDuck:Boolean = true;
 
 		// events
@@ -137,7 +137,7 @@ package com.citrusengine.objects.platformer.nape {
 		 * "com.citrusengine.objects.platformer.Baddy", or Baddy (with no quotes). Only String
 		 * form will work when creating objects via a level editor.
 		 */
-		[Property(value="com.citrusengine.objects.platformer.nape.Baddy")]
+		[Inspectable(defaultValue="com.citrusengine.objects.platformer.nape.Baddy",type="String")]
 		public function set enemyClass(value:*):void {
 			
 			/*if (value is String)

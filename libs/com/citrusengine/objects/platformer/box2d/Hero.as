@@ -33,67 +33,67 @@ package com.citrusengine.objects.platformer.box2d
 		/**
 		 * This is the rate at which the hero speeds up when you move him left and right. 
 		 */
-		[Property(value="1")]
+		[Inspectable(defaultValue="1")]
 		public var acceleration:Number = 1;
 		
 		/**
 		 * This is the fastest speed that the hero can move left or right. 
 		 */
-		[Property(value="8")]
+		[Inspectable(defaultValue="8")]
 		public var maxVelocity:Number = 8;
 		
 		/**
 		 * This is the initial velocity that the hero will move at when he jumps.
 		 */
-		[Property(value="11")]
+		[Inspectable(defaultValue="11")]
 		public var jumpHeight:Number = 11;
 		
 		/**
 		 * This is the amount of "float" that the hero has when the player holds the jump button while jumping. 
 		 */
-		[Property(value="0.3")]
+		[Inspectable(defaultValue="0.3")]
 		public var jumpAcceleration:Number = 0.3;
 		
 		/**
 		 * This is the y velocity that the hero must be travelling in order to kill a Baddy.
 		 */
-		[Property(value="3")]
+		[Inspectable(defaultValue="3")]
 		public var killVelocity:Number = 3;
 		
 		/**
 		 * The y velocity that the hero will spring when he kills an enemy. 
 		 */
-		[Property(value="8")]
+		[Inspectable(defaultValue="8")]
 		public var enemySpringHeight:Number = 8;
 		
 		/**
 		 * The y velocity that the hero will spring when he kills an enemy while pressing the jump button. 
 		 */
-		[Property(value="9")]
+		[Inspectable(defaultValue="9")]
 		public var enemySpringJumpHeight:Number = 9;
 		
 		/**
 		 * How long the hero is in hurt mode for. 
 		 */
-		[Property(value="1000")]
+		[Inspectable(defaultValue="1000")]
 		public var hurtDuration:Number = 1000;
 		
 		/**
 		 * The amount of kick-back that the hero jumps when he gets hurt. 
 		 */
-		[Property(value="6")]
+		[Inspectable(defaultValue="6")]
 		public var hurtVelocityX:Number = 6;
 		
 		/**
 		 * The amount of kick-back that the hero jumps when he gets hurt. 
 		 */
-		[Property(value="10")]
+		[Inspectable(defaultValue="10")]
 		public var hurtVelocityY:Number = 10;
 		
 		/**
 		 * Determines whether or not the hero's ducking ability is enabled.
 		 */
-		[Property(value="true")]
+		[Inspectable(defaultValue="true")]
 		public var canDuck:Boolean = true;
 		
 		//events
@@ -193,7 +193,7 @@ package com.citrusengine.objects.platformer.box2d
 		 * "com.citrusengine.objects.platformer.Baddy", or Baddy (with no quotes). Only String
 		 * form will work when creating objects via a level editor.
 		 */
-		[Property(value="com.citrusengine.objects.platformer.box2d.Baddy")]
+		[Inspectable(defaultValue="com.citrusengine.objects.platformer.box2d.Baddy",type="String")]
 		public function set enemyClass(value:*):void
 		{
 			if (value is String)
@@ -211,7 +211,7 @@ package com.citrusengine.objects.platformer.box2d
 			return _friction;
 		}
 		
-		[Property(value="0.75")]
+		[Inspectable(defaultValue="0.75")]
 		public function set friction(value:Number):void
 		{
 			_friction = value;

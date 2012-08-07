@@ -24,7 +24,7 @@ package com.citrusengine.objects.platformer.nape {
 		 * "com.citrusengine.objects.platformer.nape.Hero" or Hero directly (no quotes). Only String
 		 * form will work when creating objects via a level editor.
 		 */
-		[Property(value="com.citrusengine.objects.platformer.nape.Hero")]
+		[Inspectable(defaultValue="com.citrusengine.objects.platformer.nape.Hero")]
 		public function set collectorClass(value:*):void {
 			
 			if (value is String)

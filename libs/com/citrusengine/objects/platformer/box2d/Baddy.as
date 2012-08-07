@@ -26,31 +26,31 @@ package com.citrusengine.objects.platformer.box2d {
 	 */	
 	public class Baddy extends Box2DPhysicsObject
 	{
-		[Property(value="1.3")]
+		[Inspectable(defaultValue="1.3")]
 		public var speed:Number = 1.3;
 		
-		[Property(value="3")]
+		[Inspectable(defaultValue="3")]
 		public var enemyKillVelocity:Number = 3;
 		
-		[Property(value="left")]
+		[Inspectable(defaultValue="left",enumeration="left,right")]
 		public var startingDirection:String = "left";
 		
-		[Property(value="400")]
+		[Inspectable(defaultValue="400")]
 		public var hurtDuration:Number = 400;
 		
-		[Property(value="-100000")]
+		[Inspectable(defaultValue="-100000")]
 		public var leftBound:Number = -100000;
 		
-		[Property(value="100000")]
+		[Inspectable(defaultValue="100000")]
 		public var rightBound:Number = 100000;
 		
-		[Citrus(value="10")]
+		[Inspectable(defaultValue="10")]
 		public var wallSensorOffset:Number = 10;
 		
-		[Citrus(value="2")]
+		[Inspectable(defaultValue="2")]
 		public var wallSensorWidth:Number = 2;
 		
-		[Citrus(value="2")]
+		[Inspectable(defaultValue="2")]
 		public var wallSensorHeight:Number = 2;
 		
 		protected var _hurtTimeoutID:Number = 0;
@@ -91,6 +91,7 @@ package com.citrusengine.objects.platformer.box2d {
 			_sensorFixtureDef.destroy();
 			_leftSensorShape.destroy();
 			_rightSensorShape.destroy();
+			
 			super.destroy();
 		}
 		
@@ -99,7 +100,7 @@ package com.citrusengine.objects.platformer.box2d {
 			return _enemyClass;
 		}
 		
-		[Property(value="com.citrusengine.objects.platformer.box2d.Hero")]
+		[Inspectable(defaultValue="com.citrusengine.objects.platformer.box2d.Hero",type="String")]
 		public function set enemyClass(value:*):void
 		{
 			if (value is String)
