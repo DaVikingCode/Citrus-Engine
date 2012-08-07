@@ -7,12 +7,12 @@ package com.citrusengine.system.components.box2d.hero {
 	import com.citrusengine.system.components.box2d.CollisionComponent;
 
 	/**
-	 * @author Aymeric
+	 * The Box2D Hero collision component. We need to access informations of the hero view & movement component.
 	 */
 	public class HeroCollisionComponent extends CollisionComponent {
 		
 		protected var _viewComponent:HeroViewComponent;
-		protected var _moveComponent:HeroMoveComponent;
+		protected var _movementComponent:HeroMovementComponent;
 		
 		protected var _combinedGroundAngle:Number = 0;
 
@@ -26,7 +26,7 @@ package com.citrusengine.system.components.box2d.hero {
 			super.initialize();
 			
 			_viewComponent = entity.components["view"];
-			_moveComponent = entity.components["move"];
+			_movementComponent = entity.components["move"];
 		}
 
 		override public function handleBeginContact(e:ContactEvent):void {
@@ -40,7 +40,7 @@ package com.citrusengine.system.components.box2d.hero {
 				if (collisionAngle > 45 && collisionAngle < 135)
 				{
 					_viewComponent.groundContacts.push(e.other);
-					_moveComponent.onGround = true;
+					_movementComponent.onGround = true;
 					updateCombinedGroundAngle();
 				}
 			}
@@ -56,7 +56,7 @@ package com.citrusengine.system.components.box2d.hero {
 			{
 				_viewComponent.groundContacts.splice(index, 1);
 				if (_viewComponent.groundContacts.length == 0)
-					_moveComponent.onGround = false;
+					_movementComponent.onGround = false;
 				updateCombinedGroundAngle();
 			}
 		}

@@ -3,14 +3,15 @@ package com.citrusengine.system.components.box2d.hero {
 	import Box2DAS.Common.V2;
 
 	import com.citrusengine.system.components.InputComponent;
-	import com.citrusengine.system.components.box2d.MoveComponent;
+	import com.citrusengine.system.components.box2d.MovementComponent;
 
 	import org.osflash.signals.Signal;
 
 	/**
-	 * @author Aymeric
+	 * The Box2D Hero movement component. Most of its properties are here. It uses a lot of informations from the input component & 
+	 * some from the Box2D Hero collision component.
 	 */
-	public class HeroMoveComponent extends MoveComponent {
+	public class HeroMovementComponent extends MovementComponent {
 		
 		//properties
 		/**
@@ -47,7 +48,7 @@ package com.citrusengine.system.components.box2d.hero {
 		protected var _playerMovingHero:Boolean = false;
 		protected var _ducking:Boolean = false;
 
-		public function HeroMoveComponent(name:String, params:Object = null) {
+		public function HeroMovementComponent(name:String, params:Object = null) {
 			
 			super(name, params);
 			

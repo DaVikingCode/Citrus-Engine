@@ -8,7 +8,7 @@ package com.citrusengine.system.components.box2d.hero {
 	import com.citrusengine.utils.Box2DShapeMaker;
 
 	/**
-	 * @author Aymeric
+	 * The Box2D Hero physics component add the fixture listener, change its friction, restitution...
 	 */
 	public class HeroPhysicsComponent extends Box2DComponent {
 		

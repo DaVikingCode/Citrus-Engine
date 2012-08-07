@@ -5,15 +5,15 @@ package com.citrusengine.system.components.box2d {
 	import com.citrusengine.system.Component;
 
 	/**
-	 * @author Aymeric
+	 * The Box2D movement component, we've to know the Box2D physics component to be able to move it.
 	 */
-	public class MoveComponent extends Component {
+	public class MovementComponent extends Component {
 		
 		protected var _physicsComponent:Box2DComponent;
 		
 		protected var _velocity:V2;
 
-		public function MoveComponent(name:String, params:Object = null) {
+		public function MovementComponent(name:String, params:Object = null) {
 			super(name, params);
 		}
 			

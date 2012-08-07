@@ -5,14 +5,14 @@ package com.citrusengine.system.components.box2d.hero {
 	import com.citrusengine.system.components.ViewComponent;
 
 	/**
-	 * @author Aymeric
+	 * The Box2D Hero view component. It manages the hero's view based on its physics component and depending its movement.
 	 */
 	public class HeroViewComponent extends ViewComponent {
 		
 		public var groundContacts:Array = [];//Used to determine if he's on ground or not.
 		
 		protected var _physicsComponent:HeroPhysicsComponent;
-		protected var _moveComponent:HeroMoveComponent;
+		protected var _movementComponent:HeroMovementComponent;
 
 		public function HeroViewComponent(name:String, params:Object = null) {
 			
@@ -24,7 +24,7 @@ package com.citrusengine.system.components.box2d.hero {
 			super.initialize();
 			
 			_physicsComponent = entity.components["physics"];
-			_moveComponent = entity.components["move"];
+			_movementComponent = entity.components["move"];
 		}
 
 		override public function update(timeDelta:Number):void {
@@ -33,20 +33,20 @@ package com.citrusengine.system.components.box2d.hero {
 			
 			var prevAnimation:String = _animation;
 			
-			if (_physicsComponent && _moveComponent) {
+			if (_physicsComponent && _movementComponent) {
 				
-				if (!_moveComponent.onGround) {
+				if (!_movementComponent.onGround) {
 					_animation = "jump";
-				} else if (_moveComponent.ducking) {
+				} else if (_movementComponent.ducking) {
 					_animation = "duck";
 				} else {
 					
 					var walkingSpeed:Number = getWalkingSpeed();
 					
-					if (walkingSpeed < -_moveComponent.acceleration) {
+					if (walkingSpeed < -_movementComponent.acceleration) {
 						_inverted = true;
 						_animation = "walk";
-					} else if (walkingSpeed > _moveComponent.acceleration) {
+					} else if (walkingSpeed > _movementComponent.acceleration) {
 						_inverted = false;
 						_animation = "walk";
 					} else {

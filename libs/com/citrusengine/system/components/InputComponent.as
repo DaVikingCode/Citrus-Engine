@@ -5,7 +5,7 @@ package com.citrusengine.system.components {
 	import flash.ui.Keyboard;
 
 	/**
-	 * @author Aymeric
+	 * An input component, it will inform if the key is down, just pressed or just released.
 	 */
 	public class InputComponent extends Component {
 		

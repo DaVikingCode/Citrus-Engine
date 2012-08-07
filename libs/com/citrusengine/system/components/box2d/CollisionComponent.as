@@ -5,7 +5,7 @@ package com.citrusengine.system.components.box2d {
 	import com.citrusengine.system.Component;
 
 	/**
-	 * @author Aymeric
+	 * The Box2D collision component, extends it to handle collision.
 	 */
 	public class CollisionComponent extends Component {
 

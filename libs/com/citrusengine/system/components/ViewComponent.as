@@ -8,7 +8,8 @@ package com.citrusengine.system.components {
 	import flash.display.MovieClip;
 
 	/**
-	 * @author Aymeric
+	 * The view component, it manages everything to set the view.
+	 * Extend it to handle animation.
 	 */
 	public class ViewComponent extends Component implements ISpriteView {
 		
@@ -74,7 +75,6 @@ package com.citrusengine.system.components {
 			return _parallax;
 		}
 
-		[Property(value="1")]
 		public function set parallax(value:Number):void {
 			_parallax = value;
 		}
@@ -84,7 +84,6 @@ package com.citrusengine.system.components {
 			return _group;
 		}
 		
-		[Property(value="0")]
 		public function set group(value:Number):void
 		{
 			_group = value;
@@ -105,7 +104,6 @@ package com.citrusengine.system.components {
 			return _view;
 		}
 		
-		[Property(value="", browse="true")]
 		public function set view(value:*):void
 		{
 			_view = value;
@@ -126,7 +124,6 @@ package com.citrusengine.system.components {
 			return _offsetX;
 		}
 		
-		[Property(value="0")]
 		public function set offsetX(value:Number):void
 		{
 			_offsetX = value;
@@ -137,7 +134,6 @@ package com.citrusengine.system.components {
 			return _offsetY;
 		}
 		
-		[Property(value="0")]
 		public function set offsetY(value:Number):void
 		{
 			_offsetY = value;
@@ -148,7 +144,6 @@ package com.citrusengine.system.components {
 			return _registration;
 		}
 		
-		[Property(value="center")]
 		public function set registration(value:String):void
 		{
 			_registration = value;

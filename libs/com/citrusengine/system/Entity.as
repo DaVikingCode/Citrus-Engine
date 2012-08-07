@@ -5,7 +5,8 @@ package com.citrusengine.system {
 	import flash.utils.Dictionary;
 
 	/**
-	 * @author Aymeric
+	 * A game entity is compound by components. The entity serves as a link to communicate between components.
+	 * It extends the CitrusObject class to enjoy its params setter.
 	 */
 	public class Entity extends CitrusObject {
 
@@ -17,7 +18,10 @@ package com.citrusengine.system {
 
 			components = new Dictionary();
 		}
-
+		
+		/**
+		 * Add a component to the entity.
+		 */
 		public function add(component:Component):Entity {
 			
 			components[component.name] = component;
@@ -25,6 +29,9 @@ package com.citrusengine.system {
 			return this;
 		}
 		
+		/**
+		 * Remove a component from the entity.
+		 */
 		public function remove(component:Component):void {
 			
 			if (components[component.name]) {
@@ -33,13 +40,20 @@ package com.citrusengine.system {
 			}
 		}
 		
+		/**
+		 * After all the components have been added call this function to perform an init on them.
+		 * Mostly used if you want to access to other components through the entity.
+		 */
 		public function initialize():void {
 			
 			for each (var component:Component in components) {
 				component.initialize();
 			}
-		}	
+		}
 		
+		/**
+		 * Destroy the entity and its components.
+		 */
 		override public function destroy():void {
 			
 			for each (var component:Component in components) {
@@ -50,7 +64,10 @@ package com.citrusengine.system {
 			
 			super.destroy();
 		}
-
+		
+		/**
+		 * Perform an update on all entity's components.
+		 */
 		override public function update(timeDelta:Number):void {
 			
 			for each (var component:Component in components) {

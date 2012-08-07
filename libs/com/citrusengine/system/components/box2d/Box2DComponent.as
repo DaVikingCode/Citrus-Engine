@@ -15,7 +15,7 @@ package com.citrusengine.system.components.box2d {
 	import com.citrusengine.system.Component;
 
 	/**
-	 * @author Aymeric
+	 * The base's physics Box2D Component. Manage (just) the physics creation.
 	 */
 	public class Box2DComponent extends Component {
 		
@@ -31,7 +31,7 @@ package com.citrusengine.system.components.box2d {
 		protected var _rotation:Number = 0;
 		protected var _width:Number = 1;
 		protected var _height:Number = 1;
-		protected var _radius:Number;
+		protected var _radius:Number = 0;
 
 		public function Box2DComponent(name:String, params:Object = null) {
 			
@@ -66,7 +66,6 @@ package com.citrusengine.system.components.box2d {
 				return _x * _box2D.scale;
 		}
 		
-		[Property(value="0")]
 		public function set x(value:Number):void
 		{
 			_x = value / _box2D.scale;
@@ -87,7 +86,6 @@ package com.citrusengine.system.components.box2d {
 				return _y * _box2D.scale;
 		}
 		
-		[Property(value="0")]
 		public function set y(value:Number):void
 		{
 			_y = value / _box2D.scale;
@@ -108,7 +106,6 @@ package com.citrusengine.system.components.box2d {
 				return _rotation * 180 / Math.PI;
 		}
 		
-		[Property(value="0")]
 		public function set rotation(value:Number):void
 		{
 			_rotation = value * Math.PI / 180;
@@ -125,7 +122,6 @@ package com.citrusengine.system.components.box2d {
 			return _width * _box2D.scale;
 		}
 		
-		[Property(value="30")]
 		public function set width(value:Number):void
 		{
 			_width = value / _box2D.scale;
@@ -144,7 +140,6 @@ package com.citrusengine.system.components.box2d {
 			return _height * _box2D.scale;
 		}
 		
-		[Property(value="30")]
 		public function set height(value:Number):void
 		{
 			_height = value / _box2D.scale;
@@ -166,7 +161,6 @@ package com.citrusengine.system.components.box2d {
 		/**
 		 * The object has a radius or a width & height. It can't have both.
 		 */
-		[Property(value="")]
 		public function set radius(value:Number):void
 		{
 			_radius = value / _box2D.scale;
@@ -212,7 +206,7 @@ package com.citrusengine.system.components.box2d {
 		 */	
 		protected function createShape():void
 		{
-			if (_radius) {
+			if (_radius != 0) {
 				_shape = new b2CircleShape();
 				b2CircleShape(_shape).m_radius = _radius;
 			} else {
