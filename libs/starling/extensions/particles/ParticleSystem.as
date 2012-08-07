@@ -26,10 +26,10 @@ package starling.extensions.particles
     import starling.core.RenderSupport;
     import starling.core.Starling;
     import starling.display.DisplayObject;
+	import starling.extensions.utils.MatrixUtil;
     import starling.errors.MissingContextError;
     import starling.events.Event;
     import starling.textures.Texture;
-    import starling.utils.MatrixUtil;
     import starling.utils.VertexData;
     
     public class ParticleSystem extends DisplayObject implements IAnimatable
