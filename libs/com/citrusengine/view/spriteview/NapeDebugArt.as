@@ -17,24 +17,24 @@ package com.citrusengine.view.spriteview {
 		private var _debugDrawer:ShapeDebug;
 
 		public function NapeDebugArt() {
-			addEventListener(Event.ADDED, handleAddedToParent);
+			addEventListener(Event.ADDED_TO_STAGE, handleAddedToParent);
 			addEventListener(Event.ENTER_FRAME, handleEnterFrame);
 			addEventListener(Event.REMOVED, destroy);
 		}
 		
 		private function handleAddedToParent(evt:Event):void 
 		{
-			removeEventListener(Event.ADDED, handleAddedToParent);
+			removeEventListener(Event.ADDED_TO_STAGE, handleAddedToParent);
 			
 			_nape = SpriteArt(parent).citrusObject as Nape;
 			
-			_debugDrawer = new ShapeDebug(0, 0);
+			_debugDrawer = new ShapeDebug(stage.stageWidth, stage.stageHeight);
 			addChild(_debugDrawer.display);
 		}
 		
 		private function destroy(evt:Event):void
 		{
-			removeEventListener(Event.ADDED, handleAddedToParent);
+			removeEventListener(Event.ADDED_TO_STAGE, handleAddedToParent);
 			removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
 			removeEventListener(Event.REMOVED, destroy);
 		}

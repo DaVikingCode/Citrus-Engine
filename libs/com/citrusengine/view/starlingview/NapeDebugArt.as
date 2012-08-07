@@ -19,24 +19,24 @@ package com.citrusengine.view.starlingview {
 
 		public function NapeDebugArt() {
 			
-			addEventListener(Event.ADDED, handleAddedToParent);
+			addEventListener(Event.ADDED_TO_STAGE, handleAddedToParent);
 			addEventListener(Event.ENTER_FRAME, handleEnterFrame);
 			addEventListener(Event.REMOVED, destroy);
 		}
 		
 		private function handleAddedToParent(evt:Event):void {
 			
-			removeEventListener(Event.ADDED, handleAddedToParent);
+			removeEventListener(Event.ADDED_TO_STAGE, handleAddedToParent);
 
 			_nape = StarlingArt(parent).citrusObject as Nape;
 
-			_debugDrawer = new ShapeDebug(0, 0);
+			_debugDrawer = new ShapeDebug(Starling.current.stage.stageWidth, Starling.current.stage.stageHeight);
 			Starling.current.nativeStage.addChild(_debugDrawer.display);
 		}
 
 		private function destroy(evt:Event):void {
 			
-			removeEventListener(Event.ADDED, handleAddedToParent);
+			removeEventListener(Event.ADDED_TO_STAGE, handleAddedToParent);
 			removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
 			removeEventListener(Event.REMOVED, destroy);
 		}
