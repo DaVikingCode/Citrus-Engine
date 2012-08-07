@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:0b073aabb77e0b1ad1b64e635374a692$ -->
+<TextureAtlas imagePath="Hero.png">
+    <SubTexture name="die.swf/0000" x="128" y="246" width="64" height="119" frameX="-1" frameY="-25" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0001" x="256" y="240" width="70" height="109" frameX="-5" frameY="-35" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0002" x="328" y="296" width="74" height="93" frameX="-3" frameY="-52" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0003" x="412" y="213" width="78" height="81" frameX="-3" frameY="-64" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0004" x="328" y="218" width="78" height="65" frameX="-4" frameY="-80" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0005" x="2" y="431" width="82" height="65" frameX="-3" frameY="-80" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0006" x="424" y="2" width="84" height="63" frameX="-3" frameY="-82" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0007" x="424" y="67" width="84" height="43" frameX="-3" frameY="-102" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0008" x="226" y="363" width="90" height="27" frameX="-3" frameY="-118" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0009" x="128" y="367" width="96" height="27" frameX="-3" frameY="-118" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0010" x="128" y="367" width="96" height="27" frameX="-3" frameY="-118" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0011" x="128" y="367" width="96" height="27" frameX="-3" frameY="-118" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0012" x="128" y="367" width="96" height="27" frameX="-3" frameY="-118" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0013" x="128" y="367" width="96" height="27" frameX="-3" frameY="-118" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="die.swf/0014" x="128" y="367" width="96" height="27" frameX="-3" frameY="-118" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="duck.swf/0000" x="156" y="396" width="64" height="113" frameX="-27" frameY="-31" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="duck.swf/0001" x="388" y="391" width="68" height="87" frameX="-29" frameY="-57" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="hurt.swf/0000" x="254" y="2" width="82" height="109" frameX="0" frameY="-36" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="hurt.swf/0001" x="338" y="2" width="84" height="103" frameX="-3" frameY="-42" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="hurt.swf/0002" x="412" y="112" width="88" height="99" frameX="0" frameY="-46" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="hurt.swf/0003" x="412" y="112" width="88" height="99" frameX="0" frameY="-46" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="hurt.swf/0004" x="326" y="113" width="84" height="103" frameX="-3" frameY="-42" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="hurt.swf/0005" x="254" y="2" width="82" height="109" frameX="0" frameY="-36" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="idle.swf/0000" x="190" y="123" width="60" height="119" frameX="-16" frameY="-26" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="idle.swf/0001" x="190" y="123" width="60" height="119" frameX="-16" frameY="-26" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="jump.swf/0000" x="2" y="149" width="56" height="145" frameX="-21" frameY="0" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="jump.swf/0001" x="2" y="2" width="56" height="145" frameX="-21" frameY="0" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="jump.swf/0002" x="2" y="296" width="60" height="133" frameX="-20" frameY="-11" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="jump.swf/0003" x="64" y="272" width="62" height="123" frameX="-21" frameY="-21" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="jump.swf/0004" x="306" y="392" width="80" height="111" frameX="-8" frameY="-20" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="jump.swf/0005" x="222" y="396" width="82" height="111" frameX="-5" frameY="-20" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="walk.swf/0000" x="180" y="2" width="72" height="119" frameX="-9" frameY="-22" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="walk.swf/0001" x="86" y="397" width="68" height="113" frameX="-18" frameY="-16" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="walk.swf/0002" x="86" y="397" width="68" height="113" frameX="-18" frameY="-16" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="walk.swf/0003" x="60" y="137" width="54" height="133" frameX="-24" frameY="-12" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="walk.swf/0004" x="116" y="2" width="62" height="121" frameX="-16" frameY="-24" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="walk.swf/0005" x="116" y="2" width="62" height="121" frameX="-16" frameY="-24" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="walk.swf/0006" x="116" y="125" width="72" height="119" frameX="-12" frameY="-24" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="walk.swf/0007" x="252" y="123" width="72" height="115" frameX="-17" frameY="-16" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="walk.swf/0008" x="252" y="123" width="72" height="115" frameX="-17" frameY="-16" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="walk.swf/0009" x="60" y="2" width="54" height="133" frameX="-24" frameY="-12" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="walk.swf/0010" x="194" y="244" width="60" height="117" frameX="-17" frameY="-28" frameWidth="100" frameHeight="145"/>
+    <SubTexture name="walk.swf/0011" x="194" y="244" width="60" height="117" frameX="-17" frameY="-28" frameWidth="100" frameHeight="145"/>
+</TextureAtlas>
