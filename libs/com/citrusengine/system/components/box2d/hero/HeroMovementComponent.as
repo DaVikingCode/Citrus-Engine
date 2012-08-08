@@ -2,10 +2,14 @@ package com.citrusengine.system.components.box2d.hero {
 
 	import Box2DAS.Common.V2;
 
+	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.system.components.InputComponent;
 	import com.citrusengine.system.components.box2d.MovementComponent;
 
 	import org.osflash.signals.Signal;
+
+	import flash.utils.clearTimeout;
+	import flash.utils.setTimeout;
 
 	/**
 	 * The Box2D Hero movement component. Most of its properties are here. It uses a lot of informations from the input component & 
@@ -33,17 +37,65 @@ package com.citrusengine.system.components.box2d.hero {
 		 * This is the amount of "float" that the hero has when the player holds the jump button while jumping. 
 		 */
 		public var jumpAcceleration:Number = 0.3;
+		
+		/**
+		 * This is the y velocity that the hero must be travelling in order to kill a Baddy.
+		 */
+		public var killVelocity:Number = 3;
+		
+		/**
+		 * The y velocity that the hero will spring when he kills an enemy. 
+		 */
+		public var enemySpringHeight:Number = 8;
+		
+		/**
+		 * The y velocity that the hero will spring when he kills an enemy while pressing the jump button. 
+		 */
+		public var enemySpringJumpHeight:Number = 9;
+		
+		/**
+		 * How long the hero is in hurt mode for. 
+		 */
+		public var hurtDuration:Number = 1000;
+		
+		/**
+		 * The amount of kick-back that the hero jumps when he gets hurt. 
+		 */
+		public var hurtVelocityX:Number = 6;
+		
+		/**
+		 * The amount of kick-back that the hero jumps when he gets hurt. 
+		 */
+		public var hurtVelocityY:Number = 10;
+		
+		/**
+		 * Determines whether or not the hero's ducking ability is enabled.
+		 */
 		public var canDuck:Boolean = true;
 		
+		//events
 		/**
 		 * Dispatched whenever the hero jumps. 
 		 */
 		public var onJump:Signal;
 		
+		/**
+		 * Dispatched whenever the hero gives damage to an enemy. 
+		 */		
+		public var onGiveDamage:Signal;
+		
+		/**
+		 * Dispatched whenever the hero takes damage from an enemy. 
+		 */		
+		public var onTakeDamage:Signal;
+		
 		protected var _inputComponent:InputComponent;
 		protected var _collisionComponent:HeroCollisionComponent;
 		
 		protected var _onGround:Boolean = false;
+		protected var _springOffEnemy:Number = -1;
+		protected var _hurtTimeoutID:Number;
+		protected var _isHurt:Boolean = false;
 		protected var _controlsEnabled:Boolean = true;
 		protected var _playerMovingHero:Boolean = false;
 		protected var _ducking:Boolean = false;
@@ -53,6 +105,8 @@ package com.citrusengine.system.components.box2d.hero {
 			super(name, params);
 			
 			onJump = new Signal();
+			onGiveDamage = new Signal();
+			onTakeDamage = new Signal();
 		}
 			
 		override public function initialize():void {
@@ -66,6 +120,10 @@ package com.citrusengine.system.components.box2d.hero {
 		override public function destroy():void {
 			
 			onJump.removeAll();
+			onGiveDamage.removeAll();
+			onTakeDamage.removeAll();
+			
+			clearTimeout(_hurtTimeoutID);
 			
 			super.destroy();
 		}
@@ -108,15 +166,63 @@ package com.citrusengine.system.components.box2d.hero {
 				
 				if (_inputComponent.spaceKeyIsDown && !_onGround && _velocity.y < 0)
 					_velocity.y -= jumpAcceleration;
+					
+				if (_springOffEnemy != -1) {
+					if (_inputComponent.spaceKeyIsDown)
+						_velocity.y = -enemySpringJumpHeight;
+					else
+						_velocity.y = -enemySpringHeight;
+					_springOffEnemy = -1;
+				}
 				
 				//Cap velocities
-				if (_velocity.x > (maxVelocity))
+				if (_velocity.x > maxVelocity)
 					_velocity.x = maxVelocity;
-				else if (_velocity.x < (-maxVelocity))
+				else if (_velocity.x < -maxVelocity)
 					_velocity.x = -maxVelocity;
 				
 				_physicsComponent.body.SetLinearVelocity(_velocity);
 			}
+		}
+		
+		/**
+		 * The hero gives damage
+		 */
+		 
+		public function giveDamage(collider:Box2DPhysicsObject):void {
+			
+			_springOffEnemy = collider.y - _physicsComponent.height;
+			onGiveDamage.dispatch();
+		}
+		
+		/**
+		 * Hurts and fling the hero, disables his controls for a little bit, and dispatches the onTakeDamage signal. 
+		 */		
+		public function hurt(collider:Box2DPhysicsObject):void {
+			
+			_isHurt = true;
+			controlsEnabled = false;
+			_hurtTimeoutID = setTimeout(endHurtState, hurtDuration);
+			onTakeDamage.dispatch();
+			
+			var hurtVelocity:V2 = _physicsComponent.body.GetLinearVelocity();
+			hurtVelocity.y = -hurtVelocityY;
+			hurtVelocity.x = hurtVelocityX;
+			if (collider.x > _physicsComponent.x)
+				hurtVelocity.x = -hurtVelocityX;
+			_physicsComponent.body.SetLinearVelocity(hurtVelocity);
+			
+			//Makes sure that the hero is not frictionless while his control is disabled
+			if (_playerMovingHero) {
+				_playerMovingHero = false;
+				(_physicsComponent as HeroPhysicsComponent).changeFixtureToItsInitialValue();
+			}
+		}
+		
+		protected function endHurtState():void {
+			
+			_isHurt = false;
+			controlsEnabled = true;
 		}
 		
 		protected function getSlopeBasedMoveAngle():V2 {
@@ -152,6 +258,10 @@ package com.citrusengine.system.components.box2d.hero {
 
 		public function get ducking():Boolean {
 			return _ducking;
+		}
+
+		public function get isHurt():Boolean {
+			return _isHurt;
 		}
 	}
 }

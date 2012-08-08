@@ -4,16 +4,20 @@ package com.citrusengine.system.components.box2d.hero {
 	import Box2DAS.Dynamics.b2Fixture;
 
 	import com.citrusengine.math.MathVector;
+	import com.citrusengine.objects.Box2DPhysicsObject;
+	import com.citrusengine.objects.platformer.box2d.Baddy;
 	import com.citrusengine.system.components.box2d.CollisionComponent;
 
 	/**
-	 * The Box2D Hero collision component. We need to access informations of the hero view & movement component.
+	 * The Box2D Hero collision component. We need to access informations of the hero view & movement & physics component.
 	 */
 	public class HeroCollisionComponent extends CollisionComponent {
 		
 		protected var _viewComponent:HeroViewComponent;
 		protected var _movementComponent:HeroMovementComponent;
+		protected var _physicsComponent:HeroPhysicsComponent;
 		
+		protected var _enemyClass:Class = Baddy;
 		protected var _combinedGroundAngle:Number = 0;
 
 		public function HeroCollisionComponent(name:String, params:Object = null) {
@@ -27,11 +31,43 @@ package com.citrusengine.system.components.box2d.hero {
 			
 			_viewComponent = entity.components["view"];
 			_movementComponent = entity.components["move"];
+			_physicsComponent = entity.components["physics"];
+		}
+			
+		override public function destroy():void {
+			
+			super.destroy();
+		}
+		
+		override public function handlePreSolve(e:ContactEvent):void {
+			
+			super.handlePreSolve(e);
+			
+			if (!_movementComponent.ducking)
+				return;
+				
+			var other:Box2DPhysicsObject = e.other.GetBody().GetUserData() as Box2DPhysicsObject;
+			
+			var heroTop:Number = _physicsComponent.y;
+			var objectBottom:Number = other.y + (other.height / 2);
+			
+			if (objectBottom < heroTop)
+				e.contact.Disable();
 		}
 
 		override public function handleBeginContact(e:ContactEvent):void {
 			
 			super.handleBeginContact(e);
+			
+			var collider:Box2DPhysicsObject = e.other.GetBody().GetUserData();
+			
+			if (_enemyClass && collider is _enemyClass) {
+				
+				if (_physicsComponent.body.GetLinearVelocity().y < _movementComponent.killVelocity && !_movementComponent.isHurt)
+					_movementComponent.hurt(collider);
+				else
+					_movementComponent.giveDamage(collider);
+			}
 			
 			//Collision angle
 			if (e.normal) //The normal property doesn't come through all the time. I think doesn't come through against sensors.

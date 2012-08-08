@@ -35,11 +35,13 @@ package com.citrusengine.system.components.box2d.hero {
 			
 			if (_physicsComponent && _movementComponent) {
 				
-				if (!_movementComponent.onGround) {
+				if (_movementComponent.isHurt)
+					_animation = "hurt";
+				else if (!_movementComponent.onGround)
 					_animation = "jump";
-				} else if (_movementComponent.ducking) {
+				else if (_movementComponent.ducking)
 					_animation = "duck";
-				} else {
+				else {
 					
 					var walkingSpeed:Number = getWalkingSpeed();
 					
