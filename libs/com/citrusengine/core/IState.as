@@ -19,7 +19,7 @@ package com.citrusengine.core {
 		
 		function add(object:CitrusObject):CitrusObject;
 		
-		function addEntity(entity:Entity, view:ViewComponent):Entity;
+		function addEntity(entity:Entity, view:ViewComponent = null):Entity;
 		
 		function remove(object:CitrusObject):void;
 		
