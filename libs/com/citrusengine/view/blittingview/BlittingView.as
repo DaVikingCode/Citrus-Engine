@@ -1,11 +1,14 @@
 package com.citrusengine.view.blittingview 
 {
 
+	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.physics.Box2D;
 	import com.citrusengine.physics.Nape;
+	import com.citrusengine.physics.SimpleCitrusSolver;
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.ISpriteView;
+	import com.citrusengine.view.SpriteDebugArt;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -24,6 +27,10 @@ package com.citrusengine.view.blittingview
 		private var _spriteOrder:Array = [];
 		private var _spritesAdded:uint = 0;
 		private var _cameraPosition:MathVector = new MathVector();
+		
+		private var _usePhysicsEngine:Boolean = false;
+		private var _useSimpleCitrusSolver:Boolean = false;
+		private var _tabSpriteDebugArt:Array = [[], []];
 		
 		public function BlittingView(root:Sprite) 
 		{
@@ -73,14 +80,22 @@ package com.citrusengine.view.blittingview
 			}
 			
 			_debugView.x = -_cameraPosition.x;
-			_debugView.y = -_cameraPosition.y; 
+			_debugView.y = -_cameraPosition.y;
+			
+			if (_useSimpleCitrusSolver) {
+				var tabLength:uint = _tabSpriteDebugArt[0].length;
+				for (var i:uint = 0; i < tabLength; ++i) { 
+					_tabSpriteDebugArt[0][i].x = _tabSpriteDebugArt[1][i].x;
+					_tabSpriteDebugArt[0][i].y = _tabSpriteDebugArt[1][i].y;
+				}
+			}
 			
 			_canvas.lock();
 			_canvas.fillRect(new Rectangle(0, 0, cameraLensWidth, cameraLensHeight), backgroundColor);
 			var n:Number = _spriteOrder.length;
-			for (var i:int = 0; i < n; i++)
+			for (var j:uint = 0; j < n; ++j)
 			{
-				updateArt(_spriteOrder[i].citrusObject, _spriteOrder[i]);
+				updateArt(_spriteOrder[j].citrusObject, _spriteOrder[j]);
 			}
 			_canvas.unlock();
 		}
@@ -105,14 +120,29 @@ package com.citrusengine.view.blittingview
 				var artClass:Class = getDefinitionByName(viewObject.view as String) as Class;
 				blittingArt = new artClass() as BlittingArt;
 			}
-			else if ((citrusObject is Box2D || citrusObject is Nape) && citrusObject.visible)
+			else if ((citrusObject is Box2D || citrusObject is Nape) && citrusObject.visible && !_usePhysicsEngine && !_useSimpleCitrusSolver)
 			{
-				_debugView.addChild(new citrusObject.view());				
+				_debugView.addChild(new citrusObject.view());
+				_usePhysicsEngine = true;			
 			}
+			
+			if (CitrusEngine.getInstance().state.getFirstObjectByType(SimpleCitrusSolver) && !_usePhysicsEngine && !_useSimpleCitrusSolver)
+				_useSimpleCitrusSolver = true;
+				
 			
 			if (!blittingArt)
 			{
 				blittingArt = new BlittingArt();
+				
+				if (_useSimpleCitrusSolver) {
+					var spriteDebugArt:SpriteDebugArt = new citrusObject.view();
+					if (spriteDebugArt.hasOwnProperty("initialize")) {
+						spriteDebugArt["initialize"](citrusObject);
+						_debugView.addChild(spriteDebugArt);
+						_tabSpriteDebugArt[0].push(spriteDebugArt);
+						_tabSpriteDebugArt[1].push(citrusObject);
+					}
+				}
 			}
 			blittingArt.addIndex = _spritesAdded++;
 			blittingArt.group = viewObject.group;
@@ -130,6 +160,20 @@ package com.citrusengine.view.blittingview
 		{
 			var art:BlittingArt = _viewObjects[citrusObject];
 			_spriteOrder.splice(_spriteOrder.indexOf(art), 1);
+			
+			if (_useSimpleCitrusSolver) {
+				
+				var tabLength:uint = _tabSpriteDebugArt[0].length;
+				for (var i:uint = 0; i < tabLength; ++i) {
+					
+					if (_tabSpriteDebugArt[1][i] == citrusObject)
+						break;
+				}
+				
+				_debugView.removeChild(_tabSpriteDebugArt[0][i]);
+				_tabSpriteDebugArt[0].splice(i, 1);
+				_tabSpriteDebugArt[1].splice(i, 1);
+			}
 		}
 		
 		override protected function updateArt(citrusObject:Object, art:Object):void
