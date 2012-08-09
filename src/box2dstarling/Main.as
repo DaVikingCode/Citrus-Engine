@@ -6,6 +6,9 @@ package box2dstarling {
 
 	[SWF(frameRate="60")]
 	
+	/**
+	 * @author Aymeric
+	 */
 	public class Main extends CitrusEngine {
 		
 		public function Main() {
