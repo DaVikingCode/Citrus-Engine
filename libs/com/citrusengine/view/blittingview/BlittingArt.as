@@ -1,9 +1,6 @@
-package com.citrusengine.view.blittingview
-{
+package com.citrusengine.view.blittingview {
+
 	import com.citrusengine.math.MathVector;
-	import flash.display.BitmapData;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	
 	public class BlittingArt
 	{

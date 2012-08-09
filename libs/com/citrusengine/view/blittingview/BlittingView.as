@@ -1,8 +1,12 @@
 package com.citrusengine.view.blittingview 
 {
+
 	import com.citrusengine.math.MathVector;
+	import com.citrusengine.physics.Box2D;
+	import com.citrusengine.physics.Nape;
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.ISpriteView;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
@@ -14,6 +18,7 @@ package com.citrusengine.view.blittingview
 	{
 		public var backgroundColor:Number = 0xffffffff;
 		
+		private var _debugView:Sprite;
 		private var _canvasBitmap:Bitmap;
 		private var _canvas:BitmapData;
 		private var _spriteOrder:Array = [];
@@ -27,6 +32,9 @@ package com.citrusengine.view.blittingview
 			_canvas = new BitmapData(cameraLensWidth, cameraLensHeight, true, backgroundColor);
 			_canvasBitmap = new Bitmap(_canvas);
 			root.addChild(_canvasBitmap);
+			
+			_debugView = new Sprite();
+			root.addChild(_debugView);
 		}
 		
 		public function get cameraPosition():MathVector
@@ -63,6 +71,10 @@ package com.citrusengine.view.blittingview
 						_cameraPosition.y = cameraBounds.bottom - cameraLensHeight;
 				}
 			}
+			
+			_debugView.x = -_cameraPosition.x;
+			_debugView.y = -_cameraPosition.y; 
+			
 			_canvas.lock();
 			_canvas.fillRect(new Rectangle(0, 0, cameraLensWidth, cameraLensHeight), backgroundColor);
 			var n:Number = _spriteOrder.length;
@@ -93,10 +105,13 @@ package com.citrusengine.view.blittingview
 				var artClass:Class = getDefinitionByName(viewObject.view as String) as Class;
 				blittingArt = new artClass() as BlittingArt;
 			}
+			else if ((citrusObject is Box2D || citrusObject is Nape) && citrusObject.visible)
+			{
+				_debugView.addChild(new citrusObject.view());				
+			}
 			
 			if (!blittingArt)
 			{
-				trace("Warning: the 'view' property of " + viewObject + " must be a BlittingArt object since you are using the BlittingView");
 				blittingArt = new BlittingArt();
 			}
 			blittingArt.addIndex = _spritesAdded++;

@@ -1,11 +1,12 @@
 package com.citrusengine.view.spriteview {
 
+	import nape.util.ShapeDebug;
+
+	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.physics.Nape;
-	
+
 	import flash.display.MovieClip;
 	import flash.events.Event;
-	
-	import nape.util.ShapeDebug;
 
 	/**
 	 * This displays Nape's debug graphics. It does so properly through Citrus Engine's view manager. Nape by default
@@ -26,7 +27,10 @@ package com.citrusengine.view.spriteview {
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, handleAddedToParent);
 			
-			_nape = SpriteArt(parent).citrusObject as Nape;
+			if (parent is SpriteArt)
+				_nape = SpriteArt(parent).citrusObject as Nape;
+			else
+				_nape = CitrusEngine.getInstance().state.getFirstObjectByType(Nape) as Nape;
 			
 			_debugDrawer = new ShapeDebug(stage.stageWidth, stage.stageHeight);
 			addChild(_debugDrawer.display);

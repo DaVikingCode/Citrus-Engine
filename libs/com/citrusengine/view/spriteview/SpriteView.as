@@ -1,7 +1,8 @@
-﻿package com.citrusengine.view.spriteview
-{
+﻿package com.citrusengine.view.spriteview {
+
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.ISpriteView;
+
 	import flash.display.Sprite;
 	
 	/**
