@@ -1,6 +1,5 @@
 package com.citrusengine.view.blittingview 
 {
-
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.physics.Box2D;
@@ -28,6 +27,7 @@ package com.citrusengine.view.blittingview
 		private var _spritesAdded:uint = 0;
 		private var _cameraPosition:MathVector = new MathVector();
 		
+		private var _debuggerPhysicsObject:Object;
 		private var _usePhysicsEngine:Boolean = false;
 		private var _useSimpleCitrusSolver:Boolean = false;
 		private var _tabSpriteDebugArt:Array = [[], []];
@@ -79,6 +79,8 @@ package com.citrusengine.view.blittingview
 				}
 			}
 			
+			if (_debuggerPhysicsObject)
+				_debugView.visible = _debuggerPhysicsObject.visible;
 			_debugView.x = -_cameraPosition.x;
 			_debugView.y = -_cameraPosition.y;
 			
@@ -120,15 +122,16 @@ package com.citrusengine.view.blittingview
 				var artClass:Class = getDefinitionByName(viewObject.view as String) as Class;
 				blittingArt = new artClass() as BlittingArt;
 			}
-			else if ((citrusObject is Box2D || citrusObject is Nape) && citrusObject.visible && !_usePhysicsEngine && !_useSimpleCitrusSolver)
+			else if ((citrusObject is Box2D || citrusObject is Nape) && !_usePhysicsEngine && !_useSimpleCitrusSolver)
 			{
 				_debugView.addChild(new citrusObject.view());
-				_usePhysicsEngine = true;			
+				_usePhysicsEngine = true;
+				_debuggerPhysicsObject = citrusObject;	
 			}
 			
-			if (CitrusEngine.getInstance().state.getFirstObjectByType(SimpleCitrusSolver) && !_usePhysicsEngine && !_useSimpleCitrusSolver)
+			if (CitrusEngine.getInstance().state.getFirstObjectByType(SimpleCitrusSolver) && !_usePhysicsEngine && !_useSimpleCitrusSolver) {
 				_useSimpleCitrusSolver = true;
-				
+			}
 			
 			if (!blittingArt)
 			{

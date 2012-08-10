@@ -40,7 +40,7 @@ package blitting {
 			super.initialize();
 
 			var box2D:Box2D = new Box2D("box2D");
-			//box2D.visible = true; //it can't be changed through the console on runtime.
+			//box2D.visible = true;
 			add(box2D);
 
 			add(new Platform("P1", {x:320, y:400, width:2000, height:20}));
