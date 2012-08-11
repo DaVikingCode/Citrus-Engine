@@ -1,10 +1,12 @@
 package mobilenapestarling {
-
+	
 	import nape.callbacks.InteractionCallback;
 
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.extensions.particles.PDParticleSystem;
+	import starling.text.BitmapFont;
+	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
@@ -31,6 +33,12 @@ package mobilenapestarling {
 
 		[Embed(source="../embed/heroMobile.png")]
 		private var _heroPng:Class;
+		
+		[Embed(source="../embed/ArialFont.fnt", mimeType="application/octet-stream")]
+		private var _fontConfig:Class;
+		
+		[Embed(source="../embed/ArialFont.png")]
+		private var _fontPng:Class;
 
 		[Embed(source="../embed/yellowParticle.pex", mimeType="application/octet-stream")]
 		private var _particleConfig:Class;
@@ -51,6 +59,7 @@ package mobilenapestarling {
 		private var _backPng3:Class;
 		
 		private var _mobileHero:MobileHero;
+		private var _score:TextField;
 		
 		private var _back1:CitrusSprite, _back2:CitrusSprite, _back3:CitrusSprite;
 
@@ -69,9 +78,9 @@ package mobilenapestarling {
 
 			var gameLength:uint = 10000;
 
-			var napePhysics:Nape = new Nape("nape");
-			napePhysics.visible = true;
-			add(napePhysics);
+			var nape:Nape = new Nape("nape");
+			//nape.visible = true;
+			add(nape);
 			
 			add(new CitrusSprite("backgroud", {parallax:0.05, view:Image.fromBitmap(new _backgroundPng())}));
 			
@@ -81,8 +90,17 @@ package mobilenapestarling {
 			add(_back1);
 			add(_back2);
 			add(_back3);
+			
+			var bitmap:Bitmap = new _fontPng();
+			var ftTexture:Texture = Texture.fromBitmap(bitmap);
+			var ftXML:XML = XML(new _fontConfig());
+			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML));
+			
+			_score = new TextField(50, 20, "0", "ArialMT");
+			_score.x = stage.stageWidth - _score.width;
+			addChild(_score);
 
-			var bitmap:Bitmap = new _heroPng();
+			bitmap = new _heroPng();
 			var texture:Texture = Texture.fromBitmap(bitmap);
 			var xml:XML = XML(new _heroConfig());
 			var sTextureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
@@ -99,17 +117,36 @@ package mobilenapestarling {
 
 			view.setupCamera(_mobileHero, new MathVector(_mobileHero.width, 0), new Rectangle(0, 0, gameLength, 450), new MathVector(.25, .05));
 
-			_timerParticle = new Timer(750);
+			_timerParticle = new Timer(300);
 			_timerParticle.addEventListener(TimerEvent.TIMER, _particleCreation);
 			_timerParticle.start();
 		}
 			
 		override public function destroy():void {
 			
+			TextField.unregisterBitmapFont("ArialMT");
+			removeChild(_score);
+			
 			_timerParticle.stop();
 			_timerParticle.removeEventListener(TimerEvent.TIMER, _particleCreation);
 			
 			super.destroy();
+		}
+		
+		override public function update(timeDelta:Number):void {
+			
+			super.update(timeDelta);
+			
+			//switch background positions
+				
+			if (_mobileHero.x + stage.stageWidth > _back1.x + _back1.width)
+				_back2.x = _back1.x + _back1.width;
+				
+			if (_mobileHero.x + stage.stageWidth > _back2.x + _back2.width)
+				_back3.x = _back2.x + _back2.width;
+				
+			if (_mobileHero.x + stage.stageWidth > _back3.x + _back3.width)
+				_back1.x = _back3.x + _back3.width;
 		}
 
 		private function _particleCreation(tEvt:TimerEvent):void {
@@ -126,27 +163,15 @@ package mobilenapestarling {
 				var positionY:uint = 50 + Math.random() * 250;
 				var sensor:Particle = new Particle("Sensor", {x:positionX, y:positionY, view:particleSystem});
 				add(sensor);
-				sensor.onBeginContact.add(_particleTouched);
+				sensor.onBeginContact.addOnce(_particleTouched);
 			}
 		}
 
 		private function _particleTouched(interactionCallback:InteractionCallback):void {
 			
-			interactionCallback.int1.userData.myData.kill = true;
-		}
-
-		override public function update(timeDelta:Number):void {
+			_score.text = String(uint(_score.text)+1);
 			
-			super.update(timeDelta);
-				
-			if (_mobileHero.x + 500 > _back1.x + _back1.width)
-				_back2.x = _back1.x + _back1.width;
-				
-			if (_mobileHero.x + 500 > _back2.x + _back2.width)
-				_back3.x = _back2.x + _back2.width;
-				
-			if (_mobileHero.x + 500 > _back3.x + _back3.width)
-				_back1.x = _back3.x + _back3.width;
+			interactionCallback.int1.userData.myData.kill = true;
 		}
 	}
 }
