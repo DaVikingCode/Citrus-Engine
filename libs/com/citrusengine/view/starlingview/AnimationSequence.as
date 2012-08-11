@@ -14,6 +14,8 @@ package com.citrusengine.view.starlingview {
 	 * @param textureAtlas : a TextureAtlas object with all your object's animations
 	 * @param animations : an array with all your object's animations as a String
 	 * @param firstAnimation : a string of your default animation at its creation
+	 * @param firstAnimFps : a number which determines the first animation MC's fps
+	 * @param firstAnimLoop : a boolean, set it to true if you want your first animation to loop
 	 */
 	public class AnimationSequence extends Sprite {
 
@@ -22,7 +24,7 @@ package com.citrusengine.view.starlingview {
 		private var _mcSequences:Dictionary;
 		private var _previousAnimation:String;
 
-		public function AnimationSequence(textureAtlas:TextureAtlas, animations:Array, firstAnimation:String) {
+		public function AnimationSequence(textureAtlas:TextureAtlas, animations:Array, firstAnimation:String, firstAnimFps:Number = 30, firstAnimLoop:Boolean = false) {
 
 			super();
 
@@ -39,12 +41,13 @@ package com.citrusengine.view.starlingview {
 				}
 				
 				_mcSequences[animation] = new MovieClip(_textureAtlas.getTextures(animation));
-				
 			}
 			
 			addChild(_mcSequences[firstAnimation]);
 			Starling.juggler.add(_mcSequences[firstAnimation]);
-			
+			_mcSequences[firstAnimation].fps = firstAnimFps;
+			_mcSequences[firstAnimation].loop = firstAnimLoop;
+				
 			_previousAnimation = firstAnimation;			
 		}
 		
