@@ -81,10 +81,6 @@ package box2dstarling {
 		}
 		
 		override public function destroy():void {
-
-			Starling.juggler.remove(_particleSystem);
-			_particleSystem.stop();
-			_particleSystem.dispose();
 			
 			removeChild(_bmpFontTF);
 
