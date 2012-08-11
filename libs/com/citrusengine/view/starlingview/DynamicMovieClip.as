@@ -23,11 +23,11 @@ package com.citrusengine.view.starlingview {
 		private var mLoop:Boolean;
 		private var mPlaying:Boolean;
 
-		public function DynamicMovieClip(textures:Vector.<Texture>, fps:Number = 12) {
+		public function DynamicMovieClip(textures:Vector.<Texture>, fps:Number = 30) {
 			super(textures, fps);
 		}
 
-		public function changeTextures(textures:Vector.<Texture>, fps:Number = 12, loop:Boolean = true):void {
+		public function changeTextures(textures:Vector.<Texture>, loop:Boolean = true, fps:Number = 30):void {
 
 			if (textures.length > 0) {
 				

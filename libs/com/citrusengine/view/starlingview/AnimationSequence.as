@@ -14,7 +14,7 @@ package com.citrusengine.view.starlingview {
 	 * @param textureAtlas : a TextureAtlas object with all your object's animations
 	 * @param animations : an array with all your object's animations as a String
 	 * @param firstAnimation : a string of your default animation at its creation
-	 * @param firstAnimFps : a number which determines the first animation MC's fps
+	 * @param animFps : a number which determines the animation MC's fps
 	 * @param firstAnimLoop : a boolean, set it to true if you want your first animation to loop
 	 */
 	public class AnimationSequence extends Sprite {
@@ -24,7 +24,7 @@ package com.citrusengine.view.starlingview {
 		private var _mcSequences:Dictionary;
 		private var _previousAnimation:String;
 
-		public function AnimationSequence(textureAtlas:TextureAtlas, animations:Array, firstAnimation:String, firstAnimFps:Number = 30, firstAnimLoop:Boolean = false) {
+		public function AnimationSequence(textureAtlas:TextureAtlas, animations:Array, firstAnimation:String, animFps:Number = 30, firstAnimLoop:Boolean = false) {
 
 			super();
 
@@ -41,11 +41,11 @@ package com.citrusengine.view.starlingview {
 				}
 				
 				_mcSequences[animation] = new MovieClip(_textureAtlas.getTextures(animation));
+				_mcSequences[animation].fps = animFps;
 			}
 			
 			addChild(_mcSequences[firstAnimation]);
 			Starling.juggler.add(_mcSequences[firstAnimation]);
-			_mcSequences[firstAnimation].fps = firstAnimFps;
 			_mcSequences[firstAnimation].loop = firstAnimLoop;
 				
 			_previousAnimation = firstAnimation;			
@@ -57,7 +57,7 @@ package com.citrusengine.view.starlingview {
 		 * @param fps : the MC's fps
 		 * @param animLoop : true if the MC is a loop
 		 */
-		public function changeAnimation(animation:String, fps:Number, animLoop:Boolean):void {
+		public function changeAnimation(animation:String, animLoop:Boolean):void {
 			
 			if (!(_mcSequences[animation])) {
 				throw new Error("One object doesn't have the " + animation + " animation set up in its initial array");
@@ -69,7 +69,6 @@ package com.citrusengine.view.starlingview {
 			
 			addChild(_mcSequences[animation]);
 			Starling.juggler.add(_mcSequences[animation]);
-			_mcSequences[animation].fps = fps;
 			_mcSequences[animation].loop = animLoop;
 			_mcSequences[animation].currentFrame = 0;
 			

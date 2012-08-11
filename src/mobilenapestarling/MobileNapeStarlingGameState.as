@@ -92,18 +92,13 @@ package mobilenapestarling {
 
 				var positionX:uint = _mobileHero.x + 500 + Math.random() * 300;
 				var positionY:uint = 50 + Math.random() * 250;
-				var sensor:Sensor = new Sensor("Sensor", {x:positionX, y:positionY, view:particleSystem});
+				var sensor:Particle = new Particle("Sensor", {x:positionX, y:positionY, view:particleSystem});
 				add(sensor);
 				sensor.onBeginContact.add(_particleTouched);
 			}
 		}
 
 		private function _particleTouched(interactionCallback:InteractionCallback):void {
-			
-			var particleSystem:PDParticleSystem = PDParticleSystem(view.getArt(interactionCallback.int1.userData.myData).content);
-			Starling.juggler.remove(particleSystem);
-			particleSystem.stop();
-			particleSystem.dispose();
 			
 			interactionCallback.int1.userData.myData.kill = true;
 		}

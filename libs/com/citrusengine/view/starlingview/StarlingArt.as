@@ -7,6 +7,7 @@ package com.citrusengine.view.starlingview {
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
+	import starling.extensions.particles.PDParticleSystem;
 	import starling.extensions.textureAtlas.DynamicAtlas;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
@@ -72,9 +73,6 @@ package com.citrusengine.view.starlingview {
 		private var _view:*;
 		private var _animation:String;
 		private var _group:int;
-		
-		// fps for this MovieClip, it can be different between objects, to set it : view.getArt(myHero).fpsMC = 25; 
-		private var _fpsMC:uint = 30;
 
 		private var _texture:Texture;
 		private var _textureAtlas:TextureAtlas;
@@ -96,7 +94,7 @@ package com.citrusengine.view.starlingview {
 		}
 
 		public function destroy():void {
-
+			
 			if (content is MovieClip) {
 				
 				Starling.juggler.remove(content as MovieClip);
@@ -113,6 +111,12 @@ package com.citrusengine.view.starlingview {
 				if (_texture)
 					_texture.dispose();
 					
+				content.dispose();
+				
+			} else if (content is PDParticleSystem) {
+				
+				Starling.juggler.remove(content as PDParticleSystem);
+				(content as PDParticleSystem).stop();
 				content.dispose();
 			}
 
@@ -228,10 +232,10 @@ package com.citrusengine.view.starlingview {
 				var animLoop:Boolean = _loopAnimation[_animation];
 				
 				if (content is MovieClip)
-					(content as DynamicMovieClip).changeTextures(_textureAtlas.getTextures(_animation), _fpsMC, animLoop);
+					(content as DynamicMovieClip).changeTextures(_textureAtlas.getTextures(_animation), animLoop);
 				
 				if (content is AnimationSequence)
-					(content as AnimationSequence).changeAnimation(_animation, _fpsMC, animLoop);
+					(content as AnimationSequence).changeAnimation(_animation, animLoop);
 			}
 		}
 
@@ -241,14 +245,6 @@ package com.citrusengine.view.starlingview {
 
 		public function set group(value:int):void {
 			_group = value;
-		}
-
-		public function get fpsMC():uint {
-			return _fpsMC;
-		}
-
-		public function set fpsMC(fpsMC:uint):void {
-			_fpsMC = fpsMC;
 		}
 
 		public function get citrusObject():ISpriteView {
@@ -315,7 +311,7 @@ package com.citrusengine.view.starlingview {
 			if (evt.target.loader.content is flash.display.MovieClip) {
 
 				_textureAtlas = DynamicAtlas.fromMovieClipContainer(evt.target.loader.content, 1, 0, true, true);
-				content = new DynamicMovieClip(_textureAtlas.getTextures(animation), _fpsMC);
+				content = new DynamicMovieClip(_textureAtlas.getTextures(animation));
 				Starling.juggler.add(content as MovieClip);
 			}
 
