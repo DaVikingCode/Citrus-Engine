@@ -41,8 +41,8 @@ package com.citrusengine.objects {
 		protected var _y:Number = 0;
 		protected var _view:* = MovieClip;
 		protected var _rotation:Number = 0;
-		protected var _width:Number = 1;
-		protected var _height:Number = 1;
+		protected var _width:Number = 30;
+		protected var _height:Number = 30;
 		protected var _radius:Number = 0;
 		
 		private var _group:Number = 0;
