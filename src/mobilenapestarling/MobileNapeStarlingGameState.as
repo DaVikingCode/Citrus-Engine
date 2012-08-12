@@ -1,10 +1,10 @@
 package mobilenapestarling {
-	
-	import starling.display.MovieClip;
+
+	import starling.events.Event;
 	import nape.callbacks.InteractionCallback;
 
-	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.extensions.particles.PDParticleSystem;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
@@ -23,6 +23,7 @@ package mobilenapestarling {
 	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
+	
 
 	/**
 	 * @author Aymeric
@@ -50,6 +51,7 @@ package mobilenapestarling {
 		private var _score:TextField;
 		
 		private var _particlePicked:CitrusSprite;
+		private var _particlePickedMC:MovieClip;
 		
 		private var _back1:CitrusSprite, _back2:CitrusSprite, _back3:CitrusSprite;
 
@@ -103,9 +105,11 @@ package mobilenapestarling {
 			texture = Texture.fromBitmap(new _particlePickedPng());
 			xml = new XML(new _particlePickedConfig());
 			textureAtlas = new TextureAtlas(texture, xml);
-			var mc:MovieClip = new MovieClip(textureAtlas.getTextures("particlePicked"), 30);
-			mc.loop = true;
-			_particlePicked = new CitrusSprite("particlePicked", {view:mc, x:400, y:100});
+			_particlePickedMC = new MovieClip(textureAtlas.getTextures("particlePicked"), 30);
+			_particlePickedMC.loop = false;
+			_particlePickedMC.stop();
+			_particlePickedMC.addEventListener(Event.COMPLETE, _hideParticlePickedMc);
+			_particlePicked = new CitrusSprite("particlePicked", {x:_mobileHero.x, y:_mobileHero.y, view:_particlePickedMC});
 			add(_particlePicked);
 
 			_psconfig = new XML(new _particleConfig());
@@ -125,6 +129,8 @@ package mobilenapestarling {
 			TextField.unregisterBitmapFont("ArialMT");
 			removeChild(_score);
 			
+			_particlePickedMC.removeEventListener(Event.COMPLETE, _hideParticlePickedMc);
+			
 			_timerParticle.stop();
 			_timerParticle.removeEventListener(TimerEvent.TIMER, _particleCreation);
 			
@@ -135,8 +141,10 @@ package mobilenapestarling {
 			
 			super.update(timeDelta);
 			
+			_particlePicked.x = _mobileHero.x - _mobileHero.width - _particlePicked.width - 25;
+			_particlePicked.y = _mobileHero.y - _mobileHero.height - _particlePicked.height + 10;
+			
 			//switch background positions
-				
 			if (_mobileHero.x + stage.stageWidth > _back1.x + _back1.width)
 				_back2.x = _back1.x + _back1.width;
 				
@@ -156,19 +164,27 @@ package mobilenapestarling {
 				var particleSystem:PDParticleSystem = new PDParticleSystem(_psconfig, _psTexture);
 				particleSystem.start();
 
-				var positionX:uint = _mobileHero.x + 500 + Math.random() * 300;
+				var positionX:uint = _mobileHero.x + stage.stageWidth + Math.random() * 300;
 				var positionY:uint = 50 + Math.random() * 250;
-				var sensor:Particle = new Particle("Sensor", {x:positionX, y:positionY, view:particleSystem});
-				add(sensor);
-				sensor.onBeginContact.addOnce(_particleTouched);
+				var particle:Particle = new Particle("Sensor", {x:positionX, y:positionY, view:particleSystem});
+				add(particle);
+				particle.onBeginContact.addOnce(_particleTouched);
 			}
 		}
 
 		private function _particleTouched(interactionCallback:InteractionCallback):void {
 			
+			_particlePickedMC.visible = true;
+			_particlePickedMC.currentFrame = 0;
+			_particlePickedMC.play();
+			
 			_score.text = String(uint(_score.text)+1);
 			
 			interactionCallback.int1.userData.myData.kill = true;
+		}
+
+		private function _hideParticlePickedMc(evt:Event):void {
+			_particlePickedMC.visible = false;
 		}
 	}
 }
