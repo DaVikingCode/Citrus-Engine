@@ -31,6 +31,8 @@ package com.citrusengine.system.components.box2d.hero {
 
 		override public function initialize():void {
 			
+			super.initialize();
+			
 			_collisionComponent = entity.components["collision"];
 			
 			_fixture.addEventListener(ContactEvent.PRE_SOLVE, _collisionComponent.handlePreSolve);

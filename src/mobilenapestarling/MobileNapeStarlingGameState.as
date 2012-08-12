@@ -166,7 +166,7 @@ package mobilenapestarling {
 
 				var positionX:uint = _mobileHero.x + stage.stageWidth + Math.random() * 300;
 				var positionY:uint = 50 + Math.random() * 250;
-				var particle:Particle = new Particle("Sensor", {x:positionX, y:positionY, view:particleSystem});
+				var particle:Particle = new Particle("particle", {x:positionX, y:positionY, view:particleSystem});
 				add(particle);
 				particle.onBeginContact.addOnce(_particleTouched);
 			}

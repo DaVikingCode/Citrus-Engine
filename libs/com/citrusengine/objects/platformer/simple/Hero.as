@@ -12,6 +12,11 @@ package com.citrusengine.objects.platformer.simple {
 		public function Hero(name:String, params:Object = null) {
 			
 			super(name, params);
+		}
+			
+		override public function initialize():void {
+			
+			super.initialize();
 			
 			velocity.y = gravity;
 		}

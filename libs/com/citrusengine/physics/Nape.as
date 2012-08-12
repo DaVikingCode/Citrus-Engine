@@ -27,7 +27,12 @@ package com.citrusengine.physics {
 		public function Nape(name:String, params:Object = null) {
 
 			super(name, params);
-
+		}
+			
+		override public function initialize():void {
+			
+			super.initialize();
+			
 			_space = new Space(_gravity);
 			_contactListener = new NapeContactListener(_space);
 		}

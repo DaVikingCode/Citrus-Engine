@@ -75,11 +75,14 @@ package com.citrusengine.objects.platformer.box2d {
 		public function Baddy(name:String, params:Object=null)
 		{
 			super(name, params);
+		}
+			
+		override public function initialize():void {
+			
+			super.initialize();
 			
 			if (startingDirection == "left")
-			{
 				_inverted = true;
-			}
 		}
 		
 		override public function destroy():void

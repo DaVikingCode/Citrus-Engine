@@ -57,13 +57,8 @@ package com.citrusengine.objects {
 		}
 		
 		/**
-		 * Creates an instance of a PhysicsObject. Natively, this object does not default to any graphical representation,
+		 * Creates an instance of a Box2DPhysicsObject. Natively, this object does not default to any graphical representation,
 		 * so you will need to set the "view" property in the params parameter.
-		 * 
-		 * <p>You'll notice that the PhysicsObject constructor calls a bunch of functions that start with "define" and "create".
-		 * This is how the Box2D objects are created. You should override these methods in your own PhysicsObject implementation
-		 * if you need additional Box2D functionality. Please see provided examples of classes that have overridden
-		 * the PhysicsObject.</p>
 		 */		
 		public function Box2DPhysicsObject(name:String, params:Object=null)
 		{
@@ -71,10 +66,22 @@ package com.citrusengine.objects {
 			_box2D = _ce.state.getFirstObjectByType(Box2D) as Box2D;
 			
 			super(name, params);
+		}
+		
+		/**
+		 * All your init physics code must be added in this method, no physics code into the constructor.
+		 * <p>You'll notice that the Box2DPhysicsObject's initialize method calls a bunch of functions that start with "define" and "create".
+		 * This is how the Box2D objects are created. You should override these methods in your own Box2DPhysicsObject implementation
+		 * if you need additional Box2D functionality. Please see provided examples of classes that have overridden
+		 * the Box2DPhysicsObject.</p>
+		 */
+		override public function initialize():void {
+			
+			super.initialize();
 			
 			if (!_box2D)
 			{
-				throw new Error("Cannot create PhysicsObject when a Box2D object has not been added to the state.");
+				throw new Error("Cannot create a Box2DPhysicsObject when a Box2D object has not been added to the state.");
 				return;
 			}
 			

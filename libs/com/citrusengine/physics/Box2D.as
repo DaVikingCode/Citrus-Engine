@@ -33,6 +33,12 @@ package com.citrusengine.physics {
 		public function Box2D(name:String, params:Object = null)
 		{
 			super(name, params);
+		}
+			
+		override public function initialize():void {
+			
+			super.initialize();
+			
 			_world = new b2World(_gravity);
 			b2Base.initialize();
 			

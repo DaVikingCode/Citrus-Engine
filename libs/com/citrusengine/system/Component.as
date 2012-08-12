@@ -17,17 +17,23 @@ package com.citrusengine.system {
 
 		public function Component(name:String, params:Object = null) {
 			
-			super(name, params);
-			
 			_ce = CitrusEngine.getInstance();
+			
+			if (params == null)
+				params = {type:"component"};
+			else
+				params["type"] = "component";
+			
+			super(name, params);
 		}
 		
 		/**
 		 * Register other components in your component class in this function.
 		 * It should be call after all components have been added to an entity.
 		 */
-		public function initialize():void {
+		override public function initialize():void {
 			
+			super.initialize();
 		}
 		
 		/**

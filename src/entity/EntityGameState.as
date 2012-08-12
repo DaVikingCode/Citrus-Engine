@@ -15,10 +15,10 @@ package entity {
 	 */
 	public class EntityGameState extends State {
 		
-		private var heroEntity : Entity;
-		private var input : InputComponent;
-		private var _view : HeroViewComponent;
-		private var physics : HeroPhysicsComponent;
+		private var heroEntity:Entity;
+		private var input:InputComponent;
+		private var _view:HeroViewComponent;
+		private var physics:HeroPhysicsComponent;
 
 		public function EntityGameState() {
 			

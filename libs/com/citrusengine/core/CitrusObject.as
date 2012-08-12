@@ -13,6 +13,7 @@ package com.citrusengine.core
 		
 		public var name:String;
 		public var kill:Boolean = false;
+		public var type:String = "classicObject"; // added to the CE's render list via the State & the add method.
 		
 		/**
 		 * used in Flash Pro Level Editor
@@ -21,6 +22,8 @@ package com.citrusengine.core
 		public var className:String = "";
 		
 		protected var _initialized:Boolean = false;
+		
+		private var _params:Object;
 		
 		/**
 		 * Every Citrus Object needs a name. It helps if it's unique, but it won't blow up if it's not.
@@ -33,10 +36,27 @@ package com.citrusengine.core
 		public function CitrusObject(name:String, params:Object = null)
 		{
 			this.name = name;
-			if (params)
-				setParams(params);
+			
+			_params = params;
+			
+			if (params) {
+				if (type == "classicObject" && !params["type"])
+					initialize();
+			} else
+				initialize();
+		}
+		
+		/**
+		 * Call in the constructor if the Object is added via the State & the add method
+		 * If it's a pool object or an entity initialize it yourself.
+		 * If it's a component, it should be call by the entity.
+		 */
+		public function initialize():void {
+			
+			if (_params)
+				setParams(_params);
 			else
-				_initialized = true;
+				_initialized = true;					
 		}
 		
 		/**

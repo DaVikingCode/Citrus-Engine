@@ -50,15 +50,31 @@ package com.citrusengine.objects {
 		private var _offsetY:Number = 0;
 		private var _registration:String = "center";
 
+		/**
+		 * Creates an instance of a NapePhysicsObject. Natively, this object does not default to any graphical representation,
+		 * so you will need to set the "view" property in the params parameter.
+		 */	
 		public function NapePhysicsObject(name:String, params:Object = null) {
-			
-			super(name, params);
 			
 			_ce = CitrusEngine.getInstance();
 			_nape = _ce.state.getFirstObjectByType(Nape) as Nape;
 			
+			super(name, params);
+		}
+			
+		/**
+		 * All your init physics code must be added in this method, no physics code into the constructor.
+		 * <p>You'll notice that the NapePhysicsObject's initialize method calls a bunch of functions that start with "define" and "create".
+		 * This is how the Nape objects are created. You should override these methods in your own NapePhysicsObject implementation
+		 * if you need additional Nape functionality. Please see provided examples of classes that have overridden
+		 * the NapePhysicsObject.</p>
+		 */
+		override public function initialize():void {
+			
+			super.initialize();
+			
 			if (!_nape) {
-				throw new Error("Cannot create PhysicsObject when a Nape object has not been added to the state.");
+				throw new Error("Cannot create a NapePhysicsObject when a Nape object has not been added to the state.");
 				return;
 			}
 			

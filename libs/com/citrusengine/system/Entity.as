@@ -14,6 +14,11 @@ package com.citrusengine.system {
 
 		public function Entity(name:String, params:Object = null) {
 			
+			if (params == null)
+				params = {type:"entity"};
+			else
+				params["type"] = "entity";
+			
 			super(name, params);
 
 			components = new Dictionary();
@@ -44,7 +49,9 @@ package com.citrusengine.system {
 		 * After all the components have been added call this function to perform an init on them.
 		 * Mostly used if you want to access to other components through the entity.
 		 */
-		public function initialize():void {
+		override public function initialize():void {
+			
+			super.initialize();
 			
 			for each (var component:Component in components) {
 				component.initialize();

@@ -38,7 +38,18 @@ package com.citrusengine.system.components.box2d {
 			_box2D = CitrusEngine.getInstance().state.getFirstObjectByType(Box2D) as Box2D;
 			
 			super(name, params);
+		}
 			
+		override public function initialize():void {
+			
+			super.initialize();
+			
+			if (!_box2D) {
+				throw new Error("Cannot create a Box2DPhysicsObject when a Box2D object has not been added to the state.");
+				return;
+			}
+			
+			//Override these to customize your Box2D initialization. Things must be done in this order.
 			defineBody();
 			createBody();
 			createShape();

@@ -85,6 +85,11 @@ package com.citrusengine.objects.platformer.nape
 		{
 			super(name, params);
 			onExplode = new Signal(Missile, NapePhysicsObject);
+		}
+			
+		override public function initialize():void {
+			
+			super.initialize();
 			
 			_velocity = new Vec2(speed, 0);
 			_velocity.rotate(angle);
