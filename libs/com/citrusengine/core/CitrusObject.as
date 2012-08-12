@@ -51,7 +51,10 @@ package com.citrusengine.core
 		 * If it's a pool object or an entity initialize it yourself.
 		 * If it's a component, it should be call by the entity.
 		 */
-		public function initialize():void {
+		public function initialize(poolObjectParams:Object = null):void {
+			
+			if (poolObjectParams)
+				_params = poolObjectParams;
 			
 			if (_params)
 				setParams(_params);
@@ -65,7 +68,7 @@ package com.citrusengine.core
 		 */		
 		public function destroy():void
 		{
-			
+			_initialized = false;			
 		}
 		
 		/**

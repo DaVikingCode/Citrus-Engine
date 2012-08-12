@@ -109,7 +109,7 @@ package com.citrusengine.system.components.box2d.hero {
 			onTakeDamage = new Signal();
 		}
 			
-		override public function initialize():void {
+		override public function initialize(poolObjectParams:Object = null):void {
 			
 			super.initialize();
 			

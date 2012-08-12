@@ -77,9 +77,9 @@ package com.citrusengine.objects.platformer.box2d {
 			super(name, params);
 		}
 			
-		override public function initialize():void {
+		override public function initialize(poolObjectParams:Object = null):void {
 			
-			super.initialize();
+			super.initialize(poolObjectParams);
 			
 			if (startingDirection == "left")
 				_inverted = true;

@@ -31,7 +31,7 @@ package com.citrusengine.system {
 		 * Register other components in your component class in this function.
 		 * It should be call after all components have been added to an entity.
 		 */
-		override public function initialize():void {
+		override public function initialize(poolObjectParams:Object = null):void {
 			
 			super.initialize();
 		}

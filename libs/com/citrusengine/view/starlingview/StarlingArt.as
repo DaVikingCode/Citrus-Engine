@@ -77,8 +77,14 @@ package com.citrusengine.view.starlingview {
 		private var _texture:Texture;
 		private var _textureAtlas:TextureAtlas;
 
-		public function StarlingArt(object:ISpriteView) {
-
+		public function StarlingArt(object:ISpriteView = null) {
+			
+			if (object)
+				initialize(object);
+		}
+		
+		public function initialize(object:ISpriteView):void {
+			
 			_citrusObject = object;
 			
 			var ceState:IState = CitrusEngine.getInstance().state;
@@ -119,7 +125,8 @@ package com.citrusengine.view.starlingview {
 				(content as PDParticleSystem).stop();
 				content.dispose();
 			}
-
+			
+			_view = null;
 		}
 		
 		/**

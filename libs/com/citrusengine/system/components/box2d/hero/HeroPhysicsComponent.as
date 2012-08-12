@@ -29,7 +29,7 @@ package com.citrusengine.system.components.box2d.hero {
 			super.destroy();
 		}
 
-		override public function initialize():void {
+		override public function initialize(poolObjectParams:Object = null):void {
 			
 			super.initialize();
 			

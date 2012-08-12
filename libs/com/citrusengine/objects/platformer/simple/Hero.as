@@ -14,9 +14,9 @@ package com.citrusengine.objects.platformer.simple {
 			super(name, params);
 		}
 			
-		override public function initialize():void {
+		override public function initialize(poolObjectParams:Object = null):void {
 			
-			super.initialize();
+			super.initialize(poolObjectParams);
 			
 			velocity.y = gravity;
 		}

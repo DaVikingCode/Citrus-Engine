@@ -69,9 +69,9 @@ package com.citrusengine.objects {
 		 * if you need additional Nape functionality. Please see provided examples of classes that have overridden
 		 * the NapePhysicsObject.</p>
 		 */
-		override public function initialize():void {
+		override public function initialize(poolObjectParams:Object = null):void {
 			
-			super.initialize();
+			super.initialize(poolObjectParams);
 			
 			if (!_nape) {
 				throw new Error("Cannot create a NapePhysicsObject when a Nape object has not been added to the state.");

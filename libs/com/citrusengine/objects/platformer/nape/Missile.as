@@ -87,9 +87,9 @@ package com.citrusengine.objects.platformer.nape
 			onExplode = new Signal(Missile, NapePhysicsObject);
 		}
 			
-		override public function initialize():void {
+		override public function initialize(poolObjectParams:Object = null):void {
 			
-			super.initialize();
+			super.initialize(poolObjectParams);
 			
 			_velocity = new Vec2(speed, 0);
 			_velocity.rotate(angle);

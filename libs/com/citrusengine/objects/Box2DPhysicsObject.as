@@ -75,9 +75,9 @@ package com.citrusengine.objects {
 		 * if you need additional Box2D functionality. Please see provided examples of classes that have overridden
 		 * the Box2DPhysicsObject.</p>
 		 */
-		override public function initialize():void {
+		override public function initialize(poolObjectParams:Object = null):void {
 			
-			super.initialize();
+			super.initialize(poolObjectParams);
 			
 			if (!_box2D)
 			{

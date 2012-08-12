@@ -3,3 +3,6 @@ The [Citrus Engine](http://citrusengine.com/) is a professional-grade, scalable 
 It offers many options, you may use :
 - the classic flash display list, or blitting or Stage3D thanks to [Starling](http://gamua.com/starling/).
 - Box2D, or Nape or a Simple math based collision detection.
+- a simple way to manage object creation, or for advanced developers : an entity/component system & and object pooling.
+
+It also handles very well Flash Pro as a level editor.

@@ -49,7 +49,7 @@ package com.citrusengine.system {
 		 * After all the components have been added call this function to perform an init on them.
 		 * Mostly used if you want to access to other components through the entity.
 		 */
-		override public function initialize():void {
+		override public function initialize(poolObjectParams:Object = null):void {
 			
 			super.initialize();
 			

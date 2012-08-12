@@ -82,9 +82,9 @@ package com.citrusengine.objects.platformer.box2d
 			onExplode = new Signal(Missile, Box2DPhysicsObject);
 		}
 			
-		override public function initialize():void {
+		override public function initialize(poolObjectParams:Object = null):void {
 			
-			super.initialize();
+			super.initialize(poolObjectParams);
 			
 			_velocity = new V2(speed, 0);
 			_velocity.rotate(angle * Math.PI / 180);
