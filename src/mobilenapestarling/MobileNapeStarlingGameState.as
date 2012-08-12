@@ -1,5 +1,6 @@
 package mobilenapestarling {
 	
+	import starling.display.MovieClip;
 	import nape.callbacks.InteractionCallback;
 
 	import starling.core.Starling;
@@ -28,38 +29,27 @@ package mobilenapestarling {
 	 */
 	public class MobileNapeStarlingGameState extends StarlingState {
 
-		[Embed(source="../embed/heroMobile.xml", mimeType="application/octet-stream")]
-		private var _heroConfig:Class;
+		[Embed(source="../embed/heroMobile.xml", mimeType="application/octet-stream")] private var _heroConfig:Class;
+		[Embed(source="../embed/heroMobile.png")] private var _heroPng:Class;
+		
+		[Embed(source="../embed/ArialFont.fnt", mimeType="application/octet-stream")] private var _fontConfig:Class;
+		[Embed(source="../embed/ArialFont.png")] private var _fontPng:Class;
 
-		[Embed(source="../embed/heroMobile.png")]
-		private var _heroPng:Class;
+		[Embed(source="../embed/yellowParticle.pex", mimeType="application/octet-stream")] private var _particleConfig:Class;
+		[Embed(source="../embed/yellowParticle.png")] private var _particlePng:Class;
 		
-		[Embed(source="../embed/ArialFont.fnt", mimeType="application/octet-stream")]
-		private var _fontConfig:Class;
+		[Embed(source="../embed/particlePicked.xml", mimeType="application/octet-stream")] private var _particlePickedConfig:Class;
+		[Embed(source="../embed/particlePicked.png")] private var _particlePickedPng:Class;
 		
-		[Embed(source="../embed/ArialFont.png")]
-		private var _fontPng:Class;
-
-		[Embed(source="../embed/yellowParticle.pex", mimeType="application/octet-stream")]
-		private var _particleConfig:Class;
-
-		[Embed(source="../embed/yellowParticle.png")]
-		private var _particlePng:Class;
-		
-		[Embed(source="../embed/yellowBackground.png")]
-		private var _backgroundPng:Class;
-		
-		[Embed(source="../embed/yellow1.png")]
-		private var _backPng1:Class;
-		
-		[Embed(source="../embed/yellow2.png")]
-		private var _backPng2:Class;
-		
-		[Embed(source="../embed/yellow3.png")]
-		private var _backPng3:Class;
+		[Embed(source="../embed/yellowBackground.png")] private var _backgroundPng:Class;
+		[Embed(source="../embed/yellow1.png")] private var _backPng1:Class;
+		[Embed(source="../embed/yellow2.png")] private var _backPng2:Class;
+		[Embed(source="../embed/yellow3.png")] private var _backPng3:Class;
 		
 		private var _mobileHero:MobileHero;
 		private var _score:TextField;
+		
+		private var _particlePicked:CitrusSprite;
 		
 		private var _back1:CitrusSprite, _back2:CitrusSprite, _back3:CitrusSprite;
 
@@ -92,23 +82,31 @@ package mobilenapestarling {
 			add(_back3);
 			
 			var bitmap:Bitmap = new _fontPng();
-			var ftTexture:Texture = Texture.fromBitmap(bitmap);
-			var ftXML:XML = XML(new _fontConfig());
-			TextField.registerBitmapFont(new BitmapFont(ftTexture, ftXML));
+			var texture:Texture = Texture.fromBitmap(bitmap);
+			var xml:XML = XML(new _fontConfig());
+			TextField.registerBitmapFont(new BitmapFont(texture, xml));
 			
 			_score = new TextField(50, 20, "0", "ArialMT");
 			_score.x = stage.stageWidth - _score.width;
 			addChild(_score);
 
 			bitmap = new _heroPng();
-			var texture:Texture = Texture.fromBitmap(bitmap);
-			var xml:XML = XML(new _heroConfig());
-			var sTextureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
-			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["fly", "descent", "stop", "ascent", "throughPortal", "jump", "ground"], "fly", 30, true);
+			texture = Texture.fromBitmap(bitmap);
+			xml = XML(new _heroConfig());
+			var textureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
+			var heroAnim:AnimationSequence = new AnimationSequence(textureAtlas, ["fly", "descent", "stop", "ascent", "throughPortal", "jump", "ground"], "fly", 30, true);
 			StarlingArt.setLoopAnimations(["fly"]);
 
 			_mobileHero = new MobileHero("hero", {x:40, y:300, width:80, height:75, jumpHeight:175, jumpAcceleration:5, view:heroAnim});
 			add(_mobileHero);
+			
+			texture = Texture.fromBitmap(new _particlePickedPng());
+			xml = new XML(new _particlePickedConfig());
+			textureAtlas = new TextureAtlas(texture, xml);
+			var mc:MovieClip = new MovieClip(textureAtlas.getTextures("particlePicked"), 30);
+			mc.loop = true;
+			_particlePicked = new CitrusSprite("particlePicked", {view:mc, x:400, y:100});
+			add(_particlePicked);
 
 			_psconfig = new XML(new _particleConfig());
 			_psTexture = Texture.fromBitmap(new _particlePng());
@@ -157,7 +155,6 @@ package mobilenapestarling {
 
 				var particleSystem:PDParticleSystem = new PDParticleSystem(_psconfig, _psTexture);
 				particleSystem.start();
-				Starling.juggler.add(particleSystem);
 
 				var positionX:uint = _mobileHero.x + 500 + Math.random() * 300;
 				var positionY:uint = 50 + Math.random() * 250;

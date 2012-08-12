@@ -205,6 +205,11 @@ package com.citrusengine.view.starlingview {
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(content);
 					
+					if (_view is MovieClip)
+						Starling.juggler.add(content as MovieClip);
+					else if (_view is PDParticleSystem)
+						Starling.juggler.add(content as PDParticleSystem);
+					
 				} else {
 					throw new Error("StarlingArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
 					return;

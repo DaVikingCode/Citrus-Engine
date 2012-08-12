@@ -43,7 +43,6 @@ package box2dstarling {
 
 			_particleSystem = new PDParticleSystem(psconfig, psTexture);
 			_particleSystem.start();
-			Starling.juggler.add(_particleSystem);
 			
 			var endLevel:Sensor = Sensor(getObjectByName("endLevel"));
 			endLevel.view = _particleSystem;
