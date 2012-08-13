@@ -74,6 +74,7 @@ package objectpooling {
 			while (_poolGraphic.head)
 				removeChild(_poolGraphic.disposeNode(_poolGraphic.head).data);
 				
+			// reassign object
 			for (var i:uint = 0; i < 7; ++i) {
 				var physicsNode:DoublyLinkedListNode = _poolPhysics.create({x:i * 40 + 120, view:"crate.png"});
 				addChild(_poolGraphic.create(physicsNode.data).data);

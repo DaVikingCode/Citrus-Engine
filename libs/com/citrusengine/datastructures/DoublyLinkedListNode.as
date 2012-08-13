@@ -1,7 +1,8 @@
 package com.citrusengine.datastructures {
 	
 	/**
-	 * @author Aymeric
+	 * Each node is composed of a data and references (in other words, links) to the next and previous node in the sequence.
+	 * This structure allows for efficient insertion or removal of elements from any position in the sequence.
 	 */
 	public class DoublyLinkedListNode {
 		

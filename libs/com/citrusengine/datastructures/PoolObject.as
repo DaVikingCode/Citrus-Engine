@@ -3,14 +3,20 @@ package com.citrusengine.datastructures {
 	import com.citrusengine.view.CitrusView;
 
 	/**
-	 * @author Aymeric based on the works of Alkemi (Mickael Mouillé & Alain Puget) <a href="http://www.alkemi-games.com/pages/tutorials/">Alkemi Games</a>. 
+	 * Object pooling is a data structure based on a simple observation : the ‘new’ operator is costly, 
+	 * memory allocation necessary for the object creation is a slow process. And Garbage Collection too!
+	 * So object pooling idea is really simple :
+	 * - create lots of object at the beginning of your level, if there is FPS reduction it shouldn’t be a big problem.
+	 * - if you need more objects during the game create many of them that can be use later. 
+	 * - destroy your object if you don’t need it anymore, but keep a link to it! So it will be reassign!
+	 * - destroy all your objects and set them to null at the end of your level (garbage collector will work).
 	 */
 	public class PoolObject extends DoublyLinkedList {
 
 		protected var _poolType:Class;
 		protected var _poolSize:uint = 0;
 		protected var _poolGrowthRate:uint = 0;
-		protected var _physicsPool:Boolean;
+		protected var _isCitrusObjectPool:Boolean;
 
 		// Start of the list of free objects
 		protected var _freeListHead:DoublyLinkedListNode = null;
@@ -21,20 +27,21 @@ package com.citrusengine.datastructures {
 		 * If you want that, reimplement the Pool class and the DoublyLinkedListNode for each of your pool or port these files to Haxe with Generics !
 		 * WARNING : Be sure to design your pooled objects with NO constructor parameters and an 'init' method of some kind that will reinitialized 
 		 * all necessary properties each time your objects are 'recycled'.
-		 * WARNING : Remember to cast your objects in the correct type before using them each time you get on from a DoublyLinkedListNode.data !!!
+		 * WARNING : Remember to cast your objects in the correct type before using them each time you get one from a DoublyLinkedListNode.data !!!
 		 * 
-		 * @param $pooledType the Class Object of the type you want to store in this pool
-		 * @param $poolSize the initial size of your pool. Ideally you should never have to use more than this number.
-		 * @param $poolGrowthRate the number of object to instantiate each time a new one is needed and the free list is empty
+		 * @param pooledType the Class Object of the type you want to store in this pool
+		 * @param poolSize the initial size of your pool. Ideally you should never have to use more than this number.
+		 * @param poolGrowthRate the number of object to instantiate each time a new one is needed and the free list is empty
+		 * @param isCitrusObjectPool a boolean, set it to true if the Pool is composed of Physics/CitrusSprite, set it to false for SpriteArt/StarlingArt
 		 */
-		public function PoolObject(pooledType:Class, poolSize:uint, poolGrowthRate:uint, physicsPool:Boolean):void {
+		public function PoolObject(pooledType:Class, poolSize:uint, poolGrowthRate:uint, isCitrusObjectPool:Boolean):void {
 
 			super();
 
 			_poolType = pooledType;
 			_poolSize = poolSize;
 			_poolGrowthRate = poolGrowthRate;
-			_physicsPool = physicsPool;
+			_isCitrusObjectPool = isCitrusObjectPool;
 
 			increasePoolSize(_poolSize);
 		}
@@ -44,14 +51,14 @@ package com.citrusengine.datastructures {
 		 * Called once at the pool creation with _poolSize as a parameter, and once with _poolGrowthRate
 		 * each time a new Object is needed and the free list is empty.
 		 * 
-		 * @param	$sizeIncrease the number of objects to instantiate and store in the free list
+		 * @param	sizeIncrease the number of objects to instantiate and store in the free list
 		 */
 		protected function increasePoolSize(sizeIncrease:uint):void {
 
 			for (var i:int = 0; i < sizeIncrease; ++i) {
 				var node:DoublyLinkedListNode = new DoublyLinkedListNode();
 				
-				if (_physicsPool)
+				if (_isCitrusObjectPool)
 					node.data = new _poolType("aPoolObject", {type:"poolObject"});
 				else
 					node.data = new _poolType();
@@ -152,7 +159,7 @@ package com.citrusengine.datastructures {
 
 		/**
 		 * Discard a now useless object to be stored in the free list.
-		 * @param	$node the node holding the object to discard
+		 * @param node the node holding the object to discard
 		 */
 		public function disposeNode(node:DoublyLinkedListNode):DoublyLinkedListNode {
 			
