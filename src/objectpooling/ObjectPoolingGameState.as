@@ -32,8 +32,11 @@ package objectpooling {
 			
 			add(new Platform("platformBot", {x:0, y:380, width:4000, height:20}));
 			
-			_poolPhysics = new PoolObject(NapePhysicsObject, 50, 5);
-			_poolGraphic = new PoolObject(SpriteArt, 50, 5);
+			// the Citrus Engine separates physics from art so we use two PoolObjects.
+			// all objects in a PoolObject must have the same type.
+			// PoolObject isn't render through the state, you have to manage it in your GameState.
+			_poolPhysics = new PoolObject(NapePhysicsObject, 50, 5, true);
+			_poolGraphic = new PoolObject(SpriteArt, 50, 5, false);
 			
 			for (var i:uint = 0; i < 5; ++i) {
 				
@@ -48,6 +51,7 @@ package objectpooling {
 			
 			_poolPhysics.disposeAll();
 			
+			// for the graphic pool, we have to removeChild each object, it can't be made in the PoolObject since it's not a display object.
 			while (_poolGraphic.head)
 				removeChild(_poolGraphic.disposeNode(_poolGraphic.head).data);
 			
@@ -58,6 +62,8 @@ package objectpooling {
 			
 			super.update(timeDelta);
 			
+			// update pool objects
+			_poolPhysics.updatePhysics(timeDelta);
 			_poolGraphic.updateArt(view);
 		}
 		
@@ -68,9 +74,7 @@ package objectpooling {
 			while (_poolGraphic.head)
 				removeChild(_poolGraphic.disposeNode(_poolGraphic.head).data);
 				
-				
 			for (var i:uint = 0; i < 7; ++i) {
-				
 				var physicsNode:DoublyLinkedListNode = _poolPhysics.create({x:i * 40 + 120, view:"crate.png"});
 				addChild(_poolGraphic.create(physicsNode.data).data);
 			}

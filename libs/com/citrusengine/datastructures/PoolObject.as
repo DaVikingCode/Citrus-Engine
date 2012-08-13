@@ -1,16 +1,16 @@
 package com.citrusengine.datastructures {
 
-	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.view.CitrusView;
 
 	/**
-	 * @author Aymeric based on the works of Alkemi (Mickael Mouillé & Alain Puget) www.alkemi-games.com 
+	 * @author Aymeric based on the works of Alkemi (Mickael Mouillé & Alain Puget) <a href="http://www.alkemi-games.com/pages/tutorials/">Alkemi Games</a>. 
 	 */
 	public class PoolObject extends DoublyLinkedList {
 
 		protected var _poolType:Class;
 		protected var _poolSize:uint = 0;
 		protected var _poolGrowthRate:uint = 0;
+		protected var _physicsPool:Boolean;
 
 		// Start of the list of free objects
 		protected var _freeListHead:DoublyLinkedListNode = null;
@@ -27,13 +27,14 @@ package com.citrusengine.datastructures {
 		 * @param $poolSize the initial size of your pool. Ideally you should never have to use more than this number.
 		 * @param $poolGrowthRate the number of object to instantiate each time a new one is needed and the free list is empty
 		 */
-		public function PoolObject($pooledType:Class, $poolSize:uint, $poolGrowthRate:uint):void {
+		public function PoolObject(pooledType:Class, poolSize:uint, poolGrowthRate:uint, physicsPool:Boolean):void {
 
 			super();
 
-			_poolType = $pooledType;
-			_poolSize = $poolSize;
-			_poolGrowthRate = $poolGrowthRate;
+			_poolType = pooledType;
+			_poolSize = poolSize;
+			_poolGrowthRate = poolGrowthRate;
+			_physicsPool = physicsPool;
 
 			increasePoolSize(_poolSize);
 		}
@@ -45,12 +46,12 @@ package com.citrusengine.datastructures {
 		 * 
 		 * @param	$sizeIncrease the number of objects to instantiate and store in the free list
 		 */
-		protected function increasePoolSize($sizeIncrease:uint):void {
+		protected function increasePoolSize(sizeIncrease:uint):void {
 
-			for (var i:int = 0; i < $sizeIncrease; ++i) {
+			for (var i:int = 0; i < sizeIncrease; ++i) {
 				var node:DoublyLinkedListNode = new DoublyLinkedListNode();
 				
-				if (DataTest.isSubclass(_poolType, CitrusObject))
+				if (_physicsPool)
 					node.data = new _poolType("aPoolObject", {type:"poolObject"});
 				else
 					node.data = new _poolType();
@@ -132,13 +133,13 @@ package com.citrusengine.datastructures {
 		 * @param node's data
 		 * @return the node
 		 */
-		public function getNodeFromData($data:*):DoublyLinkedListNode {
+		public function getNodeFromData(data:*):DoublyLinkedListNode {
 
 			var tmpHead:DoublyLinkedListNode = head;
 
 			while (tmpHead != null) {
 				
-				if (tmpHead.data == $data) {
+				if (tmpHead.data == data) {
 					
 					return tmpHead;
 				}
@@ -153,42 +154,40 @@ package com.citrusengine.datastructures {
 		 * Discard a now useless object to be stored in the free list.
 		 * @param	$node the node holding the object to discard
 		 */
-		public function disposeNode($node:DoublyLinkedListNode):DoublyLinkedListNode {
+		public function disposeNode(node:DoublyLinkedListNode):DoublyLinkedListNode {
 			
-			($node.data as _poolType).destroy();
+			(node.data as _poolType).destroy();
 			
 			// Extract the node from the list
-			if ($node == head) {
-				head = $node.next;
+			if (node == head) {
+				head = node.next;
 				if (head != null) head.prev = null;
 			} else {
-				$node.prev.next = $node.next;
+				node.prev.next = node.next;
 			}
 
-			if ($node == tail) {
-				tail = $node.prev;
+			if (node == tail) {
+				tail = node.prev;
 				if (tail != null) tail.next = null;
 			} else {
-				$node.next.prev = $node.prev;
+				node.next.prev = node.prev;
 			}
 
-
-			$node.prev = null;
-
+			node.prev = null;
 
 			// Store the discarded object in the free list
 			if (_freeListHead) {
-				_freeListHead.prev = $node;
-				$node.next = _freeListHead;
-				_freeListHead = $node;
+				_freeListHead.prev = node;
+				node.next = _freeListHead;
+				_freeListHead = node;
 			} else {
-				_freeListHead = $node;
-				$node.next = null;
+				_freeListHead = node;
+				node.next = null;
 			}
 
 			--_count;
 			
-			return $node;
+			return node;
 		}
 
 		/**
