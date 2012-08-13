@@ -1,16 +1,17 @@
 package mobilenapestarling {
 
-	import starling.events.Event;
 	import nape.callbacks.InteractionCallback;
 
 	import starling.display.Image;
 	import starling.display.MovieClip;
+	import starling.events.Event;
 	import starling.extensions.particles.PDParticleSystem;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
+	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.StarlingState;
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.CitrusSprite;
@@ -24,7 +25,6 @@ package mobilenapestarling {
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
 	
-
 	/**
 	 * @author Aymeric
 	 */
@@ -68,11 +68,18 @@ package mobilenapestarling {
 
 			super.initialize();
 
-			var gameLength:uint = 10000;
-
 			var nape:Nape = new Nape("nape");
 			//nape.visible = true;
 			add(nape);
+			
+			CitrusEngine.getInstance().starling.addEventListener(Event.ROOT_CREATED, createGraphic);
+			
+			//createGraphic(null);
+		}
+		
+		private function createGraphic(evt:Event):void {
+			
+			var gameLength:uint = 10000;
 			
 			add(new CitrusSprite("backgroud", {parallax:0.05, view:Image.fromBitmap(new _backgroundPng())}));
 			
@@ -99,7 +106,7 @@ package mobilenapestarling {
 			var heroAnim:AnimationSequence = new AnimationSequence(textureAtlas, ["fly", "descent", "stop", "ascent", "throughPortal", "jump", "ground"], "fly", 30, true);
 			StarlingArt.setLoopAnimations(["fly"]);
 
-			_mobileHero = new MobileHero("hero", {x:40, y:300, width:80, height:75, jumpHeight:175, jumpAcceleration:5, view:heroAnim});
+			_mobileHero = new MobileHero("hero", {x:40, y:250, width:80, height:75, jumpHeight:175, jumpAcceleration:5, view:heroAnim});
 			add(_mobileHero);
 			
 			texture = Texture.fromBitmap(new _particlePickedPng());
@@ -115,13 +122,13 @@ package mobilenapestarling {
 			_psconfig = new XML(new _particleConfig());
 			_psTexture = Texture.fromBitmap(new _particlePng());
 
-			add(new Platform("platformBot", {x:0, y:stage.stageHeight - 10, width:gameLength, height:10}));
+			add(new Platform("platformBot", {x:0, y:320 - 10, width:gameLength, height:10}));
 
-			view.setupCamera(_mobileHero, new MathVector(_mobileHero.width, 0), new Rectangle(0, 0, gameLength, 450), new MathVector(.25, .05));
+			view.setupCamera(_mobileHero, new MathVector(_mobileHero.width, 0), new Rectangle(0, 0, gameLength, 0), new MathVector(.25, .05));
 
 			_timerParticle = new Timer(300);
 			_timerParticle.addEventListener(TimerEvent.TIMER, _particleCreation);
-			_timerParticle.start();
+			_timerParticle.start();			
 		}
 			
 		override public function destroy():void {
@@ -141,18 +148,22 @@ package mobilenapestarling {
 			
 			super.update(timeDelta);
 			
-			_particlePicked.x = _mobileHero.x - _mobileHero.width - _particlePicked.width - 25;
-			_particlePicked.y = _mobileHero.y - _mobileHero.height - _particlePicked.height + 10;
+			if (_particlePicked && _mobileHero) {
 			
-			//switch background positions
-			if (_mobileHero.x + stage.stageWidth > _back1.x + _back1.width)
-				_back2.x = _back1.x + _back1.width;
+				_particlePicked.x = _mobileHero.x - _mobileHero.width - _particlePicked.width - 25;
+				_particlePicked.y = _mobileHero.y - _mobileHero.height - _particlePicked.height + 10;
 				
-			if (_mobileHero.x + stage.stageWidth > _back2.x + _back2.width)
-				_back3.x = _back2.x + _back2.width;
+				//switch background positions
+				if (_mobileHero.x + stage.stageWidth > _back1.x + _back1.width)
+					_back2.x = _back1.x + _back1.width;
+					
+				if (_mobileHero.x + stage.stageWidth > _back2.x + _back2.width)
+					_back3.x = _back2.x + _back2.width;
+					
+				if (_mobileHero.x + stage.stageWidth > _back3.x + _back3.width)
+					_back1.x = _back3.x + _back3.width;
 				
-			if (_mobileHero.x + stage.stageWidth > _back3.x + _back3.width)
-				_back1.x = _back3.x + _back3.width;
+			}
 		}
 
 		private function _particleCreation(tEvt:TimerEvent):void {
