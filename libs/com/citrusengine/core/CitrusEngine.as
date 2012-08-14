@@ -7,6 +7,7 @@
 
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.geom.Rectangle;
 	
 	/**
 	 * CitrusEngine is the top-most class in the library. When you start your project, you should make your
@@ -19,7 +20,7 @@
 	 */	
 	public class CitrusEngine extends MovieClip
 	{
-		public static const VERSION:String = "3.00.00 BETA 1";
+		public static const VERSION:String = "3.00.00 BETA 2";
 				
 		private static var _instance:CitrusEngine;
 		
@@ -74,10 +75,15 @@
 		 * StarlingState is added on the starling stage : <code>_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);</code>
 		 * @param debugMode : if true, display a Stats class instance.
 		 * @param antiAliasing : The antialiasing value allows you to set the anti-aliasing (0 - 16), generally a value of 1 is totally acceptable.
+		 * @param viewPort : Starling's viewport, default is (0, 0, stage.fullScreenWidth, stage.fullScreenHeight).
 		 */
-		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1):void {
+		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewPort:Rectangle = null):void {
 			
-			_starling = new Starling(RootClass, stage);
+			if (!viewPort)
+				viewPort = new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight);
+			
+			_starling = new Starling(RootClass, stage, viewPort);
+			
 			_starling.antiAliasing = antiAliasing;
 			_starling.showStats = debugMode;
 			_starling.start();

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:9b16dc23acefebb1592f57da01e0aabb$ -->
+<TextureAtlas imagePath="worldYellow.png">
+    <SubTexture name="yellow1" x="2" y="2" width="847" height="268" frameX="0" frameY="-52" frameWidth="847" frameHeight="320"/>
+    <SubTexture name="yellow2" x="2" y="272" width="777" height="275" frameX="0" frameY="-45" frameWidth="777" frameHeight="320"/>
+    <SubTexture name="yellow3" x="2" y="549" width="702" height="239" frameX="0" frameY="-81" frameWidth="702" frameHeight="320"/>
+</TextureAtlas>

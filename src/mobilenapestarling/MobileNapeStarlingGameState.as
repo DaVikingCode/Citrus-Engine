@@ -2,6 +2,7 @@ package mobilenapestarling {
 
 	import nape.callbacks.InteractionCallback;
 
+	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.events.Event;
@@ -29,9 +30,9 @@ package mobilenapestarling {
 	 * @author Aymeric
 	 */
 	public class MobileNapeStarlingGameState extends StarlingState {
-
-		[Embed(source="../embed/heroMobile.xml", mimeType="application/octet-stream")] private var _heroConfig:Class;
-		[Embed(source="../embed/heroMobile.png")] private var _heroPng:Class;
+		
+		[Embed(source="../embed/1x/heroMobile.xml", mimeType="application/octet-stream")] private var _heroConfig:Class;
+		[Embed(source="../embed/1x/heroMobile.png")] private var _heroPng:Class;
 		
 		[Embed(source="../embed/ArialFont.fnt", mimeType="application/octet-stream")] private var _fontConfig:Class;
 		[Embed(source="../embed/ArialFont.png")] private var _fontPng:Class;
@@ -41,11 +42,6 @@ package mobilenapestarling {
 		
 		[Embed(source="../embed/particlePicked.xml", mimeType="application/octet-stream")] private var _particlePickedConfig:Class;
 		[Embed(source="../embed/particlePicked.png")] private var _particlePickedPng:Class;
-		
-		[Embed(source="../embed/yellowBackground.png")] private var _backgroundPng:Class;
-		[Embed(source="../embed/yellow1.png")] private var _backPng1:Class;
-		[Embed(source="../embed/yellow2.png")] private var _backPng2:Class;
-		[Embed(source="../embed/yellow3.png")] private var _backPng3:Class;
 		
 		private var _mobileHero:MobileHero;
 		private var _score:TextField;
@@ -68,6 +64,8 @@ package mobilenapestarling {
 
 			super.initialize();
 
+			Assets.contentScaleFactor = Starling.current.contentScaleFactor;
+
 			var nape:Nape = new Nape("nape");
 			//nape.visible = true;
 			add(nape);
@@ -81,14 +79,7 @@ package mobilenapestarling {
 			
 			var gameLength:uint = 10000;
 			
-			add(new CitrusSprite("backgroud", {parallax:0.05, view:Image.fromBitmap(new _backgroundPng())}));
-			
-			_back1 = new CitrusSprite("back1", {y:50, width:847, view:Image.fromBitmap(new _backPng1())});
-			_back2 = new CitrusSprite("back2", {y:50, x:847, width:777, view:Image.fromBitmap(new _backPng2())});
-			_back3 = new CitrusSprite("back3", {y:50, x: 847 + 777, width:702, view:Image.fromBitmap(new _backPng3())});
-			add(_back1);
-			add(_back2);
-			add(_back3);
+			add(new CitrusSprite("backgroud", {parallax:0.05, view:new Image(Assets.getTexture("Background"))}));
 			
 			var bitmap:Bitmap = new _fontPng();
 			var texture:Texture = Texture.fromBitmap(bitmap);
@@ -98,6 +89,13 @@ package mobilenapestarling {
 			_score = new TextField(50, 20, "0", "ArialMT");
 			_score.x = stage.stageWidth - _score.width;
 			addChild(_score);
+			
+			_back1 = new CitrusSprite("back1", {y:50, width:847, view:new Image(Assets.getAtlasTexture("yellow1"))});
+			_back2 = new CitrusSprite("back2", {y:50, x:847, width:777, view:new Image(Assets.getAtlasTexture("yellow2"))});
+			_back3 = new CitrusSprite("back3", {y:50, x: 847 + 777, width:702, view:new Image(Assets.getAtlasTexture("yellow3"))});
+			add(_back1);
+			add(_back2);
+			add(_back3);
 
 			bitmap = new _heroPng();
 			texture = Texture.fromBitmap(bitmap);
