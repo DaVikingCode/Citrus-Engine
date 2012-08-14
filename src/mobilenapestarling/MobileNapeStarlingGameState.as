@@ -31,9 +31,6 @@ package mobilenapestarling {
 	 */
 	public class MobileNapeStarlingGameState extends StarlingState {
 		
-		[Embed(source="../embed/1x/heroMobile.xml", mimeType="application/octet-stream")] private var _heroConfig:Class;
-		[Embed(source="../embed/1x/heroMobile.png")] private var _heroPng:Class;
-		
 		[Embed(source="../embed/ArialFont.fnt", mimeType="application/octet-stream")] private var _fontConfig:Class;
 		[Embed(source="../embed/ArialFont.png")] private var _fontPng:Class;
 
@@ -96,20 +93,16 @@ package mobilenapestarling {
 			add(_back1);
 			add(_back2);
 			add(_back3);
-
-			bitmap = new _heroPng();
-			texture = Texture.fromBitmap(bitmap);
-			xml = XML(new _heroConfig());
-			var textureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
-			var heroAnim:AnimationSequence = new AnimationSequence(textureAtlas, ["fly", "descent", "stop", "ascent", "throughPortal", "jump", "ground"], "fly", 30, true);
+			
+			var heroAnim:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Hero"), ["fly", "descent", "stop", "ascent", "throughPortal", "jump", "ground"], "fly", 30, true);
 			StarlingArt.setLoopAnimations(["fly"]);
 
-			_mobileHero = new MobileHero("hero", {x:40, y:250, width:80, height:75, jumpHeight:175, jumpAcceleration:5, view:heroAnim});
+			_mobileHero = new MobileHero("hero", {x:40, y:150, width:80, height:75, jumpHeight:175, jumpAcceleration:5, view:heroAnim});
 			add(_mobileHero);
 			
 			texture = Texture.fromBitmap(new _particlePickedPng());
 			xml = new XML(new _particlePickedConfig());
-			textureAtlas = new TextureAtlas(texture, xml);
+			var textureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
 			_particlePickedMC = new MovieClip(textureAtlas.getTextures("particlePicked"), 30);
 			_particlePickedMC.loop = false;
 			_particlePickedMC.stop();
@@ -172,6 +165,7 @@ package mobilenapestarling {
 
 				var particleSystem:PDParticleSystem = new PDParticleSystem(_psconfig, _psTexture);
 				particleSystem.start();
+				particleSystem.touchable = false;
 
 				var positionX:uint = _mobileHero.x + stage.stageWidth + Math.random() * 300;
 				var positionY:uint = 50 + Math.random() * 250;

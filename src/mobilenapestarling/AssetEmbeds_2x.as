@@ -11,10 +11,10 @@ package mobilenapestarling {
 
 		// Texture Atlas
 
-		[Embed(source="../embed/1x/heroMobile.xml", mimeType="application/octet-stream")]
+		[Embed(source="../embed/2x/heroMobile.xml", mimeType="application/octet-stream")]
 		public static const HeroConfig:Class;
 
-		[Embed(source="../embed/1x/heroMobile.png")]
+		[Embed(source="../embed/2x/heroMobile.png")]
 		public static const HeroPng:Class;
 
 		[Embed(source="../embed/2x/worldYellow.xml", mimeType="application/octet-stream")]

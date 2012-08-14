@@ -64,6 +64,11 @@ package mobilenapestarling {
             prepareAtlas();
             return sTextureAtlas.getTextures(prefix);
         }
+		
+		public static function getTextureAtlas(name:String):TextureAtlas {
+			prepareAtlas(name);
+			return sTextureAtlas;
+		}
         
         public static function getSound(name:String):Sound
         {
@@ -88,14 +93,22 @@ package mobilenapestarling {
            // sSounds["Click"] = new Click();
         }
         
-        private static function prepareAtlas():void
+        private static function prepareAtlas(name:String = ""):void
         {
-            if (sTextureAtlas == null)
+			var texture:Texture;
+			var xml:XML;
+            if (sTextureAtlas == null || name == "")
             {
-                var texture:Texture = getTexture("WorldYellowPng");
-                var xml:XML = XML(create("WorldYellowConfig"));
+                texture = getTexture("WorldYellowPng");
+                xml = XML(create("WorldYellowConfig"));
                 sTextureAtlas = new TextureAtlas(texture, xml);
             }
+			else
+			{
+				texture = getTexture(name + "Png");
+                xml = XML(create(name + "Config"));
+                sTextureAtlas = new TextureAtlas(texture, xml);
+			}
         }
         
         private static function create(name:String):Object
