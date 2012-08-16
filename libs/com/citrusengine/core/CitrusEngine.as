@@ -1,7 +1,8 @@
 ﻿package com.citrusengine.core {
 
 	import starling.core.Starling;
-
+	import starling.events.Event;
+	
 	import com.citrusengine.utils.AGameData;
 	import com.citrusengine.utils.LevelManager;
 
@@ -66,8 +67,8 @@
 			//Set up sound manager
 			_sound = SoundManager.getInstance();
 			
-			addEventListener(Event.ENTER_FRAME, handleEnterFrame);
-			addEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
+			addEventListener(flash.events.Event.ENTER_FRAME, handleEnterFrame);
+			addEventListener(flash.events.Event.ADDED_TO_STAGE, handleAddedToStage);
 		}
 		
 		/**
@@ -86,6 +87,15 @@
 			
 			_starling.antiAliasing = antiAliasing;
 			_starling.showStats = debugMode;
+			 
+			_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCeated);
+		}
+		
+		// be sure that starling is initialized (especially on mobile)
+		private function _context3DCeated(evt:starling.events.Event):void {
+			
+			_starling.removeEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCeated);
+			
 			_starling.start();
 		}
 		
@@ -194,12 +204,12 @@
 		/**
 		 * Set up things that need the stage access.
 		 */
-		private function handleAddedToStage(e:Event):void 
+		private function handleAddedToStage(e:flash.events.Event):void 
 		{
-			removeEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
+			removeEventListener(flash.events.Event.ADDED_TO_STAGE, handleAddedToStage);
 			stage.scaleMode = "noScale";
 			stage.align = "topLeft";
-			stage.addEventListener(Event.DEACTIVATE, handleStageDeactivated);
+			stage.addEventListener(flash.events.Event.DEACTIVATE, handleStageDeactivated);
 			
 			_input.initialize();
 		}
@@ -208,30 +218,42 @@
 		 * This is the game loop. It switches states if necessary, then calls update on the current state.
 		 */		
 		//TODO The CE updates use the timeDelta to keep consistent speed during slow framerates. However, Box2D becomes unstable when changing timestep. Why?
-		private function handleEnterFrame(e:Event):void
+		private function handleEnterFrame(e:flash.events.Event):void
 		{
 			//Change states if it has been requested
 			if (_newState)
 			{
-				if (_state)
+				// if we use Stage3D with StarlingView
+				if (_starling) {
+					if (_starling.isStarted) {
+						
+						if (_state) {
+							
+							_state.destroy();
+							_starling.stage.removeChild(_state as StarlingState);
+							_starling.nativeStage.removeChildAt(1); // Remove Box2D or Nape view
+						}
+						_state = _newState;
+						_newState = null;
+					
+						_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);
+						_state.initialize();
+					}
+					
+				} 
+				else // if we use class display list with the SpriteView or BlittingView 
 				{
-					_state.destroy();
-					if (_starling) {
-						_starling.stage.removeChild(_state as StarlingState);
-						_starling.nativeStage.removeChildAt(1); // Remove Box2D view
-					} else {
+					if (_state) {
+						
+						_state.destroy();
 						removeChild(_state as State);
 					}
-				}
-				_state = _newState;
-				_newState = null;
-				
-				if (_starling) {
-					_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);
-				} else {
+					_state = _newState;
+					_newState = null;
+					
 					addChildAt(_state as State, _stateDisplayIndex);
+					_state.initialize();					
 				}
-				_state.initialize();
 			}
 			
 			//Update the state
@@ -247,7 +269,7 @@
 			
 		}
 		
-		private function handleStageDeactivated(e:Event):void
+		private function handleStageDeactivated(e:flash.events.Event):void
 		{
 			if (_playing)
 			{
@@ -255,17 +277,17 @@
 					_starling.stop();
 					
 				playing = false;
-				stage.addEventListener(Event.ACTIVATE, handleStageActivated);
+				stage.addEventListener(flash.events.Event.ACTIVATE, handleStageActivated);
 			}
 		}
 		
-		private function handleStageActivated(e:Event):void
+		private function handleStageActivated(e:flash.events.Event):void
 		{
 			if (_starling)
 				_starling.start();
 					
 			playing = true;
-			stage.removeEventListener(Event.ACTIVATE, handleStageActivated);
+			stage.removeEventListener(flash.events.Event.ACTIVATE, handleStageActivated);
 		}
 		
 		private function handleShowConsole():void

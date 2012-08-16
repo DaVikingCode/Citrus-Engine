@@ -1,4 +1,4 @@
-package mobilenapestarling {
+package mobilenapestarling.assets {
 	
 	/**
 	 * @author Aymeric

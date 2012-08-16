@@ -1,4 +1,4 @@
-package mobilenapestarling {
+package mobilenapestarling.assets {
 
 	import starling.text.BitmapFont;
 	import starling.text.TextField;

@@ -1,5 +1,7 @@
 package mobilenapestarling {
 
+	import mobilenapestarling.assets.Assets;
+
 	import nape.callbacks.InteractionCallback;
 
 	import starling.core.Starling;
@@ -12,7 +14,6 @@ package mobilenapestarling {
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
-	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.StarlingState;
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.CitrusSprite;
@@ -62,17 +63,10 @@ package mobilenapestarling {
 			super.initialize();
 
 			Assets.contentScaleFactor = Starling.current.contentScaleFactor;
-
+			
 			var nape:Nape = new Nape("nape");
 			//nape.visible = true;
 			add(nape);
-			
-			CitrusEngine.getInstance().starling.addEventListener(Event.ROOT_CREATED, createGraphic);
-			
-			//createGraphic(null);
-		}
-		
-		private function createGraphic(evt:Event):void {
 			
 			var gameLength:uint = 10000;
 			
@@ -119,7 +113,7 @@ package mobilenapestarling {
 
 			_timerParticle = new Timer(300);
 			_timerParticle.addEventListener(TimerEvent.TIMER, _particleCreation);
-			_timerParticle.start();			
+			_timerParticle.start();	
 		}
 			
 		override public function destroy():void {
