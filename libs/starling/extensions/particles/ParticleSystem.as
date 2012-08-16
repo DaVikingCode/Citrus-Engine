@@ -8,29 +8,29 @@
 //
 // =================================================================================================
 
-package starling.extensions.particles
-{
-    import com.adobe.utils.AGALMiniAssembler;
-    
-    import flash.display3D.Context3D;
-    import flash.display3D.Context3DBlendFactor;
-    import flash.display3D.Context3DProgramType;
-    import flash.display3D.Context3DVertexBufferFormat;
-    import flash.display3D.IndexBuffer3D;
-    import flash.display3D.VertexBuffer3D;
-    import flash.geom.Matrix;
-    import flash.geom.Point;
-    import flash.geom.Rectangle;
-    
-    import starling.animation.IAnimatable;
-    import starling.core.RenderSupport;
-    import starling.core.Starling;
-    import starling.display.DisplayObject;
-	import starling.extensions.utils.MatrixUtil;
-    import starling.errors.MissingContextError;
-    import starling.events.Event;
-    import starling.textures.Texture;
-    import starling.utils.VertexData;
+package starling.extensions.particles {
+
+	import starling.animation.IAnimatable;
+	import starling.core.RenderSupport;
+	import starling.core.Starling;
+	import starling.display.DisplayObject;
+	import starling.errors.MissingContextError;
+	import starling.events.Event;
+	import starling.textures.Texture;
+	import starling.utils.MatrixUtil;
+	import starling.utils.VertexData;
+
+	import com.adobe.utils.AGALMiniAssembler;
+
+	import flash.display3D.Context3D;
+	import flash.display3D.Context3DBlendFactor;
+	import flash.display3D.Context3DProgramType;
+	import flash.display3D.Context3DVertexBufferFormat;
+	import flash.display3D.IndexBuffer3D;
+	import flash.display3D.VertexBuffer3D;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
     
     public class ParticleSystem extends DisplayObject implements IAnimatable
     {
@@ -338,7 +338,7 @@ package starling.extensions.particles
             context.setTextureAt(0, mTexture.base);
             
             context.setProgram(Starling.current.getProgram(program));
-            context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, support.mvpMatrix, true);
+            context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, support.mvpMatrix3D, true);
             context.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, sRenderAlpha, 1);
             context.setVertexBufferAt(0, mVertexBuffer, VertexData.POSITION_OFFSET, Context3DVertexBufferFormat.FLOAT_2); 
             context.setVertexBufferAt(1, mVertexBuffer, VertexData.COLOR_OFFSET,    Context3DVertexBufferFormat.FLOAT_4);
