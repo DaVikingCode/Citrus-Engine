@@ -231,7 +231,7 @@
 							
 							_state.destroy();
 							_starling.stage.removeChild(_state as StarlingState);
-							_starling.nativeStage.removeChildAt(1); // Remove Box2D or Nape view
+							_starling.nativeStage.removeChildAt(2); // Remove Box2D or Nape view
 						}
 						_state = _newState;
 						_newState = null;

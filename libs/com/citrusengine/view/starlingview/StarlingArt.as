@@ -272,8 +272,7 @@ package com.citrusengine.view.starlingview {
 
 				// Box2D view is not on the Starling display list, but on the classical flash display list.
 				// So we need to move its view here, not in the StarlingView.
-
-				var box2dDebugArt:b2DebugDraw = (Starling.current.nativeStage.getChildAt(1) as b2DebugDraw);
+				var box2dDebugArt:b2DebugDraw = (Starling.current.nativeStage.getChildAt(2) as b2DebugDraw);
 
 				if (stateView.cameraTarget) {
 
@@ -288,7 +287,7 @@ package com.citrusengine.view.starlingview {
 				// Nape view is not on the Starling display list, but on the classical flash display list.
 				// So we need to move its view here, not in the StarlingView.
 				
-				var napeDebugArt:flash.display.DisplayObject = (Starling.current.nativeStage.getChildAt(1) as flash.display.DisplayObject);
+				var napeDebugArt:flash.display.DisplayObject = (Starling.current.nativeStage.getChildAt(2) as flash.display.DisplayObject);
 				
 				if (stateView.cameraTarget) {
 
