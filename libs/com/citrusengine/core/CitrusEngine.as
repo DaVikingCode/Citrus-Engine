@@ -92,7 +92,7 @@
 		}
 		
 		// be sure that starling is initialized (especially on mobile)
-		private function _context3DCreated(evt:starling.events.Event):void {
+		protected function _context3DCreated(evt:starling.events.Event):void {
 			
 			_starling.removeEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
 			
