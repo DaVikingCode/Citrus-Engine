@@ -154,7 +154,7 @@ package mobilenapestarling {
 		private function _particleCreation(tEvt:TimerEvent):void {
 
 			var random:uint = Math.random() * 4;
-
+			
 			if (random > 1) {
 
 				var particleSystem:PDParticleSystem = new PDParticleSystem(_psconfig, _psTexture);

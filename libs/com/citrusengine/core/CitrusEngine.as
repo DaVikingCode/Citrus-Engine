@@ -88,13 +88,13 @@
 			_starling.antiAliasing = antiAliasing;
 			_starling.showStats = debugMode;
 			 
-			_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCeated);
+			_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
 		}
 		
 		// be sure that starling is initialized (especially on mobile)
-		private function _context3DCeated(evt:starling.events.Event):void {
+		private function _context3DCreated(evt:starling.events.Event):void {
 			
-			_starling.removeEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCeated);
+			_starling.removeEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
 			
 			_starling.start();
 		}

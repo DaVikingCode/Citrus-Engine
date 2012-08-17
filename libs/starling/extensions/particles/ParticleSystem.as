@@ -8,29 +8,29 @@
 //
 // =================================================================================================
 
-package starling.extensions.particles {
-
-	import starling.animation.IAnimatable;
-	import starling.core.RenderSupport;
-	import starling.core.Starling;
-	import starling.display.DisplayObject;
-	import starling.errors.MissingContextError;
-	import starling.events.Event;
-	import starling.textures.Texture;
-	import starling.utils.MatrixUtil;
-	import starling.utils.VertexData;
-
-	import com.adobe.utils.AGALMiniAssembler;
-
-	import flash.display3D.Context3D;
-	import flash.display3D.Context3DBlendFactor;
-	import flash.display3D.Context3DProgramType;
-	import flash.display3D.Context3DVertexBufferFormat;
-	import flash.display3D.IndexBuffer3D;
-	import flash.display3D.VertexBuffer3D;
-	import flash.geom.Matrix;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
+package starling.extensions.particles
+{
+    import com.adobe.utils.AGALMiniAssembler;
+    
+    import flash.display3D.Context3D;
+    import flash.display3D.Context3DBlendFactor;
+    import flash.display3D.Context3DProgramType;
+    import flash.display3D.Context3DVertexBufferFormat;
+    import flash.display3D.IndexBuffer3D;
+    import flash.display3D.VertexBuffer3D;
+    import flash.geom.Matrix;
+    import flash.geom.Point;
+    import flash.geom.Rectangle;
+    
+    import starling.animation.IAnimatable;
+    import starling.core.RenderSupport;
+    import starling.core.Starling;
+    import starling.display.DisplayObject;
+    import starling.errors.MissingContextError;
+    import starling.events.Event;
+    import starling.textures.Texture;
+    import starling.utils.MatrixUtil;
+    import starling.utils.VertexData;
     
     public class ParticleSystem extends DisplayObject implements IAnimatable
     {
@@ -319,6 +319,11 @@ package starling.extensions.particles {
             // always call this method when you write custom rendering code!
             // it causes all previously batched quads/images to render.
             support.finishQuadBatch();
+            
+            // make this call to keep the statistics display in sync.
+            // to play it safe, it's done in a backwards-compatible way here.
+            if (support.hasOwnProperty("raiseDrawCount"))
+                support.raiseDrawCount();
             
             alpha *= this.alpha;
             
