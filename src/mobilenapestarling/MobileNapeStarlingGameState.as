@@ -68,9 +68,9 @@ package mobilenapestarling {
 			//nape.visible = true;
 			add(nape);
 			
-			var gameLength:uint = 10000;
+			var gameLength:uint = 25000;
 			
-			add(new CitrusSprite("backgroud", {parallax:0.05, view:new Image(Assets.getTexture("Background"))}));
+			add(new CitrusSprite("backgroud", {parallax:0.02, view:new Image(Assets.getTexture("Background"))}));
 			
 			var bitmap:Bitmap = new _fontPng();
 			var texture:Texture = Texture.fromBitmap(bitmap);
@@ -111,7 +111,7 @@ package mobilenapestarling {
 
 			view.setupCamera(_mobileHero, new MathVector(_mobileHero.width, 0), new Rectangle(0, 0, gameLength, 0), new MathVector(.25, .05));
 
-			_timerParticle = new Timer(300);
+			_timerParticle = new Timer(500);
 			_timerParticle.addEventListener(TimerEvent.TIMER, _particleCreation);
 			_timerParticle.start();	
 		}
