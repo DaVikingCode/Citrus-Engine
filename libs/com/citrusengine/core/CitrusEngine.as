@@ -76,12 +76,12 @@
 		 * StarlingState is added on the starling stage : <code>_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);</code>
 		 * @param debugMode : if true, display a Stats class instance.
 		 * @param antiAliasing : The antialiasing value allows you to set the anti-aliasing (0 - 16), generally a value of 1 is totally acceptable.
-		 * @param viewPort : Starling's viewport, default is (0, 0, stage.fullScreenWidth, stage.fullScreenHeight).
+		 * @param viewPort : Starling's viewport, default is (0, 0, stage.stageWidth, stage.stageHeight, change to (0, 0, stage.fullScreenWidth, stage.fullScreenHeight) for mobile.
 		 */
 		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewPort:Rectangle = null):void {
 			
 			if (!viewPort)
-				viewPort = new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight);
+				viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 			
 			_starling = new Starling(RootClass, stage, viewPort);
 			
