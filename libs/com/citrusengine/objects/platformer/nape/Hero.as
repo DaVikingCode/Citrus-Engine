@@ -28,8 +28,8 @@ package com.citrusengine.objects.platformer.nape {
 		/**
 		 * This is the rate at which the hero speeds up when you move him left and right. 
 		 */
-		[Inspectable(defaultValue="5")]
-		public var acceleration:Number = 5;
+		[Inspectable(defaultValue="30")]
+		public var acceleration:Number = 30;
 		
 		/**
 		 * This is the fastest speed that the hero can move left or right. 

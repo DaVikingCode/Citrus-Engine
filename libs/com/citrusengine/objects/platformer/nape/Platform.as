@@ -101,10 +101,10 @@ package com.citrusengine.objects.platformer.nape {
 		{
 			var dir:Vec2 = new Vec2(0, callback.swapped ? 1 : -1);
 			
-			if (dir.dot(callback.arbiter.collisionArbiter.normal) >= 0) {
-				return null;
-			} else {
+			if (dir.dot(callback.arbiter.collisionArbiter.normal) <= 0) {
 				return PreFlag.IGNORE;
+			} else {
+				return null;
 			}
 		}
 	}
