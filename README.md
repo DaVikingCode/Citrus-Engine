@@ -12,3 +12,11 @@ Games
 -----
 [![Kinessia](http://aymericlamboley.fr/blog/wp-content/uploads/2012/08/Kinessia.jpg)](http://kinessia.aymericlamboley.fr/)
 [![MarcoPoloWeltrennen](http://aymericlamboley.fr/blog/wp-content/uploads/2012/08/MarcoPoloWeltrennen.png)](http://www.marcopoloweltrennen.de/)
+
+Project Setup
+-------------
+- bin : pictures, animations, levels, ... loaded at runtime.
+- embed : embedded assets (e.g. fonts, pictures, texture atlas, ...).
+- fla : two levels used in the box2dstarling demo, and two animate characters (set up to be loaded by the dynamic texture atlas, the fla is different from the one loaded at runtime in the SpriteArt ; take a look on the CE V2 for this one).
+- libs : all the libs used, included the Citrus Engine. Select just one Nape swc.
+- src : different demos ready to use! You just need to copy & paste the Main from the package you want into the src/Main.as and the demo will run. Be careful with package & import.

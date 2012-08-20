@@ -11,7 +11,7 @@ package com.citrusengine.physics {
 	import nape.space.Space;
 	
 	/**
-	 * @author Aymeric
+	 * Used to determine the contact's interaction between object.
 	 */
 	public class NapeContactListener {
 		
@@ -21,9 +21,9 @@ package com.citrusengine.physics {
 			
 			_space = space;
 			
-			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.SENSOR, Sensor.SENSOR, CbType.ANY_BODY, onSensorInteractionBegin));
-			_space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.SENSOR, Sensor.SENSOR, CbType.ANY_BODY, onSensorInteractionEnd));
-			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, Missile.MISSILE, CbType.ANY_BODY, onMissileInteractionBegin));
+			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.SENSOR, Sensor.SENSOR, CbType.ANY_BODY, onInteractionBegin));
+			_space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.SENSOR, Sensor.SENSOR, CbType.ANY_BODY, onInteractionEnd));
+			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, Missile.MISSILE, CbType.ANY_BODY, onInteractionBegin));
 		}
 		
 		public function destroy():void {
@@ -31,16 +31,12 @@ package com.citrusengine.physics {
 			_space.listeners.clear();
 		}
 		
-		public function onSensorInteractionBegin(interactionCallback:InteractionCallback):void {
+		public function onInteractionBegin(interactionCallback:InteractionCallback):void {
 			interactionCallback.int1.castBody.userData.myData.handleBeginContact(interactionCallback);
 		}
 		
-		public function onSensorInteractionEnd(interactionCallback:InteractionCallback):void {
+		public function onInteractionEnd(interactionCallback:InteractionCallback):void {
 			interactionCallback.int1.castBody.userData.myData.handleEndContact(interactionCallback);
-		}
-		
-		public function onMissileInteractionBegin(interactionCallback:InteractionCallback):void {
-			interactionCallback.int1.castBody.userData.myData.handleBeginContact(interactionCallback);
 		}
 	}
 }

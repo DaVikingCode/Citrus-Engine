@@ -3,6 +3,7 @@ package mobilenapestarling {
 	import com.citrusengine.core.CitrusEngine;
 
 	import flash.geom.Rectangle;
+	import flash.system.Capabilities;
 
 	[SWF(backgroundColor="#000000", frameRate="60")]
 	
@@ -16,7 +17,7 @@ package mobilenapestarling {
 		
 		public function Main() {
 
-			compileForMobile = true;
+			compileForMobile = isIOS() ? true : false;
 			
 			if (compileForMobile) {
 				
@@ -43,6 +44,14 @@ package mobilenapestarling {
 				_starling.stage.stageWidth = isIpad ? 512 : 480;
 				_starling.stage.stageHeight = isIpad ? 384 : 320;
 			}
+		}
+		
+		public function isAndroid():Boolean {
+    		return (Capabilities.version.substr(0,3) == "AND");
+		}
+		
+		public function isIOS():Boolean {
+	    	return (Capabilities.version.substr(0,3) == "IOS");
 		}
 	}
 }
