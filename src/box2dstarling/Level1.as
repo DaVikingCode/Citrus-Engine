@@ -2,7 +2,6 @@ package box2dstarling {
 
 	import Box2DAS.Dynamics.ContactEvent;
 
-	import starling.core.Starling;
 	import starling.extensions.particles.PDParticleSystem;
 	import starling.extensions.particles.ParticleSystem;
 	import starling.text.BitmapFont;
