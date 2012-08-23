@@ -18,15 +18,13 @@ package games.osmos {
 			this.graphics.endFill();
 		}
 		
-		public function changeSize(radius:Number):void {
-			
-			radius *= 0.5; // = radius /2
+		public function changeSize(diameter:Number):void {
 			
 			this.graphics.clear();
 			
-			if (radius > 0) {
+			if (diameter > 0) {
 				this.graphics.beginFill(_color);
-				this.graphics.drawCircle(0, 0, radius);
+				this.graphics.drawCircle(0, 0, diameter * 0.5);
 				this.graphics.endFill();
 			}
 		} 
