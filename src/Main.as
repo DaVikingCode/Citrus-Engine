@@ -1,6 +1,6 @@
 package {
 
-	import objectpooling.ObjectPoolingGameState;
+	import games.osmos.OsmosGameState;
 
 	import com.citrusengine.core.CitrusEngine;
 
@@ -19,7 +19,7 @@ package {
 			
 			//setUpStarling(true);
 			
-			state = new ObjectPoolingGameState();
+			state = new OsmosGameState();
 		}
 	}
 }

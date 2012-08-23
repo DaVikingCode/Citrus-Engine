@@ -24,7 +24,7 @@ package games.osmos {
 		
 		public static const ATOM:CbType = new CbType();
 		
-		public var _size:String = "";
+		public var size:String = "";
 		
 		private var _preListener:PreListener;
 
@@ -34,18 +34,24 @@ package games.osmos {
 		public function Atom(name:String, params:Object = null) {
 
 			super(name, params);
+		}
 			
-			_preListener = new PreListener(InteractionType.ANY, ATOM, CbType.ANY_BODY, handlePreContact);
+		override protected function createConstraint():void {
+			
+			super.createConstraint();
+			
+			// we need to ignore physics collision
+			_preListener = new PreListener(InteractionType.ANY, ATOM, ATOM, handlePreContact);
 			_body.space.listeners.add(_preListener);
 			_body.cbTypes.add(ATOM);
 			
-			_nape.space.listeners.add(new InteractionListener(CbEvent.ONGOING, InteractionType.ANY, ATOM, CbType.ANY_BODY, handleOnGoingContact));
+			_nape.space.listeners.add(new InteractionListener(CbEvent.ONGOING, InteractionType.ANY, ATOM, ATOM, handleOnGoingContact));
 
 			_hand = new PivotJoint(_nape.space.world, null, new Vec2(), new Vec2());
 			_hand.active = false;
 			_hand.stiff = false;
 			_hand.space = _nape.space;
-			_hand.maxForce = 3;
+			_hand.maxForce = 5;
 		}
 
 		override public function destroy():void {
@@ -65,18 +71,24 @@ package games.osmos {
 			if (_mouseScope)
 				_hand.anchor1.setxy(_mouseScope.mouseX, _mouseScope.mouseY);
 				
-			if (_size == "bigger") {
-				_body.scaleShapes(1.01, 1.01);
-				(view as AtomArt).changeSize(_size);
-				_size = "";
+			var bodyDiameter:Number;
 				
-			} else if (_size == "smaller") {
+			if (size == "bigger") {
+				bodyDiameter = _body.shapes.at(0).bounds.width;
+				bodyDiameter > 100 ? _body.scaleShapes(1.003, 1.003) : _body.scaleShapes(1.01, 1.01); 
+				bodyDiameter = _body.shapes.at(0).bounds.width;
+				(view as AtomArt).changeSize(bodyDiameter);
+				
+			} else if (size == "smaller") {
 				_body.scaleShapes(0.9, 0.9);
-				(view as AtomArt).changeSize(_size);
-				_size = "";
+				bodyDiameter = _body.shapes.at(0).bounds.width;
+				(view as AtomArt).changeSize(bodyDiameter);
+				
 				if (_body.shapes.at(0).bounds.width < 1)
 					this.kill = true;
 			}
+			
+			size = "";
 		}
 
 		public function enableHolding(mouseScope:DisplayObject):void {
@@ -107,12 +119,12 @@ package games.osmos {
 			var atom1:Atom = callback.int1.userData.myData as Atom;
 			var atom2:Atom = callback.int2.userData.myData as Atom;
 			
-			if (atom1.radius > atom2.radius) {
-				 atom1._size = "bigger";
-				 atom2._size = "smaller";
+			if (atom1.body.shapes.at(0).bounds.width > atom2.body.shapes.at(0).bounds.width) {
+				 atom1.size = "bigger";
+				 atom2.size = "smaller";
 			} else {
-				atom1._size = "smaller";
-				atom2._size = "bigger";
+				atom1.size = "smaller";
+				atom2.size = "bigger";
 			}
 		}
 			
