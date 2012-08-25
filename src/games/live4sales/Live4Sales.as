@@ -37,14 +37,10 @@ package games.live4sales {
 			//box2D.visible = true;
 			add(box2D);
 			
-			var background:CitrusSprite = new CitrusSprite("background", {view:Image.fromBitmap(new Assets.BackgroundPng())});
-			add(background);
-			
-			var saleswomanAnim:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Defenders"), ["attack", "stand"], "attack", 30, true);
 			StarlingArt.setLoopAnimations(["stand", "attack"]);
 			
-			var saleswoman:SalesWoman = new SalesWoman("hero", {x:200, y:200, width:30, height:60, fireRate:1000, view:saleswomanAnim});
-			add(saleswoman);
+			var background:CitrusSprite = new CitrusSprite("background", {view:Image.fromBitmap(new Assets.BackgroundPng())});
+			add(background);
 			
 			_grid = new Grid();
 			addChild(_grid);
@@ -65,6 +61,10 @@ package games.live4sales {
 					//trace(_grid.casePosition(touchEnd.globalX, touchEnd.globalY));
 					var casePositions:Array = _grid.getCaseCenter(touchEnd.globalX, touchEnd.globalY);
 					trace(casePositions);
+					
+					var saleswomanAnim:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Defenders"), ["attack", "stand"], "attack", 30, true);
+					var saleswoman:SalesWoman = new SalesWoman("hero", {x:casePositions[0], y:casePositions[1], width:30, height:35, fireRate:1000, missileExplodeDuration:0, missileFuseDuration:3000, view:saleswomanAnim});
+					add(saleswoman);
 					
 				}
 		}
