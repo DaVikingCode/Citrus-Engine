@@ -12,7 +12,6 @@ package games.live4sales {
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.StarlingState;
 	import com.citrusengine.objects.CitrusSprite;
-	import com.citrusengine.objects.platformer.box2d.Hero;
 	import com.citrusengine.physics.Box2D;
 	import com.citrusengine.view.starlingview.AnimationSequence;
 	import com.citrusengine.view.starlingview.StarlingArt;
@@ -42,10 +41,10 @@ package games.live4sales {
 			add(background);
 			
 			var saleswomanAnim:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Defenders"), ["attack", "stand"], "attack", 30, true);
-			StarlingArt.setLoopAnimations(["stand"]);
+			StarlingArt.setLoopAnimations(["stand", "attack"]);
 			
-			//var saleswoman:Hero = new Hero("hero", {x:200, y:200, width:30, height:60, view:saleswomanAnim});
-			//add(saleswoman);
+			var saleswoman:SalesWoman = new SalesWoman("hero", {x:200, y:200, width:30, height:60, fireRate:1000, view:saleswomanAnim});
+			add(saleswoman);
 			
 			_grid = new Grid();
 			addChild(_grid);
