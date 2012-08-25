@@ -71,10 +71,16 @@ package games.live4sales {
 						
 						var shopswoman:ShopsWoman = new ShopsWoman("shopswoman", {x:450, y:casePositions[1], speed:1});
 						add(shopswoman);
+						shopswoman.onTouchLeftSide.add(_endGame);
 						
 					} else trace('no');
 					
 				}
+		}
+
+		private function _endGame():void {
+			
+			trace('game over');
 		}
 
 	}

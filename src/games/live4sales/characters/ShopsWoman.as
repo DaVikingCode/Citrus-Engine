@@ -8,6 +8,8 @@ package games.live4sales.characters {
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.Box2DCollisionCategories;
 
+	import org.osflash.signals.Signal;
+
 	/**
 	 * @author Aymeric
 	 */
@@ -16,16 +18,23 @@ package games.live4sales.characters {
 		public var speed:Number = 1.3;
 		public var life:uint = 3;
 		
+		public var onTouchLeftSide:Signal;
+		
 		private var _fighting:Boolean = false;
 
 		public function ShopsWoman(name:String, params:Object = null) {
+			
 			super(name, params);
+			
+			onTouchLeftSide = new Signal();
 		}
 			
 		override public function destroy():void {
 			
 			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
 			_fixture.removeEventListener(ContactEvent.END_CONTACT, handleEndContact);
+			
+			onTouchLeftSide.removeAll();
 			
 			super.destroy();
 		}
@@ -42,9 +51,11 @@ package games.live4sales.characters {
 				
 				_body.SetLinearVelocity(velocity);
 			}
-			
-			if (life == 0)
+				
+			if (x < 0) {
+				onTouchLeftSide.dispatch();
 				kill = true;
+			}
 			
 			updateAnimation();
 		}
