@@ -1,6 +1,7 @@
-package games.live4sales {
+package games.live4sales.characters {
 
 	import games.live4sales.assets.Assets;
+	import games.live4sales.weapons.Bag;
 
 	import starling.display.Image;
 

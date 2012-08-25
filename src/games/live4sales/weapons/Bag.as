@@ -1,4 +1,4 @@
-package games.live4sales {
+package games.live4sales.weapons {
 
 	import com.citrusengine.objects.platformer.box2d.Missile;
 

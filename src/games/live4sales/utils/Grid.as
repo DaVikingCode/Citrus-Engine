@@ -1,4 +1,4 @@
-package games.live4sales {
+package games.live4sales.utils {
 
 	import starling.display.Sprite;
 	import starling.extensions.utils.Line;
@@ -10,11 +10,20 @@ package games.live4sales {
 
 		private const CASE_WIDTH:uint = 96;
 		private const CASE_HEIGHT:uint = 38;
+		private const OFFSET_Y:uint = 130;
+		private var tabObjects:Array;
+		
 		
 		public function Grid() {
 			
-			//96 width
-			//38 height
+			tabObjects = new Array(6);
+			tabObjects[0] = [false];
+			tabObjects[1] = [false, false, false, false, false];
+			tabObjects[2] = [false, false, false, false, false];
+			tabObjects[3] = [false, false, false, false, false];
+			tabObjects[4] = [false, false, false, false, false];
+			tabObjects[5] = [false, false, false, false, false];
+			
 			
 			_addNewLine(96, 130, 0, 190);
 			_addNewLine(192, 130, 0, 190);
@@ -37,31 +46,36 @@ package games.live4sales {
 			line.lineTo(posXEnd, posYEnd);
 		}
 		
-		public function casePosition(posX:uint, posY:int):Array {
-			//trace(posX, posY);
+		public function getCaseId(posX:uint, posY:int):Array {
 			
 			var position:uint = 0;
 			var  caseId:Array = [0,0];
 			var idLine :uint = 0;
 			var idColumn:uint = 0;
-			posY -= 130;
+			posY -= OFFSET_Y;
 			if (posY < 0)
 				return caseId;
 			idLine=Math.floor(posY / CASE_HEIGHT)+1;
 			idColumn=Math.floor(posX / CASE_WIDTH)+1;
-		return (caseId = [idLine, idColumn]);
+			return (caseId = [idLine, idColumn]);
 
 		}
 		public function getCaseCenter(posX:uint, posY:int):Array
 		{
-			var caseId : Array = casePosition(posX, posY);
-			var positions : Array = [0, 0];
+			var caseId : Array = getCaseId(posX, posY);
+			var positions : Array = [0, 0, 0];
 			
 			if (caseId[0] != 0 && caseId[1] != 0)
 			{
+				if (tabObjects[caseId[1] - 1][caseId[0] - 1] == true)
+				{
+					return positions;
+				}
+			
 				positions[0] = caseId[1] * CASE_WIDTH - (CASE_WIDTH / 2);
-				positions[1] = caseId[0] * CASE_HEIGHT - (CASE_HEIGHT / 2);
-				
+				positions[1] = caseId[0] * CASE_HEIGHT - (CASE_HEIGHT / 2) + OFFSET_Y;
+				positions[2] = caseId[0];
+				tabObjects[caseId[1]-1][caseId[0]-1] = true;
 			}
 
 			return positions;
