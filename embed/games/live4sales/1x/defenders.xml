@@ -34,7 +34,7 @@
     <SubTexture name="attack/0029" x="2" y="96" width="38" height="92"/>
     <SubTexture name="attack/0030" x="2" y="96" width="38" height="92"/>
     <SubTexture name="attack/0031" x="2" y="2" width="38" height="92"/>
-    <SubTexture name="bag/0000" x="210" y="42" width="24" height="18" frameX="0" frameY="0" frameWidth="24" frameHeight="19"/>
+    <SubTexture name="bag" x="210" y="42" width="24" height="18" frameX="0" frameY="0" frameWidth="24" frameHeight="19"/>
     <SubTexture name="block1" x="158" y="2" width="50" height="60" frameX="-15" frameY="-15" frameWidth="307" frameHeight="230"/>
     <SubTexture name="block2" x="106" y="188" width="50" height="60" frameX="-15" frameY="-15" frameWidth="307" frameHeight="230"/>
     <SubTexture name="block3" x="2" y="190" width="51" height="62" frameX="-14" frameY="-15" frameWidth="307" frameHeight="230"/>
