@@ -5,7 +5,6 @@ package games.live4sales {
 	import starling.display.Image;
 
 	import com.citrusengine.objects.platformer.box2d.Cannon;
-	import com.citrusengine.objects.platformer.box2d.Missile;
 
 	import flash.events.TimerEvent;
 
@@ -29,12 +28,12 @@ package games.live4sales {
 		
 		override protected function _fire(tEvt:TimerEvent):void {
 
-			var missile:Missile;
+			var missile:Bag;
 
 			if (startingDirection == "right")
-				missile = new Missile("Missile", {x:x + width, y:y, width:missileWidth, height:missileHeight, speed:missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag"))});
+				missile = new Bag("Missile", {x:x + width, y:y, width:missileWidth, height:missileHeight, speed:missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag"))});
 			else
-				missile = new Missile("Missile", {x:x - width, y:y, width:missileWidth, height:missileHeight, speed:-missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag"))});
+				missile = new Bag("Missile", {x:x - width, y:y, width:missileWidth, height:missileHeight, speed:-missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag"))});
 
 			_ce.state.add(missile);
 			missile.onExplode.addOnce(_damage);
