@@ -21,7 +21,7 @@ package games.live4sales {
 			
 			if (compileForMobile) {
 				
-				// detect if iPad
+				// detect if iPad, landscape mode!
 				isIpad = (stage.fullScreenHeight == 768 || stage.fullScreenHeight == 1536);
 				
 				if (isIpad)

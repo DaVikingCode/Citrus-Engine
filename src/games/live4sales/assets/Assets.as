@@ -98,20 +98,15 @@ package games.live4sales.assets {
         
         private static function prepareAtlas(name:String = ""):void
         {
-			var texture:Texture;
-			var xml:XML;
-            if (name == "")
+            if (name != "")
             {
-                texture = getTexture("WorldYellowPng");
-                xml = XML(create("WorldYellowConfig"));
-                sTextureAtlas = new TextureAtlas(texture, xml);
-            }
-			else
-			{
-				texture = getTexture(name + "Png");
+				var texture:Texture;
+				var xml:XML;
+				
+                texture = getTexture(name + "Png");
                 xml = XML(create(name + "Config"));
                 sTextureAtlas = new TextureAtlas(texture, xml);
-			}
+            }
         }
         
         private static function create(name:String):Object
