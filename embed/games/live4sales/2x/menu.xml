@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:4c3b53f67b78329f6ceef8ab76c53c24$ -->
+<TextureAtlas imagePath="menu.png">
+    <SubTexture name="background-menu" x="278" y="2" width="519" height="47" frameX="-1" frameY="-1" frameWidth="522" frameHeight="49"/>
+    <SubTexture name="icon-block" x="186" y="2" width="90" height="90"/>
+    <SubTexture name="icon-cash" x="94" y="2" width="90" height="90"/>
+    <SubTexture name="icon-saleswoman" x="2" y="2" width="90" height="90"/>
+    <SubTexture name="icon-sound" x="278" y="51" width="60" height="42" frameX="-1" frameY="-1" frameWidth="63" frameHeight="44"/>
+</TextureAtlas>
