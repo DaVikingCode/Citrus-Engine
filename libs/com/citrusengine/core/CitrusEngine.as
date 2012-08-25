@@ -83,7 +83,7 @@
 			if (!viewPort)
 				viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 			
-			_starling = new Starling(RootClass, stage, viewPort);
+			_starling = new Starling(RootClass, stage, viewPort, null, "auto", "baseline");
 			
 			_starling.antiAliasing = antiAliasing;
 			_starling.showStats = debugMode;
