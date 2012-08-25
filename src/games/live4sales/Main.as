@@ -22,10 +22,10 @@ package games.live4sales {
 			if (compileForMobile) {
 				
 				// detect if iPad
-				isIpad = (stage.fullScreenWidth == 768 || stage.fullScreenWidth == 1536);
+				isIpad = (stage.fullScreenHeight == 768 || stage.fullScreenHeight == 1536);
 				
 				if (isIpad)
-					setUpStarling(true, 1, new Rectangle(32, 64, stage.fullScreenWidth, stage.fullScreenHeight));
+					setUpStarling(true, 1, new Rectangle(64, 128, stage.fullScreenWidth, stage.fullScreenHeight));
 				else
 					setUpStarling(true, 1, new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight));
 			} else 
