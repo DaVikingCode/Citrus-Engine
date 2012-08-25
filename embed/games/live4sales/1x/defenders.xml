@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:b24dfbf5197bae85fe7969cafd24e41f$ -->
+<TextureAtlas imagePath="defenders.png">
+    <SubTexture name="attack/0000" x="80" y="2" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0001" x="42" y="96" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0002" x="42" y="96" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0003" x="42" y="96" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0004" x="42" y="96" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0005" x="42" y="96" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0006" x="42" y="96" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0007" x="42" y="96" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0008" x="42" y="96" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0009" x="42" y="96" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0010" x="42" y="96" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0011" x="42" y="2" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0012" x="42" y="2" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0013" x="42" y="2" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0014" x="42" y="2" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0015" x="42" y="2" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0016" x="42" y="2" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0017" x="42" y="2" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0018" x="42" y="2" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0019" x="42" y="2" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0020" x="42" y="2" width="36" height="92" frameX="0" frameY="0" frameWidth="38" frameHeight="92"/>
+    <SubTexture name="attack/0021" x="2" y="96" width="38" height="92"/>
+    <SubTexture name="attack/0022" x="2" y="96" width="38" height="92"/>
+    <SubTexture name="attack/0023" x="2" y="96" width="38" height="92"/>
+    <SubTexture name="attack/0024" x="2" y="96" width="38" height="92"/>
+    <SubTexture name="attack/0025" x="2" y="96" width="38" height="92"/>
+    <SubTexture name="attack/0026" x="2" y="96" width="38" height="92"/>
+    <SubTexture name="attack/0027" x="2" y="96" width="38" height="92"/>
+    <SubTexture name="attack/0028" x="2" y="96" width="38" height="92"/>
+    <SubTexture name="attack/0029" x="2" y="96" width="38" height="92"/>
+    <SubTexture name="attack/0030" x="2" y="96" width="38" height="92"/>
+    <SubTexture name="attack/0031" x="2" y="2" width="38" height="92"/>
+    <SubTexture name="bag/0000" x="210" y="42" width="24" height="18" frameX="0" frameY="0" frameWidth="24" frameHeight="19"/>
+    <SubTexture name="block1" x="158" y="2" width="50" height="60" frameX="-15" frameY="-15" frameWidth="307" frameHeight="230"/>
+    <SubTexture name="block2" x="106" y="188" width="50" height="60" frameX="-15" frameY="-15" frameWidth="307" frameHeight="230"/>
+    <SubTexture name="block3" x="2" y="190" width="51" height="62" frameX="-14" frameY="-15" frameWidth="307" frameHeight="230"/>
+    <SubTexture name="blockDestroyed" x="55" y="190" width="49" height="61" frameX="-23" frameY="-14" frameWidth="90" frameHeight="90"/>
+    <SubTexture name="coin" x="210" y="2" width="32" height="38"/>
+    <SubTexture name="stand/0000" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0001" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0002" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0003" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0004" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0005" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0006" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0007" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0008" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0009" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0010" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0011" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0012" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0013" x="118" y="2" width="36" height="90"/>
+    <SubTexture name="stand/0014" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0015" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0016" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0017" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0018" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0019" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0020" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0021" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0022" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0023" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0024" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0025" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0026" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0027" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0028" x="118" y="94" width="36" height="89" frameX="0" frameY="-1" frameWidth="36" frameHeight="90"/>
+    <SubTexture name="stand/0029" x="80" y="96" width="36" height="90"/>
+</TextureAtlas>

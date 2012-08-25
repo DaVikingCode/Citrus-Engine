@@ -32,6 +32,9 @@ package games.live4sales.assets {
         
         // static members
         
+		[Embed(source="../embed/games/live4sales/background.png")]
+		public static const BackgroundPng:Class;
+        
         private static var sContentScaleFactor:int = 1;
         private static var sTextures:Dictionary = new Dictionary();
         private static var sSounds:Dictionary = new Dictionary();
@@ -97,7 +100,7 @@ package games.live4sales.assets {
         {
 			var texture:Texture;
 			var xml:XML;
-            if (sTextureAtlas == null || name == "")
+            if (name == "")
             {
                 texture = getTexture("WorldYellowPng");
                 xml = XML(create("WorldYellowConfig"));
