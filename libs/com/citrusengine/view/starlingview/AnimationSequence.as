@@ -83,8 +83,6 @@ package com.citrusengine.view.starlingview {
 			for each (var animation : String in _animations)
 				_mcSequences[animation].dispose();
 			
-			_textureAtlas.dispose();
-			
 			_mcSequences = null;
 		}
 	}
