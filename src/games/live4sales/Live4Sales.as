@@ -17,6 +17,7 @@ package games.live4sales {
 	import com.citrusengine.view.starlingview.AnimationSequence;
 	import com.citrusengine.view.starlingview.StarlingArt;
 	
+	
 	/**
 	 * @author Aymeric
 	 */
@@ -43,8 +44,8 @@ package games.live4sales {
 			var saleswomanAnim:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Defenders"), ["attack", "stand"], "attack", 30, true);
 			StarlingArt.setLoopAnimations(["stand"]);
 			
-			var saleswoman:Hero = new Hero("hero", {x:200, y:200, width:30, height:60, view:saleswomanAnim});
-			add(saleswoman);
+			//var saleswoman:Hero = new Hero("hero", {x:200, y:200, width:30, height:60, view:saleswomanAnim});
+			//add(saleswoman);
 			
 			_grid = new Grid();
 			addChild(_grid);
@@ -62,7 +63,10 @@ package games.live4sales {
 					
 				} else if (touchEnd) {
 					
-					trace(_grid.casePosition(touchEnd.globalX, touchEnd.globalY));
+					//trace(_grid.casePosition(touchEnd.globalX, touchEnd.globalY));
+					var casePositions:Array = _grid.getCaseCenter(touchEnd.globalX, touchEnd.globalY);
+					trace(casePositions);
+					
 				}
 		}
 
