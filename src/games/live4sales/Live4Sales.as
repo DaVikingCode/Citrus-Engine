@@ -36,7 +36,7 @@ package games.live4sales {
 			super.initialize();
 			
 			var box2D:Box2D = new Box2D("box2D", {gravity:new V2()});
-			box2D.visible = true;
+			//box2D.visible = true;
 			add(box2D);
 			
 			StarlingArt.setLoopAnimations(["stand", "attack"]);
@@ -61,15 +61,15 @@ package games.live4sales {
 				} else if (touchEnd) {
 					
 					//trace(_grid.casePosition(touchEnd.globalX, touchEnd.globalY));
-					var casePositions:Array = _grid.getCaseCenter(touchEnd.globalX, touchEnd.globalY);
-					trace(casePositions);
+					var casePositions:Array = Grid.getCaseCenter(touchEnd.globalX, touchEnd.globalY);
+					
 					if (casePositions[0]!=0 && casePositions[1]!=0)
 					{
 						var saleswomanAnim:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Defenders"), ["attack", "stand"], "attack", 30, true);
-						var saleswoman:SalesWoman = new SalesWoman("hero", {x:casePositions[0], y:casePositions[1], group:casePositions[2], offsetY:-saleswomanAnim.height * 0.3, fireRate:1000, missileExplodeDuration:0, missileFuseDuration:3000, view:saleswomanAnim});
+						var saleswoman:SalesWoman = new SalesWoman("saleswoman", {x:casePositions[0], y:casePositions[1], group:casePositions[2], offsetY:-saleswomanAnim.height * 0.3, fireRate:1000, missileExplodeDuration:0, missileFuseDuration:3000, view:saleswomanAnim});
 						add(saleswoman);
 						
-						var shopswoman:ShopsWoman = new ShopsWoman("shops", {x:450, y:casePositions[1], speed:1});
+						var shopswoman:ShopsWoman = new ShopsWoman("shopswoman", {x:450, y:casePositions[1], speed:1});
 						add(shopswoman);
 						
 					} else trace('no');

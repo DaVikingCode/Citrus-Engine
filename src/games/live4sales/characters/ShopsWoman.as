@@ -1,8 +1,9 @@
 package games.live4sales.characters {
 
-	import games.live4sales.weapons.Bag;
 	import Box2DAS.Common.V2;
 	import Box2DAS.Dynamics.ContactEvent;
+
+	import games.live4sales.weapons.Bag;
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.Box2DCollisionCategories;
@@ -13,6 +14,7 @@ package games.live4sales.characters {
 	public class ShopsWoman extends Box2DPhysicsObject {
 		
 		public var speed:Number = 1.3;
+		public var life:uint = 3;
 		
 		private var _fighting:Boolean = false;
 
@@ -23,6 +25,7 @@ package games.live4sales.characters {
 		override public function destroy():void {
 			
 			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
+			_fixture.removeEventListener(ContactEvent.END_CONTACT, handleEndContact);
 			
 			super.destroy();
 		}
@@ -40,7 +43,17 @@ package games.live4sales.characters {
 				_body.SetLinearVelocity(velocity);
 			}
 			
+			if (life == 0)
+				kill = true;
+			
 			updateAnimation();
+		}
+		
+		override protected function defineBody():void {
+			
+			super.defineBody();
+			
+			_bodyDef.fixedRotation = true;
 		}
 		
 		override protected function defineFixture():void {
@@ -57,7 +70,9 @@ package games.live4sales.characters {
 			super.createFixture();
 			
 			_fixture.m_reportBeginContact = true;
+			_fixture.m_reportEndContact = true;
 			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
+			_fixture.addEventListener(ContactEvent.END_CONTACT, handleEndContact);
 		}
 			
 		protected function handleBeginContact(cEvt:ContactEvent):void {
@@ -65,8 +80,16 @@ package games.live4sales.characters {
 			if (cEvt.other.GetBody().GetUserData() is SalesWoman)
 				_fighting = true;
 				
-			if (cEvt.other.GetBody().GetUserData() is Bag)
+			if (cEvt.other.GetBody().GetUserData() is Bag) {
+				life--;
 				cEvt.contact.Disable();
+			}
+		}
+		
+		protected function handleEndContact(cEvt:ContactEvent):void {
+			
+			if (cEvt.other.GetBody().GetUserData() is SalesWoman)
+				_fighting = false;
 		}
 		
 		protected function updateAnimation():void {

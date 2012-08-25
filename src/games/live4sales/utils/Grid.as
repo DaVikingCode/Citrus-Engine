@@ -7,12 +7,12 @@ package games.live4sales.utils {
 	 * @author Aymeric
 	 */
 	public class Grid extends Sprite {
-
-		private const CASE_WIDTH:uint = 96;
-		private const CASE_HEIGHT:uint = 38;
-		private const OFFSET_Y:uint = 130;
-		private var tabObjects:Array;
 		
+		public static var tabObjects:Array;
+
+		private static const CASE_WIDTH:uint = 96;
+		private static const CASE_HEIGHT:uint = 38;
+		private static const OFFSET_Y:uint = 130;
 		
 		public function Grid() {
 			
@@ -46,7 +46,7 @@ package games.live4sales.utils {
 			line.lineTo(posXEnd, posYEnd);
 		}
 		
-		public function getCaseId(posX:uint, posY:int):Array {
+		public static function getCaseId(posX:uint, posY:int):Array {
 			
 			var position:uint = 0;
 			var  caseId:Array = [0,0];
@@ -60,14 +60,14 @@ package games.live4sales.utils {
 			return (caseId = [idLine, idColumn]);
 
 		}
-		public function getCaseCenter(posX:uint, posY:int):Array
+		public static function getCaseCenter(posX:uint, posY:int):Array
 		{
 			var caseId : Array = getCaseId(posX, posY);
 			var positions : Array = [0, 0, 0];
 			
 			if (caseId[0] != 0 && caseId[1] != 0)
 			{
-				if (tabObjects[caseId[1] - 1][caseId[0] - 1] == true)
+				if (tabObjects[caseId[1]][caseId[0]] == true)
 				{
 					return positions;
 				}
@@ -75,7 +75,7 @@ package games.live4sales.utils {
 				positions[0] = caseId[1] * CASE_WIDTH - (CASE_WIDTH / 2);
 				positions[1] = caseId[0] * CASE_HEIGHT - (CASE_HEIGHT / 2) + OFFSET_Y;
 				positions[2] = caseId[0];
-				tabObjects[caseId[1]-1][caseId[0]-1] = true;
+				tabObjects[caseId[1]][caseId[0] ] = true;
 			}
 
 			return positions;
