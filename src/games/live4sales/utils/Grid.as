@@ -48,7 +48,6 @@ package games.live4sales.utils {
 		
 		public static function getCaseId(posX:uint, posY:int):Array {
 			
-			var position:uint = 0;
 			var  caseId:Array = [0,0];
 			var idLine :uint = 0;
 			var idColumn:uint = 0;

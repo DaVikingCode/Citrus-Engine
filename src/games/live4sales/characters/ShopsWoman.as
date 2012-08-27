@@ -57,6 +57,9 @@ package games.live4sales.characters {
 				kill = true;
 			}
 			
+			if (life == 0)
+				kill = true;
+			
 			updateAnimation();
 		}
 		

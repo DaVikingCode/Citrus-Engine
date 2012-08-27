@@ -56,10 +56,10 @@ package games.live4sales.assets {
             return sTextures[name];
         }
         
-        public static function getAtlasTexture(name:String):Texture
+        public static function getAtlasTexture(textureName:String, atlasName:String):Texture
         {
-            prepareAtlas();
-            return sTextureAtlas.getTexture(name);
+            prepareAtlas(atlasName);
+            return sTextureAtlas.getTexture(textureName);
         }
         
         public static function getAtlasTextures(prefix:String):Vector.<Texture>
@@ -98,15 +98,12 @@ package games.live4sales.assets {
         
         private static function prepareAtlas(name:String = ""):void
         {
-            if (name != "")
-            {
-				var texture:Texture;
-				var xml:XML;
-				
-                texture = getTexture(name + "Png");
-                xml = XML(create(name + "Config"));
-                sTextureAtlas = new TextureAtlas(texture, xml);
-            }
+			var texture:Texture;
+			var xml:XML;
+			
+            texture = getTexture(name + "Png");
+            xml = XML(create(name + "Config"));
+            sTextureAtlas = new TextureAtlas(texture, xml);
         }
         
         private static function create(name:String):Object
