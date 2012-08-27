@@ -6,13 +6,21 @@ package games.live4sales.ui {
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.text.BitmapFont;
+	import starling.text.TextField;
+	import starling.textures.Texture;
 
 	import org.osflash.signals.Signal;
+
+	import flash.display.Bitmap;
 
 	/**
 	 * @author Aymeric
 	 */
 	public class Hud extends Sprite {
+		
+		[Embed(source="../embed/ArialFont.fnt", mimeType="application/octet-stream")] private var _fontConfig:Class;
+		[Embed(source="../embed/ArialFont.png")] private var _fontPng:Class;
 
 		public var onIconePositioned:Signal;
 
@@ -23,6 +31,8 @@ package games.live4sales.ui {
 		private var _iconSaleswoman:Icon;
 		private var _iconCash:Icon;
 		private var _iconBlock:Icon;
+		
+		private var _score:TextField;
 
 		public function Hud() {
 
@@ -40,6 +50,12 @@ package games.live4sales.ui {
 			_vectorIcon[0] = _iconSaleswoman;
 			_vectorIcon[1] = _iconCash;
 			_vectorIcon[2] = _iconBlock;
+			
+			var bitmap:Bitmap = new _fontPng();
+			var texture:Texture = Texture.fromBitmap(bitmap);
+			var xml:XML = XML(new _fontConfig());
+			TextField.registerBitmapFont(new BitmapFont(texture, xml));
+			_score = new TextField(50, 20, "0", "ArialMT");
 
 			addEventListener(Event.ADDED_TO_STAGE, _addedToStage);
 		}
@@ -56,6 +72,9 @@ package games.live4sales.ui {
 			}
 			
 			_vectorIcon = null;
+			
+			TextField.unregisterBitmapFont("ArialMT");
+			removeChild(_score);
 		}
 
 		private function _addedToStage(evt:Event):void {
@@ -84,6 +103,11 @@ package games.live4sales.ui {
 				icon.onStartDrag.add(_showGrid);
 				icon.onStopDrag.add(_hideGridAndCreateObject);
 			}
+			
+			_score.x = 165;
+			_score.y = 3;
+			addChild(_score);
+			_score.text = "400";
 			
 		}
 
