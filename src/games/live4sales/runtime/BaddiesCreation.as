@@ -1,4 +1,4 @@
-package games.live4sales.ia {
+package games.live4sales.runtime {
 
 	import games.live4sales.utils.Grid;
 	import games.live4sales.characters.ShopsWoman;

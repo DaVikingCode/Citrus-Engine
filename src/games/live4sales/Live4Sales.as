@@ -4,8 +4,9 @@ package games.live4sales {
 
 	import games.live4sales.assets.Assets;
 	import games.live4sales.characters.SalesWoman;
-	import games.live4sales.ia.BaddiesCreation;
 	import games.live4sales.objects.Block;
+	import games.live4sales.runtime.BaddiesCreation;
+	import games.live4sales.runtime.CoinsCreation;
 	import games.live4sales.ui.Hud;
 	import games.live4sales.utils.Grid;
 
@@ -24,6 +25,8 @@ package games.live4sales {
 
 		private var _hud:Hud;
 		
+		private var _coinsCreation:CoinsCreation;
+		
 		private var _baddiesCreation:BaddiesCreation;
 
 		public function Live4Sales() {
@@ -41,6 +44,9 @@ package games.live4sales {
 			_hud = new Hud();
 			addChild(_hud);
 			_hud.onIconePositioned.add(_createObject);
+			
+			_coinsCreation = new CoinsCreation();
+			addChild(_coinsCreation);
 
 			StarlingArt.setLoopAnimations(["stand", "attack"]);
 

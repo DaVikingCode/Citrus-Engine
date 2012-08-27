@@ -1,11 +1,12 @@
 package games.live4sales.ui {
 
-	import org.osflash.signals.Signal;
 	import starling.display.Image;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
+
+	import org.osflash.signals.Signal;
 
 	/**
 	 * @author Aymeric
