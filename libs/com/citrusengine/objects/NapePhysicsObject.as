@@ -134,7 +134,8 @@ package com.citrusengine.objects {
 				_body.shapes.add(new Polygon(Polygon.box(_width, _height), _material));				
 			}
 			
-			_body.rotate(new Vec2(_x + _width / 2, _y + _height / 2), _rotation);
+			//_body.rotate(new Vec2(_x + _width / 2, _y + _height / 2), _rotation);
+			_body.rotate(new Vec2(_x, _y), _rotation);
 		}
 		
 		protected function createConstraint():void {
@@ -207,7 +208,8 @@ package com.citrusengine.objects {
 			_rotation = value * Math.PI / 180;
 			
 			if (_body) {
-				_body.rotate(new Vec2(_x + _width / 2, _y + _height / 2), _rotation);
+				//_body.rotate(new Vec2(_x + _width / 2, _y + _height / 2), _rotation);
+				_body.rotate(new Vec2(_x, _y), _rotation);
 			} 
 		}
 			

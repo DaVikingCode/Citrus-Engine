@@ -124,6 +124,9 @@ package com.citrusengine.view.starlingview {
 				Starling.juggler.remove(content as PDParticleSystem);
 				(content as PDParticleSystem).stop(true);
 				content.dispose();
+			} else if (content is StarlingTileSystem) {
+				(content as StarlingTileSystem).destroy();
+				content.dispose();
 			}
 			
 			_view = null;
