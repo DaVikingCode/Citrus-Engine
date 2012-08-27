@@ -21,6 +21,7 @@ package games.live4sales.ui {
 
 		private var _backgroundMenu:Image;
 		private var _iconSaleswoman:Icon;
+		private var _iconCash:Icon;
 		private var _iconBlock:Icon;
 
 		public function Hud() {
@@ -29,14 +30,16 @@ package games.live4sales.ui {
 
 			_grid = new Grid();
 
-			_vectorIcon = new Vector.<Icon>(2, true);
+			_vectorIcon = new Vector.<Icon>(3, true);
 
 			_backgroundMenu = new Image(Assets.getAtlasTexture("background-menu", "Menu"));
 			_iconSaleswoman = new Icon(Assets.getAtlasTexture("icon-saleswoman", "Menu"));
+			_iconCash = new Icon(Assets.getAtlasTexture("icon-cash", "Menu"));
 			_iconBlock = new Icon(Assets.getAtlasTexture("icon-block", "Menu"));
 
 			_vectorIcon[0] = _iconSaleswoman;
-			_vectorIcon[1] = _iconBlock;
+			_vectorIcon[1] = _iconCash;
+			_vectorIcon[2] = _iconBlock;
 
 			addEventListener(Event.ADDED_TO_STAGE, _addedToStage);
 		}
@@ -44,6 +47,13 @@ package games.live4sales.ui {
 		public function destroy():void {
 			
 			onIconePositioned.removeAll();
+			
+			removeChild(_grid);
+			
+			for each (var icon:Icon in _vectorIcon) {
+				icon.destroy();
+				removeChild(icon);
+			}
 			
 			_vectorIcon = null;
 		}
@@ -62,9 +72,13 @@ package games.live4sales.ui {
 			_iconSaleswoman.name = "SalesWoman";
 			_iconSaleswoman.x = (stage.stageWidth - _iconSaleswoman.width) / 2 - 50;
 			
+			addChild(_iconCash);
+			_iconCash.name = "Cash";
+			_iconCash.x = (stage.stageWidth - _iconCash.width) / 2;
+			
 			addChild(_iconBlock);
 			_iconBlock.name = "Block";
-			_iconBlock.x = (stage.stageWidth - _iconBlock.width) / 2;
+			_iconBlock.x = (stage.stageWidth - _iconBlock.width) / 2 + 50;
 
 			for each (var icon:Icon in _vectorIcon) {
 				icon.onStartDrag.add(_showGrid);
