@@ -3,7 +3,9 @@ package games.live4sales.weapons {
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import games.live4sales.characters.SalesWoman;
+	import games.live4sales.objects.Block;
 
+	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.objects.platformer.box2d.Missile;
 
 	/**
@@ -25,11 +27,12 @@ package games.live4sales.weapons {
 			
 		override protected function handleBeginContact(cEvt:ContactEvent):void {
 			
-			if (cEvt.other.GetBody().GetUserData() is SalesWoman || cEvt.other.GetBody().GetUserData() is Bag) {
+			var other:Box2DPhysicsObject = cEvt.other.GetBody().GetUserData();
+			
+			if (other is SalesWoman || other is Bag || other is Block)
 				cEvt.contact.Disable();
-			} else if (!cEvt.other.IsSensor()) {
+			else
 				explode();
-			}
 		}
 
 	}

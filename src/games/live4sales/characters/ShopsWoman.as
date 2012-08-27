@@ -3,6 +3,7 @@ package games.live4sales.characters {
 	import Box2DAS.Common.V2;
 	import Box2DAS.Dynamics.ContactEvent;
 
+	import games.live4sales.objects.Block;
 	import games.live4sales.weapons.Bag;
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
@@ -91,10 +92,12 @@ package games.live4sales.characters {
 			
 		protected function handleBeginContact(cEvt:ContactEvent):void {
 			
-			if (cEvt.other.GetBody().GetUserData() is SalesWoman)
+			var other:Box2DPhysicsObject = cEvt.other.GetBody().GetUserData();
+			
+			if (other is SalesWoman || other is Block)
 				_fighting = true;
 				
-			if (cEvt.other.GetBody().GetUserData() is Bag) {
+			else if (other is Bag) {
 				life--;
 				cEvt.contact.Disable();
 			}
@@ -102,7 +105,9 @@ package games.live4sales.characters {
 		
 		protected function handleEndContact(cEvt:ContactEvent):void {
 			
-			if (cEvt.other.GetBody().GetUserData() is SalesWoman)
+			var other:Box2DPhysicsObject = cEvt.other.GetBody().GetUserData();
+			
+			if (other is SalesWoman || other is Block)
 				_fighting = false;
 		}
 		

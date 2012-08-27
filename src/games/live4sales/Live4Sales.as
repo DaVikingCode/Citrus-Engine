@@ -1,5 +1,6 @@
 package games.live4sales {
 
+	import games.live4sales.objects.Block;
 	import Box2DAS.Common.V2;
 
 	import games.live4sales.assets.Assets;
@@ -32,7 +33,7 @@ package games.live4sales {
 			super.initialize();
 
 			var box2D:Box2D = new Box2D("box2D", {gravity:new V2()});
-			//box2D.visible = true;
+			box2D.visible = true;
 			add(box2D);
 
 			_hud = new Hud();
@@ -56,11 +57,17 @@ package games.live4sales {
 					var saleswomanAnim:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Defenders"), ["attack", "stand"], "attack", 30, true);
 					var saleswoman:SalesWoman = new SalesWoman("saleswoman", {x:casePositions[0], y:casePositions[1], group:casePositions[2], offsetY:-saleswomanAnim.height * 0.3, fireRate:1000, missileExplodeDuration:0, missileFuseDuration:3000, view:saleswomanAnim});
 					add(saleswoman);
-	
-					var shopswoman:ShopsWoman = new ShopsWoman("shopswoman", {x:450, y:casePositions[1], speed:1});
-					add(shopswoman);
-					shopswoman.onTouchLeftSide.add(_endGame);
+					
+				} else if (name == "Block") {
+					
+					var blockAnimation:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Defenders"), ["block1", "block2", "block3", "blockDestroyed"], "block1");
+					var block:Block = new Block("block", {x:casePositions[0], y:casePositions[1], group:casePositions[2], view:blockAnimation});
+					add(block); 
 				}
+				
+				var shopswoman:ShopsWoman = new ShopsWoman("shopswoman", {x:450, y:casePositions[1], speed:1});
+				add(shopswoman);
+				shopswoman.onTouchLeftSide.add(_endGame);
 
 			} else trace('no');
 
