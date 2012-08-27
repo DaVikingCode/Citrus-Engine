@@ -40,7 +40,6 @@ package games.live4sales.runtime {
 				
 				_coin.x = Math.random() * stage.stageWidth - _coin.width;
 				_coin.y = Math.random() * stage.stageHeight - _coin.height;
-				
 			}
 		}
 

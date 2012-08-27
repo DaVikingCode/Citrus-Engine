@@ -28,7 +28,7 @@ package games.live4sales.objects {
 			
 			addEventListener(TouchEvent.TOUCH, _touched);
 			
-			_coinDurationTimeoutID = setTimeout(_destroyCoin, 1900);
+			_coinDurationTimeoutID = setTimeout(_destroyCoin, 2500);
 		}
 		
 		private function _touched(tEvt:TouchEvent):void {

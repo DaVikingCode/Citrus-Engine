@@ -17,7 +17,7 @@ package games.live4sales.objects {
 		
 		public var life:uint = 5;
 		
-		private var _timerHurt:Timer;
+		protected var _timerHurt:Timer;
 
 		public function Block(name:String, params:Object = null) {
 			
@@ -52,7 +52,7 @@ package games.live4sales.objects {
 			_updateAnimation();
 		}
 
-		private function _updateAnimation():void {
+		protected function _updateAnimation():void {
 			
 			if (life == 3)
 				_animation = "block2";

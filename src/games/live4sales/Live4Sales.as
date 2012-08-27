@@ -5,6 +5,7 @@ package games.live4sales {
 	import games.live4sales.assets.Assets;
 	import games.live4sales.characters.SalesWoman;
 	import games.live4sales.objects.Block;
+	import games.live4sales.objects.Cash;
 	import games.live4sales.runtime.BaddiesCreation;
 	import games.live4sales.runtime.CoinsCreation;
 	import games.live4sales.ui.Hud;
@@ -72,7 +73,12 @@ package games.live4sales {
 					
 					var blockAnimation:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Defenders"), ["block1", "block2", "block3", "blockDestroyed"], "block1");
 					var block:Block = new Block("block", {x:casePositions[0], y:casePositions[1], group:casePositions[2], view:blockAnimation});
-					add(block); 
+					add(block);
+					 
+				} else if (name == "Cash") {
+					
+					var cash:Cash = new Cash("cash", {x:casePositions[0], y:casePositions[1], group:casePositions[2]});
+					add(cash);
 				}
 
 			} else trace('no');

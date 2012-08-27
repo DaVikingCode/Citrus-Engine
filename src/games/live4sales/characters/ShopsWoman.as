@@ -4,6 +4,7 @@ package games.live4sales.characters {
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import games.live4sales.objects.Block;
+	import games.live4sales.objects.Cash;
 	import games.live4sales.utils.Grid;
 	import games.live4sales.weapons.Bag;
 
@@ -99,7 +100,7 @@ package games.live4sales.characters {
 			
 			var other:Box2DPhysicsObject = cEvt.other.GetBody().GetUserData();
 			
-			if (other is SalesWoman || other is Block)
+			if (other is SalesWoman || other is Block || other is Cash)
 				_fighting = true;
 				
 			else if (other is Bag) {
@@ -112,7 +113,7 @@ package games.live4sales.characters {
 			
 			var other:Box2DPhysicsObject = cEvt.other.GetBody().GetUserData();
 			
-			if (other is SalesWoman || other is Block)
+			if (other is SalesWoman || other is Block || other is Cash)
 				_fighting = false;
 		}
 		

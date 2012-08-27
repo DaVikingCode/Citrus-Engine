@@ -4,6 +4,7 @@ package games.live4sales.weapons {
 
 	import games.live4sales.characters.SalesWoman;
 	import games.live4sales.objects.Block;
+	import games.live4sales.objects.Cash;
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.objects.platformer.box2d.Missile;
@@ -29,7 +30,7 @@ package games.live4sales.weapons {
 			
 			var other:Box2DPhysicsObject = cEvt.other.GetBody().GetUserData();
 			
-			if (other is SalesWoman || other is Bag || other is Block)
+			if (other is SalesWoman || other is Bag || other is Block || other is Cash)
 				cEvt.contact.Disable();
 			else
 				explode();
