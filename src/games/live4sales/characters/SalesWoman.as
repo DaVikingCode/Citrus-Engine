@@ -51,6 +51,11 @@ package games.live4sales.characters {
 				
 				Grid.tabObjects[tab[1]][tab[0]] = false;
 			}
+			
+			if (Grid.tabBaddies[group])
+				_firing = true;
+			else
+				_firing = false;
 		}
 			
 		override protected function createFixture():void {
@@ -85,16 +90,19 @@ package games.live4sales.characters {
 		}
 		
 		override protected function _fire(tEvt:TimerEvent):void {
+			
+			if (_firing) {
 
-			var missile:Bag;
-
-			if (startingDirection == "right")
-				missile = new Bag("Missile", {x:x + width, y:y, width:missileWidth, height:missileHeight, offsetY:-30, speed:missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag", "Defenders"))});
-			else
-				missile = new Bag("Missile", {x:x - width, y:y, width:missileWidth, height:missileHeight, offsetY:-30, speed:-missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag", "Defenders"))});
-
-			_ce.state.add(missile);
-			missile.onExplode.addOnce(_damage);
+				var missile:Bag;
+	
+				if (startingDirection == "right")
+					missile = new Bag("Missile", {x:x + width, y:y, width:missileWidth, height:missileHeight, offsetY:-30, speed:missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag", "Defenders"))});
+				else
+					missile = new Bag("Missile", {x:x - width, y:y, width:missileWidth, height:missileHeight, offsetY:-30, speed:-missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag", "Defenders"))});
+	
+				_ce.state.add(missile);
+				missile.onExplode.addOnce(_damage);
+			}
 		}
 
 		override protected function _updateAnimation():void {

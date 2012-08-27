@@ -1,11 +1,11 @@
 package games.live4sales {
 
-	import games.live4sales.objects.Block;
 	import Box2DAS.Common.V2;
 
 	import games.live4sales.assets.Assets;
 	import games.live4sales.characters.SalesWoman;
-	import games.live4sales.characters.ShopsWoman;
+	import games.live4sales.ia.BaddiesCreation;
+	import games.live4sales.objects.Block;
 	import games.live4sales.ui.Hud;
 	import games.live4sales.utils.Grid;
 
@@ -23,6 +23,8 @@ package games.live4sales {
 	public class Live4Sales extends StarlingState {
 
 		private var _hud:Hud;
+		
+		private var _baddiesCreation:BaddiesCreation;
 
 		public function Live4Sales() {
 			super();
@@ -44,6 +46,8 @@ package games.live4sales {
 
 			var background:CitrusSprite = new CitrusSprite("background", {view:Image.fromBitmap(new Assets.BackgroundPng())});
 			add(background);
+			
+			_baddiesCreation = new BaddiesCreation();
 		}
 
 		private function _createObject(name:String, posX:uint, posY:uint):void {
@@ -64,19 +68,9 @@ package games.live4sales {
 					var block:Block = new Block("block", {x:casePositions[0], y:casePositions[1], group:casePositions[2], view:blockAnimation});
 					add(block); 
 				}
-				
-				var shopswoman:ShopsWoman = new ShopsWoman("shopswoman", {x:450, y:casePositions[1], speed:1});
-				add(shopswoman);
-				shopswoman.onTouchLeftSide.add(_endGame);
 
 			} else trace('no');
 
 		}
-
-		private function _endGame():void {
-
-			trace('game over');
-		}
-
 	}
 }

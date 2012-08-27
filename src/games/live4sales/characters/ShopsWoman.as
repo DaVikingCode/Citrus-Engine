@@ -4,6 +4,7 @@ package games.live4sales.characters {
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import games.live4sales.objects.Block;
+	import games.live4sales.utils.Grid;
 	import games.live4sales.weapons.Bag;
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
@@ -58,8 +59,12 @@ package games.live4sales.characters {
 				kill = true;
 			}
 			
-			if (life == 0)
+			if (life == 0) {
 				kill = true;
+				Grid.tabBaddies[group] = false;
+			} else {
+				Grid.tabBaddies[group] = true;
+			}
 			
 			updateAnimation();
 		}
