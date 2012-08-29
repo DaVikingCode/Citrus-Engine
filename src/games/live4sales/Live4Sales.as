@@ -11,6 +11,7 @@ package games.live4sales {
 	import games.live4sales.ui.Hud;
 	import games.live4sales.utils.Grid;
 
+	import starling.core.Starling;
 	import starling.display.Image;
 
 	import com.citrusengine.core.StarlingState;
@@ -37,6 +38,8 @@ package games.live4sales {
 		override public function initialize():void {
 
 			super.initialize();
+			
+			Assets.contentScaleFactor = Starling.current.contentScaleFactor;
 
 			var box2D:Box2D = new Box2D("box2D", {gravity:new V2()});
 			box2D.visible = true;
