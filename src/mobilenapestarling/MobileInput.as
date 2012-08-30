@@ -11,13 +11,18 @@ package mobilenapestarling {
 	 * @author Aymeric
 	 */
 	public class MobileInput extends Input {
-
-		private var _ce:CitrusEngine;
 		
 		private var _screenTouched:Boolean = false;
 
 		public function MobileInput() {
 			super();
+		}
+			
+		override public function destroy():void {
+			
+			_ce.starling.stage.removeEventListener(TouchEvent.TOUCH, _touchEvent);
+			
+			super.destroy();
 		}
 
 		override public function set enabled(value:Boolean):void {

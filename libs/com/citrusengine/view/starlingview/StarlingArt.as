@@ -104,7 +104,8 @@ package com.citrusengine.view.starlingview {
 			if (content is MovieClip) {
 				
 				Starling.juggler.remove(content as MovieClip);
-				_textureAtlas.dispose();
+				if (_textureAtlas)
+					_textureAtlas.dispose();
 				content.dispose();
 			
 			} else if (content is AnimationSequence) {

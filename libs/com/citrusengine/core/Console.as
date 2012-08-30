@@ -95,6 +95,14 @@ package com.citrusengine.core
 			_onHideConsole = new Signal();
 		}
 		
+		public function destroy():void {
+			
+			stage.removeEventListener(KeyboardEvent.KEY_UP, onToggleKeyPress);
+			
+			_onShowConsole.removeAll();
+			_onHideConsole.removeAll();
+		}
+		
 		/**
 		 * Gets dispatched when the console is shown. Handler accepts 0 params.
 		 */		

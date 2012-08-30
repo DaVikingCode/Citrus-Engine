@@ -28,6 +28,12 @@ package com.citrusengine.core {
 			return _instance;
 		}
 		
+		public function destroy():void {
+			
+			sounds = null;
+			currPlayingSounds = null;
+		}
+		
 		/*
 		 * The sound is a path to a file or an embedded sound 
 		 */

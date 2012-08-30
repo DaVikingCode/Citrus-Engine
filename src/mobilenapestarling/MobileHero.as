@@ -1,7 +1,5 @@
 package mobilenapestarling {
 
-	import com.citrusengine.objects.platformer.nape.Platform;
-
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionType;
 	import nape.callbacks.PreCallback;
@@ -10,6 +8,7 @@ package mobilenapestarling {
 	import nape.geom.Vec2;
 
 	import com.citrusengine.objects.platformer.nape.Hero;
+	import com.citrusengine.objects.platformer.nape.Platform;
 
 	/**
 	 * @author Aymeric
@@ -33,6 +32,8 @@ package mobilenapestarling {
 			
 			_preListener.space = null;
 			_preListener = null;
+			
+			_mobileInput.destroy();
 
 			super.destroy();
 		}
@@ -62,8 +63,6 @@ package mobilenapestarling {
 		}
 
 		private function _updateAnimation():void {
-			
-			var prevAnimation:String = _animation;
 			
 			if (_mobileInput.screenTouched) {
 				

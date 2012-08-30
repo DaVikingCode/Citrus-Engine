@@ -72,6 +72,37 @@
 		}
 		
 		/**
+		 * Destroy the Citrus Engine, use it only if the Citrus Engine is just a part of your project and not your Main class.
+		 */
+		public function destroy():void {
+			
+			stage.removeEventListener(flash.events.Event.ACTIVATE, handleStageActivated);
+			stage.removeEventListener(flash.events.Event.DEACTIVATE, handleStageDeactivated);
+			
+			removeEventListener(flash.events.Event.ENTER_FRAME, handleEnterFrame);
+			
+			if (_state) {
+				
+				_state.destroy();
+				
+				if (_starling) {
+					
+					_starling.stage.removeChild(_state as StarlingState);
+					_starling.nativeStage.removeChildAt(2); // Remove Box2D or Nape debug view
+					
+				} else {
+					removeChild(_state as State);
+				}
+			}
+				
+			_console.destroy();
+			removeChild(_console);
+			
+			_input.destroy();
+			_sound.destroy();
+		}
+		
+		/**
 		 * You should call this function to create your Starling view. The RootClass is internal, it is never used elsewhere. 
 		 * StarlingState is added on the starling stage : <code>_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);</code>
 		 * @param debugMode : if true, display a Stats class instance.
@@ -231,7 +262,7 @@
 							
 							_state.destroy();
 							_starling.stage.removeChild(_state as StarlingState);
-							_starling.nativeStage.removeChildAt(2); // Remove Box2D or Nape view
+							_starling.nativeStage.removeChildAt(2); // Remove Box2D or Nape debug view
 						}
 						_state = _newState;
 						_newState = null;

@@ -10,15 +10,28 @@
 		public static const JUST_RELEASED:uint = 2;
 		public static const UP:uint = 3;
 		
-		private var _keys:Dictionary;
-		private var _keysReleased:Vector.<int>;
-		private var _initialized:Boolean;
-		private var _enabled:Boolean = true;
+		protected var _ce:CitrusEngine;
+		
+		protected var _keys:Dictionary;
+		protected var _keysReleased:Vector.<uint>;
+		protected var _initialized:Boolean;
+		protected var _enabled:Boolean = true;
 		
 		public function Input() 
 		{
 			_keys = new Dictionary();
-			_keysReleased = new Vector.<int>;
+			_keysReleased = new Vector.<uint>;
+			
+			_ce = CitrusEngine.getInstance();
+		}
+		
+		public function destroy():void {
+			
+			_keys = null;
+			_keysReleased = null;
+			
+			_ce.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			_ce.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 		}
 		
 		/**
@@ -37,16 +50,15 @@
 			
 			_enabled = value;
 			
-			var ce:CitrusEngine = CitrusEngine.getInstance();
 			if (_enabled)
 			{
-				ce.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-				ce.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+				_ce.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+				_ce.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			}
 			else
 			{
-				ce.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-				ce.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+				_ce.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+				_ce.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			}
 		}
 		
@@ -77,9 +89,9 @@
 				return;
 			
 			_initialized = true;
-			var ce:CitrusEngine = CitrusEngine.getInstance();
-			ce.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			ce.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			
+			_ce.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			_ce.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 		}
 		
 		/**
