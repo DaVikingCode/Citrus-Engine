@@ -18,8 +18,8 @@ package games.live4sales.characters {
 	 */
 	public class ShopsWoman extends Box2DPhysicsObject {
 		
-		public var speed:Number = 1.3;
-		public var life:uint = 3;
+		public var speed:Number = 0.7;
+		public var life:uint = 4;
 		
 		public var onTouchLeftSide:Signal;
 		

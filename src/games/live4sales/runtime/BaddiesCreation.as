@@ -58,7 +58,7 @@ package games.live4sales.runtime {
 			
 			var casePosition:Array = Grid.getBaddyPosition(0, Grid.getRandomHeight());
 			
-			var shopswoman:ShopsWoman = new ShopsWoman("shopswoman", {x:480, y:casePosition[1], group:casePosition[2], speed:1});
+			var shopswoman:ShopsWoman = new ShopsWoman("shopswoman", {x:480, y:casePosition[1], group:casePosition[2]});
 			_ce.state.add(shopswoman);
 			shopswoman.onTouchLeftSide.add(_endGame);
 			
