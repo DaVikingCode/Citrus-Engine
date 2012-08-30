@@ -1,9 +1,12 @@
 package games.live4sales.runtime {
 
 	import games.live4sales.assets.Assets;
+	import games.live4sales.events.MoneyEvent;
 	import games.live4sales.objects.Coin;
 
 	import starling.display.Sprite;
+
+	import com.citrusengine.core.CitrusEngine;
 
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
@@ -13,11 +16,15 @@ package games.live4sales.runtime {
 	 */
 	public class CoinsCreation extends Sprite {
 		
+		private var _ce:CitrusEngine;
+		
 		private var _timerCoins:Timer;
 		
 		private var _coin:Coin;
 		
 		public function CoinsCreation() {
+			
+			_ce = CitrusEngine.getInstance();
 			
 			_timerCoins = new Timer(2000);
 			_timerCoins.start();
@@ -47,9 +54,8 @@ package games.live4sales.runtime {
 			
 			removeChild(coin);
 			
-			if (touched) {
-				//add money
-			}
+			if (touched)
+				_ce.dispatchEvent(new MoneyEvent(MoneyEvent.PICKUP_MONEY));
 		}
 	}
 }

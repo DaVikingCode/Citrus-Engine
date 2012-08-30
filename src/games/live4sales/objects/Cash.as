@@ -1,6 +1,7 @@
 package games.live4sales.objects {
 
 	import games.live4sales.assets.Assets;
+	import games.live4sales.events.MoneyEvent;
 
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
@@ -47,9 +48,8 @@ package games.live4sales.objects {
 			
 			_ce.starling.stage.removeChild(_coin);
 			
-			if (touched) {
-				//add money
-			}
+			if (touched)
+				_ce.dispatchEvent(new MoneyEvent(MoneyEvent.PICKUP_MONEY));
 		}
 
 		override protected function _updateAnimation():void {
