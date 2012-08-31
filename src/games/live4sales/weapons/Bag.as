@@ -1,5 +1,5 @@
 package games.live4sales.weapons {
-
+	
 	import Box2DAS.Common.V2;
 	import Box2DAS.Dynamics.ContactEvent;
 
@@ -28,6 +28,14 @@ package games.live4sales.weapons {
 			
 		override protected function handleBeginContact(cEvt:ContactEvent):void {
 			explode();
+		}
+		
+		override protected function defineBody():void {
+			
+			super.defineBody();
+			
+			_bodyDef.bullet = false;
+			_bodyDef.allowSleep = true;
 		}
 		
 		override protected function defineFixture():void {
