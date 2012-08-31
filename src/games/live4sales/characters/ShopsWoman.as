@@ -83,7 +83,7 @@ package games.live4sales.characters {
 			
 			_fixtureDef.friction = 0;
 			_fixtureDef.filter.categoryBits = Box2DCollisionCategories.Get("BadGuys");
-			_fixtureDef.filter.maskBits = Box2DCollisionCategories.GetAllExcept("Items");
+			_fixtureDef.filter.maskBits = Box2DCollisionCategories.GetAllExcept("BadGuys");
 		}
 			
 		override protected function createFixture():void {

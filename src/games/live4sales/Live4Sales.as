@@ -81,12 +81,12 @@ package games.live4sales {
 					} else if (name == "Block") {
 						
 						var blockAnimation:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Objects"), ["block1", "block2", "block3", "blockDestroyed"], "block1");
-						var block:Block = new Block("block", {x:casePositions[0], y:casePositions[1], group:casePositions[2], view:blockAnimation});
+						var block:Block = new Block("block", {x:casePositions[0], y:casePositions[1], group:casePositions[2], offsetY:-15, view:blockAnimation});
 						add(block);
 						
 					} else if (name == "Cash") {
 						
-						var cash:Cash = new Cash("cash", {x:casePositions[0], y:casePositions[1], group:casePositions[2], view:new Image(Assets.getAtlasTexture("cash", "Objects"))});
+						var cash:Cash = new Cash("cash", {x:casePositions[0], y:casePositions[1], group:casePositions[2], offsetY:-15, view:new Image(Assets.getAtlasTexture("cash", "Objects"))});
 						add(cash);
 					}
 
