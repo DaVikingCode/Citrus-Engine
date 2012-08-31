@@ -101,7 +101,6 @@ package games.live4sales.characters {
 					missile = new Bag("Missile", {x:x - width, y:y, group:group, width:missileWidth, height:missileHeight, offsetY:-30, speed:-missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag", "Objects"))});
 	
 				_ce.state.add(missile);
-				missile.onExplode.addOnce(_damage);
 			}
 		}
 

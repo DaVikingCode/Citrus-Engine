@@ -46,8 +46,8 @@ package games.live4sales.runtime {
 				addChild(_coin);
 				_coin.onDestroyed.add(_coinDestroy);
 				
-				_coin.x = Math.random() * Starling.current.viewPort.width - _coin.width;
-				_coin.y = Math.random() * Starling.current.viewPort.height - _coin.height;
+				_coin.x = Math.random() * Starling.current.viewPort.width - Starling.current.viewPort.x - _coin.width;
+				_coin.y = Math.random() * Starling.current.viewPort.height - Starling.current.viewPort.y - _coin.height;
 			}
 		}
 

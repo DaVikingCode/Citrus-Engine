@@ -1,5 +1,6 @@
 package games.live4sales.weapons {
 
+	import Box2DAS.Common.V2;
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import com.citrusengine.objects.platformer.box2d.Missile;
@@ -16,7 +17,10 @@ package games.live4sales.weapons {
 		
 		override public function update(timeDelta:Number):void {
 			
-			super.update(timeDelta);
+			if (!_exploded)
+				_body.SetLinearVelocity(_velocity);
+			else
+				_body.SetLinearVelocity(new V2());
 			
 			if (x > 480)
 				kill = true;
