@@ -36,7 +36,7 @@ package games.live4sales.objects {
 
 		private function _createCoin(tEvt:TimerEvent):void {
 			
-			_coin = new Coin(Assets.getAtlasTexture("coin", "Defenders"));
+			_coin = new Coin(Assets.getAtlasTexture("coin", "Objects"));
 			_ce.starling.stage.addChild(_coin);
 			_coin.onDestroyed.add(_coinDestroy);
 			

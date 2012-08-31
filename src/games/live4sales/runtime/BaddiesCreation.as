@@ -1,9 +1,11 @@
 package games.live4sales.runtime {
 
+	import games.live4sales.assets.Assets;
 	import games.live4sales.characters.ShopsWoman;
 	import games.live4sales.utils.Grid;
 
 	import com.citrusengine.core.CitrusEngine;
+	import com.citrusengine.view.starlingview.AnimationSequence;
 
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
@@ -58,7 +60,8 @@ package games.live4sales.runtime {
 			
 			var casePosition:Array = Grid.getBaddyPosition(0, Grid.getRandomHeight());
 			
-			var shopswoman:ShopsWoman = new ShopsWoman("shopswoman", {x:480, y:casePosition[1], group:casePosition[2]});
+			var shopsWomanAnim:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Objects"), ["walk", "attack"], "walk");
+			var shopswoman:ShopsWoman = new ShopsWoman("shopswoman", {x:480, y:casePosition[1], group:casePosition[2],  offsetY:-shopsWomanAnim.height * 0.3, view:shopsWomanAnim});
 			_ce.state.add(shopswoman);
 			shopswoman.onTouchLeftSide.add(_endGame);
 			

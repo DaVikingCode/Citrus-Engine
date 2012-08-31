@@ -46,7 +46,7 @@ package games.live4sales {
 			Assets.contentScaleFactor = Starling.current.contentScaleFactor;
 
 			var box2D:Box2D = new Box2D("box2D", {gravity:new V2()});
-			box2D.visible = true;
+			//box2D.visible = true;
 			add(box2D);
 
 			_hud = new Hud();
@@ -56,7 +56,7 @@ package games.live4sales {
 			_coinsCreation = new CoinsCreation();
 			addChild(_coinsCreation);
 
-			StarlingArt.setLoopAnimations(["stand", "attack"]);
+			StarlingArt.setLoopAnimations(["stand", "fire", "attack", "walk"]);
 
 			var background:CitrusSprite = new CitrusSprite("background", {view:Image.fromBitmap(new Assets.BackgroundPng())});
 			add(background);
@@ -74,19 +74,19 @@ package games.live4sales {
 					
 					if (name == "SalesWoman") {
 						
-						var saleswomanAnim:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Defenders"), ["attack", "stand"], "attack", 30, true);
+						var saleswomanAnim:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Objects"), ["fire", "stand"], "fire", 30, true);
 						var saleswoman:SalesWoman = new SalesWoman("saleswoman", {x:casePositions[0], y:casePositions[1], group:casePositions[2], offsetY:-saleswomanAnim.height * 0.3, fireRate:1000, missileExplodeDuration:0, missileFuseDuration:3000, view:saleswomanAnim});
 						add(saleswoman);
 						
 					} else if (name == "Block") {
 						
-						var blockAnimation:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Defenders"), ["block1", "block2", "block3", "blockDestroyed"], "block1");
+						var blockAnimation:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Objects"), ["block1", "block2", "block3", "blockDestroyed"], "block1");
 						var block:Block = new Block("block", {x:casePositions[0], y:casePositions[1], group:casePositions[2], view:blockAnimation});
 						add(block);
 						
 					} else if (name == "Cash") {
 						
-						var cash:Cash = new Cash("cash", {x:casePositions[0], y:casePositions[1], group:casePositions[2], view:new Image(Assets.getAtlasTexture("cash", "Defenders"))});
+						var cash:Cash = new Cash("cash", {x:casePositions[0], y:casePositions[1], group:casePositions[2], view:new Image(Assets.getAtlasTexture("cash", "Objects"))});
 						add(cash);
 					}
 

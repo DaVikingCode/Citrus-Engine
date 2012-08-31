@@ -65,7 +65,7 @@ package games.live4sales.ui {
 				this.x = _posX;
 				this.y = _posY;
 				
-				onStopDrag.dispatch(name, touchEnded.globalX, touchEnded.globalY);
+				onStopDrag.dispatch(name, uint(touchEnded.globalX), uint(touchEnded.globalY));
 			}
 		}
 	}

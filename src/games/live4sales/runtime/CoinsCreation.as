@@ -41,7 +41,7 @@ package games.live4sales.runtime {
 			
 			if (Math.random() > 0.5) {
 				
-				_coin = new Coin(Assets.getAtlasTexture("coin", "Defenders"));
+				_coin = new Coin(Assets.getAtlasTexture("coin", "Objects"));
 				addChild(_coin);
 				_coin.onDestroyed.add(_coinDestroy);
 				

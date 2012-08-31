@@ -96,9 +96,9 @@ package games.live4sales.characters {
 				var missile:Bag;
 	
 				if (startingDirection == "right")
-					missile = new Bag("Missile", {x:x + width, y:y, width:missileWidth, height:missileHeight, offsetY:-30, speed:missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag", "Defenders"))});
+					missile = new Bag("Missile", {x:x + width, y:y, width:missileWidth, height:missileHeight, offsetY:-30, speed:missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag", "Objects"))});
 				else
-					missile = new Bag("Missile", {x:x - width, y:y, width:missileWidth, height:missileHeight, offsetY:-30, speed:-missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag", "Defenders"))});
+					missile = new Bag("Missile", {x:x - width, y:y, width:missileWidth, height:missileHeight, offsetY:-30, speed:-missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag", "Objects"))});
 	
 				_ce.state.add(missile);
 				missile.onExplode.addOnce(_damage);
@@ -108,7 +108,7 @@ package games.live4sales.characters {
 		override protected function _updateAnimation():void {
 			
 			if (_firing)
-				_animation = "attack";
+				_animation = "fire";
 			else
 				_animation = "stand";
 		}

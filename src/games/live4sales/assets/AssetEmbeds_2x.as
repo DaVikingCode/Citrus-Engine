@@ -9,11 +9,11 @@ package games.live4sales.assets {
 
 		// Texture Atlas
 
-		[Embed(source="../embed/games/live4sales/2x/defenders.xml", mimeType="application/octet-stream")]
-		public static const DefendersConfig:Class;
+		[Embed(source="../embed/games/live4sales/2x/objects.xml", mimeType="application/octet-stream")]
+		public static const ObjectsConfig:Class;
 
-		[Embed(source="../embed/games/live4sales/2x/defenders.png")]
-		public static const DefendersPng:Class;
+		[Embed(source="../embed/games/live4sales/2x/objects.png")]
+		public static const ObjectsPng:Class;
 
 		[Embed(source="../embed/games/live4sales/2x/menu.xml", mimeType="application/octet-stream")]
 		public static const MenuConfig:Class;

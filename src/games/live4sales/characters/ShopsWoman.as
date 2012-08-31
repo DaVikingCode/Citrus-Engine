@@ -119,7 +119,7 @@ package games.live4sales.characters {
 		
 		protected function updateAnimation():void {
 			
-			_animation = "walk";
+			_animation = _fighting ? "attack" : "walk";
 		}
 	}
 }
