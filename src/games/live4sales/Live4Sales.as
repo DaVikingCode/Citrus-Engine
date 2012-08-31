@@ -86,11 +86,12 @@ package games.live4sales {
 						
 					} else if (name == "Cash") {
 						
-						var cash:Cash = new Cash("cash", {x:casePositions[0], y:casePositions[1], group:casePositions[2]});
+						var cash:Cash = new Cash("cash", {x:casePositions[0], y:casePositions[1], group:casePositions[2], view:new Image(Assets.getAtlasTexture("cash", "Defenders"))});
 						add(cash);
 					}
 
 					_ce.dispatchEvent(new MoneyEvent(MoneyEvent.BUY_ITEM));
+					
 				} else trace('case not empty');
 				
 			} else trace('no money');

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:0731e8bbe3b53ee0d5e0b31ee40728a8$ -->
+<!-- $TexturePacker:SmartUpdate:e120d30fb5c89d79f636b067dd02e7b5$ -->
 <TextureAtlas imagePath="defenders.png">
     <SubTexture name="attack/0000" x="154" y="2" width="72" height="184" frameX="0" frameY="0" frameWidth="76" frameHeight="184"/>
     <SubTexture name="attack/0001" x="80" y="188" width="72" height="184" frameX="0" frameY="0" frameWidth="76" frameHeight="184"/>
@@ -34,12 +34,13 @@
     <SubTexture name="attack/0029" x="2" y="188" width="76" height="184"/>
     <SubTexture name="attack/0030" x="2" y="188" width="76" height="184"/>
     <SubTexture name="attack/0031" x="2" y="2" width="76" height="184"/>
-    <SubTexture name="bag" x="300" y="304" width="47" height="35" frameX="0" frameY="0" frameWidth="48" frameHeight="37"/>
-    <SubTexture name="block1" x="206" y="370" width="99" height="121" frameX="-30" frameY="-30" frameWidth="614" frameHeight="461"/>
-    <SubTexture name="block2" x="105" y="374" width="99" height="121" frameX="-30" frameY="-30" frameWidth="614" frameHeight="461"/>
-    <SubTexture name="block3" x="2" y="374" width="101" height="124" frameX="-28" frameY="-30" frameWidth="614" frameHeight="461"/>
-    <SubTexture name="blockDestroyed" x="300" y="181" width="98" height="121" frameX="-46" frameY="-29" frameWidth="180" frameHeight="180"/>
-    <SubTexture name="coin" x="400" y="2" width="63" height="73" frameX="-1" frameY="-1" frameWidth="65" frameHeight="75"/>
+    <SubTexture name="bag" x="300" y="303" width="47" height="35" frameX="0" frameY="0" frameWidth="48" frameHeight="37"/>
+    <SubTexture name="block1" x="204" y="370" width="98" height="120"/>
+    <SubTexture name="block2" x="104" y="374" width="98" height="120"/>
+    <SubTexture name="block3" x="2" y="374" width="100" height="123"/>
+    <SubTexture name="blockDestroyed" x="300" y="181" width="97" height="120"/>
+    <SubTexture name="cash" x="399" y="2" width="98" height="109"/>
+    <SubTexture name="coin" x="301" y="2" width="63" height="73" frameX="-1" frameY="-1" frameWidth="65" frameHeight="75"/>
     <SubTexture name="stand/0000" x="227" y="188" width="71" height="180" frameX="0" frameY="0" frameWidth="72" frameHeight="180"/>
     <SubTexture name="stand/0001" x="227" y="188" width="71" height="180" frameX="0" frameY="0" frameWidth="72" frameHeight="180"/>
     <SubTexture name="stand/0002" x="227" y="188" width="71" height="180" frameX="0" frameY="0" frameWidth="72" frameHeight="180"/>
