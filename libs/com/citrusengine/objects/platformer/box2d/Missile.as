@@ -63,11 +63,11 @@ package com.citrusengine.objects.platformer.box2d
 		 */
 		public var onExplode:Signal;
 		
-		private var _velocity:V2;
-		private var _exploded:Boolean = false;
-		private var _explodeTimeoutID:Number = 0;
-		private var _fuseDurationTimeoutID:Number = 0;
-		private var _contact:Box2DPhysicsObject;
+		protected var _velocity:V2;
+		protected var _exploded:Boolean = false;
+		protected var _explodeTimeoutID:Number = 0;
+		protected var _fuseDurationTimeoutID:Number = 0;
+		protected var _contact:Box2DPhysicsObject;
 		
 		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, angle:Number, view:* = null, speed:Number = 2, fuseDuration:Number = 10000, explodeDuration:Number = 1000):Missile
 		{
