@@ -4,6 +4,7 @@ package games.live4sales.runtime {
 	import games.live4sales.events.MoneyEvent;
 	import games.live4sales.objects.Coin;
 
+	import starling.core.Starling;
 	import starling.display.Sprite;
 
 	import com.citrusengine.core.CitrusEngine;
@@ -45,8 +46,8 @@ package games.live4sales.runtime {
 				addChild(_coin);
 				_coin.onDestroyed.add(_coinDestroy);
 				
-				_coin.x = Math.random() * stage.stageWidth - _coin.width;
-				_coin.y = Math.random() * stage.stageHeight - _coin.height;
+				_coin.x = Math.random() * Starling.current.viewPort.width - _coin.width;
+				_coin.y = Math.random() * Starling.current.viewPort.height - _coin.height;
 			}
 		}
 
