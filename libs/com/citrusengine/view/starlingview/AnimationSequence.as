@@ -75,6 +75,18 @@ package com.citrusengine.view.starlingview {
 			_previousAnimation = animation;
 		}
 		
+		/**
+		 * Called by StarlingArt, remove or add to the Juggler if the Citrus Engine is playing or not
+		 */
+		public function pauseAnimation(value:Boolean):void {
+			
+			if (value) {
+				Starling.juggler.add(_mcSequences[_previousAnimation]);
+			} else {
+				Starling.juggler.remove(_mcSequences[_previousAnimation]);
+			}
+		}
+		
 		public function destroy():void {
 			
 			removeChild(_mcSequences[_previousAnimation]);

@@ -87,6 +87,8 @@ package com.citrusengine.view.starlingview {
 			
 			_citrusObject = object;
 			
+			CitrusEngine.getInstance().onPlayingChange.add(_pauseAnimation);
+			
 			var ceState:IState = CitrusEngine.getInstance().state;
 			
 			if (_citrusObject is ViewComponent && (ceState.getFirstObjectByType(Box2D) as Box2D || ceState.getFirstObjectByType(Nape) as Nape))
@@ -100,6 +102,8 @@ package com.citrusengine.view.starlingview {
 		}
 
 		public function destroy():void {
+			
+			CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
 			
 			if (content is MovieClip) {
 				
@@ -157,7 +161,6 @@ package com.citrusengine.view.starlingview {
 				content.x = -content.width / 2;
 				content.y = -content.height / 2;
 			}
-			
 		}
 
 		public function get registration():String {
@@ -319,6 +322,19 @@ package com.citrusengine.view.starlingview {
 			view = _citrusObject.view;
 			animation = _citrusObject.animation;
 			group = _citrusObject.group;
+		}
+		
+		/**
+		 * Remove or add to the Juggler if the Citrus Engine is playing or not
+		 */
+		private function _pauseAnimation(value:Boolean):void {
+			
+			if (content is MovieClip)
+				value ? Starling.juggler.add(content as MovieClip) : Starling.juggler.remove(content as MovieClip);
+			else if (content is AnimationSequence)
+				(content as AnimationSequence).pauseAnimation(value);
+			else if (content is PDParticleSystem)
+				value ? Starling.juggler.add(content as PDParticleSystem) : Starling.juggler.remove(content as PDParticleSystem);
 		}
 
 		private function handleContentLoaded(evt:Event):void {

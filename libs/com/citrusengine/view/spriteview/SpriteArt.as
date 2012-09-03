@@ -67,6 +67,8 @@ package com.citrusengine.view.spriteview
 			
 			_citrusObject = object;
 			
+			CitrusEngine.getInstance().onPlayingChange.add(_pauseAnimation);
+			
 			var ceState:IState = CitrusEngine.getInstance().state;
 			
 			if (_citrusObject is ViewComponent && (ceState.getFirstObjectByType(Box2D) as Box2D || ceState.getFirstObjectByType(Nape) as Nape))
@@ -76,6 +78,8 @@ package com.citrusengine.view.spriteview
 		}
 		
 		public function destroy():void {
+			
+			CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
 			
 			_view = null;
 		}
@@ -238,6 +242,18 @@ package com.citrusengine.view.spriteview
 			}
 			
 			return false;
+		}
+		
+		/**
+		 * Stop or play the animation if the Citrus Engine is playing or not
+		 */
+		private function _pauseAnimation(value:Boolean):void {
+			
+			//TODO : not able to stop it... why ?
+			if (content is MovieClip) {
+				
+			}
+				
 		}
 		
 		private function handleContentLoaded(e:Event):void

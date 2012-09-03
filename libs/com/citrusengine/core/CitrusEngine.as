@@ -2,9 +2,11 @@
 
 	import starling.core.Starling;
 	import starling.events.Event;
-	
+
 	import com.citrusengine.utils.AGameData;
 	import com.citrusengine.utils.LevelManager;
+
+	import org.osflash.signals.Signal;
 
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -21,9 +23,11 @@
 	 */	
 	public class CitrusEngine extends MovieClip
 	{
-		public static const VERSION:String = "3.00.00 BETA 2";
+		public static const VERSION:String = "3.00.00 BETA 3";
 				
 		private static var _instance:CitrusEngine;
+		
+		public var onPlayingChange:Signal;
 		
 		protected var _starling:Starling;
 		
@@ -51,6 +55,8 @@
 		{
 			_instance = this;
 			
+			onPlayingChange = new Signal(Boolean);
+			
 			//Set up console
 			_console = new Console(9); //Opens with tab key by default
 			_console.onShowConsole.add(handleShowConsole);
@@ -75,6 +81,8 @@
 		 * Destroy the Citrus Engine, use it only if the Citrus Engine is just a part of your project and not your Main class.
 		 */
 		public function destroy():void {
+			
+			onPlayingChange.removeAll();
 			
 			stage.removeEventListener(flash.events.Event.ACTIVATE, handleStageActivated);
 			stage.removeEventListener(flash.events.Event.DEACTIVATE, handleStageDeactivated);
@@ -172,19 +180,25 @@
 		}
 		
 		/**
-		 * Runs and pauses the game loop. Assign this to false to pause the game and stop the
-		 * <code>update()</code> methods from being called. 
+		 * @return true if the Citrus Engine is playing
 		 */		
 		public function get playing():Boolean
 		{
 			return _playing;
 		}
 		
+		/**
+		 * Runs and pauses the game loop. Assign this to false to pause the game and stop the
+		 * <code>update()</code> methods from being called.
+		 * Dispatch the Signal onPlayingChange with the value
+		 */
 		public function set playing(value:Boolean):void
 		{
 			_playing = value;
 			if (_playing)
 				_gameTime = new Date().time;
+			
+			onPlayingChange.dispatch(_playing);
 		}
 		
 		/**
