@@ -1,32 +1,35 @@
-package games.live4sales.objects {
+package games.live4sales.box2d.characters {
 
 	import Box2DAS.Dynamics.ContactEvent;
 
-	import games.live4sales.characters.ShopsWoman;
-	import games.live4sales.utils.Grid;
+	import games.live4sales.box2d.assets.Assets;
+	import games.live4sales.box2d.utils.Grid;
+	import games.live4sales.box2d.weapons.Bag;
 
-	import com.citrusengine.objects.platformer.box2d.Platform;
+	import starling.display.Image;
+
+	import com.citrusengine.objects.platformer.box2d.Cannon;
 
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-
+	
 	/**
 	 * @author Aymeric
 	 */
-	public class Block extends Platform {
+	public class SalesWoman extends Cannon {
 		
-		public var life:uint = 5;
+		public var life:uint = 2;
 		
-		protected var _timerHurt:Timer;
+		private var _timerHurt:Timer;
 
-		public function Block(name:String, params:Object = null) {
+		public function SalesWoman(name:String, params:Object = null) {
 			
 			super(name, params);
 			
 			_timerHurt = new Timer(1000);
 			_timerHurt.addEventListener(TimerEvent.TIMER, _removeLife);
 		}
-		
+			
 		override public function destroy():void {
 			
 			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
@@ -49,17 +52,10 @@ package games.live4sales.objects {
 				Grid.tabObjects[tab[1]][tab[0]] = false;
 			}
 			
-			_updateAnimation();
-		}
-
-		protected function _updateAnimation():void {
-			
-			if (life == 3)
-				_animation = "block2";
-			else if (life == 2)
-				_animation = "block3";
-			else if (life == 1)
-				_animation = "blockDestroyed";
+			if (Grid.tabBaddies[group])
+				_firing = true;
+			else
+				_firing = false;
 		}
 			
 		override protected function createFixture():void {
@@ -92,5 +88,29 @@ package games.live4sales.objects {
 		private function _removeLife(tEvt:TimerEvent):void {
 			life--;
 		}
+		
+		override protected function _fire(tEvt:TimerEvent):void {
+			
+			if (_firing) {
+
+				var missile:Bag;
+	
+				if (startingDirection == "right")
+					missile = new Bag("Missile", {x:x + width, y:y, group:group, width:missileWidth, height:missileHeight, offsetY:-30, speed:missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag", "Objects"))});
+				else
+					missile = new Bag("Missile", {x:x - width, y:y, group:group, width:missileWidth, height:missileHeight, offsetY:-30, speed:-missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:new Image(Assets.getAtlasTexture("bag", "Objects"))});
+	
+				_ce.state.add(missile);
+			}
+		}
+
+		override protected function _updateAnimation():void {
+			
+			if (_firing)
+				_animation = "fire";
+			else
+				_animation = "stand";
+		}
+
 	}
 }

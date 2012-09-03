@@ -1,16 +1,16 @@
-package games.live4sales {
+package games.live4sales.box2d {
 
 	import Box2DAS.Common.V2;
 
-	import games.live4sales.assets.Assets;
-	import games.live4sales.characters.SalesWoman;
-	import games.live4sales.events.MoneyEvent;
-	import games.live4sales.objects.Block;
-	import games.live4sales.objects.Cash;
-	import games.live4sales.runtime.BaddiesCreation;
-	import games.live4sales.runtime.CoinsCreation;
-	import games.live4sales.ui.Hud;
-	import games.live4sales.utils.Grid;
+	import games.live4sales.box2d.assets.Assets;
+	import games.live4sales.box2d.characters.SalesWoman;
+	import games.live4sales.box2d.events.MoneyEvent;
+	import games.live4sales.box2d.objects.Block;
+	import games.live4sales.box2d.objects.Cash;
+	import games.live4sales.box2d.runtime.BaddiesCreation;
+	import games.live4sales.box2d.runtime.CoinsCreation;
+	import games.live4sales.box2d.ui.Hud;
+	import games.live4sales.box2d.utils.Grid;
 
 	import starling.core.Starling;
 	import starling.display.Image;

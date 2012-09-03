@@ -1,8 +1,8 @@
-package games.live4sales.runtime {
+package games.live4sales.box2d.runtime {
 
-	import games.live4sales.assets.Assets;
-	import games.live4sales.events.MoneyEvent;
-	import games.live4sales.objects.Coin;
+	import games.live4sales.box2d.assets.Assets;
+	import games.live4sales.box2d.events.MoneyEvent;
+	import games.live4sales.box2d.objects.Coin;
 
 	import starling.core.Starling;
 	import starling.display.Sprite;

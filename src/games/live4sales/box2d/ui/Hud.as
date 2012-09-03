@@ -1,8 +1,8 @@
-package games.live4sales.ui {
+package games.live4sales.box2d.ui {
 
-	import games.live4sales.events.MoneyEvent;
-	import games.live4sales.assets.Assets;
-	import games.live4sales.utils.Grid;
+	import games.live4sales.box2d.assets.Assets;
+	import games.live4sales.box2d.events.MoneyEvent;
+	import games.live4sales.box2d.utils.Grid;
 
 	import starling.display.Image;
 	import starling.display.Sprite;

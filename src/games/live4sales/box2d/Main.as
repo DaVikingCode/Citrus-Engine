@@ -1,4 +1,4 @@
-package games.live4sales {
+package games.live4sales.box2d {
 	
 	import com.citrusengine.core.CitrusEngine;
 

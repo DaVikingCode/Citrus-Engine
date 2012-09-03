@@ -1,4 +1,4 @@
-package games.live4sales.events {
+package games.live4sales.box2d.events {
 
 	import flash.events.Event;
 

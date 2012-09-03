@@ -1,7 +1,7 @@
-package games.live4sales.objects {
+package games.live4sales.box2d.objects {
 
-	import games.live4sales.assets.Assets;
-	import games.live4sales.events.MoneyEvent;
+	import games.live4sales.box2d.assets.Assets;
+	import games.live4sales.box2d.events.MoneyEvent;
 
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;

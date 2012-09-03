@@ -1,4 +1,4 @@
-package games.live4sales.assets {
+package games.live4sales.box2d.assets {
 
 	/**
 	 * @author Aymeric

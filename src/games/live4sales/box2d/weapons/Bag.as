@@ -1,4 +1,4 @@
-package games.live4sales.weapons {
+package games.live4sales.box2d.weapons {
 	
 	import Box2DAS.Common.V2;
 	import Box2DAS.Dynamics.ContactEvent;

@@ -1,4 +1,4 @@
-package games.live4sales.utils {
+package games.live4sales.box2d.utils {
 
 	import starling.display.Sprite;
 	import starling.extensions.utils.Line;

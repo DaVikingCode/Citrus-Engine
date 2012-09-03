@@ -1,18 +1,18 @@
-package games.live4sales.characters {
+package games.live4sales.box2d.characters {
 
 	import Box2DAS.Common.V2;
 	import Box2DAS.Dynamics.ContactEvent;
 
-	import games.live4sales.objects.Block;
-	import games.live4sales.objects.Cash;
-	import games.live4sales.utils.Grid;
-	import games.live4sales.weapons.Bag;
+	import games.live4sales.box2d.objects.Block;
+	import games.live4sales.box2d.objects.Cash;
+	import games.live4sales.box2d.utils.Grid;
+	import games.live4sales.box2d.weapons.Bag;
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.Box2DCollisionCategories;
 
 	import org.osflash.signals.Signal;
-
+	
 	/**
 	 * @author Aymeric
 	 */
