@@ -107,7 +107,7 @@ package mobilenapestarling {
 			_psconfig = new XML(new _particleConfig());
 			_psTexture = Texture.fromBitmap(new _particlePng());
 
-			add(new Platform("platformBot", {x:0, y:320 - 10, width:gameLength, height:10}));
+			add(new Platform("platformBot", {x:gameLength / 2, y:320, width:gameLength, height:10}));
 
 			view.setupCamera(_mobileHero, new MathVector(_mobileHero.width, 0), new Rectangle(0, 0, gameLength, 0), new MathVector(.25, .05));
 

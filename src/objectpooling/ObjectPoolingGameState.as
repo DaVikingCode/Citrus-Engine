@@ -40,7 +40,7 @@ package objectpooling {
 			
 			for (var i:uint = 0; i < 5; ++i) {
 				
-				var physicsNode:DoublyLinkedListNode = _poolPhysics.create({x:i * 40 + 30, view:"crate.png"});
+				var physicsNode:DoublyLinkedListNode = _poolPhysics.create({x:i * 40 + 60, view:"crate.png"});
 				addChild(_poolGraphic.create(physicsNode.data).data);
 			}
 			
@@ -76,7 +76,7 @@ package objectpooling {
 				
 			// reassign object
 			for (var i:uint = 0; i < 7; ++i) {
-				var physicsNode:DoublyLinkedListNode = _poolPhysics.create({x:i * 40 + 120, view:"crate.png"});
+				var physicsNode:DoublyLinkedListNode = _poolPhysics.create({x:i * 40 + 150, view:"crate.png"});
 				addChild(_poolGraphic.create(physicsNode.data).data);
 			}
 			

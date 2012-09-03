@@ -117,7 +117,7 @@ package com.citrusengine.objects {
 		
 		protected function createBody():void {
 			
-			_body = new Body(_bodyType, new Vec2(_x + _width / 2, _y + _height / 2));
+			_body = new Body(_bodyType, new Vec2(_x, _y));
 			_body.userData.myData = this;
 		}
 		
@@ -128,13 +128,11 @@ package com.citrusengine.objects {
 		
 		protected function createShape():void {
 			
-			if (_radius != 0) {
+			if (_radius != 0)
 				_body.shapes.add(new Circle(_radius, null, _material));
-			} else {
-				_body.shapes.add(new Polygon(Polygon.box(_width, _height), _material));				
-			}
+			else
+				_body.shapes.add(new Polygon(Polygon.box(_width, _height), _material));
 			
-			//_body.rotate(new Vec2(_x + _width / 2, _y + _height / 2), _rotation);
 			_body.rotate(new Vec2(_x, _y), _rotation);
 		}
 		
@@ -207,10 +205,8 @@ package com.citrusengine.objects {
 		{
 			_rotation = value * Math.PI / 180;
 			
-			if (_body) {
-				//_body.rotate(new Vec2(_x + _width / 2, _y + _height / 2), _rotation);
+			if (_body)
 				_body.rotate(new Vec2(_x, _y), _rotation);
-			} 
 		}
 			
 		public function get group():Number
