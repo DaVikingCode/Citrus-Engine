@@ -249,11 +249,8 @@ package com.citrusengine.view.spriteview
 		 */
 		private function _pauseAnimation(value:Boolean):void {
 			
-			//TODO : not able to stop it... why ?
-			if (content is MovieClip) {
-				
-			}
-				
+			if (content is MovieClip)
+				value ? MovieClip(content).gotoAndStop(_animation) : MovieClip(content).stop();
 		}
 		
 		private function handleContentLoaded(e:Event):void
