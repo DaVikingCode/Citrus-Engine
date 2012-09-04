@@ -1,11 +1,11 @@
 package games.live4sales {
 
 	import games.live4sales.assets.Assets;
-	import games.live4sales.box2d.objects.Block;
-	import games.live4sales.box2d.objects.Cash;
 	import games.live4sales.events.MoneyEvent;
 	import games.live4sales.nape.characters.SalesWoman;
 	import games.live4sales.nape.characters.ShopsWoman;
+	import games.live4sales.nape.objects.Block;
+	import games.live4sales.nape.objects.Cash;
 	import games.live4sales.runtime.BaddiesCreation;
 	import games.live4sales.runtime.CoinsCreation;
 	import games.live4sales.ui.Hud;
@@ -51,13 +51,15 @@ package games.live4sales {
 			Assets.contentScaleFactor = Starling.current.contentScaleFactor;
 
 			var nape:Nape = new Nape("nape", {gravity:new Vec2()});
-			//nape.visible = true;
+			nape.visible = true;
 			add(nape);
 			
 			nape.space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, SalesWoman.SALESWOMAN, CbType.ANY_BODY, nape.contactListener.onInteractionBegin));
 			nape.space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.COLLISION, SalesWoman.SALESWOMAN, CbType.ANY_BODY, nape.contactListener.onInteractionEnd));
 			nape.space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, ShopsWoman.SHOPSWOMAN, CbType.ANY_BODY, nape.contactListener.onInteractionBegin));
 			nape.space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.COLLISION, ShopsWoman.SHOPSWOMAN, CbType.ANY_BODY, nape.contactListener.onInteractionEnd));
+			nape.space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, Block.BLOCK, CbType.ANY_BODY, nape.contactListener.onInteractionBegin));
+			nape.space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.COLLISION, Block.BLOCK, CbType.ANY_BODY, nape.contactListener.onInteractionEnd));
 			
 			_hud = new Hud();
 			addChild(_hud);

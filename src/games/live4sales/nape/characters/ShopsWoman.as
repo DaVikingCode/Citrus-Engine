@@ -1,14 +1,14 @@
 package games.live4sales.nape.characters {
 
+	import games.live4sales.nape.objects.Block;
+	import games.live4sales.nape.objects.Cash;
 	import games.live4sales.nape.weapons.Bag;
 	import games.live4sales.utils.Grid;
 
-	import nape.callbacks.CbEvent;
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
-	import nape.callbacks.InteractionListener;
-	import nape.callbacks.InteractionType;
 	import nape.geom.Vec2;
+	import nape.phys.Material;
 
 	import com.citrusengine.objects.NapePhysicsObject;
 
@@ -77,6 +77,11 @@ package games.live4sales.nape.characters {
 			_body.allowRotation = false;
 		}
 		
+		override protected function createMaterial():void {
+			
+			_material = new Material(0, 0, 0, 1, 0);
+		}
+		
 		override protected function createConstraint():void {
 			
 			_body.space = _nape.space;			
@@ -87,7 +92,7 @@ package games.live4sales.nape.characters {
 			
 			var other:NapePhysicsObject = callback.int2.userData.myData;
 			
-			if (other is SalesWoman)
+			if (other is SalesWoman || other is Block || other is Cash)
 				_fighting = true;
 				
 			else if (other is Bag) {
