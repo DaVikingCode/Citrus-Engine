@@ -1,16 +1,16 @@
-package games.live4sales.box2d {
+package games.live4sales {
 
-	import Box2DAS.Common.V2;
-
-	import games.live4sales.box2d.assets.Assets;
+	import games.live4sales.assets.Assets;
 	import games.live4sales.box2d.characters.SalesWoman;
-	import games.live4sales.box2d.events.MoneyEvent;
 	import games.live4sales.box2d.objects.Block;
 	import games.live4sales.box2d.objects.Cash;
-	import games.live4sales.box2d.runtime.BaddiesCreation;
-	import games.live4sales.box2d.runtime.CoinsCreation;
-	import games.live4sales.box2d.ui.Hud;
-	import games.live4sales.box2d.utils.Grid;
+	import games.live4sales.events.MoneyEvent;
+	import games.live4sales.runtime.BaddiesCreation;
+	import games.live4sales.runtime.CoinsCreation;
+	import games.live4sales.ui.Hud;
+	import games.live4sales.utils.Grid;
+
+	import nape.geom.Vec2;
 
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -18,21 +18,21 @@ package games.live4sales.box2d {
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.StarlingState;
 	import com.citrusengine.objects.CitrusSprite;
-	import com.citrusengine.physics.Box2D;
+	import com.citrusengine.physics.Nape;
 	import com.citrusengine.view.starlingview.AnimationSequence;
 	import com.citrusengine.view.starlingview.StarlingArt;
-
+	
 	/**
 	 * @author Aymeric
 	 */
-	public class Live4Sales extends StarlingState {
+	public class NapeLive4Sales extends StarlingState {
 
 		private var _ce:CitrusEngine;
 		private var _hud:Hud;
 		private var _coinsCreation:CoinsCreation;
 		private var _baddiesCreation:BaddiesCreation;
 
-		public function Live4Sales() {
+		public function NapeLive4Sales() {
 			
 			super();
 
@@ -45,9 +45,9 @@ package games.live4sales.box2d {
 
 			Assets.contentScaleFactor = Starling.current.contentScaleFactor;
 
-			var box2D:Box2D = new Box2D("box2D", {gravity:new V2()});
-			//box2D.visible = true;
-			add(box2D);
+			var nape:Nape = new Nape("nape", {gravity:new Vec2()});
+			//nape.visible = true;
+			add(nape);
 
 			_hud = new Hud();
 			addChild(_hud);

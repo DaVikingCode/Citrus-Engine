@@ -3,13 +3,13 @@ package games.live4sales.box2d.objects {
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import games.live4sales.box2d.characters.ShopsWoman;
-	import games.live4sales.box2d.utils.Grid;
+	import games.live4sales.utils.Grid;
 
 	import com.citrusengine.objects.platformer.box2d.Platform;
 
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-
+	
 	/**
 	 * @author Aymeric
 	 */

@@ -5,8 +5,8 @@ package games.live4sales.box2d.characters {
 
 	import games.live4sales.box2d.objects.Block;
 	import games.live4sales.box2d.objects.Cash;
-	import games.live4sales.box2d.utils.Grid;
 	import games.live4sales.box2d.weapons.Bag;
+	import games.live4sales.utils.Grid;
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.Box2DCollisionCategories;

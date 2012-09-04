@@ -1,10 +1,11 @@
-package games.live4sales.box2d.runtime {
+package games.live4sales.runtime {
 
-	import games.live4sales.box2d.assets.Assets;
+	import games.live4sales.assets.Assets;
 	import games.live4sales.box2d.characters.ShopsWoman;
-	import games.live4sales.box2d.utils.Grid;
+	import games.live4sales.utils.Grid;
 
 	import com.citrusengine.core.CitrusEngine;
+	import com.citrusengine.physics.Box2D;
 	import com.citrusengine.view.starlingview.AnimationSequence;
 
 	import flash.events.TimerEvent;
@@ -61,9 +62,12 @@ package games.live4sales.box2d.runtime {
 			var casePosition:Array = Grid.getBaddyPosition(0, Grid.getRandomHeight());
 			
 			var shopsWomanAnim:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Objects"), ["walk", "attack"], "walk");
-			var shopswoman:ShopsWoman = new ShopsWoman("shopswoman", {x:480, y:casePosition[1], group:casePosition[2],  offsetY:-shopsWomanAnim.height * 0.3, view:shopsWomanAnim});
-			_ce.state.add(shopswoman);
-			shopswoman.onTouchLeftSide.add(_endGame);
+			
+			if (_ce.state.getFirstObjectByType(Box2D) as Box2D) {
+				var shopswomanBox2D:ShopsWoman = new ShopsWoman("shopswoman", {x:480, y:casePosition[1], group:casePosition[2],  offsetY:-shopsWomanAnim.height * 0.3, view:shopsWomanAnim});
+				_ce.state.add(shopswomanBox2D);
+				shopswomanBox2D.onTouchLeftSide.add(_endGame);
+			}
 			
 			Grid.tabBaddies[casePosition[2]] = true;
 		}

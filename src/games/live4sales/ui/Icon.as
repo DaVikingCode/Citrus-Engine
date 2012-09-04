@@ -1,4 +1,4 @@
-package games.live4sales.box2d.ui {
+package games.live4sales.ui {
 
 	import starling.display.Image;
 	import starling.events.Touch;

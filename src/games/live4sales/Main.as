@@ -1,4 +1,4 @@
-package games.live4sales.box2d {
+package games.live4sales {
 	
 	import com.citrusengine.core.CitrusEngine;
 
@@ -31,7 +31,9 @@ package games.live4sales.box2d {
 			} else 
 				setUpStarling(true);
 			
-			state = new Live4Sales();
+			// select Box2D Alchemy or Nape demo
+			//state = new NapeLive4Sales();
+			state = new Box2DLive4Sales();
 		}
 		
 		override public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewport:Rectangle = null):void {
