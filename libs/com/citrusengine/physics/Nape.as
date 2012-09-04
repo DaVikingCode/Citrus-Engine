@@ -59,6 +59,10 @@ package com.citrusengine.physics {
 		public function set gravity(value:Vec2):void {
 			_gravity = value;
 		}
+		
+		public function get contactListener():NapeContactListener {
+			return _contactListener;
+		}
 
 		override public function update(timeDelta:Number):void {
 			

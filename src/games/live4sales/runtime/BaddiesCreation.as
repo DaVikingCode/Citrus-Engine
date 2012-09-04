@@ -2,10 +2,12 @@ package games.live4sales.runtime {
 
 	import games.live4sales.assets.Assets;
 	import games.live4sales.box2d.characters.ShopsWoman;
+	import games.live4sales.nape.characters.ShopsWoman;
 	import games.live4sales.utils.Grid;
 
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.physics.Box2D;
+	import com.citrusengine.physics.Nape;
 	import com.citrusengine.view.starlingview.AnimationSequence;
 
 	import flash.events.TimerEvent;
@@ -64,9 +66,16 @@ package games.live4sales.runtime {
 			var shopsWomanAnim:AnimationSequence = new AnimationSequence(Assets.getTextureAtlas("Objects"), ["walk", "attack"], "walk");
 			
 			if (_ce.state.getFirstObjectByType(Box2D) as Box2D) {
-				var shopswomanBox2D:ShopsWoman = new ShopsWoman("shopswoman", {x:480, y:casePosition[1], group:casePosition[2],  offsetY:-shopsWomanAnim.height * 0.3, view:shopsWomanAnim});
+				
+				var shopswomanBox2D:games.live4sales.box2d.characters.ShopsWoman = new games.live4sales.box2d.characters.ShopsWoman("shopswoman", {x:480, y:casePosition[1], group:casePosition[2],  offsetY:-shopsWomanAnim.height * 0.3, view:shopsWomanAnim});
 				_ce.state.add(shopswomanBox2D);
 				shopswomanBox2D.onTouchLeftSide.add(_endGame);
+				
+			} else if (_ce.state.getFirstObjectByType(Nape) as Nape) {
+				
+				var shopswomanNape:games.live4sales.nape.characters.ShopsWoman = new games.live4sales.nape.characters.ShopsWoman("shopswoman", {x:480, y:casePosition[1], group:casePosition[2],  offsetY:-shopsWomanAnim.height * 0.3, view:shopsWomanAnim});
+				_ce.state.add(shopswomanNape);
+				shopswomanNape.onTouchLeftSide.add(_endGame);
 			}
 			
 			Grid.tabBaddies[casePosition[2]] = true;

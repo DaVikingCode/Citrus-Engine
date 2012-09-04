@@ -1,15 +1,16 @@
 package com.citrusengine.physics {
-	
-	import com.citrusengine.objects.platformer.nape.Sensor;
-	import com.citrusengine.objects.platformer.nape.Missile;
-	
+
 	import nape.callbacks.CbEvent;
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
 	import nape.callbacks.InteractionListener;
 	import nape.callbacks.InteractionType;
 	import nape.space.Space;
-	
+
+	import com.citrusengine.objects.platformer.nape.Missile;
+	import com.citrusengine.objects.platformer.nape.MissileWithExplosion;
+	import com.citrusengine.objects.platformer.nape.Sensor;
+		
 	/**
 	 * Used to determine the contact's interaction between object.
 	 */
@@ -24,6 +25,7 @@ package com.citrusengine.physics {
 			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.SENSOR, Sensor.SENSOR, CbType.ANY_BODY, onInteractionBegin));
 			_space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.SENSOR, Sensor.SENSOR, CbType.ANY_BODY, onInteractionEnd));
 			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, Missile.MISSILE, CbType.ANY_BODY, onInteractionBegin));
+			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, MissileWithExplosion.MISSILE, CbType.ANY_BODY, onInteractionBegin));
 		}
 		
 		public function destroy():void {
