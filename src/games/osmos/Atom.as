@@ -27,6 +27,7 @@ package games.osmos {
 		public var size:String = "";
 		
 		private var _preListener:PreListener;
+		private var _onGoingInteraction:InteractionListener;
 
 		private var _hand:PivotJoint;
 		private var _mouseScope:DisplayObject;
@@ -42,10 +43,12 @@ package games.osmos {
 			
 			// we need to ignore physics collision
 			_preListener = new PreListener(InteractionType.ANY, ATOM, ATOM, handlePreContact);
-			_body.space.listeners.add(_preListener);
+			_nape.space.listeners.add(_preListener);
 			_body.cbTypes.add(ATOM);
 			
-			_nape.space.listeners.add(new InteractionListener(CbEvent.ONGOING, InteractionType.ANY, ATOM, ATOM, handleOnGoingContact));
+			_onGoingInteraction = new InteractionListener(CbEvent.ONGOING, InteractionType.ANY, ATOM, ATOM, handleOnGoingContact);
+			
+			_nape.space.listeners.add(_onGoingInteraction);
 
 			_hand = new PivotJoint(_nape.space.world, null, new Vec2(), new Vec2());
 			_hand.active = false;
@@ -56,10 +59,10 @@ package games.osmos {
 
 		override public function destroy():void {
 			
-			_hand.space = null;
+			_nape.space.listeners.remove(_preListener);
+			_nape.space.listeners.remove(_onGoingInteraction);
 			
-			_preListener.space = null;
-			_preListener = null;
+			_hand.space = null;
 
 			super.destroy();
 		}
