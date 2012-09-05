@@ -54,12 +54,8 @@ package games.live4sales {
 			nape.visible = true;
 			add(nape);
 			
-			nape.space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, SalesWoman.SALESWOMAN, CbType.ANY_BODY, nape.contactListener.onInteractionBegin));
-			nape.space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.COLLISION, SalesWoman.SALESWOMAN, CbType.ANY_BODY, nape.contactListener.onInteractionEnd));
 			nape.space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, ShopsWoman.SHOPSWOMAN, CbType.ANY_BODY, nape.contactListener.onInteractionBegin));
 			nape.space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.COLLISION, ShopsWoman.SHOPSWOMAN, CbType.ANY_BODY, nape.contactListener.onInteractionEnd));
-			nape.space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, Block.BLOCK, CbType.ANY_BODY, nape.contactListener.onInteractionBegin));
-			nape.space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.COLLISION, Block.BLOCK, CbType.ANY_BODY, nape.contactListener.onInteractionEnd));
 			
 			_hud = new Hud();
 			addChild(_hud);

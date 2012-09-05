@@ -1,17 +1,13 @@
 package com.citrusengine.objects.platformer.nape {
 
-	import com.citrusengine.math.MathVector;
-	import com.citrusengine.objects.NapePhysicsObject;
-
-	import flash.display.MovieClip;
-	import flash.ui.Keyboard;
-	import flash.utils.clearTimeout;
-	import flash.utils.getDefinitionByName;
-	import flash.utils.setTimeout;
-	
 	import nape.geom.Vec2;
 
+	import com.citrusengine.objects.NapePhysicsObject;
+
 	import org.osflash.signals.Signal;
+
+	import flash.ui.Keyboard;
+	import flash.utils.getDefinitionByName;
 
 	/**
 	 * This is a common, simple, yet solid implementation of a side-scrolling Hero. 
@@ -34,20 +30,20 @@ package com.citrusengine.objects.platformer.nape {
 		/**
 		 * This is the fastest speed that the hero can move left or right. 
 		 */
-		[Inspectable(defaultValue="100")]
-		public var maxVelocity:Number = 100;
+		[Inspectable(defaultValue="240")]
+		public var maxVelocity:Number = 240;
 		
 		/**
 		 * This is the initial velocity that the hero will move at when he jumps.
 		 */
-		[Inspectable(defaultValue="60")]
-		public var jumpHeight:Number = 60;
+		[Inspectable(defaultValue="200")]
+		public var jumpHeight:Number = 200;
 		
 		/**
 		 * This is the amount of "float" that the hero has when the player holds the jump button while jumping. 
 		 */
-		[Inspectable(defaultValue="0.9")]
-		public var jumpAcceleration:Number = 0.9;
+		[Inspectable(defaultValue="7")]
+		public var jumpAcceleration:Number = 7;
 		
 		/**
 		 * Determines whether or not the hero's ducking ability is enabled.
@@ -77,7 +73,7 @@ package com.citrusengine.objects.platformer.nape {
 		public var onAnimationChange:Signal;
 
 		protected var _groundContacts:Array = [];// Used to determine if he's on ground or not.
-		// protected var _enemyClass:Class = Baddy;
+		protected var _enemyClass:Class = Baddy;
 		protected var _onGround:Boolean = false;
 		protected var _springOffEnemy:Number = -1;
 		protected var _hurtTimeoutID:Number;
@@ -140,10 +136,10 @@ package com.citrusengine.objects.platformer.nape {
 		[Inspectable(defaultValue="com.citrusengine.objects.platformer.nape.Baddy",type="String")]
 		public function set enemyClass(value:*):void {
 			
-			/*if (value is String)
+			if (value is String)
 			_enemyClass = getDefinitionByName(value as String) as Class;
 			else if (value is Class)
-			_enemyClass = value;*/
+			_enemyClass = value;
 		}
 		
 		override public function update(timeDelta:Number):void

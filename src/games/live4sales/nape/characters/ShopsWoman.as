@@ -23,10 +23,9 @@ package games.live4sales.nape.characters {
 		
 		public var speed:Number = 21;
 		public var life:uint = 4;
+		public var fighting:Boolean = false;
 		
 		public var onTouchLeftSide:Signal;
-		
-		private var _fighting:Boolean = false;
 
 		public function ShopsWoman(name:String, params:Object = null) {
 			
@@ -46,14 +45,11 @@ package games.live4sales.nape.characters {
 			
 			super.update(timeDelta);
 			
-			if (!_fighting) {
+			var velocity:Vec2 = _body.velocity;
 			
-				var velocity:Vec2 = _body.velocity;
-				
-				velocity.x = -speed;
-				
-				_body.velocity = velocity;
-			}
+			velocity.x = -speed;
+			
+			_body.velocity = velocity;
 				
 			if (x < 0) {
 				onTouchLeftSide.dispatch();
@@ -89,29 +85,32 @@ package games.live4sales.nape.characters {
 		}
 			
 		override public function handleBeginContact(callback:InteractionCallback):void {
+			trace('ici');
 			
+			var self:ShopsWoman = callback.int1.userData.myData;
 			var other:NapePhysicsObject = callback.int2.userData.myData;
 			
 			if (other is SalesWoman || other is Block || other is Cash)
-				_fighting = true;
+				self.fighting = true;
 				
 			else if (other is Bag) {
-				life--;
+				self.life--;
 				//cEvt.contact.Disable();
 			}
 		}
 			
 		override public function handleEndContact(callback:InteractionCallback):void {
-			
+			trace('là');
+			var self:ShopsWoman = callback.int1.userData.myData;
 			var other:NapePhysicsObject = callback.int2.castBody.userData.myData;
 			
 			if (other is SalesWoman)
-				_fighting = false;
+				self.fighting = false;
 		}
 		
 		protected function updateAnimation():void {
 			
-			_animation = _fighting ? "attack" : "walk";
+			_animation = fighting ? "attack" : "walk";
 		}
 
 	}

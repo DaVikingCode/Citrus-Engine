@@ -4,7 +4,6 @@ package games.live4sales.nape.characters {
 	import games.live4sales.nape.weapons.Bag;
 	import games.live4sales.utils.Grid;
 
-	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
 	import nape.phys.Material;
 
@@ -19,8 +18,6 @@ package games.live4sales.nape.characters {
 	 * @author Aymeric
 	 */
 	public class SalesWoman extends Cannon {
-		
-		public static const SALESWOMAN:CbType = new CbType();
 		
 		public var life:uint = 2;
 		
@@ -62,12 +59,6 @@ package games.live4sales.nape.characters {
 		override protected function createMaterial():void {
 			
 			_material = new Material(0, 0, 0, 1, 0);
-		}
-		
-		override protected function createConstraint():void {
-			
-			_body.space = _nape.space;			
-			_body.cbTypes.add(SALESWOMAN);
 		}
 			
 		override public function handleBeginContact(callback:InteractionCallback):void {

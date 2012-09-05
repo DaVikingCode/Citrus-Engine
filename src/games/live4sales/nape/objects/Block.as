@@ -3,7 +3,6 @@ package games.live4sales.nape.objects {
 	import games.live4sales.nape.characters.ShopsWoman;
 	import games.live4sales.utils.Grid;
 
-	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
 	import nape.phys.Material;
 
@@ -16,8 +15,6 @@ package games.live4sales.nape.objects {
 	 * @author Aymeric
 	 */
 	public class Block extends Platform {
-		
-		public static const BLOCK:CbType = new CbType();
 		
 		public var life:uint = 5;
 		
@@ -66,12 +63,6 @@ package games.live4sales.nape.objects {
 		override protected function createMaterial():void {
 			
 			_material = new Material(0, 0, 0, 1, 0);
-		}
-		
-		override protected function createConstraint():void {
-			
-			_body.space = _nape.space;			
-			_body.cbTypes.add(BLOCK);
 		}
 		
 		override public function handleBeginContact(callback:InteractionCallback):void {
