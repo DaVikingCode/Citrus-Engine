@@ -30,6 +30,7 @@ package games.live4sales.nape.weapons {
 		}
 			
 		override protected function createConstraint():void {
+			
 			super.createConstraint();
 			
 			//_fixtureDef.filter.categoryBits = Box2DCollisionCategories.Get("Level");

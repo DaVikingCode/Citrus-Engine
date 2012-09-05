@@ -39,15 +39,15 @@ package com.citrusengine.physics {
 		
 		public function onInteractionBegin(interactionCallback:InteractionCallback):void {
 			
-			interactionCallback.int1.castBody.userData.myData.handleBeginContact(interactionCallback);
+			interactionCallback.int1.userData.myData.handleBeginContact(interactionCallback);
 			
 			if (interactionCallback.int1.cbTypes.at(1) != Missile.MISSILE)
-				interactionCallback.int2.castBody.userData.myData.handleBeginContact(interactionCallback);
+				interactionCallback.int2.userData.myData.handleBeginContact(interactionCallback);
 		}
 		
 		public function onInteractionEnd(interactionCallback:InteractionCallback):void {
-			interactionCallback.int1.castBody.userData.myData.handleEndContact(interactionCallback);
-			interactionCallback.int2.castBody.userData.myData.handleEndContact(interactionCallback);
+			interactionCallback.int1.userData.myData.handleEndContact(interactionCallback);
+			interactionCallback.int2.userData.myData.handleEndContact(interactionCallback);
 		}
 	}
 }

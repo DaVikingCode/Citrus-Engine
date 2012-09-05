@@ -102,7 +102,7 @@ package games.live4sales.nape.characters {
 		override public function handleEndContact(callback:InteractionCallback):void {
 			trace('là');
 			var self:ShopsWoman = callback.int1.userData.myData;
-			var other:NapePhysicsObject = callback.int2.castBody.userData.myData;
+			var other:NapePhysicsObject = callback.int2.userData.myData;
 			
 			if (other is SalesWoman)
 				self.fighting = false;

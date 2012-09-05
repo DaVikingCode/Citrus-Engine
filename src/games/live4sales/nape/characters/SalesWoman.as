@@ -63,7 +63,7 @@ package games.live4sales.nape.characters {
 			
 		override public function handleBeginContact(callback:InteractionCallback):void {
 			
-			if (callback.int2.castBody.userData.myData is ShopsWoman) {
+			if (callback.int1.userData.myData is ShopsWoman) {
 				
 				if (!_timerHurt.running)
 					_timerHurt.start();
@@ -72,7 +72,7 @@ package games.live4sales.nape.characters {
 			
 		override public function handleEndContact(callback:InteractionCallback):void {
 			
-			if (callback.int2.castBody.userData.myData is ShopsWoman) {
+			if (callback.int1.userData.myData is ShopsWoman) {
 				
 				if (_timerHurt.running)
 					_timerHurt.stop();
