@@ -104,7 +104,7 @@ package games.live4sales.nape.characters {
 			var self:ShopsWoman = callback.int1.userData.myData;
 			var other:NapePhysicsObject = callback.int2.userData.myData;
 			
-			if (other is SalesWoman)
+			if (other is SalesWoman || other is Block || other is Cash)
 				self.fighting = false;
 		}
 		
