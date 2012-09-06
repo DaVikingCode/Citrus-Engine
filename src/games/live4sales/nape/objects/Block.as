@@ -18,20 +18,20 @@ package games.live4sales.nape.objects {
 		
 		public var life:uint = 5;
 		
-		protected var _timerHurt:Timer;
+		public var timerHurt:Timer;
 
 		public function Block(name:String, params:Object = null) {
 			
 			super(name, params);
 			
-			_timerHurt = new Timer(1000);
-			_timerHurt.addEventListener(TimerEvent.TIMER, _removeLife);
+			timerHurt = new Timer(1000);
+			timerHurt.addEventListener(TimerEvent.TIMER, _removeLife);
 		}
 		
 		override public function destroy():void {
 			
-			_timerHurt.removeEventListener(TimerEvent.TIMER, _removeLife);
-			_timerHurt = null;
+			timerHurt.removeEventListener(TimerEvent.TIMER, _removeLife);
+			timerHurt = null;
 			
 			super.destroy();
 		}
@@ -69,8 +69,8 @@ package games.live4sales.nape.objects {
 			
 			if (callback.int1.userData.myData is ShopsWoman) {
 				
-				if (!_timerHurt.running)
-					_timerHurt.start();
+				if (!callback.int2.userData.myData.timerHurt.running)
+					callback.int2.userData.myData.timerHurt.start();
 			}
 		}
 		
@@ -78,8 +78,8 @@ package games.live4sales.nape.objects {
 			
 			if (callback.int1.userData.myData is ShopsWoman) {
 				
-				if (_timerHurt.running)
-					_timerHurt.stop();
+				if (callback.int2.userData.myData.timerHurt)
+					callback.int2.userData.myData.timerHurt.stop();
 			}
 		}
 		
