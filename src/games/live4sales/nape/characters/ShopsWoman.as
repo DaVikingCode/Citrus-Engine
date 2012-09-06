@@ -85,7 +85,7 @@ package games.live4sales.nape.characters {
 		}
 			
 		override public function handleBeginContact(callback:InteractionCallback):void {
-			trace('ici');
+			trace('contact start');
 			
 			var self:ShopsWoman = callback.int1.userData.myData;
 			var other:NapePhysicsObject = callback.int2.userData.myData;
@@ -100,7 +100,7 @@ package games.live4sales.nape.characters {
 		}
 			
 		override public function handleEndContact(callback:InteractionCallback):void {
-			trace('là');
+			trace('contact end');
 			var self:ShopsWoman = callback.int1.userData.myData;
 			var other:NapePhysicsObject = callback.int2.userData.myData;
 			

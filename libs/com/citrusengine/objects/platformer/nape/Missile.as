@@ -106,12 +106,6 @@ package com.citrusengine.objects.platformer.nape {
 			
 			super.update(timeDelta);
 			
-			var removeGravity:Vec2 = new Vec2();
-			removeGravity.subeq(_nape.gravity);
-			removeGravity.muleq(_body.mass);
-			
-			_body.applyLocalForce(removeGravity);
-			
 			if (!_exploded) {
 				_body.velocity =_velocity;
 			} else {
@@ -146,6 +140,7 @@ package com.citrusengine.objects.platformer.nape {
 			super.createBody();
 			
 			_body.allowRotation = false;
+			_body.gravMass = 0;
 		}
 			
 		override protected function createConstraint():void {
