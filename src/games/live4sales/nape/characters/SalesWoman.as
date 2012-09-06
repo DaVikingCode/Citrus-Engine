@@ -60,7 +60,7 @@ package games.live4sales.nape.characters {
 			
 			_material = new Material(0, 0, 0, 1, 0);
 		}
-			
+		
 		override public function handleBeginContact(callback:InteractionCallback):void {
 			
 			if (callback.int1.userData.myData is ShopsWoman) {

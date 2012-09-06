@@ -10,6 +10,7 @@ package com.citrusengine.objects {
 	import nape.phys.Material;
 	import nape.shape.Circle;
 	import nape.shape.Polygon;
+	import nape.shape.Shape;
 
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
@@ -32,6 +33,7 @@ package com.citrusengine.objects {
 		protected var _body:Body;
 		protected var _bodyType:BodyType;
 		protected var _material:Material;
+		protected var _shape:Shape;
 		
 		protected var _inverted:Boolean = false;
 		protected var _parallax:Number = 1;
@@ -119,6 +121,8 @@ package com.citrusengine.objects {
 			
 			_body = new Body(_bodyType, new Vec2(_x, _y));
 			_body.userData.myData = this;
+			
+			_body.rotate(new Vec2(_x, _y), _rotation);
 		}
 		
 		protected function createMaterial():void {
@@ -129,11 +133,11 @@ package com.citrusengine.objects {
 		protected function createShape():void {
 			
 			if (_radius != 0)
-				_body.shapes.add(new Circle(_radius, null, _material));
+				_shape = new Circle(_radius, null, _material);
 			else
-				_body.shapes.add(new Polygon(Polygon.box(_width, _height), _material));
+				_shape = new Polygon(Polygon.box(_width, _height), _material);
 			
-			_body.rotate(new Vec2(_x, _y), _rotation);
+			_body.shapes.add(_shape);
 		}
 		
 		protected function createConstraint():void {
