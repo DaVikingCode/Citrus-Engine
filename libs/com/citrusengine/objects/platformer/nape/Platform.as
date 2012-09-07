@@ -34,13 +34,8 @@ package com.citrusengine.objects.platformer.nape {
 		
 		override public function destroy():void {
 			
-			if (_body.cbTypes.length > 0) {
-				_body.cbTypes.clear();
-			}
-			if (_preListener) {
-				_preListener.space = null;
-				_preListener = null;
-			}
+			if (_preListener)
+				_body.space.listeners.remove(_preListener);
 			
 			super.destroy();
 		}

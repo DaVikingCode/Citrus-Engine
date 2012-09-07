@@ -60,12 +60,10 @@ package com.citrusengine.objects.platformer.nape {
 
 			_bodyType = BodyType.STATIC;
 		}
-
-		override protected function createShape():void {
-
-			super.createShape();
 			
-			_body.setShapeFilters(new InteractionFilter(0, 0, 1, 1, 0, 0));
+		override protected function createFilter():void {
+			
+			_body.setShapeFilters(new InteractionFilter(0, 0 , 1, 1, 0, 0));
 		}
 		
 		override protected function createConstraint():void {
