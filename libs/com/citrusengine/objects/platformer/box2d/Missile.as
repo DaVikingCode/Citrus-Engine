@@ -5,7 +5,7 @@ package com.citrusengine.objects.platformer.box2d
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
-	import com.citrusengine.physics.Box2DCollisionCategories;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
 
 	import org.osflash.signals.Signal;
 
@@ -143,7 +143,7 @@ package com.citrusengine.objects.platformer.box2d
 			_exploded = true;
 			
 			//Not collideable with anything anymore.
-			_fixture.SetFilterData({ maskBits: Box2DCollisionCategories.GetNone() });
+			_fixture.SetFilterData({ maskBits: PhysicsCollisionCategories.GetNone() });
 			
 			onExplode.dispatch(this, _contact);
 			

@@ -12,7 +12,7 @@ package com.citrusengine.objects {
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.physics.Box2D;
-	import com.citrusengine.physics.Box2DCollisionCategories;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.view.ISpriteView;
 
 	import flash.display.MovieClip;
@@ -367,8 +367,8 @@ package com.citrusengine.objects {
 			_fixtureDef.density = 1;
 			_fixtureDef.friction = 0.6;
 			_fixtureDef.restitution = 0.3;
-			_fixtureDef.filter.categoryBits = Box2DCollisionCategories.Get("Level");
-			_fixtureDef.filter.maskBits = Box2DCollisionCategories.GetAll();
+			_fixtureDef.filter.categoryBits = PhysicsCollisionCategories.Get("Level");
+			_fixtureDef.filter.maskBits = PhysicsCollisionCategories.GetAll();
 		}
 		
 		/**

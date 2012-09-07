@@ -11,7 +11,7 @@ package com.citrusengine.system.components.box2d {
 
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.physics.Box2D;
-	import com.citrusengine.physics.Box2DCollisionCategories;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.system.Component;
 
 	/**
@@ -236,8 +236,8 @@ package com.citrusengine.system.components.box2d {
 			_fixtureDef.density = 1;
 			_fixtureDef.friction = 0.6;
 			_fixtureDef.restitution = 0.3;
-			_fixtureDef.filter.categoryBits = Box2DCollisionCategories.Get("Level");
-			_fixtureDef.filter.maskBits = Box2DCollisionCategories.GetAll();
+			_fixtureDef.filter.categoryBits = PhysicsCollisionCategories.Get("Level");
+			_fixtureDef.filter.maskBits = PhysicsCollisionCategories.GetAll();
 		}
 		
 		/**

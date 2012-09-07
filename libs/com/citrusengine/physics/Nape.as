@@ -35,6 +35,12 @@ package com.citrusengine.physics {
 			
 			_space = new Space(_gravity);
 			_contactListener = new NapeContactListener(_space);
+			
+			//Set up collision categories
+			PhysicsCollisionCategories.Add("GoodGuys");
+			PhysicsCollisionCategories.Add("BadGuys");
+			PhysicsCollisionCategories.Add("Level");
+			PhysicsCollisionCategories.Add("Items");
 		}
 
 		override public function destroy():void {

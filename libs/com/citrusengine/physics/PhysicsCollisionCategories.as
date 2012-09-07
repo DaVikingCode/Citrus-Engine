@@ -1,8 +1,8 @@
 package com.citrusengine.physics 
 {
 	/**
-	 * Box2D uses bits to represent collision categories. If you don't understand binary and bit shifting, 
-	 * then it may get kind of confusing trying to work with Box2D categories, so I've created this class
+	 * Box2D and Nape uses bits to represent collision categories. If you don't understand binary and bit shifting, 
+	 * then it may get kind of confusing trying to work with physics engine categories, so I've created this class
 	 * so that those bits can be accessed by creating and referring to String representations.
 	 * 
 	 * The bit system is actually really great because any combination of categories can actually be
@@ -10,12 +10,12 @@ package com.citrusengine.physics
 	 * for everyone, so this call is meant to be as light of a wrapper as possible for managing collision
 	 * categories with the Citrus Engine.
 	 * 
-	 * The constructor of the Citrus Engine's Box2D  class creates a couple of initial categories for you to use:
+	 * The constructor of the Citrus Engine's Box2D & Nape  class creates a couple of initial categories for you to use:
 	 * GoodGuys, BadGuys, Items, Level. If you need more, you can always add more categories, but don't complicate
-	 * it just for the sake of adding fun category names. The categories created by the Box2D class are used by the
+	 * it just for the sake of adding fun category names. The categories created by the Box2D & Nape class are used by the
 	 * platformer kit that comes with Citrus Engine.
 	 */
-	public class Box2DCollisionCategories 
+	public class PhysicsCollisionCategories 
 	{
 		private static var _allCategories:uint = 0;
 		private static var _numCategories:uint = 0;

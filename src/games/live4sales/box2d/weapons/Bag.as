@@ -4,7 +4,7 @@ package games.live4sales.box2d.weapons {
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import com.citrusengine.objects.platformer.box2d.Missile;
-	import com.citrusengine.physics.Box2DCollisionCategories;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
 	
 	/**
 	 * @author Aymeric
@@ -42,8 +42,8 @@ package games.live4sales.box2d.weapons {
 			
 			super.defineFixture();
 
-			_fixtureDef.filter.categoryBits = Box2DCollisionCategories.Get("Level");
-			_fixtureDef.filter.maskBits = Box2DCollisionCategories.GetAllExcept("Level");
+			_fixtureDef.filter.categoryBits = PhysicsCollisionCategories.Get("Level");
+			_fixtureDef.filter.maskBits = PhysicsCollisionCategories.GetAllExcept("Level");
 		}
 
 	}

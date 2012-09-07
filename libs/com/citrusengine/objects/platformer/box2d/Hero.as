@@ -7,7 +7,7 @@ package com.citrusengine.objects.platformer.box2d
 
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.Box2DPhysicsObject;
-	import com.citrusengine.physics.Box2DCollisionCategories;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.utils.Box2DShapeMaker;
 
 	import org.osflash.signals.Signal;
@@ -342,8 +342,8 @@ package com.citrusengine.objects.platformer.box2d
 			super.defineFixture();
 			_fixtureDef.friction = _friction;
 			_fixtureDef.restitution = 0;
-			_fixtureDef.filter.categoryBits = Box2DCollisionCategories.Get("GoodGuys");
-			_fixtureDef.filter.maskBits = Box2DCollisionCategories.GetAll();
+			_fixtureDef.filter.categoryBits = PhysicsCollisionCategories.Get("GoodGuys");
+			_fixtureDef.filter.maskBits = PhysicsCollisionCategories.GetAll();
 		}
 		
 		override protected function createFixture():void

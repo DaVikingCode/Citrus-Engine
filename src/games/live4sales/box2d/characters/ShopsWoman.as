@@ -9,7 +9,7 @@ package games.live4sales.box2d.characters {
 	import games.live4sales.utils.Grid;
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
-	import com.citrusengine.physics.Box2DCollisionCategories;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
 
 	import org.osflash.signals.Signal;
 	
@@ -82,8 +82,8 @@ package games.live4sales.box2d.characters {
 			super.defineFixture();
 			
 			_fixtureDef.friction = 0;
-			_fixtureDef.filter.categoryBits = Box2DCollisionCategories.Get("BadGuys");
-			_fixtureDef.filter.maskBits = Box2DCollisionCategories.GetAllExcept("BadGuys");
+			_fixtureDef.filter.categoryBits = PhysicsCollisionCategories.Get("BadGuys");
+			_fixtureDef.filter.maskBits = PhysicsCollisionCategories.GetAllExcept("BadGuys");
 		}
 			
 		override protected function createFixture():void {

@@ -4,6 +4,7 @@ package com.citrusengine.objects {
 	import nape.callbacks.InteractionCallback;
 	import nape.callbacks.PreCallback;
 	import nape.callbacks.PreFlag;
+	import nape.dynamics.InteractionFilter;
 	import nape.geom.Vec2;
 	import nape.phys.Body;
 	import nape.phys.BodyType;
@@ -15,6 +16,7 @@ package com.citrusengine.objects {
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.physics.Nape;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.view.ISpriteView;
 
 	import flash.display.MovieClip;
@@ -85,6 +87,7 @@ package com.citrusengine.objects {
 			createBody();
 			createMaterial();
 			createShape();
+			createFilter();
 			createConstraint();
 		}
 		
@@ -138,6 +141,11 @@ package com.citrusengine.objects {
 				_shape = new Polygon(Polygon.box(_width, _height), _material);
 			
 			_body.shapes.add(_shape);
+		}
+		
+		protected function createFilter():void {
+			
+			_body.setShapeFilters(new InteractionFilter(PhysicsCollisionCategories.Get("Level"), PhysicsCollisionCategories.GetAll()));
 		}
 		
 		protected function createConstraint():void {

@@ -2,7 +2,7 @@ package com.citrusengine.system.components.box2d.hero {
 
 	import Box2DAS.Dynamics.ContactEvent;
 
-	import com.citrusengine.physics.Box2DCollisionCategories;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.system.components.box2d.Box2DComponent;
 	import com.citrusengine.system.components.box2d.CollisionComponent;
 	import com.citrusengine.utils.Box2DShapeMaker;
@@ -59,8 +59,8 @@ package com.citrusengine.system.components.box2d.hero {
 			
 			_fixtureDef.friction = _friction;
 			_fixtureDef.restitution = 0;
-			_fixtureDef.filter.categoryBits = Box2DCollisionCategories.Get("GoodGuys");
-			_fixtureDef.filter.maskBits = Box2DCollisionCategories.GetAll();
+			_fixtureDef.filter.categoryBits = PhysicsCollisionCategories.Get("GoodGuys");
+			_fixtureDef.filter.maskBits = PhysicsCollisionCategories.GetAll();
 		}
 
 		override protected function createFixture():void {

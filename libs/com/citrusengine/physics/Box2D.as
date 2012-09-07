@@ -43,10 +43,10 @@ package com.citrusengine.physics {
 			b2Base.initialize();
 			
 			//Set up collision categories
-			Box2DCollisionCategories.Add("GoodGuys");
-			Box2DCollisionCategories.Add("BadGuys");
-			Box2DCollisionCategories.Add("Level");
-			Box2DCollisionCategories.Add("Items");
+			PhysicsCollisionCategories.Add("GoodGuys");
+			PhysicsCollisionCategories.Add("BadGuys");
+			PhysicsCollisionCategories.Add("Level");
+			PhysicsCollisionCategories.Add("Items");
 		}
 		
 		override public function destroy():void
