@@ -28,7 +28,7 @@ package com.citrusengine.physics {
 			
 			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, Baddy.BADDY, CbType.ANY_BODY, onInteractionBegin));
 			
-			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, Missile.MISSILE, CbType.ANY_BODY, onInteractionBegin));
+			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, Missile.MISSILE, CbType.ANY_BODY, onInteractionBegin));
 			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, MissileWithExplosion.MISSILE, CbType.ANY_BODY, onInteractionBegin));
 		}
 		

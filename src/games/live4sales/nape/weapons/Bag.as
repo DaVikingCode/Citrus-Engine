@@ -1,9 +1,11 @@
 package games.live4sales.nape.weapons {
 
 	import nape.callbacks.InteractionCallback;
+	import nape.dynamics.InteractionFilter;
 	import nape.geom.Vec2;
 
 	import com.citrusengine.objects.platformer.nape.Missile;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
 
 	/**
 	 * @author Aymeric
@@ -29,12 +31,9 @@ package games.live4sales.nape.weapons {
 			explode();
 		}
 			
-		override protected function createConstraint():void {
+		override protected function createFilter():void {
 			
-			super.createConstraint();
-			
-			//_fixtureDef.filter.categoryBits = Box2DCollisionCategories.Get("Level");
-			//_fixtureDef.filter.maskBits = Box2DCollisionCategories.GetAllExcept("Level");
+			_body.setShapeFilters(new InteractionFilter(PhysicsCollisionCategories.Get("Level"), PhysicsCollisionCategories.GetAllExcept("Level")));
 		}
 	}
 }

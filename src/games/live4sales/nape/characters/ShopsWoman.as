@@ -7,10 +7,12 @@ package games.live4sales.nape.characters {
 
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
+	import nape.dynamics.InteractionFilter;
 	import nape.geom.Vec2;
 	import nape.phys.Material;
 
 	import com.citrusengine.objects.NapePhysicsObject;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
 
 	import org.osflash.signals.Signal;
 
@@ -77,6 +79,11 @@ package games.live4sales.nape.characters {
 			
 			_material = new Material(0, 0, 0, 1, 0);
 		}
+			
+		override protected function createFilter():void {
+			
+			_body.setShapeFilters(new InteractionFilter(PhysicsCollisionCategories.Get("BadGuys"), PhysicsCollisionCategories.GetAllExcept("BadGuys")));
+		}
 		
 		override protected function createConstraint():void {
 			
@@ -85,7 +92,6 @@ package games.live4sales.nape.characters {
 		}
 			
 		override public function handleBeginContact(callback:InteractionCallback):void {
-			trace('contact start');
 			
 			var self:ShopsWoman = callback.int1.userData.myData;
 			var other:NapePhysicsObject = callback.int2.userData.myData;
@@ -100,7 +106,7 @@ package games.live4sales.nape.characters {
 		}
 			
 		override public function handleEndContact(callback:InteractionCallback):void {
-			trace('contact end');
+			
 			var self:ShopsWoman = callback.int1.userData.myData;
 			var other:NapePhysicsObject = callback.int2.userData.myData;
 			
