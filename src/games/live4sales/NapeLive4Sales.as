@@ -51,7 +51,7 @@ package games.live4sales {
 			Assets.contentScaleFactor = Starling.current.contentScaleFactor;
 
 			var nape:Nape = new Nape("nape", {gravity:new Vec2()});
-			nape.visible = true;
+			//nape.visible = true;
 			add(nape);
 			
 			nape.space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, ShopsWoman.SHOPSWOMAN, CbType.ANY_BODY, nape.contactListener.onInteractionBegin));
