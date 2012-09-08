@@ -101,12 +101,20 @@ package com.citrusengine.view.starlingview {
 			}
 		}
 
-		public function destroy():void {
+		public function destroy(viewChanged:Boolean = false):void {
 			
-			CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
+			if (viewChanged) {
+				
+				removeChild(content);
+				
+			} else {
+				
+				CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
+				_view = null;
+			}
 			
 			if (content is MovieClip) {
-				
+					
 				Starling.juggler.remove(content as MovieClip);
 				if (_textureAtlas)
 					_textureAtlas.dispose();
@@ -134,7 +142,6 @@ package com.citrusengine.view.starlingview {
 				content.dispose();
 			}
 			
-			_view = null;
 		}
 		
 		/**
@@ -185,6 +192,9 @@ package com.citrusengine.view.starlingview {
 
 			if (_view == value)
 				return;
+				
+			if (content && content.parent)
+				destroy(true);
 
 			_view = value;
 

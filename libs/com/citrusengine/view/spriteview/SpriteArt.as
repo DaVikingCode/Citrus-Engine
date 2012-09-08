@@ -77,11 +77,20 @@ package com.citrusengine.view.spriteview
 			this.name = (_citrusObject as CitrusObject).name;
 		}
 		
-		public function destroy():void {
+		public function destroy(viewChanged:Boolean = false):void {
 			
-			CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
-			
-			_view = null;
+			if (viewChanged) {
+				
+				if (_view is String)
+					removeChild(content.loaderInfo.loader);
+				else
+					removeChild(content);
+				
+			} else {
+				
+				CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
+				_view = null;
+			}
 		}
 		
 		public function moveRegistrationPoint(registrationPoint:String):void {
@@ -120,11 +129,15 @@ package com.citrusengine.view.spriteview
 		{
 			if (_view == value)
 				return;
+				
+			if (content && content.parent)
+				destroy(true);
 			
 			_view = value;
 			
 			if (_view)
-			{
+			{				
+				
 				if (_view is String)
 				{
 					// view property is a path to an image?
