@@ -1,33 +1,23 @@
 package com.citrusengine.view.starlingview {
-	// flash
-	import com.citrusengine.core.CitrusEngine;
-	import flash.display.MovieClip;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
-	import flash.display.Bitmap;
-	
-	// starling
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.Texture;
-	
-	// citrus
+
+	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.view.ISpriteView;
-	import com.citrusengine.view.starlingview.StarlingTile;
+
+	import flash.display.Bitmap;
+	import flash.display.MovieClip;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+	
 	
 	/**
-	 * ...
 	 * @author Nick Pinkham
 	 */
-	
-	
-	
-	
 	public class StarlingTileSystem extends Sprite {
-		
-		
-		
 		
 		private var _ce:CitrusEngine;
 		
@@ -35,7 +25,6 @@ package com.citrusengine.view.starlingview {
 		
 		private var _images:MovieClip;
 		private var _liveTiles:Array = new Array();
-		
 		
 		private var _parallax:Number;
 		
@@ -47,9 +36,6 @@ package com.citrusengine.view.starlingview {
 		// test for maximum memory use
 		private var maxInRam:Number = 0;
 		
-		
-		
-		
 		public function StarlingTileSystem(bodyToFollow:ISpriteView, images:MovieClip, parallax:Number = 1) {
 			
 			_ce = CitrusEngine.getInstance();
@@ -57,10 +43,12 @@ package com.citrusengine.view.starlingview {
 			_followMe = bodyToFollow;
 			_images = images;
 			_parallax = parallax;
+			
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
 		public function init(e:Event = null):void {
+			
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
 			
@@ -101,6 +89,7 @@ package com.citrusengine.view.starlingview {
 		}
 		
 		private function onTimer(e:TimerEvent = null):void {
+			
 			// loop through tiles
 			var currentTile:StarlingTile;
 			var d:Number;
@@ -154,12 +143,14 @@ package com.citrusengine.view.starlingview {
 		}
 		
 		private function DistanceTwoPoints(x1:Number, x2:Number,  y1:Number, y2:Number):Number {
+			
 			var dx:Number = x1 - x2;
 			var dy:Number = y1 - y2;
 			return Math.sqrt(dx * dx + dy * dy);
 		}
 		
 		public function destroy():void {
+			
 			_timer.removeEventListener(TimerEvent.TIMER, onTimer);
 			_timer.reset();
 			removeEventListeners();
