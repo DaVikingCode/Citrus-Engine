@@ -1,5 +1,7 @@
 package com.citrusengine.view.starlingview {
 	// flash
+	import com.citrusengine.core.CitrusEngine;
+	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import flash.display.Bitmap;
@@ -24,17 +26,15 @@ package com.citrusengine.view.starlingview {
 	
 	public class StarlingTileSystem extends Sprite {
 		
-		private static const TW:uint = 1024; // tile width
-		private static const TH:uint = 1024; // tile height
 		
 		
 		
+		private var _ce:CitrusEngine;
 		
 		private var _followMe:ISpriteView; // the object that tracks
 		
-		private var _images:Array;
+		private var _images:MovieClip;
 		private var _liveTiles:Array = new Array();
-		private var _ltl:uint;
 		
 		
 		private var _parallax:Number;
@@ -50,7 +50,10 @@ package com.citrusengine.view.starlingview {
 		
 		
 		
-		public function StarlingTileSystem(bodyToFollow:ISpriteView, images:Array, parallax:Number = 1) {
+		public function StarlingTileSystem(bodyToFollow:ISpriteView, images:MovieClip, parallax:Number = 1) {
+			
+			_ce = CitrusEngine.getInstance();
+			
 			_followMe = bodyToFollow;
 			_images = images;
 			_parallax = parallax;
@@ -60,35 +63,36 @@ package com.citrusengine.view.starlingview {
 		public function init(e:Event = null):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			// loop through tiles array
-			// get rows
-			var rl:uint = _images.length;
-			for (var r:uint = 0; r < rl; r ++) {
-				// get columns
-				var row:Array = _images[r] as Array;
-				var cl:uint = row.length;
-				for (var c:uint = 0; c < cl; c ++) {
-					// check to see if it's a 1 or 0
-					if (row[c] != null) {
-						var clz:Class = row[c] as Class;
-						var bmp:Bitmap = new clz();
-						if (bmp) {
-							var tile:StarlingTile = new StarlingTile();
-							tile.myBitmap = bmp;
-							tile.isInRAM = false;
-							tile.x = TW * c;
-							tile.y = TH * r;
-							_liveTiles.push(tile);
-						} else {
-							trace("error creating class ref");
-						}
-					}
+			
+			// loop through children of _images movieclip
+			// get all bitmaps
+			// gather the bitmap's size and position
+			// ?
+			// profit
+			
+			var bitmap:Bitmap;
+			var tile:StarlingTile;
+			
+			var nc:uint = _images.numChildren;
+			for (var c:uint = 0; c < nc; c ++) {
+				bitmap = _images.getChildAt(c) as Bitmap;
+				// if it's a bitmap, make a tile out of it
+				if (bitmap) {
+					tile = new StarlingTile();
+					tile.myBitmap = bitmap;
+					tile.x = bitmap.x;
+					tile.y = bitmap.y;
+					tile.width = bitmap.width;
+					tile.height = bitmap.height;
+					_liveTiles.push(tile);
+				} else {
+					trace("other object in tile movieclip:", _images.getChildAt(c));
 				}
-				// length of tile array for speed
-				_ltl = _liveTiles.length;
+				
 			}
 			
-			// fire timer for the first time
+			
+			// gather nearby to player
 			onTimer();
 			
 			// start up the timer
@@ -101,17 +105,20 @@ package com.citrusengine.view.starlingview {
 			var currentTile:StarlingTile;
 			var d:Number;
 			var numInRam:uint = 0;
-			for (var t:uint = 0; t < _ltl; t ++) {
+			var viewRootX:Number = StarlingView(_ce.state.view).viewRoot.x;
+			var viewRootY:Number = StarlingView(_ce.state.view).viewRoot.y;
+			
+			var ll:uint = _liveTiles.length;
+			for (var t:uint = 0; t < ll; t ++) {
 				// get a tile
 				currentTile = _liveTiles[t] as StarlingTile;
 				// check distance between tile and hero
-				d = DistanceTwoPoints(currentTile.x + (TW >> 1), _followMe.x, currentTile.y + (TH >> 1), _followMe.y);
+				d = DistanceTwoPoints(currentTile.x + (-viewRootX * (1 - _parallax)) + (currentTile.width >> 1), _followMe.x, currentTile.y + (-viewRootY * (1 - _parallax)) + (currentTile.height >> 1), _followMe.y);
 				// check if it is close enough to load in
-				if (d < TW * (1.5 / _parallax)) {
+				if (d < (Math.max(currentTile.width, currentTile.height)) * (1.7 / _parallax)) {
 					if (!currentTile.isInRAM) {
-						//trace("adding it");
 						currentTile.isInRAM = true;
-						currentTile.myTexture = Texture.fromBitmap(currentTile.myBitmap);
+						currentTile.myTexture = Texture.fromBitmap(currentTile.myBitmap, false);
 						var img:Image = new Image(currentTile.myTexture);
 						img.x = currentTile.x;
 						img.y = currentTile.y;
@@ -122,9 +129,8 @@ package com.citrusengine.view.starlingview {
 					
 					
 				// otherwise, check if it is far enough to dispose
-				} else if (d > TW * (1.7 / _parallax)) {
+				} else if (d > (Math.max(currentTile.width, currentTile.height)) * (1.8 / _parallax)) {
 					if (currentTile.isInRAM) {
-						//trace("removing it");
 						currentTile.isInRAM = false;
 						removeChild(currentTile.myImage);
 						
@@ -142,7 +148,7 @@ package com.citrusengine.view.starlingview {
 				if (numInRam > maxInRam) {
 					maxInRam = numInRam;
 					// shows the maximum number of tiles used
-					//trace(this.name, "maximum tiles in ram:", numInRam, "memory in use:", (numInRam * 4), "MB");
+					//trace(this.name, "max tiles in ram:", numInRam, "memory:", (numInRam * 4), "MB");
 				}
 			}
 		}
@@ -159,10 +165,11 @@ package com.citrusengine.view.starlingview {
 			removeEventListeners();
 			removeChildren(0, -1, true);
 			
-			// reset vars
+			// reset
 			_followMe = null;
-			_images = new Array();
-			_liveTiles = new Array();
+			_images = null;
+			_liveTiles.length = 0;
+			_liveTiles = null;
 		}
 	}
 }
