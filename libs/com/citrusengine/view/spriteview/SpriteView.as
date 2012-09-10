@@ -95,6 +95,7 @@
 		override protected function destroyArt(citrusObject:Object):void
 		{
 			var spriteArt:SpriteArt = _viewObjects[citrusObject];
+			spriteArt.destroy();
 			spriteArt.parent.removeChild(spriteArt);
 		}
 		
