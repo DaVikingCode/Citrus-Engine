@@ -263,6 +263,7 @@ package com.citrusengine.view.spriteview
 		private function _pauseAnimation(value:Boolean):void {
 			
 			if (content is MovieClip)
+				if (hasAnimation(_animation))
 				value ? MovieClip(content).gotoAndStop(_animation) : MovieClip(content).stop();
 		}
 		
