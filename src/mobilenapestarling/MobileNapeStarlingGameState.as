@@ -32,14 +32,14 @@ package mobilenapestarling {
 	 */
 	public class MobileNapeStarlingGameState extends StarlingState {
 		
-		[Embed(source="../embed/ArialFont.fnt", mimeType="application/octet-stream")] private var _fontConfig:Class;
-		[Embed(source="../embed/ArialFont.png")] private var _fontPng:Class;
+		[Embed(source="/../embed/ArialFont.fnt", mimeType="application/octet-stream")] private var _fontConfig:Class;
+		[Embed(source="/../embed/ArialFont.png")] private var _fontPng:Class;
 
-		[Embed(source="../embed/yellowParticle.pex", mimeType="application/octet-stream")] private var _particleConfig:Class;
-		[Embed(source="../embed/yellowParticle.png")] private var _particlePng:Class;
+		[Embed(source="/../embed/yellowParticle.pex", mimeType="application/octet-stream")] private var _particleConfig:Class;
+		[Embed(source="/../embed/yellowParticle.png")] private var _particlePng:Class;
 		
-		[Embed(source="../embed/particlePicked.xml", mimeType="application/octet-stream")] private var _particlePickedConfig:Class;
-		[Embed(source="../embed/particlePicked.png")] private var _particlePickedPng:Class;
+		[Embed(source="/../embed/particlePicked.xml", mimeType="application/octet-stream")] private var _particlePickedConfig:Class;
+		[Embed(source="/../embed/particlePicked.png")] private var _particlePickedPng:Class;
 		
 		private var _mobileHero:MobileHero;
 		private var _score:TextField;

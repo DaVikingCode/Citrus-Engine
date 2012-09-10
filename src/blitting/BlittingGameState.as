@@ -19,16 +19,16 @@ package blitting {
 	public class BlittingGameState extends State {
 
 		// embed your graphics
-		[Embed(source = '../embed/hero_idle.png')]
+		[Embed(source = '/../embed/hero_idle.png')]
 		private var _heroIdleClass:Class;
 		
-		[Embed(source = '../embed/hero_walk.png')]
+		[Embed(source = '/../embed/hero_walk.png')]
 		private var _heroWalkClass:Class;
 		
-		[Embed(source = '../embed/hero_jump.png')]
+		[Embed(source = '/../embed/hero_jump.png')]
 		private var _heroJumpClass:Class;
 		
-		[Embed(source = '../embed/bg_hills.png')]
+		[Embed(source = '/../embed/bg_hills.png')]
 		private var _hillsClass:Class;
 
 		public function BlittingGameState() {

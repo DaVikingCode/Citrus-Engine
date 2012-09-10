@@ -32,7 +32,7 @@ package games.live4sales.assets {
         
         // static members
         
-		[Embed(source="../embed/games/live4sales/background.png")]
+		[Embed(source="/../embed/games/live4sales/background.png")]
 		public static const BackgroundPng:Class;
         
         private static var sContentScaleFactor:int = 1;

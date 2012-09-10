@@ -40,16 +40,16 @@ package box2dstarling {
 		
 		protected var _hero:Hero;
 		
-		[Embed(source="../embed/Hero.xml", mimeType="application/octet-stream")]
+		[Embed(source="/../embed/Hero.xml", mimeType="application/octet-stream")]
 		private var _heroConfig:Class;
 		
-		[Embed(source="../embed/Hero.png")]
+		[Embed(source="/../embed/Hero.png")]
 		private var _heroPng:Class;
 		
-		[Embed(source="../embed/ArialFont.fnt", mimeType="application/octet-stream")]
+		[Embed(source="/../embed/ArialFont.fnt", mimeType="application/octet-stream")]
 		private var _fontConfig:Class;
 		
-		[Embed(source="../embed/ArialFont.png")]
+		[Embed(source="/../embed/ArialFont.png")]
 		private var _fontPng:Class;
 		
 		protected var _maskDuringLoading:Quad;

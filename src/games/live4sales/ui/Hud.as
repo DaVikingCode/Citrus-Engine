@@ -22,8 +22,8 @@ package games.live4sales.ui {
 	 */
 	public class Hud extends Sprite {
 		
-		[Embed(source="../embed/ArialFont.fnt", mimeType="application/octet-stream")] private var _fontConfig:Class;
-		[Embed(source="../embed/ArialFont.png")] private var _fontPng:Class;
+		[Embed(source="/../embed/ArialFont.fnt", mimeType="application/octet-stream")] private var _fontConfig:Class;
+		[Embed(source="/../embed/ArialFont.png")] private var _fontPng:Class;
 		
 		static public var money:uint = 400;
 

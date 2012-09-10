@@ -19,10 +19,10 @@ package box2dstarling {
 	 */
 	public class Level1 extends ALevel {
 		
-		[Embed(source="../embed/Particle.pex", mimeType="application/octet-stream")]
+		[Embed(source="/../embed/Particle.pex", mimeType="application/octet-stream")]
 		private var _particleConfig:Class;
 
-		[Embed(source="../embed/ParticleTexture.png")]
+		[Embed(source="/../embed/ParticleTexture.png")]
 		private var _particlePng:Class;
 		
 		private var _particleSystem:ParticleSystem;
