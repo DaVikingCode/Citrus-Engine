@@ -1,13 +1,24 @@
-﻿package Box2DAS.Common {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
+package Box2DAS.Common {
+
+	import Box2DAS.Collision.Shapes.b2CircleShape;
+	import Box2DAS.Collision.Shapes.b2EdgeShape;
+	import Box2DAS.Collision.Shapes.b2LoopShape;
+	import Box2DAS.Collision.Shapes.b2PolygonShape;
+	import Box2DAS.Collision.b2DistanceInput;
+	import Box2DAS.Collision.b2DistanceOutput;
+	import Box2DAS.Collision.b2SimplexCache;
+	import Box2DAS.Dynamics.Joints.b2DistanceJointDef;
+	import Box2DAS.Dynamics.Joints.b2FrictionJointDef;
+	import Box2DAS.Dynamics.Joints.b2GearJointDef;
+	import Box2DAS.Dynamics.Joints.b2LineJointDef;
+	import Box2DAS.Dynamics.Joints.b2MouseJointDef;
+	import Box2DAS.Dynamics.Joints.b2PrismaticJointDef;
+	import Box2DAS.Dynamics.Joints.b2PulleyJointDef;
+	import Box2DAS.Dynamics.Joints.b2RevoluteJointDef;
+	import Box2DAS.Dynamics.Joints.b2RopeJointDef;
+	import Box2DAS.Dynamics.Joints.b2WeldJointDef;
+	import Box2DAS.Dynamics.b2BodyDef;
+	import Box2DAS.Dynamics.b2FixtureDef;
 	
 	/**
 	 * Holds static Box2D definition objects that can be reused for performance.

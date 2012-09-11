@@ -1,15 +1,9 @@
-﻿package Box2DAS.Collision.Shapes {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
-	import flash.display.*;
-	
+package Box2DAS.Collision.Shapes {
+
+	import Box2DAS.Common.V2;
+	import Box2DAS.Common.XF;
+
+	import flash.display.Graphics;
 	
 	/// A loop shape is a free form sequence of line segments that form a circular list.
 	/// The loop may cross upon itself, but this is not recommended for smooth collision.

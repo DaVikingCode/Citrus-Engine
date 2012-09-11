@@ -1,13 +1,7 @@
-﻿package Box2DAS.Dynamics {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
+package Box2DAS.Dynamics {
+
+	import Box2DAS.Collision.Shapes.b2Shape;
+	import Box2DAS.Common.b2Base;
 	
 	/// A fixture definition is used to create a fixture. This class defines an
 	/// abstract fixture definition. You can reuse fixture definitions safely.

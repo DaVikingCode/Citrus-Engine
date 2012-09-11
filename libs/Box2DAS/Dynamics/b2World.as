@@ -1,18 +1,19 @@
-﻿package Box2DAS.Dynamics {
+package Box2DAS.Dynamics {
+
+	import Box2DAS.Collision.AABB;
+	import Box2DAS.Collision.b2Manifold;
+	import Box2DAS.Common.V2;
+	import Box2DAS.Common.b2Base;
+	import Box2DAS.Common.b2EventDispatcher;
+	import Box2DAS.Common.b2Vec2;
+	import Box2DAS.Controllers.b2Controller;
+	import Box2DAS.Dynamics.Contacts.b2Contact;
+	import Box2DAS.Dynamics.Joints.b2Joint;
+	import Box2DAS.Dynamics.Joints.b2JointDef;
+
+	import flash.events.IEventDispatcher;
+	import flash.utils.Dictionary;
 	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Controllers.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
-	import flash.events.*;
-	import flash.utils.*;
-	import flash.display.*;
-	import flash.utils.*;
 	
 	/// The world class manages all physics entities, dynamic simulation,
 	/// and asynchronous queries. The world also contains efficient memory

@@ -1,14 +1,8 @@
-﻿package Box2DAS.Dynamics.Joints {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
-	import flash.events.*;
+package Box2DAS.Dynamics.Joints {
+
+	import Box2DAS.Dynamics.b2World;
+
+	import flash.events.IEventDispatcher;
 	
 	/// Gear joint definition. This definition requires two existing
 	/// revolute or prismatic joints (any combination will work).

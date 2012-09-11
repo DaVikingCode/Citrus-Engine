@@ -1,13 +1,8 @@
-﻿package Box2DAS.Collision {
+package Box2DAS.Collision {
+
+	import Box2DAS.Common.b2Base;
+	import Box2DAS.Common.b2Def;
 	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
 	
 	/// Compute the closest points between two shapes. Supports any combination of:
 	/// b2CircleShape, b2PolygonShape, b2EdgeShape. The simplex cache is input/output.

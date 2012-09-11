@@ -1,13 +1,9 @@
-﻿package Box2DAS.Collision {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
+package Box2DAS.Collision {
+
+	import Box2DAS.Collision.Shapes.b2CircleShape;
+	import Box2DAS.Collision.Shapes.b2PolygonShape;
+	import Box2DAS.Collision.Shapes.b2Shape;
+	import Box2DAS.Common.b2Base;
 	
 	/// A distance proxy is used by the GJK algorithm.
 	/// It encapsulates any shape.	

@@ -1,14 +1,9 @@
-﻿package Box2DAS.Dynamics {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
+package Box2DAS.Dynamics {
 
+	import Box2DAS.Collision.b2BroadPhase;
+	import Box2DAS.Common.b2Base;
+	import Box2DAS.Dynamics.Contacts.b2Contact;
+	
 	// Delegate of b2World.
 	public class b2ContactManager extends b2Base {
 		

@@ -1,16 +1,22 @@
-﻿package Box2DAS.Dynamics {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
-	import flash.utils.*;
-	import flash.display.*;
-	import flash.events.*;
+package Box2DAS.Dynamics {
+
+	import Box2DAS.Collision.Shapes.b2MassData;
+	import Box2DAS.Collision.Shapes.b2Shape;
+	import Box2DAS.Collision.b2AABB;
+	import Box2DAS.Collision.b2Distance;
+	import Box2DAS.Collision.b2DistanceInput;
+	import Box2DAS.Collision.b2DistanceOutput;
+	import Box2DAS.Common.V2;
+	import Box2DAS.Common.XF;
+	import Box2DAS.Common.b2Def;
+	import Box2DAS.Common.b2EventDispatcher;
+	import Box2DAS.Dynamics.Contacts.b2Contact;
+	import Box2DAS.Dynamics.Contacts.b2ContactEdge;
+
+	import flash.display.Graphics;
+	import flash.events.IEventDispatcher;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
 	
 	/// A fixture is used to attach a shape to a body for collision detection. A fixture
 	/// inherits its transform from its parent. Fixtures hold additional non-geometric data

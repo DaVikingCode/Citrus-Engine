@@ -1,14 +1,11 @@
-﻿package Box2DAS.Dynamics.Joints {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
-	import flash.events.*;
+package Box2DAS.Dynamics.Joints {
+
+	import Box2DAS.Common.V2;
+	import Box2DAS.Common.b2Vec2;
+	import Box2DAS.Dynamics.b2Body;
+	import Box2DAS.Dynamics.b2World;
+
+	import flash.events.IEventDispatcher;
 	
 	/// Mouse joint definition. This requires a world target point,
 	/// tuning parameters, and the time step.

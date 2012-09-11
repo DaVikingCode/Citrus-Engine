@@ -1,15 +1,11 @@
-﻿package Box2DAS.Controllers {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
-	import flash.utils.*;
+package Box2DAS.Controllers {
 
+	import Box2DAS.Dynamics.StepEvent;
+	import Box2DAS.Dynamics.b2Body;
+	import Box2DAS.Dynamics.b2World;
+
+	import flash.utils.Dictionary;
+	
 	public class b2Controller {
 		
 		public var effect:b2Effect;

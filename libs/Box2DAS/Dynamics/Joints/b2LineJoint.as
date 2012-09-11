@@ -1,14 +1,11 @@
-﻿package Box2DAS.Dynamics.Joints {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
-	import flash.events.*;
+package Box2DAS.Dynamics.Joints {
+
+	import Box2DAS.Common.V2;
+	import Box2DAS.Common.b2Def;
+	import Box2DAS.Common.b2Vec2;
+	import Box2DAS.Dynamics.b2World;
+
+	import flash.events.IEventDispatcher;
 	
 	/// A line joint. This joint provides one degree of freedom: translation
 	/// along an axis fixed in m_bodyA. You can use a joint limit to restrict

@@ -1,15 +1,20 @@
-﻿package Box2DAS.Dynamics {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Controllers.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
-	import flash.utils.*;
+package Box2DAS.Dynamics {
+
+	import Box2DAS.Collision.Shapes.b2MassData;
+	import Box2DAS.Collision.Shapes.b2Shape;
+	import Box2DAS.Common.V2;
+	import Box2DAS.Common.XF;
+	import Box2DAS.Common.b2Base;
+	import Box2DAS.Common.b2Def;
+	import Box2DAS.Common.b2Sweep;
+	import Box2DAS.Common.b2Transform;
+	import Box2DAS.Common.b2Vec2;
+	import Box2DAS.Controllers.b2Controller;
+	import Box2DAS.Dynamics.Contacts.b2ContactEdge;
+	import Box2DAS.Dynamics.Joints.b2Joint;
+	import Box2DAS.Dynamics.Joints.b2JointEdge;
+
+	import flash.utils.Dictionary;
 	
 	/// A rigid body. These are created via b2World::CreateBody.
 	public class b2Body extends b2Base {

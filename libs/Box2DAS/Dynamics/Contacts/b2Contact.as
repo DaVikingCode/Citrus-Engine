@@ -1,13 +1,11 @@
-﻿package Box2DAS.Dynamics.Contacts {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
+package Box2DAS.Dynamics.Contacts {
+
+	import Box2DAS.Collision.Shapes.b2Shape;
+	import Box2DAS.Collision.b2Manifold;
+	import Box2DAS.Collision.b2WorldManifold;
+	import Box2DAS.Common.b2Base;
+	import Box2DAS.Dynamics.b2Body;
+	import Box2DAS.Dynamics.b2Fixture;
 	
 	/// The class manages contact between two shapes. A contact exists for each overlapping
 	/// AABB in the broad-phase (except if filtered). Therefore a contact object may exist

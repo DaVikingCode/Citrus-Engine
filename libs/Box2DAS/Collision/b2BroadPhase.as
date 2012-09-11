@@ -1,13 +1,7 @@
-﻿package Box2DAS.Collision {
+package Box2DAS.Collision {
+
+	import Box2DAS.Common.b2Base;
 	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
 	
 	/// The broad-phase is used for computing pairs and performing volume queries and ray casts.
 	/// This broad-phase does not persist pairs. Instead, this reports potentially new pairs.

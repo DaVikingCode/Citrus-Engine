@@ -1,14 +1,12 @@
-﻿package Box2DAS.Common {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
-	import flash.utils.*;
+package Box2DAS.Common {
+
+	import cmodule.Box2D.CLibInit;
+	import cmodule.Box2D.MemUser;
+	import cmodule.Box2D.arr;
+	import cmodule.Box2D.gstate;
+	import cmodule.Box2D.vt;
+
+	import flash.utils.ByteArray;
 	
 	public class b2Base {
 	

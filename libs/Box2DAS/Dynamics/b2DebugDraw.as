@@ -1,29 +1,25 @@
 ﻿package Box2DAS.Dynamics {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
-	import flash.events.*;
-	import flash.utils.*;
-	import flash.display.*;
+
+	import Box2DAS.Common.V2;
+	import Box2DAS.Common.XF;
+	import Box2DAS.Dynamics.Contacts.b2Contact;
+	import Box2DAS.Dynamics.Joints.b2Joint;
+	import Box2DAS.Dynamics.Joints.b2PulleyJoint;
+
+	import flash.display.Shape;
 	
 	public class b2DebugDraw extends Shape {
 		
 		/// Colors to use for drawing (array indicates [fill, stroke]).
 		public var colors:Object = {
 			shape: [0x7f8c7b, 0],
-			static: [0x5d6059, 0],
+			staticBody: [0x5d6059, 0],
 			kinematic: [0x5d5e50, 0],
 			inactive: [0xffffff, 0],
 			asleep: [0xc4c1ae, 0],
 			joints: 0,
 			pairs: 0
-		}
+		};
 		
 		/// When debug drawing, multiply coordinates by this value.
 		public var scale:Number = 1;
@@ -67,7 +63,7 @@
 			var b:b2Body = fixture.GetBody();
 			var c:Array = 
 				!b.IsActive() ? colors.inactive : 
-				b.IsStatic() ? colors.static : 
+				b.IsStatic() ? colors.staticBody : 
 				b.IsKinematic() ? colors.kinematic : 
 				!b.IsAwake() ? colors.asleep :
 				colors.shape;

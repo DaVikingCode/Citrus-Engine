@@ -1,13 +1,7 @@
 package Box2DAS.Dynamics {
+
+	import Box2DAS.Common.b2Base;
 	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
 
 	/// Contact impulses for reporting. Impulses are used instead of forces because
 	/// sub-step forces may approach infinity for rigid body collisions. These

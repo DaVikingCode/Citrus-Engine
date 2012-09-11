@@ -1,13 +1,7 @@
-﻿package Box2DAS.Collision {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
+package Box2DAS.Collision {
+
+	import Box2DAS.Common.b2Base;
+	import Box2DAS.Common.b2Vec2;
 	
 	public class b2Manifold extends b2Base {
 		
@@ -23,7 +17,7 @@
 			localPoint = new b2Vec2(_ptr + 56);
 			points[0] = new b2ManifoldPoint(_ptr + 0);
 			//points[1] = new b2ManifoldPoint(_ptr + 20);
-			points[1] = new b2ManifoldPoint(_ptr + 24)
+			points[1] = new b2ManifoldPoint(_ptr + 24);
 		}
 		
 		/* public var localPlaneNormal:b2Vec2; 

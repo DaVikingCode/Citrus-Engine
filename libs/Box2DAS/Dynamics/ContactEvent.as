@@ -1,14 +1,11 @@
-﻿package Box2DAS.Dynamics {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
-	import flash.events.*;
+package Box2DAS.Dynamics {
+
+	import Box2DAS.Collision.b2Manifold;
+	import Box2DAS.Collision.b2WorldManifold;
+	import Box2DAS.Common.V2;
+	import Box2DAS.Dynamics.Contacts.b2Contact;
+
+	import flash.events.Event;
 	
 	/**
 	 * A native flash event class for handling Box2d contact events. If a fixture's user data implements

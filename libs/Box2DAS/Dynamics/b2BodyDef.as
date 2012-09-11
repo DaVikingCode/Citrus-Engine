@@ -1,13 +1,7 @@
-﻿package Box2DAS.Dynamics {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
+package Box2DAS.Dynamics {
+
+	import Box2DAS.Common.b2Base;
+	import Box2DAS.Common.b2Vec2;
 	
 	/// A body definition holds all the data needed to construct a rigid body.
 	/// You can safely re-use body definitions.

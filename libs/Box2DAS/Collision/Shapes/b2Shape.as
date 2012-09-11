@@ -1,15 +1,15 @@
-﻿package Box2DAS.Collision.Shapes {
-	
-	import Box2DAS.*;
-	import Box2DAS.Collision.*;
-	import Box2DAS.Collision.Shapes.*;
-	import Box2DAS.Common.*;
-	import Box2DAS.Dynamics.*;
-	import Box2DAS.Dynamics.Contacts.*;
-	import Box2DAS.Dynamics.Joints.*;
-	import cmodule.Box2D.*;
-	import flash.display.*;
-	
+package Box2DAS.Collision.Shapes {
+
+	import Box2DAS.Collision.AABB;
+	import Box2DAS.Common.V2;
+	import Box2DAS.Common.XF;
+	import Box2DAS.Common.b2Base;
+	import Box2DAS.Common.b2Def;
+	import Box2DAS.Dynamics.b2Body;
+	import Box2DAS.Dynamics.b2Fixture;
+	import Box2DAS.Dynamics.b2FixtureDef;
+
+	import flash.display.Graphics;
 	
 	/// A shape is used for collision detection. You can create a shape however you like.
 	/// Shapes used for simulation in b2World are created automatically when a b2Fixture
