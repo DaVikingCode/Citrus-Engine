@@ -1,31 +1,58 @@
-package starlingtiles {
+package starlingtiles 
+{
 
+	import com.citrusengine.core.CitrusEngine;
+	import com.citrusengine.core.StarlingState;
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.CitrusSprite;
-	import com.citrusengine.objects.platformer.nape.Hero;
-	import com.citrusengine.objects.platformer.nape.Sensor;
+	import com.citrusengine.objects.platformer.nape.*;
+	import com.citrusengine.physics.Nape;
+	import com.citrusengine.utils.ObjectMaker;
 	import com.citrusengine.view.starlingview.StarlingTileSystem;
+
+	import org.osflash.signals.Signal;
 
 	import flash.display.MovieClip;
 	import flash.geom.Rectangle;
-	
+ 
 	/**
 	 * @author Nick Pinkham
 	 */
-	public class Level1 extends ALevel {
+	public class StarlingTilesGameState extends StarlingState 
+	{
+		public var lvlEnded:Signal;
+		public var restartLevel:Signal;
+		
+		protected var _ce:CitrusEngine;
+		protected var _level:MovieClip;
 		
 		private var _hero:Hero;
 		
-		public function Level1(level:MovieClip = null) {
-			super(level);
-		}
-		
-		override public function initialize():void {
+		public function StarlingTilesGameState(level:MovieClip = null) 
+		{
+			super();
 			
+			_ce = CitrusEngine.getInstance();
+			
+			_level = level;
+			
+			lvlEnded = new Signal();
+			restartLevel = new Signal();
+			
+			// Useful for not forgetting to import object from the Level Editor
+			var objectsUsed:Array = [Hero, Platform, Sensor, CitrusSprite];
+		}
+ 
+		override public function initialize():void {
+ 
 			super.initialize();
 			
-			var restartLevel:Sensor = Sensor(getObjectByName("restartLevel"));
-			restartLevel.onBeginContact.add(_restartLevel);
+			var nape:Nape = new Nape("nape");
+			nape.visible = true; // -> to see the debug view!
+			add(nape);
+			
+			// create objects from our level made with Flash Pro
+			ObjectMaker.FromMovieClip(_level);
 			
 			// get hero from movieclip
 			_hero = Hero(getFirstObjectByType(Hero));
@@ -56,12 +83,12 @@ package starlingtiles {
 			
 			// setup camera to follow hero
 			view.setupCamera(_hero, new MathVector(640, 360), new Rectangle(0, 0, 5120, 1024), new MathVector(0.25, 0.15));
-		}
+		}		
 		
 		override public function destroy():void {
-			
 			super.destroy();
 		}
+ 
 	}
-	
+ 
 }

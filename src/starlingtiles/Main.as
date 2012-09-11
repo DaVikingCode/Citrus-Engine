@@ -1,8 +1,10 @@
 package starlingtiles {
 
 	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.core.IState;
-	import com.citrusengine.utils.LevelManager;
+
+	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.net.URLRequest;
 	
 	[SWF(backgroundColor="#FFFF00", frameRate="60", width="1280", height="720")]
 	
@@ -13,30 +15,19 @@ package starlingtiles {
 		
 		public function Main():void {
 			
-			setUpStarling(true, 16);
+			setUpStarling(true);
 			
-			gameData = new MyGameData();
-			
-			levelManager = new LevelManager(ALevel);
-			levelManager.onLevelChanged.add(_onLevelChanged);
-			levelManager.levels = gameData.levels;
-			levelManager.gotoLevel();
+			var loader:Loader = new Loader();
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _levelLoaded);
+			loader.load(new URLRequest("levels/starlingtiles_demo_level.swf"));
 		}
 		
-		private function _onLevelChanged(lvl:ALevel):void {
+		private function _levelLoaded(evt:Event):void {
 			
-			state = lvl;
+			state = new StarlingTilesGameState(evt.target.loader.content);
 			
-			lvl.lvlEnded.add(_nextLevel);
-			lvl.restartLevel.add(_restartLevel);
-		}
-		
-		private function _nextLevel():void {
-			levelManager.nextLevel();
-		}
-		
-		private function _restartLevel():void {
-			state = levelManager.currentLevel as IState;
+			evt.target.removeEventListener(Event.COMPLETE, _levelLoaded);
+			evt.target.loader.unloadAndStop();
 		}
 	}
 	
