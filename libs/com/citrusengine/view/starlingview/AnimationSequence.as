@@ -80,11 +80,7 @@ package com.citrusengine.view.starlingview {
 		 */
 		public function pauseAnimation(value:Boolean):void {
 			
-			if (value) {
-				Starling.juggler.add(_mcSequences[_previousAnimation]);
-			} else {
-				Starling.juggler.remove(_mcSequences[_previousAnimation]);
-			}
+			value ? Starling.juggler.add(_mcSequences[_previousAnimation]) : Starling.juggler.remove(_mcSequences[_previousAnimation]);
 		}
 		
 		public function destroy():void {

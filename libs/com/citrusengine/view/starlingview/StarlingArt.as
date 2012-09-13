@@ -1,5 +1,5 @@
 package com.citrusengine.view.starlingview {
-	
+
 	import Box2DAS.Dynamics.b2DebugDraw;
 
 	import starling.core.Starling;
@@ -28,7 +28,7 @@ package com.citrusengine.view.starlingview {
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
-
+	
 	/**
 	 * This is the class that all art objects use for the StarlingView state view. If you are using the StarlingView (as opposed to the blitting view, for instance),
 	 * then all your graphics will be an instance of this class. There are 2 ways to manage MovieClip :
@@ -137,6 +137,7 @@ package com.citrusengine.view.starlingview {
 				Starling.juggler.remove(content as PDParticleSystem);
 				(content as PDParticleSystem).stop(true);
 				content.dispose();
+				
 			} else if (content is StarlingTileSystem) {
 				(content as StarlingTileSystem).destroy();
 				content.dispose();
@@ -260,8 +261,15 @@ package com.citrusengine.view.starlingview {
 				
 				var animLoop:Boolean = _loopAnimation[_animation];
 				
-				if (content is MovieClip)
-					(content as DynamicMovieClip).changeTextures(_textureAtlas.getTextures(_animation), animLoop);
+				if (content is MovieClip && _textureAtlas) {
+					Starling.juggler.remove(content as MovieClip);
+					removeChild(content);
+					content = new MovieClip(_textureAtlas.getTextures(_animation), 30);
+					moveRegistrationPoint(_citrusObject.registration);
+					addChild(content);
+					Starling.juggler.add(content as MovieClip);
+					(content as MovieClip).loop = animLoop;
+				}
 				
 				if (content is AnimationSequence)
 					(content as AnimationSequence).changeAnimation(_animation, animLoop);
@@ -352,7 +360,7 @@ package com.citrusengine.view.starlingview {
 			if (evt.target.loader.content is flash.display.MovieClip) {
 
 				_textureAtlas = DynamicAtlas.fromMovieClipContainer(evt.target.loader.content, 1, 0, true, true);
-				content = new DynamicMovieClip(_textureAtlas.getTextures(animation));
+				content = new MovieClip(_textureAtlas.getTextures(animation), 30);
 				Starling.juggler.add(content as MovieClip);
 			}
 

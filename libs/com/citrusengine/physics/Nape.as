@@ -64,6 +64,9 @@ package com.citrusengine.physics {
 		
 		public function set gravity(value:Vec2):void {
 			_gravity = value;
+			
+			if (_space)
+				_space.gravity = _gravity;
 		}
 		
 		public function get contactListener():NapeContactListener {

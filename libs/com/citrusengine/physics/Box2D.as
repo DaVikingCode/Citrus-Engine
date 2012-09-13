@@ -80,6 +80,9 @@ package com.citrusengine.physics {
 		
 		public function set gravity(value:V2):void {
 			_gravity = value;
+			
+			if (_world)
+				_world.SetGravity(_gravity);
 		}
 		
 		override public function update(timeDelta:Number):void
