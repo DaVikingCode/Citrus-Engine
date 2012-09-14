@@ -87,5 +87,37 @@ package com.citrusengine.utils {
 			} else
 				return false;
 		}
+
+		static public function get iOS_MARGIN():uint {
+			return _IOS_MARGIN;
+		}
+
+		static public function get iPHONE_RETINA_WIDTH():uint {
+			return _IPHONE_RETINA_WIDTH;
+		}
+
+		static public function get iPHONE_RETINA_HEIGHT():uint {
+			return _IPHONE_RETINA_HEIGHT;
+		}
+
+		static public function get iPHONE5_RETINA_HEIGHT():uint {
+			return _IPHONE5_RETINA_HEIGHT;
+		}
+
+		static public function get iPAD_WIDTH():uint {
+			return _IPAD_WIDTH;
+		}
+
+		static public function get iPAD_HEIGHT():uint {
+			return _IPAD_HEIGHT;
+		}
+
+		static public function get iPAD_RETINA_WIDTH():uint {
+			return _IPAD_RETINA_WIDTH;
+		}
+
+		static public function get iPAD_RETINA_HEIGHT():uint {
+			return _IPAD_RETINA_HEIGHT;
+		}
 	}
 }
