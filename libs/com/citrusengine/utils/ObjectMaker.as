@@ -3,8 +3,17 @@
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.core.IState;
+	import com.citrusengine.objects.CitrusSprite;
+	import com.citrusengine.utils.tmx.TmxMap;
+	import com.citrusengine.utils.tmx.TmxObject;
+	import com.citrusengine.utils.tmx.TmxObjectGroup;
+	import com.citrusengine.utils.tmx.TmxTileSet;
 
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.MovieClip;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 	
 	/**
@@ -92,6 +101,111 @@
 			}
 			
 			return a;
+		}
+		
+		
+		/**
+		 * http://www.mapeditor.org/
+		 */
+		public static function FromTiledMap(levelXML:XML, TilesImg:Class, addToCurrentState:Boolean = true):Array {
+			
+			var ce:CitrusEngine = CitrusEngine.getInstance();
+			
+			var objects:Array = [];
+			
+			var tmx:TmxMap = new TmxMap(levelXML);
+			var tiles:TmxTileSet = tmx.getTileSet('tiles');
+			
+			var bmp:Bitmap = new TilesImg();
+			
+			tiles.image = bmp.bitmapData;
+			
+			var bmpData:BitmapData;
+			var citrusSprite:CitrusSprite;
+			
+			var mapTiles:Array;
+				
+			var rectangleSelection:Rectangle = new Rectangle();
+			rectangleSelection.width = tmx.tileWidth;
+			rectangleSelection.height = tmx.tileHeight;
+			
+			var pt:Point = new Point();
+			
+			var mapTilesX:uint, mapTilesY:uint;
+			
+			for (var layer:String in tmx.layers) {
+				
+				mapTiles = tmx.getLayer(layer).tileGIDs;
+				
+				mapTilesX = mapTiles.length;
+				
+				bmpData = new BitmapData(tmx.width * tmx.tileWidth, tmx.height * tmx.tileHeight, true, 0);
+				bmpData.lock();
+				
+				for (var i:uint = 0; i < mapTilesX; ++i) {
+					
+					mapTilesY = mapTiles[i].length;
+					
+					for (var j:uint = 0; j < mapTilesY; ++j) {
+						
+						if (mapTiles[i][j] != 0) {
+							
+							if (mapTiles[i][j] <= tiles.numCols) {
+								
+								rectangleSelection.x = mapTiles[i][j] * tmx.tileWidth - tmx.tileWidth;
+								rectangleSelection.y = 0;
+								
+							} else {
+								
+								var modulo:uint = mapTiles[i][j] % tiles.numCols;
+								
+								rectangleSelection.x = modulo * tmx.tileWidth - tmx.tileWidth;;
+								rectangleSelection.y = Math.floor(mapTiles[i][j] / tiles.numCols) * tmx.tileHeight;
+							}
+							
+							pt.x = j * tmx.tileWidth;
+							pt.y = i * tmx.tileHeight;
+							
+							bmpData.copyPixels(bmp.bitmapData, rectangleSelection, new Point(pt.x, pt.y));
+						}
+					}
+					
+					bmpData.unlock();
+				}				
+				
+				citrusSprite = new CitrusSprite(layer, {view:new Bitmap(bmpData)});
+				objects.push(citrusSprite);
+			}
+			
+			var objectClass:Class;
+			var params:Object;
+			var object:CitrusObject;
+			
+			for each (var group:TmxObjectGroup in tmx.objectGroups) {
+				
+				for each (var objectTmx:TmxObject in group.objects) {
+					
+					objectClass = getDefinitionByName(objectTmx.type) as Class;
+					
+					params = {};
+					
+					for (var param:String in objectTmx.custom)
+						params[param] = objectTmx.custom[param];
+					
+					params.x = objectTmx.x + objectTmx.width * 0.5;
+					params.y = objectTmx.y + objectTmx.height * 0.5;
+					params.width = objectTmx.width;
+					params.height = objectTmx.height;
+					
+					object = new objectClass(objectTmx.name, params);
+					objects.push(object);
+				}
+			}
+			
+			if (addToCurrentState)
+				for each (object in objects) ce.state.add(object);
+			
+			return objects;
 		}
 		
 		/**
