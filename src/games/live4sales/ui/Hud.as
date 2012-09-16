@@ -73,17 +73,17 @@ package games.live4sales.ui {
 			
 			onIconePositioned.removeAll();
 			
-			removeChild(_grid);
+			removeChild(_grid, true);
 			
 			for each (var icon:Icon in _vectorIcon) {
 				icon.destroy();
-				removeChild(icon);
+				removeChild(icon, true);
 			}
 			
 			_vectorIcon = null;
 			
 			TextField.unregisterBitmapFont("ArialMT");
-			removeChild(_score);
+			removeChild(_score, true);
 			
 			_ce.removeEventListener(MoneyEvent.BUY_ITEM, _changeMoney);
 		}

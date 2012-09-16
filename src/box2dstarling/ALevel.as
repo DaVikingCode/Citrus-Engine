@@ -128,8 +128,8 @@ package box2dstarling {
 		
 		protected function _handleLoadComplete():void {
 			
-			removeChild(_percentTF);
-			removeChild(_maskDuringLoading);
+			removeChild(_percentTF, true);
+			removeChild(_maskDuringLoading, true);
 		}
 			
 		override public function update(timeDelta:Number):void {

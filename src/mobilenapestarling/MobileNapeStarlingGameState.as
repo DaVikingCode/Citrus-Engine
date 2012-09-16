@@ -119,7 +119,7 @@ package mobilenapestarling {
 		override public function destroy():void {
 			
 			TextField.unregisterBitmapFont("ArialMT");
-			removeChild(_score);
+			removeChild(_score, true);
 			
 			_particlePickedMC.removeEventListener(Event.COMPLETE, _hideParticlePickedMc);
 			

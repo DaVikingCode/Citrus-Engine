@@ -63,6 +63,19 @@ package games.live4sales {
 
 			_baddiesCreation = new BaddiesCreation();
 		}
+			
+		override public function destroy():void {
+			
+			_hud.destroy();
+			removeChild(_hud, true);
+			
+			_coinsCreation.destroy();
+			removeChild(_coinsCreation, true);
+			
+			_baddiesCreation.destroy();
+			
+			super.destroy();
+		}
 
 		private function _createObject(name:String, posX:uint, posY:uint):void {
 			

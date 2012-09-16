@@ -80,7 +80,7 @@ package box2dstarling {
 		
 		override public function destroy():void {
 			
-			removeChild(_bmpFontTF);
+			removeChild(_bmpFontTF, true);
 
 			super.destroy();
 		}

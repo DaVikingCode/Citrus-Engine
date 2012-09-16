@@ -98,6 +98,8 @@
 					_starling.stage.removeChild(_state as StarlingState);
 					_starling.nativeStage.removeChildAt(2); // Remove Box2D or Nape debug view
 					
+					_starling.dispose();
+					
 				} else {
 					removeChild(_state as State);
 				}
