@@ -1,5 +1,7 @@
 ﻿package com.citrusengine.utils {
 
+	import starling.display.Image;
+
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.core.IState;
@@ -35,6 +37,12 @@
 		 * You can pass a custom-created MovieClip object into this method to auto-create CitrusObjects.
 		 * This method looks at all the children of the MovieClip you passed in, and creates a CitrusObject with the
 		 * x, y, width, height, name, and rotation of the of MovieClip.
+		 * 
+		 * <p>You may use the powerful Inspectable metadata tag : in your fla file, add the path to the libraries and 
+		 * the swcs. Then create your MovieClip, right click on it and convert as a component. Inform the package and class. 
+		 * You will have access to all its properties. Don't forget to put the className with path!</p>
+		 * 
+		 * <p>You can also add properties directly in your MovieClips, follow this step :</p>
 		 * 
 		 * <p>In order for this to properly create a CitrusObject from a MovieClip, the MovieClip needs to have a variable
 		 * called <code>classPath</code> on it, which will provide, in String form, the full
@@ -105,11 +113,18 @@
 		
 		
 		/**
-		 * http://www.mapeditor.org/
+		 * The Citrus Engine supports <a href="http://www.mapeditor.org/">the Tiled Map Editor</a>.
+		 * <p>It supports different layers, objects creation and a Tilesets.</p>
+		 * 
+		 * <p>You can add properties inside layers (group, parallax...), they are processed as Citrus Sprite.</p>
+		 * 
+		 * <p>For the objects, you can add their name and don't forget their types : package name + class name. 
+		 * It also supports properties.</p>
 		 */
 		public static function FromTiledMap(levelXML:XML, TilesImg:Class, addToCurrentState:Boolean = true):Array {
 			
 			var ce:CitrusEngine = CitrusEngine.getInstance();
+			var params:Object;
 			
 			var objects:Array = [];
 			
@@ -171,14 +186,26 @@
 					}
 					
 					bmpData.unlock();
-				}				
+				}
 				
-				citrusSprite = new CitrusSprite(layer, {view:new Bitmap(bmpData)});
+				params = {};
+				
+				if (ce.starling) {
+					
+					//TODO : cut bitmap if size > 2048 * 2048, use StarlingTileSystem?
+					params.view = Image.fromBitmap(new Bitmap(bmpData));
+					
+				} else
+					params.view = new Bitmap(bmpData);
+				
+				for (var param:String in tmx.getLayer(layer).properties)
+					params[param] = tmx.getLayer(layer).properties[param];
+				
+				citrusSprite = new CitrusSprite(layer, params);
 				objects.push(citrusSprite);
 			}
 			
 			var objectClass:Class;
-			var params:Object;
 			var object:CitrusObject;
 			
 			for each (var group:TmxObjectGroup in tmx.objectGroups) {
@@ -189,7 +216,7 @@
 					
 					params = {};
 					
-					for (var param:String in objectTmx.custom)
+					for (param in objectTmx.custom)
 						params[param] = objectTmx.custom[param];
 					
 					params.x = objectTmx.x + objectTmx.width * 0.5;
