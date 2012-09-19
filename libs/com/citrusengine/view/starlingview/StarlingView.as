@@ -29,6 +29,13 @@ package com.citrusengine.view.starlingview {
 		public function get viewRoot():Sprite {
 			return _viewRoot;
 		}
+			
+		override public function destroy():void {
+			
+			_viewRoot.dispose();
+			
+			super.destroy();
+		}
 
 		override public function update():void {
 			

@@ -9,9 +9,6 @@
   </data>
  </layer>
  <layer name="background-elements" width="20" height="10">
-  <properties>
-   <property name="" value=""/>
-  </properties>
   <data encoding="base64" compression="zlib">
    eJxjYKA+YB4gvSDASKF+Su0faECp/0kB2MKKUPiRE7709BM6AAAkrAAW
   </data>
