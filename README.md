@@ -10,8 +10,9 @@ It offers many options, you may use :
 - a simple way to manage object creation, and for advanced developers : an entity/component system and object pooling.
 - a LevelManager and a LoadManager which may use Flash Pro as a level editor.
 
-Games
------
+Games References
+----------------
+[![Escape From Nerd Factory](http://aymericlamboley.fr/blog/wp-content/uploads/2012/09/escape-from-nerd-factory.jpg)](http://www.newgrounds.com/portal/view/598677)
 [![Kinessia](http://aymericlamboley.fr/blog/wp-content/uploads/2012/08/Kinessia.jpg)](http://kinessia.aymericlamboley.fr/)
 [![MarcoPoloWeltrennen](http://aymericlamboley.fr/blog/wp-content/uploads/2012/08/MarcoPoloWeltrennen.png)](http://www.marcopoloweltrennen.de/)
 [![Tibi](http://aymericlamboley.fr/blog/wp-content/uploads/2012/09/Tibi.png)](http://hellorepublic.com/client/tibi/platform/)
