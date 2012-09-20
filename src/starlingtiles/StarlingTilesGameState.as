@@ -57,27 +57,41 @@ package starlingtiles
 			// get hero from movieclip
 			_hero = Hero(getFirstObjectByType(Hero));
 			
-			// add background tiles via flash stage
-			var px:Number = 0.6;
-			// sprite is a movieclip on the stage
-			var tileSprite:CitrusSprite = new CitrusSprite("tileLowerBackground", { x:0, y:0, parallax:px } );
-			tileSprite.view = new StarlingTileSystem(_hero, MovieClip(_level.getChildByName("tile_lower_background")), px);
-			tileSprite.view.name = tileSprite.name;
+			// movieclip on stage converted to tiles
+			// background
+			var tileSprite:CitrusSprite = new CitrusSprite("tileLowerBackground", { x:0, y:0, parallax:0.6 } );
+			var tileSystem:StarlingTileSystem = new StarlingTileSystem(MovieClip(_level.getChildByName("tile_lower_background")), _hero);
+			
+			tileSystem.parallax = 0.6;
+			tileSystem.name = tileSprite.name;
+			tileSystem.init();
+			
+			tileSprite.view = tileSystem;
 			tileSprite.group = 0;
 			add(tileSprite);
 			
+			
 			// add upper background
-			px = 0.8;
-			tileSprite = new CitrusSprite("tileUpperBackground", { x:0, y:0, parallax:px } );
-			tileSprite.view = new StarlingTileSystem(_hero, MovieClip(_level.getChildByName("tile_upper_background")), px);
-			tileSprite.view.name = tileSprite.name;
+			tileSprite = new CitrusSprite("tileUpperBackground", { x:0, y:0, parallax:0.8 } );
+			tileSystem = new StarlingTileSystem(MovieClip(_level.getChildByName("tile_upper_background")), _hero);
+			
+			tileSystem.parallax = 0.8;
+			tileSystem.name = tileSprite.name;
+			tileSystem.init();
+			
+			tileSprite.view = tileSystem;
 			tileSprite.group = 1;
 			add(tileSprite);
 			
+			
 			// add player plane tiles via flash stage
 			tileSprite = new CitrusSprite("tilePlayerPlane", { x:0, y:0 } );
-			tileSprite.view = new StarlingTileSystem(_hero, MovieClip(_level.getChildByName("tile_player_plane")));
-			tileSprite.view.name = tileSprite.name;
+			tileSystem = new StarlingTileSystem(MovieClip(_level.getChildByName("tile_player_plane")), _hero);
+			
+			tileSystem.name = tileSprite.name;
+			tileSystem.init();
+			
+			tileSprite.view = tileSystem;
 			tileSprite.group = 2;
 			add(tileSprite);
 			
