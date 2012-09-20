@@ -1,6 +1,10 @@
 package com.citrusengine.view.starlingview {
 
+	import flash.display.BitmapData;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import starling.display.Image;
+	import starling.display.QuadBatch;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -21,12 +25,25 @@ package com.citrusengine.view.starlingview {
 		
 		private var _ce:CitrusEngine;
 		
-		private var _followMe:ISpriteView; // the object that tracks
+		private var _followMe:ISpriteView; // the object that is tracked
 		
-		private var _images:MovieClip;
+		private var _imagesMC:MovieClip;
+		private var _imagesArray:Array;
 		private var _liveTiles:Array = new Array();
 		
-		private var _parallax:Number;
+		public var parallax:Number = 1;
+		
+		// determine whether to use dynamic loading to preserve gpu ram, or not and preserve loading times during play
+		public var dynamicLoading:Boolean = true;
+		
+		// tile sizes
+		public var tileWidth:uint = 2048;
+		public var tileHeight:uint = 2048;
+		
+		
+		// load in and out distances
+		public var loadInDistance:Number = 1.8;
+		public var unloadDistance:Number = 2.0;
 		
 		
 		// timer to call updates, every second should be fine
@@ -36,56 +53,136 @@ package com.citrusengine.view.starlingview {
 		// test for maximum memory use
 		private var maxInRam:Number = 0;
 		
-		public function StarlingTileSystem(bodyToFollow:ISpriteView, images:MovieClip, parallax:Number = 1) {
+		
+		
+		
+		
+		
+		
+		
+		public function StarlingTileSystem(images:*, bodyToFollow:ISpriteView = null) {
 			
 			_ce = CitrusEngine.getInstance();
 			
 			_followMe = bodyToFollow;
-			_images = images;
-			_parallax = parallax;
 			
-			addEventListener(Event.ADDED_TO_STAGE, init);
+			if (images is MovieClip) {
+				_imagesMC = images;
+			} else if (images is Array) {
+				_imagesArray = images;
+			} else {
+				trace("StarlingTileSystem IMAGES SOURCE TYPE NOT FOUND!");
+			}
 		}
 		
-		public function init(e:Event = null):void {
+		public function init():void {
+			addEventListener(Event.ADDED_TO_STAGE, onAdded);
+		}
+		
+		public function onAdded(e:Event = null):void {
 			
-			removeEventListener(Event.ADDED_TO_STAGE, init);
+			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			
-			
-			// loop through children of _images movieclip
-			// get all bitmaps
-			// gather the bitmap's size and position
-			// ?
-			// profit
-			
-			var bitmap:Bitmap;
-			var tile:StarlingTile;
-			
-			var nc:uint = _images.numChildren;
-			for (var c:uint = 0; c < nc; c ++) {
-				bitmap = _images.getChildAt(c) as Bitmap;
-				// if it's a bitmap, make a tile out of it
-				if (bitmap) {
-					tile = new StarlingTile();
-					tile.myBitmap = bitmap;
-					tile.x = bitmap.x;
-					tile.y = bitmap.y;
-					tile.width = bitmap.width;
-					tile.height = bitmap.height;
-					_liveTiles.push(tile);
-				} else {
-					trace("other object in tile movieclip:", _images.getChildAt(c));
-				}
-				
+			if (_imagesMC) {
+				tilesFromMovieclip(_imagesMC);
+			} else if (_imagesArray) {
+				tilesFromArray(_imagesArray);
 			}
 			
+			if (dynamicLoading) {
+				// gather nearby to player
+				onTimer();
+				
+				// start up the timer
+				_timer.addEventListener(TimerEvent.TIMER, onTimer);
+				_timer.start();
+			} else {
+				loadAll();
+			}
+		}
+		
+		
+		
+		
+		
+		/*
+		 * gathers tiles from MovieClip via BitmapData. Remember the MovieClip must not have any graphics "bleeding" over the edge of the viewable region
+		 * 
+		 */
+		private function tilesFromMovieclip(mc:MovieClip):void {
 			
-			// gather nearby to player
-			onTimer();
+			//trace("getting from movieclip");
+			var mcBitmapData:BitmapData = new BitmapData(mc.width, mc.height, true, 0x000000);
+			mcBitmapData.draw(mc);
 			
-			// start up the timer
-			_timer.addEventListener(TimerEvent.TIMER, onTimer);
-			_timer.start();
+			var numColumns:uint = Math.ceil(mc.width / tileWidth);
+			var numRows:uint = Math.ceil(mc.height / tileHeight);
+			
+			var pWidth:Number = (numColumns * tileWidth) / numColumns;
+			var pHeight:Number = (numRows * tileHeight) / numRows;
+			
+			//trace("mc:", mc.width, "x", mc.height);
+			//trace("rows:", numRows);
+			//trace("columns:", numColumns);
+			
+			var bitmapData:BitmapData;
+			var bitmap:Bitmap;
+			var rect:Rectangle;
+			var array:Array = new Array();
+			
+			for (var ri:uint = 0; ri < numRows; ri ++) {
+				
+				array[ri] = new Array();
+				
+				for (var ci:uint = 0; ci < numColumns; ci ++) {
+					bitmapData = new BitmapData(pWidth, pHeight, true);
+					rect = new Rectangle(ci * pWidth, ri * pHeight, pWidth, pHeight);
+					bitmapData.copyPixels(mcBitmapData, rect, new Point(0, 0));
+					bitmap = new Bitmap(bitmapData);
+					array[ri][ci] = bitmap;
+				}
+			}
+			
+			_imagesArray = array;
+			
+			tilesFromArray(_imagesArray);
+		}
+		
+		private function tilesFromArray(images:Array):void {
+			
+			// loop through tiles array
+			// get rows
+			var rl:uint = images.length;
+			for (var r:uint = 0; r < rl; r ++) {
+				// get columns
+				var row:Array = images[r] as Array;
+				var cl:uint = row.length;
+				for (var c:uint = 0; c < cl; c ++) {
+					// check to see if it's a 1 or 0
+					if (row[c] != null) {
+						var bmp:Bitmap = row[c] as Bitmap;
+						if (!bmp) {
+							var clz:Class = row[c] as Class;
+							bmp = new clz();
+						}
+						
+						
+						if (bmp) {
+							//trace("bitmap:", bmp.width, "x", bmp.height);
+							var tile:StarlingTile = new StarlingTile();
+							tile.myBitmap = bmp;
+							tile.isInRAM = false;
+							tile.x = bmp.width * c;
+							tile.y = bmp.height * r;
+							tile.width = bmp.width;
+							tile.height = bmp.height;
+							_liveTiles.push(tile);
+						} else {
+							trace("error creating bitmap");
+						}
+					}
+				}
+			}
 		}
 		
 		private function onTimer(e:TimerEvent = null):void {
@@ -102,10 +199,13 @@ package com.citrusengine.view.starlingview {
 				// get a tile
 				currentTile = _liveTiles[t] as StarlingTile;
 				// check distance between tile and hero
-				d = DistanceTwoPoints(currentTile.x + (-viewRootX * (1 - _parallax)) + (currentTile.width >> 1), _followMe.x, currentTile.y + (-viewRootY * (1 - _parallax)) + (currentTile.height >> 1), _followMe.y);
+				d = DistanceTwoPoints(currentTile.x + (-viewRootX * (1 - parallax)) + (currentTile.width >> 1), _followMe.x, currentTile.y + (-viewRootY * (1 - parallax)) + (currentTile.height >> 1), _followMe.y);
 				// check if it is close enough to load in
-				if (d < (Math.max(currentTile.width, currentTile.height)) * (1.7 / _parallax)) {
+				if (d < (Math.max(currentTile.width, currentTile.height)) * (loadInDistance / parallax)) {
 					if (!currentTile.isInRAM) {
+						if (isFlattened) {
+							unflatten();
+						}
 						currentTile.isInRAM = true;
 						currentTile.myTexture = Texture.fromBitmap(currentTile.myBitmap, false);
 						var img:Image = new Image(currentTile.myTexture);
@@ -113,13 +213,15 @@ package com.citrusengine.view.starlingview {
 						img.y = currentTile.y;
 						addChild(img);
 						currentTile.myImage = img;
-						
 					}
 					
 					
 				// otherwise, check if it is far enough to dispose
-				} else if (d > (Math.max(currentTile.width, currentTile.height)) * (1.8 / _parallax)) {
+				} else if (d > (Math.max(currentTile.width, currentTile.height)) * (unloadDistance / parallax)) {
 					if (currentTile.isInRAM) {
+						if (isFlattened) {
+							unflatten();
+						}
 						currentTile.isInRAM = false;
 						removeChild(currentTile.myImage);
 						
@@ -137,8 +239,12 @@ package com.citrusengine.view.starlingview {
 				if (numInRam > maxInRam) {
 					maxInRam = numInRam;
 					// shows the maximum number of tiles used
-					//trace(this.name, "max tiles in ram:", numInRam, "memory:", (numInRam * 4), "MB");
+					trace(this.name, "max tiles in ram:", numInRam, "memory:", (numInRam * 16), "MB");
 				}
+			}
+			
+			if (!isFlattened) {
+				flatten();
 			}
 		}
 		
@@ -149,18 +255,69 @@ package com.citrusengine.view.starlingview {
 			return Math.sqrt(dx * dx + dy * dy);
 		}
 		
+		
+		
+		// loops through all tiles and loads into memory
+		public function loadAll():void {
+			
+			for each (var tile:StarlingTile in _liveTiles) {
+				tile.isInRAM = true;
+				tile.myTexture = Texture.fromBitmap(tile.myBitmap, false);
+				var img:Image = new Image(tile.myTexture);
+				img.x = tile.x;
+				img.y = tile.y;
+				addChild(img);
+				tile.myImage = img;
+			}
+			
+			flatten();
+			
+			trace(this.name, "all shown, max tiles in ram:", _liveTiles.length);
+		}
+		
+		
+		// loops through all tiles and removes from memory
+		public function removeAll():void {
+			
+			for each (var tile:StarlingTile in _liveTiles) {
+				tile.isInRAM = false;
+				removeChild(tile.myImage);
+				
+				tile.myImage.dispose();
+				tile.myTexture.dispose();
+				
+				tile.myImage = null;
+				tile.myTexture = null;
+			}
+		}
+		
+		
+		
+		
 		public function destroy():void {
 			
 			_timer.removeEventListener(TimerEvent.TIMER, onTimer);
 			_timer.reset();
 			removeEventListeners();
+			removeAll();
 			removeChildren(0, -1, true);
 			
 			// reset
 			_followMe = null;
-			_images = null;
+			if (_imagesArray) {
+				_imagesArray.length = 0;
+				_imagesArray = null;
+			}
+			_imagesMC = null;
 			_liveTiles.length = 0;
 			_liveTiles = null;
 		}
+		
+		
+		
+		
+		
+		
+		
 	}
 }
