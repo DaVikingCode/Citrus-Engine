@@ -48,7 +48,7 @@ package starlingtiles
 			super.initialize();
 			
 			var nape:Nape = new Nape("nape");
-			nape.visible = true; // -> to see the debug view!
+			nape.visible = false; // -> to see the debug view!
 			add(nape);
 			
 			// create objects from our level made with Flash Pro
@@ -64,6 +64,8 @@ package starlingtiles
 			
 			tileSystem.parallax = 0.6;
 			tileSystem.name = tileSprite.name;
+			tileSystem.tileWidth = 2048;
+			tileSystem.tileHeight = 1024;
 			tileSystem.init();
 			
 			tileSprite.view = tileSystem;
@@ -77,6 +79,8 @@ package starlingtiles
 			
 			tileSystem.parallax = 0.8;
 			tileSystem.name = tileSprite.name;
+			tileSystem.tileWidth = 2048;
+			tileSystem.tileHeight = 1024;
 			tileSystem.init();
 			
 			tileSprite.view = tileSystem;
@@ -89,6 +93,8 @@ package starlingtiles
 			tileSystem = new StarlingTileSystem(MovieClip(_level.getChildByName("tile_player_plane")), _hero);
 			
 			tileSystem.name = tileSprite.name;
+			tileSystem.tileWidth = 2048;
+			tileSystem.tileHeight = 1024;
 			tileSystem.init();
 			
 			tileSprite.view = tileSystem;
@@ -96,7 +102,7 @@ package starlingtiles
 			add(tileSprite);
 			
 			// setup camera to follow hero
-			view.setupCamera(_hero, new MathVector(640, 360), new Rectangle(0, 0, 5120, 1024), new MathVector(0.25, 0.15));
+			view.setupCamera(_hero, new MathVector(640, 360), new Rectangle(0, 0, 5000, 1024), new MathVector(0.25, 0.15));
 		}		
 		
 		override public function destroy():void {

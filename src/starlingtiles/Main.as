@@ -6,7 +6,7 @@ package starlingtiles {
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	
-	[SWF(backgroundColor="#FFFF00", frameRate="60", width="1280", height="720")]
+	[SWF(backgroundColor="#000000", frameRate="60", width="1280", height="720")]
 	
 	/**
 	 * @author Nick Pinkham
