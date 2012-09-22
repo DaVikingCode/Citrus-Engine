@@ -5,10 +5,15 @@ package starlingtiles
 	import com.citrusengine.core.StarlingState;
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.CitrusSprite;
+	import com.citrusengine.objects.NapePhysicsObject;
 	import com.citrusengine.objects.platformer.nape.*;
 	import com.citrusengine.physics.Nape;
 	import com.citrusengine.utils.ObjectMaker;
 	import com.citrusengine.view.starlingview.StarlingTileSystem;
+	
+	import starling.core.Starling;
+	import starling.display.Image;
+	import starling.textures.Texture;
 
 	import org.osflash.signals.Signal;
 
@@ -20,6 +25,12 @@ package starlingtiles
 	 */
 	public class StarlingTilesGameState extends StarlingState 
 	{
+		[Embed(source="../../embed/crate.png")]
+		private var _cratePng:Class;
+		
+		[Embed(source = "../../embed/hero_static.png")]
+		private var _heroPng:Class;
+		
 		public var lvlEnded:Signal;
 		public var restartLevel:Signal;
 		
@@ -73,6 +84,8 @@ package starlingtiles
 			add(tileSprite);
 			
 			
+			if (Starling.current.context.driverInfo.toLowerCase().search("software") < 0) {
+				
 			// add upper background
 			tileSprite = new CitrusSprite("tileUpperBackground", { x:0, y:0, parallax:0.8 } );
 			tileSystem = new StarlingTileSystem(MovieClip(_level.getChildByName("tile_upper_background")), _hero);
@@ -86,6 +99,10 @@ package starlingtiles
 			tileSprite.view = tileSystem;
 			tileSprite.group = 1;
 			add(tileSprite);
+			
+			}
+			
+			
 			
 			
 			// add player plane tiles via flash stage
@@ -103,6 +120,31 @@ package starlingtiles
 			
 			// setup camera to follow hero
 			view.setupCamera(_hero, new MathVector(640, 360), new Rectangle(0, 0, 5000, 1024), new MathVector(0.25, 0.15));
+			
+			// set view
+			var heroTexture:Texture = Texture.fromBitmap(new _heroPng());
+			var heroImage:Image = new Image(heroTexture);
+			_hero.view = heroImage;
+			
+			// check to see if software mode, if not drop a bunch of boxes
+			if (Starling.current.context.driverInfo.toLowerCase().search("software") < 0) {
+				var texture:Texture = Texture.fromBitmap(new  _cratePng());
+				var image:Image;
+				var physicObject:NapePhysicsObject;
+				for (var i:uint = 0; i < 50; i++ ) {
+					image = new Image(texture);
+					physicObject = new NapePhysicsObject(("physicobject" + i), { x:Math.random() * stage.stageWidth, y:Math.random() * 300, width:60, height:60, view:image } );
+					physicObject.group = 3;
+					add(physicObject);
+				}
+
+			} else {
+				var texture1:Texture = Texture.fromBitmap(new _cratePng());
+				var image1:Image = new Image(texture1);
+				var physicObject1:NapePhysicsObject = new NapePhysicsObject("physicobject", { x:Math.random() * stage.stageWidth, y:0, width:60, height:60, view:image1 } );
+				physicObject1.group = 3;
+				add(physicObject1);
+			}
 		}		
 		
 		override public function destroy():void {
