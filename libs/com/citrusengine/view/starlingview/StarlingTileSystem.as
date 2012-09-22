@@ -34,7 +34,7 @@ package com.citrusengine.view.starlingview {
 		public var parallax:Number = 1;
 		
 		// determine whether to use dynamic loading to preserve gpu ram, or not and preserve loading times during play
-		public var dynamicLoading:Boolean = true;
+		public var dynamicLoading:Boolean = false;
 		
 		// tile sizes
 		public var tileWidth:uint = 2048;
