@@ -1,6 +1,12 @@
 package com.citrusengine.objects.platformer.nape {
 
+	import nape.callbacks.CbType;
+	import nape.callbacks.InteractionCallback;
+	import nape.callbacks.InteractionListener;
+	import nape.callbacks.InteractionType;
+	import nape.callbacks.CbEvent;
 	import nape.geom.Vec2;
+	import nape.phys.Body;
 
 	import com.citrusengine.objects.NapePhysicsObject;
 
@@ -83,6 +89,14 @@ package com.citrusengine.objects.platformer.nape {
 		protected var _controlsEnabled:Boolean = true;
 		protected var _ducking:Boolean = false;
 		protected var _combinedGroundAngle:Number = 0;
+		
+		// interaction listeners
+		private var _beginContactListener:InteractionListener;
+		private var _endContactListener:InteractionListener;
+		
+		public static const HERO:CbType = new CbType();
+		
+		
 
 		public function Hero(name:String, params:Object = null) {
 
@@ -93,6 +107,17 @@ package com.citrusengine.objects.platformer.nape {
 			onTakeDamage = new Signal();
 			onAnimationChange = new Signal();
 		}
+		
+		override protected function createConstraint():void {
+			
+			super.createConstraint();
+			
+			_beginContactListener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, HERO, CbType.ANY_BODY, handleBeginContact);
+			_endContactListener = new InteractionListener(CbEvent.END, InteractionType.COLLISION, HERO, CbType.ANY_BODY, handleEndContact);
+			_body.cbTypes.add(HERO);
+			_body.space.listeners.add(_beginContactListener);
+			_body.space.listeners.add(_endContactListener);
+		}
 
 		override public function destroy():void {
 
@@ -100,6 +125,11 @@ package com.citrusengine.objects.platformer.nape {
 			onGiveDamage.removeAll();
 			onTakeDamage.removeAll();
 			onAnimationChange.removeAll();
+			
+			if (_beginContactListener) {
+				_beginContactListener.space = null;
+				_beginContactListener = null;
+			}
 
 			super.destroy();
 		}
@@ -179,16 +209,19 @@ package com.citrusengine.objects.platformer.nape {
 					//_fixture.SetFriction(_friction); //Add friction so that he stops running
 				}
 				
-				// && _onGround
-				if (_ce.input.justPressed(Keyboard.SPACE) && !_ducking)
+				//
+				if (_ce.input.justPressed(Keyboard.SPACE) && _onGround && !_ducking)
 				{
+					trace("jumping!");
 					velocity.y = -jumpHeight;
+					_onGround = false;
 					onJump.dispatch();
 				}
 				
-				// && !_onGround
-				if (_ce.input.isDown(Keyboard.SPACE) && velocity.y < 0)
+				//
+				if (_ce.input.isDown(Keyboard.SPACE) && !_onGround && velocity.y < 0)
 				{
+					trace("going up!", _onGround);
 					velocity.y -= jumpAcceleration;
 				}
 				
@@ -210,7 +243,7 @@ package com.citrusengine.objects.platformer.nape {
 				//update physics with new velocity
 				_body.velocity = velocity;
 			}
-			
+			trace(velocity.y);
 			//updateAnimation();
 		}
 		
@@ -225,6 +258,27 @@ package com.citrusengine.objects.platformer.nape {
 			super.createBody();
 			
 			_body.allowRotation = false;
+		}
+		
+		
+		override public function handleBeginContact(e:InteractionCallback):void {
+			
+			trace("------------------------------");
+			trace("begin contact:", e.int2.castBody.userData.myData);
+			var body2:Body = e.int2.castBody;
+			_groundContacts.push(body2);
+			trace("ground contacts:", _groundContacts.length);
+			var angle:Number = e.arbiters.at(0).collisionArbiter.normal.angle * 180 / Math.PI;
+			if ((45 < angle) && (angle < 135)) {
+				_onGround = true;
+			}
+		}
+		
+		override public function handleEndContact(e:InteractionCallback):void {
+			trace("****************************");
+			trace("end contact:", e.int2.castBody.userData.myData);
+			_groundContacts.splice(_groundContacts.indexOf(e.int2.castBody), 1);
+			trace("ground contacts:", _groundContacts.length);
 		}
 	}
 }

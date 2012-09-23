@@ -14,6 +14,8 @@ package starlingtiles
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.textures.Texture;
+	
+	import nape.geom.Vec2;
 
 	import org.osflash.signals.Signal;
 
@@ -61,6 +63,7 @@ package starlingtiles
 			var nape:Nape = new Nape("nape");
 			nape.visible = false; // -> to see the debug view!
 			add(nape);
+			nape.gravity = new Vec2(0, 210);
 			
 			// create objects from our level made with Flash Pro
 			ObjectMaker.FromMovieClip(_level);
