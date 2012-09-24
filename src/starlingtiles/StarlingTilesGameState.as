@@ -122,7 +122,7 @@ package starlingtiles
 			add(tileSprite);
 			
 			// setup camera to follow hero
-			view.setupCamera(_hero, new MathVector(640, 360), new Rectangle(0, 0, 5000, 1024), new MathVector(0.25, 0.15));
+			view.setupCamera(_hero, new MathVector(400, 300), new Rectangle(0, 0, 5000, 1024), new MathVector(0.25, 0.15));
 			
 			// set view
 			var heroTexture:Texture = Texture.fromBitmap(new _heroPng());

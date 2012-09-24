@@ -130,6 +130,11 @@ package com.citrusengine.objects.platformer.nape {
 				_beginContactListener.space = null;
 				_beginContactListener = null;
 			}
+			
+			if (_endContactListener) {
+				_endContactListener.space = null;
+				_endContactListener = null;
+			}
 
 			super.destroy();
 		}
@@ -186,13 +191,15 @@ package com.citrusengine.objects.platformer.nape {
 				
 				if (_ce.input.isDown(Keyboard.RIGHT)  && !_ducking)
 				{
-					velocity.addeq(getSlopeBasedMoveAngle());
+					//velocity.addeq(getSlopeBasedMoveAngle());
+					velocity.x += acceleration;
 					moveKeyPressed = true;
 				}
 				
 				if (_ce.input.isDown(Keyboard.LEFT) && !_ducking)
 				{
-					velocity.subeq(getSlopeBasedMoveAngle());
+					//velocity.subeq(getSlopeBasedMoveAngle());
+					velocity.x -= acceleration;
 					moveKeyPressed = true;
 				}
 				
@@ -212,7 +219,6 @@ package com.citrusengine.objects.platformer.nape {
 				//
 				if (_ce.input.justPressed(Keyboard.SPACE) && _onGround && !_ducking)
 				{
-					trace("jumping!");
 					velocity.y = -jumpHeight;
 					_onGround = false;
 					onJump.dispatch();
@@ -221,7 +227,6 @@ package com.citrusengine.objects.platformer.nape {
 				//
 				if (_ce.input.isDown(Keyboard.SPACE) && !_onGround && velocity.y < 0)
 				{
-					trace("going up!", _onGround);
 					velocity.y -= jumpAcceleration;
 				}
 				
@@ -243,7 +248,6 @@ package com.citrusengine.objects.platformer.nape {
 				//update physics with new velocity
 				_body.velocity = velocity;
 			}
-			trace(velocity.y);
 			//updateAnimation();
 		}
 		
