@@ -89,6 +89,10 @@ package com.citrusengine.objects
 			_y = value;
 		}
 		
+		public function get z():Number {
+			return 0;
+		}
+		
 		public function get width():Number
 		{
 			return _width;
@@ -107,6 +111,10 @@ package com.citrusengine.objects
 		public function set height(value:Number):void
 		{
 			_height = value;
+		}
+		
+		public function get depth():Number {
+			return 0;
 		}
 		
 		public function get parallax():Number

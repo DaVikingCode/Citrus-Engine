@@ -103,6 +103,11 @@ package com.citrusengine.physics {
 			return 0;
 		}
 		
+		public function get z():Number
+		{
+			return 0;
+		}
+		
 		public function get width():Number
 		{
 			return 0;
@@ -110,6 +115,10 @@ package com.citrusengine.physics {
 		
 		public function get height():Number
 		{
+			return 0;
+		}
+		
+		public function get depth():Number {
 			return 0;
 		}
 		

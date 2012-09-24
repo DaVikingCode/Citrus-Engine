@@ -63,11 +63,19 @@ package com.citrusengine.system.components {
 			_y = value;
 		}
 		
+		public function get z():Number {
+			return 0;
+		}
+		
 		public function get width():Number {
 			return 0;
 		}
 		
 		public function get height():Number {
+			return 0;
+		}
+		
+		public function get depth():Number {
 			return 0;
 		}
 

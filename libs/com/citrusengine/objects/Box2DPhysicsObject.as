@@ -152,6 +152,10 @@ package com.citrusengine.objects {
 				_body.SetTransform(pos, _body.GetAngle());
 			}
 		}
+		
+		public function get z():Number {
+			return 0;
+		}
 			
 		public function get parallax():Number
 		{
@@ -289,6 +293,10 @@ package com.citrusengine.objects {
 			{
 				trace("Warning: You cannot set " + this + " height after it has been created. Please set it in the constructor.");
 			}
+		}
+		
+		public function get depth():Number {
+			return 0;
 		}
 		
 		/**
