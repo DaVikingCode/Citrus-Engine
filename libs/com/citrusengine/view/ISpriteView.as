@@ -24,6 +24,16 @@ package com.citrusengine.view
 		function get y():Number;
 		
 		/**
+		 * The width of the object. 
+		 */
+		function get width():Number;
+		
+		/**
+		 * The height of the object. 
+		 */
+		function get height():Number;
+		
+		/**
 		 * The ratio at which the object scrolls in relation to the camera.
 		 */
 		function get parallax():Number;

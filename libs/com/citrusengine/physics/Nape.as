@@ -88,6 +88,14 @@ package com.citrusengine.physics {
 		public function get y():Number {
 			return 0;
 		}
+		
+		public function get width():Number {
+			return 0;
+		}
+		
+		public function get height():Number {
+			return 0;
+		}
 
 		public function get parallax():Number {
 			return 1;

@@ -62,6 +62,14 @@ package com.citrusengine.system.components {
 		public function set y(value:Number):void {
 			_y = value;
 		}
+		
+		public function get width():Number {
+			return 0;
+		}
+		
+		public function get height():Number {
+			return 0;
+		}
 
 		public function get rotation():Number {
 			return _rotation;
