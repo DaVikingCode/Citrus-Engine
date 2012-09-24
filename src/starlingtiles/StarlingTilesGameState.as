@@ -14,6 +14,7 @@ package starlingtiles
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.textures.Texture;
+	import starling.display.BlendMode;
 	
 	import nape.geom.Vec2;
 
@@ -80,6 +81,8 @@ package starlingtiles
 			tileSystem.name = tileSprite.name;
 			tileSystem.tileWidth = 2048;
 			tileSystem.tileHeight = 1024;
+			tileSystem.blendMode = BlendMode.NONE;
+			tileSystem.touchable = false;
 			tileSystem.init();
 			
 			tileSprite.view = tileSystem;
@@ -97,6 +100,7 @@ package starlingtiles
 			tileSystem.name = tileSprite.name;
 			tileSystem.tileWidth = 2048;
 			tileSystem.tileHeight = 1024;
+			tileSystem.touchable = false;
 			tileSystem.init();
 			
 			tileSprite.view = tileSystem;
@@ -115,6 +119,7 @@ package starlingtiles
 			tileSystem.name = tileSprite.name;
 			tileSystem.tileWidth = 2048;
 			tileSystem.tileHeight = 1024;
+			tileSystem.touchable = false;
 			tileSystem.init();
 			
 			tileSprite.view = tileSystem;
