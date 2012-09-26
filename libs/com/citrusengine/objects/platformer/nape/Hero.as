@@ -272,9 +272,11 @@ package com.citrusengine.objects.platformer.nape {
 			var body2:Body = e.int2.castBody;
 			_groundContacts.push(body2);
 			trace("ground contacts:", _groundContacts.length);
-			var angle:Number = e.arbiters.at(0).collisionArbiter.normal.angle * 180 / Math.PI;
-			if ((45 < angle) && (angle < 135)) {
-				_onGround = true;
+			if (e.arbiters.at(0).collisionArbiter) {
+				var angle:Number = e.arbiters.at(0).collisionArbiter.normal.angle * 180 / Math.PI;
+				if ((45 < angle) && (angle < 135)) {
+					_onGround = true;
+				}
 			}
 		}
 		
