@@ -189,48 +189,51 @@ package com.citrusengine.view.away3dview {
 
 		public function update(stateView:Away3DView):void {
 			
-			scaleX = _citrusObject.inverted ? -1 : 1;
-			// position = object position + (camera position * inverse parallax)
+			if (stateView.mode == "2D") {
 			
-			if (content is Box2DDebugArt) {
+				scaleX = _citrusObject.inverted ? -1 : 1;
+				// position = object position + (camera position * inverse parallax)
 				
-				(content as Box2DDebugArt).update();
-				
-				var box2dDebugArt:b2DebugDraw = (_ce.state as State).getChildByName("Box2D debug view") as b2DebugDraw;
-				
-				if (stateView.cameraTarget) {
+				if (content is Box2DDebugArt) {
 					
-					box2dDebugArt.x = stateView.container.x;
-					box2dDebugArt.y = stateView.container.y;
-				}
-				
-				box2dDebugArt.visible = _citrusObject.visible;
-				
-			} else if (content is NapeDebugArt) {
-				
-				(content as NapeDebugArt).update();
-				
-				var napeDebugArt:DisplayObject = (_ce.state as State).getChildByName("Nape debug view") as DisplayObject;
-				
-				if (stateView.cameraTarget) {
+					(content as Box2DDebugArt).update();
 					
-					napeDebugArt.x = stateView.container.x;
-					napeDebugArt.y = stateView.container.y;
+					var box2dDebugArt:b2DebugDraw = (_ce.state as State).getChildByName("Box2D debug view") as b2DebugDraw;
+					
+					if (stateView.cameraTarget) {
+						
+						box2dDebugArt.x = stateView.container.x;
+						box2dDebugArt.y = stateView.container.y;
+					}
+					
+					box2dDebugArt.visible = _citrusObject.visible;
+					
+				} else if (content is NapeDebugArt) {
+					
+					(content as NapeDebugArt).update();
+					
+					var napeDebugArt:DisplayObject = (_ce.state as State).getChildByName("Nape debug view") as DisplayObject;
+					
+					if (stateView.cameraTarget) {
+						
+						napeDebugArt.x = stateView.container.x;
+						napeDebugArt.y = stateView.container.y;
+					}
+					
+					napeDebugArt.visible = _citrusObject.visible;
+					
+				} else if (_physicsComponent) {
+	
+					x = _citrusObject.x - stateView.viewRoot.width * 0.5 + (-stateView.container.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
+					y = -1 * (_citrusObject.y - stateView.viewRoot.height * 0.5 + (-stateView.container.y * (1 - _citrusObject.parallax)) - _citrusObject.offsetY);
+					rotationZ = -_citrusObject.rotation;
+	
+				} else {
+					
+					x = _citrusObject.x - stateView.viewRoot.width * 0.5 + (-stateView.container.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
+					y = -1 * (_citrusObject.y - stateView.viewRoot.height * 0.5 + (-stateView.container.y * (1 - _citrusObject.parallax)) - _citrusObject.offsetY);
+					rotationZ = -_citrusObject.rotation;
 				}
-				
-				napeDebugArt.visible = _citrusObject.visible;
-				
-			} else if (_physicsComponent) {
-
-				x = _citrusObject.x - stateView.viewRoot.width * 0.5 + (-stateView.container.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
-				y = -1 * (_citrusObject.y - stateView.viewRoot.height * 0.5 + (-stateView.container.y * (1 - _citrusObject.parallax)) - _citrusObject.offsetY);
-				rotationZ = _citrusObject.rotation;
-
-			} else {
-				
-				x = _citrusObject.x - stateView.viewRoot.width * 0.5 + (-stateView.container.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
-				y = -1 * (_citrusObject.y - stateView.viewRoot.height * 0.5 + (-stateView.container.y * (1 - _citrusObject.parallax)) - _citrusObject.offsetY);
-				rotationZ = _citrusObject.rotation;
 			}
 
 			visible = _citrusObject.visible;

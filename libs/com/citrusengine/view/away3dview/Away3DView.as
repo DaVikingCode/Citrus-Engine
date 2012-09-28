@@ -29,9 +29,9 @@ package com.citrusengine.view.away3dview {
 		private var _container:ObjectContainer3D;
 
 		/**
-		 * The mode defines 2D or 3D physics / logics usage.
+		 * @param mode defines 2D or 3D physics / logics usage, default is 3D
 		 */
-		public function Away3DView(root:Sprite, mode:String) {
+		public function Away3DView(root:Sprite, mode:String = "3D") {
 
 			super(root, ISpriteView);
 
