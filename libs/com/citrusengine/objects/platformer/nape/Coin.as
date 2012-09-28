@@ -37,7 +37,7 @@ package com.citrusengine.objects.platformer.nape {
 			
 			super.handleBeginContact(interactionCallback);
 			
-			if (_collectorClass && interactionCallback.int2.castBody.userData is _collectorClass) {
+			if (_collectorClass && interactionCallback.int2.userData.myData is _collectorClass) {
 				kill = true;
 			}
 		}

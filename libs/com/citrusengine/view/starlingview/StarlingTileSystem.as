@@ -1,10 +1,6 @@
 package com.citrusengine.view.starlingview {
-
-	import flash.display.BitmapData;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
+	
 	import starling.display.Image;
-	import starling.display.QuadBatch;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -13,10 +9,12 @@ package com.citrusengine.view.starlingview {
 	import com.citrusengine.view.ISpriteView;
 
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.utils.Timer;
-	
 	
 	/**
 	 * @author Nick Pinkham
@@ -52,11 +50,6 @@ package com.citrusengine.view.starlingview {
 		
 		// test for maximum memory use
 		private var maxInRam:Number = 0;
-		
-		
-		
-		
-		
 		
 		
 		
@@ -100,9 +93,6 @@ package com.citrusengine.view.starlingview {
 				loadAll();
 			}
 		}
-		
-		
-		
 		
 		
 		/*
@@ -256,7 +246,6 @@ package com.citrusengine.view.starlingview {
 		}
 		
 		
-		
 		// loops through all tiles and loads into memory
 		public function loadAll():void {
 			
@@ -292,8 +281,6 @@ package com.citrusengine.view.starlingview {
 		}
 		
 		
-		
-		
 		public function destroy():void {
 			
 			_timer.removeEventListener(TimerEvent.TIMER, onTimer);
@@ -312,12 +299,6 @@ package com.citrusengine.view.starlingview {
 			_liveTiles.length = 0;
 			_liveTiles = null;
 		}
-		
-		
-		
-		
-		
-		
 		
 	}
 }

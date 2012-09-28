@@ -44,13 +44,17 @@ package com.citrusengine.view.away3dview {
 			
 			if (event.asset.assetType == AssetType.MESH) {
 				_mesh = event.asset as Mesh;
+				AssetLibrary.removeEventListener(AssetEvent.ASSET_COMPLETE, _onAssetComplete);
 
 			} else if (event.asset.assetType == AssetType.ANIMATION_SET) {
 				_animationSet = event.asset as VertexAnimationSet;
+				
 			}
 		}
 
 		private function _onResourceComplete(event:LoaderEvent):void {
+			
+			AssetLibrary.removeEventListener(LoaderEvent.RESOURCE_COMPLETE, _onResourceComplete);
 
 			var bitmapData:BitmapData = _Texture.bitmapData;
 			var material:TextureMaterial = new TextureMaterial(Cast.bitmapTexture(bitmapData));
