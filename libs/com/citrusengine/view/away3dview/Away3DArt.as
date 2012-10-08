@@ -3,11 +3,17 @@ package com.citrusengine.view.away3dview {
 	import Box2DAS.Dynamics.b2DebugDraw;
 
 	import away3d.containers.ObjectContainer3D;
+	import away3d.events.LoaderEvent;
+	import away3d.loaders.Loader3D;
+
+	import awayphysics.debug.AWPDebugDraw;
 
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.core.IState;
 	import com.citrusengine.core.State;
+	import com.citrusengine.objects.AwayPhysicsObject;
+	import com.citrusengine.objects.platformer.awayphysics.IPlatformer;
 	import com.citrusengine.physics.Box2D;
 	import com.citrusengine.physics.Nape;
 	import com.citrusengine.system.components.ViewComponent;
@@ -19,6 +25,8 @@ package com.citrusengine.view.away3dview {
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.net.URLRequest;
+	import flash.utils.getDefinitionByName;
 
 	/**
 	 * @author Aymeric
@@ -28,6 +36,7 @@ package com.citrusengine.view.away3dview {
 		public var content:ObjectContainer3D;
 		
 		public var loader:Loader;
+		public var loader3D:Loader3D;
 		
 		private var _ce:CitrusEngine;
 
@@ -120,22 +129,31 @@ package com.citrusengine.view.away3dview {
 
 				if (_view is String) {
 					// view property is a path to an image?
-					/*var classString:String = _view;
+					var classString:String = _view;
 					var suffix:String = classString.substring(classString.length - 4).toLowerCase();
-					if (suffix == ".swf" || suffix == ".png" || suffix == ".gif" || suffix == ".jpg") {
+					
+					if (suffix == ".obj") {
+						loader3D = new Loader3D();
+						addChild(loader3D);
+						loader.addEventListener(LoaderEvent.RESOURCE_COMPLETE, handle3DContentLoaded);
+						loader.addEventListener(LoaderEvent.LOAD_ERROR, handle3DContentIOError);
+						loader.load(new URLRequest(classString));
+					}
+					
+					/*if (suffix == ".swf" || suffix == ".png" || suffix == ".gif" || suffix == ".jpg") {
 						loader = new Loader();
 						addChild(loader);
 						loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleContentLoaded);
 						loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, handleContentIOError);
 						loader.load(new URLRequest(classString));
-					}
+					}*/
 					// view property is a fully qualified class name in string form. 
 					else {
 						var artClass:Class = getDefinitionByName(classString) as Class;
 						content = new artClass();
 						moveRegistrationPoint(_citrusObject.registration);
 						addChild(content);
-					}*/
+					}
 				} else if (_view is Class) {
 					// view property is a class reference
 					content = new citrusObject.view();
@@ -189,7 +207,36 @@ package com.citrusengine.view.away3dview {
 
 		public function update(stateView:Away3DView):void {
 			
-			if (stateView.mode == "2D") {
+			if (stateView.mode == "3D") {
+				
+				if (content is AwayPhysicsDebugArt) {
+					
+					(content as AwayPhysicsDebugArt).update();
+					
+					var awayPhysicsDebugArt:AWPDebugDraw = (content as AwayPhysicsDebugArt).debugDrawer;
+					
+					if (_citrusObject.visible)
+						awayPhysicsDebugArt.debugMode = AWPDebugDraw.DBG_DrawTransform + 1;
+					else
+						awayPhysicsDebugArt.debugMode = 0;
+					
+				} else {
+					
+					x = _citrusObject.x;
+					y = _citrusObject.y;
+					z = _citrusObject.z;
+					
+					var physicsObject3D:AwayPhysicsObject = _citrusObject as AwayPhysicsObject;
+					var platformerPhysicsObject3D:IPlatformer = (_citrusObject as AwayPhysicsObject) as IPlatformer;
+					
+					if (physicsObject3D && physicsObject3D.body)
+						rotateTo(physicsObject3D.body.rotation.x, physicsObject3D.body.rotation.y, physicsObject3D.body.rotation.z);
+					else if (physicsObject3D && platformerPhysicsObject3D.character)
+						rotateTo(platformerPhysicsObject3D.ghostObject.rotation.x, platformerPhysicsObject3D.ghostObject.rotation.y, platformerPhysicsObject3D.ghostObject.rotation.z);
+				}
+				
+				
+			} else if (stateView.mode == "2D") {
 			
 				scaleX = _citrusObject.inverted ? -1 : 1;
 				// position = object position + (camera position * inverse parallax)
@@ -261,10 +308,22 @@ package com.citrusengine.view.away3dview {
 
 			moveRegistrationPoint(_citrusObject.registration);
 		}
+		
+		private function handle3DContentLoaded(e:LoaderEvent):void {
+			
+			content = e.target.loader.content;
+			
+			//moveRegistrationPoint(_citrusObject.registration);
+		}
 
 		private function handleContentIOError(e:IOErrorEvent):void {
 			
 			throw new Error(e.text);
+		}
+		
+		private function handle3DContentIOError(e:LoaderEvent):void {
+			
+			throw new Error(e.message);
 		}
 	}
 }

@@ -33,10 +33,10 @@ package away3dbox2d {
 	 */
 	public class Away3DGameState extends State {
 
-		[Embed(source="/../embed/pknight/pknight3.png")]
+		[Embed(source="/../embed/3D/pknight3.png")]
 		public static var PKnightTexture3:Class;
 
-		[Embed(source="/../embed/pknight/pknight.md2", mimeType="application/octet-stream")]
+		[Embed(source="/../embed/3D/pknight.md2", mimeType="application/octet-stream")]
 		public static var PKnightModel:Class;
 
 		// navigation variables

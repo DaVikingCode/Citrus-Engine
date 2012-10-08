@@ -158,6 +158,7 @@ package com.citrusengine.objects.platformer.box2d
 			onGiveDamage.removeAll();
 			onTakeDamage.removeAll();
 			onAnimationChange.removeAll();
+			
 			super.destroy();
 		}
 		
@@ -454,7 +455,6 @@ package com.citrusengine.objects.platformer.box2d
 		{
 			var prevAnimation:String = _animation;
 			
-			var velocity:V2 = _body.GetLinearVelocity();
 			if (_hurt)
 			{
 				_animation = "hurt";

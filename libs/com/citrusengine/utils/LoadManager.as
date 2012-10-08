@@ -1,5 +1,7 @@
 package com.citrusengine.utils {
 
+	import away3d.loaders.Loader3D;
+
 	import starling.display.Sprite;
 
 	import org.osflash.signals.Signal;
@@ -76,6 +78,8 @@ package com.citrusengine.utils {
 		public function add(potentialLoader:*, recursionDepth:Number = 1):Boolean {
 			
 			var loader:Loader;
+			var loader3D:Loader3D;
+			//TODO : manage laoder 3D
 
 			if (potentialLoader is Loader || (potentialLoader is Sprite && potentialLoader.loader)) {
 				
