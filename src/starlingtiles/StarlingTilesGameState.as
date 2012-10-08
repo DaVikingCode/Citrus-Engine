@@ -10,11 +10,15 @@ package starlingtiles
 	import com.citrusengine.physics.Nape;
 	import com.citrusengine.utils.ObjectMaker;
 	import com.citrusengine.view.starlingview.StarlingTileSystem;
+	import com.citrusengine.view.starlingview.AnimationSequence;
+	import com.citrusengine.view.starlingview.StarlingArt;
+	import flash.display.Bitmap;
 	
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.textures.Texture;
 	import starling.display.BlendMode;
+	import starling.textures.TextureAtlas;
 	
 	import nape.geom.Vec2;
 
@@ -31,7 +35,13 @@ package starlingtiles
 		[Embed(source="../../embed/crate.png")]
 		private var _cratePng:Class;
 		
-		[Embed(source = "../../embed/hero_static.png")]
+		//[Embed(source = "../../embed/hero_static.png")]
+		//private var _heroPng:Class;
+		
+		[Embed(source="../../embed/buckshot_platforming.xml", mimeType = "application/octet-stream")]
+		private var _heroConfig:Class;
+		
+		[Embed(source="../../embed/buckshot_platforming_black.png")]
 		private var _heroPng:Class;
 		
 		public var lvlEnded:Signal;
@@ -69,8 +79,28 @@ package starlingtiles
 			// create objects from our level made with Flash Pro
 			ObjectMaker.FromMovieClip(_level);
 			
+			
+			// the hero view from sprite sheet
+			var heroBitmap:Bitmap = new _heroPng();
+			var heroTexture:Texture = Texture.fromBitmap(heroBitmap);
+			var xml:XML = XML(new _heroConfig());
+			var sTextureAtlas:TextureAtlas = new TextureAtlas(heroTexture, xml);
+			
 			// get hero from movieclip
 			_hero = Hero(getFirstObjectByType(Hero));
+			_hero.view = new AnimationSequence(sTextureAtlas, ["unarmed_walk", "unarmed_idle", "unarmed_jump", "hurt"], "unarmed_idle");
+			StarlingArt.setLoopAnimations(["unarmed_walk"]);
+			
+			// setup camera to follow hero
+			view.setupCamera(_hero, new MathVector(400, 300), new Rectangle(0, 0, 5000, 1024), new MathVector(0.25, 0.15));
+			
+			/*
+			// set view
+			var heroTexture:Texture = Texture.fromBitmap(new _heroPng());
+			var heroImage:Image = new Image(heroTexture);
+			_hero.view = heroImage;
+			*/
+			
 			
 			// movieclip on stage converted to tiles
 			// background
@@ -125,14 +155,6 @@ package starlingtiles
 			tileSprite.view = tileSystem;
 			tileSprite.group = 2;
 			add(tileSprite);
-			
-			// setup camera to follow hero
-			view.setupCamera(_hero, new MathVector(400, 300), new Rectangle(0, 0, 5000, 1024), new MathVector(0.25, 0.15));
-			
-			// set view
-			var heroTexture:Texture = Texture.fromBitmap(new _heroPng());
-			var heroImage:Image = new Image(heroTexture);
-			_hero.view = heroImage;
 			
 			// check to see if software mode, if not drop a bunch of boxes
 			if (Starling.current.context.driverInfo.toLowerCase().search("software") < 0) {

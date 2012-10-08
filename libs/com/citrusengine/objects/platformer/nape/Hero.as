@@ -249,6 +249,49 @@ package com.citrusengine.objects.platformer.nape {
 				_body.velocity = velocity;
 			}
 			//updateAnimation();
+			
+			
+			// update the animation
+			var prevAnimation:String = _animation;
+			
+			//var velocity:V2 = _body.GetLinearVelocity();
+			if (_hurt)
+			{
+				_animation = "unarmed_hurt";
+			}
+			else if (!_onGround)
+			{
+				_animation = "unarmed_jump";
+			}
+			else if (_ducking)
+			{
+				//_animation = "duck";
+			}
+			else
+			{
+				//var walkingSpeed:Number = getWalkingSpeed();
+				var walkingSpeed:Number = _body.velocity.x; // this won't work long term!
+				if (walkingSpeed < -acceleration)
+				{
+					_inverted = true;
+					_animation = "unarmed_walk";
+				}
+				else if (walkingSpeed > acceleration)
+				{
+					_inverted = false;
+					_animation = "unarmed_walk";
+				}
+				else
+				{
+					_animation = "unarmed_idle";
+				}
+			}
+			
+			if (prevAnimation != _animation)
+			{
+				onAnimationChange.dispatch();
+			}
+			
 		}
 		
 		protected function getSlopeBasedMoveAngle():Vec2 {

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:e36a748f372630e15a2cec3d11c055a2$ -->
+<TextureAtlas imagePath="buckshot_platforming.png">
+    <SubTexture name="hurt0001" x="2" y="422" width="220" height="103"/>
+    <SubTexture name="hurt0002" x="2" y="422" width="220" height="103"/>
+    <SubTexture name="hurt0003" x="2" y="422" width="220" height="103"/>
+    <SubTexture name="hurt0004" x="2" y="422" width="220" height="103"/>
+    <SubTexture name="hurt0005" x="224" y="317" width="220" height="103"/>
+    <SubTexture name="hurt0006" x="224" y="317" width="220" height="103"/>
+    <SubTexture name="ladderClimbDown0001" x="2" y="527" width="220" height="103"/>
+    <SubTexture name="ladderClimbDown0002" x="2" y="527" width="220" height="103"/>
+    <SubTexture name="ladderClimbDown0003" x="2" y="527" width="220" height="103"/>
+    <SubTexture name="ladderClimbDown0004" x="2" y="527" width="220" height="103"/>
+    <SubTexture name="ladderClimbDown0005" x="2" y="527" width="220" height="103"/>
+    <SubTexture name="ladderClimbDown0006" x="224" y="422" width="220" height="103"/>
+    <SubTexture name="ladderClimbDown0007" x="224" y="422" width="220" height="103"/>
+    <SubTexture name="ladderClimbDown0008" x="224" y="422" width="220" height="103"/>
+    <SubTexture name="ladderClimbDown0009" x="224" y="422" width="220" height="103"/>
+    <SubTexture name="ladderClimbDown0010" x="224" y="422" width="220" height="103"/>
+    <SubTexture name="ladderClimbUp0001" x="2" y="527" width="220" height="103"/>
+    <SubTexture name="ladderClimbUp0002" x="2" y="527" width="220" height="103"/>
+    <SubTexture name="ladderClimbUp0003" x="2" y="527" width="220" height="103"/>
+    <SubTexture name="ladderClimbUp0004" x="2" y="527" width="220" height="103"/>
+    <SubTexture name="ladderClimbUp0005" x="2" y="527" width="220" height="103"/>
+    <SubTexture name="ladderClimbUp0006" x="224" y="422" width="220" height="103"/>
+    <SubTexture name="ladderClimbUp0007" x="224" y="422" width="220" height="103"/>
+    <SubTexture name="ladderClimbUp0008" x="224" y="422" width="220" height="103"/>
+    <SubTexture name="ladderClimbUp0009" x="224" y="422" width="220" height="103"/>
+    <SubTexture name="ladderClimbUp0010" x="224" y="422" width="220" height="103"/>
+    <SubTexture name="ladderIdle" x="224" y="422" width="220" height="103"/>
+    <SubTexture name="shotgun_idle" x="2" y="107" width="220" height="103"/>
+    <SubTexture name="shotgun_jump" x="224" y="2" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080001" x="224" y="2" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080002" x="224" y="2" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080003" x="224" y="2" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080004" x="224" y="2" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080005" x="224" y="2" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080006" x="224" y="2" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080007" x="2" y="107" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080008" x="2" y="107" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080009" x="2" y="2" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080010" x="2" y="2" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080011" x="2" y="2" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080012" x="2" y="2" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080013" x="2" y="2" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080014" x="2" y="2" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080015" x="2" y="107" width="220" height="103"/>
+    <SubTexture name="shotgun_walk00080016" x="2" y="107" width="220" height="103"/>
+    <SubTexture name="unarmed_idle" x="2" y="317" width="220" height="103"/>
+    <SubTexture name="unarmed_jump" x="224" y="212" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0001" x="224" y="212" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0002" x="224" y="212" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0003" x="224" y="212" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0004" x="224" y="212" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0005" x="224" y="212" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0006" x="224" y="212" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0007" x="2" y="212" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0008" x="2" y="212" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0009" x="224" y="107" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0010" x="224" y="107" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0011" x="224" y="107" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0012" x="224" y="107" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0013" x="224" y="107" width="220" height="103"/>
+    <SubTexture name="unarmed_walk0014" x="224" y="107" width="220" height="103"/>
+</TextureAtlas>
