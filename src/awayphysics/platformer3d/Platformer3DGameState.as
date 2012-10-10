@@ -1,5 +1,6 @@
 package awayphysics.platformer3d {
 
+	import com.citrusengine.objects.AwayPhysicsObject;
 	import com.citrusengine.objects.platformer.awayphysics.Sensor;
 	import away3d.controllers.HoverController;
 	import away3d.debug.AwayStats;
@@ -54,8 +55,11 @@ package awayphysics.platformer3d {
 			var hero:Hero = new Hero("hero", {height:60, y:30, view:cube1});
 			add(hero);
 			
-			var sensor:Sensor = new Sensor("sensor", {z:150, y:100});
+			var sensor:Sensor = new Sensor("sensor", {z:150, y:50});
 			add(sensor);
+			
+			var object:AwayPhysicsObject = new AwayPhysicsObject("object", {z:100, y:300});
+			add(object);
 			
 			_cameraController = new HoverController((view as Away3DView).viewRoot.camera, null, 175, 20, 500);
 			

@@ -1,11 +1,11 @@
 package com.citrusengine.objects.platformer.awayphysics {
+
 	import awayphysics.data.AWPCollisionFlags;
 	import awayphysics.events.AWPEvent;
 
 	import com.citrusengine.objects.AwayPhysicsObject;
 
 	import org.osflash.signals.Signal;
-	
 	
 	/**
 	 * @author Aymeric
@@ -49,6 +49,7 @@ package com.citrusengine.objects.platformer.awayphysics {
 		override protected function createConstraint():void {
 			
 			_body.addEventListener(AWPEvent.COLLISION_ADDED, handleBeginContact);
+			
 			_body.collisionFlags |= AWPCollisionFlags.CF_NO_CONTACT_RESPONSE;
 		}
 		
