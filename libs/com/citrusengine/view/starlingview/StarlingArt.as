@@ -1,7 +1,5 @@
 package com.citrusengine.view.starlingview {
 
-	import Box2DAS.Dynamics.b2DebugDraw;
-
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -292,35 +290,37 @@ package com.citrusengine.view.starlingview {
 			
 			scaleX = _citrusObject.inverted ? -1 : 1;
 			// The position = object position + (camera position * inverse parallax)
+			
+			var physicsDebugArt:flash.display.DisplayObject;
 
 			if (content is Box2DDebugArt) {
 
 				// Box2D view is not on the Starling display list, but on the classical flash display list.
 				// So we need to move its view here, not in the StarlingView.
-				var box2dDebugArt:b2DebugDraw = (Starling.current.nativeStage.getChildAt(2) as b2DebugDraw);
-
+				physicsDebugArt = (Starling.current.nativeStage.getChildAt(2) as flash.display.DisplayObject);
+				
 				if (stateView.cameraTarget) {
 
-					box2dDebugArt.x = stateView.viewRoot.x;
-					box2dDebugArt.y = stateView.viewRoot.y;
+					physicsDebugArt.x = stateView.viewRoot.x;
+					physicsDebugArt.y = stateView.viewRoot.y;
 				}
 
-				box2dDebugArt.visible = _citrusObject.visible;
+				physicsDebugArt.visible = _citrusObject.visible;
 				
 			} else if (content is NapeDebugArt) {
 				
 				// Nape view is not on the Starling display list, but on the classical flash display list.
 				// So we need to move its view here, not in the StarlingView.
 				
-				var napeDebugArt:flash.display.DisplayObject = (Starling.current.nativeStage.getChildAt(2) as flash.display.DisplayObject);
+				physicsDebugArt = (Starling.current.nativeStage.getChildAt(2) as flash.display.DisplayObject);
 				
 				if (stateView.cameraTarget) {
 
-					napeDebugArt.x = stateView.viewRoot.x;
-					napeDebugArt.y = stateView.viewRoot.y;
+					physicsDebugArt.x = stateView.viewRoot.x;
+					physicsDebugArt.y = stateView.viewRoot.y;
 				}
 
-				napeDebugArt.visible = _citrusObject.visible;
+				physicsDebugArt.visible = _citrusObject.visible;
 				
 			} else if (_physicsComponent) {
 				
