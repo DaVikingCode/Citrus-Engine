@@ -5,6 +5,7 @@
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.core.IState;
+	import com.citrusengine.objects.AwayPhysicsObject;
 	import com.citrusengine.objects.CitrusSprite;
 	import com.citrusengine.utils.tmx.TmxMap;
 	import com.citrusengine.utils.tmx.TmxObject;
@@ -374,6 +375,51 @@
 			}
 			
 			return array;
+		}
+		
+		public static function FromCadet3DEditor(levelData:XML):Array {
+			
+			var ce:CitrusEngine = CitrusEngine.getInstance();
+			
+			var objects:Array = [];
+			
+			var x:Number, y:Number, z:Number;
+			var width:Number, height:Number, depth:Number;
+
+			for each (var root:XML in levelData.children()) {
+
+				for each (var parent:XML in root.children()) {
+					//trace(parent.@name);
+					if (parent.@name == "Cube") {
+
+						var transform:Array = parent.@transform.split(",");
+
+						x = transform[12];
+						y = transform[13];
+						z = transform[14];
+
+						trace(parent.@name, x, y, z);
+
+						for each (var child:XML in parent.children()) {
+
+							for each (var finalElement:XML in child.children()) {
+								
+								width = finalElement.@width;
+								height = finalElement.@height;
+								depth = finalElement.@depth;
+								
+								trace(finalElement.@name, width, height, depth);
+								
+								var cube:AwayPhysicsObject = new AwayPhysicsObject("cube", {x:x, y:y, z:z, width:width, height:height, depth:depth});
+								ce.state.add(cube);
+							}
+						}
+
+					}
+				}
+			}
+			
+			return objects;
 		}
 		
 		private static function Replace(str:String, fnd:String, rpl:String):String{

@@ -98,6 +98,20 @@ package awayphysics.car {
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, _keyDownHandler);
 			stage.addEventListener(KeyboardEvent.KEY_UP, _keyUpHandler);
 		}
+		
+		// Make sure and call this override to specify Away3D view.
+		override protected function createView():CitrusView {
+
+			return new Away3DView(this);
+		}
+
+		override public function destroy():void {
+
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, _keyDownHandler);
+			stage.removeEventListener(KeyboardEvent.KEY_UP, _keyUpHandler);
+
+			super.destroy();
+		}
 
 		private function _onSceneResourceComplete(event:LoaderEvent):void {
 
@@ -197,20 +211,6 @@ package awayphysics.car {
 			carShape.addChildShape(boxShape2, new Vector3D(0, 150, -30), new Vector3D());
 
 			return carShape;
-		}
-
-		// Make sure and call this override to specify Away3D view.
-		override protected function createView():CitrusView {
-
-			return new Away3DView(this);
-		}
-
-		override public function destroy():void {
-
-			stage.removeEventListener(KeyboardEvent.KEY_DOWN, _keyDownHandler);
-			stage.removeEventListener(KeyboardEvent.KEY_UP, _keyUpHandler);
-
-			super.destroy();
 		}
 
 		override public function update(timeDelta:Number):void {

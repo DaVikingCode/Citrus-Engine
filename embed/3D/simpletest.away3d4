@@ -1,0 +1,32 @@
+<cadet:CadetScene x:id="0" timeScale="1" framerate="30" name="Component" xmlns:cadet="www.unwrong.com/cadet/1.0.0" xmlns:x="org.bonesframework.core.serialization.Serializer" xmlns:bones="www.bonesframwork.org/bones/1.0.0" xmlns:cadetAway3D4="www.unwrong.com/cadetAway3D4/1.0.0" xmlns:ns0="cadetAway3D4.components.cameras" xmlns:ns1="cadetAway3D4.components.materials" xmlns:ns2="cadetAway3D4.components.lights" xmlns:ns3="cadetAway3D4.components.geom">
+  <bones:ArrayCollection x:name="children" x:id="1">
+    <cadetAway3D4:RendererAway3D x:name="0" x:id="2" name="Away3D 4 Renderer">
+      <ns0:CameraComponent x:name="cameraComponent" x:id="3" name="Camera" transform="0.8768106698989868,-1.862645149230957e-9,0.48083576560020447,0,-0.2578573226928711,0.8440471291542053,0.4702063798904419,0,-0.40584805607795715,-0.5362690091133118,0.7400695085525513,0,431.6740417480469,445.2362365722656,-854.9461059570313,1">
+        <bones:ArrayCollection x:name="children" x:id="4"/>
+      </ns0:CameraComponent>
+    </cadetAway3D4:RendererAway3D>
+    <ns1:ColorMaterialComponent x:name="1" x:id="5" specularStrength="1" color="12105912" depthCompareMode="less" name="Grey Material" gloss="50"/>
+    <ns2:DirectionalLightComponent x:name="2" x:id="6" specular="1" color="16777215" ambient="0.1" diffuse="1" name="Directional Light" transform="0.9063077569007874,0,-0.4226183295249939,0,0.3830223083496094,0.42261824011802673,0.8213937878608704,0,0.17860621213912964,-0.9063078165054321,0.3830221891403198,0,0,0,0,1" ambientColor="16777215">
+      <bones:ArrayCollection x:name="children" x:id="7"/>
+    </ns2:DirectionalLightComponent>
+    <cadetAway3D4:MeshComponent x:name="3" x:id="8" name="PlaneMesh" transform="1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1">
+      <x:Ref x:name="materialComponent" x:id="5"/>
+      <bones:ArrayCollection x:name="children" x:id="9"/>
+      <ns3:PlaneGeometryComponent x:name="geometryComponent" x:id="10" height="1000" segmentsH="2" name="Plane Geometry" segmentsW="2" width="1000"/>
+    </cadetAway3D4:MeshComponent>
+    <x:Ref x:name="4" x:id="10"/>
+    <x:Ref x:name="5" x:id="3"/>
+    <ns1:ColorMaterialComponent x:name="6" x:id="11" specularStrength="1" color="13421772" depthCompareMode="less" name="Default Primitive Material" gloss="50"/>
+    <cadetAway3D4:MeshComponent x:name="7" x:id="12" name="Cube" transform="1,0,0,0,0,1,0,0,0,0,1,0,-58.91594696044922,90.4260025024414,-107.36917877197266,1">
+      <x:Ref x:name="materialComponent" x:id="11"/>
+      <bones:ArrayCollection x:name="children" x:id="13">
+        <ns3:CubeGeometryComponent x:name="0" x:id="14" height="180.85" segmentsH="1" depth="180.85" tile6="1" segmentsD="1" name="titi" segmentsW="1" width="180.85"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="14"/>
+    </cadetAway3D4:MeshComponent>
+  </bones:ArrayCollection>
+  <bones:DependencyManager x:name="dependencyManager" x:id="15">
+    <bones:ArrayCollection x:name="dependencyNodes" x:id="16"/>
+  </bones:DependencyManager>
+  <Object x:name="userData" x:id="17"/>
+</cadet:CadetScene>
