@@ -293,25 +293,10 @@ package com.citrusengine.view.starlingview {
 			
 			var physicsDebugArt:flash.display.DisplayObject;
 
-			if (content is Box2DDebugArt) {
+			if (content is Box2DDebugArt || content is NapeDebugArt) {
 
-				// Box2D view is not on the Starling display list, but on the classical flash display list.
-				// So we need to move its view here, not in the StarlingView.
-				physicsDebugArt = (Starling.current.nativeStage.getChildAt(2) as flash.display.DisplayObject);
-				
-				if (stateView.cameraTarget) {
-
-					physicsDebugArt.x = stateView.viewRoot.x;
-					physicsDebugArt.y = stateView.viewRoot.y;
-				}
-
-				physicsDebugArt.visible = _citrusObject.visible;
-				
-			} else if (content is NapeDebugArt) {
-				
-				// Nape view is not on the Starling display list, but on the classical flash display list.
-				// So we need to move its view here, not in the StarlingView.
-				
+				// Box2D & Nape debug views are not on the Starling display list, but on the classical flash display list.
+				// So we need to move their views here, not in the StarlingView.
 				physicsDebugArt = (Starling.current.nativeStage.getChildAt(2) as flash.display.DisplayObject);
 				
 				if (stateView.cameraTarget) {

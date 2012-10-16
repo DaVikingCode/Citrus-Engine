@@ -11,7 +11,7 @@ package com.citrusengine.view.away3dview {
 	/**
 	 * @author Aymeric
 	 */
-	public class Box2DDebugArt extends ObjectContainer3D {
+	public class Box2DDebugArt extends ObjectContainer3D implements IDebugView {
 		
 		private var _ce:CitrusEngine;
 
@@ -28,7 +28,7 @@ package com.citrusengine.view.away3dview {
 				_box2D = _ce.state.getFirstObjectByType(Box2D) as Box2D;
 			
 			_debugDrawer = new b2DebugDraw();
-			_debugDrawer.name = "Box2D debug view";
+			_debugDrawer.name = "debug view";
 			(_ce.state as State).addChild(_debugDrawer);
 			_debugDrawer.world = _box2D.world;
 			_debugDrawer.scale = _box2D.scale;

@@ -11,7 +11,7 @@ package com.citrusengine.view.away3dview {
 	/**
 	 * @author Aymeric 
 	 */
-	public class NapeDebugArt extends ObjectContainer3D {
+	public class NapeDebugArt extends ObjectContainer3D implements IDebugView {
 		
 		private var _ce:CitrusEngine;
 		
@@ -28,7 +28,7 @@ package com.citrusengine.view.away3dview {
 				_nape = _ce.state.getFirstObjectByType(Nape) as Nape;
 			
 			_debugDrawer = new ShapeDebug(_ce.stage.stageWidth, _ce.stage.stageHeight);
-			_debugDrawer.display.name = "Nape debug view";
+			_debugDrawer.display.name = "debug view";
 			(_ce.state as State).addChild(_debugDrawer.display);
 		}
 		

@@ -1,7 +1,5 @@
 package com.citrusengine.view.away3dview {
 
-	import Box2DAS.Dynamics.b2DebugDraw;
-
 	import away3d.containers.ObjectContainer3D;
 	import away3d.events.LoaderEvent;
 	import away3d.loaders.Loader3D;
@@ -241,33 +239,21 @@ package com.citrusengine.view.away3dview {
 				scaleX = _citrusObject.inverted ? -1 : 1;
 				// position = object position + (camera position * inverse parallax)
 				
-				if (content is Box2DDebugArt) {
+				var physicsDebugArt:DisplayObject;
+				
+				if (content is IDebugView) {
 					
-					(content as Box2DDebugArt).update();
+					(content as IDebugView).update();
 					
-					var box2dDebugArt:b2DebugDraw = (_ce.state as State).getChildByName("Box2D debug view") as b2DebugDraw;
-					
-					if (stateView.cameraTarget) {
-						
-						box2dDebugArt.x = stateView.container.x;
-						box2dDebugArt.y = stateView.container.y;
-					}
-					
-					box2dDebugArt.visible = _citrusObject.visible;
-					
-				} else if (content is NapeDebugArt) {
-					
-					(content as NapeDebugArt).update();
-					
-					var napeDebugArt:DisplayObject = (_ce.state as State).getChildByName("Nape debug view") as DisplayObject;
+					physicsDebugArt = (_ce.state as State).getChildByName("debug view") as DisplayObject;
 					
 					if (stateView.cameraTarget) {
 						
-						napeDebugArt.x = stateView.container.x;
-						napeDebugArt.y = stateView.container.y;
+						physicsDebugArt.x = stateView.container.x;
+						physicsDebugArt.y = stateView.container.y;
 					}
 					
-					napeDebugArt.visible = _citrusObject.visible;
+					physicsDebugArt.visible = _citrusObject.visible;
 					
 				} else if (_physicsComponent) {
 	
