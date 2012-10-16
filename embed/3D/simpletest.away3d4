@@ -1,32 +1,140 @@
-<cadet:CadetScene x:id="0" timeScale="1" framerate="30" name="Component" xmlns:cadet="www.unwrong.com/cadet/1.0.0" xmlns:x="org.bonesframework.core.serialization.Serializer" xmlns:bones="www.bonesframwork.org/bones/1.0.0" xmlns:cadetAway3D4="www.unwrong.com/cadetAway3D4/1.0.0" xmlns:ns0="cadetAway3D4.components.cameras" xmlns:ns1="cadetAway3D4.components.materials" xmlns:ns2="cadetAway3D4.components.lights" xmlns:ns3="cadetAway3D4.components.geom">
+<cadet:CadetScene x:id="0" framerate="30" name="Component" timeScale="1" xmlns:cadet="www.unwrong.com/cadet/1.0.0" xmlns:x="org.bonesframework.core.serialization.Serializer" xmlns:bones="www.bonesframwork.org/bones/1.0.0" xmlns:cadetAway3D4="www.unwrong.com/cadetAway3D4/1.0.0" xmlns:ns0="cadetAway3D4.components.cameras" xmlns:ns1="cadetAway3D4.components.materials" xmlns:ns2="cadetAway3D4.components.geom" xmlns:ns3="cadetAway3D4.components.lights">
   <bones:ArrayCollection x:name="children" x:id="1">
     <cadetAway3D4:RendererAway3D x:name="0" x:id="2" name="Away3D 4 Renderer">
-      <ns0:CameraComponent x:name="cameraComponent" x:id="3" name="Camera" transform="0.8768106698989868,-1.862645149230957e-9,0.48083576560020447,0,-0.2578573226928711,0.8440471291542053,0.4702063798904419,0,-0.40584805607795715,-0.5362690091133118,0.7400695085525513,0,431.6740417480469,445.2362365722656,-854.9461059570313,1">
+      <ns0:CameraComponent x:name="cameraComponent" x:id="3" transform="-0.22511957585811615,-8.76647945347031e-8,0.9743311405181885,0,-0.6352310180664063,0.7582480311393738,-0.14677028357982635,0,-0.738784670829773,-0.6519662141799927,-0.17069652676582336,0,867.9591064453125,578.1322631835938,167.0931396484375,1" name="Camera">
         <bones:ArrayCollection x:name="children" x:id="4"/>
       </ns0:CameraComponent>
     </cadetAway3D4:RendererAway3D>
-    <ns1:ColorMaterialComponent x:name="1" x:id="5" specularStrength="1" color="12105912" depthCompareMode="less" name="Grey Material" gloss="50"/>
-    <ns2:DirectionalLightComponent x:name="2" x:id="6" specular="1" color="16777215" ambient="0.1" diffuse="1" name="Directional Light" transform="0.9063077569007874,0,-0.4226183295249939,0,0.3830223083496094,0.42261824011802673,0.8213937878608704,0,0.17860621213912964,-0.9063078165054321,0.3830221891403198,0,0,0,0,1" ambientColor="16777215">
-      <bones:ArrayCollection x:name="children" x:id="7"/>
-    </ns2:DirectionalLightComponent>
-    <cadetAway3D4:MeshComponent x:name="3" x:id="8" name="PlaneMesh" transform="1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1">
-      <x:Ref x:name="materialComponent" x:id="5"/>
-      <bones:ArrayCollection x:name="children" x:id="9"/>
-      <ns3:PlaneGeometryComponent x:name="geometryComponent" x:id="10" height="1000" segmentsH="2" name="Plane Geometry" segmentsW="2" width="1000"/>
-    </cadetAway3D4:MeshComponent>
-    <x:Ref x:name="4" x:id="10"/>
-    <x:Ref x:name="5" x:id="3"/>
-    <ns1:ColorMaterialComponent x:name="6" x:id="11" specularStrength="1" color="13421772" depthCompareMode="less" name="Default Primitive Material" gloss="50"/>
-    <cadetAway3D4:MeshComponent x:name="7" x:id="12" name="Cube" transform="1,0,0,0,0,1,0,0,0,0,1,0,-58.91594696044922,90.4260025024414,-107.36917877197266,1">
-      <x:Ref x:name="materialComponent" x:id="11"/>
-      <bones:ArrayCollection x:name="children" x:id="13">
-        <ns3:CubeGeometryComponent x:name="0" x:id="14" height="180.85" segmentsH="1" depth="180.85" tile6="1" segmentsD="1" name="titi" segmentsW="1" width="180.85"/>
+    <ns1:ColorMaterialComponent x:name="1" x:id="5" gloss="50" specularStrength="1" color="12105912" name="Grey Material" depthCompareMode="less"/>
+    <cadetAway3D4:MeshComponent x:name="2" x:id="6" transform="1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1" name="Plane">
+      <ns1:ColorMaterialComponent x:name="materialComponent" x:id="7" gloss="50" specularStrength="1" color="13421772" name="Default Primitive Material" depthCompareMode="less"/>
+      <bones:ArrayCollection x:name="children" x:id="8">
+        <ns2:PlaneGeometryComponent x:name="0" x:id="9" height="1000" segmentsH="1" segmentsW="1" name="a platform" width="1000"/>
       </bones:ArrayCollection>
-      <x:Ref x:name="geometryComponent" x:id="14"/>
+      <x:Ref x:name="geometryComponent" x:id="9"/>
+    </cadetAway3D4:MeshComponent>
+    <ns3:DirectionalLightComponent x:name="3" x:id="10" color="16777215" specular="1" ambient="0.1" transform="0.9063077569007874,0,-0.4226183295249939,0,0.3830223083496094,0.42261824011802673,0.8213937878608704,0,0.17860621213912964,-0.9063078165054321,0.3830221891403198,0,0,0,0,1" ambientColor="16777215" diffuse="1" name="Directional Light">
+      <bones:ArrayCollection x:name="children" x:id="11"/>
+    </ns3:DirectionalLightComponent>
+    <x:Ref x:name="4" x:id="3"/>
+    <ns1:ColorMaterialComponent x:name="5" x:id="12" gloss="50" specularStrength="1" color="13421772" name="Default Primitive Material" depthCompareMode="less"/>
+    <cadetAway3D4:MeshComponent x:name="6" x:id="13" transform="1,0,0,0,0,1,0,0,0,0,1,0,-58.91594696044922,146.62379455566406,-32.241188049316406,1" name="Cube">
+      <x:Ref x:name="materialComponent" x:id="12"/>
+      <bones:ArrayCollection x:name="children" x:id="14">
+        <ns2:CubeGeometryComponent x:name="0" x:id="15" height="180.85" segmentsH="1" tile6="1" depth="180.85" segmentsW="1" segmentsD="1" name="a cube" width="180.85"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="15"/>
+    </cadetAway3D4:MeshComponent>
+    <x:Ref x:name="7" x:id="7"/>
+    <cadetAway3D4:MeshComponent x:name="8" x:id="16" transform="1,0,0,0,0,1,0,0,0,0,1,0,-140.8660888671875,340.4476318359375,-54.04615783691406,1" name="Sphere">
+      <x:Ref x:name="materialComponent" x:id="7"/>
+      <bones:ArrayCollection x:name="children" x:id="17">
+        <ns2:SphereGeometryComponent x:name="0" x:id="18" segmentsH="12" segmentsW="16" radius="84.13898408877864" name="a sphere"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="18"/>
+    </cadetAway3D4:MeshComponent>
+    <ns1:ColorMaterialComponent x:name="9" x:id="19" gloss="50" specularStrength="1" color="13421772" name="Default Primitive Material" depthCompareMode="less"/>
+    <cadetAway3D4:MeshComponent x:name="10" x:id="20" transform="1,0,0,0,0,1,0,0,0,0,1,0,151.02638244628906,146.50900268554688,127.5979995727539,1" name="Sphere">
+      <x:Ref x:name="materialComponent" x:id="19"/>
+      <bones:ArrayCollection x:name="children" x:id="21">
+        <ns2:SphereGeometryComponent x:name="0" x:id="22" segmentsH="12" segmentsW="16" radius="52.35" name="Sphere Geometry"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="22"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="11" x:id="23" transform="1,0,0,0,0,1,0,0,0,0,1,0,164.13088989257813,348.98486328125,102.31562805175781,1" name="Cube">
+      <x:Ref x:name="materialComponent" x:id="19"/>
+      <bones:ArrayCollection x:name="children" x:id="24">
+        <ns2:CubeGeometryComponent x:name="0" x:id="25" height="76.87" segmentsH="1" tile6="1" depth="76.87" segmentsW="1" segmentsD="1" name="Cube Geometry" width="76.87064711138314"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="25"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="12" x:id="26" transform="1,0,0,0,0,1,0,0,0,0,1,0,-161.5980987548828,37.646751403808594,291.46575927734375,1" name="Cube">
+      <x:Ref x:name="materialComponent" x:id="19"/>
+      <bones:ArrayCollection x:name="children" x:id="27">
+        <ns2:CubeGeometryComponent x:name="0" x:id="28" height="75.29" segmentsH="1" tile6="1" depth="75.29" segmentsW="1" segmentsD="1" name="Cube Geometry" width="75.29350445797198"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="28"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="13" x:id="29" transform="1,0,0,0,0,1,0,0,0,0,1,0,-10.505144119262695,181.75933837890625,69.79844665527344,1" name="Cube">
+      <x:Ref x:name="materialComponent" x:id="19"/>
+      <bones:ArrayCollection x:name="children" x:id="30">
+        <ns2:CubeGeometryComponent x:name="0" x:id="31" height="66.29" segmentsH="1" tile6="1" depth="66.29" segmentsW="1" segmentsD="1" name="Cube Geometry" width="66.29740645095558"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="31"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="14" x:id="32" transform="1,0,0,0,0,1,0,0,0,0,1,0,-393.7727966308594,113.91818237304688,-41.75886917114258,1" name="Cube">
+      <x:Ref x:name="materialComponent" x:id="19"/>
+      <bones:ArrayCollection x:name="children" x:id="33">
+        <ns2:CubeGeometryComponent x:name="0" x:id="34" height="84.85" segmentsH="1" tile6="1" depth="84.85" segmentsW="1" segmentsD="1" name="Cube Geometry" width="84.85060333420417"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="34"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="15" x:id="35" transform="1,0,0,0,0,1,0,0,0,0,1,0,110.92161560058594,25.127405166625977,230.1426239013672,1" name="Cube">
+      <x:Ref x:name="materialComponent" x:id="12"/>
+      <bones:ArrayCollection x:name="children" x:id="36">
+        <ns2:CubeGeometryComponent x:name="0" x:id="37" height="50.25" segmentsH="1" tile6="1" depth="50.25" segmentsW="1" segmentsD="1" name="Cube Geometry" width="50.25481013821924"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="37"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="16" x:id="38" transform="1,0,0,0,0,1,0,0,0,0,1,0,156.6885223388672,99.52238464355469,51.9654655456543,1" name="Cube">
+      <x:Ref x:name="materialComponent" x:id="19"/>
+      <bones:ArrayCollection x:name="children" x:id="39">
+        <ns2:CubeGeometryComponent x:name="0" x:id="40" height="49.76" segmentsH="1" tile6="1" depth="49.76" segmentsW="1" segmentsD="1" name="Cube Geometry" width="49.76054139091827"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="40"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="17" x:id="41" transform="1,0,0,0,0,1,0,0,0,0,1,0,-241.41665649414063,106.39049530029297,-15.305731773376465,1" name="Sphere">
+      <x:Ref x:name="materialComponent" x:id="19"/>
+      <bones:ArrayCollection x:name="children" x:id="42">
+        <ns2:SphereGeometryComponent x:name="0" x:id="43" segmentsH="12" segmentsW="16" radius="81.08778158664182" name="Sphere Geometry"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="43"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="18" x:id="44" transform="1,0,0,0,0,1,0,0,0,0,1,0,240.3887176513672,66.32697296142578,28.3767147064209,1" name="Sphere">
+      <x:Ref x:name="materialComponent" x:id="19"/>
+      <bones:ArrayCollection x:name="children" x:id="45">
+        <ns2:SphereGeometryComponent x:name="0" x:id="46" segmentsH="12" segmentsW="16" radius="42.73389288130251" name="Sphere Geometry"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="46"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="19" x:id="47" transform="1,0,0,0,0,1,0,0,0,0,1,0,77.10282897949219,82.25804901123047,-173.88815307617188,1" name="Sphere">
+      <x:Ref x:name="materialComponent" x:id="19"/>
+      <bones:ArrayCollection x:name="children" x:id="48">
+        <ns2:SphereGeometryComponent x:name="0" x:id="49" segmentsH="12" segmentsW="16" radius="44.53863475379832" name="Sphere Geometry"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="49"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="20" x:id="50" transform="1,0,0,0,0,1,0,0,0,0,1,0,-8.887575149536133,77.42305755615234,325.1551513671875,1" name="Sphere">
+      <x:Ref x:name="materialComponent" x:id="19"/>
+      <bones:ArrayCollection x:name="children" x:id="51">
+        <ns2:SphereGeometryComponent x:name="0" x:id="52" segmentsH="12" segmentsW="16" radius="26.87288819730761" name="Sphere Geometry"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="52"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="21" x:id="53" transform="1,0,0,0,0,1,0,0,0,0,1,0,-111.85294342041016,150.3166961669922,314.55419921875,1" name="Sphere">
+      <x:Ref x:name="materialComponent" x:id="19"/>
+      <bones:ArrayCollection x:name="children" x:id="54">
+        <ns2:SphereGeometryComponent x:name="0" x:id="55" segmentsH="12" segmentsW="16" radius="36.59617847826625" name="Sphere Geometry"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="55"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="22" x:id="56" transform="1,0,0,0,0,1,0,0,0,0,1,0,194.72483825683594,66.20823669433594,249.91229248046875,1" name="Sphere">
+      <x:Ref x:name="materialComponent" x:id="19"/>
+      <bones:ArrayCollection x:name="children" x:id="57">
+        <ns2:SphereGeometryComponent x:name="0" x:id="58" segmentsH="12" segmentsW="16" radius="34.06102262376309" name="Sphere Geometry"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="58"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="23" x:id="59" transform="1,0,0,0,0,1,0,0,0,0,1,0,153.58782958984375,59.29662322998047,139.8775634765625,1" name="Sphere">
+      <x:Ref x:name="materialComponent" x:id="19"/>
+      <bones:ArrayCollection x:name="children" x:id="60">
+        <ns2:SphereGeometryComponent x:name="0" x:id="61" segmentsH="12" segmentsW="16" radius="27.704758141615848" name="Sphere Geometry"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="geometryComponent" x:id="61"/>
     </cadetAway3D4:MeshComponent>
   </bones:ArrayCollection>
-  <bones:DependencyManager x:name="dependencyManager" x:id="15">
-    <bones:ArrayCollection x:name="dependencyNodes" x:id="16"/>
+  <Object x:name="userData" x:id="62"/>
+  <bones:DependencyManager x:name="dependencyManager" x:id="63">
+    <bones:ArrayCollection x:name="dependencyNodes" x:id="64"/>
   </bones:DependencyManager>
-  <Object x:name="userData" x:id="17"/>
 </cadet:CadetScene>

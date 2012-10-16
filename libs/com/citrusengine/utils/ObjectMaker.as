@@ -1,5 +1,11 @@
 ﻿package com.citrusengine.utils {
 
+	import away3d.primitives.SphereGeometry;
+	import away3d.primitives.CubeGeometry;
+	import away3d.materials.ColorMaterial;
+	import away3d.primitives.PlaneGeometry;
+	import away3d.entities.Mesh;
+
 	import starling.display.Image;
 
 	import com.citrusengine.core.CitrusEngine;
@@ -7,6 +13,7 @@
 	import com.citrusengine.core.IState;
 	import com.citrusengine.objects.AwayPhysicsObject;
 	import com.citrusengine.objects.CitrusSprite;
+	import com.citrusengine.objects.platformer.awayphysics.Platform;
 	import com.citrusengine.utils.tmx.TmxMap;
 	import com.citrusengine.utils.tmx.TmxObject;
 	import com.citrusengine.utils.tmx.TmxObjectGroup;
@@ -377,47 +384,81 @@
 			return array;
 		}
 		
-		public static function FromCadet3DEditor(levelData:XML):Array {
+		/**
+		 * The Citrus Engine supports <a href="http://unwrong.com/cadet">the Cadet Editor 3D</a>.
+		 * <p>It supports physics objects creation (Plane, Cube, Sphere).</p>
+		 */
+		public static function FromCadetEditor3D(levelData:XML, addToCurrentState:Boolean = true):Array {
 			
 			var ce:CitrusEngine = CitrusEngine.getInstance();
 			
+			var params:Object;
+			
 			var objects:Array = [];
 			
+			var type:String;
 			var x:Number, y:Number, z:Number;
 			var width:Number, height:Number, depth:Number;
+			var radius:Number;
+			
+			var object:AwayPhysicsObject;
+			var mesh:Mesh;
 
 			for each (var root:XML in levelData.children()) {
-
 				for each (var parent:XML in root.children()) {
-					//trace(parent.@name);
-					if (parent.@name == "Cube") {
+					
+					type = parent.@name;
+					
+					if (type == "Cube" || type == "Plane" || type == "Sphere") {
 
 						var transform:Array = parent.@transform.split(",");
-
-						x = transform[12];
-						y = transform[13];
-						z = transform[14];
-
-						trace(parent.@name, x, y, z);
+						
+						params = {};
+						params.x = transform[12];
+						params.y = transform[13];
+						params.z = transform[14];
 
 						for each (var child:XML in parent.children()) {
 
 							for each (var finalElement:XML in child.children()) {
 								
-								width = finalElement.@width;
-								height = finalElement.@height;
-								depth = finalElement.@depth;
+								params.width = finalElement.@width;
+								params.height = finalElement.@height;
+								params.depth = finalElement.@depth;
+								radius = finalElement.@radius;
 								
-								trace(finalElement.@name, width, height, depth);
+								if (radius)
+									params.radius = finalElement.@radius;
 								
-								var cube:AwayPhysicsObject = new AwayPhysicsObject("cube", {x:x, y:y, z:z, width:width, height:height, depth:depth});
-								ce.state.add(cube);
+								if (type == "Plane") {
+									// the plane seems to use the height as the depth
+									params.view = new Mesh(new CubeGeometry(params.width, 0, params.height), new ColorMaterial(0xFF0000));
+									object = new Platform("cube", {view:params.view, x:params.x, y:params.y, z:params.z, width:params.width, height:0, depth:params.height});
+									
+								} else {
+									
+									if (params.radius) {
+										
+										params.view = new Mesh(new SphereGeometry(params.radius), new ColorMaterial(0x00FF00));
+										object = new AwayPhysicsObject("sphere", params);
+										
+									} else {
+										
+										params.view = new Mesh(new CubeGeometry(params.width, params.height, params.depth), new ColorMaterial(0x0000FF));
+										object = new AwayPhysicsObject("cube", params);
+									}
+								}
+								
+								objects.push(object);
 							}
 						}
 
 					}
 				}
 			}
+			
+			if (addToCurrentState)
+				for each (object in objects) ce.state.add(object);
 			
 			return objects;
 		}
