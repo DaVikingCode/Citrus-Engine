@@ -1,11 +1,5 @@
 ﻿package com.citrusengine.utils {
 
-	import away3d.primitives.SphereGeometry;
-	import away3d.primitives.CubeGeometry;
-	import away3d.materials.ColorMaterial;
-	import away3d.primitives.PlaneGeometry;
-	import away3d.entities.Mesh;
-
 	import starling.display.Image;
 
 	import com.citrusengine.core.CitrusEngine;
@@ -397,12 +391,9 @@
 			var objects:Array = [];
 			
 			var type:String;
-			var x:Number, y:Number, z:Number;
-			var width:Number, height:Number, depth:Number;
 			var radius:Number;
 			
 			var object:AwayPhysicsObject;
-			var mesh:Mesh;
 
 			for each (var root:XML in levelData.children()) {
 				for each (var parent:XML in root.children()) {
@@ -419,7 +410,7 @@
 						params.z = transform[14];
 
 						for each (var child:XML in parent.children()) {
-
+							
 							for each (var finalElement:XML in child.children()) {
 								
 								params.width = finalElement.@width;
@@ -432,19 +423,21 @@
 								
 								if (type == "Plane") {
 									// the plane seems to use the height as the depth
-									params.view = new Mesh(new CubeGeometry(params.width, 0, params.height), new ColorMaterial(0xFF0000));
-									object = new Platform("cube", {view:params.view, x:params.x, y:params.y, z:params.z, width:params.width, height:0, depth:params.height});
+									params.depth = params.height;
+									params.height = 0;
+									//params.view = new Mesh(new CubeGeometry(params.width, params.height, params.depth), new ColorMaterial(0xFF0000));									
+									object = new Platform("cube", params);
 									
 								} else {
 									
 									if (params.radius) {
 										
-										params.view = new Mesh(new SphereGeometry(params.radius), new ColorMaterial(0x00FF00));
+										//params.view = new Mesh(new SphereGeometry(params.radius), new ColorMaterial(0x00FF00));
 										object = new AwayPhysicsObject("sphere", params);
 										
 									} else {
 										
-										params.view = new Mesh(new CubeGeometry(params.width, params.height, params.depth), new ColorMaterial(0x0000FF));
+										//params.view = new Mesh(new CubeGeometry(params.width, params.height, params.depth), new ColorMaterial(0x0000FF));
 										object = new AwayPhysicsObject("cube", params);
 									}
 								}
