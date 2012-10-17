@@ -17,6 +17,7 @@ package com.citrusengine.view.starlingview {
 	import com.citrusengine.physics.Box2D;
 	import com.citrusengine.physics.Nape;
 	import com.citrusengine.system.components.ViewComponent;
+	import com.citrusengine.view.IDebugView;
 	import com.citrusengine.view.ISpriteView;
 
 	import flash.display.Bitmap;
@@ -293,7 +294,9 @@ package com.citrusengine.view.starlingview {
 			
 			var physicsDebugArt:flash.display.DisplayObject;
 
-			if (content is Box2DDebugArt || content is NapeDebugArt) {
+			if (content is IDebugView) {
+				
+				(content as IDebugView).update();
 
 				// Box2D & Nape debug views are not on the Starling display list, but on the classical flash display list.
 				// So we need to move their views here, not in the StarlingView.

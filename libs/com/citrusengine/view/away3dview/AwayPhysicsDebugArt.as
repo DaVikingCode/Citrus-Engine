@@ -6,11 +6,12 @@ package com.citrusengine.view.away3dview {
 
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.physics.AwayPhysics;
+	import com.citrusengine.view.IDebugView;
 
 	/**
 	 * @author Aymeric
 	 */
-	public class AwayPhysicsDebugArt extends ObjectContainer3D {
+	public class AwayPhysicsDebugArt extends ObjectContainer3D implements IDebugView {
 		
 		public var debugDrawer:AWPDebugDraw;
 		

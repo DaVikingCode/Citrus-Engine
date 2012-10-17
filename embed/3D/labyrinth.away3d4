@@ -1,0 +1,60 @@
+<cadet:CadetScene x:id="0" timeScale="1" framerate="30" name="Component" xmlns:cadet="www.unwrong.com/cadet/1.0.0" xmlns:x="org.bonesframework.core.serialization.Serializer" xmlns:bones="www.bonesframwork.org/bones/1.0.0" xmlns:cadetAway3D4="www.unwrong.com/cadetAway3D4/1.0.0" xmlns:ns0="cadetAway3D4.components.cameras" xmlns:ns1="cadetAway3D4.components.geom" xmlns:ns2="cadetAway3D4.components.materials" xmlns:ns3="cadetAway3D4.components.lights">
+  <bones:ArrayCollection x:name="children" x:id="1">
+    <cadetAway3D4:RendererAway3D x:name="0" x:id="2" name="Away3D 4 Renderer">
+      <ns0:CameraComponent x:name="cameraComponent" x:id="3" transform="-0.9957407712936401,-1.5035267608709546e-7,-0.09219734370708466,0,0.06042603775858879,0.7552818059921265,-0.6526086330413818,0,0.0696350708603859,-0.6554001569747925,-0.7520648837089539,0,-52.88041687011719,631.5750122070313,954.6475219726563,1" name="Camera">
+        <bones:ArrayCollection x:name="children" x:id="4"/>
+      </ns0:CameraComponent>
+    </cadetAway3D4:RendererAway3D>
+    <cadetAway3D4:MeshComponent x:name="1" x:id="5" transform="1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1" name="Plane">
+      <ns1:PlaneGeometryComponent x:name="geometryComponent" x:id="6" width="1000" height="1000" segmentsW="1" segmentsH="1" name="Plane Geometry"/>
+      <bones:ArrayCollection x:name="children" x:id="7">
+        <x:Ref x:name="0" x:id="6"/>
+      </bones:ArrayCollection>
+      <ns2:ColorMaterialComponent x:name="materialComponent" x:id="8" depthCompareMode="less" color="12105912" gloss="50" specularStrength="1" name="Grey Material"/>
+    </cadetAway3D4:MeshComponent>
+    <x:Ref x:name="2" x:id="8"/>
+    <ns3:DirectionalLightComponent x:name="3" x:id="9" color="16777215" transform="0.9063077569007874,0,-0.4226183295249939,0,0.3830223083496094,0.42261824011802673,0.8213937878608704,0,0.17860621213912964,-0.9063078165054321,0.3830221891403198,0,0,0,0,1" diffuse="1" ambientColor="16777215" specular="1" ambient="0.1" name="Directional Light">
+      <bones:ArrayCollection x:name="children" x:id="10"/>
+    </ns3:DirectionalLightComponent>
+    <x:Ref x:name="4" x:id="3"/>
+    <cadetAway3D4:MeshComponent x:name="5" x:id="11" transform="-4.371138828673793e-8,1,0,0,-1,-4.371138828673793e-8,0,0,0,0,1,0,250,100,0,1" name="Plane">
+      <ns1:PlaneGeometryComponent x:name="geometryComponent" x:id="12" width="200" height="1000" segmentsW="1" segmentsH="1" name="Plane Geometry"/>
+      <bones:ArrayCollection x:name="children" x:id="13">
+        <x:Ref x:name="0" x:id="12"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="materialComponent" x:id="8"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="6" x:id="14" transform="-4.371138828673793e-8,1,0,0,-1,-4.371138828673793e-8,0,0,0,0,1,0,-250,100,0,1" name="Plane">
+      <ns1:PlaneGeometryComponent x:name="geometryComponent" x:id="15" width="200" height="1000" segmentsW="1" segmentsH="1" name="Plane Geometry"/>
+      <bones:ArrayCollection x:name="children" x:id="16">
+        <x:Ref x:name="0" x:id="15"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="materialComponent" x:id="8"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="7" x:id="17" transform="1,0,0,0,0,1,0,0,0,0,1,0,12.040613174438477,73.07546997070313,314.2930603027344,1" name="Sphere">
+      <ns1:SphereGeometryComponent x:name="geometryComponent" x:id="18" segmentsW="16" radius="33.81909260243554" segmentsH="12" name="Sphere Geometry"/>
+      <bones:ArrayCollection x:name="children" x:id="19">
+        <x:Ref x:name="0" x:id="18"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="materialComponent" x:id="8"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="8" x:id="20" transform="-4.371138828673793e-8,1,0,0,4.371138828673793e-8,1.910685465164705e-15,1,0,1,4.371138828673793e-8,-4.371138828673793e-8,0,0,100,500,1" name="Plane">
+      <ns1:PlaneGeometryComponent x:name="geometryComponent" x:id="21" width="200" height="500" segmentsW="1" segmentsH="1" name="Plane Geometry"/>
+      <bones:ArrayCollection x:name="children" x:id="22">
+        <x:Ref x:name="0" x:id="21"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="materialComponent" x:id="8"/>
+    </cadetAway3D4:MeshComponent>
+    <cadetAway3D4:MeshComponent x:name="9" x:id="23" transform="-4.371138828673793e-8,1,0,0,4.371138828673793e-8,1.910685465164705e-15,1,0,1,4.371138828673793e-8,-4.371138828673793e-8,0,100.6346206665039,50,131.81300354003906,1" name="Plane">
+      <ns1:PlaneGeometryComponent x:name="geometryComponent" x:id="24" width="100" height="300" segmentsW="1" segmentsH="1" name="Plane Geometry"/>
+      <bones:ArrayCollection x:name="children" x:id="25">
+        <x:Ref x:name="0" x:id="24"/>
+      </bones:ArrayCollection>
+      <x:Ref x:name="materialComponent" x:id="8"/>
+    </cadetAway3D4:MeshComponent>
+  </bones:ArrayCollection>
+  <bones:DependencyManager x:name="dependencyManager" x:id="26">
+    <bones:ArrayCollection x:name="dependencyNodes" x:id="27"/>
+  </bones:DependencyManager>
+  <Object x:name="userData" x:id="28"/>
+</cadet:CadetScene>

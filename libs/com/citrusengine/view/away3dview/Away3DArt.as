@@ -15,6 +15,7 @@ package com.citrusengine.view.away3dview {
 	import com.citrusengine.physics.Box2D;
 	import com.citrusengine.physics.Nape;
 	import com.citrusengine.system.components.ViewComponent;
+	import com.citrusengine.view.IDebugView;
 	import com.citrusengine.view.ISpriteView;
 
 	import flash.display.Bitmap;

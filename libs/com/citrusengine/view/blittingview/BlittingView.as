@@ -1,11 +1,13 @@
 package com.citrusengine.view.blittingview 
 {
+
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.physics.Box2D;
 	import com.citrusengine.physics.Nape;
 	import com.citrusengine.physics.SimpleCitrusSolver;
 	import com.citrusengine.view.CitrusView;
+	import com.citrusengine.view.IDebugView;
 	import com.citrusengine.view.ISpriteView;
 	import com.citrusengine.view.SpriteDebugArt;
 
@@ -79,8 +81,10 @@ package com.citrusengine.view.blittingview
 				}
 			}
 			
-			if (_debuggerPhysicsObject)
+			if (_debuggerPhysicsObject) {
 				_debugView.visible = _debuggerPhysicsObject.visible;
+				(_debugView.getChildAt(0) as IDebugView).update();
+			}
 			_debugView.x = -_cameraPosition.x;
 			_debugView.y = -_cameraPosition.y;
 			

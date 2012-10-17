@@ -7,6 +7,7 @@ package com.citrusengine.view.away3dview {
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.State;
 	import com.citrusengine.physics.Nape;
+	import com.citrusengine.view.IDebugView;
 
 	/**
 	 * @author Aymeric 

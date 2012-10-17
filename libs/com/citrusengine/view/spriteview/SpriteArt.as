@@ -7,6 +7,7 @@ package com.citrusengine.view.spriteview
 	import com.citrusengine.physics.Box2D;
 	import com.citrusengine.physics.Nape;
 	import com.citrusengine.system.components.ViewComponent;
+	import com.citrusengine.view.IDebugView;
 	import com.citrusengine.view.ISpriteView;
 
 	import flash.display.Bitmap;
@@ -226,7 +227,11 @@ package com.citrusengine.view.spriteview
 			scaleX = _citrusObject.inverted ? -1 : 1;
 			//position = object position + (camera position * inverse parallax)
 			
-			if (_physicsComponent) {
+			if (content is IDebugView) {
+				
+				(content as IDebugView).update();
+				
+			} else if (_physicsComponent) {
 				
 				x = _physicsComponent.x + (-stateView.viewRoot.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
 				y = _physicsComponent.y + (-stateView.viewRoot.y * (1 - _citrusObject.parallax)) + _citrusObject.offsetY;
