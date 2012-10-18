@@ -4,8 +4,7 @@ package com.citrusengine.view.spriteview
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.core.IState;
-	import com.citrusengine.physics.Box2D;
-	import com.citrusengine.physics.Nape;
+	import com.citrusengine.physics.APhysicsEngine;
 	import com.citrusengine.system.components.ViewComponent;
 	import com.citrusengine.view.IDebugView;
 	import com.citrusengine.view.ISpriteView;
@@ -72,7 +71,7 @@ package com.citrusengine.view.spriteview
 			
 			var ceState:IState = CitrusEngine.getInstance().state;
 			
-			if (_citrusObject is ViewComponent && (ceState.getFirstObjectByType(Box2D) as Box2D || ceState.getFirstObjectByType(Nape) as Nape))
+			if (_citrusObject is ViewComponent && ceState.getFirstObjectByType(APhysicsEngine) as APhysicsEngine)
 				_physicsComponent = (_citrusObject as ViewComponent).entity.components["physics"];
 			
 			this.name = (_citrusObject as CitrusObject).name;
