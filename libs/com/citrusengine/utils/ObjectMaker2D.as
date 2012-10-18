@@ -1,7 +1,5 @@
 ﻿package com.citrusengine.utils {
 
-	import starling.display.Image;
-
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.core.IState;
@@ -111,7 +109,6 @@
 			return a;
 		}
 		
-		
 		/**
 		 * The Citrus Engine supports <a href="http://www.mapeditor.org/">the Tiled Map Editor</a>.
 		 * <p>It supports different layers, objects creation and a Tilesets.</p>
@@ -193,7 +190,8 @@
 				if (ce.starling) {
 					
 					//TODO : cut bitmap if size > 2048 * 2048, use StarlingTileSystem?
-					params.view = Image.fromBitmap(new Bitmap(bmpData));
+					//params.view = Image.fromBitmap(new Bitmap(bmpData));
+					params.view = new Bitmap(bmpData);
 					
 				} else
 					params.view = new Bitmap(bmpData);

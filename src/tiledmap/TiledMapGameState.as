@@ -15,15 +15,15 @@ package tiledmap {
 	 */
 	public class TiledMapGameState extends State {
 		
+		[Embed(source="/../embed/tiledmap/map.tmx", mimeType="application/octet-stream")]
+		private const _Map:Class;
+		
 		[Embed(source="/../embed/tiledmap/Genetica-tiles.png")]
 		private const _ImgTiles:Class;
-		
-		private var _level:XML;
 
-		public function TiledMapGameState(level:XML) {
-			super();
+		public function TiledMapGameState() {
 			
-			_level = level;
+			super();
 			
 			var objects:Array = [Hero, Platform];
 		}
@@ -36,7 +36,7 @@ package tiledmap {
 			//box2D.visible = true;
 			add(box2D);
 			
-			ObjectMaker2D.FromTiledMap(_level, _ImgTiles);
+			ObjectMaker2D.FromTiledMap(XML(new _Map()), _ImgTiles);
 			
 			var hero:Hero = getObjectByName("hero") as Hero;
 			

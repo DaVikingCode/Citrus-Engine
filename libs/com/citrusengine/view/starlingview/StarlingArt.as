@@ -232,6 +232,12 @@ package com.citrusengine.view.starlingview {
 						Starling.juggler.add(content as MovieClip);
 					else if (_view is PDParticleSystem)
 						Starling.juggler.add(content as PDParticleSystem);
+				
+				} else if (_view is Bitmap) {
+					
+					content = Image.fromBitmap(_view);
+					moveRegistrationPoint(_citrusObject.registration);
+					addChild(content);
 					
 				} else {
 					throw new Error("StarlingArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
