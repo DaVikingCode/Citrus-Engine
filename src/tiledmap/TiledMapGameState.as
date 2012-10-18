@@ -5,7 +5,7 @@ package tiledmap {
 	import com.citrusengine.objects.platformer.box2d.Hero;
 	import com.citrusengine.objects.platformer.box2d.Platform;
 	import com.citrusengine.physics.Box2D;
-	import com.citrusengine.utils.ObjectMaker;
+	import com.citrusengine.utils.ObjectMaker2D;
 	import com.citrusengine.view.spriteview.SpriteArt;
 
 	import flash.geom.Rectangle;
@@ -36,7 +36,7 @@ package tiledmap {
 			//box2D.visible = true;
 			add(box2D);
 			
-			ObjectMaker.FromTiledMap(_level, _ImgTiles);
+			ObjectMaker2D.FromTiledMap(_level, _ImgTiles);
 			
 			var hero:Hero = getObjectByName("hero") as Hero;
 			

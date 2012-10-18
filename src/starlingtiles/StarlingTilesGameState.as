@@ -16,7 +16,7 @@ package starlingtiles
 	import com.citrusengine.objects.NapePhysicsObject;
 	import com.citrusengine.objects.platformer.nape.*;
 	import com.citrusengine.physics.Nape;
-	import com.citrusengine.utils.ObjectMaker;
+	import com.citrusengine.utils.ObjectMaker2D;
 	import com.citrusengine.view.starlingview.AnimationSequence;
 	import com.citrusengine.view.starlingview.NapeDebugArt;
 	import com.citrusengine.view.starlingview.StarlingArt;
@@ -78,7 +78,7 @@ package starlingtiles
 			nape.gravity = new Vec2(0, 210);
 			
 			// create objects from our level made with Flash Pro
-			ObjectMaker.FromMovieClip(_level);
+			ObjectMaker2D.FromMovieClip(_level);
 			
 			
 			// the hero view from sprite sheet

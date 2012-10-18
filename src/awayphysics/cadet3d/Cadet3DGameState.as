@@ -5,7 +5,7 @@ package awayphysics.cadet3d {
 
 	import com.citrusengine.core.State;
 	import com.citrusengine.physics.AwayPhysics;
-	import com.citrusengine.utils.ObjectMaker;
+	import com.citrusengine.utils.ObjectMaker3D;
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.away3dview.Away3DView;
 
@@ -46,7 +46,7 @@ package awayphysics.cadet3d {
 			awayPhysics.visible = true;
 			add(awayPhysics);
 			
-			ObjectMaker.FromCadetEditor3D(XML(new _CADET_LEVEL()));
+			ObjectMaker3D.FromCadetEditor3D(XML(new _CADET_LEVEL()));
 			
 			_cameraController = new HoverController((view as Away3DView).viewRoot.camera, null, 175, 20, 1000);
 			
