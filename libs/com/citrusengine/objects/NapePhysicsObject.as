@@ -14,7 +14,6 @@ package com.citrusengine.objects {
 	import nape.shape.Shape;
 
 	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.physics.Nape;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.view.ISpriteView;
@@ -26,33 +25,19 @@ package com.citrusengine.objects {
 	 * and creating Nape bodies, fixtures, shapes, and joints. If you are not familiar with Nape, you should first
 	 * learn about it via the <a href="http://deltaluca.me.uk/docnew/">Nape Documentation</a>.
 	 */	
-	public class NapePhysicsObject extends CitrusObject implements ISpriteView {
+	public class NapePhysicsObject extends APhysicsObject implements ISpriteView {
 		
 		public static const PHYSICS_OBJECT:CbType = new CbType();
 		
-		protected var _ce:CitrusEngine;
 		protected var _nape:Nape;
 		protected var _body:Body;
 		protected var _bodyType:BodyType;
 		protected var _material:Material;
 		protected var _shape:Shape;
 		
-		protected var _inverted:Boolean = false;
-		protected var _parallax:Number = 1;
-		protected var _animation:String = "";
-		protected var _visible:Boolean = true;
-		protected var _x:Number = 0;
-		protected var _y:Number = 0;
-		protected var _view:* = MovieClip;
-		protected var _rotation:Number = 0;
 		protected var _width:Number = 30;
 		protected var _height:Number = 30;
-		protected var _radius:Number = 0;
-		
-		private var _group:Number = 0;
-		private var _offsetX:Number = 0;
-		private var _offsetY:Number = 0;
-		private var _registration:String = "center";
+		protected var _view:* = MovieClip;
 
 		/**
 		 * Creates an instance of a NapePhysicsObject. Natively, this object does not default to any graphical representation,
@@ -197,17 +182,6 @@ package com.citrusengine.objects {
 		public function get z():Number {
 			return 0;
 		}
-			
-		public function get parallax():Number
-		{
-			return _parallax;
-		}
-		
-		[Inspectable(defaultValue="1")]
-		public function set parallax(value:Number):void
-		{
-			_parallax = value;
-		}
 		
 		public function get rotation():Number
 		{
@@ -224,27 +198,6 @@ package com.citrusengine.objects {
 			if (_body)
 				_body.rotate(new Vec2(_x, _y), _rotation);
 		}
-			
-		public function get group():Number
-		{
-			return _group;
-		}
-		
-		[Inspectable(defaultValue="0")]
-		public function set group(value:Number):void
-		{
-			_group = value;
-		}
-		
-		public function get visible():Boolean
-		{
-			return _visible;
-		}
-		
-		public function set visible(value:Boolean):void
-		{
-			_visible = value;
-		}
 		
 		public function get view():*
 		{
@@ -255,49 +208,6 @@ package com.citrusengine.objects {
 		public function set view(value:*):void
 		{
 			_view = value;
-		}
-		
-		public function get animation():String
-		{
-			return _animation;
-		}
-		
-		public function get inverted():Boolean
-		{
-			return _inverted;
-		}
-		
-		public function get offsetX():Number
-		{
-			return _offsetX;
-		}
-		
-		[Inspectable(defaultValue="0")]
-		public function set offsetX(value:Number):void
-		{
-			_offsetX = value;
-		}
-		
-		public function get offsetY():Number
-		{
-			return _offsetY;
-		}
-		
-		[Inspectable(defaultValue="0")]
-		public function set offsetY(value:Number):void
-		{
-			_offsetY = value;
-		}
-		
-		public function get registration():String
-		{
-			return _registration;
-		}
-		
-		[Inspectable(defaultValue="center",enumeration="center,topLeft")]
-		public function set registration(value:String):void
-		{
-			_registration = value;
 		}
 		
 		/**

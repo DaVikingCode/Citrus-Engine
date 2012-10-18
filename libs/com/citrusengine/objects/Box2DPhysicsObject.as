@@ -10,7 +10,6 @@ package com.citrusengine.objects {
 	import Box2DAS.Dynamics.b2FixtureDef;
 
 	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.physics.Box2D;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.view.ISpriteView;
@@ -22,9 +21,8 @@ package com.citrusengine.objects {
 	 * and creating Box2D bodies, fixtures, shapes, and joints. If you are not familiar with Box2D, you should first
 	 * learn about it via the <a href="http://www.box2d.org/manual.html">Box2D Manual</a>.
 	 */	
-	public class Box2DPhysicsObject extends CitrusObject implements ISpriteView
+	public class Box2DPhysicsObject extends APhysicsObject implements ISpriteView
 	{
-		protected var _ce:CitrusEngine;
 		protected var _box2D:Box2D;
 		protected var _bodyDef:b2BodyDef;
 		protected var _body:b2Body;
@@ -32,22 +30,9 @@ package com.citrusengine.objects {
 		protected var _fixtureDef:b2FixtureDef;
 		protected var _fixture:b2Fixture;
 		
-		protected var _inverted:Boolean = false;
-		protected var _parallax:Number = 1;
-		protected var _animation:String = "";
-		protected var _visible:Boolean = true;
-		protected var _x:Number = 0;
-		protected var _y:Number = 0;
-		protected var _view:* = MovieClip;
-		protected var _rotation:Number = 0;
 		protected var _width:Number = 1;
 		protected var _height:Number = 1;
-		protected var _radius:Number = 0;
-		
-		private var _group:Number = 0;
-		private var _offsetX:Number = 0;
-		private var _offsetY:Number = 0;
-		private var _registration:String = "center";
+		protected var _view:* = MovieClip;
 		
 		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, view:*):Box2DPhysicsObject
 		{
@@ -61,7 +46,7 @@ package com.citrusengine.objects {
 		 * so you will need to set the "view" property in the params parameter.
 		 */		
 		public function Box2DPhysicsObject(name:String, params:Object=null)
-		{
+		{			
 			_ce = CitrusEngine.getInstance();
 			_box2D = _ce.state.getFirstObjectByType(Box2D) as Box2D;
 			
@@ -156,17 +141,6 @@ package com.citrusengine.objects {
 		public function get z():Number {
 			return 0;
 		}
-			
-		public function get parallax():Number
-		{
-			return _parallax;
-		}
-		
-		[Inspectable(defaultValue="1")]
-		public function set parallax(value:Number):void
-		{
-			_parallax = value;
-		}
 		
 		public function get rotation():Number
 		{
@@ -183,27 +157,6 @@ package com.citrusengine.objects {
 			if (_body)
 				_body.SetTransform(_body.GetPosition(), _rotation); 
 		}
-			
-		public function get group():Number
-		{
-			return _group;
-		}
-		
-		[Inspectable(defaultValue="0")]
-		public function set group(value:Number):void
-		{
-			_group = value;
-		}
-		
-		public function get visible():Boolean
-		{
-			return _visible;
-		}
-		
-		public function set visible(value:Boolean):void
-		{
-			_visible = value;
-		}
 		
 		public function get view():*
 		{
@@ -214,49 +167,6 @@ package com.citrusengine.objects {
 		public function set view(value:*):void
 		{
 			_view = value;
-		}
-		
-		public function get animation():String
-		{
-			return _animation;
-		}
-		
-		public function get inverted():Boolean
-		{
-			return _inverted;
-		}
-		
-		public function get offsetX():Number
-		{
-			return _offsetX;
-		}
-		
-		[Inspectable(defaultValue="0")]
-		public function set offsetX(value:Number):void
-		{
-			_offsetX = value;
-		}
-		
-		public function get offsetY():Number
-		{
-			return _offsetY;
-		}
-		
-		[Inspectable(defaultValue="0")]
-		public function set offsetY(value:Number):void
-		{
-			_offsetY = value;
-		}
-		
-		public function get registration():String
-		{
-			return _registration;
-		}
-		
-		[Inspectable(defaultValue="center",enumeration="center,topLeft")]
-		public function set registration(value:String):void
-		{
-			_registration = value;
 		}
 		
 		/**
