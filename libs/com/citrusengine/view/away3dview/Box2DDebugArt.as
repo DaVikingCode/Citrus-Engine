@@ -38,5 +38,9 @@ package com.citrusengine.view.away3dview {
 		public function update():void {
 			_debugDrawer.Draw();
 		}
+		
+		public function debugMode(mode:uint):void {
+			
+		}
 	}
 }

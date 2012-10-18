@@ -39,5 +39,9 @@ package com.citrusengine.view.away3dview {
 			_debugDrawer.draw(_nape.space);
 			_debugDrawer.flush();
 		}
+		
+		public function debugMode(mode:uint):void {
+			
+		}
 	}
 }

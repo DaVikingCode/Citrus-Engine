@@ -4,14 +4,10 @@ package com.citrusengine.view.away3dview {
 	import away3d.events.LoaderEvent;
 	import away3d.loaders.Loader3D;
 
-	import awayphysics.debug.AWPDebugDraw;
-
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.core.IState;
 	import com.citrusengine.core.State;
-	import com.citrusengine.objects.AwayPhysicsObject;
-	import com.citrusengine.objects.platformer.awayphysics.IPlatformer;
 	import com.citrusengine.physics.APhysicsEngine;
 	import com.citrusengine.system.components.ViewComponent;
 	import com.citrusengine.view.IDebugView;
@@ -207,16 +203,14 @@ package com.citrusengine.view.away3dview {
 			
 			if (stateView.mode == "3D") {
 				
-				if (content is AwayPhysicsDebugArt) {
+				if (content is IDebugView) {
 					
-					(content as AwayPhysicsDebugArt).update();
-					
-					var awayPhysicsDebugArt:AWPDebugDraw = (content as AwayPhysicsDebugArt).debugDrawer;
+					(content as IDebugView).update();
 					
 					if (_citrusObject.visible)
-						awayPhysicsDebugArt.debugMode = AWPDebugDraw.DBG_DrawTransform + 1;
+						(content as IDebugView).debugMode(9);
 					else
-						awayPhysicsDebugArt.debugMode = 0;
+						(content as IDebugView).debugMode(0);
 					
 				} else {
 					
@@ -224,13 +218,8 @@ package com.citrusengine.view.away3dview {
 					y = _citrusObject.y;
 					z = _citrusObject.z;
 					
-					var physicsObject3D:AwayPhysicsObject = _citrusObject as AwayPhysicsObject;
-					var platformerPhysicsObject3D:IPlatformer = (_citrusObject as AwayPhysicsObject) as IPlatformer;
-					
-					if (physicsObject3D && physicsObject3D.body)
-						rotateTo(physicsObject3D.body.rotation.x, physicsObject3D.body.rotation.y, physicsObject3D.body.rotation.z);
-					else if (physicsObject3D && platformerPhysicsObject3D.character)
-						rotateTo(platformerPhysicsObject3D.ghostObject.rotation.x, platformerPhysicsObject3D.ghostObject.rotation.y, platformerPhysicsObject3D.ghostObject.rotation.z);
+					if (citrusObject.body)
+						rotateTo(citrusObject.body.rotation.x, citrusObject.body.rotation.y, citrusObject.body.rotation.z);
 				}
 				
 				

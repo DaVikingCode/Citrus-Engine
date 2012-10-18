@@ -9,6 +9,7 @@ package com.citrusengine.objects {
 	public class APhysicsObject extends CitrusObject {
 		
 		protected var _ce:CitrusEngine;
+		protected var _body:*;
 
 		protected var _inverted:Boolean = false;
 		protected var _parallax:Number = 1;
@@ -27,6 +28,10 @@ package com.citrusengine.objects {
 
 		public function APhysicsObject(name:String, params:Object = null) {
 			super(name, params);
+		}
+		
+		public function get body():* {
+			return _body;
 		}
 		
 		public function get inverted():Boolean {

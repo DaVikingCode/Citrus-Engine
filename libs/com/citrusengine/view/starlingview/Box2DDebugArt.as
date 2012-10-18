@@ -39,5 +39,9 @@ package com.citrusengine.view.starlingview {
 			
 			_debugDrawer.Draw();
 		}
+		
+		public function debugMode(mode:uint):void {
+			
+		}
 	}
 }

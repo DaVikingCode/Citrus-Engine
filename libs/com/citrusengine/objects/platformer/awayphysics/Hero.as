@@ -17,7 +17,7 @@ package com.citrusengine.objects.platformer.awayphysics {
 	/**
 	 * @author Aymeric
 	 */
-	public class Hero extends AwayPhysicsObject implements IPlatformer {
+	public class Hero extends AwayPhysicsObject {
 
 		public var stepHeight:Number = 0.1;
 
@@ -148,13 +148,13 @@ package com.citrusengine.objects.platformer.awayphysics {
 				body.applyForce(force, event.manifoldPoint.localPointB);
 			}
 		}
+			
+		override public function get body():* {
+			return _ghostObject;
+		}
 
 		public function get character():AWPKinematicCharacterController {
 			return _character;
-		}
-
-		public function get ghostObject():AWPGhostObject {
-			return _ghostObject;
 		}
 
 	}

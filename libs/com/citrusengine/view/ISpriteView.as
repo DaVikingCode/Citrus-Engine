@@ -12,7 +12,12 @@ package com.citrusengine.view
 	 * [commonly] 30 before being returned in order to convert the meter values to pixel values.
 	 */	
 	public interface ISpriteView
-	{
+	{	
+		/**
+		 * the body used by a physics engine
+		 */
+		function get body():*;
+		
 		/**
 		 * The x position of the object. 
 		 */	

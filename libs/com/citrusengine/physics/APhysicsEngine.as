@@ -14,6 +14,10 @@ package com.citrusengine.physics {
 			super(name, params);
 		}
 		
+		public function get body():* {
+			return null;
+		}
+		
 		public function get x():Number {
 			return 0;
 		}

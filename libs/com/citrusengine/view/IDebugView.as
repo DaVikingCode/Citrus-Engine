@@ -7,5 +7,7 @@ package com.citrusengine.view {
 		
 		// draw the debug view
 		function update():void
+		
+		function debugMode(mode:uint):void
 	}
 }

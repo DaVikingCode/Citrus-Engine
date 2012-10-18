@@ -42,5 +42,9 @@ package com.citrusengine.view.spriteview {
 			_debugDrawer.draw(_nape.space);
 			_debugDrawer.flush();
 		}
+		
+		public function debugMode(mode:uint):void {
+			
+		}
 	}
 }

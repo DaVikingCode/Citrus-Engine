@@ -30,7 +30,6 @@ package com.citrusengine.objects {
 		public static const PHYSICS_OBJECT:CbType = new CbType();
 		
 		protected var _nape:Nape;
-		protected var _body:Body;
 		protected var _bodyType:BodyType;
 		protected var _material:Material;
 		protected var _shape:Shape;
@@ -275,7 +274,7 @@ package com.citrusengine.objects {
 		/**
 		 * A direction reference to the Nape body associated with this object.
 		 */
-		public function get body():Body
+		override public function get body():*
 		{
 			return _body;
 		}

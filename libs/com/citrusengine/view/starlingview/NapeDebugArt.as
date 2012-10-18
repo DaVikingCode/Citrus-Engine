@@ -39,5 +39,9 @@ package com.citrusengine.view.starlingview {
 			_debugDrawer.draw(_nape.space);
 			_debugDrawer.flush();
 		}
+		
+		public function debugMode(mode:uint):void {
+			
+		}
 	}
 }

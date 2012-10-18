@@ -21,7 +21,6 @@ package com.citrusengine.objects {
 		
 		protected var _awayPhysics:AwayPhysics;
 
-		protected var _body:AWPRigidBody;
 		protected var _shape:AWPCollisionShape;
 		protected var _mass:Number = 1;
 		
@@ -263,7 +262,7 @@ package com.citrusengine.objects {
 		/**
 		 * A direction reference to the Nape body associated with this object.
 		 */
-		public function get body():AWPRigidBody {
+		override public function get body():* {
 			return _body;
 		}
 

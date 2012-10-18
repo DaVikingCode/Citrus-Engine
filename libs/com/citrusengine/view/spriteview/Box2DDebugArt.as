@@ -42,5 +42,9 @@ package com.citrusengine.view.spriteview {
 		{
 			_debugDrawer.Draw();
 		}
+		
+		public function debugMode(mode:uint):void {
+			
+		}
 	}
 }

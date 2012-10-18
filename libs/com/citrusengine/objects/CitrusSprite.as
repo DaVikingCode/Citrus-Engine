@@ -6,7 +6,6 @@ package com.citrusengine.objects
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.view.ISpriteView;
 	import com.citrusengine.view.SpriteDebugArt;
-	import com.citrusengine.view.StarlingSpriteDebugArt;
 
 	import org.osflash.signals.Signal;
 
@@ -66,6 +65,11 @@ package com.citrusengine.objects
 			collisions = null;
 			
 			super.destroy();
+		}
+		
+		// No physics here
+		public function get body():* {
+			return null;
 		}
 		
 		public function get x():Number

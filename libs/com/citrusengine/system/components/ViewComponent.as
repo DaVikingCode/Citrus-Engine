@@ -47,6 +47,10 @@ package com.citrusengine.system.components {
 			super.destroy();
 		}
 		
+		public function get body():* {
+			return null;
+		}
+		
 		public function get x():Number {
 			return _x;
 		}

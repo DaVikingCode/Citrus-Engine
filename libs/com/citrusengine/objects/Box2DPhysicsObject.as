@@ -25,7 +25,6 @@ package com.citrusengine.objects {
 	{
 		protected var _box2D:Box2D;
 		protected var _bodyDef:b2BodyDef;
-		protected var _body:b2Body;
 		protected var _shape:b2Shape;
 		protected var _fixtureDef:b2FixtureDef;
 		protected var _fixture:b2Fixture;
@@ -234,7 +233,7 @@ package com.citrusengine.objects {
 		/**
 		 * A direction reference to the Box2D body associated with this object.
 		 */
-		public function get body():b2Body
+		override public function get body():*
 		{
 			return _body;
 		}
