@@ -4,7 +4,6 @@ package com.citrusengine.physics {
 	import Box2DAS.Common.b2Base;
 	import Box2DAS.Dynamics.b2World;
 
-	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.view.ISpriteView;
 	import com.citrusengine.view.spriteview.Box2DDebugArt;
 	
@@ -13,13 +12,11 @@ package com.citrusengine.physics {
 	 * Add an instance of this class to your State before you create any phyiscs bodies. It will need to 
 	 * exist first, or your physics bodies will throw an error when they try to create themselves.
 	 */	
-	public class Box2D extends CitrusObject implements ISpriteView
+	public class Box2D extends APhysicsEngine implements ISpriteView
 	{	
-		private var _visible:Boolean = false;
 		private var _scale:Number = 30;
 		private var _world:b2World;
 		private var _gravity:V2 = new V2(0, 15);
-		private var _group:Number = 1;
 		private var _view:* = Box2DDebugArt;
 		
 		public static function Make(name:String, visible:Boolean):Box2D
@@ -93,70 +90,6 @@ package com.citrusengine.physics {
 			_world.Step(0.05, 8, 8);
 		}
 		
-		public function get x():Number
-		{
-			return 0;
-		}
-		
-		public function get y():Number
-		{
-			return 0;
-		}
-		
-		public function get z():Number
-		{
-			return 0;
-		}
-		
-		public function get width():Number
-		{
-			return 0;
-		}
-		
-		public function get height():Number
-		{
-			return 0;
-		}
-		
-		public function get depth():Number {
-			return 0;
-		}
-		
-		public function get parallax():Number
-		{
-			return 1;
-		}
-		
-		public function get rotation():Number
-		{
-			return 0;
-		}
-		
-		public function get group():Number
-		{
-			return _group;
-		}
-		
-		public function set group(value:Number):void
-		{
-			_group = value;
-		}
-		
-		public function get visible():Boolean
-		{
-			return _visible;
-		}
-		
-		public function set visible(value:Boolean):void
-		{
-			_visible = value;
-		}
-		
-		public function get animation():String
-		{
-			return "";
-		}
-		
 		public function get view():*
 		{
 			return _view;
@@ -165,26 +98,6 @@ package com.citrusengine.physics {
 		public function set view(value:*):void
 		{
 			_view = value;
-		}
-		
-		public function get inverted():Boolean
-		{
-			return false;
-		}
-		
-		public function get offsetX():Number
-		{
-			return 0;
-		}
-		
-		public function get offsetY():Number
-		{
-			return 0;
-		}
-		
-		public function get registration():String
-		{
-			return "topLeft";
 		}
 	}
 }

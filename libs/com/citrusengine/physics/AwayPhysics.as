@@ -2,7 +2,6 @@ package com.citrusengine.physics {
 
 	import awayphysics.dynamics.AWPDynamicsWorld;
 
-	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.view.ISpriteView;
 	import com.citrusengine.view.away3dview.AwayPhysicsDebugArt;
 
@@ -11,12 +10,10 @@ package com.citrusengine.physics {
 	/**
 	 * @author Aymeric
 	 */
-	public class AwayPhysics extends CitrusObject implements ISpriteView {
+	public class AwayPhysics extends APhysicsEngine implements ISpriteView {
 		
-		private var _visible:Boolean = false;
 		private var _world:AWPDynamicsWorld;
 		private var _gravity:Vector3D = new Vector3D(0, -10, 0);
-		private var _group:Number = 1;
 		private var _view:* = AwayPhysicsDebugArt;
 
 		public function AwayPhysics(name:String, params:Object = null) {
@@ -70,58 +67,6 @@ package com.citrusengine.physics {
 			// 0.01667 = 1 / 60
 			_world.step(0.01667, 1, 0.01667);
 		}
-		
-		public function get x():Number {
-			return 0;
-		}
-
-		public function get y():Number {
-			return 0;
-		}
-		
-		public function get z():Number {
-			return 0;
-		}
-		
-		public function get width():Number {
-			return 0;
-		}
-		
-		public function get height():Number {
-			return 0;
-		}
-		
-		public function get depth():Number {
-			return 0;
-		}
-
-		public function get parallax():Number {
-			return 1;
-		}
-
-		public function get rotation():Number {
-			return 0;
-		}
-
-		public function get group():Number {
-			return _group;
-		}
-
-		public function set group(value:Number):void {
-			_group = value;
-		}
-
-		public function get visible():Boolean {
-			return _visible;
-		}
-
-		public function set visible(value:Boolean):void {
-			_visible = value;
-		}
-
-		public function get animation():String {
-			return "";
-		}
 
 		public function get view():* {
 			return _view;
@@ -129,22 +74,6 @@ package com.citrusengine.physics {
 
 		public function set view(value:*):void {
 			_view = value;
-		}
-
-		public function get inverted():Boolean {
-			return false;
-		}
-
-		public function get offsetX():Number {
-			return 0;
-		}
-
-		public function get offsetY():Number {
-			return 0;
-		}
-
-		public function get registration():String {
-			return "topLeft";
 		}
 
 	}

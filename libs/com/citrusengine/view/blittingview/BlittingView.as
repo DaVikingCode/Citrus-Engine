@@ -3,8 +3,7 @@ package com.citrusengine.view.blittingview
 
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.math.MathVector;
-	import com.citrusengine.physics.Box2D;
-	import com.citrusengine.physics.Nape;
+	import com.citrusengine.physics.APhysicsEngine;
 	import com.citrusengine.physics.SimpleCitrusSolver;
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.IDebugView;
@@ -126,7 +125,7 @@ package com.citrusengine.view.blittingview
 				var artClass:Class = getDefinitionByName(viewObject.view as String) as Class;
 				blittingArt = new artClass() as BlittingArt;
 			}
-			else if ((citrusObject is Box2D || citrusObject is Nape) && !_usePhysicsEngine && !_useSimpleCitrusSolver)
+			else if (citrusObject is APhysicsEngine && !_usePhysicsEngine && !_useSimpleCitrusSolver)
 			{
 				_debugView.addChild(new citrusObject.view());
 				_usePhysicsEngine = true;
