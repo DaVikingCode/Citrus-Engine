@@ -257,11 +257,11 @@ package com.citrusengine.objects.platformer.nape {
 			//var velocity:V2 = _body.GetLinearVelocity();
 			if (_hurt)
 			{
-				_animation = "unarmed_hurt";
+				_animation = "hurt";
 			}
 			else if (!_onGround)
 			{
-				_animation = "unarmed_jump";
+				_animation = "jump";
 			}
 			else if (_ducking)
 			{
@@ -274,16 +274,16 @@ package com.citrusengine.objects.platformer.nape {
 				if (walkingSpeed < -acceleration)
 				{
 					_inverted = true;
-					_animation = "unarmed_walk";
+					_animation = "walk";
 				}
 				else if (walkingSpeed > acceleration)
 				{
 					_inverted = false;
-					_animation = "unarmed_walk";
+					_animation = "walk";
 				}
 				else
 				{
-					_animation = "unarmed_idle";
+					_animation = "idle";
 				}
 			}
 			

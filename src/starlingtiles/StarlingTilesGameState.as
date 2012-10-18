@@ -80,7 +80,6 @@ package starlingtiles
 			// create objects from our level made with Flash Pro
 			ObjectMaker2D.FromMovieClip(_level);
 			
-			
 			// the hero view from sprite sheet
 			var heroBitmap:Bitmap = new _heroPng();
 			var heroTexture:Texture = Texture.fromBitmap(heroBitmap);
@@ -89,8 +88,8 @@ package starlingtiles
 			
 			// get hero from movieclip
 			_hero = Hero(getFirstObjectByType(Hero));
-			_hero.view = new AnimationSequence(sTextureAtlas, ["unarmed_walk", "unarmed_idle", "unarmed_jump", "hurt"], "unarmed_idle");
-			StarlingArt.setLoopAnimations(["unarmed_walk"]);
+			_hero.view = new AnimationSequence(sTextureAtlas, ["walk", "idle", "jump", "hurt"], "idle");
+			StarlingArt.setLoopAnimations(["walk"]);
 			
 			// setup camera to follow hero
 			view.setupCamera(_hero, new MathVector(400, 300), new Rectangle(0, 0, 5000, 1024), new MathVector(0.25, 0.15));
@@ -101,7 +100,6 @@ package starlingtiles
 			var heroImage:Image = new Image(heroTexture);
 			_hero.view = heroImage;
 			*/
-			
 			
 			// movieclip on stage converted to tiles
 			// background
@@ -139,9 +137,6 @@ package starlingtiles
 			add(tileSprite);
 			
 			}
-			
-			
-			
 			
 			// add player plane tiles via flash stage
 			tileSprite = new CitrusSprite("tilePlayerPlane", { x:0, y:0 } );

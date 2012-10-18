@@ -38,19 +38,15 @@ package com.citrusengine.view.starlingview {
 		public var tileWidth:uint = 2048;
 		public var tileHeight:uint = 2048;
 		
-		
 		// load in and out distances
 		public var loadInDistance:Number = 1.8;
 		public var unloadDistance:Number = 2.0;
 		
-		
 		// timer to call updates, every second should be fine
 		private var _timer:Timer = new Timer(1000);
 		
-		
 		// test for maximum memory use
 		private var maxInRam:Number = 0;
-		
 		
 		
 		public function StarlingTileSystem(images:*, bodyToFollow:ISpriteView = null) {
@@ -93,7 +89,6 @@ package com.citrusengine.view.starlingview {
 				loadAll();
 			}
 		}
-		
 		
 		/*
 		 * gathers tiles from MovieClip via BitmapData. Remember the MovieClip must not have any graphics "bleeding" over the edge of the viewable region
@@ -245,7 +240,6 @@ package com.citrusengine.view.starlingview {
 			return Math.sqrt(dx * dx + dy * dy);
 		}
 		
-		
 		// loops through all tiles and loads into memory
 		public function loadAll():void {
 			
@@ -264,7 +258,6 @@ package com.citrusengine.view.starlingview {
 			trace(this.name, "all shown, max tiles in ram:", _liveTiles.length);
 		}
 		
-		
 		// loops through all tiles and removes from memory
 		public function removeAll():void {
 			
@@ -279,7 +272,6 @@ package com.citrusengine.view.starlingview {
 				tile.myTexture = null;
 			}
 		}
-		
 		
 		public function destroy():void {
 			
