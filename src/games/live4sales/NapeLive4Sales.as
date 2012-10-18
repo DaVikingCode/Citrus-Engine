@@ -6,8 +6,8 @@ package games.live4sales {
 	import games.live4sales.nape.characters.ShopsWoman;
 	import games.live4sales.nape.objects.Block;
 	import games.live4sales.nape.objects.Cash;
-	import games.live4sales.runtime.BaddiesCreation;
 	import games.live4sales.runtime.CoinsCreation;
+	import games.live4sales.runtime.nape.BaddiesCreation;
 	import games.live4sales.ui.Hud;
 	import games.live4sales.utils.Grid;
 

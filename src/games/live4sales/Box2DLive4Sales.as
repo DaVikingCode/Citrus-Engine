@@ -7,8 +7,8 @@ package games.live4sales {
 	import games.live4sales.box2d.objects.Block;
 	import games.live4sales.box2d.objects.Cash;
 	import games.live4sales.events.MoneyEvent;
-	import games.live4sales.runtime.BaddiesCreation;
 	import games.live4sales.runtime.CoinsCreation;
+	import games.live4sales.runtime.box2d.BaddiesCreation;
 	import games.live4sales.ui.Hud;
 	import games.live4sales.utils.Grid;
 
@@ -22,7 +22,7 @@ package games.live4sales {
 	import com.citrusengine.view.starlingview.AnimationSequence;
 	import com.citrusengine.view.starlingview.Box2DDebugArt;
 	import com.citrusengine.view.starlingview.StarlingArt;
-	
+		
 	/**
 	 * @author Aymeric
 	 */
