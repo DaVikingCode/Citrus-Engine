@@ -1,6 +1,6 @@
 package starlingtiles {
 
-	import com.citrusengine.core.CitrusEngine;
+	import com.citrusengine.core.StarlingCitrusEngine;
 
 	import flash.display.Loader;
 	import flash.events.Event;
@@ -11,7 +11,7 @@ package starlingtiles {
 	/**
 	 * @author Nick Pinkham
 	 */
-	public class Main extends CitrusEngine {
+	public class Main extends StarlingCitrusEngine {
 		
 		public function Main():void {
 			

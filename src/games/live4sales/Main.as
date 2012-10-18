@@ -1,6 +1,6 @@
 package games.live4sales {
-	
-	import com.citrusengine.core.CitrusEngine;
+
+	import com.citrusengine.core.StarlingCitrusEngine;
 	import com.citrusengine.utils.Mobile;
 
 	import flash.geom.Rectangle;
@@ -10,7 +10,7 @@ package games.live4sales {
 	/**
 	 * @author Aymeric
 	 */
-	public class Main extends CitrusEngine {
+	public class Main extends StarlingCitrusEngine {
 
 		public var compileForMobile:Boolean;
 		public var isIpad:Boolean = false;

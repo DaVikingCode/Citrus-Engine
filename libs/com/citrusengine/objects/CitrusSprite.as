@@ -39,7 +39,7 @@ package com.citrusengine.objects
 		protected var _rotation:Number = 0;
 		protected var _group:Number = 0;
 		protected var _visible:Boolean = true;
-		protected var _view:*;
+		protected var _view:* = SpriteDebugArt;
 		protected var _inverted:Boolean = false;
 		protected var _animation:String = "";
 		protected var _offsetX:Number = 0;
@@ -54,7 +54,6 @@ package com.citrusengine.objects
 		public function CitrusSprite(name:String, params:Object=null)
 		{
 			_ce = CitrusEngine.getInstance();
-			_view = _ce.starling ? StarlingSpriteDebugArt : SpriteDebugArt;
 			
 			super(name, params);
 		}

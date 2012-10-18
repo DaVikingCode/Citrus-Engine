@@ -187,14 +187,8 @@
 				
 				params = {};
 				
-				if (ce.starling) {
-					
-					//TODO : cut bitmap if size > 2048 * 2048, use StarlingTileSystem?
-					//params.view = Image.fromBitmap(new Bitmap(bmpData));
-					params.view = new Bitmap(bmpData);
-					
-				} else
-					params.view = new Bitmap(bmpData);
+				//TODO : cut bitmap if size > 2048 * 2048, use StarlingTileSystem?
+				params.view = new Bitmap(bmpData);
 				
 				for (var param:String in tmx.getLayer(layer).properties)
 					params[param] = tmx.getLayer(layer).properties[param];

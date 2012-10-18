@@ -1,8 +1,5 @@
 ﻿package com.citrusengine.core {
 
-	import starling.core.Starling;
-	import starling.events.Event;
-
 	import com.citrusengine.utils.AGameData;
 	import com.citrusengine.utils.LevelManager;
 
@@ -10,7 +7,6 @@
 
 	import flash.display.MovieClip;
 	import flash.events.Event;
-	import flash.geom.Rectangle;
 	
 	/**
 	 * CitrusEngine is the top-most class in the library. When you start your project, you should make your
@@ -29,15 +25,14 @@
 		
 		public var onPlayingChange:Signal;
 		
-		protected var _starling:Starling;
+		protected var _state:IState;
+		protected var _newState:IState;
+		protected var _stateDisplayIndex:uint = 0;
+		protected var _playing:Boolean = true;
 		
 		private var _levelManager:LevelManager;
-		private var _state:IState;
-		private var _newState:IState;
-		private var _stateDisplayIndex:uint = 0;
 		private var _startTime:Number;
 		private var _gameTime:Number;
-		private var _playing:Boolean = true;
 		private var _gameData:AGameData;
 		private var _input:Input;
 		private var _sound:SoundManager;
@@ -93,16 +88,8 @@
 				
 				_state.destroy();
 				
-				if (_starling) {
-					
-					_starling.stage.removeChild(_state as StarlingState);
-					_starling.nativeStage.removeChildAt(2); // Remove Box2D or Nape debug view
-					
-					_starling.dispose();
-					
-				} else {
+				if (_state is State)
 					removeChild(_state as State);
-				}
 			}
 				
 			_console.destroy();
@@ -110,38 +97,6 @@
 			
 			_input.destroy();
 			_sound.destroy();
-		}
-		
-		/**
-		 * You should call this function to create your Starling view. The RootClass is internal, it is never used elsewhere. 
-		 * StarlingState is added on the starling stage : <code>_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);</code>
-		 * @param debugMode : if true, display a Stats class instance.
-		 * @param antiAliasing : The antialiasing value allows you to set the anti-aliasing (0 - 16), generally a value of 1 is totally acceptable.
-		 * @param viewPort : Starling's viewport, default is (0, 0, stage.stageWidth, stage.stageHeight, change to (0, 0, stage.fullScreenWidth, stage.fullScreenHeight) for mobile.
-		 */
-		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewPort:Rectangle = null):void {
-			
-			if (!viewPort)
-				viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
-			
-			_starling = new Starling(RootClass, stage, viewPort, null, "auto", "baseline");
-			
-			_starling.antiAliasing = antiAliasing;
-			_starling.showStats = debugMode;
-			 
-			_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
-		}
-		
-		// be sure that starling is initialized (especially on mobile)
-		protected function _context3DCreated(evt:starling.events.Event):void {
-			
-			_starling.removeEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
-			
-			_starling.start();
-		}
-		
-		public function get starling():Starling {
-			return _starling;
 		}
 		
 		/**
@@ -265,33 +220,15 @@
 		 * This is the game loop. It switches states if necessary, then calls update on the current state.
 		 */		
 		//TODO The CE updates use the timeDelta to keep consistent speed during slow framerates. However, Box2D becomes unstable when changing timestep. Why?
-		private function handleEnterFrame(e:flash.events.Event):void
+		protected function handleEnterFrame(e:flash.events.Event):void
 		{
 			//Change states if it has been requested
 			if (_newState)
 			{
-				// if we use Stage3D with StarlingView
-				if (_starling) {
-					if (_starling.isStarted) {
-						
-						if (_state) {
-							
-							_state.destroy();
-							_starling.stage.removeChild(_state as StarlingState);
-							_starling.nativeStage.removeChildAt(2); // Remove Box2D or Nape debug view
-						}
-						_state = _newState;
-						_newState = null;
+				if (_newState is State) {
 					
-						_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);
-						_state.initialize();
-					}
-					
-				} 
-				else // if we use class display list with the SpriteView or BlittingView 
-				{
 					if (_state) {
-						
+							
 						_state.destroy();
 						removeChild(_state as State);
 					}
@@ -316,23 +253,17 @@
 			
 		}
 		
-		private function handleStageDeactivated(e:flash.events.Event):void
+		protected function handleStageDeactivated(e:flash.events.Event):void
 		{
 			if (_playing)
 			{
-				if (_starling)
-					_starling.stop();
-					
 				playing = false;
 				stage.addEventListener(flash.events.Event.ACTIVATE, handleStageActivated);
 			}
 		}
 		
-		private function handleStageActivated(e:flash.events.Event):void
+		protected function handleStageActivated(e:flash.events.Event):void
 		{
-			if (_starling)
-				_starling.start();
-					
 			playing = true;
 			stage.removeEventListener(flash.events.Event.ACTIVATE, handleStageActivated);
 		}
@@ -374,16 +305,5 @@
 			else
 				trace("Warning: " + objectName + " has no parameter named " + paramName + ".");
 		}
-	}
-}
-
-import starling.display.Sprite;
-
-/**
- * RootClass is the root of Starling, it is never destroyed and only accessed through <code>_starling.stage</code>.
- */
-internal class RootClass extends Sprite {
-	
-	public function RootClass() {
 	}
 }

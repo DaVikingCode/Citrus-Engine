@@ -6,6 +6,7 @@ package mobilenapestarling {
 
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.Input;
+	import com.citrusengine.core.StarlingCitrusEngine;
 
 	/**
 	 * @author Aymeric
@@ -20,7 +21,7 @@ package mobilenapestarling {
 			
 		override public function destroy():void {
 			
-			_ce.starling.stage.removeEventListener(TouchEvent.TOUCH, _touchEvent);
+			(_ce as StarlingCitrusEngine).starling.stage.removeEventListener(TouchEvent.TOUCH, _touchEvent);
 			
 			super.destroy();
 		}
@@ -32,9 +33,9 @@ package mobilenapestarling {
 			_ce = CitrusEngine.getInstance();
 
 			if (enabled)
-				_ce.starling.stage.addEventListener(TouchEvent.TOUCH, _touchEvent);
+				(_ce as StarlingCitrusEngine).starling.stage.addEventListener(TouchEvent.TOUCH, _touchEvent);
 			else
-				_ce.starling.stage.removeEventListener(TouchEvent.TOUCH, _touchEvent);
+				(_ce as StarlingCitrusEngine).starling.stage.removeEventListener(TouchEvent.TOUCH, _touchEvent);
 		}
 
 		override public function initialize():void {
@@ -43,13 +44,13 @@ package mobilenapestarling {
 
 			_ce = CitrusEngine.getInstance();
 
-			_ce.starling.stage.addEventListener(TouchEvent.TOUCH, _touchEvent);
+			(_ce as StarlingCitrusEngine).starling.stage.addEventListener(TouchEvent.TOUCH, _touchEvent);
 		}
 
 		private function _touchEvent(tEvt:TouchEvent):void {
 						
-			var touchStart:Touch = tEvt.getTouch(_ce.starling.stage, TouchPhase.BEGAN);
-			var touchEnd:Touch = tEvt.getTouch(_ce.starling.stage, TouchPhase.ENDED);
+			var touchStart:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.BEGAN);
+			var touchEnd:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.ENDED);
 
 			if (touchStart)
 				_screenTouched = true;

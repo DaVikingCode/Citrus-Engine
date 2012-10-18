@@ -4,6 +4,8 @@ package games.live4sales.nape.objects {
 	import games.live4sales.events.MoneyEvent;
 	import games.live4sales.objects.Coin;
 
+	import com.citrusengine.core.StarlingCitrusEngine;
+
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 
@@ -38,7 +40,7 @@ package games.live4sales.nape.objects {
 		private function _createCoin(tEvt:TimerEvent):void {
 			
 			_coin = new Coin(Assets.getAtlasTexture("coin", "Objects"));
-			_ce.starling.stage.addChild(_coin);
+			(_ce as StarlingCitrusEngine).starling.stage.addChild(_coin);
 			_coin.onDestroyed.add(_coinDestroy);
 			
 			_coin.x = x - width;
@@ -47,7 +49,7 @@ package games.live4sales.nape.objects {
 		
 		private function _coinDestroy(coin:Coin, touched:Boolean):void {
 			
-			_ce.starling.stage.removeChild(_coin);
+			(_ce as StarlingCitrusEngine).starling.stage.removeChild(_coin);
 			
 			if (touched)
 				_ce.dispatchEvent(new MoneyEvent(MoneyEvent.PICKUP_MONEY));

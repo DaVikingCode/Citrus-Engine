@@ -1,6 +1,6 @@
 package mobilenapestarling {
 
-	import com.citrusengine.core.CitrusEngine;
+	import com.citrusengine.core.StarlingCitrusEngine;
 
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
@@ -10,7 +10,7 @@ package mobilenapestarling {
 	/**
 	 * @author Aymeric
 	 */
-	public class Main extends CitrusEngine {
+	public class Main extends StarlingCitrusEngine {
 
 		public var compileForMobile:Boolean;
 		public var isIpad:Boolean = false;

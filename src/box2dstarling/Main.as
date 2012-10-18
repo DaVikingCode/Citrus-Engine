@@ -1,7 +1,7 @@
 package box2dstarling {
 
-	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.IState;
+	import com.citrusengine.core.StarlingCitrusEngine;
 	import com.citrusengine.utils.LevelManager;
 
 	[SWF(frameRate="60")]
@@ -9,7 +9,7 @@ package box2dstarling {
 	/**
 	 * @author Aymeric
 	 */
-	public class Main extends CitrusEngine {
+	public class Main extends StarlingCitrusEngine {
 		
 		public function Main() {
 			
