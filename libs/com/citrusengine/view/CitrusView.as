@@ -146,7 +146,7 @@ package com.citrusengine.view {
 			if (!citrusObject is _viewInterface)
 			{
 				throw new Error("The object " + citrusObject + " does not have a graphical counterpart because it does not implement " + _viewInterface + ".");
-				return;
+				return null;
 			}
 			
 			return _viewObjects[citrusObject];
