@@ -187,7 +187,6 @@
 				
 				params = {};
 				
-				//TODO : cut bitmap if size > 2048 * 2048, use StarlingTileSystem?
 				params.view = new Bitmap(bmpData);
 				
 				for (var param:String in tmx.getLayer(layer).properties)

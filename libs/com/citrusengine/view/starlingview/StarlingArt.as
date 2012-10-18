@@ -234,7 +234,7 @@ package com.citrusengine.view.starlingview {
 						Starling.juggler.add(content as PDParticleSystem);
 				
 				} else if (_view is Bitmap) {
-					
+					//TODO : cut bitmap if size > 2048 * 2048, use StarlingTileSystem?
 					content = Image.fromBitmap(_view);
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(content);
