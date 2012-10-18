@@ -7,8 +7,6 @@ package com.citrusengine.view.away3dview {
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.ISpriteView;
-	import com.citrusengine.view.spriteview.Box2DDebugArt;
-	import com.citrusengine.view.spriteview.NapeDebugArt;
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -120,14 +118,6 @@ package com.citrusengine.view.away3dview {
 		override protected function createArt(citrusObject:Object):Object {
 
 			var viewObject:ISpriteView = citrusObject as ISpriteView;
-
-			// Changing to appropriate Box2DDebugArt
-			if (citrusObject.view == com.citrusengine.view.spriteview.Box2DDebugArt)
-				citrusObject.view = com.citrusengine.view.away3dview.Box2DDebugArt;
-
-			// Changing to appropriate NapeDebugArt
-			if (citrusObject.view == com.citrusengine.view.spriteview.NapeDebugArt)
-				citrusObject.view = com.citrusengine.view.away3dview.NapeDebugArt;
 
 			if (citrusObject.view == MovieClip)
 				citrusObject.view = ObjectContainer3D;

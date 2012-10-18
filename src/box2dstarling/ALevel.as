@@ -20,6 +20,7 @@ package box2dstarling {
 	import com.citrusengine.physics.Box2D;
 	import com.citrusengine.utils.ObjectMaker;
 	import com.citrusengine.view.starlingview.AnimationSequence;
+	import com.citrusengine.view.starlingview.Box2DDebugArt;
 
 	import org.osflash.signals.Signal;
 
@@ -74,7 +75,7 @@ package box2dstarling {
 			
 			super.initialize();
 			
-			var box2d:Box2D = new Box2D("Box2D");
+			var box2d:Box2D = new Box2D("Box2D", {view:Box2DDebugArt});
 			//box2d.visible = true;
 			add(box2d);
 			

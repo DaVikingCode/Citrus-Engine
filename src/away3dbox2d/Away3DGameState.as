@@ -21,6 +21,7 @@ package away3dbox2d {
 	import com.citrusengine.view.away3dview.AnimationSequence;
 	import com.citrusengine.view.away3dview.Away3DArt;
 	import com.citrusengine.view.away3dview.Away3DView;
+	import com.citrusengine.view.away3dview.Box2DDebugArt;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -64,7 +65,7 @@ package away3dbox2d {
 
 			addChild(new AwayStats((view as Away3DView).viewRoot));
 
-			var box2D:Box2D = new Box2D("box2D");
+			var box2D:Box2D = new Box2D("box2D", {view:Box2DDebugArt});
 			// box2D.visible = true;
 			add(box2D);
 

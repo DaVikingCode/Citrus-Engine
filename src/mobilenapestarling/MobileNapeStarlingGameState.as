@@ -20,6 +20,7 @@ package mobilenapestarling {
 	import com.citrusengine.objects.platformer.nape.Platform;
 	import com.citrusengine.physics.Nape;
 	import com.citrusengine.view.starlingview.AnimationSequence;
+	import com.citrusengine.view.starlingview.NapeDebugArt;
 	import com.citrusengine.view.starlingview.StarlingArt;
 
 	import flash.display.Bitmap;
@@ -64,7 +65,7 @@ package mobilenapestarling {
 
 			Assets.contentScaleFactor = Starling.current.contentScaleFactor;
 			
-			var nape:Nape = new Nape("nape");
+			var nape:Nape = new Nape("nape", {view:NapeDebugArt});
 			//nape.visible = true;
 			add(nape);
 			

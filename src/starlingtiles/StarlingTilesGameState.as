@@ -1,6 +1,14 @@
 package starlingtiles 
 {
 
+	import nape.geom.Vec2;
+
+	import starling.core.Starling;
+	import starling.display.BlendMode;
+	import starling.display.Image;
+	import starling.textures.Texture;
+	import starling.textures.TextureAtlas;
+
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.StarlingState;
 	import com.citrusengine.math.MathVector;
@@ -9,21 +17,14 @@ package starlingtiles
 	import com.citrusengine.objects.platformer.nape.*;
 	import com.citrusengine.physics.Nape;
 	import com.citrusengine.utils.ObjectMaker;
-	import com.citrusengine.view.starlingview.StarlingTileSystem;
 	import com.citrusengine.view.starlingview.AnimationSequence;
+	import com.citrusengine.view.starlingview.NapeDebugArt;
 	import com.citrusengine.view.starlingview.StarlingArt;
-	import flash.display.Bitmap;
-	
-	import starling.core.Starling;
-	import starling.display.Image;
-	import starling.textures.Texture;
-	import starling.display.BlendMode;
-	import starling.textures.TextureAtlas;
-	
-	import nape.geom.Vec2;
+	import com.citrusengine.view.starlingview.StarlingTileSystem;
 
 	import org.osflash.signals.Signal;
 
+	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.geom.Rectangle;
  
@@ -71,7 +72,7 @@ package starlingtiles
  
 			super.initialize();
 			
-			var nape:Nape = new Nape("nape");
+			var nape:Nape = new Nape("nape", {view:NapeDebugArt});
 			nape.visible = false; // -> to see the debug view!
 			add(nape);
 			nape.gravity = new Vec2(0, 210);
