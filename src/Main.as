@@ -17,6 +17,7 @@ package {
 			// be careful with the package & import!
 			// import libraries from the libs folder, select just one Nape swc.
 
+			// If you wish to use Starling, the Main class must extends StarlingCitrusEngine!
 			//setUpStarling(true);
 
 			state = new OsmosGameState();
