@@ -1,7 +1,5 @@
 package com.citrusengine.utils {
 
-	import starling.display.Sprite;
-
 	import org.osflash.signals.Signal;
 
 	import flash.display.Loader;
@@ -77,7 +75,7 @@ package com.citrusengine.utils {
 			
 			var loader:Loader;
 
-			if (potentialLoader is Loader || (potentialLoader is Sprite && potentialLoader.loader)) {
+			if (potentialLoader is Loader || potentialLoader.loader) {
 				
 				// We found our first loader, so reset the bytesLoaded/Total dictionaries to get a fresh count.
 				if (_numLoadersLoading == 0) {
