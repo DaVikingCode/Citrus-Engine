@@ -68,8 +68,8 @@
 			//Set up sound manager
 			_sound = SoundManager.getInstance();
 			
-			addEventListener(flash.events.Event.ENTER_FRAME, handleEnterFrame);
-			addEventListener(flash.events.Event.ADDED_TO_STAGE, handleAddedToStage);
+			addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+			addEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
 		}
 		
 		/**
@@ -79,10 +79,10 @@
 			
 			onPlayingChange.removeAll();
 			
-			stage.removeEventListener(flash.events.Event.ACTIVATE, handleStageActivated);
-			stage.removeEventListener(flash.events.Event.DEACTIVATE, handleStageDeactivated);
+			stage.removeEventListener(Event.ACTIVATE, handleStageActivated);
+			stage.removeEventListener(Event.DEACTIVATE, handleStageDeactivated);
 			
-			removeEventListener(flash.events.Event.ENTER_FRAME, handleEnterFrame);
+			removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
 			
 			if (_state) {
 				
@@ -206,12 +206,12 @@
 		/**
 		 * Set up things that need the stage access.
 		 */
-		private function handleAddedToStage(e:flash.events.Event):void 
+		private function handleAddedToStage(e:Event):void 
 		{
-			removeEventListener(flash.events.Event.ADDED_TO_STAGE, handleAddedToStage);
+			removeEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
 			stage.scaleMode = "noScale";
 			stage.align = "topLeft";
-			stage.addEventListener(flash.events.Event.DEACTIVATE, handleStageDeactivated);
+			stage.addEventListener(Event.DEACTIVATE, handleStageDeactivated);
 			
 			_input.initialize();
 		}
@@ -220,7 +220,7 @@
 		 * This is the game loop. It switches states if necessary, then calls update on the current state.
 		 */		
 		//TODO The CE updates use the timeDelta to keep consistent speed during slow framerates. However, Box2D becomes unstable when changing timestep. Why?
-		protected function handleEnterFrame(e:flash.events.Event):void
+		protected function handleEnterFrame(e:Event):void
 		{
 			//Change states if it has been requested
 			if (_newState)
@@ -253,19 +253,19 @@
 			
 		}
 		
-		protected function handleStageDeactivated(e:flash.events.Event):void
+		protected function handleStageDeactivated(e:Event):void
 		{
 			if (_playing)
 			{
 				playing = false;
-				stage.addEventListener(flash.events.Event.ACTIVATE, handleStageActivated);
+				stage.addEventListener(Event.ACTIVATE, handleStageActivated);
 			}
 		}
 		
-		protected function handleStageActivated(e:flash.events.Event):void
+		protected function handleStageActivated(e:Event):void
 		{
 			playing = true;
-			stage.removeEventListener(flash.events.Event.ACTIVATE, handleStageActivated);
+			stage.removeEventListener(Event.ACTIVATE, handleStageActivated);
 		}
 		
 		private function handleShowConsole():void

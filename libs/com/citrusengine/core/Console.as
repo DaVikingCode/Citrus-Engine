@@ -37,7 +37,6 @@ package com.citrusengine.core
 	{
 		public var openKey:uint = 9;
 		private var _inputField:TextField;
-		private var _openKey:int;
 		private var _executeKey:int;
 		private var _prevHistoryKey:int;
 		private var _nextHistoryKey:int;
