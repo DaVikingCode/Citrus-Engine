@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Build SWC Library" default="CE-swc-global">
+	
+	<!-- Change this to the installation directory of FLEX -->
+	<property name="FLEX_HOME" value="C:/Users/Aymeric/Workspace/SDKs/flex_sdk_4.6" />
+	
+	<!-- Don't change this (it's the path to the compiler to use) -->
+	<property name="compc.exe" value="${FLEX_HOME}/bin/compc.exe" />
+        
+	<!-- Point Ant to the Flex installation -->
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
+		
+	<!-- Define the commands to generate a SWC library -->
+ 	<target name="CE-swc-global" description="Generates a single SWC library with everything included in.">
+ 		
+		<echo>Generating Citrus Engine Global</echo>
+		<exec executable="${compc.exe}">
+			<!-- Set the output path -->
+			<arg line="-output CEV3Beta3.swc"/>
+			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../libs/com"/>
+			<arg line="-include-sources ../libs/awayphysics"/>
+			<arg line="-include-sources ../libs/Box2DAS"/>
+			<arg line="-include-sources ../libs/starling"/>
+			
+			<arg line="-include-libraries ../libs/swc/"/>
+			
+			
+			<!-- Compile for Flash Player 10.0.0 and higher -->
+			<!-- <arg line="-target-player=10.0.0"/> -->
+			
+			<!-- <arg line="-optimize=true" /> -->
+			
+			<!-- Turn off strict mode -->
+			<!-- <arg line="-strict=false"/> -->
+		</exec>
+	</target>
+	
+	<target name="CE-swc-core" description="Generates the CE core's SWC">
+	 		
+			<echo>Generating Citrus Engine Core</echo>
+			<exec executable="${compc.exe}">
+				<!-- Set the output path -->
+				<arg line="-output CEV3Beta3-Core.swc"/>
+				
+				<!-- Include all of the AS3 files in LIBRARY -->
+				<arg line="-include-sources ../libs/com/citrusengine/core/CitrusEngine.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/core/CitrusObject.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/core/Console.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/core/Input.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/core/IState.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/core/SoundManager.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/core/State.as"/>
+				
+				<arg line="-include-sources ../libs/com/citrusengine/datastructures/DoublyLinkedList.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/datastructures/DoublyLinkedListNode.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/datastructures/PoolObject.as"/>
+				
+				<arg line="-include-sources ../libs/com/citrusengine/math/MathVector.as"/>
+				
+				<arg line="-include-sources ../libs/com/citrusengine/objects/APhysicsObject.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/objects/CitrusSprite.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/objects/common/Emitter.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/objects/common/EmitterParticle.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/objects/platformer/simple/DynamicObject.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/objects/platformer/simple/Hero.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/objects/platformer/simple/Sensor.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/objects/platformer/simple/StaticObject.as"/>
+				
+				<arg line="-include-sources ../libs/com/citrusengine/physics/APhysicsEngine.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/physics/PhysicsCollisionCategories.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/physics/SimpleCitrusSolver.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/physics/SimpleCollision.as"/>
+				
+				<arg line="-include-sources ../libs/com/citrusengine/system/Component.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/system/Entity.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/system/components/InputComponent.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/system/components/ViewComponent.as"/>
+				
+				<arg line="-include-sources ../libs/com/citrusengine/utils/AGameData.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/utils/LevelManager.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/utils/LoadManager.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/utils/Mobile.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/utils/ObjectMaker2D.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/utils/tmx/TmxLayer.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/utils/tmx/TmxMap.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/utils/tmx/TmxObject.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/utils/tmx/TmxObjectGroup.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/utils/tmx/TmxPropertySet.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/utils/tmx/TmxTileSet.as"/>
+				
+				<arg line="-include-sources ../libs/com/citrusengine/view/CitrusView.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/view/IDebugView.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/view/ISpriteView.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/view/SpriteDebugArt.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/view/blittingview/AnimationSequence.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/view/blittingview/BlittingArt.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/view/blittingview/BlittingView.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/view/spriteview/SpriteArt.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/view/spriteview/SpriteView.as"/>
+				
+				<arg line="-include-libraries ../libs/swc/signals.swc"/>
+				
+				<!-- Compile for Flash Player 10.0.0 and higher -->
+				<!-- <arg line="-target-player=10.0.0"/> -->
+				
+				<!-- <arg line="-optimize=true" /> -->
+				
+				<!-- Turn off strict mode -->
+				<!-- <arg line="-strict=false"/> -->
+			</exec>
+		</target>
+</project>
