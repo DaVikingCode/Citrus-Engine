@@ -47,7 +47,7 @@ package com.citrusengine.system.components {
 			super.destroy();
 		}
 		
-		public function get body():* {
+		public function getBody():* {
 			return null;
 		}
 		

@@ -31,6 +31,7 @@ package com.citrusengine.objects {
 		
 		protected var _nape:Nape;
 		protected var _bodyType:BodyType;
+		protected var _body:Body;
 		protected var _material:Material;
 		protected var _shape:Shape;
 		
@@ -274,7 +275,11 @@ package com.citrusengine.objects {
 		/**
 		 * A direction reference to the Nape body associated with this object.
 		 */
-		override public function get body():*
+		public function get body():Body {
+			return _body;
+		}
+		
+		override public function getBody():*
 		{
 			return _body;
 		}

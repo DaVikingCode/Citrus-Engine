@@ -14,7 +14,7 @@ package com.citrusengine.physics {
 			super(name, params);
 		}
 		
-		public function get body():* {
+		public function getBody():* {
 			return null;
 		}
 		

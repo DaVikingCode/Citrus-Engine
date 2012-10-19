@@ -68,7 +68,7 @@ package com.citrusengine.objects
 		}
 		
 		// No physics here
-		public function get body():* {
+		public function getBody():* {
 			return null;
 		}
 		

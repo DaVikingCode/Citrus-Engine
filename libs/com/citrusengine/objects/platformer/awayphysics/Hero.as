@@ -149,7 +149,7 @@ package com.citrusengine.objects.platformer.awayphysics {
 			}
 		}
 			
-		override public function get body():* {
+		override public function getBody():* {
 			return _ghostObject;
 		}
 

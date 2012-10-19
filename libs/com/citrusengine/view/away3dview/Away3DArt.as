@@ -218,8 +218,8 @@ package com.citrusengine.view.away3dview {
 					y = _citrusObject.y;
 					z = _citrusObject.z;
 					
-					if (citrusObject.body)
-						rotateTo(citrusObject.body.rotation.x, citrusObject.body.rotation.y, citrusObject.body.rotation.z);
+					if (citrusObject.getBody())
+						rotateTo(citrusObject.getBody().rotation.x, citrusObject.getBody().rotation.y, citrusObject.getBody().rotation.z);
 				}
 				
 				

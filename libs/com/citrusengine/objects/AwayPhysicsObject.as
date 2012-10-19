@@ -20,7 +20,7 @@ package com.citrusengine.objects {
 	public class AwayPhysicsObject extends APhysicsObject implements ISpriteView {
 		
 		protected var _awayPhysics:AwayPhysics;
-
+		protected var _body:AWPRigidBody;
 		protected var _shape:AWPCollisionShape;
 		protected var _mass:Number = 1;
 		
@@ -258,11 +258,15 @@ package com.citrusengine.objects {
 				trace("Warning: You cannot set " + this + " radius after it has been created. Please set it in the constructor.");
 			}
 		}
-
+		
 		/**
-		 * A direction reference to the Nape body associated with this object.
+		 * A direction reference to the AwayPhysics body associated with this object.
 		 */
-		override public function get body():* {
+		public function get body():AWPRigidBody {
+			return _body;
+		}
+		
+		override public function getBody():* {
 			return _body;
 		}
 

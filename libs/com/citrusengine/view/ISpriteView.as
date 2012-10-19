@@ -16,7 +16,7 @@ package com.citrusengine.view
 		/**
 		 * the body used by a physics engine
 		 */
-		function get body():*;
+		function getBody():*;
 		
 		/**
 		 * The x position of the object. 
