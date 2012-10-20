@@ -3,7 +3,6 @@ package com.citrusengine.physics {
 	import nape.geom.Vec2;
 	import nape.space.Space;
 
-	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.view.ISpriteView;
 	import com.citrusengine.view.spriteview.NapeDebugArt;
 
@@ -17,13 +16,15 @@ package com.citrusengine.physics {
 		private var _space:Space;
 		private var _gravity:Vec2 = new Vec2(0, 150);
 		private var _contactListener:NapeContactListener;
-		private var _view:* = NapeDebugArt;
-
+		
 		/**
 		 * Creates and initializes a Nape space. 
 		 */
 		public function Nape(name:String, params:Object = null) {
-
+			
+			if (params.view == undefined)
+				params.view = NapeDebugArt;
+			
 			super(name, params);
 		}
 			
@@ -77,14 +78,6 @@ package com.citrusengine.physics {
 			
 			// 0.05 = 1 / 20
 			_space.step(0.05, 8, 8);
-		}
-		
-		public function get view():* {
-			return _view;
-		}
-
-		public function set view(value:*):void {
-			_view = value;
 		}
 	}
 }

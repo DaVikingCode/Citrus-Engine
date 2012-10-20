@@ -14,9 +14,11 @@ package com.citrusengine.physics {
 		
 		private var _world:AWPDynamicsWorld;
 		private var _gravity:Vector3D = new Vector3D(0, -10, 0);
-		private var _view:* = AwayPhysicsDebugArt;
 
 		public function AwayPhysics(name:String, params:Object = null) {
+			
+			if (params.view == undefined)
+				params.view = AwayPhysicsDebugArt;
 			
 			super(name, params);
 		}
@@ -67,14 +69,5 @@ package com.citrusengine.physics {
 			// 0.01667 = 1 / 60
 			_world.step(0.01667, 1, 0.01667);
 		}
-
-		public function get view():* {
-			return _view;
-		}
-
-		public function set view(value:*):void {
-			_view = value;
-		}
-
 	}
 }

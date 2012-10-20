@@ -17,7 +17,6 @@ package com.citrusengine.physics {
 		private var _scale:Number = 30;
 		private var _world:b2World;
 		private var _gravity:V2 = new V2(0, 15);
-		private var _view:* = Box2DDebugArt;
 		
 		public static function Make(name:String, visible:Boolean):Box2D
 		{
@@ -29,6 +28,9 @@ package com.citrusengine.physics {
 		 */		
 		public function Box2D(name:String, params:Object = null)
 		{
+			if (params.view == undefined)
+				params.view = Box2DDebugArt;
+			
 			super(name, params);
 		}
 			
@@ -88,16 +90,6 @@ package com.citrusengine.physics {
 			
 			// 0.05 = 1 / 20
 			_world.Step(0.05, 8, 8);
-		}
-		
-		public function get view():*
-		{
-			return _view;
-		}
-		
-		public function set view(value:*):void
-		{
-			_view = value;
 		}
 	}
 }

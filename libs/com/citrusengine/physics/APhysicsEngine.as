@@ -9,6 +9,7 @@ package com.citrusengine.physics {
 		
 		protected var _visible:Boolean = false;
 		protected var _group:Number = 1;
+		protected var _view:*;
 
 		public function APhysicsEngine(name:String, params:Object = null) {
 			super(name, params);
@@ -16,6 +17,14 @@ package com.citrusengine.physics {
 		
 		public function getBody():* {
 			return null;
+		}
+		
+		public function get view():* {
+			return _view;
+		}
+		
+		public function set view(value:*):void {
+			_view = value;
 		}
 		
 		public function get x():Number {
