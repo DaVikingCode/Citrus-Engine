@@ -25,10 +25,8 @@ package com.citrusengine.physics {
 		{
 			if (params && params.view == undefined)
 				params.view = Box2DDebugArt;
-			else if (params == null) {
-				params = {};
-				params.view = Box2DDebugArt; 
-			}
+			else if (params == null)
+				params = {view:Box2DDebugArt};
 			
 			super(name, params);
 		}

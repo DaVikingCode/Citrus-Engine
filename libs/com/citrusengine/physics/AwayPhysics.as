@@ -19,10 +19,8 @@ package com.citrusengine.physics {
 			
 			if (params && params.view == undefined)
 				params.view = AwayPhysicsDebugArt;
-			else if (params == null) {
-				params = {};
-				params.view = AwayPhysicsDebugArt;
-			}
+			else if (params == null)
+				params = {view:AwayPhysicsDebugArt};
 			
 			super(name, params);
 		}

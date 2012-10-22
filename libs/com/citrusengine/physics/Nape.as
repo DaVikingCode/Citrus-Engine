@@ -24,10 +24,8 @@ package com.citrusengine.physics {
 			
 			if (params && params.view == undefined)
 				params.view = NapeDebugArt;
-			else if (params == null) {
-				params = {};
-				params.view = NapeDebugArt; 
-			}
+			else if (params == null)
+				params = {view:NapeDebugArt};
 			
 			super(name, params);
 		}
