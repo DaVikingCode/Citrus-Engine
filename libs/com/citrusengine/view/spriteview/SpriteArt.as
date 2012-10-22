@@ -1,12 +1,11 @@
 package com.citrusengine.view.spriteview 
 {
-
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.core.IState;
 	import com.citrusengine.physics.APhysicsEngine;
+	import com.citrusengine.physics.IDebugView;
 	import com.citrusengine.system.components.ViewComponent;
-	import com.citrusengine.view.IDebugView;
 	import com.citrusengine.view.ISpriteView;
 
 	import flash.display.Bitmap;
