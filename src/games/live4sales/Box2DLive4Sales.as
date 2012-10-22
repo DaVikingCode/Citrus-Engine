@@ -20,7 +20,6 @@ package games.live4sales {
 	import com.citrusengine.objects.CitrusSprite;
 	import com.citrusengine.physics.Box2D;
 	import com.citrusengine.view.starlingview.AnimationSequence;
-	import com.citrusengine.view.starlingview.Box2DDebugArt;
 	import com.citrusengine.view.starlingview.StarlingArt;
 		
 	/**
@@ -46,7 +45,7 @@ package games.live4sales {
 
 			Assets.contentScaleFactor = Starling.current.contentScaleFactor;
 
-			var box2D:Box2D = new Box2D("box2D", {view:Box2DDebugArt, gravity:new V2()});
+			var box2D:Box2D = new Box2D("box2D", {gravity:new V2()});
 			//box2D.visible = true;
 			add(box2D);
 

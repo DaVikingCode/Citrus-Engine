@@ -1,5 +1,5 @@
 package com.citrusengine.view.away3dview {
-
+	
 	import away3d.containers.ObjectContainer3D;
 	import away3d.events.LoaderEvent;
 	import away3d.loaders.Loader3D;
@@ -203,14 +203,14 @@ package com.citrusengine.view.away3dview {
 			
 			if (stateView.mode == "3D") {
 				
-				if (content is IDebugView) {
-					
-					(content as IDebugView).update();
+				if (content is AwayPhysicsDebugView) {
+				
+					(content as AwayPhysicsDebugView).update();
 					
 					if (_citrusObject.visible)
-						(content as IDebugView).debugMode(9);
+						(content as AwayPhysicsDebugView).debugMode(9);
 					else
-						(content as IDebugView).debugMode(0);
+						(content as AwayPhysicsDebugView).debugMode(0);
 					
 				} else {
 					
@@ -230,9 +230,9 @@ package com.citrusengine.view.away3dview {
 				
 				var physicsDebugArt:DisplayObject;
 				
-				if (content is IDebugView) {
-					
-					(content as IDebugView).update();
+				if (content is AwayPhysicsDebugView) {
+				
+					(content as AwayPhysicsDebugView).update();
 					
 					physicsDebugArt = (_ce.state as State).getChildByName("debug view") as DisplayObject;
 					

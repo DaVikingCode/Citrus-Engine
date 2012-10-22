@@ -18,7 +18,6 @@ package starlingtiles
 	import com.citrusengine.physics.Nape;
 	import com.citrusengine.utils.ObjectMaker2D;
 	import com.citrusengine.view.starlingview.AnimationSequence;
-	import com.citrusengine.view.starlingview.NapeDebugArt;
 	import com.citrusengine.view.starlingview.StarlingArt;
 	import com.citrusengine.view.starlingview.StarlingTileSystem;
 
@@ -72,7 +71,7 @@ package starlingtiles
  
 			super.initialize();
 			
-			var nape:Nape = new Nape("nape", {view:NapeDebugArt});
+			var nape:Nape = new Nape("nape");
 			nape.visible = false; // -> to see the debug view!
 			add(nape);
 			nape.gravity = new Vec2(0, 210);

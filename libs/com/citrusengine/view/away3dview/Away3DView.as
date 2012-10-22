@@ -1,10 +1,11 @@
 package com.citrusengine.view.away3dview {
-
+	
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.Scene3D;
 	import away3d.containers.View3D;
 
 	import com.citrusengine.core.CitrusEngine;
+	import com.citrusengine.physics.APhysicsEngine;
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.ISpriteView;
 
@@ -118,6 +119,9 @@ package com.citrusengine.view.away3dview {
 		override protected function createArt(citrusObject:Object):Object {
 
 			var viewObject:ISpriteView = citrusObject as ISpriteView;
+			
+			if (citrusObject is APhysicsEngine)
+				citrusObject.view = AwayPhysicsDebugView;
 
 			if (citrusObject.view == MovieClip)
 				citrusObject.view = ObjectContainer3D;

@@ -1,5 +1,5 @@
 package com.citrusengine.view.starlingview {
-
+	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -16,7 +16,6 @@ package com.citrusengine.view.starlingview {
 	import com.citrusengine.core.IState;
 	import com.citrusengine.physics.APhysicsEngine;
 	import com.citrusengine.system.components.ViewComponent;
-	import com.citrusengine.view.IDebugView;
 	import com.citrusengine.view.ISpriteView;
 
 	import flash.display.Bitmap;
@@ -298,10 +297,10 @@ package com.citrusengine.view.starlingview {
 			// The position = object position + (camera position * inverse parallax)
 			
 			var physicsDebugArt:flash.display.DisplayObject;
-
-			if (content is IDebugView) {
+			
+			if (content is StarlingPhysicsDebugView) {
 				
-				(content as IDebugView).update();
+				(content as StarlingPhysicsDebugView).update();
 
 				// Box2D & Nape debug views are not on the Starling display list, but on the classical flash display list.
 				// So we need to move their views here, not in the StarlingView.

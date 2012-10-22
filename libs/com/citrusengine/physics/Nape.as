@@ -34,6 +34,8 @@ package com.citrusengine.physics {
 			
 			super.initialize();
 			
+			_realDebugView = _view;
+			
 			_space = new Space(_gravity);
 			_contactListener = new NapeContactListener(_space);
 			

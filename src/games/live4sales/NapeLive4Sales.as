@@ -25,7 +25,6 @@ package games.live4sales {
 	import com.citrusengine.objects.CitrusSprite;
 	import com.citrusengine.physics.Nape;
 	import com.citrusengine.view.starlingview.AnimationSequence;
-	import com.citrusengine.view.starlingview.NapeDebugArt;
 	import com.citrusengine.view.starlingview.StarlingArt;
 	
 	/**
@@ -51,7 +50,7 @@ package games.live4sales {
 
 			Assets.contentScaleFactor = Starling.current.contentScaleFactor;
 
-			var nape:Nape = new Nape("nape", {view:NapeDebugArt, gravity:new Vec2()});
+			var nape:Nape = new Nape("nape", {gravity:new Vec2()});
 			//nape.visible = true;
 			add(nape);
 			

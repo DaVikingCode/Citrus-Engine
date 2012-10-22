@@ -35,6 +35,8 @@ package com.citrusengine.physics {
 			
 			super.initialize();
 			
+			_realDebugView = _view;
+			
 			_world = new b2World(_gravity);
 			b2Base.initialize();
 			

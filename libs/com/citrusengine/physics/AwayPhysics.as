@@ -27,8 +27,13 @@ package com.citrusengine.physics {
 		
 		override public function initialize(poolObjectParams:Object = null):void {
 			
+			super.initialize();
+			
+			_realDebugView = _view;
+			
 			_world = new AWPDynamicsWorld();
 			_world.initWithDbvtBroadphase();
+			_world.gravity = _gravity;
 			_world.collisionCallbackOn = true;
 			
 			//Set up collision categories

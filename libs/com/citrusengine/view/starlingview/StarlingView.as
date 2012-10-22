@@ -1,7 +1,8 @@
 package com.citrusengine.view.starlingview {
-
+	
 	import starling.display.Sprite;
 
+	import com.citrusengine.physics.APhysicsEngine;
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.ISpriteView;
 
@@ -74,6 +75,9 @@ package com.citrusengine.view.starlingview {
 		override protected function createArt(citrusObject:Object):Object {
 			
 			var viewObject:ISpriteView = citrusObject as ISpriteView;
+			
+			if (citrusObject is APhysicsEngine)
+				citrusObject.view = StarlingPhysicsDebugView;
 				
 			if (citrusObject.view == flash.display.MovieClip)
 				citrusObject.view = starling.display.Sprite;

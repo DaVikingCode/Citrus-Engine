@@ -9,7 +9,7 @@ package com.citrusengine.view.away3dview {
 	import com.citrusengine.view.IDebugView;
 
 	/**
-	 * @author Aymeric
+	 * This displays AwayPhysics's debug graphics. It does so properly through Citrus Engine's view manager.
 	 */
 	public class AwayPhysicsDebugArt extends ObjectContainer3D implements IDebugView {
 		
