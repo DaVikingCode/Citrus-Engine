@@ -121,7 +121,7 @@ package com.citrusengine.view.away3dview {
 			var viewObject:ISpriteView = citrusObject as ISpriteView;
 			
 			if (citrusObject is APhysicsEngine)
-				citrusObject.view = AwayPhysicsDebugView;
+				citrusObject.view = Away3DPhysicsDebugView;
 
 			if (citrusObject.view == MovieClip)
 				citrusObject.view = ObjectContainer3D;

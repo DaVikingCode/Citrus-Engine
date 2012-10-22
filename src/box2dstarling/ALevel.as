@@ -1,5 +1,5 @@
 package box2dstarling {
-	
+
 	import Box2DAS.Dynamics.ContactEvent;
 
 	import starling.display.Quad;
@@ -17,7 +17,7 @@ package box2dstarling {
 	import com.citrusengine.objects.platformer.box2d.Hero;
 	import com.citrusengine.objects.platformer.box2d.Platform;
 	import com.citrusengine.objects.platformer.box2d.Sensor;
-	import com.citrusengine.physics.Box2D;
+	import com.citrusengine.physics.box2d.Box2D;
 	import com.citrusengine.utils.ObjectMaker2D;
 	import com.citrusengine.view.starlingview.AnimationSequence;
 

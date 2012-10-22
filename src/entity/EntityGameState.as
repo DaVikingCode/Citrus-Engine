@@ -3,15 +3,15 @@ package entity {
 	import com.citrusengine.core.CitrusObject;
 	import com.citrusengine.core.State;
 	import com.citrusengine.objects.platformer.box2d.Platform;
-	import com.citrusengine.physics.Box2D;
+	import com.citrusengine.physics.box2d.Box2D;
 	import com.citrusengine.system.Entity;
 	import com.citrusengine.system.components.InputComponent;
 	import com.citrusengine.system.components.box2d.hero.HeroCollisionComponent;
 	import com.citrusengine.system.components.box2d.hero.HeroMovementComponent;
 	import com.citrusengine.system.components.box2d.hero.HeroViewComponent;
-
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
+
 
 	/**
 	 * @author Aymeric

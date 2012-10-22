@@ -8,11 +8,11 @@ package com.citrusengine.system.components.box2d {
 	import Box2DAS.Dynamics.b2BodyDef;
 	import Box2DAS.Dynamics.b2Fixture;
 	import Box2DAS.Dynamics.b2FixtureDef;
-
 	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.physics.Box2D;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.box2d.Box2D;
 	import com.citrusengine.system.Component;
+
 
 	/**
 	 * The base's physics Box2D Component. Manage (just) the physics creation.

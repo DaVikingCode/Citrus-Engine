@@ -1,7 +1,5 @@
 package awayphysics.platformer3d {
 
-	import com.citrusengine.objects.AwayPhysicsObject;
-	import com.citrusengine.objects.platformer.awayphysics.Sensor;
 	import away3d.controllers.HoverController;
 	import away3d.debug.AwayStats;
 	import away3d.entities.Mesh;
@@ -9,9 +7,11 @@ package awayphysics.platformer3d {
 	import away3d.primitives.CubeGeometry;
 
 	import com.citrusengine.core.State;
+	import com.citrusengine.objects.AwayPhysicsObject;
 	import com.citrusengine.objects.platformer.awayphysics.Hero;
 	import com.citrusengine.objects.platformer.awayphysics.Platform;
-	import com.citrusengine.physics.AwayPhysics;
+	import com.citrusengine.objects.platformer.awayphysics.Sensor;
+	import com.citrusengine.physics.awayphysics.AwayPhysics;
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.away3dview.Away3DView;
 

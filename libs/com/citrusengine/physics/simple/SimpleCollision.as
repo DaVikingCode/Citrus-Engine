@@ -1,4 +1,4 @@
-package com.citrusengine.physics 
+package com.citrusengine.physics.simple 
 {
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.CitrusSprite;

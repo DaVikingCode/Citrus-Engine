@@ -10,7 +10,6 @@ package com.citrusengine.view.away3dview {
 	import com.citrusengine.core.State;
 	import com.citrusengine.physics.APhysicsEngine;
 	import com.citrusengine.system.components.ViewComponent;
-	import com.citrusengine.view.IDebugView;
 	import com.citrusengine.view.ISpriteView;
 
 	import flash.display.Bitmap;
@@ -203,14 +202,14 @@ package com.citrusengine.view.away3dview {
 			
 			if (stateView.mode == "3D") {
 				
-				if (content is AwayPhysicsDebugView) {
+				if (content is Away3DPhysicsDebugView) {
 				
-					(content as AwayPhysicsDebugView).update();
+					(content as Away3DPhysicsDebugView).update();
 					
 					if (_citrusObject.visible)
-						(content as AwayPhysicsDebugView).debugMode(9);
+						(content as Away3DPhysicsDebugView).debugMode(9);
 					else
-						(content as AwayPhysicsDebugView).debugMode(0);
+						(content as Away3DPhysicsDebugView).debugMode(0);
 					
 				} else {
 					
@@ -230,9 +229,9 @@ package com.citrusengine.view.away3dview {
 				
 				var physicsDebugArt:DisplayObject;
 				
-				if (content is AwayPhysicsDebugView) {
+				if (content is Away3DPhysicsDebugView) {
 				
-					(content as AwayPhysicsDebugView).update();
+					(content as Away3DPhysicsDebugView).update();
 					
 					physicsDebugArt = (_ce.state as State).getChildByName("debug view") as DisplayObject;
 					

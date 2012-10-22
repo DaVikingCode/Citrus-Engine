@@ -4,11 +4,11 @@ package tiledmap {
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.platformer.box2d.Hero;
 	import com.citrusengine.objects.platformer.box2d.Platform;
-	import com.citrusengine.physics.Box2D;
+	import com.citrusengine.physics.box2d.Box2D;
 	import com.citrusengine.utils.ObjectMaker2D;
 	import com.citrusengine.view.spriteview.SpriteArt;
-
 	import flash.geom.Rectangle;
+
 	
 	/**
 	 * @author Aymeric

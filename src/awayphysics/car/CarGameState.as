@@ -26,7 +26,7 @@ package awayphysics.car {
 
 	import com.citrusengine.core.State;
 	import com.citrusengine.objects.AwayPhysicsObject;
-	import com.citrusengine.physics.AwayPhysics;
+	import com.citrusengine.physics.awayphysics.AwayPhysics;
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.away3dview.Away3DView;
 
@@ -34,7 +34,7 @@ package awayphysics.car {
 	import flash.geom.Vector3D;
 	import flash.net.URLRequest;
 	import flash.ui.Keyboard;
-
+	
 	/**
 	 * @author Aymeric, car demo coming from AwayPhysics examples
 	 */

@@ -1,5 +1,5 @@
 package mobilenapestarling {
-	
+
 	import mobilenapestarling.assets.Assets;
 
 	import nape.callbacks.InteractionCallback;
@@ -18,7 +18,7 @@ package mobilenapestarling {
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.CitrusSprite;
 	import com.citrusengine.objects.platformer.nape.Platform;
-	import com.citrusengine.physics.Nape;
+	import com.citrusengine.physics.nape.Nape;
 	import com.citrusengine.view.starlingview.AnimationSequence;
 	import com.citrusengine.view.starlingview.StarlingArt;
 

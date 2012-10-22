@@ -1,6 +1,5 @@
 package starlingtiles 
 {
-
 	import nape.geom.Vec2;
 
 	import starling.core.Starling;
@@ -14,8 +13,10 @@ package starlingtiles
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.CitrusSprite;
 	import com.citrusengine.objects.NapePhysicsObject;
-	import com.citrusengine.objects.platformer.nape.*;
-	import com.citrusengine.physics.Nape;
+	import com.citrusengine.objects.platformer.nape.Hero;
+	import com.citrusengine.objects.platformer.nape.Platform;
+	import com.citrusengine.objects.platformer.nape.Sensor;
+	import com.citrusengine.physics.nape.Nape;
 	import com.citrusengine.utils.ObjectMaker2D;
 	import com.citrusengine.view.starlingview.AnimationSequence;
 	import com.citrusengine.view.starlingview.StarlingArt;
@@ -26,7 +27,7 @@ package starlingtiles
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.geom.Rectangle;
- 
+
 	/**
 	 * @author Nick Pinkham
 	 */

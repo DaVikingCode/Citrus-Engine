@@ -4,7 +4,7 @@ package awayphysics.labyrinth {
 	import away3d.debug.AwayStats;
 
 	import com.citrusengine.core.State;
-	import com.citrusengine.physics.AwayPhysics;
+	import com.citrusengine.physics.awayphysics.AwayPhysics;
 	import com.citrusengine.utils.ObjectMaker3D;
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.away3dview.Away3DView;

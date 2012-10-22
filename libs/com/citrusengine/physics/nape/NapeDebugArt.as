@@ -1,9 +1,8 @@
-package com.citrusengine.view.spriteview {
-	
+package com.citrusengine.physics.nape {
+
 	import nape.util.ShapeDebug;
 
 	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.physics.Nape;
 	import com.citrusengine.view.IDebugView;
 
 	import flash.display.Sprite;

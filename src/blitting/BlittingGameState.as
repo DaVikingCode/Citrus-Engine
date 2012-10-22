@@ -5,7 +5,7 @@ package blitting {
 	import com.citrusengine.objects.CitrusSprite;
 	import com.citrusengine.objects.platformer.box2d.Hero;
 	import com.citrusengine.objects.platformer.box2d.Platform;
-	import com.citrusengine.physics.Box2D;
+	import com.citrusengine.physics.box2d.Box2D;
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.blittingview.AnimationSequence;
 	import com.citrusengine.view.blittingview.BlittingArt;

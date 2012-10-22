@@ -1,9 +1,8 @@
-package com.citrusengine.view.spriteview {
-	
+package com.citrusengine.physics.box2d {
+
 	import Box2DAS.Dynamics.b2DebugDraw;
 
 	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.physics.Box2D;
 	import com.citrusengine.view.IDebugView;
 
 	import flash.display.Sprite;

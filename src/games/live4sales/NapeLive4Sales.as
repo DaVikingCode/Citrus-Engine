@@ -23,7 +23,7 @@ package games.live4sales {
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.StarlingState;
 	import com.citrusengine.objects.CitrusSprite;
-	import com.citrusengine.physics.Nape;
+	import com.citrusengine.physics.nape.Nape;
 	import com.citrusengine.view.starlingview.AnimationSequence;
 	import com.citrusengine.view.starlingview.StarlingArt;
 	

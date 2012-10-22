@@ -12,14 +12,14 @@ package com.citrusengine.view.away3dview {
 	/**
 	 * A wrapper for Away3D to display the debug view of the different physics engine
 	 */
-	public class AwayPhysicsDebugView extends ObjectContainer3D {
+	public class Away3DPhysicsDebugView extends ObjectContainer3D {
 		
 		private var _ce:CitrusEngine;
 		
 		private var _physicsEngine:APhysicsEngine;
 		private var _debugView:IDebugView;
 		
-		public function AwayPhysicsDebugView() {
+		public function Away3DPhysicsDebugView() {
 			
 			_ce = CitrusEngine.getInstance();
 			

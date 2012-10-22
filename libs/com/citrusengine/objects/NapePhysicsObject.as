@@ -14,8 +14,8 @@ package com.citrusengine.objects {
 	import nape.shape.Shape;
 
 	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.physics.Nape;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.nape.Nape;
 	import com.citrusengine.view.ISpriteView;
 
 	import flash.display.MovieClip;

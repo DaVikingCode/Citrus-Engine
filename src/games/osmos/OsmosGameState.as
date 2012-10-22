@@ -1,13 +1,13 @@
 package games.osmos {
 
-	import nape.geom.Vec2;
-
 	import com.citrusengine.core.State;
 	import com.citrusengine.objects.platformer.nape.Platform;
-	import com.citrusengine.physics.Nape;
-
+	import com.citrusengine.physics.nape.Nape;
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
+	import nape.geom.Vec2;
+
+
 
 	/**
 	 * @author Aymeric

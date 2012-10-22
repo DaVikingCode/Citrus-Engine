@@ -16,7 +16,7 @@ package away3dbox2d {
 	import com.citrusengine.objects.platformer.box2d.Coin;
 	import com.citrusengine.objects.platformer.box2d.Hero;
 	import com.citrusengine.objects.platformer.box2d.Platform;
-	import com.citrusengine.physics.Box2D;
+	import com.citrusengine.physics.box2d.Box2D;
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.away3dview.AnimationSequence;
 	import com.citrusengine.view.away3dview.Away3DArt;

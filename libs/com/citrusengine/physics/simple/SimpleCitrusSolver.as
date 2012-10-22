@@ -1,4 +1,4 @@
-package com.citrusengine.physics {
+package com.citrusengine.physics.simple {
 
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;

@@ -1,10 +1,11 @@
-package com.citrusengine.physics {
+package com.citrusengine.physics.nape {
 
+	import com.citrusengine.physics.APhysicsEngine;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.view.ISpriteView;
 	import nape.geom.Vec2;
 	import nape.space.Space;
 
-	import com.citrusengine.view.ISpriteView;
-	import com.citrusengine.view.spriteview.NapeDebugArt;
 
 	/**
 	 * This is a simple wrapper class that allows you to add a Nape space to your game's state.

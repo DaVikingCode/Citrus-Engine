@@ -1,9 +1,10 @@
-package com.citrusengine.physics {
+package com.citrusengine.physics.awayphysics {
 
 	import awayphysics.dynamics.AWPDynamicsWorld;
 
+	import com.citrusengine.physics.APhysicsEngine;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.view.ISpriteView;
-	import com.citrusengine.view.away3dview.AwayPhysicsDebugArt;
 
 	import flash.geom.Vector3D;
 

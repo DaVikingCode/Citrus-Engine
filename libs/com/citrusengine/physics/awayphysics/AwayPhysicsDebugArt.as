@@ -1,12 +1,13 @@
-package com.citrusengine.view.away3dview {
+package com.citrusengine.physics.awayphysics {
 
 	import away3d.containers.ObjectContainer3D;
 
 	import awayphysics.debug.AWPDebugDraw;
 
 	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.physics.AwayPhysics;
 	import com.citrusengine.view.IDebugView;
+	import com.citrusengine.view.away3dview.Away3DArt;
+	import com.citrusengine.view.away3dview.Away3DView;
 
 	/**
 	 * This displays AwayPhysics's debug graphics. It does so properly through Citrus Engine's view manager.

@@ -7,7 +7,7 @@ package simplecollision {
 	import com.citrusengine.objects.platformer.simple.Hero;
 	import com.citrusengine.objects.platformer.simple.Sensor;
 	import com.citrusengine.objects.platformer.simple.StaticObject;
-	import com.citrusengine.physics.SimpleCitrusSolver;
+	import com.citrusengine.physics.simple.SimpleCitrusSolver;
 
 	/**
 	 * @author Aymeric

@@ -1,18 +1,18 @@
 package com.citrusengine.objects {
 
 	import away3d.containers.ObjectContainer3D;
-
 	import awayphysics.collision.shapes.AWPBoxShape;
 	import awayphysics.collision.shapes.AWPCollisionShape;
 	import awayphysics.collision.shapes.AWPSphereShape;
 	import awayphysics.dynamics.AWPRigidBody;
-
 	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.physics.AwayPhysics;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.awayphysics.AwayPhysics;
 	import com.citrusengine.view.ISpriteView;
-
 	import flash.geom.Vector3D;
+
+
+
 
 	/**
 	 * @author Aymeric
