@@ -1,4 +1,4 @@
-package com.citrusengine.view {
+package com.citrusengine.physics {
 	
 	/**
 	 * Interface for all the debug views

@@ -1,11 +1,11 @@
 package com.citrusengine.view.starlingview {
-	
+
 	import starling.core.Starling;
 	import starling.display.Sprite;
 
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.physics.APhysicsEngine;
-	import com.citrusengine.view.IDebugView;
+	import com.citrusengine.physics.IDebugView;
 
 	import flash.display.Sprite;
 	

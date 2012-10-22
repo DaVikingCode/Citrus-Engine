@@ -5,7 +5,7 @@ package com.citrusengine.physics.awayphysics {
 	import awayphysics.debug.AWPDebugDraw;
 
 	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.view.IDebugView;
+	import com.citrusengine.physics.IDebugView;
 	import com.citrusengine.view.away3dview.Away3DArt;
 	import com.citrusengine.view.away3dview.Away3DView;
 

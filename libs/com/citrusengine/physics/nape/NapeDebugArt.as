@@ -3,7 +3,7 @@ package com.citrusengine.physics.nape {
 	import nape.util.ShapeDebug;
 
 	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.view.IDebugView;
+	import com.citrusengine.physics.IDebugView;
 
 	import flash.display.Sprite;
 	import flash.events.Event;

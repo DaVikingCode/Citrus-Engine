@@ -3,7 +3,7 @@ package com.citrusengine.physics.box2d {
 	import Box2DAS.Dynamics.b2DebugDraw;
 
 	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.view.IDebugView;
+	import com.citrusengine.physics.IDebugView;
 
 	import flash.display.Sprite;
 	
