@@ -17,8 +17,12 @@ package com.citrusengine.physics {
 
 		public function AwayPhysics(name:String, params:Object = null) {
 			
-			if (params.view == undefined)
+			if (params && params.view == undefined)
 				params.view = AwayPhysicsDebugArt;
+			else if (params == null) {
+				params = {};
+				params.view = AwayPhysicsDebugArt;
+			}
 			
 			super(name, params);
 		}

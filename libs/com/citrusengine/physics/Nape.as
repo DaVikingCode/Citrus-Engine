@@ -22,8 +22,12 @@ package com.citrusengine.physics {
 		 */
 		public function Nape(name:String, params:Object = null) {
 			
-			if (params.view == undefined)
+			if (params && params.view == undefined)
 				params.view = NapeDebugArt;
+			else if (params == null) {
+				params = {};
+				params.view = NapeDebugArt; 
+			}
 			
 			super(name, params);
 		}

@@ -18,18 +18,17 @@ package com.citrusengine.physics {
 		private var _world:b2World;
 		private var _gravity:V2 = new V2(0, 15);
 		
-		public static function Make(name:String, visible:Boolean):Box2D
-		{
-			return new Box2D(name, { visible: visible } );
-		}
-		
 		/**
 		 * Creates and initializes a Box2D world. 
 		 */		
 		public function Box2D(name:String, params:Object = null)
 		{
-			if (params.view == undefined)
+			if (params && params.view == undefined)
 				params.view = Box2DDebugArt;
+			else if (params == null) {
+				params = {};
+				params.view = Box2DDebugArt; 
+			}
 			
 			super(name, params);
 		}
