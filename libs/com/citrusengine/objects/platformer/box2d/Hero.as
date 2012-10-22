@@ -402,7 +402,7 @@ package com.citrusengine.objects.platformer.box2d
 			if (e.normal) //The normal property doesn't come through all the time. I think doesn't come through against sensors.
 			{
 				var collisionAngle:Number = new MathVector(e.normal.x, e.normal.y).angle * 180 / Math.PI;
-				if (collisionAngle > 45 && collisionAngle < 135)
+				if ((collisionAngle > 45 && collisionAngle < 135) || e.other.GetBody().GetUserData() is Crate)
 				{
 					_groundContacts.push(e.other);
 					_onGround = true;
