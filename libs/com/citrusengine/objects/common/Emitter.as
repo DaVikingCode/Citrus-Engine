@@ -159,7 +159,7 @@ package com.citrusengine.objects.common
 				particle.kill = true;
 			_particles.length = 0;
 			
-			for each (var particle:EmitterParticle in _recycle)
+			for each (particle in _recycle)
 				particle.kill = true;
 			_recycle.length = 0;
 			

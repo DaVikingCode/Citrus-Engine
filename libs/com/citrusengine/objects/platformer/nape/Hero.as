@@ -42,13 +42,13 @@ package com.citrusengine.objects.platformer.nape {
 		/**
 		 * This is the initial velocity that the hero will move at when he jumps.
 		 */
-		[Inspectable(defaultValue="200")]
+		[Inspectable(defaultValue="170")]
 		public var jumpHeight:Number = 170;
 		
 		/**
 		 * This is the amount of "float" that the hero has when the player holds the jump button while jumping. 
 		 */
-		[Inspectable(defaultValue="7")]
+		[Inspectable(defaultValue="3")]
 		public var jumpAcceleration:Number = 3;
 		
 		/**
