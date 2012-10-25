@@ -8,13 +8,13 @@ package com.citrusengine.objects {
 	import Box2DAS.Dynamics.b2BodyDef;
 	import Box2DAS.Dynamics.b2Fixture;
 	import Box2DAS.Dynamics.b2FixtureDef;
+
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.physics.box2d.Box2D;
 	import com.citrusengine.view.ISpriteView;
+
 	import flash.display.MovieClip;
-
-
 	
 	/**
 	 * You should extend this class to take advantage of Box2D. This class provides template methods for defining

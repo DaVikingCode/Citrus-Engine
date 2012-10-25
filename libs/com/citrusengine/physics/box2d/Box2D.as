@@ -3,11 +3,11 @@ package com.citrusengine.physics.box2d {
 	import Box2DAS.Common.V2;
 	import Box2DAS.Common.b2Base;
 	import Box2DAS.Dynamics.b2World;
+
 	import com.citrusengine.physics.APhysicsEngine;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.view.ISpriteView;
 
-	
 	/**
 	 * This is a simple wrapper class that allows you to add a Box2D Alchemy world to your game's state.
 	 * Add an instance of this class to your State before you create any phyiscs bodies. It will need to 

@@ -1,10 +1,12 @@
 package com.citrusengine.view.starlingview {
-	
+
 	import starling.display.Sprite;
 
 	import com.citrusengine.physics.APhysicsEngine;
 	import com.citrusengine.view.CitrusView;
 	import com.citrusengine.view.ISpriteView;
+	import com.citrusengine.view.SpriteDebugArt;
+	import com.citrusengine.view.StarlingSpriteDebugArt;
 
 	import flash.display.MovieClip;
 
@@ -78,6 +80,9 @@ package com.citrusengine.view.starlingview {
 			
 			if (citrusObject is APhysicsEngine)
 				citrusObject.view = StarlingPhysicsDebugView;
+				
+			if (citrusObject.view == SpriteDebugArt)
+				citrusObject.view = StarlingSpriteDebugArt;
 				
 			if (citrusObject.view == flash.display.MovieClip)
 				citrusObject.view = starling.display.Sprite;
