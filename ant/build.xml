@@ -56,6 +56,7 @@
 				<arg line="-include-sources ../libs/com/citrusengine/datastructures/DoublyLinkedListNode.as"/>
 				<arg line="-include-sources ../libs/com/citrusengine/datastructures/PoolObject.as"/>
 				
+				<arg line="-include-sources ../libs/com/citrusengine/math/MathUtils.as"/>
 				<arg line="-include-sources ../libs/com/citrusengine/math/MathVector.as"/>
 				
 				<arg line="-include-sources ../libs/com/citrusengine/objects/APhysicsObject.as"/>
@@ -68,9 +69,10 @@
 				<arg line="-include-sources ../libs/com/citrusengine/objects/platformer/simple/StaticObject.as"/>
 				
 				<arg line="-include-sources ../libs/com/citrusengine/physics/APhysicsEngine.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/physics/IDebugView.as"/>
 				<arg line="-include-sources ../libs/com/citrusengine/physics/PhysicsCollisionCategories.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/physics/SimpleCitrusSolver.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/physics/SimpleCollision.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/physics/simple/SimpleCitrusSolver.as"/>
+				<arg line="-include-sources ../libs/com/citrusengine/physics/simple/SimpleCollision.as"/>
 				
 				<arg line="-include-sources ../libs/com/citrusengine/system/Component.as"/>
 				<arg line="-include-sources ../libs/com/citrusengine/system/Entity.as"/>
@@ -90,7 +92,6 @@
 				<arg line="-include-sources ../libs/com/citrusengine/utils/tmx/TmxTileSet.as"/>
 				
 				<arg line="-include-sources ../libs/com/citrusengine/view/CitrusView.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/view/IDebugView.as"/>
 				<arg line="-include-sources ../libs/com/citrusengine/view/ISpriteView.as"/>
 				<arg line="-include-sources ../libs/com/citrusengine/view/SpriteDebugArt.as"/>
 				<arg line="-include-sources ../libs/com/citrusengine/view/blittingview/AnimationSequence.as"/>
