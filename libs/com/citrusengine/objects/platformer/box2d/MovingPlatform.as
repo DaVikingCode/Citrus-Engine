@@ -154,7 +154,6 @@ package com.citrusengine.objects.platformer.box2d {
 				if (velocity.Length() > speed / 30)
 				{
 					//Still has further to go. Normalize the velocity to the max speed
-					//velocity = velocity.normalize(speed); // TODO normalize the speed
 					velocity.Normalize();
 				}
 				else

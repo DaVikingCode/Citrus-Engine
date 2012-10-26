@@ -2,6 +2,7 @@ package com.citrusengine.objects.platformer.box2d
 {
 
 	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
 	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
 
@@ -11,6 +12,7 @@ package com.citrusengine.objects.platformer.box2d
 
 	import org.osflash.signals.Signal;
 
+	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;
 	
 	/**
@@ -80,11 +82,7 @@ package com.citrusengine.objects.platformer.box2d
 		
 		override public function destroy():void
 		{
-			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handlePlatformContact);
-			_collectFixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleCollectContact);
 			onCollect.removeAll();
-			
-			_collectFixtureDef.destroy();
 			
 			super.destroy();
 		}
@@ -158,30 +156,23 @@ package com.citrusengine.objects.platformer.box2d
 		{
 			super.createFixture();
 			
-			_fixture.m_reportBeginContact = true;
-			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handlePlatformContact);
-			
 			_collectFixture = _body.CreateFixture(_collectFixtureDef);
-			_collectFixture.m_reportBeginContact = true;
-			_collectFixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleCollectContact);
 		}
 		
-		protected function handleCollectContact(e:ContactEvent):void
-		{
-			var collider:Box2DPhysicsObject = e.other.GetBody().GetUserData() as Box2DPhysicsObject;
+		override public function handleBeginContact(contact:b2Contact):void {
+			
+			var collider:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
 			
 			if (collider is _collectorClass)
 			{
 				kill = true;
 				onCollect.dispatch(this);
 			}
-		}
-		
-		protected function handlePlatformContact(e:ContactEvent):void
-		{
-			if (e.normal)
+			
+			if (contact.GetManifold().m_localPoint)
 			{
-				var collisionAngle:Number = new MathVector(e.normal.x, e.normal.y).angle * 180 / Math.PI;
+				var normalPoint:Point = new Point(contact.GetManifold().m_localPoint.x, contact.GetManifold().m_localPoint.y);
+				var collisionAngle:Number = new MathVector(normalPoint.x, normalPoint.y).angle * 180 / Math.PI;
 				if (collisionAngle < 45 || collisionAngle > 135)
 					_movingLeft = !_movingLeft;
 			}

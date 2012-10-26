@@ -1,6 +1,7 @@
 package com.citrusengine.objects.platformer.box2d 
 {
 
+	import Box2D.Dynamics.Contacts.b2Contact;
 	import Box2D.Dynamics.b2Body;
 
 	import com.citrusengine.math.MathVector;
@@ -8,7 +9,7 @@ package com.citrusengine.objects.platformer.box2d
 
 	import org.osflash.signals.Signal;
 
-	import flash.display.MovieClip;
+	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;
 	
 	/**
@@ -63,12 +64,6 @@ package com.citrusengine.objects.platformer.box2d
 		private var _isUsed:Boolean = false;
 		private var _createReward:Boolean = false;
 		
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, rewardClass:*, view:* = null):RewardBox
-		{
-			if (view == null) view = MovieClip;
-			return new RewardBox(name, {x: x, y: y, width: width, height: height, rewardClass: rewardClass, view: view} );
-		}
-		
 		public function RewardBox(name:String, params:Object = null) 
 		{
 			super(name, params);
@@ -79,7 +74,6 @@ package com.citrusengine.objects.platformer.box2d
 		
 		override public function destroy():void
 		{
-			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
 			onUse.removeAll();
 			onRewardCollect.removeAll();
 			
@@ -156,24 +150,18 @@ package com.citrusengine.objects.platformer.box2d
 			super.defineFixture();
 			_fixtureDef.restitution = 0;
 		}
-		
-		override protected function createFixture():void
-		{
-			super.createFixture();
 			
-			_fixture.m_reportBeginContact = true;
-			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-		}
-		
-		protected function handleBeginContact(e:ContactEvent):void
-		{
-			if (e.normal)
+		override public function handleBeginContact(contact:b2Contact):void {
+			
+			if (contact.GetManifold().m_localPoint)
 			{
-				var collisionAngle:Number = new MathVector(e.normal.x, e.normal.y).angle * 180 / Math.PI;
-				if (collisionAngle == 90)
+				var normalPoint:Point = new Point(contact.GetManifold().m_localPoint.x, contact.GetManifold().m_localPoint.y);
+				var collisionAngle:Number = new MathVector(normalPoint.x, normalPoint.y).angle * 180 / Math.PI;
+				if (collisionAngle == -90)
 				{
-					_fixture.m_reportBeginContact = false;
-					_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
+					//TODO remove contact listener
+					//_fixture.m_reportBeginContact = false;
+					//_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
 					_createReward = true;
 				}
 			}
