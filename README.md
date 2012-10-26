@@ -19,12 +19,12 @@ Games References
 [![MarcoPoloWeltrennen](http://aymericlamboley.fr/blog/wp-content/uploads/2012/08/MarcoPoloWeltrennen.png)](http://www.marcopoloweltrennen.de/)
 [![Tibi](http://aymericlamboley.fr/blog/wp-content/uploads/2012/09/Tibi.png)](http://hellorepublic.com/client/tibi/platform/)
 
-Project Setup
--------------
-- bin : pictures, animations, levels, ... loaded at runtime.
-- embed : embedded assets (e.g. fonts, pictures, texture atlas, ...).
-- fla : two levels used in the box2dstarling demo, and two animate characters in two versions one for SpriteArt and one for StarlingArt thanks to the DynamicTextureAtlas class (loaded at runtime).
-- libs : all the libs used, included the Citrus Engine. Select just one Nape swc.
-- src : different demos ready to use! You just need to copy & paste the Main from the package you want into the src/Main.as and the demo will run. Be careful with package & import.
+Repository Setup
+----------------
+- ant : an Ant file to build the different swcs.
+- bin : CE's produced swcs with all libraries included.
+- lib : the different swcs used.
+- src : Citrus Engine's source code.
+- srclib : as3 files of some libraries.
 
 [API](http://www.aymericlamboley.fr/ce-doc/)
