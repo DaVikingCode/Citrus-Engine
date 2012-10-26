@@ -16,14 +16,12 @@
 		<echo>Generating Citrus Engine Global</echo>
 		<exec executable="${compc.exe}">
 			<!-- Set the output path -->
-			<arg line="-output CEV3Beta3.swc"/>
+			<arg line="-output ../bin/CEV3Beta3.swc"/>
 			<!-- Include all of the AS3 files in LIBRARY -->
-			<arg line="-include-sources ../libs/com"/>
-			<arg line="-include-sources ../libs/awayphysics"/>
-			<arg line="-include-sources ../libs/Box2D"/>
-			<arg line="-include-sources ../libs/starling"/>
+			<arg line="-include-sources ../src"/>
+			<arg line="-include-sources ../srclib"/>
 			
-			<arg line="-include-libraries ../libs/swc/"/>
+			<arg line="-include-libraries ../lib/"/>
 			
 			
 			<!-- Compile for Flash Player 10.0.0 and higher -->
@@ -41,66 +39,50 @@
 			<echo>Generating Citrus Engine Core</echo>
 			<exec executable="${compc.exe}">
 				<!-- Set the output path -->
-				<arg line="-output CEV3Beta3-Core.swc"/>
+				<arg line="-output ../bin/CEV3Beta3-Core.swc"/>
 				
 				<!-- Include all of the AS3 files in LIBRARY -->
-				<arg line="-include-sources ../libs/com/citrusengine/core/CitrusEngine.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/core/CitrusObject.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/core/Console.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/core/Input.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/core/IState.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/core/SoundManager.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/core/State.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/core/CitrusEngine.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/core/CitrusObject.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/core/Console.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/core/Input.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/core/IState.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/core/SoundManager.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/core/State.as"/>
 				
-				<arg line="-include-sources ../libs/com/citrusengine/datastructures/DoublyLinkedList.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/datastructures/DoublyLinkedListNode.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/datastructures/PoolObject.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/datastructures"/>
 				
-				<arg line="-include-sources ../libs/com/citrusengine/math/MathUtils.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/math/MathVector.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/math"/>
 				
-				<arg line="-include-sources ../libs/com/citrusengine/objects/APhysicsObject.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/objects/CitrusSprite.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/objects/common/Emitter.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/objects/common/EmitterParticle.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/objects/platformer/simple/DynamicObject.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/objects/platformer/simple/Hero.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/objects/platformer/simple/Sensor.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/objects/platformer/simple/StaticObject.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/objects/APhysicsObject.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/objects/CitrusSprite.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/objects/common"/>
+				<arg line="-include-sources ../src/com/citrusengine/objects/platformer/simple"/>
 				
-				<arg line="-include-sources ../libs/com/citrusengine/physics/APhysicsEngine.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/physics/IDebugView.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/physics/PhysicsCollisionCategories.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/physics/simple/SimpleCitrusSolver.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/physics/simple/SimpleCollision.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/physics/APhysicsEngine.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/physics/IDebugView.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/physics/PhysicsCollisionCategories.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/physics/simple"/>
 				
-				<arg line="-include-sources ../libs/com/citrusengine/system/Component.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/system/Entity.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/system/components/InputComponent.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/system/components/ViewComponent.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/system/Component.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/system/Entity.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/system/components/InputComponent.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/system/components/ViewComponent.as"/>
 				
-				<arg line="-include-sources ../libs/com/citrusengine/utils/AGameData.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/utils/LevelManager.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/utils/LoadManager.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/utils/Mobile.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/utils/ObjectMaker2D.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/utils/tmx/TmxLayer.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/utils/tmx/TmxMap.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/utils/tmx/TmxObject.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/utils/tmx/TmxObjectGroup.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/utils/tmx/TmxPropertySet.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/utils/tmx/TmxTileSet.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/utils/AGameData.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/utils/LevelManager.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/utils/LoadManager.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/utils/Mobile.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/utils/ObjectMaker2D.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/utils/tmx"/>
 				
-				<arg line="-include-sources ../libs/com/citrusengine/view/CitrusView.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/view/ISpriteView.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/view/SpriteDebugArt.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/view/blittingview/AnimationSequence.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/view/blittingview/BlittingArt.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/view/blittingview/BlittingView.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/view/spriteview/SpriteArt.as"/>
-				<arg line="-include-sources ../libs/com/citrusengine/view/spriteview/SpriteView.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/view/CitrusView.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/view/ISpriteView.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/view/SpriteDebugArt.as"/>
+				<arg line="-include-sources ../src/com/citrusengine/view/blittingview"/>
+				<arg line="-include-sources ../src/com/citrusengine/view/spriteview"/>
 				
-				<arg line="-include-libraries ../libs/swc/signals.swc"/>
+				<arg line="-include-libraries ../lib/signals.swc"/>
 				
 				<!-- Compile for Flash Player 10.0.0 and higher -->
 				<!-- <arg line="-target-player=10.0.0"/> -->
@@ -111,4 +93,66 @@
 				<!-- <arg line="-strict=false"/> -->
 			</exec>
 		</target>
+	
+	<target name="CE-swc-starling-box2d" description="Generates the CE's SWC with Starling and Box2D">
+		 		
+				<echo>Generating Citrus Engine Core</echo>
+				<exec executable="${compc.exe}">
+					<!-- Set the output path -->
+					<arg line="-output ../bin/CEV3Beta3-Starling-Box2D.swc"/>
+					
+					<!-- Include all of the AS3 files in LIBRARY -->
+					<arg line="-include-sources ../src/com/citrusengine/core"/>
+					
+					<arg line="-include-sources ../src/com/citrusengine/datastructures"/>
+					
+					<arg line="-include-sources ../src/com/citrusengine/math"/>
+					
+					<arg line="-include-sources ../src/com/citrusengine/objects/APhysicsObject.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/objects/Box2DPhysicsObject.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/objects/CitrusSprite.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/objects/common/Emitter.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/objects/common/EmitterParticle.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/objects/platformer/box2d"/>
+					<arg line="-include-sources ../src/com/citrusengine/objects/platformer/simple"/>
+					
+					<arg line="-include-sources ../src/com/citrusengine/physics/APhysicsEngine.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/physics/IDebugView.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/physics/PhysicsCollisionCategories.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/physics/box2d"/>
+					<arg line="-include-sources ../src/com/citrusengine/physics/simple"/>
+					
+					<arg line="-include-sources ../src/com/citrusengine/system"/>
+					
+					<arg line="-include-sources ../src/com/citrusengine/utils/AGameData.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/utils/Box2DShapeMaker.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/utils/LevelManager.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/utils/LoadManager.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/utils/Mobile.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/utils/ObjectMaker2D.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/utils/tmx"/>
+					
+					<arg line="-include-sources ../src/com/citrusengine/view/CitrusView.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/view/ISpriteView.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/view/SpriteDebugArt.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/view/StarlingSpriteDebugArt.as"/>
+					<arg line="-include-sources ../src/com/citrusengine/view/blittingview"/>
+					<arg line="-include-sources ../src/com/citrusengine/view/spriteview"/>
+					<arg line="-include-sources ../src/com/citrusengine/view/starlingview"/>
+					
+					<arg line="-include-libraries ../lib/signals.swc"/>
+					<arg line="-include-libraries ../lib/starling.swc"/>
+					
+					<arg line="-include-sources ../srclib/Box2D"/>
+					<arg line="-include-sources ../srclib/starling"/>
+					
+					<!-- Compile for Flash Player 10.0.0 and higher -->
+					<!-- <arg line="-target-player=10.0.0"/> -->
+					
+					<!-- <arg line="-optimize=true" /> -->
+					
+					<!-- Turn off strict mode -->
+					<!-- <arg line="-strict=false"/> -->
+				</exec>
+			</target>
 </project>
