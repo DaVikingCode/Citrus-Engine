@@ -16,7 +16,7 @@
 		<echo>Generating Citrus Engine Global</echo>
 		<exec executable="${compc.exe}">
 			<!-- Set the output path -->
-			<arg line="-output ../bin/CEV3Beta3.swc"/>
+			<arg line="-output ../bin/CEV3Beta3-ALL.swc"/>
 			<!-- Include all of the AS3 files in LIBRARY -->
 			<arg line="-include-sources ../src"/>
 			<arg line="-include-sources ../srclib"/>
