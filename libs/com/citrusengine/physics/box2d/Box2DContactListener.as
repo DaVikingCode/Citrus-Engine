@@ -1,12 +1,12 @@
 package com.citrusengine.physics.box2d {
 
-	import Box2D.Dynamics.b2ContactImpulse;
 	import Box2D.Collision.b2Manifold;
 	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.b2ContactImpulse;
 	import Box2D.Dynamics.b2ContactListener;
 
 	/**
-	 * @author Aymeric
+	 * Used to report the contact's interaction between object.
 	 */
 	public class Box2DContactListener extends b2ContactListener {
 
