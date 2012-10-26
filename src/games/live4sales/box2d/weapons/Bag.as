@@ -1,7 +1,7 @@
 package games.live4sales.box2d.weapons {
 
-	import Box2DAS.Common.V2;
-	import Box2DAS.Dynamics.ContactEvent;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
 
 	import com.citrusengine.objects.platformer.box2d.Missile;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
@@ -20,13 +20,13 @@ package games.live4sales.box2d.weapons {
 			if (!_exploded)
 				_body.SetLinearVelocity(_velocity);
 			else
-				_body.SetLinearVelocity(new V2());
+				_body.SetLinearVelocity(new b2Vec2());
 			
 			if (x > 480)
 				kill = true;
 		}
 			
-		override protected function handleBeginContact(cEvt:ContactEvent):void {
+		override public function handleBeginContact(contact:b2Contact):void {
 			explode();
 		}
 		

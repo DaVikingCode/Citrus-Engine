@@ -1,6 +1,6 @@
 package com.citrusengine.system.components.box2d.hero {
 
-	import Box2DAS.Common.V2;
+	import Box2D.Common.Math.b2Vec2;
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.system.components.InputComponent;
@@ -139,12 +139,12 @@ package com.citrusengine.system.components.box2d.hero {
 				_ducking = (_inputComponent.downKeyIsDown && _onGround && canDuck);
 					
 				if (_inputComponent.rightKeyIsDown && !_ducking) {
-					_velocity = V2.add(_velocity, getSlopeBasedMoveAngle());
+					_velocity.Add(getSlopeBasedMoveAngle());
 					moveKeyPressed = true;
 				}
 				
 				if (_inputComponent.leftKeyIsDown && !_ducking) {					
-					_velocity = V2.subtract(_velocity, getSlopeBasedMoveAngle());
+					_velocity.Subtract(getSlopeBasedMoveAngle());
 					moveKeyPressed = true;
 				}
 				
@@ -205,7 +205,7 @@ package com.citrusengine.system.components.box2d.hero {
 			_hurtTimeoutID = setTimeout(endHurtState, hurtDuration);
 			onTakeDamage.dispatch();
 			
-			var hurtVelocity:V2 = _physicsComponent.body.GetLinearVelocity();
+			var hurtVelocity:b2Vec2 = _physicsComponent.body.GetLinearVelocity();
 			hurtVelocity.y = -hurtVelocityY;
 			hurtVelocity.x = hurtVelocityX;
 			if (collider.x > _physicsComponent.x)
@@ -225,8 +225,8 @@ package com.citrusengine.system.components.box2d.hero {
 			controlsEnabled = true;
 		}
 		
-		protected function getSlopeBasedMoveAngle():V2 {
-			return new V2(acceleration, 0).rotate(_collisionComponent.combinedGroundAngle);
+		protected function getSlopeBasedMoveAngle():b2Vec2 {
+			return Box2DPhysicsObject.Rotateb2Vec2(new b2Vec2(acceleration, 0), _collisionComponent.combinedGroundAngle);
 		}
 		
 		/**

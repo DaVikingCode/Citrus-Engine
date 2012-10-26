@@ -1,6 +1,6 @@
 package games.live4sales {
 
-	import Box2DAS.Common.V2;
+	import Box2D.Common.Math.b2Vec2;
 
 	import games.live4sales.assets.Assets;
 	import games.live4sales.box2d.characters.SalesWoman;
@@ -45,7 +45,7 @@ package games.live4sales {
 
 			Assets.contentScaleFactor = Starling.current.contentScaleFactor;
 
-			var box2D:Box2D = new Box2D("box2D", {gravity:new V2()});
+			var box2D:Box2D = new Box2D("box2D", {gravity:new b2Vec2()});
 			//box2D.visible = true;
 			add(box2D);
 

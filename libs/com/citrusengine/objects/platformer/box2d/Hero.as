@@ -1,9 +1,10 @@
 package com.citrusengine.objects.platformer.box2d
 {
 
-	import Box2DAS.Common.V2;
-	import Box2DAS.Dynamics.ContactEvent;
-	import Box2DAS.Dynamics.b2Fixture;
+	import Box2D.Collision.b2Manifold;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.b2Fixture;
 
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.Box2DPhysicsObject;
@@ -12,7 +13,7 @@ package com.citrusengine.objects.platformer.box2d
 
 	import org.osflash.signals.Signal;
 
-	import flash.display.MovieClip;
+	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
@@ -128,13 +129,7 @@ package com.citrusengine.objects.platformer.box2d
 		protected var _controlsEnabled:Boolean = true;
 		protected var _ducking:Boolean = false;
 		protected var _combinedGroundAngle:Number = 0;
-		
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, view:* = null):Hero
-		{
-			if (view == null) view = MovieClip;
-			return new Hero(name, { x: x, y: y, width: width, height: height, view: view } );
-		}
-		
+			
 		/**
 		 * Creates a new hero object.
 		 */		
@@ -150,9 +145,6 @@ package com.citrusengine.objects.platformer.box2d
 		
 		override public function destroy():void
 		{
-			_fixture.removeEventListener(ContactEvent.PRE_SOLVE, handlePreSolve);
-			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-			_fixture.removeEventListener(ContactEvent.END_CONTACT, handleEndContact);
 			clearTimeout(_hurtTimeoutID);
 			onJump.removeAll();
 			onGiveDamage.removeAll();
@@ -227,7 +219,7 @@ package com.citrusengine.objects.platformer.box2d
 		{
 			super.update(timeDelta);
 			
-			var velocity:V2 = _body.GetLinearVelocity();
+			var velocity:b2Vec2 = _body.GetLinearVelocity();
 			
 			if (controlsEnabled)
 			{
@@ -237,13 +229,13 @@ package com.citrusengine.objects.platformer.box2d
 				
 				if (_ce.input.isDown(Keyboard.RIGHT) && !_ducking)
 				{
-					velocity = V2.add(velocity, getSlopeBasedMoveAngle());
+					velocity.Add(getSlopeBasedMoveAngle());
 					moveKeyPressed = true;
 				}
 				
 				if (_ce.input.isDown(Keyboard.LEFT) && !_ducking)
 				{
-					velocity = V2.subtract(velocity, getSlopeBasedMoveAngle());
+					velocity.Subtract(getSlopeBasedMoveAngle());
 					moveKeyPressed = true;
 				}
 				
@@ -347,34 +339,23 @@ package com.citrusengine.objects.platformer.box2d
 			_fixtureDef.filter.maskBits = PhysicsCollisionCategories.GetAll();
 		}
 		
-		override protected function createFixture():void
-		{
-			super.createFixture();
-			_fixture.m_reportPreSolve = true;
-			_fixture.m_reportBeginContact = true;
-			_fixture.m_reportEndContact = true;
-			_fixture.addEventListener(ContactEvent.PRE_SOLVE, handlePreSolve);
-			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-			_fixture.addEventListener(ContactEvent.END_CONTACT, handleEndContact);
-		}
-		
-		protected function handlePreSolve(e:ContactEvent):void 
-		{
+		override public function handlePreSolve(contact:b2Contact, oldManifold:b2Manifold):void {
+			
 			if (!_ducking)
 				return;
 				
-			var other:Box2DPhysicsObject = e.other.GetBody().GetUserData() as Box2DPhysicsObject;
+			var other:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
 			
 			var heroTop:Number = y;
 			var objectBottom:Number = other.y + (other.height / 2);
 			
 			if (objectBottom < heroTop)
-				e.contact.Disable();
+				contact.SetEnabled(false);
 		}
-		
-		protected function handleBeginContact(e:ContactEvent):void
-		{
-			var collider:Box2DPhysicsObject = e.other.GetBody().GetUserData();
+					
+		override public function handleBeginContact(contact:b2Contact):void {
+			
+			var collider:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
 			
 			if (_enemyClass && collider is _enemyClass)
 			{
@@ -383,7 +364,7 @@ package com.citrusengine.objects.platformer.box2d
 					hurt();
 					
 					//fling the hero
-					var hurtVelocity:V2 = _body.GetLinearVelocity();
+					var hurtVelocity:b2Vec2 = _body.GetLinearVelocity();
 					hurtVelocity.y = -hurtVelocityY;
 					hurtVelocity.x = hurtVelocityX;
 					if (collider.x > x)
@@ -397,24 +378,27 @@ package com.citrusengine.objects.platformer.box2d
 				}
 			}
 			
-			
 			//Collision angle
-			if (e.normal) //The normal property doesn't come through all the time. I think doesn't come through against sensors.
+			if (contact.GetManifold().m_localPoint) //The normal property doesn't come through all the time. I think doesn't come through against sensors.
 			{
-				var collisionAngle:Number = new MathVector(e.normal.x, e.normal.y).angle * 180 / Math.PI;
-				if ((collisionAngle > 45 && collisionAngle < 135) || e.other.GetBody().GetUserData() is Crate)
+				var normalPoint:Point = new Point(contact.GetManifold().m_localPoint.x, contact.GetManifold().m_localPoint.y);
+				var collisionAngle:Number = new MathVector(normalPoint.x, normalPoint.y).angle * 180 / Math.PI;
+				if ((collisionAngle > 45 && collisionAngle < 135) || collider is Crate)
 				{
-					_groundContacts.push(e.other);
+					_groundContacts.push(collider.body.GetFixtureList());
 					_onGround = true;
 					updateCombinedGroundAngle();
 				}
 			}
 		}
 		
-		protected function handleEndContact(e:ContactEvent):void
-		{
+		
+		override public function handleEndContact(contact:b2Contact):void {
+			
+			var collider:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
+			
 			//Remove from ground contacts, if it is one.
-			var index:int = _groundContacts.indexOf(e.other);
+			var index:int = _groundContacts.indexOf(collider.body.GetFixtureList());
 			if (index != -1)
 			{
 				_groundContacts.splice(index, 1);
@@ -424,9 +408,9 @@ package com.citrusengine.objects.platformer.box2d
 			}
 		}
 		
-		protected function getSlopeBasedMoveAngle():V2
+		protected function getSlopeBasedMoveAngle():b2Vec2
 		{
-			return new V2(acceleration, 0).rotate(_combinedGroundAngle);
+			return Box2DPhysicsObject.Rotateb2Vec2(new b2Vec2(acceleration, 0), _combinedGroundAngle);
 		}
 		
 		protected function updateCombinedGroundAngle():void

@@ -1,16 +1,15 @@
 package com.citrusengine.objects.platformer.box2d {
 
-	import Box2DAS.Collision.Shapes.b2PolygonShape;
-	import Box2DAS.Common.V2;
-	import Box2DAS.Dynamics.ContactEvent;
-	import Box2DAS.Dynamics.b2Fixture;
-	import Box2DAS.Dynamics.b2FixtureDef;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Collision.Shapes.b2PolygonShape;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2Fixture;
+	import Box2D.Dynamics.b2FixtureDef;
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.utils.Box2DShapeMaker;
-
-	import flash.display.MovieClip;
+	
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;
@@ -66,12 +65,6 @@ package com.citrusengine.objects.platformer.box2d {
 		protected var _rightSensorFixture:b2Fixture;
 		protected var _sensorFixtureDef:b2FixtureDef;
 		
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, speed:Number, view:* = null, leftBound:Number = -100000, rightBound:Number = 100000, startingDirection:String = "left"):Baddy
-		{
-			if (view == null) view = MovieClip;
-			return new Baddy(name, { x: x, y: y, width: width, height: height, speed: speed, view: view, leftBound: leftBound, rightBound: rightBound, startingDirection: startingDirection } );
-		}
-		
 		public function Baddy(name:String, params:Object=null)
 		{
 			super(name, params);
@@ -87,13 +80,10 @@ package com.citrusengine.objects.platformer.box2d {
 		
 		override public function destroy():void
 		{
-			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-			_leftSensorFixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleSensorBeginContact);
-			_rightSensorFixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleSensorBeginContact);
 			clearTimeout(_hurtTimeoutID);
-			_sensorFixtureDef.destroy();
-			_leftSensorShape.destroy();
-			_rightSensorShape.destroy();
+			//_sensorFixtureDef.destroy();
+			//_leftSensorShape.destroy();
+			//_rightSensorShape.destroy();
 			
 			super.destroy();
 		}
@@ -116,14 +106,14 @@ package com.citrusengine.objects.platformer.box2d {
 		{
 			super.update(timeDelta);
 			
-			var position:V2 = _body.GetPosition();
+			var position:b2Vec2 = _body.GetPosition();
 			_lastXPos = position.x;
 			
 			//Turn around when they pass their left/right bounds
 			if ((_inverted && position.x * 30 < leftBound) || (!_inverted && position.x * 30 > rightBound))
 				turnAround();
 			
-			var velocity:V2 = _body.GetLinearVelocity();
+			var velocity:b2Vec2 = _body.GetLinearVelocity();
 			if (!_hurt)
 			{
 				if (_inverted)
@@ -159,15 +149,19 @@ package com.citrusengine.objects.platformer.box2d {
 		{
 			_shape = Box2DShapeMaker.BeveledRect(_width, _height, 0.2);
 			
+			//TODO : left & right sensor to prevent blocked baddy
+			
 			var sensorWidth:Number = wallSensorWidth / _box2D.scale;
 			var sensorHeight:Number = wallSensorHeight / _box2D.scale;
-			var sensorOffset:V2 = new V2( -_width / 2 - (sensorWidth / 2), _height / 2 - (wallSensorOffset / _box2D.scale));
+			var sensorOffset:b2Vec2 = new b2Vec2( -_width / 2 - (sensorWidth / 2), _height / 2 - (wallSensorOffset / _box2D.scale));
 			_leftSensorShape = new b2PolygonShape();
-			_leftSensorShape.SetAsBox(sensorWidth, sensorHeight, sensorOffset);
+			//_leftSensorShape.SetAsBox(sensorWidth, sensorHeight, sensorOffset);
+			_leftSensorShape.SetAsBox(sensorWidth, sensorHeight);
 			
 			sensorOffset.x = -sensorOffset.x;
 			_rightSensorShape = new b2PolygonShape();
-			_rightSensorShape.SetAsBox(sensorWidth, sensorHeight, sensorOffset);
+			//_rightSensorShape.SetAsBox(sensorWidth, sensorHeight, sensorOffset);
+			_rightSensorShape.SetAsBox(sensorWidth, sensorHeight);
 		}
 		
 		override protected function defineFixture():void
@@ -187,49 +181,46 @@ package com.citrusengine.objects.platformer.box2d {
 		override protected function createFixture():void
 		{
 			super.createFixture();
-			_fixture.m_reportBeginContact = true;
-			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
+			//_fixture.m_reportBeginContact = true;
+			//_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
 			
 			_leftSensorFixture = body.CreateFixture(_sensorFixtureDef);
-			_leftSensorFixture.m_reportBeginContact = true;
-			_leftSensorFixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleSensorBeginContact);
+			//_leftSensorFixture.m_reportBeginContact = true;
+			//_leftSensorFixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleSensorBeginContact);
 			
 			_sensorFixtureDef.shape = _rightSensorShape;
 			_rightSensorFixture = body.CreateFixture(_sensorFixtureDef);
-			_rightSensorFixture.m_reportBeginContact = true;
-			_rightSensorFixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleSensorBeginContact);
+			//_rightSensorFixture.m_reportBeginContact = true;
+			//_rightSensorFixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleSensorBeginContact);
 		}
-		
-		protected function handleBeginContact(e:ContactEvent):void
-		{
-			var collider:Box2DPhysicsObject = e.other.GetBody().GetUserData();
+			
+		override public function handleBeginContact(contact:b2Contact):void {
+			
+			var collider:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
 			
 			if (collider is _enemyClass && collider.body.GetLinearVelocity().y > enemyKillVelocity)
 				hurt();
-			
 		}
 		
-		protected function handleSensorBeginContact(e:ContactEvent):void
-		{
-			if (_body.GetLinearVelocity().x < 0 && e.fixture == _rightSensorFixture)
-				return;
-			
-			if (_body.GetLinearVelocity().x > 0 && e.fixture == _leftSensorFixture)
-				return;
-				
-			var collider:Box2DPhysicsObject = e.other.GetBody().GetUserData();
-			if (collider is Platform || collider is Baddy)
-			{
-				turnAround();
-			}
-		}
+//		protected function handleSensorBeginContact(e:ContactEvent):void
+//		{
+//		TODO : manage sensor
+//			if (_body.GetLinearVelocity().x < 0 && e.fixture == _rightSensorFixture)
+//				return;
+//			
+//			if (_body.GetLinearVelocity().x > 0 && e.fixture == _leftSensorFixture)
+//				return;
+//				
+//			var collider:Box2DPhysicsObject = e.other.GetBody().GetUserData();
+//			if (collider is Platform || collider is Baddy)
+//			{
+//				turnAround();
+//			}
+//		}
 		
 		protected function updateAnimation():void
 		{
-			if (_hurt)
-				_animation = "die";
-			else
-				_animation = "walk";
+			_animation = _hurt ? "die" : "walk";	
 		}
 		
 		protected function endHurtState():void

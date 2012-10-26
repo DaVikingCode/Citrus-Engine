@@ -1,10 +1,9 @@
 package com.citrusengine.objects.platformer.box2d 
 {
 
-	import Box2DAS.Common.V2;
-	import Box2DAS.Dynamics.ContactEvent;
-	import Box2DAS.Dynamics.b2Fixture;
-	import Box2DAS.Dynamics.b2FixtureDef;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2Fixture;
+	import Box2D.Dynamics.b2FixtureDef;
 
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.Box2DPhysicsObject;
@@ -114,7 +113,7 @@ package com.citrusengine.objects.platformer.box2d
 		{
 			super.update(timeDelta);
 			
-			var velocity:V2 = _body.GetLinearVelocity();
+			var velocity:b2Vec2 = _body.GetLinearVelocity();
 			
 			if (_isNew)
 			{

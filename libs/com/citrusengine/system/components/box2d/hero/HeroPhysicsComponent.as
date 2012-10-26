@@ -1,7 +1,5 @@
 package com.citrusengine.system.components.box2d.hero {
 
-	import Box2DAS.Dynamics.ContactEvent;
-
 	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.system.components.box2d.Box2DComponent;
 	import com.citrusengine.system.components.box2d.CollisionComponent;
@@ -22,10 +20,6 @@ package com.citrusengine.system.components.box2d.hero {
 			
 		override public function destroy():void {
 			
-			_fixture.removeEventListener(ContactEvent.PRE_SOLVE, _collisionComponent.handlePreSolve);
-			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, _collisionComponent.handleBeginContact);
-			_fixture.removeEventListener(ContactEvent.END_CONTACT, _collisionComponent.handleEndContact);
-			
 			super.destroy();
 		}
 
@@ -34,10 +28,6 @@ package com.citrusengine.system.components.box2d.hero {
 			super.initialize();
 			
 			_collisionComponent = entity.components["collision"];
-			
-			_fixture.addEventListener(ContactEvent.PRE_SOLVE, _collisionComponent.handlePreSolve);
-			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, _collisionComponent.handleBeginContact);
-			_fixture.addEventListener(ContactEvent.END_CONTACT, _collisionComponent.handleEndContact);
 		}
 
 		override protected function defineBody():void {
@@ -61,15 +51,6 @@ package com.citrusengine.system.components.box2d.hero {
 			_fixtureDef.restitution = 0;
 			_fixtureDef.filter.categoryBits = PhysicsCollisionCategories.Get("GoodGuys");
 			_fixtureDef.filter.maskBits = PhysicsCollisionCategories.GetAll();
-		}
-
-		override protected function createFixture():void {
-			
-			super.createFixture();
-
-			_fixture.m_reportPreSolve = true;
-			_fixture.m_reportBeginContact = true;
-			_fixture.m_reportEndContact = true;
 		}
 		
 		public function changeFixtureToZero():void {

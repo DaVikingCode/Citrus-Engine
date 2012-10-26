@@ -1,6 +1,6 @@
 package com.citrusengine.system.components.box2d {
 
-	import Box2DAS.Common.V2;
+	import Box2D.Common.Math.b2Vec2;
 
 	import com.citrusengine.system.Component;
 
@@ -11,7 +11,7 @@ package com.citrusengine.system.components.box2d {
 		
 		protected var _physicsComponent:Box2DComponent;
 		
-		protected var _velocity:V2;
+		protected var _velocity:b2Vec2;
 
 		public function MovementComponent(name:String, params:Object = null) {
 			super(name, params);

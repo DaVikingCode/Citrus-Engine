@@ -1,6 +1,6 @@
 package com.citrusengine.physics.box2d {
 
-	import Box2DAS.Dynamics.b2DebugDraw;
+	import Box2D.Dynamics.b2DebugDraw;
 
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.physics.IDebugView;
@@ -21,14 +21,17 @@ package com.citrusengine.physics.box2d {
 			_box2D = CitrusEngine.getInstance().state.getFirstObjectByType(Box2D) as Box2D;
 			
 			_debugDrawer = new b2DebugDraw();
-			addChild(_debugDrawer);
-			_debugDrawer.world = _box2D.world;
-			_debugDrawer.scale = _box2D.scale;
+			
+			_debugDrawer.SetSprite(this);
+			_debugDrawer.SetDrawScale(_box2D.scale);
+			_debugDrawer.SetFlags(b2DebugDraw.e_shapeBit|b2DebugDraw.e_jointBit);
+
+			_box2D.world.SetDebugDraw(_debugDrawer);
 		}
 		
 		public function update():void
 		{
-			_debugDrawer.Draw();
+			_box2D.world.DrawDebugData();
 		}
 		
 		public function debugMode(mode:uint):void {

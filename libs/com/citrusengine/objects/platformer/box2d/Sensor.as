@@ -1,14 +1,11 @@
-package com.citrusengine.objects.platformer.box2d
-{
+package com.citrusengine.objects.platformer.box2d {
 
-	import Box2DAS.Dynamics.ContactEvent;
-	import Box2DAS.Dynamics.b2Body;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.b2Body;
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
 
 	import org.osflash.signals.Signal;
-
-	import flash.display.MovieClip;
 	
 	/**
 	 * Sensors simply listen for when an object begins and ends contact with them. They disaptch a signal
@@ -34,25 +31,17 @@ package com.citrusengine.objects.platformer.box2d
 		 */
 		public var onEndContact:Signal;
 		
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, view:* = null):Sensor
-		{
-			if (view == null) view = MovieClip;
-			return new Sensor(name, { x: x, y: y, width: width, height: height, view: view } );
-		}
-		
 		public function Sensor(name:String, params:Object=null)
 		{
 			super(name, params);
-			onBeginContact = new Signal(ContactEvent);
-			onEndContact = new Signal(ContactEvent);
+			onBeginContact = new Signal(b2Contact);
+			onEndContact = new Signal(b2Contact);
 		}
 		
 		override public function destroy():void
 		{
 			onBeginContact.removeAll();
 			onEndContact.removeAll();
-			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-			_fixture.removeEventListener(ContactEvent.END_CONTACT, handleEndContact);
 			
 			super.destroy();
 		}
@@ -68,24 +57,13 @@ package com.citrusengine.objects.platformer.box2d
 			super.defineFixture();
 			_fixtureDef.isSensor = true;
 		}
-		
-		override protected function createFixture():void
-		{
-			super.createFixture();
-			_fixture.m_reportBeginContact = true;
-			_fixture.m_reportEndContact = true;
-			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-			_fixture.addEventListener(ContactEvent.END_CONTACT, handleEndContact);
+
+		override public function handleBeginContact(contact:b2Contact):void {
+			onBeginContact.dispatch(contact);
 		}
-		
-		protected function handleBeginContact(e:ContactEvent):void
-		{
-			onBeginContact.dispatch(e);
-		}
-		
-		protected function handleEndContact(e:ContactEvent):void
-		{
-			onEndContact.dispatch(e);
+			
+		override public function handleEndContact(contact:b2Contact):void {
+			onEndContact.dispatch(contact);
 		}
 	}
 }

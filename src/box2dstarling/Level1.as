@@ -1,6 +1,6 @@
 package box2dstarling {
 
-	import Box2DAS.Dynamics.ContactEvent;
+	import Box2D.Dynamics.Contacts.b2Contact;
 
 	import starling.extensions.particles.PDParticleSystem;
 	import starling.extensions.particles.ParticleSystem;
@@ -9,6 +9,7 @@ package box2dstarling {
 	import starling.textures.Texture;
 	import starling.utils.Color;
 
+	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.objects.platformer.box2d.Hero;
 	import com.citrusengine.objects.platformer.box2d.Sensor;
 
@@ -28,6 +29,7 @@ package box2dstarling {
 		private var _particleSystem:ParticleSystem;
 		
 		private var _bmpFontTF:TextField;
+		private var _popUp:Sensor;
 
 		public function Level1(level:MovieClip = null) {
 			super(level);
@@ -56,24 +58,24 @@ package box2dstarling {
 			addChild(_bmpFontTF);
 			_bmpFontTF.visible = false;
 			
-			var popUp:Sensor = Sensor(getObjectByName("popUp"));
+			_popUp = Sensor(getObjectByName("popUp"));
 			
 			endLevel.onBeginContact.add(_changeLevel);
 			
-			popUp.onBeginContact.add(_showPopUp);
-			popUp.onEndContact.add(_hidePopUp);
+			_popUp.onBeginContact.add(_showPopUp);
+			_popUp.onEndContact.add(_hidePopUp);
 		}
 		
-		private function _showPopUp(cEvt:ContactEvent):void {
+		private function _showPopUp(contact:b2Contact):void {
 			
-			if (cEvt.other.GetBody().GetUserData() is Hero) {
+			if (Box2DPhysicsObject.CollisionGetOther(_popUp, contact) is Hero) {
 				_bmpFontTF.visible = true;
 			}
 		}
 		
-		private function _hidePopUp(cEvt:ContactEvent):void {
+		private function _hidePopUp(contact:b2Contact):void {
 			
-			if (cEvt.other.GetBody().GetUserData() is Hero) {
+			if (Box2DPhysicsObject.CollisionGetOther(_popUp, contact) is Hero) {
 				_bmpFontTF.visible = false;
 			}
 		}

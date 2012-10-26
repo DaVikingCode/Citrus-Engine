@@ -1,13 +1,18 @@
 package com.citrusengine.objects {
 
-	import Box2DAS.Collision.Shapes.b2CircleShape;
-	import Box2DAS.Collision.Shapes.b2PolygonShape;
-	import Box2DAS.Collision.Shapes.b2Shape;
-	import Box2DAS.Common.V2;
-	import Box2DAS.Dynamics.b2Body;
-	import Box2DAS.Dynamics.b2BodyDef;
-	import Box2DAS.Dynamics.b2Fixture;
-	import Box2DAS.Dynamics.b2FixtureDef;
+	import Box2D.Collision.Shapes.b2CircleShape;
+	import Box2D.Collision.Shapes.b2PolygonShape;
+	import Box2D.Collision.Shapes.b2Shape;
+	import Box2D.Collision.b2Manifold;
+	import Box2D.Common.Math.b2Mat22;
+	import Box2D.Common.Math.b2Transform;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.b2Body;
+	import Box2D.Dynamics.b2BodyDef;
+	import Box2D.Dynamics.b2ContactImpulse;
+	import Box2D.Dynamics.b2Fixture;
+	import Box2D.Dynamics.b2FixtureDef;
 
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
@@ -33,13 +38,6 @@ package com.citrusengine.objects {
 		protected var _width:Number = 1;
 		protected var _height:Number = 1;
 		protected var _view:* = MovieClip;
-		
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, view:*):Box2DPhysicsObject
-		{
-			if (!view)
-				view = MovieClip;
-			return new Box2DPhysicsObject(name, { x: x, y: y, width: width, height: height, view: view } );
-		}
 		
 		/**
 		 * Creates an instance of a Box2DPhysicsObject. Natively, this object does not default to any graphical representation,
@@ -82,10 +80,7 @@ package com.citrusengine.objects {
 		
 		override public function destroy():void
 		{
-			_body.destroy();
-			_fixtureDef.destroy();
-			_shape.destroy();
-			_bodyDef.destroy();
+			_box2D.world.DestroyBody(_body);
 			
 			super.destroy();
 		}
@@ -96,6 +91,148 @@ package com.citrusengine.objects {
 		 */		
 		override public function update(timeDelta:Number):void
 		{
+		}
+		
+		/**
+		 * In Box2D we are blind concerning the collision, we are never sure which body is the collider. This function should help.
+		 * Call this function to obtain the colliding physics object.
+		 * @param self : in CE's code, we give this. In your code it will be your hero, a sensor, ...
+		 * @param the contact
+		 * @return the collider
+		 */
+		static public function CollisionGetOther(self:Box2DPhysicsObject, contact:b2Contact):Box2DPhysicsObject {
+			return self == contact.GetFixtureA().GetBody().GetUserData() ? contact.GetFixtureB().GetBody().GetUserData() : contact.GetFixtureA().GetBody().GetUserData();
+		}
+		
+		/**
+		 * In Box2D we are blind concerning the collision, we are never sure which body is the collider. This function should help.
+		 * Call this function to obtain the collided physics object.
+		 * @param self : in CE's code, we give this. In your code it will be your hero, a sensor, ...
+		 * @param the contact
+		 * @return the collided
+		 */
+		static public function CollisionGetSelf(self:Box2DPhysicsObject, contact:b2Contact):Box2DPhysicsObject {
+			return self == contact.GetFixtureA().GetBody().GetUserData() ? contact.GetFixtureA().GetBody().GetUserData() : contact.GetFixtureB().GetBody().GetUserData();
+		}
+		
+		/**
+		 * Useful function to rotate a b2Vec2 vector.
+		 * @param vector the initial vector
+		 * @param angle the angle desired
+		 * @return the rotated b2Vec2
+		 */
+		static public function Rotateb2Vec2(vector:b2Vec2, angle:Number):b2Vec2 {
+			var cos:Number = Math.cos(angle);
+			var sin:Number = Math.sin(angle);
+			return new b2Vec2(vector.x * cos - vector.y * sin, vector.x * sin + vector.y * cos);
+		}
+		
+		/**
+		 * This method will often need to be overriden to provide additional definition to the Box2D body object. 
+		 */		
+		protected function defineBody():void
+		{
+			_bodyDef = new b2BodyDef();
+			_bodyDef.type = b2Body.b2_dynamicBody;
+			_bodyDef.position = new b2Vec2(_x, _y);
+			_bodyDef.angle = _rotation;
+		}
+		
+		/**
+		 * This method will often need to be overriden to customize the Box2D body object. 
+		 */	
+		protected function createBody():void
+		{
+			_body = _box2D.world.CreateBody(_bodyDef);
+			_body.SetUserData(this);
+		}
+		
+		/**
+		 * This method will often need to be overriden to customize the Box2D shape object.
+		 * The PhysicsObject creates a rectangle by default if the radius it not defined, but you can replace this method's
+		 * definition and instead create a custom shape, such as a line or circle.
+		 */	
+		protected function createShape():void
+		{
+			if (_radius != 0) {
+				_shape = new b2CircleShape();
+				b2CircleShape(_shape).SetRadius(_radius);
+			} else {
+				_shape = new b2PolygonShape();
+				b2PolygonShape(_shape).SetAsBox(_width / 2, _height / 2);
+			}
+		}
+		
+		/**
+		 * This method will often need to be overriden to provide additional definition to the Box2D fixture object. 
+		 */	
+		protected function defineFixture():void
+		{
+			_fixtureDef = new b2FixtureDef();
+			_fixtureDef.shape = _shape;
+			_fixtureDef.density = 1;
+			_fixtureDef.friction = 0.6;
+			_fixtureDef.restitution = 0.3;
+			_fixtureDef.filter.categoryBits = PhysicsCollisionCategories.Get("Level");
+			_fixtureDef.filter.maskBits = PhysicsCollisionCategories.GetAll();
+		}
+		
+		/**
+		 * This method will often need to be overriden to customize the Box2D fixture object. 
+		 */	
+		protected function createFixture():void
+		{
+			_fixture = _body.CreateFixture(_fixtureDef);
+		}
+		
+		/**
+		 * This method will often need to be overriden to provide additional definition to the Box2D joint object.
+		 * A joint is not automatically created, because joints require two bodies. Therefore, if you need to create a joint,
+		 * you will also need to create additional bodies, fixtures and shapes, and then also instantiate a new b2JointDef
+		 * and b2Joint object.
+		 */	
+		protected function defineJoint():void
+		{
+			
+		}
+		
+		/**
+		 * This method will often need to be overriden to customize the Box2D joint object. 
+		 * A joint is not automatically created, because joints require two bodies. Therefore, if you need to create a joint,
+		 * you will also need to create additional bodies, fixtures and shapes, and then also instantiate a new b2JointDef
+		 * and b2Joint object.
+		 */		
+		protected function createJoint():void
+		{
+
+		}
+		
+		/**
+		 * Override this method to handle the begin contact collision.
+		 */
+		public function handleBeginContact(contact:b2Contact):void {
+			
+		}
+		
+		/**
+		 * Override this method to handle the end contact collision.
+		 */
+		public function handleEndContact(contact:b2Contact):void {
+			
+		}
+		
+		/**
+		 * Override this method if you want to perform some actions before the collision (deactivate).
+		 */
+		public function handlePreSolve(contact:b2Contact, oldManifold:b2Manifold):void {
+			
+		}
+		
+		/**
+		 * Override this method if you want to perform some actions after the collision.
+		 */
+		public function handlePostSolve(contact:b2Contact, impulse:b2ContactImpulse):void {
+			
 		}
 		
 		public function get x():Number
@@ -112,9 +249,9 @@ package com.citrusengine.objects {
 			
 			if (_body)
 			{
-				var pos:V2 = _body.GetPosition();
+				var pos:b2Vec2 = _body.GetPosition();
 				pos.x = _x;
-				_body.SetTransform(pos, _body.GetAngle());
+				_body.SetTransform(new b2Transform(pos, b2Mat22.FromAngle(_body.GetAngle())));
 			}
 		}
 			
@@ -132,9 +269,9 @@ package com.citrusengine.objects {
 			
 			if (_body)
 			{
-				var pos:V2 = _body.GetPosition();
+				var pos:b2Vec2 = _body.GetPosition();
 				pos.y = _y;
-				_body.SetTransform(pos, _body.GetAngle());
+				_body.SetTransform(new b2Transform(pos, b2Mat22.FromAngle(_body.GetAngle())));
 			}
 		}
 		
@@ -155,7 +292,7 @@ package com.citrusengine.objects {
 			_rotation = value * Math.PI / 180;
 			
 			if (_body)
-				_body.SetTransform(_body.GetPosition(), _rotation); 
+				_body.SetTransform(new b2Transform(_body.GetPosition(), b2Mat22.FromAngle(_rotation)));
 		}
 		
 		public function get view():*
@@ -243,85 +380,5 @@ package com.citrusengine.objects {
 			return _body;
 		}
 		
-		/**
-		 * This method will often need to be overriden to provide additional definition to the Box2D body object. 
-		 */		
-		protected function defineBody():void
-		{
-			_bodyDef = new b2BodyDef();
-			_bodyDef.type = b2Body.b2_dynamicBody;
-			_bodyDef.position.v2 = new V2(_x, _y);
-			_bodyDef.angle = _rotation;
-		}
-		
-		/**
-		 * This method will often need to be overriden to customize the Box2D body object. 
-		 */	
-		protected function createBody():void
-		{
-			_body = _box2D.world.CreateBody(_bodyDef);
-			_body.SetUserData(this);
-		}
-		
-		/**
-		 * This method will often need to be overriden to customize the Box2D shape object.
-		 * The PhysicsObject creates a rectangle by default if the radius it not defined, but you can replace this method's
-		 * definition and instead create a custom shape, such as a line or circle.
-		 */	
-		protected function createShape():void
-		{
-			if (_radius != 0) {
-				_shape = new b2CircleShape();
-				b2CircleShape(_shape).m_radius = _radius;
-			} else {
-				_shape = new b2PolygonShape();
-				b2PolygonShape(_shape).SetAsBox(_width / 2, _height / 2);
-			}
-		}
-		
-		/**
-		 * This method will often need to be overriden to provide additional definition to the Box2D fixture object. 
-		 */	
-		protected function defineFixture():void
-		{
-			_fixtureDef = new b2FixtureDef();
-			_fixtureDef.shape = _shape;
-			_fixtureDef.density = 1;
-			_fixtureDef.friction = 0.6;
-			_fixtureDef.restitution = 0.3;
-			_fixtureDef.filter.categoryBits = PhysicsCollisionCategories.Get("Level");
-			_fixtureDef.filter.maskBits = PhysicsCollisionCategories.GetAll();
-		}
-		
-		/**
-		 * This method will often need to be overriden to customize the Box2D fixture object. 
-		 */	
-		protected function createFixture():void
-		{
-			_fixture = _body.CreateFixture(_fixtureDef);
-		}
-		
-		/**
-		 * This method will often need to be overriden to provide additional definition to the Box2D joint object.
-		 * A joint is not automatically created, because joints require two bodies. Therefore, if you need to create a joint,
-		 * you will also need to create additional bodies, fixtures and shapes, and then also instantiate a new b2JointDef
-		 * and b2Joint object.
-		 */	
-		protected function defineJoint():void
-		{
-			
-		}
-		
-		/**
-		 * This method will often need to be overriden to customize the Box2D joint object. 
-		 * A joint is not automatically created, because joints require two bodies. Therefore, if you need to create a joint,
-		 * you will also need to create additional bodies, fixtures and shapes, and then also instantiate a new b2JointDef
-		 * and b2Joint object.
-		 */		
-		protected function createJoint():void
-		{
-
-		}
-
 	}
 }

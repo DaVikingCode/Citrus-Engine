@@ -1,8 +1,10 @@
 package com.citrusengine.utils 
 {
-	import Box2DAS.Collision.Shapes.b2CircleShape;
-	import Box2DAS.Collision.Shapes.b2PolygonShape;
-	import Box2DAS.Common.V2;
+
+	import Box2D.Collision.Shapes.b2CircleShape;
+	import Box2D.Collision.Shapes.b2PolygonShape;
+	import Box2D.Common.Math.b2Vec2;
+
 	public class Box2DShapeMaker 
 	{
 		public static function BeveledRect(width:Number, height:Number, bevel:Number):b2PolygonShape
@@ -11,16 +13,16 @@ package com.citrusengine.utils
 			var halfHeight:Number = height * 0.5;
 			
 			var shape:b2PolygonShape = new b2PolygonShape();
-			var vertices:Vector.<V2> = new Vector.<V2>();
-			vertices.push(new V2( -halfWidth + bevel, -halfHeight));
-			vertices.push(new V2( halfWidth - bevel, -halfHeight));
-			vertices.push(new V2( halfWidth, -halfHeight + bevel));
-			vertices.push(new V2( halfWidth, halfHeight - bevel));
-			vertices.push(new V2( halfWidth - bevel, halfHeight));
-			vertices.push(new V2( -halfWidth + bevel, halfHeight));
-			vertices.push(new V2( -halfWidth, halfHeight - bevel));
-			vertices.push(new V2( -halfWidth, -halfHeight + bevel));
-			shape.Set(vertices);
+			var vertices:Array = [];
+			vertices.push(new b2Vec2( -halfWidth + bevel, -halfHeight));
+			vertices.push(new b2Vec2( halfWidth - bevel, -halfHeight));
+			vertices.push(new b2Vec2( halfWidth, -halfHeight + bevel));
+			vertices.push(new b2Vec2( halfWidth, halfHeight - bevel));
+			vertices.push(new b2Vec2( halfWidth - bevel, halfHeight));
+			vertices.push(new b2Vec2( -halfWidth + bevel, halfHeight));
+			vertices.push(new b2Vec2( -halfWidth, halfHeight - bevel));
+			vertices.push(new b2Vec2( -halfWidth, -halfHeight + bevel));
+			shape.SetAsArray(vertices);
 			
 			return shape;
 		}
@@ -37,7 +39,7 @@ package com.citrusengine.utils
 		{
 			var radius:Number = (width + height) * 0.25;
 			var shape:b2CircleShape = new b2CircleShape();
-			shape.m_radius = radius;
+			shape.SetRadius(radius);
 			
 			return shape;
 		}

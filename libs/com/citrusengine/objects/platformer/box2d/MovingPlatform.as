@@ -1,13 +1,11 @@
-package com.citrusengine.objects.platformer.box2d
-{
+package com.citrusengine.objects.platformer.box2d {
 
-	import Box2DAS.Common.V2;
-	import Box2DAS.Dynamics.ContactEvent;
-	import Box2DAS.Dynamics.b2Body;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.b2Body;
 
 	import com.citrusengine.math.MathVector;
-
-	import flash.display.MovieClip;
+	import com.citrusengine.objects.Box2DPhysicsObject;
 	
 	/**
 	 * A platform that moves between two points. The MovingPlatform has several properties that
@@ -47,12 +45,6 @@ package com.citrusengine.objects.platformer.box2d
 		protected var _forward:Boolean = true;
 		protected var _passengers:Vector.<b2Body> = new Vector.<b2Body>();
 		
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, endX:Number, endY:Number, view:* = null, speed:Number = 1, waitForPassenger:Boolean = false):MovingPlatform
-		{
-			if (view == null) view = MovieClip;
-			return new MovingPlatform(name, { x: x, y: y, width: width, height: height, endX: endX, endY: endY, view: view, speed: speed, waitForPassenger: waitForPassenger } );
-		}
-		
 		public function MovingPlatform(name:String, params:Object=null)
 		{
 			super(name, params);
@@ -60,8 +52,6 @@ package com.citrusengine.objects.platformer.box2d
 		
 		override public function destroy():void
 		{
-			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-			_fixture.removeEventListener(ContactEvent.END_CONTACT, handleEndContact);
 			_passengers.length = 0;
 			
 			super.destroy();
@@ -143,27 +133,29 @@ package com.citrusengine.objects.platformer.box2d
 		{
 			super.update(timeDelta);
 			
-			var velocity:V2 = _body.GetLinearVelocity();
+			var velocity:b2Vec2 = _body.GetLinearVelocity();
 			
 			if ((waitForPassenger && _passengers.length == 0) || !enabled)
 			{
 				//Platform should not move
-				velocity.zero();
+				velocity.SetZero();
 			}
 			else
 			{
 				//Move the platform according to its destination
 				
-				var destination:V2 = new V2(_end.x, _end.y);
+				var destination:b2Vec2 = new b2Vec2(_end.x, _end.y);
 				if (!_forward)
-					destination = new V2(_start.x, _start.y);
+					destination = new b2Vec2(_start.x, _start.y);
 				
-				velocity = destination.subtract(_body.GetPosition());
+				destination.Subtract(_body.GetPosition());
+				velocity = destination;
 				
-				if (velocity.length() > speed / 30)
+				if (velocity.Length() > speed / 30)
 				{
 					//Still has further to go. Normalize the velocity to the max speed
-					velocity = velocity.normalize(speed);
+					//velocity = velocity.normalize(speed); // TODO normalize the speed
+					velocity.Normalize();
 				}
 				else
 				{
@@ -182,23 +174,16 @@ package com.citrusengine.objects.platformer.box2d
 			_bodyDef.allowSleep = false;
 		}
 		
-		override protected function createFixture():void
-		{
-			super.createFixture();
-			_fixture.m_reportBeginContact = true;
-			_fixture.m_reportEndContact = true;
-			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-			_fixture.addEventListener(ContactEvent.END_CONTACT, handleEndContact);
+		
+		override public function handleBeginContact(contact:b2Contact):void {
+			
+			_passengers.push(Box2DPhysicsObject.CollisionGetOther(this, contact).body);
 		}
 		
-		protected function handleBeginContact(e:ContactEvent):void
-		{
-			_passengers.push(e.other.GetBody());
-		}
 		
-		protected function handleEndContact(e:ContactEvent):void
-		{
-			_passengers.splice(_passengers.indexOf(e.other.GetBody()), 1); 
+		override public function handleEndContact(contact:b2Contact):void {
+			
+			_passengers.splice(_passengers.indexOf(Box2DPhysicsObject.CollisionGetOther(this, contact).body), 1); 
 		}
 	}
 }

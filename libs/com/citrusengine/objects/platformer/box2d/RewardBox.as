@@ -1,8 +1,7 @@
 package com.citrusengine.objects.platformer.box2d 
 {
 
-	import Box2DAS.Dynamics.ContactEvent;
-	import Box2DAS.Dynamics.b2Body;
+	import Box2D.Dynamics.b2Body;
 
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.Box2DPhysicsObject;

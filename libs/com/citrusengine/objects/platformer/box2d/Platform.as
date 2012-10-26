@@ -1,8 +1,9 @@
-package com.citrusengine.objects.platformer.box2d
-{
-	import Box2DAS.Dynamics.ContactEvent;
-	import Box2DAS.Dynamics.b2Body;
-	
+package com.citrusengine.objects.platformer.box2d {
+
+	import Box2D.Collision.b2Manifold;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.b2Body;
+
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	
 	/**
@@ -19,21 +20,9 @@ package com.citrusengine.objects.platformer.box2d
 	{
 		private var _oneWay:Boolean = false;
 		
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number):Platform
-		{
-			return new Platform(name, { x: x, y: y, width: width, height: height } );
-		}
-		
 		public function Platform(name:String, params:Object = null )
 		{
 			super(name, params);
-		}
-		
-		override public function destroy():void
-		{
-			_fixture.removeEventListener(ContactEvent.PRE_SOLVE, handlePreSolve);
-			
-			super.destroy();
 		}
 		
 		/**
@@ -54,17 +43,6 @@ package com.citrusengine.objects.platformer.box2d
 			
 			if (!_fixture)
 				return;
-			
-			if (_oneWay)
-			{
-				_fixture.m_reportPreSolve = true;
-				_fixture.addEventListener(ContactEvent.PRE_SOLVE, handlePreSolve);
-			}
-			else
-			{
-				_fixture.m_reportPreSolve = false;
-				_fixture.removeEventListener(ContactEvent.PRE_SOLVE, handlePreSolve);
-			}
 		}
 		
 		override protected function defineBody():void
@@ -80,36 +58,29 @@ package com.citrusengine.objects.platformer.box2d
 			
 			_fixtureDef.restitution = 0;
 		}
-		
-		override protected function createFixture():void
-		{
-			super.createFixture();
 			
-			if (_oneWay)
-			{
-				_fixture.m_reportPreSolve = true;
-				_fixture.addEventListener(ContactEvent.PRE_SOLVE, handlePreSolve);
+		override public function handlePreSolve(contact:b2Contact, oldManifold:b2Manifold):void {
+			
+			if (_oneWay) {
+				
+				//Get the y position of the top of the platform
+				var platformTop:Number = _body.GetPosition().y - _height / 2;
+				
+				//Get the half-height of the collider, if we can guess what it is (we are hoping the collider extends PhysicsObject).
+				var colliderHalfHeight:Number = 0;
+				var collider:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
+				if (collider.height)
+					colliderHalfHeight = collider.height / _box2D.scale / 2;
+				else
+					return;
+				
+				//Get the y position of the bottom of the collider
+				var colliderBottom:Number = collider.body.GetPosition().y + colliderHalfHeight;
+				
+				//Find out if the collider is below the platform
+				if (platformTop < colliderBottom)
+					contact.SetEnabled(false);
 			}
-		}
-		
-		protected function handlePreSolve(e:ContactEvent):void
-		{
-			//Get the y position of the top of the platform
-			var platformTop:Number = _body.GetPosition().y - _height / 2;
-			
-			//Get the half-height of the collider, if we can guess what it is (we are hoping the collider extends PhysicsObject).
-			var colliderHalfHeight:Number = 0;
-			if (e.other.GetBody().GetUserData().height)
-				colliderHalfHeight = e.other.GetBody().GetUserData().height / _box2D.scale / 2;
-			else
-				return;
-			
-			//Get the y position of the bottom of the collider
-			var colliderBottom:Number = e.other.GetBody().GetPosition().y + colliderHalfHeight;
-			
-			//Find out if the collider is below the platform
-			if (platformTop < colliderBottom)
-				e.contact.Disable();
 		}
 	}
 }

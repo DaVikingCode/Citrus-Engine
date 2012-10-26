@@ -1,7 +1,6 @@
 package com.citrusengine.system.components.box2d.hero {
 
-	import Box2DAS.Dynamics.ContactEvent;
-	import Box2DAS.Dynamics.b2Fixture;
+	import Box2D.Dynamics.b2Fixture;
 
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.Box2DPhysicsObject;
@@ -39,7 +38,7 @@ package com.citrusengine.system.components.box2d.hero {
 			super.destroy();
 		}
 		
-		override public function handlePreSolve(e:ContactEvent):void {
+		/*override public function handlePreSolve(e:ContactEvent):void {
 			
 			super.handlePreSolve(e);
 			
@@ -95,7 +94,7 @@ package com.citrusengine.system.components.box2d.hero {
 					_movementComponent.onGround = false;
 				updateCombinedGroundAngle();
 			}
-		}
+		}*/
 		
 		protected function updateCombinedGroundAngle():void {
 			

@@ -1,7 +1,7 @@
 package games.live4sales.box2d.characters {
 
-	import Box2DAS.Common.V2;
-	import Box2DAS.Dynamics.ContactEvent;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
 
 	import games.live4sales.box2d.objects.Block;
 	import games.live4sales.box2d.objects.Cash;
@@ -34,9 +34,6 @@ package games.live4sales.box2d.characters {
 			
 		override public function destroy():void {
 			
-			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-			_fixture.removeEventListener(ContactEvent.END_CONTACT, handleEndContact);
-			
 			onTouchLeftSide.removeAll();
 			
 			super.destroy();
@@ -48,7 +45,7 @@ package games.live4sales.box2d.characters {
 			
 			if (!_fighting) {
 			
-				var velocity:V2 = _body.GetLinearVelocity();
+				var velocity:b2Vec2 = _body.GetLinearVelocity();
 				
 				velocity.x = -speed;
 				
@@ -85,33 +82,23 @@ package games.live4sales.box2d.characters {
 			_fixtureDef.filter.categoryBits = PhysicsCollisionCategories.Get("BadGuys");
 			_fixtureDef.filter.maskBits = PhysicsCollisionCategories.GetAllExcept("BadGuys");
 		}
+
+		override public function handleBeginContact(contact:b2Contact):void {
 			
-		override protected function createFixture():void {
-			
-			super.createFixture();
-			
-			_fixture.m_reportBeginContact = true;
-			_fixture.m_reportEndContact = true;
-			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-			_fixture.addEventListener(ContactEvent.END_CONTACT, handleEndContact);
-		}
-			
-		protected function handleBeginContact(cEvt:ContactEvent):void {
-			
-			var other:Box2DPhysicsObject = cEvt.other.GetBody().GetUserData();
+			var other:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
 			
 			if (other is SalesWoman || other is Block || other is Cash)
 				_fighting = true;
 				
 			else if (other is Bag) {
 				life--;
-				cEvt.contact.Disable();
+				contact.SetEnabled(false);
 			}
 		}
-		
-		protected function handleEndContact(cEvt:ContactEvent):void {
 			
-			var other:Box2DPhysicsObject = cEvt.other.GetBody().GetUserData();
+		override public function handleEndContact(contact : b2Contact) : void {
+		
+			var other:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
 			
 			if (other is SalesWoman || other is Block || other is Cash)
 				_fighting = false;

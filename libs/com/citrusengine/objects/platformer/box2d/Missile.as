@@ -1,15 +1,15 @@
 package com.citrusengine.objects.platformer.box2d 
 {
 
-	import Box2DAS.Common.V2;
-	import Box2DAS.Dynamics.ContactEvent;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.b2FilterData;
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
 
 	import org.osflash.signals.Signal;
 
-	import flash.display.MovieClip;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 		
@@ -63,17 +63,11 @@ package com.citrusengine.objects.platformer.box2d
 		 */
 		public var onExplode:Signal;
 		
-		protected var _velocity:V2;
+		protected var _velocity:b2Vec2;
 		protected var _exploded:Boolean = false;
 		protected var _explodeTimeoutID:Number = 0;
 		protected var _fuseDurationTimeoutID:Number = 0;
 		protected var _contact:Box2DPhysicsObject;
-		
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, angle:Number, view:* = null, speed:Number = 2, fuseDuration:Number = 10000, explodeDuration:Number = 1000):Missile
-		{
-			if (view == null) view = MovieClip;
-			return new Missile(name, { x: x, y: y, width: width, height: height, angle: angle, view: view, speed: speed, fuseDuration: fuseDuration, explodeDuration: explodeDuration } );
-		}
 		
 		public function Missile(name:String, params:Object = null) 
 		{
@@ -86,18 +80,24 @@ package com.citrusengine.objects.platformer.box2d
 			
 			super.initialize(poolObjectParams);
 			
-			_velocity = new V2(speed, 0);
-			_velocity.rotate(angle * Math.PI / 180);
+			_velocity = new b2Vec2(speed, 0);
+			_velocity = Box2DPhysicsObject.Rotateb2Vec2(_velocity, angle* Math.PI / 180);
 			_inverted = speed < 0;
 			
 			_fuseDurationTimeoutID = setTimeout(explode, fuseDuration);
 			_body.SetLinearVelocity(_velocity);
 		}
 		
+		public function rotate(vector:b2Vec2, angle:Number):b2Vec2 {
+			var cos:Number = Math.cos(angle);
+			var sin:Number = Math.sin(angle);
+			return new b2Vec2(vector.x * cos - vector.y * sin, vector.x * sin + vector.y * cos);
+			
+		}
+		
 		override public function destroy():void
 		{
 			onExplode.removeAll();
-			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
 			clearTimeout(_explodeTimeoutID);
 			clearTimeout(_fuseDurationTimeoutID);
 			
@@ -113,20 +113,16 @@ package com.citrusengine.objects.platformer.box2d
 		{
 			super.update(timeDelta);
 			
-			var removeGravity:V2 = new V2();
-			removeGravity.subtract(_box2D.world.GetGravity());
-			removeGravity.multiplyN(body.GetMass());
+			var removeGravity:b2Vec2 = new b2Vec2();
+			removeGravity.Subtract(_box2D.world.GetGravity());
+			removeGravity.Multiply(body.GetMass());
 			
 			_body.ApplyForce(removeGravity, _body.GetWorldCenter());
 			
 			if (!_exploded)
-			{
 				_body.SetLinearVelocity(_velocity);
-			}
 			else
-			{
-				_body.SetLinearVelocity(new V2());
-			}
+				_body.SetLinearVelocity(new b2Vec2());
 			
 			updateAnimation();
 		}
@@ -139,11 +135,12 @@ package com.citrusengine.objects.platformer.box2d
 			if (_exploded)
 				return;
 			
-			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
 			_exploded = true;
 			
 			//Not collideable with anything anymore.
-			_fixture.SetFilterData({ maskBits: PhysicsCollisionCategories.GetNone() });
+			var filter:b2FilterData = new b2FilterData();
+			filter.maskBits = PhysicsCollisionCategories.GetNone();
+			_fixture.SetFilterData(filter);
 			
 			onExplode.dispatch(this, _contact);
 			
@@ -160,36 +157,16 @@ package com.citrusengine.objects.platformer.box2d
 			_bodyDef.allowSleep = false;
 		}
 		
-		override protected function defineFixture():void
-		{
-			super.defineFixture();
-		}
-		
-		override protected function createFixture():void
-		{
-			super.createFixture();
+		override public function handleBeginContact(contact:b2Contact):void {
 			
-			_fixture.m_reportBeginContact = true;
-			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-		}
-		
-		protected function handleBeginContact(e:ContactEvent):void
-		{
-			_contact = e.other.GetBody().GetUserData() as Box2DPhysicsObject;
-			if (!e.other.IsSensor())
+			_contact = Box2DPhysicsObject.CollisionGetOther(this, contact);
+			if (!contact.GetFixtureB().IsSensor())
 				explode();
 		}
 		
 		protected function updateAnimation():void
 		{
-			if (_exploded)
-			{
-				_animation = "exploded";
-			}
-			else
-			{
-				_animation = "normal";
-			}
+			_animation = _exploded ? "exploded" : "normal";
 		}
 		
 		protected function killMissile():void

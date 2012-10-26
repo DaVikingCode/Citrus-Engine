@@ -1,13 +1,12 @@
 package com.citrusengine.physics.box2d {
 
-	import Box2DAS.Common.V2;
-	import Box2DAS.Common.b2Base;
-	import Box2DAS.Dynamics.b2World;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2World;
 
 	import com.citrusengine.physics.APhysicsEngine;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.view.ISpriteView;
-
+	
 	/**
 	 * This is a simple wrapper class that allows you to add a Box2D Alchemy world to your game's state.
 	 * Add an instance of this class to your State before you create any phyiscs bodies. It will need to 
@@ -17,7 +16,8 @@ package com.citrusengine.physics.box2d {
 	{	
 		private var _scale:Number = 30;
 		private var _world:b2World;
-		private var _gravity:V2 = new V2(0, 15);
+		private var _gravity:b2Vec2 = new b2Vec2(0, 15);
+		private var _contactListener:Box2DContactListener;
 		
 		/**
 		 * Creates and initializes a Box2D world. 
@@ -38,8 +38,9 @@ package com.citrusengine.physics.box2d {
 			
 			_realDebugView = _view;
 			
-			_world = new b2World(_gravity);
-			b2Base.initialize();
+			_world = new b2World(_gravity, true);
+			_contactListener = new Box2DContactListener();
+			_world.SetContactListener(_contactListener);
 			
 			//Set up collision categories
 			PhysicsCollisionCategories.Add("GoodGuys");
@@ -49,8 +50,7 @@ package com.citrusengine.physics.box2d {
 		}
 		
 		override public function destroy():void
-		{
-			_world.destroy();
+		{	
 			super.destroy();
 		}
 		
@@ -73,11 +73,11 @@ package com.citrusengine.physics.box2d {
 			return _scale;
 		}
 		
-		public function get gravity():V2 {
+		public function get gravity():b2Vec2 {
 			return _gravity;
 		}
 		
-		public function set gravity(value:V2):void {
+		public function set gravity(value:b2Vec2):void {
 			_gravity = value;
 			
 			if (_world)
@@ -90,6 +90,7 @@ package com.citrusengine.physics.box2d {
 			
 			// 0.05 = 1 / 20
 			_world.Step(0.05, 8, 8);
+			_world.ClearForces();
 		}
 	}
 }

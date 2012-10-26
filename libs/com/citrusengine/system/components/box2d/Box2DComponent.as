@@ -1,18 +1,20 @@
 package com.citrusengine.system.components.box2d {
 
-	import Box2DAS.Collision.Shapes.b2CircleShape;
-	import Box2DAS.Collision.Shapes.b2PolygonShape;
-	import Box2DAS.Collision.Shapes.b2Shape;
-	import Box2DAS.Common.V2;
-	import Box2DAS.Dynamics.b2Body;
-	import Box2DAS.Dynamics.b2BodyDef;
-	import Box2DAS.Dynamics.b2Fixture;
-	import Box2DAS.Dynamics.b2FixtureDef;
+	import Box2D.Collision.Shapes.b2CircleShape;
+	import Box2D.Collision.Shapes.b2PolygonShape;
+	import Box2D.Collision.Shapes.b2Shape;
+	import Box2D.Common.Math.b2Mat22;
+	import Box2D.Common.Math.b2Transform;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2Body;
+	import Box2D.Dynamics.b2BodyDef;
+	import Box2D.Dynamics.b2Fixture;
+	import Box2D.Dynamics.b2FixtureDef;
+
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.physics.box2d.Box2D;
 	import com.citrusengine.system.Component;
-
 
 	/**
 	 * The base's physics Box2D Component. Manage (just) the physics creation.
@@ -61,10 +63,7 @@ package com.citrusengine.system.components.box2d {
 		
 		override public function destroy():void {
 			
-			_body.destroy();
-			_fixtureDef.destroy();
-			_shape.destroy();
-			_bodyDef.destroy();
+			_box2D.world.DestroyBody(_body);
 			
 			super.destroy();
 		}
@@ -83,9 +82,9 @@ package com.citrusengine.system.components.box2d {
 			
 			if (_body)
 			{
-				var pos:V2 = _body.GetPosition();
+				var pos:b2Vec2 = _body.GetPosition();
 				pos.x = _x;
-				_body.SetTransform(pos, _body.GetAngle());
+				_body.SetTransform(new b2Transform(pos, b2Mat22.FromAngle(_body.GetAngle())));
 			}
 		}
 			
@@ -103,9 +102,9 @@ package com.citrusengine.system.components.box2d {
 			
 			if (_body)
 			{
-				var pos:V2 = _body.GetPosition();
+				var pos:b2Vec2 = _body.GetPosition();
 				pos.y = _y;
-				_body.SetTransform(pos, _body.GetAngle());
+				_body.SetTransform(new b2Transform(pos, b2Mat22.FromAngle(_body.GetAngle())));
 			}
 		}
 		
@@ -122,7 +121,7 @@ package com.citrusengine.system.components.box2d {
 			_rotation = value * Math.PI / 180;
 			
 			if (_body)
-				_body.SetTransform(_body.GetPosition(), _rotation); 
+				_body.SetTransform(new b2Transform(_body.GetPosition(), b2Mat22.FromAngle(_rotation)));
 		}
 		
 		/**
@@ -197,7 +196,7 @@ package com.citrusengine.system.components.box2d {
 		{
 			_bodyDef = new b2BodyDef();
 			_bodyDef.type = b2Body.b2_dynamicBody;
-			_bodyDef.position.v2 = new V2(_x, _y);
+			_bodyDef.position = new b2Vec2(_x, _y);
 			_bodyDef.angle = _rotation;
 		}
 		
@@ -219,7 +218,7 @@ package com.citrusengine.system.components.box2d {
 		{
 			if (_radius != 0) {
 				_shape = new b2CircleShape();
-				b2CircleShape(_shape).m_radius = _radius;
+				b2CircleShape(_shape).SetRadius(_radius);
 			} else {
 				_shape = new b2PolygonShape();
 				b2PolygonShape(_shape).SetAsBox(_width / 2, _height / 2);

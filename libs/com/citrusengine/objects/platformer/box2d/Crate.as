@@ -2,8 +2,6 @@ package com.citrusengine.objects.platformer.box2d
 {
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
-
-	import flash.display.MovieClip;
 	
 	/**
 	 * A very simple physics object. I just needed to add bullet mode and zero restitution
@@ -11,12 +9,6 @@ package com.citrusengine.objects.platformer.box2d
 	 */	
 	public class Crate extends Box2DPhysicsObject
 	{
-		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, view:* = null):Crate
-		{
-			if (view == null) view = MovieClip;
-			return new Crate(name, { x: x, y: y, width: width, height: height, view: view } );
-		}
-		
 		public function Crate(name:String, params:Object=null)
 		{
 			super(name, params);

@@ -1,6 +1,6 @@
 package games.live4sales.box2d.characters {
 
-	import Box2DAS.Dynamics.ContactEvent;
+	import Box2D.Dynamics.Contacts.b2Contact;
 
 	import games.live4sales.assets.Assets;
 	import games.live4sales.box2d.weapons.Bag;
@@ -8,6 +8,7 @@ package games.live4sales.box2d.characters {
 
 	import starling.display.Image;
 
+	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.objects.platformer.box2d.Cannon;
 
 	import flash.events.TimerEvent;
@@ -32,9 +33,6 @@ package games.live4sales.box2d.characters {
 			
 		override public function destroy():void {
 			
-			_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-			_fixture.removeEventListener(ContactEvent.END_CONTACT, handleEndContact);
-			
 			_timerHurt.removeEventListener(TimerEvent.TIMER, _removeLife);
 			_timerHurt = null;
 			
@@ -57,30 +55,21 @@ package games.live4sales.box2d.characters {
 			else
 				_firing = false;
 		}
+
+		override public function handleBeginContact(contact:b2Contact):void {
 			
-		override protected function createFixture():void {
-			
-			_fixture = _body.CreateFixture(_fixtureDef);
-			_fixture.m_reportBeginContact = true;
-			_fixture.m_reportEndContact = true;
-			_fixture.addEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
-			_fixture.addEventListener(ContactEvent.END_CONTACT, handleEndContact);
-		}
-		
-		protected function handleBeginContact(cEvt:ContactEvent):void {
-			
-			if (cEvt.other.GetBody().GetUserData() is ShopsWoman) {
+			if (Box2DPhysicsObject.CollisionGetOther(this, contact) is ShopsWoman) {
 				
 				if (!_timerHurt.running)
 					_timerHurt.start();
 			}
 		}
-		
-		protected function handleEndContact(cEvt:ContactEvent):void {
+
+		override public function handleEndContact(contact:b2Contact):void {
 			
-			if (cEvt.other.GetBody().GetUserData() is ShopsWoman) {
+			if (Box2DPhysicsObject.CollisionGetOther(this, contact) is ShopsWoman) {
 				
-				if (_timerHurt.running)
+				if (_timerHurt && _timerHurt.running)
 					_timerHurt.stop();
 			}
 		}

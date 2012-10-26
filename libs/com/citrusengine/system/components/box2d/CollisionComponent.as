@@ -1,6 +1,8 @@
 package com.citrusengine.system.components.box2d {
 
-	import Box2DAS.Dynamics.ContactEvent;
+	import Box2D.Collision.b2Manifold;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.b2ContactImpulse;
 
 	import com.citrusengine.system.Component;
 
@@ -14,15 +16,31 @@ package com.citrusengine.system.components.box2d {
 			super(name, params);
 		}
 
-		public function handlePreSolve(e:ContactEvent):void {
+		/**
+		 * Override this method to handle the begin contact collision.
+		 */
+		public function handleBeginContact(contact:b2Contact):void {
 			
 		}
-
-		public function handleBeginContact(e:ContactEvent):void {
+		
+		/**
+		 * Override this method to handle the end contact collision.
+		 */
+		public function handleEndContact(contact:b2Contact):void {
 			
 		}
+		
+		/**
+		 * Override this method if you want to perform some actions before the collision (deactivate).
+		 */
+		public function handlePreSolve(contact:b2Contact, oldManifold:b2Manifold):void {
 
-		public function handleEndContact(e:ContactEvent):void {
+		}
+		
+		/**
+		 * Override this method if you want to perform some actions after the collision.
+		 */
+		public function handlePostSolve(contact:b2Contact, impulse:b2ContactImpulse):void {
 			
 		}
 	}

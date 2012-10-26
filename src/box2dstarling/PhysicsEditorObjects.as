@@ -1,7 +1,7 @@
 package box2dstarling {
 
-	import Box2DAS.Collision.Shapes.b2PolygonShape;
-	import Box2DAS.Common.V2;
+	import Box2D.Collision.Shapes.b2PolygonShape;
+	import Box2D.Common.Math.b2Vec2;
 
 	import com.citrusengine.objects.platformer.box2d.Crate;
 
@@ -46,7 +46,7 @@ package box2dstarling {
 			
 			for (var i:uint = 0; i < _tab.length; ++i) {
 				var polygonShape:b2PolygonShape = new b2PolygonShape();
-				polygonShape.Set(_tab[i]);
+				polygonShape.SetAsArray(_tab[i]);
 				_fixtureDef.shape = polygonShape;
 
 				body.CreateFixture(_fixtureDef);
@@ -56,34 +56,34 @@ package box2dstarling {
         protected function _createVertices():void {
 			
 			_tab = [];
-			var vertices:Vector.<V2> = new Vector.<V2>();
+			var vertices:Array = [];
 
 			switch (peObject) {
 				
 				case "muffin":
 											
-			        vertices.push(new V2(-0.5/_box2D.scale, 81.5/_box2D.scale));
-					vertices.push(new V2(10.5/_box2D.scale, 59.5/_box2D.scale));
-					vertices.push(new V2(46.5/_box2D.scale, 27.5/_box2D.scale));
-					vertices.push(new V2(50.5/_box2D.scale, 27.5/_box2D.scale));
-					vertices.push(new V2(92.5/_box2D.scale, 61.5/_box2D.scale));
-					vertices.push(new V2(99.5/_box2D.scale, 79.5/_box2D.scale));
-					vertices.push(new V2(59.5/_box2D.scale, 141.5/_box2D.scale));
-					vertices.push(new V2(17.5/_box2D.scale, 133.5/_box2D.scale));
+			        vertices.push(new b2Vec2(-0.5/_box2D.scale, 81.5/_box2D.scale));
+					vertices.push(new b2Vec2(10.5/_box2D.scale, 59.5/_box2D.scale));
+					vertices.push(new b2Vec2(46.5/_box2D.scale, 27.5/_box2D.scale));
+					vertices.push(new b2Vec2(50.5/_box2D.scale, 27.5/_box2D.scale));
+					vertices.push(new b2Vec2(92.5/_box2D.scale, 61.5/_box2D.scale));
+					vertices.push(new b2Vec2(99.5/_box2D.scale, 79.5/_box2D.scale));
+					vertices.push(new b2Vec2(59.5/_box2D.scale, 141.5/_box2D.scale));
+					vertices.push(new b2Vec2(17.5/_box2D.scale, 133.5/_box2D.scale));
 					
 					_tab.push(vertices);
-					vertices = new Vector.<V2>();
+					vertices = [];
 											
-			        vertices.push(new V2(59.5/_box2D.scale, 141.5/_box2D.scale));
-					vertices.push(new V2(99.5/_box2D.scale, 79.5/_box2D.scale));
-					vertices.push(new V2(83.5/_box2D.scale, 133.5/_box2D.scale));
+			        vertices.push(new b2Vec2(59.5/_box2D.scale, 141.5/_box2D.scale));
+					vertices.push(new b2Vec2(99.5/_box2D.scale, 79.5/_box2D.scale));
+					vertices.push(new b2Vec2(83.5/_box2D.scale, 133.5/_box2D.scale));
 					
 					_tab.push(vertices);
-					vertices = new Vector.<V2>();
+					vertices = [];
 											
-			        vertices.push(new V2(50.5/_box2D.scale, 27.5/_box2D.scale));
-					vertices.push(new V2(46.5/_box2D.scale, 27.5/_box2D.scale));
-					vertices.push(new V2(42.5/_box2D.scale, -0.5/_box2D.scale));
+			        vertices.push(new b2Vec2(50.5/_box2D.scale, 27.5/_box2D.scale));
+					vertices.push(new b2Vec2(46.5/_box2D.scale, 27.5/_box2D.scale));
+					vertices.push(new b2Vec2(42.5/_box2D.scale, -0.5/_box2D.scale));
 					
 					_tab.push(vertices);
 					

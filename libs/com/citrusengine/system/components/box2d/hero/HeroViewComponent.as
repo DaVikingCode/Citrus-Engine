@@ -1,6 +1,6 @@
 package com.citrusengine.system.components.box2d.hero {
 
-	import Box2DAS.Dynamics.b2Fixture;
+	import Box2D.Dynamics.b2Fixture;
 
 	import com.citrusengine.system.components.ViewComponent;
 

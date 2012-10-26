@@ -1,6 +1,6 @@
 package box2dstarling {
 
-	import Box2DAS.Dynamics.ContactEvent;
+	import Box2D.Dynamics.Contacts.b2Contact;
 
 	import starling.display.Quad;
 	import starling.text.BitmapFont;
@@ -12,6 +12,7 @@ package box2dstarling {
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.StarlingState;
 	import com.citrusengine.math.MathVector;
+	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.objects.CitrusSprite;
 	import com.citrusengine.objects.platformer.box2d.Baddy;
 	import com.citrusengine.objects.platformer.box2d.Hero;
@@ -119,9 +120,9 @@ package box2dstarling {
 			view.setupCamera(_hero, new MathVector(320, 240), new Rectangle(0, 0, 1550, 450), new MathVector(.25, .05));
 		}
 		
-		protected function _changeLevel(cEvt:ContactEvent):void {
+		protected function _changeLevel(contact:b2Contact):void {
 			
-			if (cEvt.other.GetBody().GetUserData() is Hero) {
+			if (Box2DPhysicsObject.CollisionGetOther(Sensor(getObjectByName("endLevel")), contact) is Hero) {
 				lvlEnded.dispatch();
 			}
 		}

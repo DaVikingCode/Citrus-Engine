@@ -1,8 +1,8 @@
 package entity {
 
-	import Box2DAS.Common.V2;
-	import Box2DAS.Dynamics.Joints.b2MouseJoint;
-	import Box2DAS.Dynamics.Joints.b2MouseJointDef;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Joints.b2MouseJoint;
+	import Box2D.Dynamics.Joints.b2MouseJointDef;
 
 	import com.citrusengine.system.components.box2d.hero.HeroPhysicsComponent;
 
@@ -20,7 +20,6 @@ package entity {
 
 		override public function destroy():void {
 			
-			_jointDef.destroy();
 			if (_joint)
 				_box2D.world.DestroyJoint(_joint);
 				
@@ -32,7 +31,7 @@ package entity {
 			super.update(timeDelta);
 
 			if (_joint) {
-				_joint.SetTarget(new V2(_mouseScope.mouseX / _box2D.scale, _mouseScope.mouseY / _box2D.scale));
+				_joint.SetTarget(new b2Vec2(_mouseScope.mouseX / _box2D.scale, _mouseScope.mouseY / _box2D.scale));
 			}
 		}
 
@@ -42,7 +41,7 @@ package entity {
 				return;
 
 			_mouseScope = mouseScope;
-			_jointDef.target.v2 = new V2(_mouseScope.mouseX / _box2D.scale, _mouseScope.mouseY / _box2D.scale);
+			_jointDef.target = new b2Vec2(_mouseScope.mouseX / _box2D.scale, _mouseScope.mouseY / _box2D.scale);
 			_joint = _box2D.world.CreateJoint(_jointDef) as b2MouseJoint;
 		}
 
@@ -67,7 +66,7 @@ package entity {
 			super.defineJoint();
 
 			_jointDef = new b2MouseJointDef();
-			_jointDef.bodyA = _box2D.world.m_groundBody;
+			_jointDef.bodyA = _box2D.world.GetGroundBody();
 			_jointDef.bodyB = _body;
 			_jointDef.dampingRatio = .2;
 			_jointDef.frequencyHz = 100;
