@@ -20,7 +20,7 @@
 			<!-- Include all of the AS3 files in LIBRARY -->
 			<arg line="-include-sources ../libs/com"/>
 			<arg line="-include-sources ../libs/awayphysics"/>
-			<arg line="-include-sources ../libs/Box2DAS"/>
+			<arg line="-include-sources ../libs/Box2D"/>
 			<arg line="-include-sources ../libs/starling"/>
 			
 			<arg line="-include-libraries ../libs/swc/"/>
