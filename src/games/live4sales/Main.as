@@ -30,7 +30,7 @@ package games.live4sales {
 			} else 
 				setUpStarling(true);
 			
-			// select Box2D Alchemy or Nape demo
+			// select Box2D or Nape demo
 			state = new NapeLive4Sales();
 			//state = new Box2DLive4Sales();
 		}

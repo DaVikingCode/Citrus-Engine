@@ -8,7 +8,7 @@ package com.citrusengine.physics.box2d {
 	import com.citrusengine.view.ISpriteView;
 	
 	/**
-	 * This is a simple wrapper class that allows you to add a Box2D Alchemy world to your game's state.
+	 * This is a simple wrapper class that allows you to add a Box2D world to your game's state.
 	 * Add an instance of this class to your State before you create any phyiscs bodies. It will need to 
 	 * exist first, or your physics bodies will throw an error when they try to create themselves.
 	 */	
