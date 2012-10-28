@@ -1,0 +1,36 @@
+Text for description in com.citrusengine.physics:PhysicsCollisionCategories is not valid.
+org.xml.sax.SAXParseException: Le nom d'entité doit immédiatement suivre le caractère '&' de la référence d'entité.
+
+Text for description in com.citrusengine.utils:AGameData is not valid.
+org.xml.sax.SAXParseException: Le nom d'entité doit immédiatement suivre le caractère '&' de la référence d'entité.
+
+Text for description in com.citrusengine.utils:LevelManager is not valid.
+org.xml.sax.SAXParseException: Le nom d'entité doit immédiatement suivre le caractère '&' de la référence d'entité.
+
+Text for description in com.citrusengine.objects.platformer.box2d:RewardBox is not valid.
+org.xml.sax.SAXParseException: Le type d'élément "code" doit être terminé par la balise de fin correspondante "</code>".
+
+Text for description in com.citrusengine.system.components.box2d.hero:HeroCollisionComponent is not valid.
+org.xml.sax.SAXParseException: Le nom d'entité doit immédiatement suivre le caractère '&' de la référence d'entité.
+
+Text for description in com.citrusengine.system.components.box2d.hero:HeroMovementComponent is not valid.
+org.xml.sax.SAXParseException: Le nom d'entité doit immédiatement suivre le caractère '&' de la référence d'entité.
+
+Text for description in com.citrusengine.view:ISpriteView/com.citrusengine.view:ISpriteView:view/get is not valid.
+org.xml.sax.SAXParseException: Le type d'élément "p" doit être terminé par la balise de fin correspondante "</p>".
+
+Text for description in com.citrusengine.core:CitrusObject/initialize is not valid.
+org.xml.sax.SAXParseException: Le nom d'entité doit immédiatement suivre le caractère '&' de la référence d'entité.
+
+Text for description in com.citrusengine.objects:Box2DPhysicsObject/radius/set is not valid.
+org.xml.sax.SAXParseException: Le nom d'entité doit immédiatement suivre le caractère '&' de la référence d'entité.
+
+Text for description in com.citrusengine.objects:NapePhysicsObject/radius/set is not valid.
+org.xml.sax.SAXParseException: Le nom d'entité doit immédiatement suivre le caractère '&' de la référence d'entité.
+
+Text for description in com.citrusengine.objects:AwayPhysicsObject/radius/set is not valid.
+org.xml.sax.SAXParseException: Le nom d'entité doit immédiatement suivre le caractère '&' de la référence d'entité.
+
+Text for description in com.citrusengine.system.components.box2d:Box2DComponent/radius/set is not valid.
+org.xml.sax.SAXParseException: Le nom d'entité doit immédiatement suivre le caractère '&' de la référence d'entité.
+

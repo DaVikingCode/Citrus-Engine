@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2010 by Thomas Jahn
  * This content is released under the MIT License.
- * Questions? Mail me at lithander@gmx.de!
+ * Questions? Mail me at lithander at gmx.de!
  ******************************************************************************/
 package com.citrusengine.utils.tmx 
 {

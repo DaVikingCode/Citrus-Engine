@@ -361,61 +361,61 @@
 			<arg line="-include-sources ../srclib/starling" />
 		</exec>
 	</target>
-	
+
 	<target name="CE-swc-away3d" description="Generates the CE's SWC with Away3D">
 
-			<echo>Generating Citrus Engine Away3D - AwayPhysics</echo>
-			<exec executable="${compc.exe}">
-				<!-- Set the output path -->
-				<arg line="-output ../bin/CE${VERSION}-Away3D.swc" />
+		<echo>Generating Citrus Engine Away3D - AwayPhysics</echo>
+		<exec executable="${compc.exe}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/CE${VERSION}-Away3D.swc" />
 
-				<!-- Include all of the AS3 files in LIBRARY -->
-				<arg line="-include-sources ../src/com/citrusengine/core/CitrusEngine.as" />
-				<arg line="-include-sources ../src/com/citrusengine/core/CitrusObject.as" />
-				<arg line="-include-sources ../src/com/citrusengine/core/Console.as" />
-				<arg line="-include-sources ../src/com/citrusengine/core/Input.as" />
-				<arg line="-include-sources ../src/com/citrusengine/core/IState.as" />
-				<arg line="-include-sources ../src/com/citrusengine/core/SoundManager.as" />
-				<arg line="-include-sources ../src/com/citrusengine/core/State.as" />
+			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../src/com/citrusengine/core/CitrusEngine.as" />
+			<arg line="-include-sources ../src/com/citrusengine/core/CitrusObject.as" />
+			<arg line="-include-sources ../src/com/citrusengine/core/Console.as" />
+			<arg line="-include-sources ../src/com/citrusengine/core/Input.as" />
+			<arg line="-include-sources ../src/com/citrusengine/core/IState.as" />
+			<arg line="-include-sources ../src/com/citrusengine/core/SoundManager.as" />
+			<arg line="-include-sources ../src/com/citrusengine/core/State.as" />
 
-				<arg line="-include-sources ../src/com/citrusengine/datastructures" />
+			<arg line="-include-sources ../src/com/citrusengine/datastructures" />
 
-				<arg line="-include-sources ../src/com/citrusengine/math" />
+			<arg line="-include-sources ../src/com/citrusengine/math" />
 
-				<arg line="-include-sources ../src/com/citrusengine/objects/APhysicsObject.as" />
-				<arg line="-include-sources ../src/com/citrusengine/objects/CitrusSprite.as" />
-				<arg line="-include-sources ../src/com/citrusengine/objects/common/Emitter.as" />
-				<arg line="-include-sources ../src/com/citrusengine/objects/common/EmitterParticle.as" />
-				<arg line="-include-sources ../src/com/citrusengine/objects/platformer/simple" />
+			<arg line="-include-sources ../src/com/citrusengine/objects/APhysicsObject.as" />
+			<arg line="-include-sources ../src/com/citrusengine/objects/CitrusSprite.as" />
+			<arg line="-include-sources ../src/com/citrusengine/objects/common/Emitter.as" />
+			<arg line="-include-sources ../src/com/citrusengine/objects/common/EmitterParticle.as" />
+			<arg line="-include-sources ../src/com/citrusengine/objects/platformer/simple" />
 
-				<arg line="-include-sources ../src/com/citrusengine/physics/APhysicsEngine.as" />
-				<arg line="-include-sources ../src/com/citrusengine/physics/IDebugView.as" />
-				<arg line="-include-sources ../src/com/citrusengine/physics/PhysicsCollisionCategories.as" />
-				<arg line="-include-sources ../src/com/citrusengine/physics/simple" />
+			<arg line="-include-sources ../src/com/citrusengine/physics/APhysicsEngine.as" />
+			<arg line="-include-sources ../src/com/citrusengine/physics/IDebugView.as" />
+			<arg line="-include-sources ../src/com/citrusengine/physics/PhysicsCollisionCategories.as" />
+			<arg line="-include-sources ../src/com/citrusengine/physics/simple" />
 
-				<arg line="-include-sources ../src/com/citrusengine/system/Component.as" />
-				<arg line="-include-sources ../src/com/citrusengine/system/Entity.as" />
-				<arg line="-include-sources ../src/com/citrusengine/system/components/InputComponent.as" />
-				<arg line="-include-sources ../src/com/citrusengine/system/components/ViewComponent.as" />
+			<arg line="-include-sources ../src/com/citrusengine/system/Component.as" />
+			<arg line="-include-sources ../src/com/citrusengine/system/Entity.as" />
+			<arg line="-include-sources ../src/com/citrusengine/system/components/InputComponent.as" />
+			<arg line="-include-sources ../src/com/citrusengine/system/components/ViewComponent.as" />
 
-				<arg line="-include-sources ../src/com/citrusengine/utils/AGameData.as" />
-				<arg line="-include-sources ../src/com/citrusengine/utils/LevelManager.as" />
-				<arg line="-include-sources ../src/com/citrusengine/utils/LoadManager.as" />
-				<arg line="-include-sources ../src/com/citrusengine/utils/Mobile.as" />
-				<!--<arg line="-include-sources ../src/com/citrusengine/utils/ObjectMaker3D.as" />-->
-				<arg line="-include-sources ../src/com/citrusengine/utils/tmx" />
+			<arg line="-include-sources ../src/com/citrusengine/utils/AGameData.as" />
+			<arg line="-include-sources ../src/com/citrusengine/utils/LevelManager.as" />
+			<arg line="-include-sources ../src/com/citrusengine/utils/LoadManager.as" />
+			<arg line="-include-sources ../src/com/citrusengine/utils/Mobile.as" />
+			<!--<arg line="-include-sources ../src/com/citrusengine/utils/ObjectMaker3D.as" />-->
+			<arg line="-include-sources ../src/com/citrusengine/utils/tmx" />
 
-				<arg line="-include-sources ../src/com/citrusengine/view/CitrusView.as" />
-				<arg line="-include-sources ../src/com/citrusengine/view/ISpriteView.as" />
-				<arg line="-include-sources ../src/com/citrusengine/view/SpriteDebugArt.as" />
-				<arg line="-include-sources ../src/com/citrusengine/view/blittingview" />
-				<arg line="-include-sources ../src/com/citrusengine/view/spriteview" />
-				<arg line="-include-sources ../src/com/citrusengine/view/away3dview" />
+			<arg line="-include-sources ../src/com/citrusengine/view/CitrusView.as" />
+			<arg line="-include-sources ../src/com/citrusengine/view/ISpriteView.as" />
+			<arg line="-include-sources ../src/com/citrusengine/view/SpriteDebugArt.as" />
+			<arg line="-include-sources ../src/com/citrusengine/view/blittingview" />
+			<arg line="-include-sources ../src/com/citrusengine/view/spriteview" />
+			<arg line="-include-sources ../src/com/citrusengine/view/away3dview" />
 
-				<arg line="-include-libraries ../lib/signals.swc" />
-				<arg line="-include-libraries ../lib/away3d.swc" />
-			</exec>
-		</target>
+			<arg line="-include-libraries ../lib/signals.swc" />
+			<arg line="-include-libraries ../lib/away3d.swc" />
+		</exec>
+	</target>
 
 	<target name="CE-swc-away3d-box2d" description="Generates the CE's SWC with Away3D and Box2D">
 
@@ -594,4 +594,43 @@
 			<arg line="-include-sources ../srclib/awayphysics" />
 		</exec>
 	</target>
+
+	<target name="Box2D SWC" description="Generates Box2D SWC">
+
+		<echo>Generating Box2D SWC</echo>
+		<exec executable="${compc.exe}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/libraries/Box2D.swc" />
+
+			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../srclib/Box2D" />
+		</exec>
+	</target>
+
+	<target name="Starling SWC" description="Generates Starling SWC">
+
+		<echo>Generating Box2D SWC</echo>
+		<exec executable="${compc.exe}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/libraries/Starling.swc" />
+
+			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../srclib/starling" />
+			<arg line="-include-libraries ../lib/starling.swc" />
+		</exec>
+	</target>
+	
+	<target name="Away3D + AwayPhysics SWC" description="Generates Away3D + AwayPhysics SWC">
+
+			<echo>Generating AwayPhysics SWC</echo>
+			<exec executable="${compc.exe}">
+				<!-- Set the output path -->
+				<arg line="-output ../bin/libraries/Away3D-AwayPhysics.swc" />
+
+				<!-- Include all of the AS3 files in LIBRARY -->
+				<arg line="-include-sources ../srclib/awayphysics" />
+				<arg line="-include-libraries ../lib/AwayPhysics.swc" />
+				<arg line="-include-libraries ../lib/away3d.swc" />
+			</exec>
+		</target>
 </project>
