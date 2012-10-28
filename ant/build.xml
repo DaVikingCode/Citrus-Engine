@@ -81,8 +81,10 @@
 			<arg line="-include-sources ../src/com/citrusengine/view/SpriteDebugArt.as" />
 			<arg line="-include-sources ../src/com/citrusengine/view/blittingview" />
 			<arg line="-include-sources ../src/com/citrusengine/view/spriteview" />
-
-			<arg line="-include-libraries ../lib/signals.swc" />
+			
+			<arg line="-include-libraries ../lib/signals.swc"/>
+			<!--<arg line="-external-library-path+=../lib/signals.swc"/>-->
+			<!--<arg line="-runtime-shared-library-path="/> don't know if needed-->
 		</exec>
 	</target>
 
@@ -137,8 +139,10 @@
 			<arg line="-include-sources ../src/com/citrusengine/view/spriteview" />
 
 			<arg line="-include-libraries ../lib/signals.swc" />
+			<!--<arg line="-external-library-path+=../lib/signals.swc"/>-->
 
 			<arg line="-include-sources ../srclib/Box2D" />
+			<!--<arg line="-external-library-path+=../bin/libraries/Box2D.swc"/>-->
 		</exec>
 	</target>
 
