@@ -12,7 +12,7 @@ package com.citrusengine.objects.platformer.box2d {
 	 */
 	public class Coin extends Sensor {
 
-		private var _collectorClass:Class = Hero;
+		protected var _collectorClass:Class = Hero;
 
 		public function Coin(name:String, params:Object = null) {
 			super(name, params);
@@ -20,7 +20,7 @@ package com.citrusengine.objects.platformer.box2d {
 
 		/**
 		 * The Coin uses the collectorClass parameter to know who can collect it.
-		 * Use this setter to to pass in which base class the collector should be, in String form
+		 * Use this setter to pass in which base class the collector should be, in String form
 		 * or Object notation.
 		 * For example, if you want to set the "Hero" class as your hero's enemy, pass
 		 * "com.citrusengine.objects.platformer.Hero" or Hero directly (no quotes). Only String

@@ -94,9 +94,7 @@ package com.citrusengine.objects.platformer.nape {
 		private var _beginContactListener:InteractionListener;
 		private var _endContactListener:InteractionListener;
 		
-		public static const HERO:CbType = new CbType();
-		
-		
+		public static const HERO:CbType = new CbType();		
 
 		public function Hero(name:String, params:Object = null) {
 
@@ -310,11 +308,11 @@ package com.citrusengine.objects.platformer.nape {
 		
 		override public function handleBeginContact(e:InteractionCallback):void {
 			
-			trace("------------------------------");
-			trace("begin contact:", e.int2.castBody.userData.myData);
+			//trace("------------------------------");
+			//trace("begin contact:", e.int2.castBody.userData.myData);
 			var body2:Body = e.int2.castBody;
 			_groundContacts.push(body2);
-			trace("ground contacts:", _groundContacts.length);
+			//trace("ground contacts:", _groundContacts.length);
 			if (e.arbiters.at(0).collisionArbiter) {
 				var angle:Number = e.arbiters.at(0).collisionArbiter.normal.angle * 180 / Math.PI;
 				if ((45 < angle) && (angle < 135)) {
@@ -324,10 +322,10 @@ package com.citrusengine.objects.platformer.nape {
 		}
 		
 		override public function handleEndContact(e:InteractionCallback):void {
-			trace("****************************");
-			trace("end contact:", e.int2.castBody.userData.myData);
+			//trace("****************************");
+			//trace("end contact:", e.int2.castBody.userData.myData);
 			_groundContacts.splice(_groundContacts.indexOf(e.int2.castBody), 1);
-			trace("ground contacts:", _groundContacts.length);
+			//trace("ground contacts:", _groundContacts.length);
 		}
 	}
 }
