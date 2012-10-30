@@ -67,7 +67,7 @@ package com.citrusengine.core
 		}
 		
 		/**
-		 * Seriously, dont' forget to release your listeners, signals, and Box2D objects here. Either that or don't ever destroy anything.
+		 * Seriously, dont' forget to release your listeners, signals, and physics objects here. Either that or don't ever destroy anything.
 		 * Your choice.
 		 */		
 		public function destroy():void

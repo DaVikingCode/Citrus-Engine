@@ -1,7 +1,5 @@
 package com.citrusengine.objects {
 
-	import away3d.containers.ObjectContainer3D;
-
 	import awayphysics.collision.shapes.AWPBoxShape;
 	import awayphysics.collision.shapes.AWPCollisionShape;
 	import awayphysics.collision.shapes.AWPSphereShape;
@@ -30,10 +28,13 @@ package com.citrusengine.objects {
 		protected var _width:Number = 30;
 		protected var _height:Number = 30;
 		protected var _depth:Number = 30;
-		protected var _view:* = ObjectContainer3D;
 		
 		private var _offsetZ:Number = 0;
-
+		
+		/**
+		 * Creates an instance of an AwayPhysicsObject. Natively, this object does not default to any graphical representation,
+		 * so you will need to set the "view" property in the params parameter.
+		 */	
 		public function AwayPhysicsObject(name:String, params:Object = null) {
 
 			_ce = CitrusEngine.getInstance();
@@ -41,7 +42,14 @@ package com.citrusengine.objects {
 
 			super(name, params);
 		}
-
+		
+		/**
+		 * All your init physics code must be added in this method, no physics code into the constructor.
+		 * <p>You'll notice that the AwayPhysicsObject's initialize method calls a bunch of functions that start with "define" and "create".
+		 * This is how the AwayPhysics objects are created. You should override these methods in your own AwayPhysicsObject implementation
+		 * if you need additional AwayPhysics functionality. Please see provided examples of classes that have overridden
+		 * the AwayPhysicsObject.</p>
+		 */
 		override public function initialize(poolObjectParams:Object = null):void {
 
 			super.initialize(poolObjectParams);
@@ -64,14 +72,12 @@ package com.citrusengine.objects {
 			
 			super.destroy();
 		}
-
+		
 		/**
-		 * You should override this method to extend the functionality of your physics object. This is where you will 
-		 * want to do any velocity/force logic. 
+		 * This method will often need to be overriden to customize the AwayPhysics shape object.
+		 * The PhysicsObject creates a rectangle by default if the radius it not defined, but you can replace this method's
+		 * definition and instead create a custom shape, such as a line or circle.
 		 */
-		override public function update(timeDelta:Number):void {
-		}
-
 		protected function createShape():void {
 			
 			if (_radius != 0)
@@ -79,12 +85,18 @@ package com.citrusengine.objects {
 			else
 				_shape = new AWPBoxShape(_width, _height, _depth);
 		}
-
+		
+		/**
+		 * This method will often need to be overriden to provide additional definition to the AwayPhysics body object. 
+		 */
 		protected function defineBody():void {
 
 			_body = new AWPRigidBody(_shape, null, _mass);
 		}
-
+		
+		/**
+		 * This method will often need to be overriden to customize the AwayPhysics body object.
+		 */
 		protected function createBody():void {
 			
 			_body.position = new Vector3D(_x, _y, _z);
@@ -92,6 +104,9 @@ package com.citrusengine.objects {
 			_awayPhysics.world.addRigidBodyWithGroup(_body, PhysicsCollisionCategories.Get("Level"), PhysicsCollisionCategories.GetAll());
 		}
 		
+		/**
+		 * This method will often need to be overriden to customize the AwayPhysics constraint object. 
+		 */
 		protected function createConstraint():void {
 		}
 
@@ -170,15 +185,6 @@ package com.citrusengine.objects {
 			if (_body)
 			_body.rotate(new Vec2(_x, _y), _rotation);*/
 		}
-
-		public function get view():* {
-			return _view;
-		}
-
-		[Inspectable(defaultValue="",format="File",type="String")]
-		public function set view(value:*):void {
-			_view = value;
-		}
 		
 		/**
 		 * offsetZ allows to move graphics on z axis compared to their initial point.
@@ -224,6 +230,9 @@ package com.citrusengine.objects {
 			}
 		}
 		
+		/**
+		 * This can only be set in the constructor parameters. 
+		 */
 		public function get depth():Number {
 			return _depth;
 		}
@@ -266,7 +275,7 @@ package com.citrusengine.objects {
 		}
 		
 		/**
-		 * A direction reference to the AwayPhysics body associated with this object.
+		 * A direct reference to the AwayPhysics body associated with this object.
 		 */
 		public function get body():AWPRigidBody {
 			return _body;

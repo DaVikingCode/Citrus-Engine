@@ -3,13 +3,16 @@ package com.citrusengine.objects {
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.core.CitrusObject;
 
+	import flash.display.MovieClip;
+
 	/**
 	 * An abstract template used by every physics object.
 	 */
 	public class APhysicsObject extends CitrusObject {
 		
 		protected var _ce:CitrusEngine;
-
+		
+		protected var _view:* = MovieClip;
 		protected var _inverted:Boolean = false;
 		protected var _parallax:Number = 1;
 		protected var _animation:String = "";
@@ -30,10 +33,39 @@ package com.citrusengine.objects {
 		}
 		
 		/**
+		 * You should override this method to extend the functionality of your physics object. This is where you will 
+		 * want to do any velocity/force logic. 
+		 */		
+		override public function update(timeDelta:Number):void
+		{
+		}
+		
+		/**
+		 * Destroy your physics objects!
+		 */
+		override public function destroy():void {
+			super.destroy();
+		}
+		
+		/**
 		 * Used for abstraction on body. There is also a getter on the body defined by each engine to keep body's type.
 		 */
 		public function getBody():* {
 			return null;
+		}
+		
+		/**
+		 * The view can be a class, a string to a file, or a display object. It must be supported by the view you target.
+		 */
+		public function get view():*
+		{
+			return _view;
+		}
+		
+		[Inspectable(defaultValue="",format="File",type="String")]
+		public function set view(value:*):void
+		{
+			_view = value;
 		}
 		
 		/**

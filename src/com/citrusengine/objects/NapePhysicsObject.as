@@ -18,8 +18,6 @@ package com.citrusengine.objects {
 	import com.citrusengine.physics.nape.Nape;
 	import com.citrusengine.view.ISpriteView;
 
-	import flash.display.MovieClip;
-
 	/**
 	 * You should extend this class to take advantage of Nape. This class provides template methods for defining
 	 * and creating Nape bodies, fixtures, shapes, and joints. If you are not familiar with Nape, you should first
@@ -37,7 +35,6 @@ package com.citrusengine.objects {
 		
 		protected var _width:Number = 30;
 		protected var _height:Number = 30;
-		protected var _view:* = MovieClip;
 
 		/**
 		 * Creates an instance of a NapePhysicsObject. Natively, this object does not default to any graphical representation,
@@ -83,28 +80,33 @@ package com.citrusengine.objects {
 			super.destroy();
 		}
 		
-		/**
-		 * You should override this method to extend the functionality of your physics object. This is where you will 
-		 * want to do any velocity/force logic. 
-		 */		
-		override public function update(timeDelta:Number):void {
-		}
-		
 		public function handlePreContact(callback:PreCallback):PreFlag {
 			return PreFlag.ACCEPT;
 		}
 		
+		/**
+		 * Override this method to handle the begin contact collision.
+		 */
 		public function handleBeginContact(callback:InteractionCallback):void {
 		}
 		
+		/**
+		 * Override this method to handle the end contact collision.
+		 */
 		public function handleEndContact(callback:InteractionCallback):void {
 		}
 		
+		/**
+		 * This method will often need to be overriden to provide additional definition to the Nape body object. 
+		 */
 		protected function defineBody():void {
 			
 			_bodyType = BodyType.DYNAMIC;
 		}
 		
+		/**
+		 * This method will often need to be overriden to customize the Nape body object. 
+		 */
 		protected function createBody():void {
 			
 			_body = new Body(_bodyType, new Vec2(_x, _y));
@@ -113,11 +115,19 @@ package com.citrusengine.objects {
 			_body.rotate(new Vec2(_x, _y), _rotation);
 		}
 		
+		/**
+		 * This method will often need to be overriden to customize the Nape material object. 
+		 */
 		protected function createMaterial():void {
 			
 			_material = new Material(0.2, 1, 1, 1, 0);
 		}
 		
+		/**
+		 * This method will often need to be overriden to customize the Nape shape object.
+		 * The PhysicsObject creates a rectangle by default if the radius it not defined, but you can replace this method's
+		 * definition and instead create a custom shape, such as a line or circle.
+		 */	
 		protected function createShape():void {
 			
 			if (_radius != 0)
@@ -128,11 +138,17 @@ package com.citrusengine.objects {
 			_body.shapes.add(_shape);
 		}
 		
+		/**
+		 * This method will often need to be overriden to customize the Nape filter object. 
+		 */
 		protected function createFilter():void {
 			
 			_body.setShapeFilters(new InteractionFilter(PhysicsCollisionCategories.Get("Level"), PhysicsCollisionCategories.GetAll()));
 		}
 		
+		/**
+		 * This method will often need to be overriden to customize the Nape constraint object. 
+		 */
 		protected function createConstraint():void {
 			
 			_body.space = _nape.space;			
@@ -199,17 +215,6 @@ package com.citrusengine.objects {
 				_body.rotate(new Vec2(_x, _y), _rotation);
 		}
 		
-		public function get view():*
-		{
-			return _view;
-		}
-		
-		[Inspectable(defaultValue="",format="File",type="String")]
-		public function set view(value:*):void
-		{
-			_view = value;
-		}
-		
 		/**
 		 * This can only be set in the constructor parameters. 
 		 */		
@@ -246,6 +251,9 @@ package com.citrusengine.objects {
 			}
 		}
 		
+		/**
+		 * No depth in a 2D Physics world.
+		 */
 		public function get depth():Number {
 			return 0;
 		}
@@ -273,7 +281,7 @@ package com.citrusengine.objects {
 		}
 		
 		/**
-		 * A direction reference to the Nape body associated with this object.
+		 * A direct reference to the Nape body associated with this object.
 		 */
 		public function get body():Body {
 			return _body;

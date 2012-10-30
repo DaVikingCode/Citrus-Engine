@@ -18,8 +18,6 @@ package com.citrusengine.objects {
 	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.physics.box2d.Box2D;
 	import com.citrusengine.view.ISpriteView;
-
-	import flash.display.MovieClip;
 	
 	/**
 	 * You should extend this class to take advantage of Box2D. This class provides template methods for defining
@@ -37,7 +35,6 @@ package com.citrusengine.objects {
 		
 		protected var _width:Number = 1;
 		protected var _height:Number = 1;
-		protected var _view:* = MovieClip;
 		
 		/**
 		 * Creates an instance of a Box2DPhysicsObject. Natively, this object does not default to any graphical representation,
@@ -86,17 +83,9 @@ package com.citrusengine.objects {
 		}
 		
 		/**
-		 * You should override this method to extend the functionality of your physics object. This is where you will 
-		 * want to do any velocity/force logic. 
-		 */		
-		override public function update(timeDelta:Number):void
-		{
-		}
-		
-		/**
 		 * In Box2D we are blind concerning the collision, we are never sure which body is the collider. This function should help.
 		 * Call this function to obtain the colliding physics object.
-		 * @param self : in CE's code, we give this. In your code it will be your hero, a sensor, ...
+		 * @param self in CE's code, we give this. In your code it will be your hero, a sensor, ...
 		 * @param the contact
 		 * @return the collider
 		 */
@@ -107,7 +96,7 @@ package com.citrusengine.objects {
 		/**
 		 * In Box2D we are blind concerning the collision, we are never sure which body is the collider. This function should help.
 		 * Call this function to obtain the collided physics object.
-		 * @param self : in CE's code, we give this. In your code it will be your hero, a sensor, ...
+		 * @param self in CE's code, we give this. In your code it will be your hero, a sensor, ...
 		 * @param the contact
 		 * @return the collided
 		 */
@@ -293,17 +282,6 @@ package com.citrusengine.objects {
 			
 			if (_body)
 				_body.SetTransform(new b2Transform(_body.GetPosition(), b2Mat22.FromAngle(_rotation)));
-		}
-		
-		public function get view():*
-		{
-			return _view;
-		}
-		
-		[Inspectable(defaultValue="",format="File",type="String")]
-		public function set view(value:*):void
-		{
-			_view = value;
 		}
 		
 		/**
