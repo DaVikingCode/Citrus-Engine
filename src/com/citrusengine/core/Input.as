@@ -3,6 +3,9 @@
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
 	
+	/**
+	 * A class managing Keyboard's input.
+	 */
 	public class Input
 	{
 		public static const JUST_PRESSED:uint = 0;

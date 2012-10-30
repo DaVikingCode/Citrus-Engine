@@ -26,7 +26,6 @@ package com.citrusengine.physics.box2d {
 		}
 
 		override public function PreSolve(contact:b2Contact, oldManifold:b2Manifold):void {
-			
 			contact.GetFixtureA().GetBody().GetUserData().handlePreSolve(contact, oldManifold);
 			contact.GetFixtureB().GetBody().GetUserData().handlePreSolve(contact, oldManifold);
 		}

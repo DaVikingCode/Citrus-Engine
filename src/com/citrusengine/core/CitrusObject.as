@@ -2,7 +2,7 @@ package com.citrusengine.core
 {
 	/**
 	 * CitrusObject is simple. Too simple. Despite its simplicity, it is the foundational object that should
-	 * be used for all game objects you create, such as spaceships, enemies, coins, bosses, and HUD elements.
+	 * be used for all game objects logic you create, such as spaceships, enemies, coins, bosses.
 	 * CitrusObject is basically an abstract class that gets added to a State instance.
 	 * The current State calls update on all CitrusObjects. Also, CitrusObjects are useful because they can be
 	 * initialized with a params object, which can be created via an object parser/factory. 
@@ -13,7 +13,11 @@ package com.citrusengine.core
 		
 		public var name:String;
 		public var kill:Boolean = false;
-		public var type:String = "classicObject"; // added to the CE's render list via the State & the add method.
+		
+		/**
+		 * Added to the CE's render list via the State & the add method.
+		 */
+		public var type:String = "classicObject";
 		
 		/**
 		 * used in Flash Pro Level Editor
@@ -47,9 +51,9 @@ package com.citrusengine.core
 		}
 		
 		/**
-		 * Call in the constructor if the Object is added via the State & the add method
-		 * If it's a pool object or an entity initialize it yourself.
-		 * If it's a component, it should be call by the entity.
+		 * Call in the constructor if the Object is added via the State and the add method.
+		 * <p>If it's a pool object or an entity initialize it yourself.</p>
+		 * <p>If it's a component, it should be call by the entity.</p>
 		 */
 		public function initialize(poolObjectParams:Object = null):void {
 			
@@ -83,7 +87,7 @@ package com.citrusengine.core
 		}
 		
 		/**
-		 * The constructor usually calls this.
+		 * The initialize method usually calls this.
 		 */		
 		protected function setParams(object:Object):void
 		{

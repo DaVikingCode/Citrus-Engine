@@ -35,7 +35,11 @@ package com.citrusengine.core
 	 */	
 	public class Console extends Sprite
 	{
+		/**
+		 * Default is tab key.
+		 */
 		public var openKey:uint = 9;
+		
 		private var _inputField:TextField;
 		private var _executeKey:int;
 		private var _prevHistoryKey:int;

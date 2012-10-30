@@ -7,7 +7,9 @@ package com.citrusengine.core {
 	import flash.geom.Rectangle;
 
 	/**
-	 * Extends this class if you create a Starling based game. Don't forget to call <i>setUpStarling</i>'s function
+	 * Extends this class if you create a Starling based game. Don't forget to call <code>setUpStarling</code> function.
+	 * 
+	 * <p>CitrusEngine can access to the Stage3D power thanks to the <a href="http://starling-framework.org/">Starling Framework</a>.</p>
 	 */
 	public class StarlingCitrusEngine extends CitrusEngine {
 
@@ -54,7 +56,9 @@ package com.citrusengine.core {
 			_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
 		}
 
-		// be sure that starling is initialized (especially on mobile)
+		/**
+		 * Be sure that starling is initialized (especially on mobile).
+		 */ 
 		protected function _context3DCreated(evt:starling.events.Event):void {
 
 			_starling.removeEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);

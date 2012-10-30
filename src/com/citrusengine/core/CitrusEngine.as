@@ -10,12 +10,10 @@
 	
 	/**
 	 * CitrusEngine is the top-most class in the library. When you start your project, you should make your
-	 * document class extend this class.
+	 * document class extend this class unless you use Starling. In this case extends StarlingCitrusEngine.
 	 * 
 	 * <p>CitrusEngine is a singleton so that you can grab a reference to it anywhere, anytime. Don't abuse this power,
 	 * but use it wisely. With it, you can quickly grab a reference to the manager classes such as current State, Input and SoundManager.</p>
-	 * 
-	 * <p>CitrusEngine can access to the Stage3D power thanks to the <a href="http://starling-framework.org/">Starling Framework</a></p>
 	 */	
 	public class CitrusEngine extends MovieClip
 	{
@@ -23,6 +21,9 @@
 				
 		private static var _instance:CitrusEngine;
 		
+		/**
+		 * Used to pause animations in SpriteArt and StarlingArt.
+		 */
 		public var onPlayingChange:Signal;
 		
 		protected var _state:IState;
@@ -191,7 +192,7 @@
 		
 		/**
 		 * A reference to the console, so that you can add your own console commands. See the class documentation for more info.
-		 * The console can be opened by pressing the tilde key (It looks like this: "~" right below the escape key).
+		 * The console can be opened by pressing the tab key.
 		 * There is one console command built-in by default, but you can add more by using the addCommand() method.
 		 * 
 		 * <p>To try it out, try using the "set" command to change a property on a CitrusObject. You can toggle Box2D's

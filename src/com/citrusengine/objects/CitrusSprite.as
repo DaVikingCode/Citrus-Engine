@@ -18,7 +18,7 @@ package com.citrusengine.objects
 	 * positioning objects. You can also add your logic to this sprite.
 	 * 
 	 * <p>With a CitrusSprite, there is only simple collision and velocity logic. If you'd like to take advantage of Box2D or Nape physics,
-	 * you should extend the PhysicsObject class instead.</p>
+	 * you should extend the APhysicsObject class instead.</p>
 	 */	
 	public class CitrusSprite extends CitrusObject implements ISpriteView
 	{
@@ -44,11 +44,6 @@ package com.citrusengine.objects
 		protected var _offsetX:Number = 0;
 		protected var _offsetY:Number = 0;
 		protected var _registration:String = "topLeft";
-		
-		public static function Make(name:String, x:Number, y:Number, view:*, parallax:Number = 1):CitrusSprite
-		{
-			return new CitrusSprite(name, { x: x, y: y, view: view, parallax: parallax } );
-		}
 			
 		public function CitrusSprite(name:String, params:Object=null)
 		{
@@ -67,7 +62,9 @@ package com.citrusengine.objects
 			super.destroy();
 		}
 		
-		// No physics here
+		/**
+		 * No physics here, return <code>null</code>.
+		 */ 
 		public function getBody():* {
 			return null;
 		}
@@ -141,6 +138,9 @@ package com.citrusengine.objects
 			_rotation = value;
 		}
 		
+		/**
+		 * The group is similar to a z-index sorting. Default is 0, 1 is over.
+		 */
 		public function get group():Number
 		{
 			return _group;
@@ -162,6 +162,9 @@ package com.citrusengine.objects
 			_visible = value;
 		}
 		
+		/**
+		 * The view can be a class, a string to a file, or a display object. It must be supported by the view you target.
+		 */
 		public function get view():*
 		{
 			return _view;
@@ -173,6 +176,9 @@ package com.citrusengine.objects
 			_view = value;
 		}
 		
+		/**
+		 * Used to invert the view on the y-axis, number of animations friendly!
+		 */
 		public function get inverted():Boolean
 		{
 			return _inverted;

@@ -15,8 +15,11 @@ package com.citrusengine.objects {
 	import flash.geom.Vector3D;
 
 	/**
-	 * @author Aymeric
-	 */
+	 * You should extend this class to take advantage of AwayPhysics. This class provides template methods for defining
+	 * and creating AwayPhysics bodies and shapes. AwayPhysics is a Flash Alchemy port of Bullet Physics Library.
+	 * If you are not familiar with Bullet, you should first learn about it
+	 * via the <a href="http://bulletphysics.org/wordpress/">Bullet Manual</a>.
+	 */	
 	public class AwayPhysicsObject extends APhysicsObject implements ISpriteView {
 		
 		protected var _awayPhysics:AwayPhysics;
@@ -177,6 +180,9 @@ package com.citrusengine.objects {
 			_view = value;
 		}
 		
+		/**
+		 * offsetZ allows to move graphics on z axis compared to their initial point.
+		 */
 		public function get offsetZ():Number {
 			return _offsetZ;
 		}

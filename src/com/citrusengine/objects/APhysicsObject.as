@@ -29,22 +29,30 @@ package com.citrusengine.objects {
 			super(name, params);
 		}
 		
+		/**
+		 * Used for abstraction on body. There is also a getter on the body defined by each engine to keep body's type.
+		 */
 		public function getBody():* {
 			return null;
 		}
 		
+		/**
+		 * Used to invert the view on the y-axis, number of animations friendly!
+		 */
 		public function get inverted():Boolean {
 			return _inverted;
 		}
-
-		public function get parallax():Number {
-			return _parallax;
-		}
 		
+		/**
+		 * Animations management works the same way than label whether it uses MovieClip, SpriteSheet or whatever.
+		 */
 		public function get animation():String {
 			return _animation;
 		}
 		
+		/**
+		 * You can easily change if an object is visible or not. It hasn't any impact on physics computation.
+		 */
 		public function get visible():Boolean {
 			return _visible;
 		}
@@ -52,21 +60,34 @@ package com.citrusengine.objects {
 		public function set visible(value:Boolean):void {
 			_visible = value;
 		}
+		
+		/**
+		 * You can set up a parallax, no impact on physics.
+		 */
+		public function get parallax():Number {
+			return _parallax;
+		}
 
 		[Inspectable(defaultValue="1")]
 		public function set parallax(value:Number):void {
 			_parallax = value;
 		}
-
+		
+		/**
+		 * The group is similar to a z-index sorting. Default is 0, 1 is over.
+		 */
 		public function get group():Number {
 			return _group;
 		}
-
+		
 		[Inspectable(defaultValue="0")]
 		public function set group(value:Number):void {
 			_group = value;
 		}
-
+		
+		/**
+		 * offsetX allows to move graphics on x axis compared to their initial point.
+		 */
 		public function get offsetX():Number {
 			return _offsetX;
 		}
@@ -75,7 +96,10 @@ package com.citrusengine.objects {
 		public function set offsetX(value:Number):void {
 			_offsetX = value;
 		}
-
+		
+		/**
+		 * offsetY allows to move graphics on y axis compared to their initial point.
+		 */
 		public function get offsetY():Number {
 			return _offsetY;
 		}
@@ -84,7 +108,11 @@ package com.citrusengine.objects {
 		public function set offsetY(value:Number):void {
 			_offsetY = value;
 		}
-
+		
+		/**
+		 * Flash registration point is topLeft, whereas physics engine use mostly center.
+		 * You can change the registration point thanks to this property.
+		 */
 		public function get registration():String {
 			return _registration;
 		}

@@ -342,6 +342,9 @@ package com.citrusengine.objects {
 			}
 		}
 		
+		/**
+		 * No depth in a 2D Physics world.
+		 */
 		public function get depth():Number {
 			return 0;
 		}
@@ -369,7 +372,7 @@ package com.citrusengine.objects {
 		}
 		
 		/**
-		 * A direction reference to the Box2D body associated with this object.
+		 * A direct reference to the Box2D body associated with this object.
 		 */
 		public function get body():b2Body {
 			return _body;
