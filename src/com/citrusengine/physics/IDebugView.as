@@ -5,9 +5,14 @@ package com.citrusengine.physics {
 	 */
 	public interface IDebugView {
 		
-		// draw the debug view
+		/**
+		 * update the debug view
+		 */
 		function update():void
 		
+		/**
+		 * change the debug mode when available, e.g. show only joints, or raycasts...
+		 */
 		function debugMode(mode:uint):void
 	}
 }

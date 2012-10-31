@@ -7,16 +7,16 @@ package com.citrusengine.physics.simple {
 
 	/**
 	 * The CitrusSolver is a simple math-based collision-detection system built for doing simple collision detection in games where physics needs are light
-	 * and Box2D is overkill (also useful for mobile). The Citrus Solver works with the CitrusSprite objects, and uses their x, y, width, and height properties to 
+	 * and physics engine are overkill (also useful for mobile). The Citrus Solver works with the CitrusSprite objects, and uses their x, y, width, and height properties to 
 	 * report and adjust for collisions.
 	 * 
-	 * The CitrusSolver is not useful for the following cases: 1) Rotated (non-axis-aligned) objects, angular velocity, mass-based collision reactions, and dynamic-to-dynamic object
+	 * <p>The CitrusSolver is not useful for the following cases: 1) Rotated (non-axis-aligned) objects, angular velocity, mass-based collision reactions, and dynamic-to-dynamic object
 	 * collisions (only static-to-dynamic works). If you need any of those physics features, you should use Box2D instead.
 	 * If you only need to know if an overlap occured and you don't need to solve the collision, then you may test collisions between two dynamic
-	 * (moving) objects.
+	 * (moving) objects.</p>
 	 * 
-	 * After you create your CitrusSolver instance, you will want to call the collide() and/or overlap() methods to tell the solver which object types to test for collisions/overlaps
-	 * against. See the documentation for those two classes for more info.
+	 * <p>After you create your CitrusSolver instance, you will want to call the <code>collide</code> and/or <code>overlap</code> methods to tell the solver which object types to test for collisions/overlaps
+	 * against. See the documentation for those two classes for more info.</p>
 	 */
 	public class SimpleCitrusSolver extends CitrusObject {
 

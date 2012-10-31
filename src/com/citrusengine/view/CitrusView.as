@@ -14,8 +14,8 @@ package com.citrusengine.view {
 	 * <p>This is the class by which you will grab a reference to the graphical representations of your Citrus Objects,
 	 * which will be useful if you need to add mouse event handlers to them, or add graphics effects and filter.</p>
 	 * 
-	 * <p>The CitrusView was meant to be extended to support multiple rendering methods, such as blitting, or even Stage3D thanks to Starling. The goal 
-	 * is to provide as much decoupling as possible of the data/logic from the view.</p> 
+	 * <p>The CitrusView was meant to be extended to support multiple rendering methods, such as blitting, or even Stage3D thanks to Starling and Away3D. 
+	 * The goal is to provide as much decoupling as possible of the data/logic from the view.</p> 
 	 */	
 	public class CitrusView
 	{
@@ -68,9 +68,9 @@ package com.citrusengine.view {
 		
 		/**
 		 * There is one CitrusView per state, so when a new state is initialized, it creates the view instance.
-		 * You can override which type of CitrusView you would like to create via the State.createView() protected method.
-		 * Thanks to the State class, you have access to traditional flash display list or blitting
-		 * If you want to target Stage3D you have to use the StarlingState class
+		 * You can override which type of CitrusView you would like to create via the <code>State.createView()</code> protected method.
+		 * Thanks to the State class, you have access to traditional flash display list, blitting and Away3D. 
+		 * If you want to target Starling you have to use the StarlingState class.
 		 */		
 		public function CitrusView(root:*, viewInterface:Class)
 		{
@@ -155,7 +155,7 @@ package com.citrusengine.view {
 		/**
 		 * Gets a reference to the CitrusObject associated with the provided art object.
 		 * This is useful for instances such as when you need to get the CitrusObject for a graphic that got clicked on or otherwise interacted with.
-		 * @param	art The graphical object that represents the CitrusObject you want.
+		 * @param art The graphical object that represents the CitrusObject you want.
 		 * @return The CitrusObject associated with the provided art object.
 		 */
 		public function getObjectFromArt(art:Object):Object

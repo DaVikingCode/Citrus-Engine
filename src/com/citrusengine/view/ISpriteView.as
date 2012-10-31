@@ -80,7 +80,7 @@ package com.citrusengine.view
 		 * 
 		 * <p>If you want your graphic to be a SWF, PNG, or JPG that
 		 * is loaded at runtime, then assign <code>view</code> a String URL relative to your game's SWF, just like you would
-		 * if you were loading any file in Flash. (graphic = "graphics/Hero.swf")
+		 * if you were loading any file in Flash. (graphic = "graphics/Hero.swf")</p>
 		 * 
 		 * <p>If your graphic is embeddeded into the SWF, you can assign the <code>view</code> property in two ways: Either by package string
 		 * notation (view = "com.myGame.MyHero"), or by using a direct class reference (graphic = MyHero). The first method, String notation, is useful
@@ -89,7 +89,7 @@ package com.citrusengine.view
 		 * Whichever way you specify your class, your class must be (on some level) a <code>DisplayObject</code>.</p>
 		 * 
 		 * <p>Also note that you CANNOT assign the <code>view</code> property to a display object that you made. You must specify either an 
-		 * external URL or a Class.
+		 * external URL or a Class.</p>
 		 * 
 		 * <p>If you are using a level editor and using the ObjectMaker to batch-create your
 		 * CitrusObjects, you will need to specify the entire classpath in string form and let the factory turn your string

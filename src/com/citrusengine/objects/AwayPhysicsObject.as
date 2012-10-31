@@ -262,7 +262,7 @@ package com.citrusengine.objects {
 		}
 
 		/**
-		 * The object has a radius or a width & height. It can't have both.
+		 * The object has a radius or a width and height. It can't have both.
 		 */
 		[Inspectable(defaultValue="0")]
 		public function set radius(value:Number):void {

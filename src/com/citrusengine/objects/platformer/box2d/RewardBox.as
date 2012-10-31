@@ -20,7 +20,7 @@ package com.citrusengine.objects.platformer.box2d
 	 * - You can set the <code>rewardClass</code> value to specify what kind of reward to have the box create. The reward class object
 	 * that is generated must extend the "Reward" class.
 	 * 
-	 * This means that you must also create a class that extends <code>Reward<code> for every reward type that you want in your game.
+	 * This means that you must also create a class that extends <code>Reward</code> for every reward type that you want in your game.
 	 * If you were making a mario clone, you would make a FireFlowerReward. This is where you would specify the reward's graphics,
 	 * its initial impulse out of the box, and any custom code such as unique movement or a death timer.
 	 * 

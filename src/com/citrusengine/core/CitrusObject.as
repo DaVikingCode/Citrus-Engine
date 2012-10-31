@@ -15,7 +15,7 @@ package com.citrusengine.core
 		public var kill:Boolean = false;
 		
 		/**
-		 * Added to the CE's render list via the State & the add method.
+		 * Added to the CE's render list via the State and the add method.
 		 */
 		public var type:String = "classicObject";
 		

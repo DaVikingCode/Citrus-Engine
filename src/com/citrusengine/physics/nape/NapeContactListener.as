@@ -13,7 +13,7 @@ package com.citrusengine.physics.nape {
 	import com.citrusengine.objects.platformer.nape.Sensor;
 		
 	/**
-	 * Used to determine the contact's interaction between object.
+	 * Used to determine the contact's interaction between objects. It calls function in NapePhysicsObject.
 	 */
 	public class NapeContactListener {
 		

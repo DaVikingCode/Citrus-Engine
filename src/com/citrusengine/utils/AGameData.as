@@ -4,8 +4,9 @@ package com.citrusengine.utils {
 	
 	/**
 	 * This is an (optional) abstract class to store your game's data such as lives, score, levels...
-	 * <p>You should extend this class & instantiate it into your main class using the gameData variable.
-	 * You can dispatch a signal, dataChanged, if you update one of your data.
+	 * 
+	 * <p>You should extend this class and instantiate it into your main class using the gameData variable.
+	 * You can dispatch a signal, <code>dataChanged</code>, if you update one of your data.
 	 * For more information, watch the example below.</p> 
 	 */
 	dynamic public class AGameData {

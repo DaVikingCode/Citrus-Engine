@@ -6,7 +6,7 @@ package com.citrusengine.physics.box2d {
 	import Box2D.Dynamics.b2ContactListener;
 
 	/**
-	 * Used to report the contact's interaction between object.
+	 * Used to report the contact's interaction between objects. It calls function in Box2dPhysicsObject.
 	 */
 	public class Box2DContactListener extends b2ContactListener {
 

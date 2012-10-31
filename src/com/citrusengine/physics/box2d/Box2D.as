@@ -9,7 +9,7 @@ package com.citrusengine.physics.box2d {
 	
 	/**
 	 * This is a simple wrapper class that allows you to add a Box2D world to your game's state.
-	 * Add an instance of this class to your State before you create any phyiscs bodies. It will need to 
+	 * Add an instance of this class to your State before you create any physics bodies. It will need to 
 	 * exist first, or your physics bodies will throw an error when they try to create themselves.
 	 */	
 	public class Box2D extends APhysicsEngine implements ISpriteView
@@ -73,6 +73,9 @@ package com.citrusengine.physics.box2d {
 			return _scale;
 		}
 		
+		/**
+		 * Change the gravity of the world.
+		 */
 		public function get gravity():b2Vec2 {
 			return _gravity;
 		}
@@ -84,6 +87,9 @@ package com.citrusengine.physics.box2d {
 				_world.SetGravity(_gravity);
 		}
 		
+		/**
+		 * This is where the time step of the physics world occurs.
+		 */
 		override public function update(timeDelta:Number):void
 		{
 			super.update(timeDelta);

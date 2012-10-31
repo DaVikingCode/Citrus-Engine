@@ -9,7 +9,7 @@ package com.citrusengine.physics.nape {
 
 	/**
 	 * This is a simple wrapper class that allows you to add a Nape space to your game's state.
-	 * Add an instance of this class to your State before you create any phyiscs bodies. It will need to 
+	 * Add an instance of this class to your State before you create any physics bodies. It will need to 
 	 * exist first, or your physics bodies will throw an error when they try to create themselves.
 	 */
 	public class Nape extends APhysicsEngine implements ISpriteView {
@@ -62,6 +62,9 @@ package com.citrusengine.physics.nape {
 			return _space;
 		}
 		
+		/**
+		 * Change the gravity of the space.
+		 */
 		public function get gravity():Vec2 {
 			return _gravity;
 		}
@@ -73,10 +76,16 @@ package com.citrusengine.physics.nape {
 				_space.gravity = _gravity;
 		}
 		
+		/**
+		 * Return a ContactListener class where some InteractionListeners are already defined.
+		 */
 		public function get contactListener():NapeContactListener {
 			return _contactListener;
 		}
 
+		/**
+		 * This is where the time step of the physics world occurs.
+		 */
 		override public function update(timeDelta:Number):void {
 			
 			super.update(timeDelta);
