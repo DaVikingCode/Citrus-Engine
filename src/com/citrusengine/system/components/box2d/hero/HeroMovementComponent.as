@@ -39,7 +39,7 @@ package com.citrusengine.system.components.box2d.hero {
 		public var jumpAcceleration:Number = 0.3;
 		
 		/**
-		 * This is the y velocity that the hero must be travelling in order to kill a Baddy.
+		 * This is the y velocity that the hero must be travelling in order to kill a Enemy.
 		 */
 		public var killVelocity:Number = 3;
 		

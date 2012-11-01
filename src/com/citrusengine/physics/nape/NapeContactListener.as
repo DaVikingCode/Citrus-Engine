@@ -7,7 +7,7 @@ package com.citrusengine.physics.nape {
 	import nape.callbacks.InteractionType;
 	import nape.space.Space;
 
-	import com.citrusengine.objects.platformer.nape.Baddy;
+	import com.citrusengine.objects.platformer.nape.Enemy;
 	import com.citrusengine.objects.platformer.nape.Missile;
 	import com.citrusengine.objects.platformer.nape.MissileWithExplosion;
 	import com.citrusengine.objects.platformer.nape.Sensor;
@@ -26,7 +26,7 @@ package com.citrusengine.physics.nape {
 			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.SENSOR, Sensor.SENSOR, CbType.ANY_BODY, onInteractionBegin));
 			_space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.SENSOR, Sensor.SENSOR, CbType.ANY_BODY, onInteractionEnd));
 			
-			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, Baddy.BADDY, CbType.ANY_BODY, onInteractionBegin));
+			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, Enemy.ENEMY, CbType.ANY_BODY, onInteractionBegin));
 			
 			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, Missile.MISSILE, CbType.ANY_BODY, onInteractionBegin));
 			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, MissileWithExplosion.MISSILE, CbType.ANY_BODY, onInteractionBegin));

@@ -18,12 +18,12 @@ package com.citrusengine.objects.platformer.box2d {
 	 * This is a common example of a side-scrolling bad guy. He has limited logic, basically
 	 * only turning around when he hits a wall.
 	 * 
-	 * When controlling collision interactions between two objects, such as a Horo and Baddy,
+	 * When controlling collision interactions between two objects, such as a Hero and Enemy,
 	 * I like to let each object perform its own actions, not control one object's action from the other object.
-	 * For example, the Hero doesn't contain the logic for killing the Baddy, and the Baddy doesn't contain the
+	 * For example, the Hero doesn't contain the logic for killing the Enemy, and the Enemy doesn't contain the
 	 * logic for making the hero "Spring" when he kills him. 
 	 */	
-	public class Baddy extends Box2DPhysicsObject
+	public class Enemy extends Box2DPhysicsObject
 	{
 		[Inspectable(defaultValue="1.3")]
 		public var speed:Number = 1.3;
@@ -65,7 +65,7 @@ package com.citrusengine.objects.platformer.box2d {
 		protected var _rightSensorFixture:b2Fixture;
 		protected var _sensorFixtureDef:b2FixtureDef;
 		
-		public function Baddy(name:String, params:Object=null)
+		public function Enemy(name:String, params:Object=null)
 		{
 			super(name, params);
 		}
@@ -195,7 +195,7 @@ package com.citrusengine.objects.platformer.box2d {
 			if (_body.GetLinearVelocity().x > 0 && (contact.GetFixtureA() == _leftSensorFixture || contact.GetFixtureB() == _leftSensorFixture))
 				return;
 				
-			if (collider is Platform || collider is Baddy)
+			if (collider is Platform || collider is Enemy)
 				turnAround();
 		}
 		

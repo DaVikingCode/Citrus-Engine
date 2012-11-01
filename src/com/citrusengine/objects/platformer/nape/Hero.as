@@ -79,7 +79,7 @@ package com.citrusengine.objects.platformer.nape {
 		public var onAnimationChange:Signal;
 
 		protected var _groundContacts:Array = [];// Used to determine if he's on ground or not.
-		protected var _enemyClass:Class = Baddy;
+		protected var _enemyClass:Class = Enemy;
 		protected var _onGround:Boolean = false;
 		protected var _springOffEnemy:Number = -1;
 		protected var _hurtTimeoutID:Number;
@@ -162,11 +162,11 @@ package com.citrusengine.objects.platformer.nape {
 		 * The Hero uses the enemyClass parameter to know who he can kill (and who can kill him).
 		 * Use this setter to to pass in which base class the hero's enemy should be, in String form
 		 * or Object notation.
-		 * For example, if you want to set the "Baddy" class as your hero's enemy, pass
-		 * "com.citrusengine.objects.platformer.Baddy", or Baddy (with no quotes). Only String
+		 * For example, if you want to set the "Enemy" class as your hero's enemy, pass
+		 * "com.citrusengine.objects.platformer.Enemy", or Enemy (with no quotes). Only String
 		 * form will work when creating objects via a level editor.
 		 */
-		[Inspectable(defaultValue="com.citrusengine.objects.platformer.nape.Baddy",type="String")]
+		[Inspectable(defaultValue="com.citrusengine.objects.platformer.nape.Enemy",type="String")]
 		public function set enemyClass(value:*):void {
 			
 			if (value is String)

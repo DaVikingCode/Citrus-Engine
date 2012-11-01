@@ -14,14 +14,14 @@ package com.citrusengine.objects.platformer.nape {
 	 * This is a common example of a side-scrolling bad guy. He has limited logic, basically
 	 * only turning around when he hits a wall.
 	 * 
-	 * When controlling collision interactions between two objects, such as a Horo and Baddy,
+	 * When controlling collision interactions between two objects, such as a Hero and Enemy,
 	 * I like to let each object perform its own actions, not control one object's action from the other object.
-	 * For example, the Hero doesn't contain the logic for killing the Baddy, and the Baddy doesn't contain the
+	 * For example, the Hero doesn't contain the logic for killing the Enemy, and the Enemy doesn't contain the
 	 * logic for making the hero "Spring" when he kills him. 
 	 */
-	public class Baddy extends NapePhysicsObject {
+	public class Enemy extends NapePhysicsObject {
 		
-		public static const BADDY:CbType = new CbType();
+		public static const ENEMY:CbType = new CbType();
 		
 		[Inspectable(defaultValue="39")]
 		public var speed:Number = 39;
@@ -48,7 +48,7 @@ package com.citrusengine.objects.platformer.nape {
 		protected var _lastTimeTurnedAround:Number = 0;
 		protected var _waitTimeBeforeTurningAround:Number = 1000;
 		
-		public function Baddy(name:String, params:Object=null) {
+		public function Enemy(name:String, params:Object=null) {
 			
 			super(name, params);
 		}
@@ -122,7 +122,7 @@ package com.citrusengine.objects.platformer.nape {
 		override protected function createConstraint():void {
 			
 			_body.space = _nape.space;			
-			_body.cbTypes.add(BADDY);
+			_body.cbTypes.add(ENEMY);
 		}
 			
 		override public function handleBeginContact(callback:InteractionCallback):void {
@@ -131,7 +131,7 @@ package com.citrusengine.objects.platformer.nape {
 			
 			if (collider is _enemyClass && collider.body.velocity.y > enemyKillVelocity)
 				hurt();
-			else if (collider is Platform || collider is Baddy)
+			else if (collider is Platform || collider is Enemy)
 				turnAround();
 		}
 		

@@ -4,7 +4,7 @@ package com.citrusengine.system.components.box2d.hero {
 
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.Box2DPhysicsObject;
-	import com.citrusengine.objects.platformer.box2d.Baddy;
+	import com.citrusengine.objects.platformer.box2d.Enemy;
 	import com.citrusengine.system.components.box2d.CollisionComponent;
 
 	/**
@@ -16,7 +16,7 @@ package com.citrusengine.system.components.box2d.hero {
 		protected var _movementComponent:HeroMovementComponent;
 		protected var _physicsComponent:HeroPhysicsComponent;
 		
-		protected var _enemyClass:Class = Baddy;
+		protected var _enemyClass:Class = Enemy;
 		protected var _combinedGroundAngle:Number = 0;
 
 		public function HeroCollisionComponent(name:String, params:Object = null) {
