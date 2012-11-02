@@ -28,5 +28,9 @@ package com.citrusengine.view.starlingview {
 		public function update():void {
 			_debugView.update();
 		}
+
+		public function get debugView():flash.display.Sprite {
+			return _debugView as flash.display.Sprite;
+		}
 	}
 }

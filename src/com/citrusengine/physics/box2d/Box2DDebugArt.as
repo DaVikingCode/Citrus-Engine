@@ -25,8 +25,10 @@ package com.citrusengine.physics.box2d {
 			_debugDrawer.SetSprite(this);
 			_debugDrawer.SetDrawScale(_box2D.scale);
 			_debugDrawer.SetFlags(b2DebugDraw.e_shapeBit|b2DebugDraw.e_jointBit);
-
+			
 			_box2D.world.SetDebugDraw(_debugDrawer);
+			
+			this.alpha = 0.5;
 		}
 		
 		public function update():void

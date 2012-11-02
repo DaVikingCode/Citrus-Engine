@@ -30,6 +30,8 @@ package com.citrusengine.physics.nape {
 			
 			_debugDrawer = new ShapeDebug(stage.stageWidth, stage.stageHeight);
 			addChild(_debugDrawer.display);
+			
+			_debugDrawer.display.alpha = 0.5;
 		}
 		
 		public function update():void
