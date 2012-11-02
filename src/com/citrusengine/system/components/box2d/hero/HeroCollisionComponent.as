@@ -8,7 +8,7 @@ package com.citrusengine.system.components.box2d.hero {
 	import com.citrusengine.system.components.box2d.CollisionComponent;
 
 	/**
-	 * The Box2D Hero collision component. We need to access informations of the hero view & movement & physics component.
+	 * The Box2D Hero collision component. We need to access informations of the hero view, movement and physics component.
 	 */
 	public class HeroCollisionComponent extends CollisionComponent {
 		

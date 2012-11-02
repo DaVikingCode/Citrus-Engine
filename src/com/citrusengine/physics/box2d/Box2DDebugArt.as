@@ -9,7 +9,7 @@ package com.citrusengine.physics.box2d {
 	
 	/**
 	 * This displays Box2D's debug graphics. It does so properly through Citrus Engine's view manager. Box2D by default
-	 * sets visible to false, so you'll need to set the Box2D object's visible property to true in order to see the debug graphics. 
+	 * sets visible to false with an alpha of 0.4, so you'll need to set the Box2D object's visible property to true in order to see the debug graphics. 
 	 */	
 	public class Box2DDebugArt extends Sprite implements IDebugView
 	{

@@ -12,7 +12,7 @@ package com.citrusengine.system.components.box2d.hero {
 	import flash.utils.setTimeout;
 
 	/**
-	 * The Box2D Hero movement component. Most of its properties are here. It uses a lot of informations from the input component & 
+	 * The Box2D Hero movement component. Most of its properties are here. It uses a lot of informations from the input component and 
 	 * some from the Box2D Hero collision component.
 	 */
 	public class HeroMovementComponent extends MovementComponent {

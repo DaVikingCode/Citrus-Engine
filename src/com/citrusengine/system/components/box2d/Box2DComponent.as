@@ -169,7 +169,7 @@ package com.citrusengine.system.components.box2d {
 		}
 		
 		/**
-		 * The object has a radius or a width & height. It can't have both.
+		 * The object has a radius or a width and height. It can't have both.
 		 */
 		public function set radius(value:Number):void
 		{

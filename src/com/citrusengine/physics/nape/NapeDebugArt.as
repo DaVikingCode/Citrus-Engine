@@ -10,7 +10,7 @@ package com.citrusengine.physics.nape {
 
 	/**
 	 * This displays Nape's debug graphics. It does so properly through Citrus Engine's view manager. Nape by default
-	 * sets visible to false, so you'll need to set the Nape object's visible property to true in order to see the debug graphics. 
+	 * sets visible to false with an alpha of 0.4, so you'll need to set the Nape object's visible property to true in order to see the debug graphics. 
 	 */
 	public class NapeDebugArt extends Sprite implements IDebugView {
 		
