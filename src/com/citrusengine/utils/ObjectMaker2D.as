@@ -315,6 +315,8 @@
 					var citrusObject:CitrusObject = new citrusClass(objectName, object);
 					if (addToCurrentState)
 						ce.state.add(citrusObject);
+
+					items.push(citrusObject);
 				}
 				layerIndex++;
 			}
