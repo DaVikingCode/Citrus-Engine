@@ -16,30 +16,27 @@ package com.citrusengine.objects.platformer.box2d
 	 * The RewardBox is a special type of platform that you can "bump" to make a reward come out. It is meant to be similar
 	 * to those "question blocks" or "mystery blocks" in mario.
 	 * 
-	 * Params: 
-	 * - You can set the <code>rewardClass</code> value to specify what kind of reward to have the box create. The reward class object
-	 * that is generated must extend the "Reward" class.
+	 * <ul>Params: 
+	 * <li>rewardClass : it specifies what kind of reward to have the box create. The reward class object
+	 * that is generated must extend the "Reward" class.</li>
+	 * <li>"collision normal" angle : it specifies the angle that you must come at it in order for it to generate a reward. The default is 90,
+	 * which is "from below", as long as the box is not rotated.</li></ul>
 	 * 
-	 * This means that you must also create a class that extends <code>Reward</code> for every reward type that you want in your game.
+	 * <p>This means that you must also create a class that extends <code>Reward</code> for every reward type that you want in your game.
 	 * If you were making a mario clone, you would make a FireFlowerReward. This is where you would specify the reward's graphics,
-	 * its initial impulse out of the box, and any custom code such as unique movement or a death timer.
+	 * its initial impulse out of the box, and any custom code such as unique movement or a death timer.</p>
 	 * 
-	 * - You can specify the "collision normal" angle that you must come at it in order for it to generate a reward. The default is 90,
-	 * which is "from below", as long as the box is not rotated.
+	 * <ul>Animations:
+	 * <li>Your Reward box should have a "normal" and "used" animation state. Once the box's reward has been obtained, it cannot be used again.</li></ul>
 	 * 
-	 * Animations:
-	 * Your Reward box should have a "normal" and "used" animation state. Once the box's reward has been obtained, it cannot be used again.
+	 * <ul>Events:
+	 * <li>onUse : gets dispatched when the reward box gets bumped. It passes a reference of itself.</li>
+	 * <li>onRewardCollect : gets dispatched when the reward is collected. This is where you would
+	 * write the code to grant your player the reward (such as a greater jump height, more points, or another life).</li></ul>
 	 * 
-	 * Events:
-	 * The RewardBox has two Signals. The first event is <code>onUse</code>, which gets dispatched when the reward box gets bumped.
-	 * It passes a reference of itself.
-	 * 
-	 * The Second event is <code>onRewardCollect</code>, which gets dispatched when the reward is collected. This is where you would
-	 * write the code to grant your player the reward (such as a greater jump height, more points, or another life).
-	 * 
-	 * Other: 
-	 * If you don't want the reward box to generate a reward, (or you want the reward to be granted immediately, like points),
-	 * you can set the rewardClass to null and just listen for the "onUse" event to grant the player the reward.
+	 * <ul>Other: 
+	 * <li>If you don't want the reward box to generate a reward, (or you want the reward to be granted immediately, like points),
+	 * you can set the rewardClass to null and just listen for the "onUse" event to grant the player the reward.</li></ul>
 	 */
 	public class RewardBox extends Box2DPhysicsObject 
 	{

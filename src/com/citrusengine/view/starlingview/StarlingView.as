@@ -11,8 +11,8 @@ package com.citrusengine.view.starlingview {
 	import flash.display.MovieClip;
 
 	/**
-	 * StarlingView is based on  Adobe Stage3D and the Starling framework to render graphics. 
-	 * It creates and manages graphics like the traditional Flash display list thanks to Starling :
+	 * StarlingView is based on Adobe Stage3D and the <a href="http://gamua.com/starling/">Starling</a> framework to render graphics. 
+	 * It creates and manages graphics like the traditional Flash display list (but on the GPU!!) thanks to Starling :
 	 * (addChild(), removeChild()) using Starling DisplayObjects (MovieClip, Image, Sprite, Quad etc).
 	 */	
 	public class StarlingView extends CitrusView {
@@ -96,10 +96,7 @@ package com.citrusengine.view.starlingview {
 			
 			return art;
 		}
-
-		/**
-		 * @inherit 
-		 */
+		
 		override protected function destroyArt(citrusObject:Object):void {
 			
 			var spriteArt:StarlingArt = _viewObjects[citrusObject];

@@ -27,6 +27,11 @@ package com.citrusengine.objects.platformer.nape {
 		public static const SENSOR:CbType = new CbType();
 		
 		/**
+		 * Determine if the sensor is used as a ladder. Ladder handler isn't implemented in the Citrus Engine to keep the Hero class easily readable.
+		 */
+		public var isLadder:Boolean = false;
+		
+		/**
 		 * Dispatches on first contact with the sensor.
 		 */
 		public var onBeginContact:Signal;

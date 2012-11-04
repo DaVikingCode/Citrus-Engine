@@ -16,7 +16,19 @@ package com.citrusengine.view.blittingview
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 
-	
+	/**
+	 * Blitting is a higher-performance alternative to using the built-in display list in Adobe Flash for drawing objects on the Stage. 
+	 * This technique involves copying the individual pixels of an existing image directly on to the screen—a bit like 
+	 * painting all of your game's spaceships and monsters onto a canvas.
+	 * 
+	 * <p>Working manually with pixels is more complicated than using the display list, but the improvement in performance more than 
+	 * makes up for the extra effort. For situations where there are many objects moving around the Stage, you must usually choose 
+	 * either a smooth frame rate or a small memory footprint. With blitting you can have both.</p>
+	 * 
+	 * <p>The Citrus Engine supports blitting, to enable it you have to override the <code>state.createView</code> method and <code>return 
+	 * new BlittingView(this)</code>. Also don't forget to call <code>BlittingView(view).updateCanvas();</code> to set up the blitting canvas. 
+	 * Check the demo for an example.</p>
+	 */	
 	public class BlittingView extends CitrusView
 	{
 		public var backgroundColor:Number = 0xffffffff;

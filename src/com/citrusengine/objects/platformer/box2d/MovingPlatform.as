@@ -8,17 +8,16 @@ package com.citrusengine.objects.platformer.box2d {
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	
 	/**
-	 * A platform that moves between two points. The MovingPlatform has several properties that
-	 * can customize it.
+	 * A platform that moves between two points. The MovingPlatform has several properties that can customize it.
 	 * 
-	 * Properties:
-	 * speed - The speed at which the moving platform travels. 
-	 * enabled - Whether or not the MovingPlatform can move, no matter the condition.
-	 * startX -  The initial starting X position of the MovingPlatform, and the place it returns to when it reaches the end destination.
-	 * startY -  The initial starting Y position of the MovingPlatform, and the place it returns to when it reaches the end destination.
-	 * endX -  The ending X position of the MovingPlatform, and the place it returns to when it reaches the start destination.
-	 * endY -  The ending Y position of the MovingPlatform, and the place it returns to when it reaches the start destination.
-	 * waitForPassenger - If set to true, MovingPlatform will not move unless there is a passenger. If set to false, it continually moves.
+	 * <ul>Properties:
+	 * <li>speed - The speed at which the moving platform travels.</li>
+	 * <li>enabled - Whether or not the MovingPlatform can move, no matter the condition.</li>
+	 * <li>startX -  The initial starting X position of the MovingPlatform, and the place it returns to when it reaches the end destination.</li>
+	 * <li>startY -  The initial starting Y position of the MovingPlatform, and the place it returns to when it reaches the end destination.</li>
+	 * <li>endX -  The ending X position of the MovingPlatform, and the place it returns to when it reaches the start destination.</li>
+	 * <li>endY -  The ending Y position of the MovingPlatform, and the place it returns to when it reaches the start destination.</li>
+	 * <li>waitForPassenger - If set to true, MovingPlatform will not move unless there is a passenger. If set to false, it continually moves.</li></ul>
 	 */	
 	public class MovingPlatform extends Platform
 	{

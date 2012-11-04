@@ -13,8 +13,8 @@ package com.citrusengine.objects.platformer.box2d {
 	 * There are two ways of adding graphics for your platform. You can give your platform a graphic just like you would any other object (by passing a graphical
 	 * class into the view property) or you can leave your platform invisible and line it up with your backgrounds for a more custom look.
 	 * 
-	 * Properties:
-	 * oneWay - Makes the platform only collidable when falling from above it.
+	 * <ul>Properties:
+	 * <li>oneWay - Makes the platform only collidable when falling from above it.</li></ul>
 	 */
 	public class Platform extends Box2DPhysicsObject
 	{

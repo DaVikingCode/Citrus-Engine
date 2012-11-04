@@ -72,7 +72,7 @@ package com.citrusengine.view.blittingview {
 		
 		/**
 		 * Call this to add a new animation sequence to this BlittingArt object.
-		 * @param	animationSequence An animation sequence that your character will use.
+		 * @param animationSequence An animation sequence that your character will use.
 		 */
 		public function addAnimation(animationSequence:AnimationSequence):void
 		{

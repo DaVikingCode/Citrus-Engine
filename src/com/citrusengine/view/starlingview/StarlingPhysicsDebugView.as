@@ -10,7 +10,7 @@ package com.citrusengine.view.starlingview {
 	import flash.display.Sprite;
 	
 	/**
-	 * A wrapper for Starling to display the debug view of the different physics engine
+	 * A wrapper for Starling to display the debug view of the different physics engine.
 	 */
 	public class StarlingPhysicsDebugView extends starling.display.Sprite {
 		

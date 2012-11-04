@@ -11,7 +11,7 @@
 	 * 
 	 * <p>You might think, "Is there any other way to display graphics in Flash?", and the answer is yes. Many Flash game programmers
 	 * prefer to use other rendering methods. The most common alternative is called "blitting", which is what Flixel uses. There are
-	 * also 3D games on the way that will use Adobe Stage3D to render graphics.</p>
+	 * also Stage3D to render graphics 2D graphics via <a href="http://gamua.com/starling/">Starling</a> or 3D graphics thanks to <a href="http://away3d.com/">Away3D</a>.</p>
 	 */	
 	public class SpriteView extends CitrusView
 	{
@@ -29,10 +29,7 @@
 		{
 			return _viewRoot;
 		}
-		
-		/**
-		 * @inherit 
-		 */		
+			
 		override public function update():void
 		{
 			super.update();
@@ -71,10 +68,7 @@
 				sprite.update(this);
 			}
 		}
-		
-		/**
-		 * @inherit 
-		 */		
+			
 		override protected function createArt(citrusObject:Object):Object
 		{
 			var viewObject:ISpriteView = citrusObject as ISpriteView;
@@ -88,10 +82,7 @@
 			
 			return art;
 		}
-		
-		/**
-		 * @inherit 
-		 */		
+				
 		override protected function destroyArt(citrusObject:Object):void
 		{
 			var spriteArt:SpriteArt = _viewObjects[citrusObject];

@@ -19,26 +19,25 @@ package com.citrusengine.objects.platformer.box2d
 	 * The Reward class is meant to pop out of a RewardBox when the player bumps it. A Reward object is the equivelant of a "mushroom"
 	 * "fire flower", or "invincible star" in the Mario games.
 	 * 
-	 * For each reward that you want in your game, you should make a class that extends this Reward class. If you want an ExtraLifeReward,
+	 * <p>For each reward that you want in your game, you should make a class that extends this Reward class. If you want an ExtraLifeReward,
 	 * you should make a class called ExtraLifeReward that extends Reward. Then hardcode your view, speed, impulseX, and impulseY properties.
-	 * Of course, you can also add additional functionality as well by doing this.
+	 * Of course, you can also add additional functionality as well by doing this.</p>
 	 * 
-	 * When you create a RewardBox, you will pass the name of this class into the rewardClass property of RewardBox. That will make the RewardBox
-	 * generate a Reward.
+	 * <p>When you create a RewardBox, you will pass the name of this class into the rewardClass property of RewardBox. That will make the RewardBox
+	 * generate a Reward.</p>
 	 * 
-	 * You can specify the <code>speed</code> property to set the speed that the reward moves at.
+	 * <ul>Properties:
+	 * <li>speed : set the speed that the reward moves at.</li>
+	 * <li>impulseX and impulseY : make the reward "jump" out of the box.</li>
+	 * <li>collectorClass : tell the object who can collect it. It is set to <code>Hero</code> class by default.</li></ul>
 	 * 
-	 * You can specify the <code>impulseX</code> and <code>impulseY</code> properties to make the reward "jump" out of the box.
+	 * <ul>Events:
+	 * <li>onCollect : the Signal is dispatched when the reward is collected. Since the RewardBox generates the reward, you probably won't
+	 * get a reference to the reward. Thus, you can instead listen for <code>RewardBox.onRewardCollect</code> to find out when the reward is collected. Nevertheless,
+	 * if you listen for <code>Reward.OnCollect</code>, it passes a reference to itself when it dispatches.</li></ul>
 	 * 
-	 * You can specify the <code>collectorClass</code> property to tell the object who can collect it. It is set to <code>Hero</code> class by default.
-	 * 
-	 * Events:
-	 * The <code>onCollect</code> Signal is dispatched when the reward is collected. Since the RewardBox generates the reward, you probably won't
-	 * get a reference to the reward. Thus, you can instead listen for RewardBox.onRewardCollect to find out when the reward is collected. Nevertheless,
-	 * if you listen for Reward.OnCollect, it passes a reference to itself when it dispatches.
-	 * 
-	 * Animation:
-	 * The reward object only has a default animation.
+	 * <ul>Animation:
+	 * <li>The reward object only has a default animation.</li></ul>
 	 * 
 	 */
 	public class Reward extends Box2DPhysicsObject 
@@ -62,7 +61,7 @@ package com.citrusengine.objects.platformer.box2d
 		public var impulseY:Number = -10;
 		
 		/**
-		 * Dispatches when the reward gets collected. Also see RewardBox.onRewardCollect for a possibly more convenient event.
+		 * Dispatches when the reward gets collected. Also see <code>RewardBox.onRewardCollect</code> for a possibly more convenient event.
 		 */
 		public var onCollect:Signal;
 		

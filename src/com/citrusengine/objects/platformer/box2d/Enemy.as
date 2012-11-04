@@ -124,12 +124,18 @@ package com.citrusengine.objects.platformer.box2d {
 			updateAnimation();
 		}
 		
+		/**
+		 * The enemy is hurt, start the time out with <code>hurtDuration</code> value. Then it called <code>endHurtState</code>'s function.
+		 */
 		public function hurt():void
 		{
 			_hurt = true;
 			_hurtTimeoutID = setTimeout(endHurtState, hurtDuration);
 		}
 		
+		/**
+		 * Change enemy's direction
+		 */
 		public function turnAround():void
 		{
 			_inverted = !_inverted;
@@ -204,6 +210,9 @@ package com.citrusengine.objects.platformer.box2d {
 			_animation = _hurt ? "die" : "walk";	
 		}
 		
+		/**
+		 * The enemy is no more hurt.
+		 */
 		protected function endHurtState():void
 		{
 			_hurt = false;

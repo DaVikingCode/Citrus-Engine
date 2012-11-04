@@ -21,17 +21,17 @@ package com.citrusengine.view.spriteview
 	
 	/**
 	 * This is the class that all art objects use for the SpriteView state view. If you are using the SpriteView (as opposed to the blitting view, for instance),
-	 * then all your graphics will be an instance of this class. This class does the following things:
+	 * then all your graphics will be an instance of this class. 
 	 * 
-	 * 1) Creates the appropriate graphic depending on your CitrusObject's view property (loader, sprite, or bitmap), and loads it if it is a non-embedded graphic.
-	 * 2) Aligns the graphic with the appropriate registration (topLeft or center).
-	 * 3) Calls the MovieClip's appropriate frame label based on the CitrusObject's animation property.
-	 * 4) Updates the graphic's properties to be in-synch with the CitrusObject's properties once per frame.
+	 * <ul>This class does the following things:
+	 * <li>Creates the appropriate graphic depending on your CitrusObject's view property (loader, sprite, or bitmap), and loads it if it is a non-embedded graphic.</li>
+	 * <li>Aligns the graphic with the appropriate registration (topLeft or center).</li>
+	 * <li>Calls the MovieClip's appropriate frame label based on the CitrusObject's animation property.</li>
+	 * <li>Updates the graphic's properties to be in-synch with the CitrusObject's properties once per frame.</li></ul>
 	 * 
-	 * These objects will be created by the Citrus Engine's SpriteView, so you should never make them yourself. When you use state.getArt() to gain access to your game's graphics
+	 * <p>These objects will be created by the Citrus Engine's SpriteView, so you should never make them yourself. When you use <code>view.getArt()</code> to gain access to your game's graphics
 	 * (for adding click events, for instance), you will get an instance of this object. It extends Sprite, so you can do all the expected stuff with it, 
-	 * such as add click listeners, change the alpha, etc.
-	 * 
+	 * such as add click listeners, change the alpha, etc.</p>
 	 * 
 	 **/
 	public class SpriteArt extends Sprite

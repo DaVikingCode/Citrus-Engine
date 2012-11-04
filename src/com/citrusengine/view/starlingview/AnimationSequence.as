@@ -9,13 +9,7 @@ package com.citrusengine.view.starlingview {
 
 	/**
 	 * The Animation Sequence class represents all object animations in one sprite sheet. You have to create your texture atlas in your state class.
-	 * Example : var hero:Hero = new Hero("Hero", {x:400, width:60, height:130, view:new AnimationSequence(textureAtlas, ["walk", "duck", "idle", "jump"], "idle")});
-	 * 
-	 * @param textureAtlas : a TextureAtlas object with all your object's animations
-	 * @param animations : an array with all your object's animations as a String
-	 * @param firstAnimation : a string of your default animation at its creation
-	 * @param animFps : a number which determines the animation MC's fps
-	 * @param firstAnimLoop : a boolean, set it to true if you want your first animation to loop
+	 * Example : <code>var hero:Hero = new Hero("Hero", {x:400, width:60, height:130, view:new AnimationSequence(textureAtlas, ["walk", "duck", "idle", "jump"], "idle")});</code>
 	 */
 	public class AnimationSequence extends Sprite {
 
@@ -23,7 +17,14 @@ package com.citrusengine.view.starlingview {
 		private var _animations:Array;
 		private var _mcSequences:Dictionary;
 		private var _previousAnimation:String;
-
+		
+		/**
+		 * @param textureAtlas a TextureAtlas object with all your object's animations.
+	 	 * @param animations an array with all your object's animations as a String.
+	 	 * @param firstAnimation a string of your default animation at its creation.
+	 	 * @param animFps a number which determines the animation MC's fps.
+	 	 * @param firstAnimLoop a boolean, set it to true if you want your first animation to loop.
+		 */
 		public function AnimationSequence(textureAtlas:TextureAtlas, animations:Array, firstAnimation:String, animFps:Number = 30, firstAnimLoop:Boolean = false) {
 
 			super();
@@ -53,9 +54,9 @@ package com.citrusengine.view.starlingview {
 		
 		/**
 		 * Called by StarlingArt, managed the MC's animations.
-		 * @param animation : the MC's animation
-		 * @param fps : the MC's fps
-		 * @param animLoop : true if the MC is a loop
+		 * @param animation the MC's animation
+		 * @param fps the MC's fps
+		 * @param animLoop true if the MC is a loop
 		 */
 		public function changeAnimation(animation:String, animLoop:Boolean):void {
 			
@@ -76,7 +77,7 @@ package com.citrusengine.view.starlingview {
 		}
 		
 		/**
-		 * Called by StarlingArt, remove or add to the Juggler if the Citrus Engine is playing or not
+		 * Called by StarlingArt, remove or add to the Juggler if the Citrus Engine is playing or not.
 		 */
 		public function pauseAnimation(value:Boolean):void {
 			

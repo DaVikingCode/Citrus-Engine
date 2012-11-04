@@ -12,16 +12,21 @@ package com.citrusengine.objects.platformer.box2d {
 	 * when contact is made or ended, and this signal can be used to perform custom game logic such as
 	 * triggering a scripted event, ending a level, popping up a dialog box, and virtually anything else.
 	 * 
-	 * Remember that signals dispatch events when ANY Box2D object collides with them, so you will want
+	 * <p>Remember that signals dispatch events when ANY Box2D object collides with them, so you will want
 	 * your collision handler to ignore collisions with objects that it is not interested in, or extend
-	 * the sensor and use maskBits to ignore collisions altogether.  
+	 * the sensor and use maskBits to ignore collisions altogether.</p>  
 	 * 
-	 * Events
-	 * onBeginContact - Dispatches on first contact with the sensor.
-	 * onEndContact - Dispatches when the object leaves the sensor.
+	 * <ul>Events:
+	 * <li>onBeginContact : Dispatches on first contact with the sensor.</li>
+	 * <li>onEndContact : Dispatches when the object leaves the sensor.</li></ul>
 	 */	
 	public class Sensor extends Box2DPhysicsObject
 	{
+		/**
+		 * Determine if the sensor is used as a ladder. Ladder handler isn't implemented in the Citrus Engine to keep the Hero class easily readable.
+		 */
+		public var isLadder:Boolean = false;
+		
 		/**
 		 * Dispatches on first contact with the sensor.
 		 */

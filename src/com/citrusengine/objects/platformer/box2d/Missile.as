@@ -19,16 +19,16 @@ package com.citrusengine.objects.platformer.box2d
 	 * Since the missile can potentially be used for any purpose, by default the missiles do not do any damage or kill the object that
 	 * they collide with. You will have to handle this manually using the onExplode() handler.
 	 * 
-	 * Properties:
-	 * angle - In degrees, the angle that the missile will fire at. Right is zero degrees, going clockwise.
-	 * speed - The speed that the missile moves at.
-	 * fuseDuration - In milliseconds, how long the missile lasts before it explodes if it doesn't touch anything.
-	 * explodeDuration - In milliseconds, how long the explode animation lasts before the missile object is destroyed.
+	 * <ul>Properties:
+	 * <li>angle - In degrees, the angle that the missile will fire at. Right is zero degrees, going clockwise.</li>
+	 * <li>speed - The speed that the missile moves at.</li>
+	 * <li>fuseDuration - In milliseconds, how long the missile lasts before it explodes if it doesn't touch anything.</li>
+	 * <li>explodeDuration - In milliseconds, how long the explode animation lasts before the missile object is destroyed.</li></ul>
 	 * 
-	 * Events
-	 * onExplode - Dispatched when the missile explodes. Passes two parameters:
+	 * <ul>Events:
+	 * <li>onExplode - Dispatched when the missile explodes. Passes two parameters:
 	 * 		1. The Missile (Missile)
-	 * 		2. The Object it exploded on (PhysicsObject)
+	 * 		2. The Object it exploded on (Box2DPhysicsObject)</li></ul>
 	 */
 	public class Missile extends Box2DPhysicsObject 
 	{
@@ -59,7 +59,7 @@ package com.citrusengine.objects.platformer.box2d
 		/**
 		 * Dispatched when the missile explodes. Passes two parameters:
 		 * 		1. The Missile (Missile)
-		 * 		2. The Object it exploded on (PhysicsObject)
+		 * 		2. The Object it exploded on (Box2DPhysicsObject)
 		 */
 		public var onExplode:Signal;
 		
@@ -86,13 +86,6 @@ package com.citrusengine.objects.platformer.box2d
 			
 			_fuseDurationTimeoutID = setTimeout(explode, fuseDuration);
 			_body.SetLinearVelocity(_velocity);
-		}
-		
-		public function rotate(vector:b2Vec2, angle:Number):b2Vec2 {
-			var cos:Number = Math.cos(angle);
-			var sin:Number = Math.sin(angle);
-			return new b2Vec2(vector.x * cos - vector.y * sin, vector.x * sin + vector.y * cos);
-			
 		}
 		
 		override public function destroy():void
@@ -128,7 +121,7 @@ package com.citrusengine.objects.platformer.box2d
 		}
 		
 		/**
-		 * Explodes the missile
+		 * Explodes the missile, it shouldn't collide with anything anymore.
 		 */
 		public function explode():void
 		{

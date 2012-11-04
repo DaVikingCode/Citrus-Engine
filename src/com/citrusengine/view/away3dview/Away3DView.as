@@ -14,7 +14,10 @@ package com.citrusengine.view.away3dview {
 	import flash.events.Event;
 
 	/**
-	 * Away3DView is based on  Adobe Stage3D and the Away3D framework to render graphics. 
+	 * Away3DView is based on Adobe Stage3D and the <a href="http://away3d.com/">Away3D</a> framework to render graphics. 
+	 * You must use this view to create a 3D game. Note that you can create a 3D game with a 2D logic/physics. 
+	 * To specify Away3DView, override the <code>state.createView</code> method and <code>return 
+	 * new Away3DView(this)</code>. Check the demo for an example.
 	 */
 	public class Away3DView extends CitrusView {
 
@@ -28,8 +31,9 @@ package com.citrusengine.view.away3dview {
 		private var _container:ObjectContainer3D;
 
 		/**
-		 * @param mode defines 2D or 3D physics / logics usage, default is 3D
-		 * @param antiAlias defines the Away3D's antiAlias value, default is 4
+		 * @param root the state class, most of the time <code>this</code>.
+		 * @param mode defines 2D or 3D physics / logics usage, default is 3D.
+		 * @param antiAlias defines the Away3D's antiAlias value, default is 4.
 		 */
 		public function Away3DView(root:Sprite, mode:String = "3D", antiAlias:uint = 4) {
 
@@ -64,14 +68,15 @@ package com.citrusengine.view.away3dview {
 		public function get mode():String {
 			return _mode;
 		}
-
+		
+		/**
+		 *With Away3D we don't use the viewRoot as the main container for our objects because we shouldn't move the View3D. 
+		 *So we use an ObjectContainer3D to add all our objects in.
+		 */
 		public function get container():ObjectContainer3D {
 			return _container;
 		}
 
-		/**
-		 * @inherit 
-		 */
 		override public function update():void {
 
 			super.update();
@@ -112,10 +117,7 @@ package com.citrusengine.view.away3dview {
 				sprite.update(this);
 			}
 		}
-
-		/**
-		 * @inherit 
-		 */
+		
 		override protected function createArt(citrusObject:Object):Object {
 
 			var viewObject:ISpriteView = citrusObject as ISpriteView;
@@ -135,10 +137,7 @@ package com.citrusengine.view.away3dview {
 
 			return art;
 		}
-
-		/**
-		 * @inherit 
-		 */
+		
 		override protected function destroyArt(citrusObject:Object):void {
 
 			var spriteArt:Away3DArt = _viewObjects[citrusObject];

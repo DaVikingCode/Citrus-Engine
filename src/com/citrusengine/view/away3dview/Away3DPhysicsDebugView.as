@@ -10,7 +10,7 @@ package com.citrusengine.view.away3dview {
 	import flash.display.Sprite;
 	
 	/**
-	 * A wrapper for Away3D to display the debug view of the different physics engine
+	 * A wrapper for Away3D to display the debug view of the different physics engine.
 	 */
 	public class Away3DPhysicsDebugView extends ObjectContainer3D {
 		
