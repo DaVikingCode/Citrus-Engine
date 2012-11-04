@@ -82,8 +82,8 @@ package com.citrusengine.view.spriteview
 				
 				if (_view is String)
 					removeChild(content.loaderInfo.loader);
-				else
-					removeChild(content);
+				else if (content && content.parent)
+					removeChild(content.parent);
 				
 			} else {
 				
