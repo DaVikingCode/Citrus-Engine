@@ -383,7 +383,8 @@ package com.citrusengine.objects.platformer.box2d
 			{
 				var normalPoint:Point = new Point(contact.GetManifold().m_localPoint.x, contact.GetManifold().m_localPoint.y);
 				var collisionAngle:Number = new MathVector(normalPoint.x, normalPoint.y).angle * 180 / Math.PI;
-				if ((collisionAngle > 45 && collisionAngle < 135) || collider is Crate)
+				
+				if ((collisionAngle > 45 && collisionAngle < 135) || collisionAngle == -90 || collider is Crate)
 				{
 					_groundContacts.push(collider.body.GetFixtureList());
 					_onGround = true;
