@@ -107,7 +107,7 @@ package com.citrusengine.objects.platformer.box2d {
 			_lastXPos = position.x;
 			
 			//Turn around when they pass their left/right bounds
-			if ((_inverted && position.x * 30 < leftBound) || (!_inverted && position.x * 30 > rightBound))
+			if ((_inverted && position.x * _box2D.scale < leftBound) || (!_inverted && position.x * _box2D.scale > rightBound))
 				turnAround();
 			
 			var velocity:b2Vec2 = _body.GetLinearVelocity();

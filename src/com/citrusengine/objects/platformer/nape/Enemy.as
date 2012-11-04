@@ -88,7 +88,7 @@ package com.citrusengine.objects.platformer.nape {
 			_lastXPos = position.x;
 			
 			//Turn around when they pass their left/right bounds
-			if ((_inverted && position.x * 30 < leftBound) || (!_inverted && position.x * 30 > rightBound))
+			if ((_inverted && position.x < leftBound) || (!_inverted && position.x > rightBound))
 				turnAround();
 			
 			var velocity:Vec2 = _body.velocity;
