@@ -1,10 +1,10 @@
 [Get the examples here](https://github.com/alamboley/Citrus-Engine-Examples)
 
-![](http://aymericlamboley.fr/blog/wp-content/uploads/2012/08/citrus.png)
+![](http://aymericlamboley.fr/blog/wp-content/uploads/2012/11/citrus-logo-2D.png)
 
-The [Citrus Engine](http://citrusengine.com/) is a professional-grade, scalable Flash game engine built for industry-quality games. It is built upon modern Flash programming practices, allowing you to focus on making your game awesome! It comes built-in with a "platformer" starter-kit, which you can use to easily make awesome 2D sidescrolling games.
+The [Citrus Engine](http://citrusengine.com/) is a professional-grade, scalable Flash game engine built for industry-quality games. It is built upon modern Flash programming practices, allowing you to focus on making your game awesome! It comes built-in with a "platformer" starter-kit, which you can use to easily make awesome 2D or 3D sidescrolling games.
 
-The [Citrus Engine](http://citrusengine.com/) is not only made for 2D platformer games, but for all type of 2D games. It offers a nice way to separate logic/physics from art.
+The [Citrus Engine](http://citrusengine.com/) is not only made for platformer games, but for all type of games. It offers a nice way to separate logic/physics from art.
 
 It offers many options, you may use :
 - select between : the classic flash display list, blitting, [Starling](http://gamua.com/starling/) and [Away3D](http://away3d.com/).
