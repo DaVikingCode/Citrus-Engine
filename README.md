@@ -28,4 +28,4 @@ Repository Setup
 - src : Citrus Engine's source code.
 - srclib : as3 files of some libraries.
 
-[API](http://www.aymericlamboley.fr/ce-doc/)
+[API](http://citrusengine.com/api/)
