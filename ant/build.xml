@@ -368,7 +368,7 @@
 
 	<target name="CE-swc-away3d" description="Generates the CE's SWC with Away3D">
 
-		<echo>Generating Citrus Engine Away3D - AwayPhysics</echo>
+		<echo>Generating Citrus Engine Away3D</echo>
 		<exec executable="${compc.exe}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-Away3D.swc" />
