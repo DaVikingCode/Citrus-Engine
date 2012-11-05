@@ -52,7 +52,7 @@ package com.citrusengine.utils {
 						for each (var child:XML in parent.children()) {
 
 							for each (var finalElement:XML in child.children()) {
-
+								
 								params.width = finalElement.@width;
 								params.height = finalElement.@height;
 								params.depth = finalElement.@depth;
@@ -62,11 +62,12 @@ package com.citrusengine.utils {
 									params.radius = finalElement.@radius;
 
 								if (type == "Plane") {
+									
 									// the plane seems to use the height as the depth
 									params.depth = params.height;
 									params.height = 0;
 									// params.view = new Mesh(new CubeGeometry(params.width, params.height, params.depth), new ColorMaterial(0xFF0000));
-									object = new Platform("cube", params);
+									object = new Platform("plane", params);
 
 								} else {
 
