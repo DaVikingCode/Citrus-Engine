@@ -17,7 +17,7 @@
 	 */	
 	public class CitrusEngine extends MovieClip
 	{
-		public static const VERSION:String = "3.00.00 BETA 3";
+		public static const VERSION:String = "3.0.0";
 				
 		private static var _instance:CitrusEngine;
 		
