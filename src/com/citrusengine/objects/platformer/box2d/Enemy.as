@@ -118,6 +118,8 @@ package com.citrusengine.objects.platformer.box2d {
 				else
 					velocity.x = speed;
 			}
+			else
+				velosity.x = 0;
 			
 			_body.SetLinearVelocity(velocity);
 			
