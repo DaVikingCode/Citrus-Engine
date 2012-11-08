@@ -111,15 +111,11 @@ package com.citrusengine.objects.platformer.box2d {
 				turnAround();
 			
 			var velocity:b2Vec2 = _body.GetLinearVelocity();
+			
 			if (!_hurt)
-			{
-				if (_inverted)
-					velocity.x = -speed;
-				else
-					velocity.x = speed;
-			}
+				velocity.x = _inverted ? -speed : speed;
 			else
-				velosity.x = 0;
+				velocity.x = 0;
 			
 			_body.SetLinearVelocity(velocity);
 			

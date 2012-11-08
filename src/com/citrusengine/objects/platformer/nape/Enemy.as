@@ -92,8 +92,11 @@ package com.citrusengine.objects.platformer.nape {
 				turnAround();
 			
 			var velocity:Vec2 = _body.velocity;
+			
 			if (!_hurt)
 				velocity.x = _inverted ? -speed : speed;
+			else
+				velocity.x = 0;
 			
 			_body.velocity = velocity;
 			
