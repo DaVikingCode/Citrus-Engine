@@ -32,8 +32,8 @@ package com.citrusengine.core
 		public function destroy():void
 		{
 			//Call destroy on all objects, and remove all art from the stage.
-			var n:Number = _objects.length;
-			for (var i:int = n - 1; i >= 0; i--)
+			var n:uint = _objects.length;
+			for (var i:int = n - 1; i >= 0; --i)
 			{
 				var object:CitrusObject = _objects[i];
 				object.destroy();
@@ -72,8 +72,8 @@ package com.citrusengine.core
 		{
 			//Call update on all objects
 			var garbage:Array = [];
-			var n:Number = _objects.length;
-			for (var i:int = 0; i < n; i++)
+			var n:uint = _objects.length;
+			for (var i:uint = 0; i < n; ++i)
 			{
 				var object:CitrusObject = _objects[i];
 				if (object.kill)
@@ -85,7 +85,7 @@ package com.citrusengine.core
 			//Destroy all objects marked for destroy
 			//TODO There might be a limit on the number of Box2D bodies that you can destroy in one tick?
 			n = garbage.length;
-			for (i = 0; i < n; i++)
+			for (i = 0; i < n; ++i)
 			{
 				var garbageObject:CitrusObject = garbage[i];
 				_objects.splice(_objects.indexOf(garbageObject), 1);
