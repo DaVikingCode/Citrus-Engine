@@ -21,7 +21,7 @@ package com.citrusengine.objects {
 	/**
 	 * You should extend this class to take advantage of Nape. This class provides template methods for defining
 	 * and creating Nape bodies, fixtures, shapes, and joints. If you are not familiar with Nape, you should first
-	 * learn about it via the <a href="http://deltaluca.me.uk/docnew/">Nape Documentation</a>.
+	 * learn about it via the <a href="http://napephys.com/help/manual.html">Nape Manual</a>.
 	 */	
 	public class NapePhysicsObject extends APhysicsObject implements ISpriteView {
 		
