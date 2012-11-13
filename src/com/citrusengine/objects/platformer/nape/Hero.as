@@ -246,50 +246,8 @@ package com.citrusengine.objects.platformer.nape {
 				//update physics with new velocity
 				_body.velocity = velocity;
 			}
-			//updateAnimation();
 			
-			
-			// update the animation
-			var prevAnimation:String = _animation;
-			
-			//var velocity:V2 = _body.GetLinearVelocity();
-			if (_hurt)
-			{
-				_animation = "hurt";
-			}
-			else if (!_onGround)
-			{
-				_animation = "jump";
-			}
-			else if (_ducking)
-			{
-				//_animation = "duck";
-			}
-			else
-			{
-				//var walkingSpeed:Number = getWalkingSpeed();
-				var walkingSpeed:Number = _body.velocity.x; // this won't work long term!
-				if (walkingSpeed < -acceleration)
-				{
-					_inverted = true;
-					_animation = "walk";
-				}
-				else if (walkingSpeed > acceleration)
-				{
-					_inverted = false;
-					_animation = "walk";
-				}
-				else
-				{
-					_animation = "idle";
-				}
-			}
-			
-			if (prevAnimation != _animation)
-			{
-				onAnimationChange.dispatch();
-			}
-			
+			updateAnimation();
 		}
 		
 		protected function getSlopeBasedMoveAngle():Vec2 {
@@ -327,6 +285,48 @@ package com.citrusengine.objects.platformer.nape {
 			//trace("end contact:", e.int2.castBody.userData.myData);
 			_groundContacts.splice(_groundContacts.indexOf(e.int2.castBody), 1);
 			//trace("ground contacts:", _groundContacts.length);
+		}
+		
+		protected function updateAnimation():void {
+			
+			var prevAnimation:String = _animation;
+			
+			//var walkingSpeed:Number = getWalkingSpeed();
+			var walkingSpeed:Number = _body.velocity.x; // this won't work long term!
+			
+			if (_hurt)
+				_animation = "hurt";
+				
+			else if (!_onGround) {
+				
+				_animation = "jump";
+				
+				if (walkingSpeed < -acceleration)
+					_inverted = true;
+				else if (walkingSpeed > acceleration)
+					_inverted = false;
+				
+			} else if (_ducking)
+				_animation = "duck";
+				
+			else {
+				
+				if (walkingSpeed < -acceleration) {
+					_inverted = true;
+					_animation = "walk";
+					
+				} else if (walkingSpeed > acceleration) {
+					
+					_inverted = false;
+					_animation = "walk";
+					
+				} else
+					_animation = "idle";
+			}
+			
+			if (prevAnimation != _animation)
+				onAnimationChange.dispatch();
+			
 		}
 	}
 }

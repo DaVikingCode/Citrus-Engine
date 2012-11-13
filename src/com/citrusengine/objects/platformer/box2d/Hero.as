@@ -430,51 +430,50 @@ package com.citrusengine.objects.platformer.box2d
 			_combinedGroundAngle /= _groundContacts.length;
 		}
 		
-		protected function endHurtState():void
-		{
+		protected function endHurtState():void {
+			
 			_hurt = false;
 			controlsEnabled = true;
 		}
 		
-		protected function updateAnimation():void
-		{
+		protected function updateAnimation():void {
+			
 			var prevAnimation:String = _animation;
 			
+			var walkingSpeed:Number = getWalkingSpeed();
+			
 			if (_hurt)
-			{
 				_animation = "hurt";
-			}
-			else if (!_onGround)
-			{
+				
+			else if (!_onGround) {
+				
 				_animation = "jump";
-			}
-			else if (_ducking)
-			{
-				_animation = "duck";
-			}
-			else
-			{
-				var walkingSpeed:Number = getWalkingSpeed();
+				
 				if (walkingSpeed < -acceleration)
-				{
+					_inverted = true;
+				else if (walkingSpeed > acceleration)
+					_inverted = false;
+				
+			} else if (_ducking)
+				_animation = "duck";
+				
+			else {
+				
+				if (walkingSpeed < -acceleration) {
 					_inverted = true;
 					_animation = "walk";
-				}
-				else if (walkingSpeed > acceleration)
-				{
+					
+				} else if (walkingSpeed > acceleration) {
+					
 					_inverted = false;
 					_animation = "walk";
-				}
-				else
-				{
+					
+				} else
 					_animation = "idle";
-				}
 			}
 			
 			if (prevAnimation != _animation)
-			{
 				onAnimationChange.dispatch();
-			}
 		}
 	}
 }
