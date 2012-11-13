@@ -100,17 +100,13 @@ package com.citrusengine.utils {
 		 * Call the LevelManager instance's gotoLevel() function to launch your first level, or you may specify it.
 		 * @param index : the level index from 1 to ... ; different from the levels' array indexes.
 		 */
-		public function gotoLevel(index:int = -1):void {
+		public function gotoLevel(index:uint = 0):void {
 
-			if (_currentLevel != null) {
+			if (_currentLevel != null)
 				_currentLevel.lvlEnded.remove(_onLevelEnded);
-			}
 
-			var loader:Loader = new Loader();
-
-			if (index != -1) {
+			if (index != 0)
 				_currentIndex = index - 1;
-			}
 
 			// Level SWF and SWC are undefined
 			if (_levels[_currentIndex][0] == undefined) {
@@ -140,6 +136,7 @@ package com.citrusengine.utils {
 					
 				} else {
 					
+					var loader:Loader = new Loader();
 					loader.load(new URLRequest(_levels[_currentIndex][1]));
 					loader.contentLoaderInfo.addEventListener(Event.COMPLETE,_levelLoaded);
 				}
