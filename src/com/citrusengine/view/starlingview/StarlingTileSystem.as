@@ -60,7 +60,7 @@ package com.citrusengine.view.starlingview {
 			} else if (images is Array) {
 				_imagesArray = images;
 			} else {
-				trace("StarlingTileSystem IMAGES SOURCE TYPE NOT FOUND!");
+				trace("StarlingTileSystem images source error!");
 			}
 		}
 		
@@ -162,8 +162,6 @@ package com.citrusengine.view.starlingview {
 							tile.width = bmp.width;
 							tile.height = bmp.height;
 							_liveTiles.push(tile);
-						} else {
-							trace("error creating bitmap");
 						}
 					}
 				}
@@ -224,7 +222,7 @@ package com.citrusengine.view.starlingview {
 				if (numInRam > maxInRam) {
 					maxInRam = numInRam;
 					// shows the maximum number of tiles used
-					trace(this.name, "max tiles in ram:", numInRam, "memory:", (numInRam * 16), "MB");
+					//trace(this.name, "max tiles in ram:", numInRam, "memory:", (numInRam * 16), "MB");
 				}
 			}
 			
@@ -255,7 +253,7 @@ package com.citrusengine.view.starlingview {
 			
 			flatten();
 			
-			trace(this.name, "all shown, max tiles in ram:", _liveTiles.length);
+			//trace(this.name, "all shown, max tiles in ram:", _liveTiles.length);
 		}
 		
 		// loops through all tiles and removes from memory
