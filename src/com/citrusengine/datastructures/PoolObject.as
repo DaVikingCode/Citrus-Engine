@@ -76,9 +76,10 @@ package com.citrusengine.datastructures {
 
 		}
 
-		/** Get an object from the free list and returns the node holding it in its data property
-		 * Don't forget to cast and reinitialize it !!!
-		 * @return a node holding the newly 'recycled' object
+		/** Get an object from the free list and returns the node holding it in its data property.
+		 * It will be reinitialize inside this function. You may need to cast it.
+		 * @param params It calls an <code>initialize</code> method. If the pool <code>_isCitrusObjectPool</code> is true, it calls the CitrusObject <code>initialize</code> method.
+		 * @return A node holding the newly 'recycled' object
 		 */
 		public function create(params:Object):DoublyLinkedListNode {
 			
