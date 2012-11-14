@@ -21,6 +21,18 @@ package com.citrusengine.core
 		private var _view:CitrusView;
 		private var _input:Input;
 		
+		/**
+		 * Set this variable to true to enable frame rate independent motion. If you don't know what FRIM is, take a look <a target="_blank" href="http://actionsnippet.com/swfs/qbox_FRIM.html">there</a>.
+		 */
+		protected var _frim:Boolean = false;
+		
+		/**
+		 * The time step you would perform using FRIM.
+		 */
+		protected var _timeStep:Number = 1 / 60;
+
+		private var _accumulator:Number = 0;
+		
 		public function State()
 		{
 			
@@ -68,40 +80,65 @@ package com.citrusengine.core
 		 * The update method also checks for CitrusObjects that are ready to be destroyed and kills them.
 		 * Finally, this method updates the Input and View managers. 
 		 */		
-		public function update(timeDelta:Number):void
-		{
-			//Call update on all objects
+		public function update(timeDelta:Number):void {
+
+			// Search objects to destroy
 			var garbage:Array = [];
 			var n:uint = _objects.length;
-			for (var i:uint = 0; i < n; ++i)
-			{
+
+			for (var i:uint = 0; i < n; ++i) {
 				var object:CitrusObject = _objects[i];
 				if (object.kill)
 					garbage.push(object);
-				else
-					object.update(timeDelta);
 			}
-			
-			//Destroy all objects marked for destroy
-			//TODO There might be a limit on the number of Box2D bodies that you can destroy in one tick?
+
+			// Destroy all objects marked for destroy
+			// TODO There might be a limit on the number of Box2D bodies that you can destroy in one tick?
 			n = garbage.length;
-			for (i = 0; i < n; ++i)
-			{
+			for (i = 0; i < n; ++i) {
 				var garbageObject:CitrusObject = garbage[i];
 				_objects.splice(_objects.indexOf(garbageObject), 1);
-				
+
 				if (garbageObject is Entity)
-					_view.removeArt((garbageObject as Entity).components["view"]);				
+					_view.removeArt((garbageObject as Entity).components["view"]);
 				else
 					_view.removeArt(garbageObject);
-				
+
 				garbageObject.destroy();
 			}
-			
-			//Update the input object
+
+			// Call update on all objects
+			n = _objects.length;
+
+			if (_frim) {
+
+				if (timeDelta > 0.25)
+					timeDelta = 0.25;
+
+				_accumulator += timeDelta;
+
+				while (_accumulator >= _timeStep) {
+
+					for (i = 0; i < n; ++i) {
+						object = _objects[i];
+						object.update(0.05);
+					}
+
+					_accumulator -= _timeStep;
+				}
+
+			} else {
+
+				for (i = 0; i < n; ++i) {
+					object = _objects[i];
+					object.update(0.05);
+				}
+			}
+
+			// Update the input object
 			_input.update();
-			
-			//Update the state's view
+
+			// Update the state's view
 			_view.update();
 		}
 		

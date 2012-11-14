@@ -21,6 +21,18 @@ package com.citrusengine.core {
 		private var _objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 		private var _view:CitrusView;
 		private var _input:Input;
+		
+		/**
+		 * Set this variable to true to enable frame rate independent motion. If you don't know what FRIM is, take a look <a target="_blank" href="http://actionsnippet.com/swfs/qbox_FRIM.html">there</a>.
+		 */
+		protected var _frim:Boolean = false;
+		
+		/**
+		 * The time step you would perform using FRIM.
+		 */
+		protected var _timeStep:Number = 1 / 60;
+
+		private var _accumulator:Number = 0;		
 
 		public function StarlingState() {
 
@@ -30,7 +42,7 @@ package com.citrusengine.core {
 		 * Called by the Citrus Engine.
 		 */
 		public function destroy():void {
-			
+
 			// Call destroy on all objects, and remove all art from the stage.
 			var n:uint = _objects.length;
 			for (var i:int = n - 1; i >= 0; --i) {
@@ -56,7 +68,7 @@ package com.citrusengine.core {
 		 * state in the constructur. You should call it in this initialize() method. 
 		 */
 		public function initialize():void {
-			
+
 			_view = createView();
 			_input = CitrusEngine.getInstance().input;
 		}
@@ -67,16 +79,15 @@ package com.citrusengine.core {
 		 * Finally, this method updates the Input and View managers. 
 		 */
 		public function update(timeDelta:Number):void {
-			
-			// Call update on all objects
+
+			// Search objects to destroy
 			var garbage:Array = [];
 			var n:uint = _objects.length;
+
 			for (var i:uint = 0; i < n; ++i) {
 				var object:CitrusObject = _objects[i];
 				if (object.kill)
 					garbage.push(object);
-				else
-					object.update(timeDelta);
 			}
 
 			// Destroy all objects marked for destroy
@@ -85,13 +96,41 @@ package com.citrusengine.core {
 			for (i = 0; i < n; ++i) {
 				var garbageObject:CitrusObject = garbage[i];
 				_objects.splice(_objects.indexOf(garbageObject), 1);
-				
+
 				if (garbageObject is Entity)
-					_view.removeArt((garbageObject as Entity).components["view"]);				
+					_view.removeArt((garbageObject as Entity).components["view"]);
 				else
 					_view.removeArt(garbageObject);
-				
+
 				garbageObject.destroy();
+			}
+
+			// Call update on all objects
+			n = _objects.length;
+
+			if (_frim) {
+
+				if (timeDelta > 0.25)
+					timeDelta = 0.25;
+
+				_accumulator += timeDelta;
+
+				while (_accumulator >= _timeStep) {
+
+					for (i = 0; i < n; ++i) {
+						object = _objects[i];
+						object.update(0.05);
+					}
+
+					_accumulator -= _timeStep;
+				}
+
+			} else {
+
+				for (i = 0; i < n; ++i) {
+					object = _objects[i];
+					object.update(0.05);
+				}
 			}
 
 			// Update the input object
@@ -107,13 +146,13 @@ package com.citrusengine.core {
 		 * @return The CitrusObject that you passed in. Useful for linking commands together.
 		 */
 		public function add(object:CitrusObject):CitrusObject {
-			
+
 			_objects.push(object);
 			_view.addArt(object);
-			
+
 			return object;
 		}
-		
+
 		/**
 		 * Call this method to add an Entity to this state. All entities will need to be created
 		 * and added via this method so that they can be properly creatd, managed, updated, and destroyed.
@@ -121,10 +160,10 @@ package com.citrusengine.core {
 		 * @return The CitrusObject that you passed in. Useful for linking commands together.
 		 */
 		public function addEntity(entity:Entity, view:ViewComponent = null):Entity {
-			
+
 			_objects.push(entity);
 			_view.addArt(view);
-			
+
 			return entity;
 		}
 
@@ -142,12 +181,12 @@ package com.citrusengine.core {
 		 * @param name The name property of the object you want to get a reference to.
 		 */
 		public function getObjectByName(name:String):CitrusObject {
-			
+
 			for each (var object:CitrusObject in _objects) {
 				if (object.name == name)
 					return object;
 			}
-			
+
 			return null;
 		}
 
@@ -157,12 +196,12 @@ package com.citrusengine.core {
 		 * @param type The class of the object you want to get a reference to.
 		 */
 		public function getFirstObjectByType(type:Class):CitrusObject {
-			
+
 			for each (var object:CitrusObject in _objects) {
 				if (object is type)
 					return object;
 			}
-			
+
 			return null;
 		}
 
@@ -172,7 +211,7 @@ package com.citrusengine.core {
 		 * of type "Coin" via this method. Then you'd loop through the returned array to add your listener to the coins' event. 
 		 */
 		public function getObjectsByType(type:Class):Vector.<CitrusObject> {
-			
+
 			var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 
 			for each (var object:CitrusObject in _objects) {
@@ -180,7 +219,7 @@ package com.citrusengine.core {
 					objects.push(object);
 				}
 			}
-			
+
 			return objects;
 		}
 
