@@ -6,6 +6,14 @@ package com.citrusengine.math {
 	
 	public class MathUtils {
 		
+		public static function DistanceBetweenTwoPoints(x1:Number, x2:Number,  y1:Number, y2:Number):Number {
+			
+			var dx:Number = x1 - x2;
+			var dy:Number = y1 - y2;
+			
+			return Math.sqrt(dx * dx + dy * dy);
+		}
+		
 		public static function RotateAroundInternalPoint(object:DisplayObject, pointToRotateAround:Point, rotation:Number):void {
 			
 			// Thanks : http://blog.open-design.be/2009/02/05/rotate-a-movieclipdisplayobject-around-a-point/

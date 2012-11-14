@@ -1,11 +1,12 @@
 package com.citrusengine.view.starlingview {
-	
+
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.Texture;
 
 	import com.citrusengine.core.CitrusEngine;
+	import com.citrusengine.math.MathUtils;
 	import com.citrusengine.view.ISpriteView;
 
 	import flash.display.Bitmap;
@@ -182,7 +183,7 @@ package com.citrusengine.view.starlingview {
 				// get a tile
 				currentTile = _liveTiles[t] as StarlingTile;
 				// check distance between tile and hero
-				d = DistanceTwoPoints(currentTile.x + (-viewRootX * (1 - parallax)) + (currentTile.width >> 1), _followMe.x, currentTile.y + (-viewRootY * (1 - parallax)) + (currentTile.height >> 1), _followMe.y);
+				d = MathUtils.DistanceBetweenTwoPoints(currentTile.x + (-viewRootX * (1 - parallax)) + (currentTile.width >> 1), _followMe.x, currentTile.y + (-viewRootY * (1 - parallax)) + (currentTile.height >> 1), _followMe.y);
 				// check if it is close enough to load in
 				if (d < (Math.max(currentTile.width, currentTile.height)) * (loadInDistance / parallax)) {
 					if (!currentTile.isInRAM) {
@@ -229,13 +230,6 @@ package com.citrusengine.view.starlingview {
 			if (!isFlattened) {
 				flatten();
 			}
-		}
-		
-		private function DistanceTwoPoints(x1:Number, x2:Number,  y1:Number, y2:Number):Number {
-			
-			var dx:Number = x1 - x2;
-			var dy:Number = y1 - y2;
-			return Math.sqrt(dx * dx + dy * dy);
 		}
 		
 		// loops through all tiles and loads into memory
