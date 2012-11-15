@@ -378,8 +378,8 @@ package com.citrusengine.objects.platformer.box2d
 				}
 			}
 			
-			//Collision angle
-			if (contact.GetManifold().m_localPoint) //The normal property doesn't come through all the time. I think doesn't come through against sensors.
+			//Collision angle if we don't touch a Sensor.
+			if (contact.GetManifold().m_localPoint && !(collider is Sensor)) //The normal property doesn't come through all the time. I think doesn't come through against sensors.
 			{
 				var normalPoint:Point = new Point(contact.GetManifold().m_localPoint.x, contact.GetManifold().m_localPoint.y);
 				var collisionAngle:Number = new MathVector(normalPoint.x, normalPoint.y).angle * 180 / Math.PI;
