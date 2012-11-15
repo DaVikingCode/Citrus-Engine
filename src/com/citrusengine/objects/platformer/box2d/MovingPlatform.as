@@ -171,7 +171,8 @@ package com.citrusengine.objects.platformer.box2d {
 				if (velocity.y > 0) {
 				
 					passengerVelocity = passenger.GetLinearVelocity();
-					passengerVelocity.Add(velocity);
+					// we don't change x velocity because of the friction!
+					passengerVelocity.y += velocity.y;
 					passenger.SetLinearVelocity(passengerVelocity);
 				}
 			}
