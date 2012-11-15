@@ -87,9 +87,15 @@ package com.citrusengine.core
 			var n:uint = _objects.length;
 
 			for (var i:uint = 0; i < n; ++i) {
+				
 				var object:CitrusObject = _objects[i];
+				
 				if (object.kill)
 					garbage.push(object);
+					
+				// if we don't use the frim, we update all objects.
+				else if (!_frim)
+					object.update(timeDelta);
 			}
 
 			// Destroy all objects marked for destroy
@@ -107,10 +113,10 @@ package com.citrusengine.core
 				garbageObject.destroy();
 			}
 
-			// Call update on all objects
-			n = _objects.length;
-
+			// Call update on all objects using the frim
 			if (_frim) {
+				
+				n = _objects.length;
 
 				if (timeDelta > 0.25)
 					timeDelta = 0.25;
@@ -127,12 +133,6 @@ package com.citrusengine.core
 					_accumulator -= _timeStep;
 				}
 
-			} else {
-
-				for (i = 0; i < n; ++i) {
-					object = _objects[i];
-					object.update(0.05);
-				}
 			}
 
 			// Update the input object
