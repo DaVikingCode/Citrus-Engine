@@ -142,9 +142,7 @@ package com.citrusengine.objects.platformer.box2d {
 				
 				//Move the platform according to its destination
 				
-				var destination:b2Vec2 = new b2Vec2(_end.x, _end.y);
-				if (!_forward)
-					destination = new b2Vec2(_start.x, _start.y);
+				var destination:b2Vec2 = _forward ? new b2Vec2(_end.x, _end.y) : new b2Vec2(_start.x, _start.y);
 				
 				destination.Subtract(_body.GetPosition());
 				velocity = destination;
