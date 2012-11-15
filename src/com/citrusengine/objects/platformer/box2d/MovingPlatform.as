@@ -141,7 +141,6 @@ package com.citrusengine.objects.platformer.box2d {
 			else {
 				
 				//Move the platform according to its destination
-				
 				var destination:b2Vec2 = _forward ? new b2Vec2(_end.x, _end.y) : new b2Vec2(_start.x, _start.y);
 				
 				destination.Subtract(_body.GetPosition());
@@ -156,6 +155,7 @@ package com.citrusengine.objects.platformer.box2d {
 					//Destination is very close. Switch the travelling direction
 					_forward = !_forward;
 					
+					//prevent bodies to fall if they are on a edge. 
 					var passenger:b2Body;
 					for each (passenger in _passengers)
            				passenger.SetLinearVelocity(velocity);
@@ -164,6 +164,7 @@ package com.citrusengine.objects.platformer.box2d {
 			
 			_body.SetLinearVelocity(velocity);
 			
+			//prevent bodies to fall if they are on a edge.
 			var passengerVelocity:b2Vec2;
 			for each (passenger in _passengers) {
 				
@@ -173,7 +174,6 @@ package com.citrusengine.objects.platformer.box2d {
 					passengerVelocity.Add(velocity);
 					passenger.SetLinearVelocity(passengerVelocity);
 				}
-				
 			}
 						
 		}
