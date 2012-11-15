@@ -135,12 +135,11 @@ package com.citrusengine.objects.platformer.box2d {
 			var velocity:b2Vec2 = _body.GetLinearVelocity();
 			
 			if ((waitForPassenger && _passengers.length == 0) || !enabled)
-			{
 				//Platform should not move
 				velocity.SetZero();
-			}
-			else
-			{
+				
+			else {
+				
 				//Move the platform according to its destination
 				
 				var destination:b2Vec2 = new b2Vec2(_end.x, _end.y);
@@ -150,19 +149,35 @@ package com.citrusengine.objects.platformer.box2d {
 				destination.Subtract(_body.GetPosition());
 				velocity = destination;
 				
-				if (velocity.Length() > speed / 30)
-				{
+				if (velocity.Length() > speed / _box2D.scale)
 					//Still has further to go. Normalize the velocity to the max speed
 					velocity.Normalize();
-				}
-				else
-				{
+					
+				else {
+					
 					//Destination is very close. Switch the travelling direction
 					_forward = !_forward;
+					
+					var passenger:b2Body;
+					for each (passenger in _passengers)
+           				passenger.SetLinearVelocity(velocity);
 				}
 			}
 			
 			_body.SetLinearVelocity(velocity);
+			
+			var passengerVelocity:b2Vec2;
+			for each (passenger in _passengers) {
+				
+				if (velocity.y > 0) {
+				
+					passengerVelocity = passenger.GetLinearVelocity();
+					passengerVelocity.Add(velocity);
+					passenger.SetLinearVelocity(passengerVelocity);
+				}
+				
+			}
+						
 		}
 		
 		override protected function defineBody():void
