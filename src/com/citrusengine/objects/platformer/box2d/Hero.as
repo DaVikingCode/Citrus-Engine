@@ -380,12 +380,16 @@ package com.citrusengine.objects.platformer.box2d
 			
 			//Collision angle if we don't touch a Sensor.
 			if (contact.GetManifold().m_localPoint && !(collider is Sensor)) //The normal property doesn't come through all the time. I think doesn't come through against sensors.
-			{
+			{				
 				var normalPoint:Point = new Point(contact.GetManifold().m_localPoint.x, contact.GetManifold().m_localPoint.y);
 				var collisionAngle:Number = new MathVector(normalPoint.x, normalPoint.y).angle * 180 / Math.PI;
 				
 				if ((collisionAngle > 45 && collisionAngle < 135) || collisionAngle == -90 || collider is Crate)
 				{
+					//we don't want the Hero to be set up as onGround if it touches a cloud.
+					if (collider is Platform && (collider as Platform).oneWay && collisionAngle == -90)
+						return;
+					
 					_groundContacts.push(collider.body.GetFixtureList());
 					_onGround = true;
 					updateCombinedGroundAngle();
