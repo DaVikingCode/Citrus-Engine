@@ -209,7 +209,7 @@ package com.citrusengine.objects.platformer.box2d {
 		}
 		
 		/**
-		 * The enemy is no more hurt.
+		 * The enemy is no more hurt, but it is killed. Override this function to prevent enemy's death.
 		 */
 		protected function endHurtState():void
 		{
