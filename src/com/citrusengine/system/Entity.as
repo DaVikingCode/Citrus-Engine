@@ -1,7 +1,7 @@
 package com.citrusengine.system {
 
 	import com.citrusengine.core.CitrusObject;
-
+	
 	import flash.utils.Dictionary;
 
 	/**
@@ -29,9 +29,42 @@ package com.citrusengine.system {
 		 */
 		public function add(component:Component):Entity {
 			
-			components[component.name] = component;
-
+			doAddComponent(component, component.name);
+			
 			return this;
+		}
+		
+		protected function doAddComponent(component:Component, componentName:String):Boolean
+		{
+			if( componentName == "" )
+			{
+				trace("A component name was not specified. This might cause problems later.");
+			}
+			
+			if( components[componentName] )
+			{
+				throw Error( "A component with name '" + componentName + "' already exists on this entity." );
+				return false;
+			}
+			
+			if( component.entity )
+			{
+				if( component.entity == this )
+				{
+					trace( "Component with name '" + componentName + "' already has entity ('" + this.name + "') defined. Manually defining components is no longer needed");
+					components[componentName] = component;
+					return true;
+				}
+				
+				throw Error( "The component '" + componentName + "' already has an owner. ('" + component.entity.name + "')" );
+				return false;
+			}
+			
+			
+			
+			component.entity = this;
+			components[componentName] = component;
+			return true;
 		}
 		
 		/**
@@ -43,6 +76,31 @@ package com.citrusengine.system {
 				component.destroy();
 				delete components[component.name];
 			}
+		}
+		
+		public function lookupComponentByType(componentType:Class):Component
+		{
+			var component:Component;
+			for each(component in components)
+			{
+				if( component is componentType )
+					return component;
+			}
+			
+			return null;
+		}
+		
+		public function lookupComponentsByType(componentType:Class):Array
+		{
+			var list:Array = [];
+			var component:Component;
+			for each(component in components)
+			{
+				if( component is componentType )
+					list.push( component );
+			}
+			
+			return list;
 		}
 		
 		/**
