@@ -207,7 +207,7 @@
 		/**
 		 * Set up things that need the stage access.
 		 */
-		private function handleAddedToStage(e:Event):void 
+		protected function handleAddedToStage(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
 			stage.scaleMode = "noScale";
