@@ -99,9 +99,9 @@ package com.citrusengine.view.starlingview {
 		
 		override protected function destroyArt(citrusObject:Object):void {
 			
-			var spriteArt:StarlingArt = _viewObjects[citrusObject];
-			spriteArt.destroy();
-			spriteArt.parent.removeChild(spriteArt);
+			var starlingArt:StarlingArt = _viewObjects[citrusObject];
+			starlingArt.destroy();
+			starlingArt.parent.removeChild(starlingArt);
 		}
 
 		private function updateGroupForSprite(sprite:StarlingArt):void {

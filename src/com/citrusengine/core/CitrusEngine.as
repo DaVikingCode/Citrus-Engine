@@ -6,6 +6,8 @@
 	import org.osflash.signals.Signal;
 
 	import flash.display.MovieClip;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	
 	/**
@@ -210,8 +212,8 @@
 		protected function handleAddedToStage(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, handleAddedToStage);
-			stage.scaleMode = "noScale";
-			stage.align = "topLeft";
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
 			stage.addEventListener(Event.DEACTIVATE, handleStageDeactivated);
 			
 			_input.initialize();
