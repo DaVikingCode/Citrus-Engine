@@ -146,9 +146,12 @@ package com.citrusengine.objects.platformer.box2d {
 				destination.Subtract(_body.GetPosition());
 				velocity = destination;
 				
-				if (velocity.Length() > speed / _box2D.scale)
+				if (velocity.Length() > speed / _box2D.scale) {
+					
 					//Still has further to go. Normalize the velocity to the max speed
 					velocity.Normalize();
+					velocity.Multiply(speed);
+				}
 					
 				else {
 					
