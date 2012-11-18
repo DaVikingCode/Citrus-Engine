@@ -62,8 +62,6 @@ package com.citrusengine.core {
 		protected function _context3DCreated(evt:starling.events.Event):void {
 
 			_starling.removeEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
-
-			_starling.start();
 		}
 
 		public function get starling():Starling {
@@ -74,7 +72,7 @@ package com.citrusengine.core {
 
 			if (_newState) {
 				
-				if (_starling.isStarted) {
+				if (_starling.isStarted && _starling.context) {
 					
 					if (_state) {
 
