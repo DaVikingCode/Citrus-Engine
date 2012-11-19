@@ -1,23 +1,24 @@
 package com.citrusengine.objects.platformer.box2d
 {
 
-	import Box2D.Collision.b2Manifold;
-	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.Contacts.b2Contact;
-	import Box2D.Dynamics.b2Fixture;
-
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
 	import com.citrusengine.utils.Box2DShapeMaker;
-
-	import org.osflash.signals.Signal;
-
+	
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;
+	
+	import Box2D.Collision.b2Manifold;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2Fixture;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	
+	import org.osflash.signals.Signal;
 	
 	/**
 	 * This is a common, simple, yet solid implementation of a side-scrolling Hero. 
@@ -344,7 +345,7 @@ package com.citrusengine.objects.platformer.box2d
 			if (!_ducking)
 				return;
 				
-			var other:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
+			var other:IBox2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
 			
 			var heroTop:Number = y;
 			var objectBottom:Number = other.y + (other.height / 2);
@@ -355,7 +356,7 @@ package com.citrusengine.objects.platformer.box2d
 					
 		override public function handleBeginContact(contact:b2Contact):void {
 			
-			var collider:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
+			var collider:IBox2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
 			
 			if (_enemyClass && collider is _enemyClass)
 			{
@@ -378,14 +379,18 @@ package com.citrusengine.objects.platformer.box2d
 				}
 			}
 			
-			//Collision angle
-			if (contact.GetManifold().m_localPoint) //The normal property doesn't come through all the time. I think doesn't come through against sensors.
-			{
+			//Collision angle if we don't touch a Sensor.
+			if (contact.GetManifold().m_localPoint && !(collider is Sensor)) //The normal property doesn't come through all the time. I think doesn't come through against sensors.
+			{				
 				var normalPoint:Point = new Point(contact.GetManifold().m_localPoint.x, contact.GetManifold().m_localPoint.y);
 				var collisionAngle:Number = new MathVector(normalPoint.x, normalPoint.y).angle * 180 / Math.PI;
 				
 				if ((collisionAngle > 45 && collisionAngle < 135) || collisionAngle == -90 || collider is Crate)
 				{
+					//we don't want the Hero to be set up as onGround if it touches a cloud.
+					if (collider is Platform && (collider as Platform).oneWay && collisionAngle == -90)
+						return;
+					
 					_groundContacts.push(collider.body.GetFixtureList());
 					_onGround = true;
 					updateCombinedGroundAngle();
@@ -396,7 +401,7 @@ package com.citrusengine.objects.platformer.box2d
 		
 		override public function handleEndContact(contact:b2Contact):void {
 			
-			var collider:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
+			var collider:IBox2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
 			
 			//Remove from ground contacts, if it is one.
 			var index:int = _groundContacts.indexOf(collider.body.GetFixtureList());

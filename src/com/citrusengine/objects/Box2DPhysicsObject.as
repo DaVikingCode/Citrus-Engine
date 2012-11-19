@@ -1,30 +1,31 @@
 package com.citrusengine.objects {
 
+	import com.citrusengine.core.CitrusEngine;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.box2d.Box2D;
+	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
+	import com.citrusengine.view.ISpriteView;
+	
+	import Box2D.Collision.b2Manifold;
 	import Box2D.Collision.Shapes.b2CircleShape;
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Collision.Shapes.b2Shape;
-	import Box2D.Collision.b2Manifold;
 	import Box2D.Common.Math.b2Mat22;
 	import Box2D.Common.Math.b2Transform;
 	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.Contacts.b2Contact;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2ContactImpulse;
 	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
-
-	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.physics.PhysicsCollisionCategories;
-	import com.citrusengine.physics.box2d.Box2D;
-	import com.citrusengine.view.ISpriteView;
+	import Box2D.Dynamics.Contacts.b2Contact;
 	
 	/**
 	 * You should extend this class to take advantage of Box2D. This class provides template methods for defining
 	 * and creating Box2D bodies, fixtures, shapes, and joints. If you are not familiar with Box2D, you should first
 	 * learn about it via the <a href="http://www.box2d.org/manual.html">Box2D Manual</a>.
 	 */	
-	public class Box2DPhysicsObject extends APhysicsObject implements ISpriteView
+	public class Box2DPhysicsObject extends APhysicsObject implements ISpriteView, IBox2DPhysicsObject
 	{
 		protected var _box2D:Box2D;
 		protected var _bodyDef:b2BodyDef;
@@ -89,7 +90,7 @@ package com.citrusengine.objects {
 		 * @param the contact
 		 * @return the collider
 		 */
-		static public function CollisionGetOther(self:Box2DPhysicsObject, contact:b2Contact):Box2DPhysicsObject {
+		static public function CollisionGetOther(self:IBox2DPhysicsObject, contact:b2Contact):IBox2DPhysicsObject {
 			return self == contact.GetFixtureA().GetBody().GetUserData() ? contact.GetFixtureB().GetBody().GetUserData() : contact.GetFixtureA().GetBody().GetUserData();
 		}
 		
@@ -100,7 +101,7 @@ package com.citrusengine.objects {
 		 * @param the contact
 		 * @return the collided
 		 */
-		static public function CollisionGetSelf(self:Box2DPhysicsObject, contact:b2Contact):Box2DPhysicsObject {
+		static public function CollisionGetSelf(self:IBox2DPhysicsObject, contact:b2Contact):IBox2DPhysicsObject {
 			return self == contact.GetFixtureA().GetBody().GetUserData() ? contact.GetFixtureA().GetBody().GetUserData() : contact.GetFixtureB().GetBody().GetUserData();
 		}
 		

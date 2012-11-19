@@ -1,17 +1,18 @@
 package com.citrusengine.objects.platformer.box2d 
 {
 
-	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.Contacts.b2Contact;
-	import Box2D.Dynamics.b2FilterData;
-
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
-
-	import org.osflash.signals.Signal;
-
+	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
+	
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
+	
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2FilterData;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	
+	import org.osflash.signals.Signal;
 		
 	/**
 	 * A missile is an object that moves at a particular trajectory and speed, and explodes when it comes into contact with something.
@@ -67,7 +68,7 @@ package com.citrusengine.objects.platformer.box2d
 		protected var _exploded:Boolean = false;
 		protected var _explodeTimeoutID:Number = 0;
 		protected var _fuseDurationTimeoutID:Number = 0;
-		protected var _contact:Box2DPhysicsObject;
+		protected var _contact:IBox2DPhysicsObject;
 		
 		public function Missile(name:String, params:Object = null) 
 		{
