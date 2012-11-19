@@ -215,6 +215,7 @@
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			stage.addEventListener(Event.DEACTIVATE, handleStageDeactivated);
+			stage.addEventListener(Event.ACTIVATE, handleStageActivated);
 			
 			_input.initialize();
 		}
