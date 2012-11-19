@@ -1,6 +1,6 @@
 package com.citrusengine.objects.platformer.box2d {
 
-	import com.citrusengine.objects.Box2DPhysicsObject;
+	import com.citrusengine.physics.box2d.Box2DUtils;
 	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
 	import com.citrusengine.utils.Box2DShapeMaker;
 	
@@ -46,7 +46,7 @@ package com.citrusengine.objects.platformer.box2d {
 
 			super.handleBeginContact(contact);
 			
-			var collider:IBox2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
+			var collider:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(this, contact);
 			
 			if (_collectorClass && collider is _collectorClass)
 				kill = true;

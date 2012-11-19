@@ -4,6 +4,7 @@ package com.citrusengine.objects.platformer.box2d
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.box2d.Box2DUtils;
 	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
 	import com.citrusengine.utils.Box2DShapeMaker;
 	
@@ -345,7 +346,7 @@ package com.citrusengine.objects.platformer.box2d
 			if (!_ducking)
 				return;
 				
-			var other:IBox2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
+			var other:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(this, contact);
 			
 			var heroTop:Number = y;
 			var objectBottom:Number = other.y + (other.height / 2);
@@ -356,7 +357,7 @@ package com.citrusengine.objects.platformer.box2d
 					
 		override public function handleBeginContact(contact:b2Contact):void {
 			
-			var collider:IBox2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
+			var collider:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(this, contact);
 			
 			if (_enemyClass && collider is _enemyClass)
 			{
@@ -401,7 +402,7 @@ package com.citrusengine.objects.platformer.box2d
 		
 		override public function handleEndContact(contact:b2Contact):void {
 			
-			var collider:IBox2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
+			var collider:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(this, contact);
 			
 			//Remove from ground contacts, if it is one.
 			var index:int = _groundContacts.indexOf(collider.body.GetFixtureList());
@@ -416,7 +417,7 @@ package com.citrusengine.objects.platformer.box2d
 		
 		protected function getSlopeBasedMoveAngle():b2Vec2
 		{
-			return Box2DPhysicsObject.Rotateb2Vec2(new b2Vec2(acceleration, 0), _combinedGroundAngle);
+			return Box2DUtils.Rotateb2Vec2(new b2Vec2(acceleration, 0), _combinedGroundAngle);
 		}
 		
 		protected function updateCombinedGroundAngle():void

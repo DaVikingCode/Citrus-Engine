@@ -3,6 +3,7 @@ package com.citrusengine.objects.platformer.box2d
 
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.box2d.Box2DUtils;
 	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
 	
 	import flash.utils.clearTimeout;
@@ -82,7 +83,7 @@ package com.citrusengine.objects.platformer.box2d
 			super.initialize(poolObjectParams);
 			
 			_velocity = new b2Vec2(speed, 0);
-			_velocity = Box2DPhysicsObject.Rotateb2Vec2(_velocity, angle* Math.PI / 180);
+			_velocity = Box2DUtils.Rotateb2Vec2(_velocity, angle* Math.PI / 180);
 			_inverted = speed < 0;
 			
 			_fuseDurationTimeoutID = setTimeout(explode, fuseDuration);
@@ -153,7 +154,7 @@ package com.citrusengine.objects.platformer.box2d
 		
 		override public function handleBeginContact(contact:b2Contact):void {
 			
-			_contact = Box2DPhysicsObject.CollisionGetOther(this, contact);
+			_contact = Box2DUtils.CollisionGetOther(this, contact);
 			if (!contact.GetFixtureB().IsSensor())
 				explode();
 		}

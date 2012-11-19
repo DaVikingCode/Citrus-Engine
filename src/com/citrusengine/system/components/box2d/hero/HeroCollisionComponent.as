@@ -1,11 +1,11 @@
 package com.citrusengine.system.components.box2d.hero {
 
 	import com.citrusengine.math.MathVector;
-	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.objects.platformer.box2d.Crate;
 	import com.citrusengine.objects.platformer.box2d.Enemy;
 	import com.citrusengine.objects.platformer.box2d.Platform;
 	import com.citrusengine.objects.platformer.box2d.Sensor;
+	import com.citrusengine.physics.box2d.Box2DUtils;
 	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
 	import com.citrusengine.system.components.box2d.CollisionComponent;
 	
@@ -53,7 +53,7 @@ package com.citrusengine.system.components.box2d.hero {
 			if (!_movementComponent.ducking)
 				return;
 				
-			var other:IBox2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(_physicsComponent, contact);
+			var other:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(_physicsComponent, contact);
 			
 			var heroTop:Number = _physicsComponent.y;
 			var objectBottom:Number = other.y + (other.height / 2);
@@ -66,7 +66,7 @@ package com.citrusengine.system.components.box2d.hero {
 			
 			super.handleBeginContact(contact);
 			
-			var collider:IBox2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(_physicsComponent, contact);
+			var collider:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(_physicsComponent, contact);
 			
 			if (_enemyClass && collider is _enemyClass) {
 				
@@ -98,7 +98,7 @@ package com.citrusengine.system.components.box2d.hero {
 			
 			super.handleEndContact(contact);
 			
-			var collider:IBox2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(_physicsComponent, contact);
+			var collider:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(_physicsComponent, contact);
 			
 			//Remove from ground contacts, if it is one.
 			var index:int = _viewComponent.groundContacts.indexOf(collider.body.GetFixtureList());

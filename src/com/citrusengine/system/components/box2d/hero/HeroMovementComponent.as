@@ -1,6 +1,6 @@
 package com.citrusengine.system.components.box2d.hero {
 
-	import com.citrusengine.objects.Box2DPhysicsObject;
+	import com.citrusengine.physics.box2d.Box2DUtils;
 	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
 	import com.citrusengine.system.components.InputComponent;
 	import com.citrusengine.system.components.box2d.MovementComponent;
@@ -227,7 +227,7 @@ package com.citrusengine.system.components.box2d.hero {
 		}
 		
 		protected function getSlopeBasedMoveAngle():b2Vec2 {
-			return Box2DPhysicsObject.Rotateb2Vec2(new b2Vec2(acceleration, 0), _collisionComponent.combinedGroundAngle);
+			return Box2DUtils.Rotateb2Vec2(new b2Vec2(acceleration, 0), _collisionComponent.combinedGroundAngle);
 		}
 		
 		/**

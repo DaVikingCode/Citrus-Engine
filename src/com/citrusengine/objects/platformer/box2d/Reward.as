@@ -4,6 +4,7 @@ package com.citrusengine.objects.platformer.box2d
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.box2d.Box2DUtils;
 	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
 	
 	import flash.geom.Point;
@@ -161,7 +162,7 @@ package com.citrusengine.objects.platformer.box2d
 		
 		override public function handleBeginContact(contact:b2Contact):void {
 			
-			var collider:IBox2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
+			var collider:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(this, contact);
 			
 			if (collider is _collectorClass)
 			{
