@@ -1,12 +1,12 @@
 package com.citrusengine.objects.platformer.box2d {
 
+	import Box2D.Dynamics.Contacts.b2Contact;
+
+	import com.citrusengine.physics.box2d.Box2DShapeMaker;
 	import com.citrusengine.physics.box2d.Box2DUtils;
 	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
-	import com.citrusengine.utils.Box2DShapeMaker;
-	
+
 	import flash.utils.getDefinitionByName;
-	
-	import Box2D.Dynamics.Contacts.b2Contact;
 
 	/**
 	 * Coin is basically a sensor that destroys itself when a particular class type touches it (often a Hero). 

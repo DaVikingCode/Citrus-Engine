@@ -125,7 +125,6 @@
 			<arg line="-include-sources ../src/com/citrusengine/system" />
 
 			<arg line="-include-sources ../src/com/citrusengine/utils/AGameData.as" />
-			<arg line="-include-sources ../src/com/citrusengine/utils/Box2DShapeMaker.as" />
 			<arg line="-include-sources ../src/com/citrusengine/utils/LevelManager.as" />
 			<arg line="-include-sources ../src/com/citrusengine/utils/LoadManager.as" />
 			<arg line="-include-sources ../src/com/citrusengine/utils/Mobile.as" />
@@ -287,7 +286,6 @@
 			<arg line="-include-sources ../src/com/citrusengine/system" />
 
 			<arg line="-include-sources ../src/com/citrusengine/utils/AGameData.as" />
-			<arg line="-include-sources ../src/com/citrusengine/utils/Box2DShapeMaker.as" />
 			<arg line="-include-sources ../src/com/citrusengine/utils/LevelManager.as" />
 			<arg line="-include-sources ../src/com/citrusengine/utils/LoadManager.as" />
 			<arg line="-include-sources ../src/com/citrusengine/utils/Mobile.as" />
@@ -458,7 +456,6 @@
 			<arg line="-include-sources ../src/com/citrusengine/system" />
 
 			<arg line="-include-sources ../src/com/citrusengine/utils/AGameData.as" />
-			<arg line="-include-sources ../src/com/citrusengine/utils/Box2DShapeMaker.as" />
 			<arg line="-include-sources ../src/com/citrusengine/utils/LevelManager.as" />
 			<arg line="-include-sources ../src/com/citrusengine/utils/LoadManager.as" />
 			<arg line="-include-sources ../src/com/citrusengine/utils/Mobile.as" />

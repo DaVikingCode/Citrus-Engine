@@ -1,4 +1,4 @@
-package com.citrusengine.utils 
+package com.citrusengine.physics.box2d 
 {
 
 	import Box2D.Collision.Shapes.b2CircleShape;

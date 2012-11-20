@@ -1,8 +1,8 @@
 package com.citrusengine.system.components.box2d.hero {
 
 	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.box2d.Box2DShapeMaker;
 	import com.citrusengine.system.components.box2d.Box2DComponent;
-	import com.citrusengine.utils.Box2DShapeMaker;
 
 	/**
 	 * The Box2D Hero physics component add the fixture listener, change its friction, restitution...

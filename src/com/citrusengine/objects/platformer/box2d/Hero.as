@@ -1,25 +1,25 @@
 package com.citrusengine.objects.platformer.box2d
 {
 
+	import Box2D.Collision.b2Manifold;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.b2Fixture;
+
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.box2d.Box2DShapeMaker;
 	import com.citrusengine.physics.box2d.Box2DUtils;
 	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
-	import com.citrusengine.utils.Box2DShapeMaker;
-	
+
+	import org.osflash.signals.Signal;
+
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;
-	
-	import Box2D.Collision.b2Manifold;
-	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.b2Fixture;
-	import Box2D.Dynamics.Contacts.b2Contact;
-	
-	import org.osflash.signals.Signal;
 	
 	/**
 	 * This is a common, simple, yet solid implementation of a side-scrolling Hero. 
