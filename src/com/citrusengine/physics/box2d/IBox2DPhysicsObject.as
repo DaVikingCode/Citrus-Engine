@@ -4,7 +4,10 @@ package com.citrusengine.physics.box2d
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2ContactImpulse;
 	import Box2D.Dynamics.Contacts.b2Contact;
-
+	
+	/**
+	 * An interface used by each Box2D object. It helps to enable interaction between entity/component object and "normal" object.
+	 */
 	public interface IBox2DPhysicsObject
 	{
 		function handleBeginContact(contact:b2Contact):void;

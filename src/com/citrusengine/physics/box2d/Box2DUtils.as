@@ -2,7 +2,10 @@ package com.citrusengine.physics.box2d
 {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.Contacts.b2Contact;
-
+	
+	/**
+	 * This class provides some useful Box2D functions.
+	 */
 	public class Box2DUtils
 	{
 		/**
@@ -28,7 +31,7 @@ package com.citrusengine.physics.box2d
 		}
 		
 		/**
-		 * Useful function to rotate a b2Vec2 vector.
+		 * Function to rotate a b2Vec2 vector.
 		 * @param vector the initial vector
 		 * @param angle the angle desired
 		 * @return the rotated b2Vec2
