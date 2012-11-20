@@ -29,8 +29,11 @@ package com.citrusengine.core {
 				if (_starling) {
 
 					_starling.stage.removeChild(_state as StarlingState);
-					_starling.nativeStage.removeChildAt(2);
+					
 					// Remove Box2D or Nape debug view
+					var debugView:DisplayObject = _starling.nativeStage.getChildByName("debug view");
+					if (debugView)
+						 _starling.nativeStage.removeChild(debugView);		
 
 					_starling.dispose();
 				}
