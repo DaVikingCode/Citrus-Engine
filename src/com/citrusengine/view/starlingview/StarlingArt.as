@@ -305,7 +305,7 @@ package com.citrusengine.view.starlingview {
 
 				// Box2D & Nape debug views are not on the Starling display list, but on the classical flash display list.
 				// So we need to move their views here, not in the StarlingView.
-				physicsDebugArt = (Starling.current.nativeStage.getChildAt(2) as flash.display.DisplayObject);
+				physicsDebugArt = (Starling.current.nativeStage.getChildByName("debug view") as flash.display.DisplayObject);
 				
 				if (stateView.cameraTarget) {
 

@@ -3,6 +3,7 @@ package com.citrusengine.core {
 	import starling.core.Starling;
 	import starling.events.Event;
 
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 
@@ -78,8 +79,11 @@ package com.citrusengine.core {
 
 						_state.destroy();
 						_starling.stage.removeChild(_state as StarlingState);
-						_starling.nativeStage.removeChildAt(2);
+						
 						// Remove Box2D or Nape debug view
+						var debugView:DisplayObject = _starling.nativeStage.getChildByName("debug view");
+						if (debugView)
+							 _starling.nativeStage.removeChild(debugView);
 					}
 					_state = _newState;
 					_newState = null;

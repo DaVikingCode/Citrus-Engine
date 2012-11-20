@@ -164,6 +164,7 @@
 							
 							if (mapTiles[i][j] <= tiles.numCols) {
 								
+								//rectangleSelection.x = mapTiles[i][j] * (tmx.tileWidth + tiles.spacing) - tmx.tileWidth;
 								rectangleSelection.x = mapTiles[i][j] * tmx.tileWidth - tmx.tileWidth;
 								rectangleSelection.y = 0;
 								
@@ -171,7 +172,8 @@
 								
 								var modulo:uint = mapTiles[i][j] % tiles.numCols;
 								
-								rectangleSelection.x = modulo * tmx.tileWidth - tmx.tileWidth;;
+								rectangleSelection.x = modulo * tmx.tileWidth - tmx.tileWidth;
+								
 								rectangleSelection.y = Math.floor(mapTiles[i][j] / tiles.numCols) * tmx.tileHeight;
 							}
 							
