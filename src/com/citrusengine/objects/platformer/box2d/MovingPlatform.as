@@ -1,11 +1,11 @@
 package com.citrusengine.objects.platformer.box2d {
 
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.b2Body;
+
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.physics.box2d.Box2DUtils;
-	
-	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.b2Body;
-	import Box2D.Dynamics.Contacts.b2Contact;
 	
 	/**
 	 * A platform that moves between two points. The MovingPlatform has several properties that can customize it.
@@ -135,34 +135,51 @@ package com.citrusengine.objects.platformer.box2d {
 			var velocity:b2Vec2 = _body.GetLinearVelocity();
 			
 			if ((waitForPassenger && _passengers.length == 0) || !enabled)
-			{
 				//Platform should not move
 				velocity.SetZero();
-			}
-			else
-			{
-				//Move the platform according to its destination
 				
-				var destination:b2Vec2 = new b2Vec2(_end.x, _end.y);
-				if (!_forward)
-					destination = new b2Vec2(_start.x, _start.y);
+			else {
+				
+				//Move the platform according to its destination
+				var destination:b2Vec2 = _forward ? new b2Vec2(_end.x, _end.y) : new b2Vec2(_start.x, _start.y);
 				
 				destination.Subtract(_body.GetPosition());
 				velocity = destination;
 				
-				if (velocity.Length() > speed / 30)
-				{
+				if (velocity.Length() > speed / _box2D.scale) {
+					
 					//Still has further to go. Normalize the velocity to the max speed
 					velocity.Normalize();
+					velocity.Multiply(speed);
 				}
-				else
-				{
+					
+				else {
+					
 					//Destination is very close. Switch the travelling direction
 					_forward = !_forward;
+					
+					//prevent bodies to fall if they are on a edge. 
+					var passenger:b2Body;
+					for each (passenger in _passengers)
+           				passenger.SetLinearVelocity(velocity);
 				}
 			}
 			
 			_body.SetLinearVelocity(velocity);
+			
+			//prevent bodies to fall if they are on a edge.
+			var passengerVelocity:b2Vec2;
+			for each (passenger in _passengers) {
+				
+				if (velocity.y > 0) {
+				
+					passengerVelocity = passenger.GetLinearVelocity();
+					// we don't change x velocity because of the friction!
+					passengerVelocity.y += velocity.y;
+					passenger.SetLinearVelocity(passengerVelocity);
+				}
+			}
+						
 		}
 		
 		override protected function defineBody():void
