@@ -2,7 +2,6 @@ package com.citrusengine.system.components.box2d.hero {
 
 	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.system.components.box2d.Box2DComponent;
-	import com.citrusengine.system.components.box2d.CollisionComponent;
 	import com.citrusengine.utils.Box2DShapeMaker;
 
 	/**
@@ -10,8 +9,6 @@ package com.citrusengine.system.components.box2d.hero {
 	 */
 	public class HeroPhysicsComponent extends Box2DComponent {
 		
-		protected var _collisionComponent:CollisionComponent;
-
 		protected var _friction:Number = 0.75;
 
 		public function HeroPhysicsComponent(name:String, params:Object = null) {

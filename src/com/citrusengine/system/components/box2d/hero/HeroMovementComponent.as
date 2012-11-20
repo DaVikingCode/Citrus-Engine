@@ -1,15 +1,16 @@
 package com.citrusengine.system.components.box2d.hero {
 
-	import Box2D.Common.Math.b2Vec2;
-
-	import com.citrusengine.objects.Box2DPhysicsObject;
+	import com.citrusengine.physics.box2d.Box2DUtils;
+	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
 	import com.citrusengine.system.components.InputComponent;
 	import com.citrusengine.system.components.box2d.MovementComponent;
-
-	import org.osflash.signals.Signal;
-
+	
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
+	
+	import Box2D.Common.Math.b2Vec2;
+	
+	import org.osflash.signals.Signal;
 
 	/**
 	 * The Box2D Hero movement component. Most of its properties are here. It uses a lot of informations from the input component and 
@@ -189,7 +190,7 @@ package com.citrusengine.system.components.box2d.hero {
 		 * The hero gives damage
 		 */
 		 
-		public function giveDamage(collider:Box2DPhysicsObject):void {
+		public function giveDamage(collider:IBox2DPhysicsObject):void {
 			
 			_springOffEnemy = collider.y - _physicsComponent.height;
 			onGiveDamage.dispatch();
@@ -198,7 +199,7 @@ package com.citrusengine.system.components.box2d.hero {
 		/**
 		 * Hurts and fling the hero, disables his controls for a little bit, and dispatches the onTakeDamage signal. 
 		 */		
-		public function hurt(collider:Box2DPhysicsObject):void {
+		public function hurt(collider:IBox2DPhysicsObject):void {
 			
 			_isHurt = true;
 			controlsEnabled = false;
@@ -226,7 +227,7 @@ package com.citrusengine.system.components.box2d.hero {
 		}
 		
 		protected function getSlopeBasedMoveAngle():b2Vec2 {
-			return Box2DPhysicsObject.Rotateb2Vec2(new b2Vec2(acceleration, 0), _collisionComponent.combinedGroundAngle);
+			return Box2DUtils.Rotateb2Vec2(new b2Vec2(acceleration, 0), _collisionComponent.combinedGroundAngle);
 		}
 		
 		/**

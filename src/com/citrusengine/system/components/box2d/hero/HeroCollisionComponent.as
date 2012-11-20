@@ -1,11 +1,19 @@
 package com.citrusengine.system.components.box2d.hero {
 
-	import Box2D.Dynamics.b2Fixture;
-
 	import com.citrusengine.math.MathVector;
-	import com.citrusengine.objects.Box2DPhysicsObject;
+	import com.citrusengine.objects.platformer.box2d.Crate;
 	import com.citrusengine.objects.platformer.box2d.Enemy;
+	import com.citrusengine.objects.platformer.box2d.Platform;
+	import com.citrusengine.objects.platformer.box2d.Sensor;
+	import com.citrusengine.physics.box2d.Box2DUtils;
+	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
 	import com.citrusengine.system.components.box2d.CollisionComponent;
+	
+	import flash.geom.Point;
+	
+	import Box2D.Collision.b2Manifold;
+	import Box2D.Dynamics.b2Fixture;
+	import Box2D.Dynamics.Contacts.b2Contact;
 
 	/**
 	 * The Box2D Hero collision component. We need to access informations of the hero view, movement and physics component.
@@ -38,27 +46,27 @@ package com.citrusengine.system.components.box2d.hero {
 			super.destroy();
 		}
 		
-		/*override public function handlePreSolve(e:ContactEvent):void {
+		override public function handlePreSolve(contact:b2Contact, oldManifold:b2Manifold):void {
 			
-			super.handlePreSolve(e);
+			super.handlePreSolve(contact, oldManifold);
 			
 			if (!_movementComponent.ducking)
 				return;
 				
-			var other:Box2DPhysicsObject = e.other.GetBody().GetUserData() as Box2DPhysicsObject;
+			var other:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(_physicsComponent, contact);
 			
 			var heroTop:Number = _physicsComponent.y;
 			var objectBottom:Number = other.y + (other.height / 2);
 			
 			if (objectBottom < heroTop)
-				e.contact.Disable();
+				contact.SetEnabled(false);
 		}
 
-		override public function handleBeginContact(e:ContactEvent):void {
+		override public function handleBeginContact(contact:b2Contact):void {
 			
-			super.handleBeginContact(e);
+			super.handleBeginContact(contact);
 			
-			var collider:Box2DPhysicsObject = e.other.GetBody().GetUserData();
+			var collider:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(_physicsComponent, contact);
 			
 			if (_enemyClass && collider is _enemyClass) {
 				
@@ -68,25 +76,32 @@ package com.citrusengine.system.components.box2d.hero {
 					_movementComponent.giveDamage(collider);
 			}
 			
-			//Collision angle
-			if (e.normal) //The normal property doesn't come through all the time. I think doesn't come through against sensors.
+			//Collision angle if we don't touch a Sensor.
+			if (contact.GetManifold().m_localPoint && !(collider is Sensor)) //The normal property doesn't come through all the time. I think doesn't come through against sensors.
 			{
-				var collisionAngle:Number = new MathVector(e.normal.x, e.normal.y).angle * 180 / Math.PI;
-				if (collisionAngle > 45 && collisionAngle < 135)
+				var normalPoint:Point = new Point(contact.GetManifold().m_localPoint.x, contact.GetManifold().m_localPoint.y);
+				var collisionAngle:Number = new MathVector(normalPoint.x, normalPoint.y).angle * 180 / Math.PI;
+				if (collisionAngle > 45 && collisionAngle < 135 || collisionAngle == -90 || collider is Crate)
 				{
-					_viewComponent.groundContacts.push(e.other);
+					//we don't want the Hero to be set up as onGround if it touches a cloud.
+					if (collider is Platform && (collider as Platform).oneWay && collisionAngle == -90)
+						return;
+					
+					_viewComponent.groundContacts.push(collider.body.GetFixtureList());
 					_movementComponent.onGround = true;
 					updateCombinedGroundAngle();
 				}
 			}
 		}
 			
-		override public function handleEndContact(e:ContactEvent):void {
+		override public function handleEndContact(contact:b2Contact):void {
 			
-			super.handleEndContact(e);
+			super.handleEndContact(contact);
+			
+			var collider:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(_physicsComponent, contact);
 			
 			//Remove from ground contacts, if it is one.
-			var index:int = _viewComponent.groundContacts.indexOf(e.other);
+			var index:int = _viewComponent.groundContacts.indexOf(collider.body.GetFixtureList());
 			if (index != -1)
 			{
 				_viewComponent.groundContacts.splice(index, 1);
@@ -94,7 +109,7 @@ package com.citrusengine.system.components.box2d.hero {
 					_movementComponent.onGround = false;
 				updateCombinedGroundAngle();
 			}
-		}*/
+		}
 		
 		protected function updateCombinedGroundAngle():void {
 			

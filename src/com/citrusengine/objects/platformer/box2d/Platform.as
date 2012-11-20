@@ -1,10 +1,12 @@
 package com.citrusengine.objects.platformer.box2d {
 
-	import Box2D.Collision.b2Manifold;
-	import Box2D.Dynamics.Contacts.b2Contact;
-	import Box2D.Dynamics.b2Body;
-
 	import com.citrusengine.objects.Box2DPhysicsObject;
+	import com.citrusengine.physics.box2d.Box2DUtils;
+	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
+	
+	import Box2D.Collision.b2Manifold;
+	import Box2D.Dynamics.b2Body;
+	import Box2D.Dynamics.Contacts.b2Contact;
 	
 	/**
 	 * A Platform is a rectangular object that is meant to be stood on. It can be given any position, width, height, or rotation to suit your level's needs.
@@ -68,7 +70,7 @@ package com.citrusengine.objects.platformer.box2d {
 				
 				//Get the half-height of the collider, if we can guess what it is (we are hoping the collider extends PhysicsObject).
 				var colliderHalfHeight:Number = 0;
-				var collider:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
+				var collider:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(this, contact);
 				if (collider.height)
 					colliderHalfHeight = collider.height / _box2D.scale / 2;
 				else

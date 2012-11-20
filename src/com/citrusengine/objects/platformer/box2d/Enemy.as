@@ -1,18 +1,20 @@
 package com.citrusengine.objects.platformer.box2d {
 
-	import Box2D.Collision.Shapes.b2PolygonShape;
-	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.Contacts.b2Contact;
-	import Box2D.Dynamics.b2Fixture;
-	import Box2D.Dynamics.b2FixtureDef;
-
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.box2d.Box2DUtils;
+	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
 	import com.citrusengine.utils.Box2DShapeMaker;
-
+	
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;
+	
+	import Box2D.Collision.Shapes.b2PolygonShape;
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2Fixture;
+	import Box2D.Dynamics.b2FixtureDef;
+	import Box2D.Dynamics.Contacts.b2Contact;
 	
 	/**
 	 * This is a common example of a side-scrolling bad guy. He has limited logic, basically
@@ -188,7 +190,7 @@ package com.citrusengine.objects.platformer.box2d {
 			
 		override public function handleBeginContact(contact:b2Contact):void {
 			
-			var collider:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
+			var collider:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(this, contact);
 			
 			if (collider is _enemyClass && collider.body.GetLinearVelocity().y > enemyKillVelocity)
 				hurt();
