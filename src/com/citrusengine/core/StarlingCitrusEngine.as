@@ -66,6 +66,9 @@ package com.citrusengine.core {
 		protected function _context3DCreated(evt:starling.events.Event):void {
 
 			_starling.removeEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
+			
+			if (!_starling.isStarted)
+				_starling.start();
 		}
 
 		public function get starling():Starling {
@@ -102,7 +105,7 @@ package com.citrusengine.core {
 		
 		override protected function handleStageDeactivated(e:flash.events.Event):void {
 			
-			if (_playing)
+			if (_playing && _starling)
 				_starling.stop();
 				
 			super.handleStageDeactivated(e);
@@ -110,7 +113,8 @@ package com.citrusengine.core {
 
 		override protected function handleStageActivated(e:flash.events.Event):void {
 			
-			_starling.start();
+			if (_starling && !_starling.isStarted)
+				_starling.start();
 			
 			super.handleStageActivated(e);
 		}
