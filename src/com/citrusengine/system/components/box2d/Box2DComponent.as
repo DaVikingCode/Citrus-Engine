@@ -1,5 +1,13 @@
 package com.citrusengine.system.components.box2d {
 
+	import com.citrusengine.core.CitrusEngine;
+	import com.citrusengine.objects.Box2DPhysicsObject;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.box2d.Box2D;
+	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
+	import com.citrusengine.system.Component;
+	
+	import Box2D.Collision.b2Manifold;
 	import Box2D.Collision.Shapes.b2CircleShape;
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Collision.Shapes.b2Shape;
@@ -8,18 +16,17 @@ package com.citrusengine.system.components.box2d {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
+	import Box2D.Dynamics.b2ContactImpulse;
 	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
-
-	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.physics.PhysicsCollisionCategories;
-	import com.citrusengine.physics.box2d.Box2D;
-	import com.citrusengine.system.Component;
+	import Box2D.Dynamics.Contacts.b2Contact;
 
 	/**
 	 * The base's physics Box2D Component. Manage (just) the physics creation.
 	 */
-	public class Box2DComponent extends Component {
+	public class Box2DComponent extends Component implements IBox2DPhysicsObject {
+		
+		protected var _collisionComponent:CollisionComponent;
 		
 		protected var _box2D:Box2D;
 		protected var _bodyDef:b2BodyDef;
@@ -41,7 +48,35 @@ package com.citrusengine.system.components.box2d {
 			
 			super(name, params);
 		}
-			
+		
+		/**
+		 * handled by collision component
+		 */
+		public function handleBeginContact(contact:b2Contact):void {
+			_collisionComponent.handleBeginContact(contact);
+		}
+		
+		/**
+		 * handled by collision component
+		 */
+		public function handleEndContact(contact:b2Contact):void {
+			_collisionComponent.handleEndContact(contact);
+		}
+		
+		/**
+		 * handled by collision component
+		 */
+		public function handlePreSolve(contact:b2Contact, oldManifold:b2Manifold):void {
+			_collisionComponent.handlePreSolve(contact, oldManifold);
+		}
+		
+		/**
+		 * handled by collision component
+		 */
+		public function handlePostSolve(contact:b2Contact, impulse:b2ContactImpulse):void {
+			_collisionComponent.handlePostSolve(contact, impulse);
+		}
+		
 		override public function initialize(poolObjectParams:Object = null):void {
 			
 			super.initialize();
@@ -50,6 +85,8 @@ package com.citrusengine.system.components.box2d {
 				throw new Error("Cannot create a Box2DPhysicsObject when a Box2D object has not been added to the state.");
 				return;
 			}
+			
+			_collisionComponent = entity.components['collision'];
 			
 			//Override these to customize your Box2D initialization. Things must be done in this order.
 			defineBody();
@@ -267,6 +304,22 @@ package com.citrusengine.system.components.box2d {
 		protected function createJoint():void
 		{
 
+		}
+		
+		/**
+		 * No depth in a 2D Physics world.
+		 */
+		public function get depth():Number {
+			return 0;
+		}
+		
+		public function get z():Number {
+			return 0;
+		}
+		
+		public function getBody():*
+		{
+			return _body;
 		}
 	}
 }

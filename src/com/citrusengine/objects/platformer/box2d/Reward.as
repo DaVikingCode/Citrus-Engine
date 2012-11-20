@@ -1,19 +1,21 @@
 package com.citrusengine.objects.platformer.box2d 
 {
 
-	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.Contacts.b2Contact;
-	import Box2D.Dynamics.b2Fixture;
-	import Box2D.Dynamics.b2FixtureDef;
-
 	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
-
-	import org.osflash.signals.Signal;
-
+	import com.citrusengine.physics.box2d.Box2DUtils;
+	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
+	
 	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;
+	
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2Fixture;
+	import Box2D.Dynamics.b2FixtureDef;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	
+	import org.osflash.signals.Signal;
 	
 	/**
 	 * The Reward class is meant to pop out of a RewardBox when the player bumps it. A Reward object is the equivelant of a "mushroom"
@@ -160,7 +162,7 @@ package com.citrusengine.objects.platformer.box2d
 		
 		override public function handleBeginContact(contact:b2Contact):void {
 			
-			var collider:Box2DPhysicsObject = Box2DPhysicsObject.CollisionGetOther(this, contact);
+			var collider:IBox2DPhysicsObject = Box2DUtils.CollisionGetOther(this, contact);
 			
 			if (collider is _collectorClass)
 			{
