@@ -4,7 +4,10 @@ package com.citrusengine.physics.box2d
 	import Box2D.Collision.Shapes.b2CircleShape;
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Common.Math.b2Vec2;
-
+	
+	/**
+	 * This class helps to define some complex shapes using vertices.
+	 */
 	public class Box2DShapeMaker 
 	{
 		public static function BeveledRect(width:Number, height:Number, bevel:Number):b2PolygonShape

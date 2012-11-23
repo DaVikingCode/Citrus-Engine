@@ -62,9 +62,10 @@ package com.citrusengine.math
 			y += vector.y;
 		}
 		
-		public function plus(vector:MathVector):MathVector
+		public function plus(vector:MathVector, result:MathVector):void
 		{
-			return new MathVector(x + vector.x, y + vector.y);
+			result.x = x + vector.x;
+			result.y = y + vector.y;
 		}
 		
 		public function minusEquals(vector:MathVector):void
@@ -73,9 +74,10 @@ package com.citrusengine.math
 			y -= vector.y;
 		}
 		
-		public function minus(vector:MathVector):MathVector
+		public function minus(vector:MathVector, result:MathVector):void
 		{
-			return new MathVector(x - vector.x, y - vector.y);
+			result.x = x - vector.x;
+			result.y = y - vector.y;
 		}
 		
 		public function get length():Number

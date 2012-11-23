@@ -107,7 +107,7 @@ package com.citrusengine.datastructures {
 				tail = node;
 			} else
 				head = tail = node;
-
+			
 			(node.data as _poolType).initialize(params);
 
 			++_count;
@@ -223,6 +223,13 @@ package com.citrusengine.datastructures {
 				node.next = null;
 			}
 
+		}
+		
+		/**
+		 * return true if the Pool is composed of Physics/CitrusSprite, false for SpriteArt/StarlingArt
+		 */
+		public function get isCitrusObjectPool():Boolean {
+			return _isCitrusObjectPool;
 		}
 
 	}
