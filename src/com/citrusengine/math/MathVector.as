@@ -41,8 +41,15 @@ package com.citrusengine.math
 			x *= value; y *= value;
 		}
 		
-		public function scale(value:Number):MathVector
+		public function scale(value:Number, result:MathVector = null):MathVector
 		{
+			if (result) {
+				result.x = x * value;
+				result.y = y * value;
+				
+				return result;
+			}
+			
 			return new MathVector(x * value, y * value);
 		}
 		
@@ -62,10 +69,16 @@ package com.citrusengine.math
 			y += vector.y;
 		}
 		
-		public function plus(vector:MathVector, result:MathVector):void
+		public function plus(vector:MathVector, result:MathVector = null):MathVector
 		{
-			result.x = x + vector.x;
-			result.y = y + vector.y;
+			if (result) {
+				result.x = x + vector.x;
+				result.y = y + vector.y;
+				
+				return result;
+			}
+			
+			return new MathVector(x + vector.x, y + vector.y);
 		}
 		
 		public function minusEquals(vector:MathVector):void
@@ -74,10 +87,16 @@ package com.citrusengine.math
 			y -= vector.y;
 		}
 		
-		public function minus(vector:MathVector, result:MathVector):void
+		public function minus(vector:MathVector, result:MathVector = null):MathVector
 		{
-			result.x = x - vector.x;
-			result.y = y - vector.y;
+			if (result) {
+				result.x = x - vector.x;
+				result.y = y - vector.y;
+				
+				return result;
+			}
+			
+			return new MathVector(x - vector.x, y - vector.y);
 		}
 		
 		public function get length():Number
