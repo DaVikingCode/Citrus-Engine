@@ -128,7 +128,7 @@ package com.citrusengine.utils {
 			} else {
 				
 				var isXml:String = _levels[_currentIndex][1].substring(_levels[_currentIndex][1].length - 4).toLowerCase();
-				if (isXml == ".xml" || isXml == ".lev") {
+				if (isXml == ".xml" || isXml == ".lev" || isXml == ".tmx") {
 					
 					var urlLoader:URLLoader = new URLLoader();
 					urlLoader.load(new URLRequest(_levels[_currentIndex][1]));
