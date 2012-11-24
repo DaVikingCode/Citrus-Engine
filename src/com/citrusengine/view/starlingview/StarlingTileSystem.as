@@ -1,21 +1,22 @@
 package com.citrusengine.view.starlingview {
-
-	import starling.display.Image;
-	import starling.display.Sprite;
-	import starling.events.Event;
-	import starling.textures.Texture;
-
+	
 	import com.citrusengine.core.CitrusEngine;
 	import com.citrusengine.math.MathUtils;
 	import com.citrusengine.view.ISpriteView;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.ByteArray;
 	import flash.utils.Timer;
+	
+	import starling.display.Image;
+	import starling.display.Sprite;
+	import starling.events.Event;
+	import starling.textures.Texture;
 	
 	/**
 	 * @author Nick Pinkham
@@ -38,6 +39,9 @@ package com.citrusengine.view.starlingview {
 		// tile sizes
 		public var tileWidth:uint = 2048;
 		public var tileHeight:uint = 2048;
+		
+		// use atf textures or not
+		public var atf:Boolean = false;
 		
 		// load in and out distances
 		public var loadInDistance:Number = 1.8;
@@ -92,9 +96,9 @@ package com.citrusengine.view.starlingview {
 		}
 		
 		/*
-		 * gathers tiles from MovieClip via BitmapData. Remember the MovieClip must not have any graphics "bleeding" over the edge of the viewable region
-		 * 
-		 */
+		* gathers tiles from MovieClip via BitmapData. Remember the MovieClip must not have any graphics "bleeding" over the edge of the viewable region
+		* 
+		*/
 		private function tilesFromMovieclip(mc:MovieClip):void {
 			
 			//trace("getting from movieclip");
@@ -146,24 +150,60 @@ package com.citrusengine.view.starlingview {
 				for (var c:uint = 0; c < cl; c ++) {
 					// check to see if it's a 1 or 0
 					if (row[c] != null) {
-						var bmp:Bitmap = row[c] as Bitmap;
-						if (!bmp) {
-							var clz:Class = row[c] as Class;
-							bmp = new clz();
-						}
 						
 						
-						if (bmp) {
-							//trace("bitmap:", bmp.width, "x", bmp.height);
-							var tile:StarlingTile = new StarlingTile();
+						var bmp:Bitmap;
+						var tile:StarlingTile = new StarlingTile();
+						tile.isInRAM = false;
+						
+						
+						// check to see if we're loading a Bitmap, a Class or a ByteArray
+						if (row[c] as Bitmap) {
+							trace(this.name, "it's a bitmap!");
+							bmp = row[c] as Bitmap;
 							tile.myBitmap = bmp;
-							tile.isInRAM = false;
 							tile.x = bmp.width * c;
 							tile.y = bmp.height * r;
 							tile.width = bmp.width;
 							tile.height = bmp.height;
-							_liveTiles.push(tile);
+							
+						} else {
+							
+							// here it is either a Class or a ByteArray
+							if (atf) {
+								
+								// load in as bytearray
+								var byteArray:ByteArray = new row[c] as ByteArray;
+								if (byteArray) {
+									
+									tile.myATF = byteArray;
+									tile.x = tileWidth * c;
+									tile.y = tileHeight * r;
+									tile.width = tileWidth;
+									tile.height = tileHeight;
+									trace('adding bytearray', tile.x, tile.y);
+									
+								}
+							} else {
+								
+								var myclass:Class = row[c] as Class;
+								trace("class:", myclass);
+								if (myclass) {
+									bmp = new myclass();
+									tile.myBitmap = bmp;
+									tile.x = bmp.width * c;
+									tile.y = bmp.height * r;
+									tile.width = bmp.width;
+									tile.height = bmp.height;
+									trace('adding bitmap', bmp, tile.x, tile.y);
+								}
+							}
 						}
+						
+						_liveTiles.push(tile);
+						
+						
+						
 					}
 				}
 			}
@@ -191,7 +231,11 @@ package com.citrusengine.view.starlingview {
 							unflatten();
 						}
 						currentTile.isInRAM = true;
-						currentTile.myTexture = Texture.fromBitmap(currentTile.myBitmap, false);
+						if (atf) {
+							currentTile.myTexture = Texture.fromAtfData(currentTile.myATF);
+						} else {
+							currentTile.myTexture = Texture.fromBitmap(currentTile.myBitmap, false);
+						}
 						var img:Image = new Image(currentTile.myTexture);
 						img.x = currentTile.x;
 						img.y = currentTile.y;
@@ -200,7 +244,7 @@ package com.citrusengine.view.starlingview {
 					}
 					
 					
-				// otherwise, check if it is far enough to dispose
+					// otherwise, check if it is far enough to dispose
 				} else if (d > (Math.max(currentTile.width, currentTile.height)) * (unloadDistance / parallax)) {
 					if (currentTile.isInRAM) {
 						if (isFlattened) {
@@ -237,8 +281,16 @@ package com.citrusengine.view.starlingview {
 			
 			for each (var tile:StarlingTile in _liveTiles) {
 				tile.isInRAM = true;
-				tile.myTexture = Texture.fromBitmap(tile.myBitmap, false);
+				if (atf) {
+					tile.myTexture = Texture.fromAtfData(tile.myATF);
+					trace("atf:", tile.myTexture, tile.myATF is ByteArray);
+				} else {
+					trace("bitmap:", tile.myBitmap);
+					tile.myTexture = Texture.fromBitmap(tile.myBitmap, false);
+				}
+				
 				var img:Image = new Image(tile.myTexture);
+				trace("image texture:", img.texture);
 				img.x = tile.x;
 				img.y = tile.y;
 				addChild(img);

@@ -1,9 +1,10 @@
 package com.citrusengine.view.starlingview {
-
+	
+	import flash.display.Bitmap;
+	import flash.utils.ByteArray;
+	
 	import starling.display.Image;
 	import starling.textures.Texture;
-
-	import flash.display.Bitmap;
 	
 	/**
 	 * @author Nick Pinkham
@@ -12,6 +13,7 @@ package com.citrusengine.view.starlingview {
 		
 		public var isInRAM:Boolean = false;
 		public var myBitmap:Bitmap;
+		public var myATF:ByteArray;
 		public var myTexture:Texture;
 		public var myImage:Image;
 		
