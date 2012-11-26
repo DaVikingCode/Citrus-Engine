@@ -24,8 +24,9 @@ package com.citrusengine.view.starlingview {
 	 	 * @param firstAnimation a string of your default animation at its creation.
 	 	 * @param animFps a number which determines the animation MC's fps.
 	 	 * @param firstAnimLoop a boolean, set it to true if you want your first animation to loop.
+	 	 * @param smoothing a string indicating the smoothing algorithms used for the AnimationSequence, default is bilinear.
 		 */
-		public function AnimationSequence(textureAtlas:TextureAtlas, animations:Array, firstAnimation:String, animFps:Number = 30, firstAnimLoop:Boolean = false) {
+		public function AnimationSequence(textureAtlas:TextureAtlas, animations:Array, firstAnimation:String, animFps:Number = 30, firstAnimLoop:Boolean = false, smoothing:String = "bilinear") {
 
 			super();
 
@@ -42,7 +43,9 @@ package com.citrusengine.view.starlingview {
 				}
 				
 				_mcSequences[animation] = new MovieClip(_textureAtlas.getTextures(animation));
+				
 				_mcSequences[animation].fps = animFps;
+				_mcSequences[animation].smoothing = smoothing;
 			}
 			
 			addChild(_mcSequences[firstAnimation]);
