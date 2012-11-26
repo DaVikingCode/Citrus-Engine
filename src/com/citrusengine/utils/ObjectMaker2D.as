@@ -126,12 +126,8 @@
 			var objects:Array = [];
 			
 			var tmx:TmxMap = new TmxMap(levelXML);
-			var tiles:TmxTileSet = tmx.getTileSet('tiles');
 			
-			var bmp:Bitmap = new TilesImg();
-			
-			tiles.image = bmp.bitmapData;
-			
+			var bmp:Bitmap;
 			var bmpData:BitmapData;
 			var citrusSprite:CitrusSprite;
 			
@@ -154,37 +150,44 @@
 				bmpData = new BitmapData(tmx.width * tmx.tileWidth, tmx.height * tmx.tileHeight, true, 0);
 				bmpData.lock();
 				
-				for (var i:uint = 0; i < mapTilesX; ++i) {
-					
-					mapTilesY = mapTiles[i].length;
-					
-					for (var j:uint = 0; j < mapTilesY; ++j) {
+				for each (var tileSet:TmxTileSet in tmx.tileSets) {
+					//TODO : support multiple tiles img.
+					bmp = new TilesImg();
+					tileSet.image = bmp.bitmapData;
+				
+					for (var i:uint = 0; i < mapTilesX; ++i) {
 						
-						if (mapTiles[i][j] != 0) {
+						mapTilesY = mapTiles[i].length;
+						
+						for (var j:uint = 0; j < mapTilesY; ++j) {
 							
-							if (mapTiles[i][j] <= tiles.numCols) {
+							if (mapTiles[i][j] != 0) {
 								
-								//rectangleSelection.x = mapTiles[i][j] * (tmx.tileWidth + tiles.spacing) - tmx.tileWidth;
-								rectangleSelection.x = mapTiles[i][j] * tmx.tileWidth - tmx.tileWidth;
-								rectangleSelection.y = 0;
+								if (mapTiles[i][j] <= tileSet.numCols) {
+									
+									//TODO : support spacing
+									//rectangleSelection.x = mapTiles[i][j] * (tmx.tileWidth + tileSet.spacing) - tmx.tileWidth;
+									rectangleSelection.x = mapTiles[i][j] * tmx.tileWidth - tmx.tileWidth;
+									rectangleSelection.y = 0;
+									
+								} else {
+									
+									var modulo:uint = mapTiles[i][j] % tileSet.numCols;
+									
+									rectangleSelection.x = modulo * tmx.tileWidth - tmx.tileWidth;
+									
+									rectangleSelection.y = Math.floor(mapTiles[i][j] / tileSet.numCols) * tmx.tileHeight;
+								}
 								
-							} else {
+								pt.x = j * tmx.tileWidth;
+								pt.y = i * tmx.tileHeight;
 								
-								var modulo:uint = mapTiles[i][j] % tiles.numCols;
-								
-								rectangleSelection.x = modulo * tmx.tileWidth - tmx.tileWidth;
-								
-								rectangleSelection.y = Math.floor(mapTiles[i][j] / tiles.numCols) * tmx.tileHeight;
+								bmpData.copyPixels(bmp.bitmapData, rectangleSelection, new Point(pt.x, pt.y));
 							}
-							
-							pt.x = j * tmx.tileWidth;
-							pt.y = i * tmx.tileHeight;
-							
-							bmpData.copyPixels(bmp.bitmapData, rectangleSelection, new Point(pt.x, pt.y));
 						}
+						
+						bmpData.unlock();
 					}
-					
-					bmpData.unlock();
 				}
 				
 				params = {};
