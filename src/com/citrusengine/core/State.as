@@ -1,6 +1,8 @@
 package com.citrusengine.core
 {
 
+	import com.citrusengine.datastructures.DoublyLinkedListNode;
+	import com.citrusengine.datastructures.PoolObject;
 	import com.citrusengine.system.Entity;
 	import com.citrusengine.system.components.ViewComponent;
 	import com.citrusengine.view.CitrusView;
@@ -18,6 +20,7 @@ package com.citrusengine.core
 	public class State extends Sprite implements IState
 	{
 		private var _objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
+		private var _poolObjects:Vector.<PoolObject> = new Vector.<PoolObject>();
 		private var _view:CitrusView;
 		private var _input:Input;
 		
@@ -53,6 +56,14 @@ package com.citrusengine.core
 				_view.removeArt(object);
 			}
 			_objects.length = 0;
+			
+			for each (var poolObject:PoolObject in _poolObjects) {
+				refreshPoolObjectArt(poolObject, poolObject.length);
+				poolObject.clear();
+			}
+			
+			_poolObjects.length = 0;
+			
 			_view.destroy();
 		}
 		
@@ -134,6 +145,9 @@ package com.citrusengine.core
 				}
 
 			}
+			
+			for each (var poolObject:PoolObject in _poolObjects)
+				poolObject.updatePhysics(timeDelta);
 
 			// Update the input object
 			_input.update();
@@ -157,14 +171,53 @@ package com.citrusengine.core
 		/**
 		 * Call this method to add an Entity to this state. All entities will need to be created
 		 * and added via this method so that they can be properly creatd, managed, updated, and destroyed.
-		 * @param view : an Entity is designed for complex objects, most of the time they have a view component.
-		 * @return The CitrusObject that you passed in. Useful for linking commands together.
+		 * @param view an Entity is designed for complex objects, most of the time they have a view component.
+		 * @return The Entity that you passed in. Useful for linking commands together.
 		 */
 		public function addEntity(entity:Entity, view:ViewComponent = null):Entity {
 			
 			_objects.push(entity);
 			_view.addArt(view);
 			return entity;
+		}
+		
+		/**
+		 * Call this method to add a PoolObject to this state. All pool objects and  will need to be created 
+		 * and added via this method so that they can be properly creatd, managed, updated, and destroyed.
+		 * @param poolObject The PoolObject isCitrusObjectPool's value must be true to be render through the State.
+		 * @return The PoolObject that you passed in. Useful for linking commands together.
+		 */
+		public function addPoolObject(poolObject:PoolObject):PoolObject {
+		
+			if (poolObject.isCitrusObjectPool) {
+		
+				_poolObjects.push(poolObject);
+		
+				return poolObject;
+		
+			} else return null;
+		}
+		
+		/**
+		 * Call this function each time you make an operation (add or delete) on the PoolObject to refresh its graphics.
+		 * @param poolObject the PoolObject which need to refresh its graphics.
+		 * @param nmbrToDelete a number of graphics to delete.
+		 */
+		public function refreshPoolObjectArt(poolObject:PoolObject, nmbrToDelete:uint = 0):void {
+
+			var tmpHead:DoublyLinkedListNode = poolObject.head;
+			var i:uint = 0;
+
+			while (tmpHead != null) {
+
+				if (nmbrToDelete > 0 && i < nmbrToDelete)
+					_view.removeArt(tmpHead.data);
+				else if (!_view.getArt(tmpHead.data))
+					_view.addArt(tmpHead.data);
+				
+				tmpHead = tmpHead.next;
+				++i;
+			}
 		}
 		
 		/**
