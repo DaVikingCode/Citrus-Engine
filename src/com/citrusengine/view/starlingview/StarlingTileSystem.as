@@ -159,7 +159,6 @@ package com.citrusengine.view.starlingview {
 						
 						// check to see if we're loading a Bitmap, a Class or a ByteArray
 						if (row[c] as Bitmap) {
-							trace(this.name, "it's a bitmap!");
 							bmp = row[c] as Bitmap;
 							tile.myBitmap = bmp;
 							tile.x = bmp.width * c;
@@ -181,13 +180,11 @@ package com.citrusengine.view.starlingview {
 									tile.y = tileHeight * r;
 									tile.width = tileWidth;
 									tile.height = tileHeight;
-									trace('adding bytearray', tile.x, tile.y);
 									
 								}
 							} else {
 								
 								var myclass:Class = row[c] as Class;
-								trace("class:", myclass);
 								if (myclass) {
 									bmp = new myclass();
 									tile.myBitmap = bmp;
@@ -195,7 +192,6 @@ package com.citrusengine.view.starlingview {
 									tile.y = bmp.height * r;
 									tile.width = bmp.width;
 									tile.height = bmp.height;
-									trace('adding bitmap', bmp, tile.x, tile.y);
 								}
 							}
 						}
@@ -283,14 +279,11 @@ package com.citrusengine.view.starlingview {
 				tile.isInRAM = true;
 				if (atf) {
 					tile.myTexture = Texture.fromAtfData(tile.myATF);
-					trace("atf:", tile.myTexture, tile.myATF is ByteArray);
 				} else {
-					trace("bitmap:", tile.myBitmap);
 					tile.myTexture = Texture.fromBitmap(tile.myBitmap, false);
 				}
 				
 				var img:Image = new Image(tile.myTexture);
-				trace("image texture:", img.texture);
 				img.x = tile.x;
 				img.y = tile.y;
 				addChild(img);
