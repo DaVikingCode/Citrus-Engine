@@ -117,8 +117,10 @@
 		 * 
 		 * <p>For the objects, you can add their name and don't forget their types : package name + class name. 
 		 * It also supports properties.</p>
+		 * @param levelXML the TMX provided by the Tiled Map Editor software, convert it into an xml before.
+		 * @param images an array of bitmap used by tileSets. The name of the bitmap must correspond to the tileSet image source name.
 		 */
-		public static function FromTiledMap(levelXML:XML, TilesImg:Class, addToCurrentState:Boolean = true):Array {
+		public static function FromTiledMap(levelXML:XML, images:Array, addToCurrentState:Boolean = true):Array {
 			
 			var ce:CitrusEngine = CitrusEngine.getInstance();
 			var params:Object;
@@ -151,8 +153,16 @@
 				bmpData.lock();
 				
 				for each (var tileSet:TmxTileSet in tmx.tileSets) {
-					//TODO : support multiple tiles img.
-					bmp = new TilesImg();
+					
+					for each (var image:Bitmap in images) {
+						
+						if (tileSet.imageSource == image.name) {
+							bmp = image;
+							break;
+							
+						} else throw new Error("ObjectMaker didn't find an image name corresponding to the tileset imagesource name, add its name to your bitmap.");
+					}
+					
 					tileSet.image = bmp.bitmapData;
 				
 					for (var i:uint = 0; i < mapTilesX; ++i) {
@@ -165,8 +175,6 @@
 								
 								if (mapTiles[i][j] <= tileSet.numCols) {
 									
-									//TODO : support spacing
-									//rectangleSelection.x = mapTiles[i][j] * (tmx.tileWidth + tileSet.spacing) - tmx.tileWidth;
 									rectangleSelection.x = mapTiles[i][j] * tmx.tileWidth - tmx.tileWidth;
 									rectangleSelection.y = 0;
 									
