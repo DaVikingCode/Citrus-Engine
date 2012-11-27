@@ -11,7 +11,8 @@
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
 	<!-- Define the commands to generate a SWC library -->
-	<target name="CE-swc-global" description="Generates a single SWC library with everything included in.">
+	<target name="CE-swc-global" depends="CE-swc-core,CE-swc-box2d,CE-swc-nape,CE-swc-starling,CE-swc-starling-box2d,CE-swc-starling-nape,CE-swc-away3d,CE-swc-away3d-box2d,CE-swc-away3d-nape,CE-swc-away3d-awayphysics" 
+		description="Generates a single SWC library with everything included in.">
 
 		<echo>Generating Citrus Engine Global</echo>
 		<exec executable="${compc.exe}">
