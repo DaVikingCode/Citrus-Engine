@@ -15,6 +15,8 @@ It offers many options, you may use :
 
 Games References
 ----------------
+[![Stack of Defence](http://aymericlamboley.fr/blog/wp-content/uploads/2012/11/stackofdefence.png)](http://www.newgrounds.com/portal/view/606457)
+[![Music Game](http://aymericlamboley.fr/blog/wp-content/uploads/2012/11/cynic.png)](http://cynicmusic.com/citrus/)
 [![Escape From Nerd Factory](http://aymericlamboley.fr/blog/wp-content/uploads/2012/09/escape-from-nerd-factory.jpg)](http://www.newgrounds.com/portal/view/598677)
 [![Kinessia](http://aymericlamboley.fr/blog/wp-content/uploads/2012/08/Kinessia.jpg)](http://kinessia.aymericlamboley.fr/)
 [![MarcoPoloWeltrennen](http://aymericlamboley.fr/blog/wp-content/uploads/2012/08/MarcoPoloWeltrennen.png)](http://www.marcopoloweltrennen.de/)
