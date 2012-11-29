@@ -28,14 +28,14 @@ package com.citrusengine.view.starlingview {
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
 	
-	
 	/**
 	 * This is the class that all art objects use for the StarlingView state view. If you are using the StarlingView (as opposed to the blitting view, for instance),
 	 * then all your graphics will be an instance of this class. 
 	 * <ul>There are 2 ways to manage MovieClip/animations :
 	 * <li>specify a "object.swf" in the view property of your object's creation.</li>
 	 * <li>add an AnimationSequence to your view property of your object's creation, see the AnimationSequence for more informations about it.</li>
-	 * The AnimationSequence is more optimized than the .swf (which creates textures "on the fly" thanks to the DynamicAtlas class).</ul>
+	 * The AnimationSequence is more optimized than the .swf (which creates textures "on the fly" thanks to the DynamicAtlas class). You can also use the awesome 
+	 * <a href="http://dragonbones.github.com/">DragonBones</a> 2D skeleton animation solution.</ul>
 	 * 
 	 * <ul>This class does the following things:
 	 * 

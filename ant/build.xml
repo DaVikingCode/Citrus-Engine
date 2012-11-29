@@ -74,8 +74,8 @@
 			<arg line="-include-sources ../src/com/citrusengine/utils/LevelManager.as" />
 			<arg line="-include-sources ../src/com/citrusengine/utils/LoadManager.as" />
 			<arg line="-include-sources ../src/com/citrusengine/utils/Mobile.as" />
-			<arg line="-include-sources ../src/com/citrusengine/utils/ObjectMaker2D.as" />
-			<arg line="-include-sources ../src/com/citrusengine/utils/tmx" />
+			<arg line="-include-sources ../src/com/citrusengine/utils/objectmakers/ObjectMaker2D.as" />
+			<arg line="-include-sources ../src/com/citrusengine/utils/objectmakers/tmx" />
 
 			<arg line="-include-sources ../src/com/citrusengine/view/CitrusView.as" />
 			<arg line="-include-sources ../src/com/citrusengine/view/ISpriteView.as" />
@@ -142,6 +142,8 @@
 			<arg line="-include-sources ../src/com/citrusengine/core/StarlingCitrusEngine.as" />
 			<arg line="-include-sources ../src/com/citrusengine/core/StarlingState.as" />
 			
+			<arg line="-include-sources ../src/com/citrusengine/utils/objectmakers/ObjectMakerStarling.as" />
+			
 			<arg line="-include-sources ../src/com/citrusengine/view/StarlingSpriteDebugArt.as" />
 			<arg line="-include-sources ../src/com/citrusengine/view/starlingview" />
 
@@ -149,6 +151,7 @@
 			<arg line="-include-libraries ../lib/starling.swc" />
 
 			<arg line="-include-sources ../srclib/starling" />
+			<arg line="-include-sources ../srclib/dragonBones" />
 		</exec>
 	</target>
 
@@ -235,7 +238,7 @@
 
 			<arg line="-include-sources ../src/com/citrusengine/physics/awayphysics" />
 
-			<arg line="-include-sources ../src/com/citrusengine/utils/ObjectMaker3D.as" />
+			<arg line="-include-sources ../src/com/citrusengine/utils/objectmakers/ObjectMaker3D.as" />
 
 			<arg line="-include-sources ../src/com/citrusengine/view/away3dview" />
 
@@ -259,15 +262,16 @@
 		</exec>
 	</target>
 
-	<target name="Starling SWC" description="Generates Starling SWC">
+	<target name="Starling + DragonBones SWC" description="Generates Starling + DragonBones SWC">
 
 		<echo>Generating Box2D SWC</echo>
 		<exec executable="${compc.exe}">
 			<!-- Set the output path -->
-			<arg line="-output ../bin/libraries/Starling.swc" />
+			<arg line="-output ../bin/libraries/Starling-DragonBones.swc" />
 
 			<!-- Include all of the AS3 files in LIBRARY -->
 			<arg line="-include-sources ../srclib/starling" />
+			<arg line="-include-sources ../srclib/dragonBones" />
 			<arg line="-include-libraries ../lib/starling.swc" />
 		</exec>
 	</target>
