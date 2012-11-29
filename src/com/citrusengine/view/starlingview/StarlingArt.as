@@ -1,5 +1,7 @@
 package com.citrusengine.view.starlingview {
-	
+
+	import dragonBones.Armature;
+
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -25,6 +27,7 @@ package com.citrusengine.view.starlingview {
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
+	
 	
 	/**
 	 * This is the class that all art objects use for the StarlingView state view. If you are using the StarlingView (as opposed to the blitting view, for instance),
@@ -101,15 +104,10 @@ package com.citrusengine.view.starlingview {
 
 		public function destroy(viewChanged:Boolean = false):void {
 			
-			if (viewChanged) {
-				
+			if (viewChanged)
 				removeChild(content);
-				
-			} else {
-				
+			else
 				CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
-				_view = null;
-			}
 			
 			if (content is MovieClip) {
 					
@@ -138,6 +136,11 @@ package com.citrusengine.view.starlingview {
 				
 			} else if (content is StarlingTileSystem) {
 				(content as StarlingTileSystem).destroy();
+				content.dispose();
+				
+			} else if (_view is Armature) {
+				
+				(_view as Armature).dispose();
 				content.dispose();
 			}
 			
@@ -239,6 +242,11 @@ package com.citrusengine.view.starlingview {
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(content);
 					
+				} else if (_view is Armature) {
+					content = (_view as Armature).display as Sprite;
+					moveRegistrationPoint(_citrusObject.registration);
+					addChild(content);
+					
 				} else {
 					throw new Error("StarlingArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
 					return;
@@ -273,10 +281,12 @@ package com.citrusengine.view.starlingview {
 					addChild(content);
 					Starling.juggler.add(content as MovieClip);
 					(content as MovieClip).loop = animLoop;
-				}
-				
-				if (content is AnimationSequence)
+					
+				} else if (content is AnimationSequence)
 					(content as AnimationSequence).changeAnimation(_animation, animLoop);
+					
+				else if (_view is Armature)
+					(_view as Armature).animation.gotoAndPlay(value); 
 			}
 		}
 
@@ -333,6 +343,9 @@ package com.citrusengine.view.starlingview {
 			view = _citrusObject.view;
 			animation = _citrusObject.animation;
 			group = _citrusObject.group;
+			
+			if (_view is Armature)
+				(_view as Armature).update();
 		}
 		
 		/**
@@ -346,6 +359,8 @@ package com.citrusengine.view.starlingview {
 				(content as AnimationSequence).pauseAnimation(value);
 			else if (content is PDParticleSystem)
 				value ? Starling.juggler.add(content as PDParticleSystem) : Starling.juggler.remove(content as PDParticleSystem);
+			else if (_view is Armature)
+				value ? (_view as Armature).animation.play() : (_view as Armature).animation.stop();
 		}
 
 		private function handleContentLoaded(evt:Event):void {

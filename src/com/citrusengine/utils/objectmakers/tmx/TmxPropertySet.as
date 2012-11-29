@@ -3,19 +3,16 @@
  * This content is released under the MIT License.
  * Questions? Mail me at lithander at gmx.de!
  ******************************************************************************/
-package com.citrusengine.utils.tmx 
-{
-	public dynamic class TmxPropertySet
-	{
-		public function TmxPropertySet(source:XML)
-		{
+package com.citrusengine.utils.objectmakers.tmx {
+	
+	public dynamic class TmxPropertySet {
+
+		public function TmxPropertySet(source:XML) {
 			extend(source);
 		}
-		
-		public function extend(source:XML):TmxPropertySet
-		{
-			for each (var prop:XML in source.property)
-			{
+
+		public function extend(source:XML):TmxPropertySet {
+			for each (var prop:XML in source.property) {
 				var key:String = prop.@name;
 				var value:String = prop.@value;
 				this[key] = value;
