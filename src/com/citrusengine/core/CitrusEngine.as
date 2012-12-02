@@ -37,7 +37,7 @@
 		private var _startTime:Number;
 		private var _gameTime:Number;
 		private var _gameData:AGameData;
-		private var _input:Input;
+		protected var _input:Input;
 		private var _sound:SoundManager;
 		private var _console:Console;
 		
