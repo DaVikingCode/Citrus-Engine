@@ -1,6 +1,6 @@
 package com.citrusengine.input.controllers.displaylist {
 
-	import com.citrusengine.input.controllers.BaseVirtualJoystick;
+	import com.citrusengine.input.controllers.AVirtualJoystick;
 
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -8,7 +8,7 @@ package com.citrusengine.input.controllers.displaylist {
 	/*
 	 * Simple Flash Virtual Joystick
 	 */
-	public class VirtualJoystick extends BaseVirtualJoystick
+	public class VirtualJoystick extends AVirtualJoystick
 	{
 		public var graphic:Sprite; //main Sprite container.
 		

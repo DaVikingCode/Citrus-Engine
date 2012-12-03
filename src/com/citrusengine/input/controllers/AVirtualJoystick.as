@@ -2,9 +2,7 @@ package com.citrusengine.input.controllers {
 
 	import com.citrusengine.input.InputController;
 
-	import flash.utils.getQualifiedSuperclassName;
-
-	public class BaseVirtualJoystick extends InputController
+	public class AVirtualJoystick extends InputController
 	{
 		//Common graphic properties
 		protected var _x:int;
@@ -31,15 +29,11 @@ package com.citrusengine.input.controllers {
 		protected var _grabbed:Boolean = false;
 		protected var _centered:Boolean = true;
 		
-		public function BaseVirtualJoystick(name:String, params:Object = null)
+		public function AVirtualJoystick(name:String, params:Object = null)
 		{
 			super(name, params);
 			
 			_innerradius = _radius - _knobradius;
-			
-			//This controller can only be extended. we shouldn't allow direct instanciation.
-			if (getQualifiedSuperclassName(this) == "com.citrusengine.core.input::InputController")
-				throw(new Error("you cannot instanciate BaseVirtualJoystick directly"));
 			
 			initActionRanges();
 			initGraphics();

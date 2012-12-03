@@ -7,12 +7,12 @@ package com.citrusengine.input.controllers.starling {
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 
-	import com.citrusengine.input.controllers.BaseVirtualButtons;
+	import com.citrusengine.input.controllers.AVirtualButtons;
 
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 
-	public class VirtualButtons extends BaseVirtualButtons {
+	public class VirtualButtons extends AVirtualButtons {
 
 		public var graphic:starling.display.Sprite;
 		// main Sprite container.

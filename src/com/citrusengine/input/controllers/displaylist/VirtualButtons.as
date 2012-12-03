@@ -1,11 +1,11 @@
 package com.citrusengine.input.controllers.displaylist {
 
-	import com.citrusengine.input.controllers.BaseVirtualButtons;
+	import com.citrusengine.input.controllers.AVirtualButtons;
 
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 
-	public class VirtualButtons extends BaseVirtualButtons
+	public class VirtualButtons extends AVirtualButtons
 	{
 		public var graphic:Sprite; //main Sprite container.
 		

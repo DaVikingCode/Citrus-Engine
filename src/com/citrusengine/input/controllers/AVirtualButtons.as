@@ -2,9 +2,7 @@ package com.citrusengine.input.controllers {
 
 	import com.citrusengine.input.InputController;
 
-	import flash.utils.getQualifiedSuperclassName;
-
-	public class BaseVirtualButtons extends InputController
+	public class AVirtualButtons extends InputController
 	{
 		//Common graphic properties
 		protected var _x:int;
@@ -19,13 +17,9 @@ package com.citrusengine.input.controllers {
 		public var button1Action:String = "button1";
 		public var button2Action:String = "button2";
 		
-		public function BaseVirtualButtons(name:String, params:Object = null)
+		public function AVirtualButtons(name:String, params:Object = null)
 		{
 			super(name, params);
-			
-			//This controller can only be extended. we shouldn't allow direct instanciation.
-			if (getQualifiedSuperclassName(this) == "com.citrusengine.core.input::InputController")
-				throw(new Error("you cannot instanciate BaseVirtualButtons directly."));
 			
 			initGraphics();
 		}

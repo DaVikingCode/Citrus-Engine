@@ -7,7 +7,7 @@ package com.citrusengine.input.controllers.starling {
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 
-	import com.citrusengine.input.controllers.BaseVirtualJoystick;
+	import com.citrusengine.input.controllers.AVirtualJoystick;
 
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
@@ -16,7 +16,7 @@ package com.citrusengine.input.controllers.starling {
 	 * Starling Virtual Joystick
 	 * (drawing itself using flash graphics -> bitmapData -> Starling Texture)
 	 */
-	public class VirtualJoystick extends BaseVirtualJoystick
+	public class VirtualJoystick extends AVirtualJoystick
 	{
 		public var graphic:starling.display.Sprite; //main Sprite container.
 		
