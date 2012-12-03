@@ -45,7 +45,7 @@ package com.citrusengine.objects
 		protected var _offsetY:Number = 0;
 		protected var _registration:String = "topLeft";
 			
-		public function CitrusSprite(name:String, params:Object=null)
+		public function CitrusSprite(name:String, params:Object = null)
 		{
 			_ce = CitrusEngine.getInstance();
 			
