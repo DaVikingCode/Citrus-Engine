@@ -1,10 +1,10 @@
-package com.citrusengine.input.controllers.graphical.simple {
+package com.citrusengine.input.controllers.displaylist {
 
-	import com.citrusengine.input.controllers.graphical.BaseVirtualJoystick;
+	import com.citrusengine.input.controllers.BaseVirtualJoystick;
 
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	
+
 	/*
 	 * Simple Flash Virtual Joystick
 	 */

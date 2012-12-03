@@ -4,7 +4,7 @@ package com.citrusengine.input.controllers {
 
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
-	
+
 	/**
 	 *  The default Keyboard controller.
 	 *  Holds static keycodes constants (see bottom)
