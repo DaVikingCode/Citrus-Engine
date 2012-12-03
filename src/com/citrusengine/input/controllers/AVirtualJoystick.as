@@ -39,7 +39,7 @@ package com.citrusengine.input.controllers {
 			initGraphics();
 		}
 		
-		/*
+		/**
 		 * Override this for specific drawing
 		 */
 		protected function initGraphics():void
@@ -47,7 +47,7 @@ package com.citrusengine.input.controllers {
 			trace("Warning: " + this + " does not render any graphics!");
 		}
 		
-		/*
+		/**
 		 * Set action ranges.
 		 */
 		protected function initActionRanges():void
@@ -87,7 +87,7 @@ package com.citrusengine.input.controllers {
 				throw(new Error("VirtualJoystick::addAxisAction() start and end values must be between -1 and 1"));
 		}
 		
-		/*
+		/**
 		 * Give handleGrab the relative position of touch or mouse to knob.
 		 * It will handle knob movement restriction, action triggering and set _knobX and _knobY for knob positioning.
 		 */
@@ -191,7 +191,7 @@ package com.citrusengine.input.controllers {
 			if (!_initialized)
 				_x = value;
 			else
-				trace("Warning: you can only set " + this + " x through graphic.x after instanciation.")
+				trace("Warning: you can only set " + this + " x through graphic.x after instanciation.");
 		}
 		
 		public function set y(value:int):void
@@ -199,7 +199,7 @@ package com.citrusengine.input.controllers {
 			if (!_initialized)
 				_y = value;
 			else
-				trace("Warning: you can only set " + this + " y through graphic.y after instanciation.")
+				trace("Warning: you can only set " + this + " y through graphic.y after instanciation.");
 		}
 		
 		public function get radius():int

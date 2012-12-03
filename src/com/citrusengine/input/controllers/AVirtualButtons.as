@@ -24,7 +24,7 @@ package com.citrusengine.input.controllers {
 			initGraphics();
 		}
 		
-		/*
+		/**
 		 * Override this for specific drawing
 		 */
 		protected function initGraphics():void

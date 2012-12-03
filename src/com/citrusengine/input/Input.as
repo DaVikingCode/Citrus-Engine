@@ -6,7 +6,6 @@ package com.citrusengine.input {
 	import org.osflash.signals.Signal;
 	
 	/**
-	 *
 	 * A class managing input of any controllers that is an InputController.
 	 * Actions are inspired by Midi signals, but they carry an action object.
 	 * "actions signals" are either ON, OFF, or VALUECHANGE.
@@ -17,7 +16,6 @@ package com.citrusengine.input {
 	 *	phase 2 action still ON. (since last frame) - this phase will only be advanced by doActionOFF.
 	 *  phase 3 is the phase where action was turned OFF. will be marked as phase 4 in update.
 	 *  phase 4 will be disposed of in update. (action was definately turned off in the previous frame.)
-	 *
 	 **/	
 	public class Input
 	{
@@ -75,7 +73,7 @@ package com.citrusengine.input {
 		public function addAction(action:Object):void
 		{
 			if (_actions.lastIndexOf(action) < 0)
-				if (action.name && (action.value !== false) && action.controller && (action.channel !== false))
+				if (action.name && action.value && action.controller && action.channel)
 					_actions[_actions.length] = action;
 		}
 		
@@ -134,7 +132,7 @@ package com.citrusengine.input {
 			return 0;
 		}
 		
-		/*
+		/**
 		 * Adds a new action of phase 0 if it does not exist.
 		 * if it does exist however, it is reset to phase 0.
 		 */
@@ -153,7 +151,7 @@ package com.citrusengine.input {
 			_actions[_actions.length] = action;
 		}
 		
-		/*
+		/**
 		 * Sets action to phase 3. will be advanced to phase 4 in next update, and finally will be removed
 		 * on the update after that.
 		 */
@@ -170,7 +168,7 @@ package com.citrusengine.input {
 				}
 		}
 		
-		/*
+		/**
 		 * Changes the value property of an action, or adds action to list if it doesn't exist.
 		 * a continuous controller, can simply trigger ActionVALUECHANGE and never have to trigger ActionON.
 		 * this will take care adding the new action to the list, setting its phase to 0 so it will respond
@@ -195,7 +193,7 @@ package com.citrusengine.input {
 			_actions[_actions.length] = action;
 		}
 		
-		/*
+		/**
 		 * Input.update is called in the end of your state update.
 		 * keep this in mind while you create new controllers - it acts only after everything else.
 		 * update first updates all registered controllers then finally
@@ -214,11 +212,11 @@ package com.citrusengine.input {
 					c.update();
 			}
 			
-			var i:*;
+			var i:String;
 			for (i in _actions)
 			{
 				if (_actions[i].phase > 3)
-					_actions.splice(i, 1);
+					_actions.splice(i as uint, 1);
 				else if (_actions[i].phase !== 2)
 					_actions[i].phase++;
 			}
@@ -234,10 +232,10 @@ package com.citrusengine.input {
 		
 		public function removeActionsOf(controller:InputController):void
 		{
-			var i:*;
+			var i:String;
 			for (i in _actions)
 				if (_actions[i].controller == controller)
-					_actions.splice(i, 1);
+					_actions.splice(i as uint, 1);
 		}
 		
 		public function resetActions():void
@@ -245,7 +243,7 @@ package com.citrusengine.input {
 			_actions.length = 0;
 		}
 		
-		/*
+		/**
 		 *  addOrSetAction sets existing parameters of an action to new values or adds action if
 		 *  it doesn't exist.
 		 */
@@ -264,7 +262,7 @@ package com.citrusengine.input {
 			_actions[_actions.length] = action;
 		}
 		
-		/*
+		/**
 		 * createAction just helps creating/cloning an action object, it enforces an action's structure.
 		 */
 		public function createAction(name:String, value:Number, controller:*, channel:uint, phase:uint):Object
@@ -278,7 +276,7 @@ package com.citrusengine.input {
 			return action;
 		}
 		
-		/*
+		/**
 		 *  getActionsSnapshot returns a Vector of all actions in current frame.
 		 */
 		public function getActionsSnapshot():Vector.<Object>
@@ -320,20 +318,19 @@ package com.citrusengine.input {
 		
 		public function destroy():void
 		{
-			
 			destroyControllers();
 			
-			_actions = null;
-			_controllers = null;
+			actionTriggeredON.removeAll();
+			actionTriggeredOFF.removeAll();
+			actionTriggeredVALUECHANGE.removeAll();
 		}
 		
-		/*
+		/**
 		 * Limited backwards compatibilty for justPressed and isDown .
 		 * /!\ only works with defined key actions in the default keyboard instance
 		 * (up, down, right, left, up, spacebar)
 		 * ultimately, you'll have to convert to the new system :)
 		 */
-		
 		public function justPressed(keyCode:uint):Boolean
 		{
 			var keyboard:Keyboard = getControllerByName("keyboard") as Keyboard;

@@ -5,7 +5,7 @@ package com.citrusengine.input.controllers.displaylist {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 
-	/*
+	/**
 	 * Simple Flash Virtual Joystick
 	 */
 	public class VirtualJoystick extends AVirtualJoystick

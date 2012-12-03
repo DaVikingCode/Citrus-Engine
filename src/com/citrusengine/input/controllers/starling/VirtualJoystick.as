@@ -12,7 +12,7 @@ package com.citrusengine.input.controllers.starling {
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	
-	/*
+	/**
 	 * Starling Virtual Joystick
 	 * (drawing itself using flash graphics -> bitmapData -> Starling Texture)
 	 */

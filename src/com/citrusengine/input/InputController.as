@@ -78,9 +78,7 @@ package com.citrusengine.input {
 		
 		public function destroy():void
 		{
-			_ce = null;
 			_input.removeController(this);
-			_input = null;
 		}
 		
 		protected function setParams(object:Object):void

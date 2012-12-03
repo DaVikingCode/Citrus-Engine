@@ -28,7 +28,6 @@ package com.citrusengine.input.controllers {
 			
 			_ce.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			_ce.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-		
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void
