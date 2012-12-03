@@ -6,7 +6,7 @@
 	/**
 	 * A class managing Keyboard's input.
 	 */
-	public class Input
+	public class InputDeprecated
 	{
 		public static const JUST_PRESSED:uint = 0;
 		public static const DOWN:uint = 1;
@@ -20,7 +20,7 @@
 		protected var _initialized:Boolean;
 		protected var _enabled:Boolean = true;
 		
-		public function Input() 
+		public function InputDeprecated() 
 		{
 			_keys = new Dictionary();
 			_keysReleased = new Vector.<uint>;
