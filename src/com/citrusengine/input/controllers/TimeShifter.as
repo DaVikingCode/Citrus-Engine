@@ -95,9 +95,10 @@ package com.citrusengine.input.controllers {
 			var abuff:Vector.<Object> = _input.getActionsSnapshot();
 			var wbuff:Vector.<Object> = new Vector.<Object>();
 			
+			var newbuffer:Object;
 			for each (obj in _Watch)
 			{
-				var newbuffer:Object = new Object();
+				newbuffer = {};
 				newbuffer.object = obj;
 				newbuffer.x = obj.body.position.x;
 				newbuffer.y = obj.body.position.y;
@@ -150,8 +151,8 @@ package com.citrusengine.input.controllers {
 			_previousBufferFrame = _Buffer[_previousBufferIndex];
 			_nextBufferFrame = _Buffer[_nextBufferIndex];
 			
-			var obj:*;
-			var obj2:*;
+			var obj:Object;
+			var obj2:Object;
 			
 			for each (obj in _previousBufferFrame.watchbuffer)
 			{

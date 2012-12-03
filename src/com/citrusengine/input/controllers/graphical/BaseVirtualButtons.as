@@ -69,7 +69,7 @@ package com.citrusengine.input.controllers.graphical {
 			if (!_initialized)
 				_x = value;
 			else
-				trace("Warning: you can only set " + this + " x through graphic.x after instanciation.")
+				trace("Warning: you can only set " + this + " x through graphic.x after instanciation.");
 		}
 		
 		public function set y(value:int):void
@@ -77,7 +77,7 @@ package com.citrusengine.input.controllers.graphical {
 			if (!_initialized)
 				_y = value;
 			else
-				trace("Warning: you can only set " + this + " y through graphic.y after instanciation.")
+				trace("Warning: you can only set " + this + " y through graphic.y after instanciation.");
 		}
 		
 		public function get visible():Boolean

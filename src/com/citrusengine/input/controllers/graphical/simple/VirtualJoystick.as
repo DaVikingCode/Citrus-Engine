@@ -25,7 +25,7 @@ package com.citrusengine.input.controllers.graphical.simple {
 		{
 			graphic = new Sprite();
 			
-			if (back == null)
+			if (!back)
 			{
 				//draw back
 				back = new Sprite();
@@ -64,7 +64,7 @@ package com.citrusengine.input.controllers.graphical.simple {
 				
 			}
 			
-			if (knob == null)
+			if (!knob)
 			{
 				//draw knob
 				knob = new Sprite();

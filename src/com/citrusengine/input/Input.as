@@ -100,7 +100,7 @@ package com.citrusengine.input {
 		
 		public function hasDone(actionName:String, channel:uint = 0):Boolean
 		{
-			var a:Object
+			var a:Object;
 			for each (a in _actions)
 				if (a.name == actionName && a.channel == channel && a.phase > 2)
 					return true;
@@ -109,7 +109,7 @@ package com.citrusengine.input {
 		
 		public function isDoing(actionName:String, channel:uint = 0):Boolean
 		{
-			var a:Object
+			var a:Object;
 			for each (a in _actions)
 				if (a.name == actionName && a.channel == channel && a.phase < 3)
 					return true;
@@ -118,7 +118,7 @@ package com.citrusengine.input {
 		
 		public function justDid(actionName:String, channel:uint = 0):Boolean
 		{
-			var a:Object
+			var a:Object;
 			for each (a in _actions)
 				if (a.name == actionName && a.channel == channel && a.phase < 2)
 					return true;
@@ -127,7 +127,7 @@ package com.citrusengine.input {
 		
 		public function getActionValue(actionName:String, channel:uint = 0):Number
 		{
-			var a:Object
+			var a:Object;
 			for each (a in _actions)
 				if (actionName == a.name && channel == a.channel && a.value)
 					return a.value;
@@ -142,7 +142,7 @@ package com.citrusengine.input {
 		{
 			if (!triggersEnabled)
 				return;
-			var a:Object
+			var a:Object;
 			for each (a in _actions)
 				if (a.name == action.name && a.controller == action.controller && a.channel == action.channel)
 				{
@@ -234,7 +234,7 @@ package com.citrusengine.input {
 		
 		public function removeActionsOf(controller:InputController):void
 		{
-			var i:*
+			var i:uint;
 			for (i in _actions)
 				if (_actions[i].controller == controller)
 					_actions.splice(i, 1);
@@ -334,7 +334,7 @@ package com.citrusengine.input {
 		 * ultimately, you'll have to convert to the new system :)
 		 */
 		
-		public function justPressed(keyCode:int):Boolean
+		public function justPressed(keyCode:uint):Boolean
 		{
 			var keyboard:Keyboard = getControllerByName("keyboard") as Keyboard;
 			var aName:String = keyboard.getActionByKey(keyCode).name;
@@ -348,11 +348,11 @@ package com.citrusengine.input {
 			}
 		}
 		
-		public function isDown(keyCode:int):Boolean
+		public function isDown(keyCode:uint):Boolean
 		{
 			var keyboard:Keyboard = getControllerByName("keyboard") as Keyboard;
 			var aName:String = keyboard.getActionByKey(keyCode).name;
-			if (aName !== null)
+			if (aName)
 				return isDoing(keyboard.getActionByKey(keyCode).name, 0);
 			else
 			{

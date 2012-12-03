@@ -29,7 +29,7 @@ package com.citrusengine.input.controllers.graphical.simple {
 			button2 = new Sprite();
 			graphic = new Sprite();
 			
-			if (button1UpGraphic == null)
+			if (!button1UpGraphic)
 			{
 				button1UpGraphic = new Sprite();
 				button1UpGraphic.graphics.beginFill(0x000000, 0.1);
@@ -37,7 +37,7 @@ package com.citrusengine.input.controllers.graphical.simple {
 				button1UpGraphic.graphics.endFill();
 			}
 			
-			if (button1DownGraphic == null)
+			if (!button1DownGraphic)
 			{
 				button1DownGraphic = new Sprite();
 				button1DownGraphic.graphics.beginFill(0xEE0000, 0.85);
@@ -45,7 +45,7 @@ package com.citrusengine.input.controllers.graphical.simple {
 				button1DownGraphic.graphics.endFill();
 			}
 			
-			if (button2UpGraphic == null)
+			if (!button2UpGraphic)
 			{
 				button2UpGraphic = new Sprite();
 				button2UpGraphic.graphics.beginFill(0x000000, 0.1);
@@ -53,7 +53,7 @@ package com.citrusengine.input.controllers.graphical.simple {
 				button2UpGraphic.graphics.endFill();
 			}
 			
-			if (button2DownGraphic == null)
+			if (!button2DownGraphic)
 			{
 				button2DownGraphic = new Sprite();
 				button2DownGraphic.graphics.beginFill(0xEE0000, 0.85);
@@ -79,7 +79,6 @@ package com.citrusengine.input.controllers.graphical.simple {
 			
 			graphic.addEventListener(MouseEvent.MOUSE_DOWN, handleMouseEvent);
 			graphic.addEventListener(MouseEvent.MOUSE_UP, handleMouseEvent);
-			
 		}
 		
 		private function handleMouseEvent(e:MouseEvent):void

@@ -1,5 +1,6 @@
 ﻿package com.citrusengine.core {
 
+	import com.citrusengine.input.Input;
 	import com.citrusengine.utils.AGameData;
 	import com.citrusengine.utils.LevelManager;
 
@@ -177,7 +178,7 @@
 		}
 		
 		/**
-		 * You can get to my Input manager object from this reference so that you can see which keys are pressed and stuff. 
+		 * You can get access to the Input manager object from this reference so that you can see which keys are pressed and stuff. 
 		 */		
 		public function get input():Input
 		{

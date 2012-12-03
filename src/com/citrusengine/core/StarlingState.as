@@ -4,6 +4,7 @@ package com.citrusengine.core {
 
 	import com.citrusengine.datastructures.DoublyLinkedListNode;
 	import com.citrusengine.datastructures.PoolObject;
+	import com.citrusengine.input.Input;
 	import com.citrusengine.system.Entity;
 	import com.citrusengine.system.components.ViewComponent;
 	import com.citrusengine.view.CitrusView;

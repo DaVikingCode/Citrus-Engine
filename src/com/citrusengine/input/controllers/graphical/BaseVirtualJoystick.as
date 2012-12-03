@@ -84,7 +84,7 @@ package com.citrusengine.input.controllers.graphical {
 			else
 			{
 				throw(new Error("VirtualJoystick::addAxisAction() invalid axis parameter (only x and y are accepted)"));
-				return
+				return;
 			}
 			
 			if (!((start < -1 || start > 1) || (end < -1 || end > 1)))

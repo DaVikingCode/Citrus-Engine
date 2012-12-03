@@ -48,10 +48,8 @@ package com.citrusengine.input.controllers {
 			_keyActions = new Dictionary();
 		}
 		
-		public function setKeyAction(name:String, keyCode:int, channel:uint = NaN):void
+		public function setKeyAction(name:String, keyCode:int, channel:uint = 0):void
 		{
-			if (isNaN(channel))
-				channel = defaultChannel;
 			
 			if (!_keyActions[keyCode])
 				_keyActions[keyCode] = {name: name, channel: channel};

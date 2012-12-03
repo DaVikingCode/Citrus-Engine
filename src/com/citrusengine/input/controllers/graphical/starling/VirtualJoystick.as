@@ -33,7 +33,7 @@ package com.citrusengine.input.controllers.graphical.starling {
 		{
 			graphic = new starling.display.Sprite();
 			
-			if (back == null)
+			if (!back)
 			{
 				//draw back
 				var tempSprite:Sprite = new Sprite();
@@ -88,7 +88,7 @@ package com.citrusengine.input.controllers.graphical.starling {
 				tempBitmapData = null;
 			}
 			
-			if (knob == null)
+			if (!knob)
 			{
 				//draw knob
 				var tempSprite2:Sprite = new Sprite();
