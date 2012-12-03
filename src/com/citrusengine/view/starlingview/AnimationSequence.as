@@ -97,5 +97,12 @@ package com.citrusengine.view.starlingview {
 			
 			_mcSequences = null;
 		}
+		
+		/**
+		 * A dictionary containing all animations registered thanks to their string name.
+		 */
+		public function get mcSequences():Dictionary {
+			return _mcSequences;
+		}
 	}
 }
