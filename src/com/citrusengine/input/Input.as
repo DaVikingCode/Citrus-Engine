@@ -234,7 +234,7 @@ package com.citrusengine.input {
 		
 		public function removeActionsOf(controller:InputController):void
 		{
-			var i:uint;
+			var i:*;
 			for (i in _actions)
 				if (_actions[i].controller == controller)
 					_actions.splice(i, 1);
