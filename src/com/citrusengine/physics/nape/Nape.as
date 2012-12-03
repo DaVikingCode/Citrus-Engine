@@ -15,7 +15,7 @@ package com.citrusengine.physics.nape {
 	public class Nape extends APhysicsEngine implements ISpriteView {
 		
 		private var _space:Space;
-		private var _gravity:Vec2 = new Vec2(0, 150);
+		private var _gravity:Vec2 = new Vec2(0, 450);
 		private var _contactListener:NapeContactListener;
 		
 		/**

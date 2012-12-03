@@ -120,7 +120,7 @@ package com.citrusengine.objects {
 		 */
 		protected function createMaterial():void {
 			
-			_material = new Material(0.2, 1, 1, 1, 0);
+			_material = new Material(0.4, 0.3, 0.35, 1, 0);
 		}
 		
 		/**
