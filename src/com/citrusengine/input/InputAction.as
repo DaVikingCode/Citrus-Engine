@@ -44,7 +44,7 @@ package com.citrusengine.input
 		 */
 		public static const ENDED:uint = 4;
 		
-		public function InputAction(name:String,controller:InputController,channel:uint,value:Number = 0,phase:uint = 0)
+		public function InputAction(name:String, controller:InputController, channel:uint = 0, value:Number = 0, phase:uint = 0)
 		{
 			_name = name;
 			_controller = controller;

@@ -44,7 +44,6 @@ package com.citrusengine.input {
 			actionTriggeredVALUECHANGE.add(doActionVALUECHANGE);
 			
 			_ce = CitrusEngine.getInstance();
-		
 		}
 		
 		public function initialize():void
@@ -152,6 +151,7 @@ package com.citrusengine.input {
 		{
 			if (!triggersEnabled)
 				return;
+				
 			var a:InputAction;
 			for each (a in _actions)
 				if (a.eq(action))
@@ -261,7 +261,7 @@ package com.citrusengine.input {
 		public function getActionsSnapshot():Vector.<Object>
 		{
 			var snapshot:Vector.<Object> = new Vector.<Object>;
-			for each (var a:Object in _actions)
+			for each (var a:InputAction in _actions)
 			{
 				snapshot.push(new InputAction(a.name, a.controller, a.channel, a.value, a.phase));
 			}

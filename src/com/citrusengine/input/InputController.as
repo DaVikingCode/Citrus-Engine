@@ -34,16 +34,16 @@ package com.citrusengine.input {
 		protected function triggerON(name:String, value:uint = 0, channel:uint = 0):void
 		{
 			if (enabled)
-				_input.actionTriggeredON.dispatch(new InputAction(name,this, channel, value));
+				_input.actionTriggeredON.dispatch(new InputAction(name, this, channel, value));
 		}
 		
-		protected function triggerOFF(name:String,value:uint = 0, channel:uint = 0):void
+		protected function triggerOFF(name:String, value:uint = 0, channel:uint = 0):void
 		{
 			if (enabled)
 				_input.actionTriggeredOFF.dispatch(new InputAction(name, this, channel, value));
 		}
 		
-		protected function triggerVALUECHANGE(name:String,value:uint = 0,channel:uint = 0):void
+		protected function triggerVALUECHANGE(name:String, value:uint = 0, channel:uint = 0):void
 		{
 			if (enabled)
 				_input.actionTriggeredVALUECHANGE.dispatch(new InputAction(name, this, channel, value));
