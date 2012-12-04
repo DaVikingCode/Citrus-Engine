@@ -29,11 +29,17 @@ package com.citrusengine.input.controllers {
 		protected var _grabbed:Boolean = false;
 		protected var _centered:Boolean = true;
 		
+		//Optional properties
+		public var circularBounds:Boolean = false;
+		
 		public function AVirtualJoystick(name:String, params:Object = null)
 		{
 			super(name, params);
 			
 			_innerradius = _radius - _knobradius;
+			
+			_x = _x ? _x : 2*_innerradius;
+			_y = _y ? _y : _ce.stage.stageHeight - 2*_innerradius;
 			
 			initActionRanges();
 			initGraphics();
@@ -93,20 +99,37 @@ package com.citrusengine.input.controllers {
 		 */
 		protected function handleGrab(relativeX:int, relativeY:int):void
 		{
-			
-			if (relativeX < _innerradius && relativeX > -_innerradius)
-				_knobX = relativeX;
-			else if (relativeX > _innerradius)
-				_knobX = _innerradius;
-			else if (relativeX < -_innerradius)
-				_knobX = -_innerradius;
-			
-			if (relativeY < _innerradius && relativeY > -_innerradius)
-				_knobY = relativeY;
-			else if (relativeY > _innerradius)
-				_knobY = _innerradius;
-			else if (relativeY < -_innerradius)
-				_knobY = -_innerradius;
+			if (circularBounds)
+			{
+				var dist:Number = relativeX*relativeX + relativeY*relativeY ;
+				if (dist <= _innerradius*_innerradius)
+				{
+					_knobX = relativeX;
+					_knobY = relativeY;
+				}
+				else
+				{
+					var angl:Number = Math.atan2(-relativeX, -relativeY);
+					_knobX = Math.cos(-angl - Math.PI/2) * _innerradius;
+					_knobY = Math.sin(-angl - Math.PI/2) * _innerradius;
+				}
+			}
+			else
+			{
+				if (relativeX < _innerradius && relativeX > -_innerradius)
+					_knobX = relativeX;
+				else if (relativeX > _innerradius)
+					_knobX = _innerradius;
+				else if (relativeX < -_innerradius)
+					_knobX = -_innerradius;
+				
+				if (relativeY < _innerradius && relativeY > -_innerradius)
+					_knobY = relativeY;
+				else if (relativeY > _innerradius)
+					_knobY = _innerradius;
+				else if (relativeY < -_innerradius)
+					_knobY = -_innerradius;
+			}
 			
 			//normalize x and y axes value.
 			

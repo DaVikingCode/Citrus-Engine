@@ -8,11 +8,11 @@ package com.citrusengine.input.controllers {
 		protected var _x:int;
 		protected var _y:int;
 		
-		protected var _margin:int = 100;
+		protected var _margin:int = 130;
 		
 		protected var _visible:Boolean = true;
 		
-		protected var _buttonradius:int = 40;
+		protected var _buttonradius:int = 50;
 		
 		public var button1Action:String = "button1";
 		public var button2Action:String = "button2";
@@ -20,6 +20,9 @@ package com.citrusengine.input.controllers {
 		public function AVirtualButtons(name:String, params:Object = null)
 		{
 			super(name, params);
+			
+			_x = _x ? _x : _ce.stage.stageWidth - (_margin + 3*_buttonradius) ;
+			_y = _y ? _y : _ce.stage.stageHeight - 3*_buttonradius;
 			
 			initGraphics();
 		}
