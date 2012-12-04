@@ -7,15 +7,10 @@ package com.citrusengine.input {
 	
 	/**
 	 * A class managing input of any controllers that is an InputController.
-	 * Actions are inspired by Midi signals, but they carry an action object.
-	 * "actions signals" are either ON, OFF, or VALUECHANGE.
+	 * Actions are inspired by Midi signals, but they carry an InputAction object.
+	 * "action signals" are either ON, OFF, or VALUECHANGE.
 	 * to track action status, and check wether action was just triggered or is still on,
-	 * there are phases for the action object:
-	 * 	phase 0 is right when the action was triggered.
-	 *	phase 1 action was ON previously. (same frame or previous frame.)
-	 *	phase 2 action still ON. (since last frame) - this phase will only be advanced by doActionOFF.
-	 *  phase 3 is the phase where action was turned OFF. will be marked as phase 4 in update.
-	 *  phase 4 will be disposed of in update. (action was definately turned off in the previous frame.)
+	 * actions have phases (see InputAction).
 	 **/	
 	public class Input
 	{
@@ -24,7 +19,7 @@ package com.citrusengine.input {
 		protected var _initialized:Boolean;
 		
 		protected var _controllers:Vector.<InputController>;
-		protected var _actions:Vector.<Object>;
+		protected var _actions:Vector.<InputAction>;
 		
 		public var triggersEnabled:Boolean = true;
 		
@@ -38,7 +33,7 @@ package com.citrusengine.input {
 		public function Input()
 		{
 			_controllers = new Vector.<InputController>();
-			_actions = new Vector.<Object>();
+			_actions = new Vector.<InputAction>();
 			
 			actionTriggeredON = new Signal();
 			actionTriggeredOFF = new Signal();
@@ -58,8 +53,7 @@ package com.citrusengine.input {
 				return;
 			
 			//default keyboard
-			var k:Keyboard = new Keyboard("keyboard", 0);
-			keyboard = k;
+			keyboard = new Keyboard("keyboard", 0);
 			
 			_initialized = true;
 		}
@@ -70,7 +64,7 @@ package com.citrusengine.input {
 				_controllers.push(controller);
 		}
 		
-		public function addAction(action:Object):void
+		public function addAction(action:InputAction):void
 		{
 			if (_actions.lastIndexOf(action) < 0)
 				if (action.name && action.value && action.controller && action.channel)
@@ -100,7 +94,7 @@ package com.citrusengine.input {
 		{
 			var a:Object;
 			for each (a in _actions)
-				if (a.name == actionName && a.channel == channel && a.phase > 2)
+				if (a.name == actionName && a.channel == channel && a.phase > InputAction.ON)
 					return true;
 			return false;
 		}
@@ -109,7 +103,7 @@ package com.citrusengine.input {
 		{
 			var a:Object;
 			for each (a in _actions)
-				if (a.name == actionName && a.channel == channel && a.phase < 3)
+				if (a.name == actionName && a.channel == channel && a.phase < InputAction.END)
 					return true;
 			return false;
 		}
@@ -118,7 +112,7 @@ package com.citrusengine.input {
 		{
 			var a:Object;
 			for each (a in _actions)
-				if (a.name == actionName && a.channel == channel && a.phase < 2)
+				if (a.name == actionName && a.channel == channel && a.phase < InputAction.ON)
 					return true;
 			return false;
 		}
@@ -136,7 +130,7 @@ package com.citrusengine.input {
 		 * Adds a new action of phase 0 if it does not exist.
 		 * if it does exist however, it is reset to phase 0.
 		 */
-		private function doActionON(action:Object):void
+		private function doActionON(action:InputAction):void
 		{
 			if (!triggersEnabled)
 				return;
@@ -144,10 +138,10 @@ package com.citrusengine.input {
 			for each (a in _actions)
 				if (a.name == action.name && a.controller == action.controller && a.channel == action.channel)
 				{
-					a.phase = 0;
+					a.phase = InputAction.BEGIN;
 					return;
 				}
-			action.phase = 0;
+			action.phase = InputAction.BEGIN;
 			_actions[_actions.length] = action;
 		}
 		
@@ -163,7 +157,7 @@ package com.citrusengine.input {
 			for each (a in _actions)
 				if (a.name == action.name && a.controller == action.controller && a.channel == action.channel)
 				{
-					a.phase = 3;
+					a.phase = InputAction.END;
 					return;
 				}
 		}
@@ -175,7 +169,7 @@ package com.citrusengine.input {
 		 * to justDid, and then only the value will be changed. - however your continous controller DOES have
 		 * to end the action by triggering ActionOFF.
 		 */
-		private function doActionVALUECHANGE(action:Object):void
+		private function doActionVALUECHANGE(action:InputAction):void
 		{
 			if (!triggersEnabled)
 				return;
@@ -184,12 +178,12 @@ package com.citrusengine.input {
 			{
 				if (a.name == action.name && a.controller == action.controller && a.channel == action.channel)
 				{
-					a.phase = 2;
+					a.phase = InputAction.ON;
 					a.value = action.value;
 					return;
 				}
 			}
-			action.phase = 0;
+			action.phase = InputAction.BEGIN;
 			_actions[_actions.length] = action;
 		}
 		
@@ -215,9 +209,9 @@ package com.citrusengine.input {
 			var i:String;
 			for (i in _actions)
 			{
-				if (_actions[i].phase > 3)
+				if (_actions[i].phase > InputAction.END)
 					_actions.splice(i as uint, 1);
-				else if (_actions[i].phase !== 2)
+				else if (_actions[i].phase !== InputAction.ON)
 					_actions[i].phase++;
 			}
 		
@@ -247,7 +241,7 @@ package com.citrusengine.input {
 		 *  addOrSetAction sets existing parameters of an action to new values or adds action if
 		 *  it doesn't exist.
 		 */
-		public function addOrSetAction(action:Object):void
+		public function addOrSetAction(action:InputAction):void
 		{
 			var a:Object;
 			for each (a in _actions)
@@ -334,9 +328,9 @@ package com.citrusengine.input {
 		public function justPressed(keyCode:uint):Boolean
 		{
 			var keyboard:Keyboard = getControllerByName("keyboard") as Keyboard;
-			var aName:String = keyboard.getActionByKey(keyCode).name;
-			if (aName !== null)
-				return justDid(keyboard.getActionByKey(keyCode).name, 0);
+			var action:Object = keyboard.getActionByKey(keyCode);
+			if (action)
+				return justDid(action.name);
 			else
 			{
 				trace("Warning: you are still using justPressed(keyCode:int) for keyboard input and might get unexpected results...");
@@ -348,9 +342,9 @@ package com.citrusengine.input {
 		public function isDown(keyCode:uint):Boolean
 		{
 			var keyboard:Keyboard = getControllerByName("keyboard") as Keyboard;
-			var aName:String = keyboard.getActionByKey(keyCode).name;
-			if (aName)
-				return isDoing(keyboard.getActionByKey(keyCode).name, 0);
+			var action:Object = keyboard.getActionByKey(keyCode);
+			if (action)
+				return isDoing(action.name);
 			else
 			{
 				trace("Warning: you are still using justPressed(keyCode:int) for keyboard input and might get unexpected results...");

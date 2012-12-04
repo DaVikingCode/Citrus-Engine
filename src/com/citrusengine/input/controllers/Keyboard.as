@@ -1,10 +1,11 @@
-package com.citrusengine.input.controllers {
-
+package com.citrusengine.input.controllers
+{
+	
 	import com.citrusengine.input.InputController;
-
+	
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
-
+	
 	/**
 	 *  The default Keyboard controller.
 	 *  Holds static keycodes constants (see bottom)
@@ -33,36 +34,43 @@ package com.citrusengine.input.controllers {
 		private function onKeyDown(e:KeyboardEvent):void
 		{
 			if (_keyActions[e.keyCode])
-				triggerON({name: _keyActions[e.keyCode].name, value: 1, channel: _keyActions[e.keyCode].channel});
+				triggerON(_keyActions[e.keyCode].name, 1, _keyActions[e.keyCode].channel);
 		}
 		
 		private function onKeyUp(e:KeyboardEvent):void
 		{
 			if (_keyActions[e.keyCode])
-				triggerOFF({name: _keyActions[e.keyCode].name, value: 1, channel: _keyActions[e.keyCode].channel});
+				triggerOFF(_keyActions[e.keyCode].name, 0, _keyActions[e.keyCode].channel);
 		}
 		
-		public function resetKeycodeActions():void
+		public function resetKeyActions():void
 		{
 			_keyActions = new Dictionary();
 		}
 		
-		public function setKeyAction(name:String, keyCode:int, channel:uint = 0):void
+		public function setKeyAction(name:String, keyCode:uint, channel:uint = 0):void
 		{
 			
 			if (!_keyActions[keyCode])
 				_keyActions[keyCode] = {name: name, channel: channel};
 		}
 		
-		public function removeKeyAction(keyCode:int):void
+		public function changeKeyAction(previousKey:uint, newKey:uint):void
 		{
-			if (_keyActions[keyCode])
-				delete _keyActions[keyCode];
+			
+			var action:Object = getActionByKey(previousKey);
+			setKeyAction(action.name, newKey, action.channel);
+			removeKeyAction(previousKey);
 		}
 		
-		public function getActionByKey(keyCode:int):Object
-		{			
-				return _keyActions[keyCode];
+		public function removeKeyAction(keyCode:uint):void
+		{
+			delete _keyActions[keyCode];
+		}
+		
+		public function getActionByKey(keyCode:uint):Object
+		{
+			return _keyActions[keyCode];
 		}
 		
 		override public function destroy():void
@@ -78,11 +86,11 @@ package com.citrusengine.input.controllers {
 		/*
 		 *  KEYCODES
 		 *  they refer to the character written on a key (the first bottom left one if there are many).
-		 *  based on commonly used QWERTY keyboard. 
-		 * 
+		 *  based on commonly used QWERTY keyboard.
+		 *
 		 *  some regular AZERTY special chars based on a French AZERTY Layout are added for
 		 *  your convenience (so you can refer to them if you have a similar layout) :
-		 *  ²)=^$ù*! 
+		 *  ²)=^$ù*!
 		 */
 		
 		public static const NUMBER_0:uint = 48;

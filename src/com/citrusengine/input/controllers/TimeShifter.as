@@ -2,6 +2,9 @@ package com.citrusengine.input.controllers {
 
 	import com.citrusengine.input.InputController;
 	
+	/**
+	 * Work In Progress.
+	 */
 	public class TimeShifter extends InputController
 	{
 		
@@ -170,7 +173,7 @@ package com.citrusengine.input.controllers {
 			
 			// tween speed.
 			
-			if (_endSpeed != _startSpeed && _startSpeed < _endSpeed && _easeFunc)
+			if (_endSpeed != _startSpeed && _startSpeed < _endSpeed)
 			{
 				if (_direction > 0)
 					_speed = _easeFunc(_bufferPosition, _startSpeed, _endSpeed, _bufferLength - 1);

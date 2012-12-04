@@ -150,18 +150,18 @@ package com.citrusengine.input.controllers {
 					{
 						
 						if ((_xAxis >= a.start) && (_xAxis <= a.end))
-							triggerVALUECHANGE({name: a.name, value: Math.abs(_xAxis)});
+							triggerVALUECHANGE(a.name, Math.abs(_xAxis));
 						else
-							triggerOFF({name: a.name});
+							triggerOFF(a.name, 0);
 					}
 				
 				if (_yAxisActions.length > 0)
 					for each (a in _yAxisActions)
 					{
 						if ((_yAxis >= a.start) && (_yAxis <= a.end))
-							triggerVALUECHANGE({name: a.name, value: Math.abs(_yAxis)});
+							triggerVALUECHANGE(a.name, Math.abs(_yAxis));
 						else
-							triggerOFF({name: a.name});
+							triggerOFF(a.name, 0);
 					}
 				
 			}
@@ -172,10 +172,10 @@ package com.citrusengine.input.controllers {
 			var a:Object;
 			if (_xAxisActions.length > 0)
 				for each (a in _xAxisActions)
-					triggerOFF({name: a.name});
+					triggerOFF(a.name);
 			if (_yAxisActions.length > 0)
 				for each (a in _yAxisActions)
-					triggerOFF({name: a.name});
+					triggerOFF(a.name);
 		}
 		
 		protected function reset():void

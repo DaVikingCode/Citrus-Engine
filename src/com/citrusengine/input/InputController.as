@@ -31,48 +31,33 @@ package com.citrusengine.input {
 		
 		}
 		
-		protected function triggerON(message:Object):void
+		protected function triggerON(name:String,value:uint = 0,channel:uint = NaN):void
 		{
 			if (enabled)
 			{
-				if (!message.value)
-					message.value = 0;
-				if (!message.channel)
-					message.channel = defaultChannel;
-				
-				message.controller = this;
-				
-				_input.actionTriggeredON.dispatch(message);
+				if (isNaN(channel))
+					channel = defaultChannel;
+				_input.actionTriggeredON.dispatch(new InputAction(name,this,channel,value));
 			}
 		}
 		
-		protected function triggerOFF(message:Object):void
+		protected function triggerOFF(name:String,value:uint = 0,channel:uint = NaN):void
 		{
 			if (enabled)
 			{
-				if (!message.value)
-					message.value = 0;
-				if (!message.channel)
-					message.channel = defaultChannel;
-				
-				message.controller = this;
-				
-				_input.actionTriggeredOFF.dispatch(message);
+				if (isNaN(channel))
+					channel = defaultChannel;
+				_input.actionTriggeredOFF.dispatch(new InputAction(name,this,channel,value));
 			}
 		}
 		
-		protected function triggerVALUECHANGE(message:Object):void
+		protected function triggerVALUECHANGE(name:String,value:uint = 0,channel:uint = NaN):void
 		{
 			if (enabled)
 			{
-				if (!message.value)
-					message.value = 0;
-				if (!message.channel)
-					message.channel = defaultChannel;
-				
-				message.controller = this;
-				
-				_input.actionTriggeredVALUECHANGE.dispatch(message);
+				if (isNaN(channel))
+					channel = defaultChannel;
+				_input.actionTriggeredVALUECHANGE.dispatch(new InputAction(name,this,channel,value));
 			}
 		}
 		
