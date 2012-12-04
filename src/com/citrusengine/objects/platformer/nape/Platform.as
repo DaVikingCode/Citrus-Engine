@@ -79,6 +79,13 @@ package com.citrusengine.objects.platformer.nape {
 			_bodyType = BodyType.STATIC;
 		}
 		
+		override protected function createMaterial():void {
+			
+			super.createMaterial();
+			
+			_material.elasticity = 0;
+		}
+		
 		override protected function createConstraint():void {
 			
 			super.createConstraint();

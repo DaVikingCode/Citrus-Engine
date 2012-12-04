@@ -16,7 +16,6 @@ package com.citrusengine.objects.platformer.box2d
 	import org.osflash.signals.Signal;
 
 	import flash.geom.Point;
-	import flash.ui.Keyboard;
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;

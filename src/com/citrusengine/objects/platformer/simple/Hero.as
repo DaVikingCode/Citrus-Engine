@@ -1,7 +1,5 @@
 package com.citrusengine.objects.platformer.simple {
 
-	import flash.ui.Keyboard;
-
 	public class Hero extends DynamicObject {
 		
 		public var gravity:Number = 50;

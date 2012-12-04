@@ -1,10 +1,10 @@
 package com.citrusengine.objects.platformer.nape {
 
+	import nape.callbacks.CbEvent;
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
 	import nape.callbacks.InteractionListener;
 	import nape.callbacks.InteractionType;
-	import nape.callbacks.CbEvent;
 	import nape.geom.Vec2;
 	import nape.phys.Body;
 
@@ -12,7 +12,6 @@ package com.citrusengine.objects.platformer.nape {
 
 	import org.osflash.signals.Signal;
 
-	import flash.ui.Keyboard;
 	import flash.utils.getDefinitionByName;
 
 	/**
@@ -43,7 +42,7 @@ package com.citrusengine.objects.platformer.nape {
 		 * This is the initial velocity that the hero will move at when he jumps.
 		 */
 		[Inspectable(defaultValue="330")]
-		public var jumpHeight:Number = 330;
+		public var jumpHeight:Number = 360;
 		
 		/**
 		 * This is the amount of "float" that the hero has when the player holds the jump button while jumping. 
@@ -90,7 +89,7 @@ package com.citrusengine.objects.platformer.nape {
 		protected var _springOffEnemy:Number = -1;
 		protected var _hurtTimeoutID:Number;
 		protected var _hurt:Boolean = false;
-		protected var _friction:Number = 0.75;
+		protected var _dynamicFriction:Number = 1.7;
 		protected var _playerMovingHero:Boolean = false;
 		protected var _controlsEnabled:Boolean = true;
 		protected var _ducking:Boolean = false;
@@ -153,8 +152,8 @@ package com.citrusengine.objects.platformer.nape {
 		public function set controlsEnabled(value:Boolean):void {
 			_controlsEnabled = value;
 
-			// if (!_controlsEnabled)
-			// _fixture.SetFriction(_friction);
+			 if (!_controlsEnabled)
+			 	_material.dynamicFriction = _dynamicFriction;
 		}
 
 		/**
@@ -179,6 +178,20 @@ package com.citrusengine.objects.platformer.nape {
 			_enemyClass = getDefinitionByName(value as String) as Class;
 			else if (value is Class)
 			_enemyClass = value;
+		}
+		
+		/**
+		 * This is the amount of friction that the hero will have. Its value is multiplied against the
+		 * friction value of other physics objects.
+		 */	
+		public function get dynamicFriction():Number {
+			return _dynamicFriction;
+		}
+		
+		[Inspectable(defaultValue="1.7")]
+		public function set dynamicFriction(value:Number):void {
+			
+			_material.dynamicFriction = _dynamicFriction = value;
 		}
 		
 		override public function update(timeDelta:Number):void
@@ -211,13 +224,13 @@ package com.citrusengine.objects.platformer.nape {
 				if (moveKeyPressed && !_playerMovingHero)
 				{
 					_playerMovingHero = true;
-					//_fixture.SetFriction(0); //Take away friction so he can accelerate.
+					_material.dynamicFriction = 0; //Take away friction so he can accelerate.
 				}
 				//Player just stopped moving the hero this tick.
 				else if (!moveKeyPressed && _playerMovingHero)
 				{
 					_playerMovingHero = false;
-					//_fixture.SetFriction(_friction); //Add friction so that he stops running
+					_material.dynamicFriction = _dynamicFriction; //Add friction so that he stops running
 				}
 				
 				//
@@ -269,6 +282,12 @@ package com.citrusengine.objects.platformer.nape {
 			_body.allowRotation = false;
 		}
 		
+		override protected function createMaterial():void {
+			
+			super.createMaterial();
+			
+			_material.elasticity = 0;
+		}
 		
 		override public function handleBeginContact(e:InteractionCallback):void {
 			
@@ -332,7 +351,7 @@ package com.citrusengine.objects.platformer.nape {
 			
 			if (prevAnimation != _animation)
 				onAnimationChange.dispatch();
-			
+
 		}
 	}
 }

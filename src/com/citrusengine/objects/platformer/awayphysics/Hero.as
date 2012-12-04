@@ -12,7 +12,6 @@ package com.citrusengine.objects.platformer.awayphysics {
 	import org.osflash.signals.Signal;
 
 	import flash.geom.Vector3D;
-	import flash.ui.Keyboard;
 
 	/**
 	 * @author Aymeric
