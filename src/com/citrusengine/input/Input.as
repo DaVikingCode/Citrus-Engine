@@ -209,7 +209,7 @@ package com.citrusengine.input {
 			for (i in _actions)
 			{
 				if (_actions[i].phase > InputAction.END)
-					_actions.splice(i as uint, 1);
+					_actions.splice(uint(i), 1);
 				else if (_actions[i].phase !== InputAction.ON)
 					_actions[i].phase++;
 			}
@@ -228,7 +228,7 @@ package com.citrusengine.input {
 			var i:String;
 			for (i in _actions)
 				if (_actions[i].controller == controller)
-					_actions.splice(i as uint, 1);
+					_actions.splice(uint(i), 1);
 		}
 		
 		public function resetActions():void
