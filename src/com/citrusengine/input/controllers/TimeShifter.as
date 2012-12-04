@@ -103,11 +103,10 @@ package com.citrusengine.input.controllers {
 			{
 				newbuffer = {};
 				newbuffer.object = obj;
-				newbuffer.x = obj.body.position.x;
-				newbuffer.y = obj.body.position.y;
-				newbuffer.rotation = obj.body.rotation;
-				newbuffer.velX = obj.body.velocity.x;
-				newbuffer.velY = obj.body.velocity.y;
+				newbuffer.x = obj.x;
+				newbuffer.y = obj.y;
+				newbuffer.rotation = obj.rotation;
+				newbuffer.velocity = obj.velocity;
 				wbuff.push(newbuffer);
 			}
 			
@@ -160,25 +159,29 @@ package com.citrusengine.input.controllers {
 				{
 					if (obj.object == obj2.object)
 					{
-						obj.object.body.position.x = obj.x + ((obj2.x - obj.x) * _interpolationFactor);
-						obj.object.body.position.y = obj.y + ((obj2.y - obj.y) * _interpolationFactor);
-						obj.object.body.rotation = obj.rotation + ((obj2.rotation - obj.rotation) * _interpolationFactor);
-						obj.object.body.velocity.x = obj.velX + ((obj2.velX - obj.velX) * _interpolationFactor);
-						obj.object.body.velocity.y = obj.velY + ((obj2.velY - obj.velY) * _interpolationFactor);
+						obj.object.x = obj.x + ((obj2.x - obj.x) * _interpolationFactor);
+						obj.object.y = obj.y + ((obj2.y - obj.y) * _interpolationFactor);
+						obj.object.rotation = obj.rotation + ((obj2.rotation - obj.rotation) * _interpolationFactor);
+						obj.object.velocity[0] = obj.velocity[0] + ((obj2.velocity[0] - obj.velocity[0]) * _interpolationFactor);
+						obj.object.velocity[1] = obj.velocity[1] + ((obj2.velocity[1] - obj.velocity[1]) * _interpolationFactor);
 					}
 				}
 			}
 			
 			_previousBufferFrame = _Buffer[_nextBufferIndex];
 			
-			// tween speed.
-			
-			if (_endSpeed != _startSpeed && _startSpeed < _endSpeed)
+			if (_endSpeed != _startSpeed)
 			{
 				if (_direction > 0)
-					_speed = _easeFunc(_bufferPosition, _startSpeed, _endSpeed, _bufferLength - 1);
+					if(_startSpeed < _endSpeed)
+						_speed = _easeFunc(_bufferPosition, _startSpeed, _endSpeed, _bufferLength - 1);
+					else
+						_speed = _easeFunc(_bufferPosition, _startSpeed, _endSpeed - _startSpeed, _bufferLength - 1);
 				else if (_direction < 0) 
-					_speed = _easeFunc(_bufferLength - 1 - _bufferPosition, _startSpeed, _endSpeed, _bufferLength - 1);
+					if(_startSpeed < _endSpeed)
+						_speed = _easeFunc(_bufferLength - 1 - _bufferPosition, _startSpeed, _endSpeed, _bufferLength - 1);
+					else
+						_speed = _easeFunc(_bufferLength - 1 - _bufferPosition, _startSpeed, _endSpeed - _startSpeed, _bufferLength - 1);
 			}
 			else
 			_speed = _endSpeed;
