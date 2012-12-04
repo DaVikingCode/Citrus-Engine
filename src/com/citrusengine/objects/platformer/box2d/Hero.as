@@ -99,6 +99,12 @@ package com.citrusengine.objects.platformer.box2d
 		[Inspectable(defaultValue="true")]
 		public var canDuck:Boolean = true;
 		
+		/**
+		 * Defines which input Channel to listen to.
+		 */
+		[Inspectable(defaultValue = "0")]
+		public var inputChannel:uint = 0;
+		
 		//events
 		/**
 		 * Dispatched whenever the hero jumps. 
@@ -227,15 +233,15 @@ package com.citrusengine.objects.platformer.box2d
 			{
 				var moveKeyPressed:Boolean = false;
 				
-				_ducking = (_ce.input.isDown(Keyboard.DOWN) && _onGround && canDuck);
+				_ducking = (_ce.input.isDoing("down",inputChannel) && _onGround && canDuck);
 				
-				if (_ce.input.isDown(Keyboard.RIGHT) && !_ducking)
+				if (_ce.input.isDoing("right",inputChannel) && !_ducking)
 				{
 					velocity.Add(getSlopeBasedMoveAngle());
 					moveKeyPressed = true;
 				}
 				
-				if (_ce.input.isDown(Keyboard.LEFT) && !_ducking)
+				if (_ce.input.isDoing("left",inputChannel) && !_ducking)
 				{
 					velocity.Subtract(getSlopeBasedMoveAngle());
 					moveKeyPressed = true;
@@ -254,20 +260,20 @@ package com.citrusengine.objects.platformer.box2d
 					_fixture.SetFriction(_friction); //Add friction so that he stops running
 				}
 				
-				if (_onGround && _ce.input.justPressed(Keyboard.SPACE) && !_ducking)
+				if (_onGround && _ce.input.justDid("jump",inputChannel) && !_ducking)
 				{
 					velocity.y = -jumpHeight;
 					onJump.dispatch();
 				}
 				
-				if (_ce.input.isDown(Keyboard.SPACE) && !_onGround && velocity.y < 0)
+				if (_ce.input.isDoing("jump",inputChannel) && !_onGround && velocity.y < 0)
 				{
 					velocity.y -= jumpAcceleration;
 				}
 				
 				if (_springOffEnemy != -1)
 				{
-					if (_ce.input.isDown(Keyboard.SPACE))
+					if (_ce.input.isDoing("jump",inputChannel))
 						velocity.y = -enemySpringJumpHeight;
 					else
 						velocity.y = -enemySpringHeight;

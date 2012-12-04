@@ -67,7 +67,6 @@ package com.citrusengine.input {
 		public function addAction(action:InputAction):void
 		{
 			if (_actions.lastIndexOf(action) < 0)
-				if (action.name && action.value && action.controller && action.channel)
 					_actions[_actions.length] = action;
 		}
 		
@@ -92,7 +91,7 @@ package com.citrusengine.input {
 		
 		public function hasDone(actionName:String, channel:uint = 0):Boolean
 		{
-			var a:Object;
+			var a:InputAction;
 			for each (a in _actions)
 				if (a.name == actionName && a.channel == channel && a.phase > InputAction.ON)
 					return true;
@@ -101,7 +100,7 @@ package com.citrusengine.input {
 		
 		public function isDoing(actionName:String, channel:uint = 0):Boolean
 		{
-			var a:Object;
+			var a:InputAction;
 			for each (a in _actions)
 				if (a.name == actionName && a.channel == channel && a.phase < InputAction.END)
 					return true;
@@ -110,7 +109,7 @@ package com.citrusengine.input {
 		
 		public function justDid(actionName:String, channel:uint = 0):Boolean
 		{
-			var a:Object;
+			var a:InputAction;
 			for each (a in _actions)
 				if (a.name == actionName && a.channel == channel && a.phase < InputAction.ON)
 					return true;
@@ -119,7 +118,7 @@ package com.citrusengine.input {
 		
 		public function getActionValue(actionName:String, channel:uint = 0):Number
 		{
-			var a:Object;
+			var a:InputAction;
 			for each (a in _actions)
 				if (actionName == a.name && channel == a.channel && a.value)
 					return a.value;
@@ -134,9 +133,9 @@ package com.citrusengine.input {
 		{
 			if (!triggersEnabled)
 				return;
-			var a:Object;
+			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == action.name && a.controller == action.controller && a.channel == action.channel)
+				if (a.eq(action))
 				{
 					a.phase = InputAction.BEGIN;
 					return;
@@ -149,13 +148,13 @@ package com.citrusengine.input {
 		 * Sets action to phase 3. will be advanced to phase 4 in next update, and finally will be removed
 		 * on the update after that.
 		 */
-		private function doActionOFF(action:Object):void
+		private function doActionOFF(action:InputAction):void
 		{
 			if (!triggersEnabled)
 				return;
-			var a:Object;
+			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == action.name && a.controller == action.controller && a.channel == action.channel)
+				if (a.eq(action))
 				{
 					a.phase = InputAction.END;
 					return;
@@ -173,10 +172,10 @@ package com.citrusengine.input {
 		{
 			if (!triggersEnabled)
 				return;
-			var a:Object;
+			var a:InputAction;
 			for each (a in _actions)
 			{
-				if (a.name == action.name && a.controller == action.controller && a.channel == action.channel)
+				if (a.eq(action))
 				{
 					a.phase = InputAction.ON;
 					a.value = action.value;
@@ -243,10 +242,10 @@ package com.citrusengine.input {
 		 */
 		public function addOrSetAction(action:InputAction):void
 		{
-			var a:Object;
+			var a:InputAction;
 			for each (a in _actions)
 			{
-				if (a.name == action.name && a.controller == action.controller && a.channel == action.channel)
+				if (a.eq(action))
 				{
 					a.phase = action.phase;
 					a.value = action.value;
@@ -257,20 +256,6 @@ package com.citrusengine.input {
 		}
 		
 		/**
-		 * createAction just helps creating/cloning an action object, it enforces an action's structure.
-		 */
-		public function createAction(name:String, value:Number, controller:*, channel:uint, phase:uint):Object
-		{
-			var action:Object = new Object();
-			action.name = name;
-			action.value = value;
-			action.controller = controller;
-			action.channel = channel;
-			action.phase = phase;
-			return action;
-		}
-		
-		/**
 		 *  getActionsSnapshot returns a Vector of all actions in current frame.
 		 */
 		public function getActionsSnapshot():Vector.<Object>
@@ -278,7 +263,7 @@ package com.citrusengine.input {
 			var snapshot:Vector.<Object> = new Vector.<Object>;
 			for each (var a:Object in _actions)
 			{
-				snapshot.push(createAction(a.name, a.value, a.controller, a.channel, a.phase));
+				snapshot.push(new InputAction(a.name, a.controller, a.channel, a.value, a.phase));
 			}
 			return snapshot;
 		}

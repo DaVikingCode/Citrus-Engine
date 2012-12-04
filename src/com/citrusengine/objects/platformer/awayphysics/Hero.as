@@ -26,6 +26,12 @@ package com.citrusengine.objects.platformer.awayphysics {
 
 		[Inspectable(defaultValue="3")]
 		public var speedRotation:Number = 3;
+		
+		/**
+		 * Defines which input Channel to listen to.
+		 */
+		[Inspectable(defaultValue = "0")]
+		public var inputChannel:uint = 0;
 
 		// events
 		/**
@@ -84,17 +90,17 @@ package com.citrusengine.objects.platformer.awayphysics {
 
 			var moveKeyPressed:Boolean = false;
 
-			if (_ce.input.isDown(Keyboard.RIGHT)) {
+			if (_ce.input.isDoing("right",inputChannel)) {
 				_chRotation += speedRotation;
 				character.ghostObject.rotation = new Vector3D(0, _chRotation, 0);
 			}
 
-			if (_ce.input.isDown(Keyboard.LEFT)) {
+			if (_ce.input.isDoing("left",inputChannel)) {
 				_chRotation -= speedRotation;
 				character.ghostObject.rotation = new Vector3D(0, _chRotation, 0);
 			}
 
-			if (_ce.input.isDown(Keyboard.UP)) {
+			if (_ce.input.isDoing("up",inputChannel)) {
 				_walkDirection = _ghostObject.front;
 				_walkDirection.scaleBy(speed);
 				_character.setWalkDirection(_walkDirection);
@@ -102,14 +108,14 @@ package com.citrusengine.objects.platformer.awayphysics {
 				// _ghostObject.position = _ghostObject.position.add(_ghostObject.worldTransform.rotationWithMatrix.transformVector(new Vector3D(0, 0, 10)));
 			}
 
-			if (_ce.input.isDown(Keyboard.DOWN)) {
+			if (_ce.input.isDoing("down",inputChannel)) {
 				_walkDirection = _ghostObject.front;
 				_walkDirection.scaleBy(-speed);
 				_character.setWalkDirection(_walkDirection);
 				moveKeyPressed = true;
 			}
 
-			if (_ce.input.isDown(Keyboard.SPACE)) {
+			if (_ce.input.isDoing("jump",inputChannel)) {
 				_character.jump();
 			}
 

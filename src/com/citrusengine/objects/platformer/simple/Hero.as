@@ -8,6 +8,12 @@ package com.citrusengine.objects.platformer.simple {
 
 		public var acceleration:Number = 10;
 		public var maxVelocity:Number = 80;
+		
+		/**
+		 * Defines which input Channel to listen to.
+		 */
+		[Inspectable(defaultValue = "0")]
+		public var inputChannel:uint = 0;
 
 		public function Hero(name:String, params:Object = null) {
 			
@@ -27,12 +33,12 @@ package com.citrusengine.objects.platformer.simple {
 
 			var moveKeyPressed:Boolean = false;
 
-			if (_ce.input.isDown(Keyboard.LEFT)) {
+			if (_ce.input.isDoing("left",inputChannel)) {
 				velocity.x -= acceleration;
 				moveKeyPressed = true;
 			}
 
-			if (_ce.input.isDown(Keyboard.RIGHT)) {
+			if (_ce.input.isDoing("right",inputChannel)) {
 				velocity.x += acceleration;
 				moveKeyPressed = true;
 			}

@@ -56,6 +56,12 @@ package com.citrusengine.objects.platformer.nape {
 		 */
 		[Inspectable(defaultValue="true")]
 		public var canDuck:Boolean = true;
+		
+		/**
+		 * Defines which input Channel to listen to.
+		 */
+		[Inspectable(defaultValue = "0")]
+		public var inputChannel:uint = 0;
 
 		// events
 		/**
@@ -185,16 +191,16 @@ package com.citrusengine.objects.platformer.nape {
 			{
 				var moveKeyPressed:Boolean = false;
 				
-				_ducking = (_ce.input.isDown(Keyboard.DOWN) && _onGround && canDuck);
+				_ducking = (_ce.input.isDoing("down",inputChannel) && _onGround && canDuck);
 				
-				if (_ce.input.isDown(Keyboard.RIGHT)  && !_ducking)
+				if (_ce.input.isDoing("right",inputChannel)  && !_ducking)
 				{
 					//velocity.addeq(getSlopeBasedMoveAngle());
 					velocity.x += acceleration;
 					moveKeyPressed = true;
 				}
 				
-				if (_ce.input.isDown(Keyboard.LEFT) && !_ducking)
+				if (_ce.input.isDoing("left",inputChannel) && !_ducking)
 				{
 					//velocity.subeq(getSlopeBasedMoveAngle());
 					velocity.x -= acceleration;
@@ -215,7 +221,7 @@ package com.citrusengine.objects.platformer.nape {
 				}
 				
 				//
-				if (_ce.input.justPressed(Keyboard.SPACE) && _onGround && !_ducking)
+				if (_ce.input.justDid("jump",inputChannel) && _onGround && !_ducking)
 				{
 					velocity.y = -jumpHeight;
 					_onGround = false;
@@ -223,14 +229,14 @@ package com.citrusengine.objects.platformer.nape {
 				}
 				
 				//
-				if (_ce.input.isDown(Keyboard.SPACE) && !_onGround && velocity.y < 0)
+				if (_ce.input.isDoing("jump",inputChannel) && !_onGround && velocity.y < 0)
 				{
 					velocity.y -= jumpAcceleration;
 				}
 				
 				/*if (_springOffEnemy != -1)
 				{
-					if (_ce.input.isDown(Keyboard.SPACE))
+					if (_ce.input.isDoing("jump",inputChannel))
 						velocity.y = -enemySpringJumpHeight;
 					else
 						velocity.y = -enemySpringHeight;
