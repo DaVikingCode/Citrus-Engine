@@ -82,6 +82,10 @@ package com.citrusengine.system.components {
 		public function get depth():Number {
 			return 0;
 		}
+		
+		public function get velocity():Array {
+			return null;
+		}
 
 		public function get rotation():Number {
 			return _rotation;

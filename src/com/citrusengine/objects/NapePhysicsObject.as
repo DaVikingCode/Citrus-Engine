@@ -291,5 +291,13 @@ package com.citrusengine.objects {
 		{
 			return _body;
 		}
+		
+		public function get velocity():Array {
+			return [_body.velocity.x, _body.velocity.y, 0];
+		}
+		
+		public function set velocity(value:Array):void {
+			_body.velocity.setxy(value[0], value[1]);
+		}
 	}
 }

@@ -44,9 +44,14 @@ package com.citrusengine.view
 		function get height():Number;
 		
 		/**
-		 * The depth of the object. 
+		 * The depth of the object (used for 3D content). 
 		 */
 		function get depth():Number;
+		
+		/**
+		 * The velocity of the object.
+		 */
+		function get velocity():Array;
 		
 		/**
 		 * The ratio at which the object scrolls in relation to the camera.

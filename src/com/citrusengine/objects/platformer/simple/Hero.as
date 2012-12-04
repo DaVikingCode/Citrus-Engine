@@ -22,7 +22,7 @@ package com.citrusengine.objects.platformer.simple {
 			
 			super.initialize(poolObjectParams);
 			
-			velocity.y = gravity;
+			_velocity.y = gravity;
 		}
 
 		override public function update(timeDelta:Number):void {
@@ -32,19 +32,19 @@ package com.citrusengine.objects.platformer.simple {
 			var moveKeyPressed:Boolean = false;
 
 			if (_ce.input.isDoing("left",inputChannel)) {
-				velocity.x -= acceleration;
+				_velocity.x -= acceleration;
 				moveKeyPressed = true;
 			}
 
 			if (_ce.input.isDoing("right",inputChannel)) {
-				velocity.x += acceleration;
+				_velocity.x += acceleration;
 				moveKeyPressed = true;
 			}
 
-			if (velocity.x > (maxVelocity))
-				velocity.x = maxVelocity;
-			else if (velocity.x < (-maxVelocity))
-				velocity.x = -maxVelocity;
+			if (_velocity.x > (maxVelocity))
+				_velocity.x = maxVelocity;
+			else if (_velocity.x < (-maxVelocity))
+				_velocity.x = -maxVelocity;
 		}
 	}
 }

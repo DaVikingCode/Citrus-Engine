@@ -22,7 +22,6 @@ package com.citrusengine.objects
 	 */	
 	public class CitrusSprite extends CitrusObject implements ISpriteView
 	{
-		public var velocity:MathVector = new MathVector();
 		public var collisions:Dictionary = new Dictionary();
 		
 		public var onCollide:Signal = new Signal(CitrusSprite, CitrusSprite, MathVector, Number);
@@ -34,6 +33,7 @@ package com.citrusengine.objects
 		protected var _y:Number = 0;
 		protected var _width:Number = 30;
 		protected var _height:Number = 30;
+		protected var _velocity:MathVector = new MathVector();
 		protected var _parallax:Number = 1;
 		protected var _rotation:Number = 0;
 		protected var _group:Number = 0;
@@ -115,6 +115,16 @@ package com.citrusengine.objects
 		
 		public function get depth():Number {
 			return 0;
+		}
+		
+		public function get velocity():Array {
+			return [_velocity.x, _velocity.y, 0];
+		}
+		
+		public function set velocity(value:Array):void {
+			
+			_velocity.x = value[0];
+			_velocity.y = value[1];
 		}
 		
 		public function get parallax():Number
@@ -236,8 +246,8 @@ package com.citrusengine.objects
 		{
 			super.update(timeDelta);
 			
-			x += (velocity.x * timeDelta);
-			y += (velocity.y * timeDelta);
+			x += (_velocity.x * timeDelta);
+			y += (_velocity.y * timeDelta);
 		}
 	}
 }

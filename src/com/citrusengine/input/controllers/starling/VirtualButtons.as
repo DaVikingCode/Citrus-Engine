@@ -92,12 +92,12 @@ package com.citrusengine.input.controllers.starling {
 					
 					case TouchPhase.BEGAN:
 						(b1.target as Image).texture = buttonDownTexture;
-						triggerON(button1Action,1);
+						triggerON(button1Action, 1);
 						break;
 						
 					case TouchPhase.ENDED:
 						(b1.target as Image).texture = buttonUpTexture;
-						triggerOFF(button1Action,0);
+						triggerOFF(button1Action);
 						break;
 				}
 			}
@@ -108,12 +108,12 @@ package com.citrusengine.input.controllers.starling {
 					
 					case TouchPhase.BEGAN:
 						(b2.target as Image).texture = buttonDownTexture;
-						triggerON(button2Action,1);
+						triggerON(button2Action, 1);
 						break;
 						
 					case TouchPhase.ENDED:
 						(b2.target as Image).texture = buttonUpTexture;
-						triggerOFF(button2Action,1);
+						triggerOFF(button2Action);
 						break;
 				}
 			}

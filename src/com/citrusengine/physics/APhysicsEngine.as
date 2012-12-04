@@ -55,6 +55,10 @@ package com.citrusengine.physics {
 		public function get depth():Number {
 			return 0;
 		}
+		
+		public function get velocity():Array {
+			return null;
+		}
 
 		public function get parallax():Number {
 			return 1;

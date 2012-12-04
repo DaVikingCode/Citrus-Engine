@@ -328,5 +328,13 @@ package com.citrusengine.objects {
 			return _body;
 		}
 		
+		public function get velocity():Array {
+			return [_body.GetLinearVelocity().x, _body.GetLinearVelocity().y, 0];
+		}
+		
+		public function set velocity(value:Array):void {
+			_body.SetLinearVelocity(new b2Vec2(value[0], value[1]));
+		}
+		
 	}
 }

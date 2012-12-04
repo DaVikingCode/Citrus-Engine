@@ -284,6 +284,14 @@ package com.citrusengine.objects {
 		override public function getBody():* {
 			return _body;
 		}
+		
+		public function get velocity():Array {
+			return [_body.linearVelocity.x, _body.linearVelocity.y, _body.linearVelocity.z];
+		}
+		
+		public function set velocity(value:Array):void {
+			_body.linearVelocity.setTo(value[0], value[1], value[2]);
+		}
 
 	}
 }
