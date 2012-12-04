@@ -89,7 +89,7 @@ package com.citrusengine.objects.platformer.nape {
 		protected var _springOffEnemy:Number = -1;
 		protected var _hurtTimeoutID:Number;
 		protected var _hurt:Boolean = false;
-		protected var _dynamicFriction:Number = 1.7;
+		protected var _dynamicFriction:Number = 0.6;
 		protected var _playerMovingHero:Boolean = false;
 		protected var _controlsEnabled:Boolean = true;
 		protected var _ducking:Boolean = false;
