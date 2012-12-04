@@ -143,10 +143,7 @@ package com.citrusengine.input.controllers {
 			else if (_direction < 0)
 				_interpolationFactor = _bufferPosition - _nextBufferIndex;
 			
-			if (!(_bufferPosition % 1))
-				_isBufferFrame = true;
-			else
-				_isBufferFrame = false;
+			_isBufferFrame = !(_bufferPosition % 1);
 			
 			_previousBufferFrame = _Buffer[_previousBufferIndex];
 			_nextBufferFrame = _Buffer[_nextBufferIndex];
@@ -158,7 +155,7 @@ package com.citrusengine.input.controllers {
 			{
 				for each (obj2 in _nextBufferFrame.watchbuffer)
 				{
-					if (obj.object === obj2.object)
+					if (obj.object == obj2.object)
 					{
 						obj.object.body.position.x = obj.x + ((obj2.x - obj.x) * _interpolationFactor);
 						obj.object.body.position.y = obj.y + ((obj2.y - obj.y) * _interpolationFactor);
@@ -173,7 +170,7 @@ package com.citrusengine.input.controllers {
 			
 			// tween speed.
 			
-			if (_endSpeed !== _startSpeed && _startSpeed < _endSpeed && _easeFunc !== null)
+			if (_endSpeed != _startSpeed && _startSpeed < _endSpeed && _easeFunc)
 			{
 				if (_direction > 0)
 					_speed = _easeFunc(_bufferPosition, _startSpeed, _endSpeed, _bufferLength - 1);

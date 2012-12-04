@@ -86,7 +86,7 @@ package com.citrusengine.input.controllers.starling {
 			var b1:Touch = e.getTouch(button1);
 			var b2:Touch = e.getTouch(button2);
 
-			if (b1 !== null) {
+			if (b1) {
 				
 				switch (b1.phase) {
 					
@@ -102,7 +102,7 @@ package com.citrusengine.input.controllers.starling {
 				}
 			}
 
-			if (b2 !== null) {
+			if (b2) {
 				
 				switch (b2.phase) {
 					

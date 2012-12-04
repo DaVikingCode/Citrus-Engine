@@ -126,7 +126,7 @@ package com.citrusengine.input.controllers.starling {
 		private function handleTouch(e:TouchEvent):void
 		{
 			var t:Touch = e.getTouch(graphic);
-			if (t == null)
+			if (!t)
 				return;
 			
 			if (t.phase == TouchPhase.ENDED)
