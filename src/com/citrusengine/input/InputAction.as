@@ -83,6 +83,11 @@ package com.citrusengine.input
 				return false;
 		}
 		
+		public function toString():String
+		{
+			return "[ Action # name: " + _name + " channel: " + _channel + " value: " + value + " phase: " + phase + " controller: " + _controller + " ]";
+		}
+		
 		public function get name():String { return _name; }
 		public function get controller():InputController { return _controller; }
 		public function get channel():uint { return _channel; }
