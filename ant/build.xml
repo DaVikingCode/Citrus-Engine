@@ -46,12 +46,21 @@
 			<arg line="-include-sources ../src/com/citrusengine/core/CitrusEngine.as" />
 			<arg line="-include-sources ../src/com/citrusengine/core/CitrusObject.as" />
 			<arg line="-include-sources ../src/com/citrusengine/core/Console.as" />
-			<arg line="-include-sources ../src/com/citrusengine/core/Input.as" />
 			<arg line="-include-sources ../src/com/citrusengine/core/IState.as" />
 			<arg line="-include-sources ../src/com/citrusengine/core/SoundManager.as" />
 			<arg line="-include-sources ../src/com/citrusengine/core/State.as" />
 
 			<arg line="-include-sources ../src/com/citrusengine/datastructures" />
+			
+			<arg line="-include-sources ../src/com/citrusengine/input/Input" />
+			<arg line="-include-sources ../src/com/citrusengine/input/InputAction" />
+			<arg line="-include-sources ../src/com/citrusengine/input/InputController" />
+			<arg line="-include-sources ../src/com/citrusengine/input/controllers/AVirtualButtons" />
+			<arg line="-include-sources ../src/com/citrusengine/input/controllers/AVirtualJoystick" />
+			<arg line="-include-sources ../src/com/citrusengine/input/controllers/Keyboard" />
+			<arg line="-include-sources ../src/com/citrusengine/input/controllers/TimeShifter" />
+			<arg line="-include-sources ../src/com/citrusengine/input/controllers/displaylist/VirtualButtons" />
+			<arg line="-include-sources ../src/com/citrusengine/input/controllers/displaylist/VirtualJoystick" />
 
 			<arg line="-include-sources ../src/com/citrusengine/math" />
 
@@ -127,7 +136,7 @@
 
 			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
 
-			<arg line="-include-libraries ../lib/release_nape.swc" />
+			<arg line="-include-libraries ../lib/nape-release.swc" />
 		</exec>
 	</target>
 
@@ -141,6 +150,9 @@
 			<!-- Include all of the AS3 files in LIBRARY -->
 			<arg line="-include-sources ../src/com/citrusengine/core/StarlingCitrusEngine.as" />
 			<arg line="-include-sources ../src/com/citrusengine/core/StarlingState.as" />
+			
+			<arg line="-include-sources ../src/com/citrusengine/input/controllers/starling/VirtualButtons" />
+			<arg line="-include-sources ../src/com/citrusengine/input/controllers/starling/VirtualJoystick" />
 			
 			<arg line="-include-sources ../src/com/citrusengine/utils/objectmakers/ObjectMakerStarling.as" />
 			
