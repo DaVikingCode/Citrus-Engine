@@ -8,11 +8,13 @@ package com.citrusengine.input.controllers
 	
 	/**
 	 *  The default Keyboard controller.
-	 *  Holds static keycodes constants (see bottom)
+	 * 	A single key can trigger multiple actions, each of these can be sent to different channels.
+	 *
+	 *  Keyboard holds static keycodes constants (see bottom)
 	 */
 	public class Keyboard extends InputController
 	{
-		protected var _keyActions:Object;
+		protected var _keyActions:Dictionary;
 		
 		public function Keyboard(name:String, channel:uint = 0)
 		{
@@ -21,11 +23,17 @@ package com.citrusengine.input.controllers
 			_keyActions = new Dictionary();
 			
 			//default arrow keys + space bar jump
-			setKeyAction("left", Keyboard.LEFT);
-			setKeyAction("up", Keyboard.UP);
-			setKeyAction("right", Keyboard.RIGHT);
-			setKeyAction("down", Keyboard.DOWN);
-			setKeyAction("jump", Keyboard.SPACE);
+			
+			addKeyAction("left", Keyboard.LEFT);
+			
+			addKeyAction("up", Keyboard.UP);
+			
+			addKeyAction("right", Keyboard.RIGHT);
+			
+			addKeyAction("down", Keyboard.DOWN);
+			addKeyAction("duck", Keyboard.DOWN);
+			
+			addKeyAction("jump", Keyboard.SPACE);
 			
 			_ce.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			_ce.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
@@ -34,43 +42,131 @@ package com.citrusengine.input.controllers
 		private function onKeyDown(e:KeyboardEvent):void
 		{
 			if (_keyActions[e.keyCode])
-				triggerON(_keyActions[e.keyCode].name, 1, _keyActions[e.keyCode].channel);
+			{
+				var a:Object;
+				for each (a in _keyActions[e.keyCode])
+					triggerON(a.name, 1, a.channel);
+			}
 		}
 		
 		private function onKeyUp(e:KeyboardEvent):void
 		{
 			if (_keyActions[e.keyCode])
-				triggerOFF(_keyActions[e.keyCode].name, 0, _keyActions[e.keyCode].channel);
+			{
+				var a:Object;
+				for each (a in _keyActions[e.keyCode])
+					triggerOFF(a.name, 0, a.channel);
+			}
 		}
 		
-		public function resetKeyActions():void
+		/**
+		 * Add an action to a Key if action doesn't exist on that Key.
+		 */
+		public function addKeyAction(actionName:String, keyCode:uint, channel:int = -1):void
+		{
+			if (channel < 0)
+				channel = defaultChannel;
+			
+			if (_keyActions[keyCode])
+			{
+				var a:Object;
+				for each (a in _keyActions[keyCode])
+				{
+					if (a.name == actionName && a.channel == channel)
+						continue;
+				}
+				_keyActions[keyCode].push({name: actionName, channel: channel});
+			}
+			else
+			{
+				_keyActions[keyCode] = new Vector.<Object>();
+				_keyActions[keyCode].push({name: actionName, channel: channel});
+			}
+		}
+		
+		/**
+		 * Removes action from a key code, by name.
+		 */
+		public function removeActionFromKey(actionName:String, keyCode:uint):void
+		{
+			if (_keyActions[keyCode])
+			{
+				var actions:Vector.<Object> = _keyActions[keyCode];
+				var i:String;
+				for (i in actions)
+				{
+					if (actions[i].name == actionName)
+					{
+						actions.splice(uint(i), 1);
+						return;
+					}
+				}
+			}
+		}
+		
+		/**
+		 * Removes every actions by name, on every keys.
+		 */
+		public function removeAction(actionName:String):void
+		{
+			var actions:Vector.<Object>
+			var i:String;
+			for each (actions in _keyActions)
+			{
+				for (i in actions)
+				{
+					if (actions[uint(i)].name == actionName)
+						actions.splice(uint(i), 1);
+				}
+			}
+		}
+		
+		/**
+		 * Deletes the entire registry of key actions.
+		 */
+		public function resetAllKeyActions():void
 		{
 			_keyActions = new Dictionary();
 		}
 		
-		public function setKeyAction(name:String, keyCode:uint, channel:uint = 0):void
-		{
-			
-			if (!_keyActions[keyCode])
-				_keyActions[keyCode] = {name: name, channel: channel};
-		}
-		
+		/**
+		 * Helps swap actions from a key to another key.
+		 */
 		public function changeKeyAction(previousKey:uint, newKey:uint):void
 		{
 			
-			var action:Object = getActionByKey(previousKey);
-			setKeyAction(action.name, newKey, action.channel);
-			removeKeyAction(previousKey);
+			var actions:Vector.<Object> = getActionsByKey(previousKey);
+			setKeyActions(newKey, actions);
+			removeKeyActions(previousKey);
 		}
 		
-		public function removeKeyAction(keyCode:uint):void
+		/**
+		 * Sets all actions on a key
+		 */
+		private function setKeyActions(keyCode:uint, actions:Vector.<Object>):void
+		{
+			
+			if (!_keyActions[keyCode])
+				_keyActions[keyCode] = actions;
+		}
+		
+		/**
+		 * removes all actions on a key.
+		 */
+		public function removeKeyActions(keyCode:uint):void
 		{
 			delete _keyActions[keyCode];
 		}
 		
-		public function getActionByKey(keyCode:uint):Object
+		/**
+		 * returns all actions on a key in Vector format or returns null if none.
+		 */
+		public function getActionsByKey(keyCode:uint):Vector.<Object>
 		{
-			return _keyActions[keyCode];
+			if (_keyActions[keyCode])
+				return _keyActions[keyCode];
+			else
+				return null;
 		}
 		
 		override public function destroy():void

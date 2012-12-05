@@ -107,7 +107,7 @@ package com.citrusengine.objects.platformer.awayphysics {
 				// _ghostObject.position = _ghostObject.position.add(_ghostObject.worldTransform.rotationWithMatrix.transformVector(new Vector3D(0, 0, 10)));
 			}
 
-			if (_ce.input.isDoing("down",inputChannel)) {
+			if (_ce.input.isDoing("duck",inputChannel)) {
 				_walkDirection = _ghostObject.front;
 				_walkDirection.scaleBy(-speed);
 				_character.setWalkDirection(_walkDirection);

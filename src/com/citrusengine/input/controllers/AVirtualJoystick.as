@@ -70,7 +70,7 @@ package com.citrusengine.input.controllers {
 			
 			//other action
 			
-			_yAxisActions.push({name: "crouch", start: 0.8, end: 1});
+			_yAxisActions.push({name: "duck", start: 0.8, end: 1});
 		
 		}
 		

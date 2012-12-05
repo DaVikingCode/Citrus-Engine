@@ -204,7 +204,7 @@ package com.citrusengine.objects.platformer.nape {
 			{
 				var moveKeyPressed:Boolean = false;
 				
-				_ducking = (_ce.input.isDoing("down",inputChannel) && _onGround && canDuck);
+				_ducking = (_ce.input.isDoing("duck",inputChannel) && _onGround && canDuck);
 				
 				if (_ce.input.isDoing("right",inputChannel)  && !_ducking)
 				{

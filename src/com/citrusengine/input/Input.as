@@ -313,9 +313,17 @@ package com.citrusengine.input {
 		public function justPressed(keyCode:uint):Boolean
 		{
 			var keyboard:Keyboard = getControllerByName("keyboard") as Keyboard;
-			var action:Object = keyboard.getActionByKey(keyCode);
-			if (action)
-				return justDid(action.name);
+			var actions:Vector.<Object> = keyboard.getActionsByKey(keyCode);
+			var a:Object;
+			var ia:InputAction;
+			if (actions)
+			{
+				for each (a in actions)
+					for each (ia in _actions)
+						if (ia.name == a.name && ia.channel == a.channel && ia.phase < InputAction.ON)
+							return true;
+				return false;
+			}
 			else
 			{
 				trace("Warning: you are still using justPressed(keyCode:int) for keyboard input and might get unexpected results...");
@@ -327,12 +335,20 @@ package com.citrusengine.input {
 		public function isDown(keyCode:uint):Boolean
 		{
 			var keyboard:Keyboard = getControllerByName("keyboard") as Keyboard;
-			var action:Object = keyboard.getActionByKey(keyCode);
-			if (action)
-				return isDoing(action.name);
+			var actions:Vector.<Object> = keyboard.getActionsByKey(keyCode);
+			var a:Object;
+			var ia:InputAction;
+			if (actions)
+			{
+				for each (a in actions)
+					for each (ia in _actions)
+						if (ia.name == a.name && ia.channel == a.channel && ia.phase < InputAction.ON)
+							return true;
+				return false;
+			}
 			else
 			{
-				trace("Warning: you are still using justPressed(keyCode:int) for keyboard input and might get unexpected results...");
+				trace("Warning: you are still using isDown(keyCode:int) for keyboard input and might get unexpected results...");
 				trace("Please use the new isDoing(actionName:String, channel:uint) method and convert your code to the Input/InputController Action system !");
 				return false;
 			}
