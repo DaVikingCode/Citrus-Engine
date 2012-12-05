@@ -1,14 +1,14 @@
 package com.citrusengine.input.controllers {
 
 	import com.citrusengine.input.InputController;
+	import com.citrusengine.view.ISpriteView;
 	
 	/**
 	 * Work In Progress.
 	 */
 	public class TimeShifter extends InputController
 	{
-		
-		protected var _Watch:Vector.<Object>;
+		protected var _Watch:Vector.<ISpriteView>;
 		protected var _Buffer:Vector.<Object>;
 		
 		protected var _overridePlayback:Boolean = false;
@@ -51,11 +51,11 @@ package com.citrusengine.input.controllers {
 				_endSpeed = 1;
 			}
 			
-			_Watch = new Vector.<Object>;
+			_Watch = new Vector.<ISpriteView>();
 			_Buffer = new Vector.<Object>();
 			
 			//register all objects in _Watch
-			var obj:*;
+			var obj:ISpriteView;
 			for each (obj in objects)
 				_Watch.push(obj);
 			
@@ -94,7 +94,7 @@ package com.citrusengine.input.controllers {
 		
 		protected function buffer():void
 		{
-			var obj:Object;
+			var obj:ISpriteView;
 			var abuff:Vector.<Object> = _input.getActionsSnapshot();
 			var wbuff:Vector.<Object> = new Vector.<Object>();
 			
