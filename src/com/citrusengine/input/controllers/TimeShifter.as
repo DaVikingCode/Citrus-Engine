@@ -64,24 +64,40 @@ package com.citrusengine.input.controllers {
 		
 		}
 		
-		protected function checkActions():void
+		public function startReplay(delay:Number = 0):void
 		{
 			
-			if (_input.justDid("rewind", 16) && !_overridePlayback)
-			{
-				_bufferPosition = _bufferLength - 1;
-				_direction = -1;
-				_overridePlayback = true;
-				_input.triggersEnabled = false;
-			}
-			if (_input.justDid("replay", 16) && !_overridePlayback)
-			{
-				_bufferPosition = 0;
-				_direction = 1;
-				_overridePlayback = true;
-				_input.triggersEnabled = false;
-			}
+		}
 		
+		public function startRewind(delay:Number = 0):void
+		{
+			
+		}
+		
+		protected function replay():void
+		{
+			_bufferPosition = 0;
+			_direction = 1;
+			_overridePlayback = true;
+			_input.startRouting(16);
+		}
+		
+		protected function rewind():void
+		{
+			_bufferPosition = _bufferLength - 1;
+			_direction = -1;
+			_overridePlayback = true;
+			_input.startRouting(16);
+		}
+		
+		protected function checkActions():void
+		{	
+			if (_input.justDid("rewind", 16) && !_overridePlayback)
+				rewind();
+			if (_input.justDid("replay", 16) && !_overridePlayback)
+				replay();
+			if (_input.justDid("down", 16))
+				trace("called down in channel 16, TimeShifter");
 		}
 		
 		public function seekTo(position:Number):void
@@ -222,6 +238,7 @@ package com.citrusengine.input.controllers {
 			_overridePlayback = false;
 			_input.triggersEnabled = true;
 			_input.resetActions();
+			_input.stopRouting();
 		}
 	
 	}

@@ -23,6 +23,9 @@ package com.citrusengine.input {
 		
 		public var triggersEnabled:Boolean = true;
 		
+		protected var _routeActions:Boolean = false;
+		protected var _routeChannel:uint;
+		
 		public var actionTriggeredON:Signal;
 		public var actionTriggeredOFF:Signal;
 		public var actionTriggeredVALUECHANGE:Signal;
@@ -92,7 +95,7 @@ package com.citrusengine.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && a.channel == channel && a.phase > InputAction.ON)
+				if (a.name == actionName && a.channel == (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase > InputAction.ON)
 					return true;
 			return false;
 		}
@@ -101,7 +104,7 @@ package com.citrusengine.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && a.channel == channel && a.phase < InputAction.END)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase < InputAction.END)
 					return true;
 			return false;
 		}
@@ -110,7 +113,7 @@ package com.citrusengine.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && a.channel == channel && a.phase < InputAction.ON)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase < InputAction.ON)
 					return true;
 			return false;
 		}
@@ -119,7 +122,7 @@ package com.citrusengine.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (actionName == a.name && channel == a.channel && a.value)
+				if (actionName == a.name && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.value)
 					return a.value;
 			return 0;
 		}
@@ -268,6 +271,23 @@ package com.citrusengine.input {
 			return snapshot;
 		}
 		
+		public function startRouting(channel:uint):void
+		{
+			_routeActions = true;
+			_routeChannel = channel;
+		}
+		
+		public function stopRouting():void
+		{
+			_routeActions = false;
+			_routeChannel = 0;
+		}
+		
+		public function isRouting():Boolean
+		{
+			return _routeActions;
+		}
+		
 		public function get enabled():Boolean
 		{
 			return _enabled;
@@ -320,7 +340,7 @@ package com.citrusengine.input {
 			{
 				for each (a in actions)
 					for each (ia in _actions)
-						if (ia.name == a.name && ia.channel == a.channel && ia.phase < InputAction.ON)
+						if (ia.name == a.name && (_routeActions ? (_routeChannel == a.channel) : ia.channel == a.channel) && ia.phase < InputAction.ON)
 							return true;
 				return false;
 			}
@@ -342,7 +362,7 @@ package com.citrusengine.input {
 			{
 				for each (a in actions)
 					for each (ia in _actions)
-						if (ia.name == a.name && ia.channel == a.channel && ia.phase < InputAction.ON)
+						if (ia.name == a.name && (_routeActions ? (_routeChannel == a.channel) : ia.channel == a.channel) && ia.phase < InputAction.ON)
 							return true;
 				return false;
 			}
