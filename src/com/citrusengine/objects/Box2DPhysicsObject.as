@@ -1,24 +1,24 @@
 package com.citrusengine.objects {
 
-	import com.citrusengine.core.CitrusEngine;
-	import com.citrusengine.physics.PhysicsCollisionCategories;
-	import com.citrusengine.physics.box2d.Box2D;
-	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
-	import com.citrusengine.view.ISpriteView;
-	
-	import Box2D.Collision.b2Manifold;
 	import Box2D.Collision.Shapes.b2CircleShape;
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Collision.Shapes.b2Shape;
+	import Box2D.Collision.b2Manifold;
 	import Box2D.Common.Math.b2Mat22;
 	import Box2D.Common.Math.b2Transform;
 	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2ContactImpulse;
 	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
-	import Box2D.Dynamics.Contacts.b2Contact;
+
+	import com.citrusengine.core.CitrusEngine;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.box2d.Box2D;
+	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
+	import com.citrusengine.view.ISpriteView;
 	
 	/**
 	 * You should extend this class to take advantage of Box2D. This class provides template methods for defining
@@ -36,6 +36,12 @@ package com.citrusengine.objects {
 		
 		protected var _width:Number = 1;
 		protected var _height:Number = 1;
+		
+		/**
+		 * Used to define vertices' x and y points.
+		 */
+		public var points:Array;
+		protected var _vertices:Array;
 		
 		/**
 		 * Creates an instance of a Box2DPhysicsObject. Natively, this object does not default to any graphical representation,
@@ -131,6 +137,21 @@ package com.citrusengine.objects {
 			_fixtureDef.restitution = 0.3;
 			_fixtureDef.filter.categoryBits = PhysicsCollisionCategories.Get("Level");
 			_fixtureDef.filter.maskBits = PhysicsCollisionCategories.GetAll();
+			
+			if (points && points.length > 1) {
+				
+				_createVerticesFromPoint();
+				
+				var polygonShape:b2PolygonShape;
+				var verticesLength:uint = _vertices.length;
+				for (var i:uint = 0; i < verticesLength; ++i) {
+					polygonShape = new b2PolygonShape();
+					polygonShape.SetAsArray(_vertices[i]);
+					_fixtureDef.shape = polygonShape;
+	
+					body.CreateFixture(_fixtureDef);
+				}
+			}
 		}
 		
 		/**
@@ -189,6 +210,19 @@ package com.citrusengine.objects {
 		 */
 		public function handlePostSolve(contact:b2Contact, impulse:b2ContactImpulse):void {
 			
+		}
+		
+		protected function _createVerticesFromPoint():void {
+			
+			_vertices = [];
+			var vertices:Array = [];
+
+			var len:uint = points.length;
+			for (var i:uint = 0; i < len; ++i) {
+				vertices.push(new b2Vec2(points[i].x / _box2D.scale, points[i].y / _box2D.scale));
+			}
+			_vertices.push(vertices);
+			vertices = [];
 		}
 		
 		public function get x():Number

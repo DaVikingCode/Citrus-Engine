@@ -17,6 +17,8 @@ package com.citrusengine.utils.objectmakers.tmx {
 		public var gid:int;
 		public var custom:TmxPropertySet;
 		public var shared:TmxPropertySet;
+		public var points:Array;
+  		public var shapeType:String;
 
 		public function TmxObject(source:XML, parent:TmxObjectGroup) {
 			if (!source)
@@ -45,6 +47,24 @@ package com.citrusengine.utils.objectmakers.tmx {
 			var node:XML;
 			for each (node in source.properties)
 				custom = custom ? custom.extend(node) : new TmxPropertySet(node);
+				
+			//points/polygon/polyline
+			var nodes:XMLList = source.children();
+			
+			for each(node in nodes) {
+				
+				shapeType = node.@name;
+				points = [];
+				var pointsArray:Array = String(node.@points).split(" ");
+				var len:uint = pointsArray.length;
+				
+				for (var i:uint = 0; i < len; ++i){
+					var pstr:Array = pointsArray[i].split(",");
+					var point:Object = {x:int(pstr[0]), y:int(pstr[1])};
+					points.push(point);
+				}
+				break;
+			}
 		}
 	}
 }
