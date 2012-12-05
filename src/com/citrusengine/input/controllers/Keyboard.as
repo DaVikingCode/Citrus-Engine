@@ -25,14 +25,10 @@ package com.citrusengine.input.controllers
 			//default arrow keys + space bar jump
 			
 			addKeyAction("left", Keyboard.LEFT);
-			
 			addKeyAction("up", Keyboard.UP);
-			
 			addKeyAction("right", Keyboard.RIGHT);
-			
 			addKeyAction("down", Keyboard.DOWN);
 			addKeyAction("duck", Keyboard.DOWN);
-			
 			addKeyAction("jump", Keyboard.SPACE);
 			
 			_ce.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
@@ -64,24 +60,20 @@ package com.citrusengine.input.controllers
 		 */
 		public function addKeyAction(actionName:String, keyCode:uint, channel:int = -1):void
 		{
-			if (channel < 0)
-				channel = defaultChannel;
-			
-			if (_keyActions[keyCode])
+			if (!_keyActions[keyCode])
+				_keyActions[keyCode] = new Vector.<Object>();
+			else
 			{
 				var a:Object;
 				for each (a in _keyActions[keyCode])
-				{
 					if (a.name == actionName && a.channel == channel)
-						continue;
-				}
-				_keyActions[keyCode].push({name: actionName, channel: channel});
+						return;
 			}
-			else
-			{
-				_keyActions[keyCode] = new Vector.<Object>();
-				_keyActions[keyCode].push({name: actionName, channel: channel});
-			}
+			
+			if (channel < 0)
+				channel = defaultChannel;
+			
+			_keyActions[keyCode].push({name: actionName, channel: channel});
 		}
 		
 		/**
@@ -94,13 +86,11 @@ package com.citrusengine.input.controllers
 				var actions:Vector.<Object> = _keyActions[keyCode];
 				var i:String;
 				for (i in actions)
-				{
 					if (actions[i].name == actionName)
 					{
 						actions.splice(uint(i), 1);
 						return;
 					}
-				}
 			}
 		}
 		
@@ -112,13 +102,9 @@ package com.citrusengine.input.controllers
 			var actions:Vector.<Object>
 			var i:String;
 			for each (actions in _keyActions)
-			{
 				for (i in actions)
-				{
 					if (actions[uint(i)].name == actionName)
 						actions.splice(uint(i), 1);
-				}
-			}
 		}
 		
 		/**
