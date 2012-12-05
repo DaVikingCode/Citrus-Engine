@@ -120,7 +120,7 @@ package com.citrusengine.objects.platformer.nape
 			var removeGravity:Vec2 = new Vec2();
 			removeGravity.subeq(_nape.gravity);
 			removeGravity.muleq(_body.mass);
-			_body.applyLocalForce(removeGravity);
+			_body.applyImpulse(removeGravity);
 			
 			if (!_exploded)
 			{
@@ -172,7 +172,7 @@ package com.citrusengine.objects.platformer.nape
 					if (impulseVector.length < 400) {
 						var impulseForce:Number = (400 - impulseVector.length) / 30;
 						var impulse:Vec2 = new Vec2(impulseVector.x * impulseForce, impulseVector.y * impulseForce * 1.4);
-						b.applyRelativeImpulse(impulse);
+						b.applyImpulse(impulse);
 					}
 				}
 			}
