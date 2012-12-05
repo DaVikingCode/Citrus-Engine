@@ -68,7 +68,9 @@ package com.citrusengine.objects.platformer.nape {
 			
 		override protected function createFilter():void {
 			
-			_body.setShapeFilters(new InteractionFilter(0, 0 , 1, 1, 0, 0));
+			super.createFilter();
+			
+			_shape.sensorEnabled = true;
 		}
 		
 		override protected function createConstraint():void {
