@@ -1,3 +1,16 @@
+V 3.1.0, Work in progress
+-------------------------
+- The setUpStarling function may take the flash stage as an argument (useful if not the root class).
+- AnimationSequence's dictionary is now accessible thanks to a getter.
+- Changed _input to protected to allow custom Input
+- Added the new input package supporting keyboard, joystick, button, channel, key action...
+- Upgraded on Nape 2.0
+- Nape's gravity is equal to Box2D's gravity
+- Nape's object physics behavior are close to Box2d one (friction, speed, hero's jump...)
+- refreshPoolObjectArt handles the startIndex
+- Now we can easily read the velocity of a body thanks to a getter
+- Thanks to objectmaker we can define vertices
+
 V 3.0.4, 11 29 2012
 -------------------
 - DragonBones support for StarlingArt class.
