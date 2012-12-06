@@ -4,6 +4,10 @@ package com.citrusengine.input.controllers {
 	
 	/**
 	 * Work In Progress.
+	 * 
+	 * notes:
+	 * see if we can get rid of useless properties.
+	 * do not use direction anymore but >speed< which will determine direction.
 	 */
 	public class TimeShifter extends InputController
 	{
@@ -34,6 +38,13 @@ package com.citrusengine.input.controllers {
 		
 		protected var _easeFunc:Function;
 		
+		protected var _doDelay:Boolean = false;
+		protected var _playbackDelay:Number = 0;
+		protected var _delayFunc:Function;
+		
+		protected var _holdingReplay:Boolean = false;
+		protected var _holdingRewind:Boolean = false;
+		
 		public function TimeShifter(bufferInSeconds:uint, startSpeed:Number = 1 ,endSpeed:Number = 1, ... objects)
 		{
 			super("TimeShifter Controller", 16);
@@ -43,6 +54,10 @@ package com.citrusengine.input.controllers {
 			{
 				_speed = _startSpeed = startSpeed;
 				_endSpeed = endSpeed;
+			}
+			else if (startSpeed == 0 && endSpeed == 0)
+			{
+				_speed = _startSpeed = startSpeed;
 			}
 			else
 			{
@@ -64,14 +79,32 @@ package com.citrusengine.input.controllers {
 		
 		}
 		
+		/**
+		 * starts replay with an optional delay.
+		 * @param	delay in seconds
+		 */
 		public function startReplay(delay:Number = 0):void
 		{
-			
+			if (delay < 0)
+				_playbackDelay = Math.abs(delay) * _ce.stage.frameRate;
+			else
+				_playbackDelay = delay * _ce.stage.frameRate;
+			_doDelay = true;
+			_delayFunc = replay;
 		}
 		
+		/**
+		 * starts rewind with an optional delay.
+		 * @param	delay in seconds
+		 */
 		public function startRewind(delay:Number = 0):void
 		{
-			
+			if (delay < 0)
+				_playbackDelay = Math.abs(delay) * _ce.stage.frameRate;
+			else
+				_playbackDelay = delay * _ce.stage.frameRate;
+			_doDelay = true;
+			_delayFunc = rewind;
 		}
 		
 		protected function replay():void
@@ -93,11 +126,47 @@ package com.citrusengine.input.controllers {
 		protected function checkActions():void
 		{	
 			if (_input.justDid("rewind", 16) && !_overridePlayback)
-				rewind();
+			{
+				_holdingRewind = true;
+				startRewind();
+			}
+			
 			if (_input.justDid("replay", 16) && !_overridePlayback)
-				replay();
-			if (_input.justDid("down", 16))
-				trace("called down in channel 16, TimeShifter");
+			{
+				_holdingReplay = true;
+				startReplay();
+			}
+			
+			//Highly experimental part - speed change on playback and when input is routed.
+			
+			if (_input.justDid("down", 16) && _overridePlayback)
+			{
+				_startSpeed -= 0.2;
+				_endSpeed -= 0.2;
+			}
+				
+			if (_input.justDid("up", 16) && _overridePlayback)
+			{
+				_startSpeed += 0.2;
+				_endSpeed += 0.2;
+			}
+			
+			//Key up
+			
+			if (!_input.isDoing("rewind", 16) && _overridePlayback && _holdingRewind)
+			{
+				_holdingRewind = false;
+				reset();
+			}
+			
+			if (!_input.isDoing("replay", 16) && _overridePlayback && _holdingReplay)
+			{
+				_holdingReplay = false;
+				reset();
+			}
+			
+			
+			
 		}
 		
 		public function seekTo(position:Number):void
@@ -138,7 +207,7 @@ package com.citrusengine.input.controllers {
 		
 		protected function seekToNext():void
 		{
-			if (_direction > 0 && Math.ceil(_bufferPosition + _speed) < _bufferLength - 1)
+			if (_direction > 0 && Math.ceil(_bufferPosition + _speed) + 1 < _bufferLength - 1)
 			{
 				_bufferPosition += _speed;
 				_previousBufferIndex = Math.floor(_bufferPosition);
@@ -147,7 +216,7 @@ package com.citrusengine.input.controllers {
 			else if (_direction < 0 && Math.floor(_bufferPosition - _speed) > 0)
 			{
 				_bufferPosition -= _speed;
-				_nextBufferIndex = Math.floor(_bufferPosition);
+				_nextBufferIndex = Math.ceil(_bufferPosition);
 				_previousBufferIndex = _nextBufferIndex - 1;
 			}
 			else
@@ -220,7 +289,18 @@ package com.citrusengine.input.controllers {
 			checkActions();
 			
 			if (!_overridePlayback)
+			{
+				if (_doDelay)
+					if ( _playbackDelay > 0 )
+						_playbackDelay--;
+					else
+					{
+						_delayFunc();
+						_doDelay = false;
+					}
+				
 				buffer();
+			}
 			else
 			{
 				seekToNext();
@@ -228,17 +308,19 @@ package com.citrusengine.input.controllers {
 			}
 		}
 		
-		protected function reset():void
+		public function reset():void
 		{
-			trace("TimeWrap reset. elapsed frame count :", _elapsedFrameCount);
 			_elapsedFrameCount = 0;
 			_bufferPosition = 0;
 			_Buffer.length = 0;
 			_bufferLength = 0;
 			_overridePlayback = false;
-			_input.triggersEnabled = true;
 			_input.resetActions();
 			_input.stopRouting();
+			_doDelay = false;
+			_direction = 0;
+			
+			//_startSpeed = _endSpeed = 0;
 		}
 	
 	}
