@@ -113,7 +113,7 @@ package com.citrusengine.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase < InputAction.ON)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase == InputAction.BEGIN)
 					return true;
 			return false;
 		}
@@ -129,7 +129,6 @@ package com.citrusengine.input {
 		
 		/**
 		 * Adds a new action of phase 0 if it does not exist.
-		 * if it does exist however, it is reset to phase 0.
 		 */
 		private function doActionON(action:InputAction):void
 		{
@@ -138,10 +137,7 @@ package com.citrusengine.input {
 			var a:InputAction;
 			for each (a in _actions)
 				if (a.eq(action))
-				{
-					a.phase = InputAction.BEGIN;
 					return;
-				}
 			action.phase = InputAction.BEGIN;
 			_actions[_actions.length] = action;
 		}
@@ -340,7 +336,7 @@ package com.citrusengine.input {
 			{
 				for each (a in actions)
 					for each (ia in _actions)
-						if (ia.name == a.name && (_routeActions ? (_routeChannel == a.channel) : ia.channel == a.channel) && ia.phase < InputAction.ON)
+						if (ia.name == a.name && (_routeActions ? (_routeChannel == a.channel) : ia.channel == a.channel) && ia.phase == InputAction.BEGIN)
 							return true;
 				return false;
 			}
