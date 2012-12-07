@@ -1,12 +1,15 @@
 package com.citrusengine.input.controllers {
 
 	import com.citrusengine.input.InputController;
+	import org.osflash.signals.Signal;
 	
 	/**
 	 * Work In Progress.
 	 */
 	public class TimeShifter extends InputController
 	{
+		public var onManualSpeedChange:Signal;
+		
 		protected var _active:Boolean = false;
 		
 		protected var _Watch:Vector.<Object>;
@@ -31,10 +34,12 @@ package com.citrusengine.input.controllers {
 		protected var _targetSpeed:Number = 0;
 		
 		protected var _easeFunc:Function;
+		protected var _easeTimer:uint = 0;
+		protected var _easeDuration:uint = 80;
 		
 		protected var _doDelay:Boolean = false;
 		protected var _playbackDelay:Number = 0;
-		protected var _delayFunc:Function;
+		protected var _delayedFunc:Function;
 		
 		protected var _manualMode:Boolean = false;
 		
@@ -47,13 +52,14 @@ package com.citrusengine.input.controllers {
 			_Watch = new Vector.<Object>;
 			_Buffer = new Vector.<Object>();
 			
-			//register all objects in _Watch
 			var obj:*;
 			for each (obj in objects)
 				_Watch.push(obj);
 			
-			//easing
 			_easeFunc = Tween_easeOut;
+			
+			onManualSpeedChange = new Signal();
+			onManualSpeedChange.add(handleManualSpeedChange);
 		
 		}
 		
@@ -63,13 +69,10 @@ package com.citrusengine.input.controllers {
 		 */
 		public function startReplay(delay:Number = 0, speed:Number = 1):void
 		{
-			if (delay < 0)
-				_playbackDelay = Math.abs(delay) * _ce.stage.frameRate;
-			else
-				_playbackDelay = delay * _ce.stage.frameRate;
+			_playbackDelay = (delay < 0) ? Math.abs(delay) * _ce.stage.frameRate : delay * _ce.stage.frameRate;
 			_doDelay = true;
-			_delayFunc = replay;
-			_targetSpeed = (speed < 0) ? -speed : speed ;
+			_delayedFunc = replay;
+			(speed < 0) ? onManualSpeedChange.dispatch(-speed) : onManualSpeedChange.dispatch(speed) ;
 		}
 		
 		/**
@@ -78,13 +81,10 @@ package com.citrusengine.input.controllers {
 		 */
 		public function startRewind(delay:Number = 0, speed:Number = 1):void
 		{
-			if (delay < 0)
-				_playbackDelay = Math.abs(delay) * _ce.stage.frameRate;
-			else
-				_playbackDelay = delay * _ce.stage.frameRate;
+			_playbackDelay = (delay < 0) ? Math.abs(delay) * _ce.stage.frameRate : delay * _ce.stage.frameRate;
 			_doDelay = true;
-			_delayFunc = rewind;
-			_targetSpeed = (speed < 0) ? speed : -speed ;
+			_delayedFunc = rewind;
+			(speed < 0) ? onManualSpeedChange.dispatch(speed) : onManualSpeedChange.dispatch(-speed) ;
 		}
 		
 		protected function replay():void
@@ -104,10 +104,18 @@ package com.citrusengine.input.controllers {
 		protected function startManualControl():void
 		{
 			_bufferPosition = _bufferLength - 1;
+			_previousBufferIndex = _bufferLength - 1;
+			_nextBufferIndex = _bufferLength - 2;
 			_active = true;
 			_input.startRouting(16);
-			_currentSpeed = -1;
-			_targetSpeed = -1;
+			_currentSpeed = 0;
+			_targetSpeed = 0;
+		}
+		
+		protected function handleManualSpeedChange(value:Number):void
+		{
+			_easeTimer = 0;
+			_targetSpeed = value;
 		}
 		
 		protected function checkActions():void
@@ -118,13 +126,13 @@ package com.citrusengine.input.controllers {
 				startManualControl();
 			}
 			
-			//speed change on playback and when input is routed.
+			//speed change on playback and when input is routed on manual mode.
 			
-			if (_input.justDid("down", 16) && _active)
-				_targetSpeed -= 1;
+			if (_input.justDid("down", 16) && _active && _manualMode)
+				onManualSpeedChange.dispatch(_targetSpeed - 1);
 				
-			if (_input.justDid("up", 16) && _active)
-				_targetSpeed += 1;
+			if (_input.justDid("up", 16) && _active && _manualMode)
+				onManualSpeedChange.dispatch(_targetSpeed + 1);
 			
 			//Key up
 			
@@ -170,19 +178,13 @@ package com.citrusengine.input.controllers {
 		 */
 		protected function moveBufferPosition(offset:Number):void
 		{
-			if (offset > 0 && Math.ceil(_bufferPosition + offset) < _bufferLength - 1)
+
+			if ( Math.ceil(_bufferPosition + offset) < _bufferLength - 1 && Math.floor(_bufferPosition + offset) > 0 )
 			{
 				_bufferPosition += offset;
-				_previousBufferIndex = Math.floor(_bufferPosition);
-				_nextBufferIndex = _previousBufferIndex + 1;
-				_interpolationFactor = _bufferPosition - _previousBufferIndex;
-			}
-			else if (offset < 0 && Math.floor(_bufferPosition + offset) > 0)
-			{
-				_bufferPosition += offset;
-				_nextBufferIndex = Math.floor(_bufferPosition) - 1;
-				_previousBufferIndex = _nextBufferIndex + 1;
-				_interpolationFactor = _bufferPosition - _nextBufferIndex;
+				_previousBufferIndex = (_bufferPosition <= 0) ? Math.floor(_bufferPosition) : Math.ceil(_bufferPosition);
+				_nextBufferIndex = (_bufferPosition <= 0) ? _previousBufferIndex - 1 :  _previousBufferIndex + 1;
+				_interpolationFactor = (_bufferPosition <= 0) ? _bufferPosition - _nextBufferIndex : _bufferPosition - _previousBufferIndex;
 			}
 			
 			_isBufferFrame = !(_bufferPosition % 1);
@@ -217,37 +219,25 @@ package com.citrusengine.input.controllers {
 			_previousBufferFrame = _Buffer[_nextBufferIndex];
 		}
 		
+		/**
+		 * Process speed easing
+		 */
 		protected function processSpeed():void
 		{			
-			
-			/*if (_currentSpeed != _targetSpeed)
+			if (_easeTimer < _easeDuration)
 			{
-				if (_currentSpeed > 0)
-					if(_currentSpeed < _targetSpeed)
-						_currentSpeed = _easeFunc(_bufferPosition, _currentSpeed, _targetSpeed, 120);
-					else
-						_currentSpeed = _easeFunc(_bufferPosition, _currentSpeed, _targetSpeed - _currentSpeed, 120);
-				else if (_currentSpeed < 0) 
-					if(_currentSpeed < _targetSpeed)
-						_currentSpeed = - _easeFunc(_bufferLength - 1 - _bufferPosition, _currentSpeed, _targetSpeed, 120);
-					else
-						_currentSpeed = - _easeFunc(_bufferLength - 1 - _bufferPosition, _currentSpeed, _targetSpeed - _currentSpeed, 120);
-			}
-			else
-			_currentSpeed = _targetSpeed;*/
-				
-			_currentSpeed = _targetSpeed;
+				_easeTimer++;
 			
-			if(_manualMode)
-				trace("current speed:",_currentSpeed);
-			
-			if (!_manualMode)
-			{
-				if (_currentSpeed > 0 && _nextBufferIndex + 1 > _bufferLength - 1)
-					reset();
-				else if (_currentSpeed < 0 && _nextBufferIndex - 1 < 0)
-					reset();
+			var t:uint = _easeTimer;
+			var b:Number = _currentSpeed;
+			var c:Number = _targetSpeed - _currentSpeed;
+			var d:uint = _easeDuration;
+
+			_currentSpeed = _easeFunc(t, b, _targetSpeed - _currentSpeed, d);
+					
 			}
+			
+			trace("current speed:",_currentSpeed,"target speed:",_targetSpeed);
 		}
 		
 		/*
@@ -266,23 +256,29 @@ package com.citrusengine.input.controllers {
 			
 			if (!_active)
 			{
+				writeBuffer();
+				
 				if(_doDelay)
 					if (_playbackDelay > 0 )
 						_playbackDelay--;
 					else
 					{
 						_doDelay = false;
-						_delayFunc();
+						_delayedFunc();
 					}
-				
-				writeBuffer();
 			}
 			else
 			{
-
 				moveBufferPosition(_currentSpeed);
 				readBuffer();
 				processSpeed();
+				//check if automatic replay or rewind has reached end of buffer.
+				if (!_manualMode)
+				{
+					if (_nextBufferIndex - 1 < 0 || _nextBufferIndex+1 > _bufferLength - 1)
+						reset();
+				}
+			
 				_elapsedFrameCount++;
 			}
 		}
