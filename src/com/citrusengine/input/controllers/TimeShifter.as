@@ -8,7 +8,7 @@ package com.citrusengine.input.controllers {
 	 */
 	public class TimeShifter extends InputController
 	{
-		public var onManualSpeedChange:Signal;
+		public var manualSpeedChange:Signal;
 		
 		protected var _active:Boolean = false;
 		
@@ -58,8 +58,8 @@ package com.citrusengine.input.controllers {
 			
 			_easeFunc = Tween_easeOut;
 			
-			onManualSpeedChange = new Signal();
-			onManualSpeedChange.add(handleManualSpeedChange);
+			manualSpeedChange = new Signal();
+			manualSpeedChange.add(onManualSpeedChange);
 		
 		}
 		
@@ -72,7 +72,7 @@ package com.citrusengine.input.controllers {
 			_playbackDelay = (delay < 0) ? Math.abs(delay) * _ce.stage.frameRate : delay * _ce.stage.frameRate;
 			_doDelay = true;
 			_delayedFunc = replay;
-			(speed < 0) ? onManualSpeedChange.dispatch(-speed) : onManualSpeedChange.dispatch(speed) ;
+			(speed < 0) ? manualSpeedChange.dispatch(-speed) : manualSpeedChange.dispatch(speed) ;
 		}
 		
 		/**
@@ -84,7 +84,7 @@ package com.citrusengine.input.controllers {
 			_playbackDelay = (delay < 0) ? Math.abs(delay) * _ce.stage.frameRate : delay * _ce.stage.frameRate;
 			_doDelay = true;
 			_delayedFunc = rewind;
-			(speed < 0) ? onManualSpeedChange.dispatch(speed) : onManualSpeedChange.dispatch(-speed) ;
+			(speed < 0) ? manualSpeedChange.dispatch(speed) : manualSpeedChange.dispatch(-speed) ;
 		}
 		
 		protected function replay():void
@@ -109,10 +109,10 @@ package com.citrusengine.input.controllers {
 			_active = true;
 			_input.startRouting(16);
 			_currentSpeed = 0;
-			_targetSpeed = 0;
+			manualSpeedChange.dispatch(0);
 		}
 		
-		protected function handleManualSpeedChange(value:Number):void
+		protected function onManualSpeedChange(value:Number):void
 		{
 			_easeTimer = 0;
 			_targetSpeed = value;
@@ -129,10 +129,10 @@ package com.citrusengine.input.controllers {
 			//speed change on playback and when input is routed on manual mode.
 			
 			if (_input.justDid("down", 16) && _active && _manualMode)
-				onManualSpeedChange.dispatch(_targetSpeed - 1);
+				manualSpeedChange.dispatch(_targetSpeed - 1);
 				
 			if (_input.justDid("up", 16) && _active && _manualMode)
-				onManualSpeedChange.dispatch(_targetSpeed + 1);
+				manualSpeedChange.dispatch(_targetSpeed + 1);
 			
 			//Key up
 			
@@ -227,13 +227,7 @@ package com.citrusengine.input.controllers {
 			if (_easeTimer < _easeDuration)
 			{
 				_easeTimer++;
-			
-			var t:uint = _easeTimer;
-			var b:Number = _currentSpeed;
-			var c:Number = _targetSpeed - _currentSpeed;
-			var d:uint = _easeDuration;
-
-			_currentSpeed = _easeFunc(t, b, _targetSpeed - _currentSpeed, d);
+				_currentSpeed = _easeFunc(_easeTimer, _currentSpeed, _targetSpeed - _currentSpeed, _easeDuration);
 					
 			}
 			
