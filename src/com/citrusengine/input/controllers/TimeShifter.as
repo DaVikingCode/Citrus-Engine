@@ -30,6 +30,7 @@ package com.citrusengine.input.controllers {
 		
 		protected var _interpolationFactor:Number = 1;
 		
+		protected var _previousSpeed:Number = 0; // used for knowing direction.
 		protected var _currentSpeed:Number = 0;
 		protected var _targetSpeed:Number = 0;
 		
@@ -170,27 +171,31 @@ package com.citrusengine.input.controllers {
 				_Buffer.shift();
 				_bufferLength--;
 			}
+			
+			trace("written", _bufferLength);
 		}
 		
 		/**
-		 * Moves buffer position by the amount given through offset.
+		 * Moves buffer position
 		 * sets previous and next buffer index and the interpolation factor.
 		 */
-		protected function moveBufferPosition(offset:Number):void
+		protected function moveBufferPosition():void
 		{
 
-			if ( Math.ceil(_bufferPosition + offset) < _bufferLength - 1 && Math.floor(_bufferPosition + offset) > 0 )
+			if (Math.ceil(_bufferPosition + _currentSpeed) < _bufferLength - 1 && Math.floor(_bufferPosition + _currentSpeed) > 0 )
 			{
-				_bufferPosition += offset;
-				_previousBufferIndex = (_bufferPosition <= 0) ? Math.floor(_bufferPosition) : Math.ceil(_bufferPosition);
-				_nextBufferIndex = (_bufferPosition <= 0) ? _previousBufferIndex - 1 :  _previousBufferIndex + 1;
-				_interpolationFactor = (_bufferPosition <= 0) ? _bufferPosition - _nextBufferIndex : _bufferPosition - _previousBufferIndex;
+				_previousBufferIndex = (_currentSpeed - _previousSpeed < 0) ? Math.floor(_bufferPosition + _currentSpeed) : Math.ceil(_bufferPosition + _currentSpeed);
+				_nextBufferIndex = (_currentSpeed - _previousSpeed < 0) ? Math.floor(_bufferPosition + _currentSpeed) - 1 :  Math.ceil(_bufferPosition + _currentSpeed) + 1;
+				_interpolationFactor = (_currentSpeed - _previousSpeed < 0) ? _nextBufferIndex - (_bufferPosition + _currentSpeed)  : (_bufferPosition + _currentSpeed) - _previousBufferIndex;
 			}
 			
-			_isBufferFrame = !(_bufferPosition % 1);
+			_isBufferFrame = !((_bufferPosition + _currentSpeed) % 1);
 			
 			_previousBufferFrame = _Buffer[_previousBufferIndex];
 			_nextBufferFrame = _Buffer[_nextBufferIndex];
+			
+			_bufferPosition += _currentSpeed;
+			
 		}
 		
 		/**
@@ -216,22 +221,20 @@ package com.citrusengine.input.controllers {
 				}
 			}
 			
-			_previousBufferFrame = _Buffer[_nextBufferIndex];
 		}
 		
 		/**
 		 * Process speed easing
 		 */
 		protected function processSpeed():void
-		{			
+		{	
 			if (_easeTimer < _easeDuration)
 			{
 				_easeTimer++;
 				_currentSpeed = _easeFunc(_easeTimer, _currentSpeed, _targetSpeed - _currentSpeed, _easeDuration);
 					
 			}
-			
-			trace("current speed:",_currentSpeed,"target speed:",_targetSpeed);
+			_previousSpeed = _currentSpeed;
 		}
 		
 		/*
@@ -263,15 +266,14 @@ package com.citrusengine.input.controllers {
 			}
 			else
 			{
-				moveBufferPosition(_currentSpeed);
-				readBuffer();
 				processSpeed();
+				moveBufferPosition();
+				readBuffer();
+				
 				//check if automatic replay or rewind has reached end of buffer.
 				if (!_manualMode)
-				{
-					if (_nextBufferIndex - 1 < 0 || _nextBufferIndex+1 > _bufferLength - 1)
+					if (_bufferLength > 0 && (_bufferPosition < 0 || _bufferPosition > _bufferLength - 1))
 						reset();
-				}
 			
 				_elapsedFrameCount++;
 			}
@@ -279,6 +281,13 @@ package com.citrusengine.input.controllers {
 		
 		public function reset():void
 		{
+			trace("reset",_elapsedFrameCount);
+			//do last frame ?
+			processSpeed();
+			moveBufferPosition();
+			readBuffer();
+			
+			//reset vars
 			_elapsedFrameCount = 0;
 			_bufferPosition = 0;
 			_Buffer.length = 0;
