@@ -4,18 +4,14 @@ package com.citrusengine.input.controllers {
 	
 	/**
 	 * Work In Progress.
-	 * 
-	 * notes:
-	 * see if we can get rid of useless properties.
-	 * do not use direction anymore but >speed< which will determine direction.
 	 */
 	public class TimeShifter extends InputController
 	{
+		protected var _active:Boolean = false;
 		
 		protected var _Watch:Vector.<Object>;
 		protected var _Buffer:Vector.<Object>;
 		
-		protected var _overridePlayback:Boolean = false;
 		protected var _bufferPosition:Number = 0;
 		protected var _bufferLength:uint = 0;
 		protected var _maxBufferLength:uint;
@@ -28,13 +24,11 @@ package com.citrusengine.input.controllers {
 		
 		protected var _elapsedFrameCount:uint = 0;
 		protected var _isBufferFrame:Boolean = true;
-		protected var _direction:int = 1;
 		
 		protected var _interpolationFactor:Number = 1;
 		
-		protected var _speed:Number;
-		protected var _startSpeed:Number;
-		protected var _endSpeed:Number;
+		protected var _currentSpeed:Number = 0;
+		protected var _targetSpeed:Number = 0;
 		
 		protected var _easeFunc:Function;
 		
@@ -42,29 +36,13 @@ package com.citrusengine.input.controllers {
 		protected var _playbackDelay:Number = 0;
 		protected var _delayFunc:Function;
 		
-		protected var _holdingReplay:Boolean = false;
-		protected var _holdingRewind:Boolean = false;
+		protected var _manualMode:Boolean = false;
 		
-		public function TimeShifter(bufferInSeconds:uint, startSpeed:Number = 1 ,endSpeed:Number = 1, ... objects)
+		public function TimeShifter(bufferInSeconds:uint, ... objects)
 		{
 			super("TimeShifter Controller", 16);
 			
 			_maxBufferLength = bufferInSeconds * _ce.stage.frameRate;
-			if (startSpeed > 0 && endSpeed > 0)
-			{
-				_speed = _startSpeed = startSpeed;
-				_endSpeed = endSpeed;
-			}
-			else if (startSpeed == 0 && endSpeed == 0)
-			{
-				_speed = _startSpeed = startSpeed;
-			}
-			else
-			{
-				trace("Warning:", this, "start and end speeds should be strictly positive.");
-				_speed = _startSpeed = 1;
-				_endSpeed = 1;
-			}
 			
 			_Watch = new Vector.<Object>;
 			_Buffer = new Vector.<Object>();
@@ -83,7 +61,7 @@ package com.citrusengine.input.controllers {
 		 * starts replay with an optional delay.
 		 * @param	delay in seconds
 		 */
-		public function startReplay(delay:Number = 0):void
+		public function startReplay(delay:Number = 0, speed:Number = 1):void
 		{
 			if (delay < 0)
 				_playbackDelay = Math.abs(delay) * _ce.stage.frameRate;
@@ -91,13 +69,14 @@ package com.citrusengine.input.controllers {
 				_playbackDelay = delay * _ce.stage.frameRate;
 			_doDelay = true;
 			_delayFunc = replay;
+			_targetSpeed = (speed < 0) ? -speed : speed ;
 		}
 		
 		/**
 		 * starts rewind with an optional delay.
 		 * @param	delay in seconds
 		 */
-		public function startRewind(delay:Number = 0):void
+		public function startRewind(delay:Number = 0, speed:Number = 1):void
 		{
 			if (delay < 0)
 				_playbackDelay = Math.abs(delay) * _ce.stage.frameRate;
@@ -105,79 +84,59 @@ package com.citrusengine.input.controllers {
 				_playbackDelay = delay * _ce.stage.frameRate;
 			_doDelay = true;
 			_delayFunc = rewind;
+			_targetSpeed = (speed < 0) ? speed : -speed ;
 		}
 		
 		protected function replay():void
 		{
 			_bufferPosition = 0;
-			_direction = 1;
-			_overridePlayback = true;
+			_active = true;
 			_input.startRouting(16);
 		}
 		
 		protected function rewind():void
 		{
 			_bufferPosition = _bufferLength - 1;
-			_direction = -1;
-			_overridePlayback = true;
+			_active = true;
 			_input.startRouting(16);
+		}
+		
+		protected function startManualControl():void
+		{
+			_bufferPosition = _bufferLength - 1;
+			_active = true;
+			_input.startRouting(16);
+			_currentSpeed = -1;
+			_targetSpeed = -1;
 		}
 		
 		protected function checkActions():void
 		{	
-			if (_input.justDid("rewind", 16) && !_overridePlayback)
+			if (_input.justDid("timeshift", 16) && !_active)
 			{
-				_holdingRewind = true;
-				startRewind();
+				_manualMode = true;
+				startManualControl();
 			}
 			
-			if (_input.justDid("replay", 16) && !_overridePlayback)
-			{
-				_holdingReplay = true;
-				startReplay();
-			}
+			//speed change on playback and when input is routed.
 			
-			//Highly experimental part - speed change on playback and when input is routed.
-			
-			if (_input.justDid("down", 16) && _overridePlayback)
-			{
-				_startSpeed -= 0.2;
-				_endSpeed -= 0.2;
-			}
+			if (_input.justDid("down", 16) && _active)
+				_targetSpeed -= 1;
 				
-			if (_input.justDid("up", 16) && _overridePlayback)
-			{
-				_startSpeed += 0.2;
-				_endSpeed += 0.2;
-			}
+			if (_input.justDid("up", 16) && _active)
+				_targetSpeed += 1;
 			
 			//Key up
 			
-			if (!_input.isDoing("rewind", 16) && _overridePlayback && _holdingRewind)
+			if (!_input.isDoing("timeshift", 16) && _active && _manualMode)
 			{
-				_holdingRewind = false;
+				_manualMode = false;
 				reset();
 			}
 			
-			if (!_input.isDoing("replay", 16) && _overridePlayback && _holdingReplay)
-			{
-				_holdingReplay = false;
-				reset();
-			}
-			
-			
-			
 		}
 		
-		public function seekTo(position:Number):void
-		{
-			if (position < 0 && position > -_bufferLength - 1)
-				_bufferPosition = _bufferLength - position - 1;
-			if (position > 0 && position < _bufferLength - 1)
-				_bufferPosition = position;
-		}
-		
-		protected function buffer():void
+		protected function writeBuffer():void
 		{
 			var obj:Object;
 			var abuff:Vector.<Object> = _input.getActionsSnapshot();
@@ -205,36 +164,38 @@ package com.citrusengine.input.controllers {
 			}
 		}
 		
-		protected function seekToNext():void
+		/**
+		 * Moves buffer position by the amount given through offset.
+		 * sets previous and next buffer index and the interpolation factor.
+		 */
+		protected function moveBufferPosition(offset:Number):void
 		{
-			if (_direction > 0 && Math.ceil(_bufferPosition + _speed) + 1 < _bufferLength - 1)
+			if (offset > 0 && Math.ceil(_bufferPosition + offset) < _bufferLength - 1)
 			{
-				_bufferPosition += _speed;
+				_bufferPosition += offset;
 				_previousBufferIndex = Math.floor(_bufferPosition);
 				_nextBufferIndex = _previousBufferIndex + 1;
-			}
-			else if (_direction < 0 && Math.floor(_bufferPosition - _speed) > 0)
-			{
-				_bufferPosition -= _speed;
-				_nextBufferIndex = Math.ceil(_bufferPosition);
-				_previousBufferIndex = _nextBufferIndex - 1;
-			}
-			else
-			{
-				reset();
-				return;
-			}
-			
-			if (_direction > 0)
 				_interpolationFactor = _bufferPosition - _previousBufferIndex;
-			else if (_direction < 0)
+			}
+			else if (offset < 0 && Math.floor(_bufferPosition + offset) > 0)
+			{
+				_bufferPosition += offset;
+				_nextBufferIndex = Math.floor(_bufferPosition) - 1;
+				_previousBufferIndex = _nextBufferIndex + 1;
 				_interpolationFactor = _bufferPosition - _nextBufferIndex;
+			}
 			
 			_isBufferFrame = !(_bufferPosition % 1);
 			
 			_previousBufferFrame = _Buffer[_previousBufferIndex];
 			_nextBufferFrame = _Buffer[_nextBufferIndex];
-			
+		}
+		
+		/**
+		 * Sets all objects properties according to position in buffer (and interpolates).
+		 */
+		protected function readBuffer():void
+		{
 			var obj:Object;
 			var obj2:Object;
 			
@@ -254,29 +215,44 @@ package com.citrusengine.input.controllers {
 			}
 			
 			_previousBufferFrame = _Buffer[_nextBufferIndex];
+		}
+		
+		protected function processSpeed():void
+		{			
 			
-			if (_endSpeed != _startSpeed)
+			/*if (_currentSpeed != _targetSpeed)
 			{
-				if (_direction > 0)
-					if(_startSpeed < _endSpeed)
-						_speed = _easeFunc(_bufferPosition, _startSpeed, _endSpeed, _bufferLength - 1);
+				if (_currentSpeed > 0)
+					if(_currentSpeed < _targetSpeed)
+						_currentSpeed = _easeFunc(_bufferPosition, _currentSpeed, _targetSpeed, 120);
 					else
-						_speed = _easeFunc(_bufferPosition, _startSpeed, _endSpeed - _startSpeed, _bufferLength - 1);
-				else if (_direction < 0) 
-					if(_startSpeed < _endSpeed)
-						_speed = _easeFunc(_bufferLength - 1 - _bufferPosition, _startSpeed, _endSpeed, _bufferLength - 1);
+						_currentSpeed = _easeFunc(_bufferPosition, _currentSpeed, _targetSpeed - _currentSpeed, 120);
+				else if (_currentSpeed < 0) 
+					if(_currentSpeed < _targetSpeed)
+						_currentSpeed = - _easeFunc(_bufferLength - 1 - _bufferPosition, _currentSpeed, _targetSpeed, 120);
 					else
-						_speed = _easeFunc(_bufferLength - 1 - _bufferPosition, _startSpeed, _endSpeed - _startSpeed, _bufferLength - 1);
+						_currentSpeed = - _easeFunc(_bufferLength - 1 - _bufferPosition, _currentSpeed, _targetSpeed - _currentSpeed, 120);
 			}
 			else
-			_speed = _endSpeed;
+			_currentSpeed = _targetSpeed;*/
+				
+			_currentSpeed = _targetSpeed;
 			
+			if(_manualMode)
+				trace("current speed:",_currentSpeed);
+			
+			if (!_manualMode)
+			{
+				if (_currentSpeed > 0 && _nextBufferIndex + 1 > _bufferLength - 1)
+					reset();
+				else if (_currentSpeed < 0 && _nextBufferIndex - 1 < 0)
+					reset();
+			}
 		}
 		
 		/*
 		 * Tweening functions for speed . equations by Robert Penner.
 		 */
-		
 		private function Tween_easeOut(t:Number, b:Number, c:Number, d:Number):Number { t /= d; return -c * t*(t-2) + b; }
 		private function Tween_easeIn(t:Number, b:Number, c:Number, d:Number):Number { t /= d; return c * t * t + b;}
 		private function Tween_linear(t:Number, b:Number, c:Number, d:Number):Number { t /= d; return c*t/d + b; }
@@ -288,22 +264,25 @@ package com.citrusengine.input.controllers {
 			
 			checkActions();
 			
-			if (!_overridePlayback)
+			if (!_active)
 			{
-				if (_doDelay)
-					if ( _playbackDelay > 0 )
+				if(_doDelay)
+					if (_playbackDelay > 0 )
 						_playbackDelay--;
 					else
 					{
-						_delayFunc();
 						_doDelay = false;
+						_delayFunc();
 					}
 				
-				buffer();
+				writeBuffer();
 			}
 			else
 			{
-				seekToNext();
+
+				moveBufferPosition(_currentSpeed);
+				readBuffer();
+				processSpeed();
 				_elapsedFrameCount++;
 			}
 		}
@@ -314,15 +293,12 @@ package com.citrusengine.input.controllers {
 			_bufferPosition = 0;
 			_Buffer.length = 0;
 			_bufferLength = 0;
-			_overridePlayback = false;
+			_active = false;
 			_input.resetActions();
 			_input.stopRouting();
 			_doDelay = false;
-			_direction = 0;
-			
-			//_startSpeed = _endSpeed = 0;
+			_currentSpeed = 0;
 		}
 	
 	}
-
 }
