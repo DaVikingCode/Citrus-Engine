@@ -11,8 +11,8 @@ package com.citrusengine.input.controllers {
 		public var onSpeedChanged:Signal;
 		public var onActivated:Signal;
 		public var onDeactivated:Signal;
-		public var paused:Boolean = false;
 		
+		protected var _paused:Boolean = false;
 		protected var _active:Boolean = false;
 		
 		protected var _Buffer:Vector.<Object>;
@@ -155,7 +155,7 @@ package com.citrusengine.input.controllers {
 			_currentSpeed = 0;
 			onSpeedChanged.dispatch(0);
 			_active = true;
-			paused = true;
+			_paused = true;
 		}
 		
 		public function startManualControl(startSpeed:Number):void
@@ -177,10 +177,10 @@ package com.citrusengine.input.controllers {
 		
 		protected function checkActions():void
 		{	
-			if (_input.justDid("timeshift", 16) && (!_active || paused))
+			if (_input.justDid("timeshift", 16) && (!_active || _paused))
 			{
 				_manualMode = true;
-				paused = false;
+				_paused = false;
 				startManualControl( -1);
 			}
 			
@@ -193,7 +193,7 @@ package com.citrusengine.input.controllers {
 			
 			//Key up
 			
-			if (!_input.isDoing("timeshift", 16) && (_active || !paused) && _manualMode)
+			if (!_input.isDoing("timeshift", 16) && (_active || !_paused) && _manualMode)
 			{
 				_manualMode = false;
 				reset();
@@ -325,7 +325,7 @@ package com.citrusengine.input.controllers {
 		 */
 		protected function processSpeed():void
 		{	
-			if (paused)
+			if (_paused)
 				return;
 			if (_easeTimer < _easeDuration)
 			{
@@ -353,7 +353,7 @@ package com.citrusengine.input.controllers {
 			
 			if (!_active)
 			{
-				if(!paused)
+				if(!_paused)
 					writeBuffer();
 				
 				if(_doDelay)
@@ -431,6 +431,16 @@ package com.citrusengine.input.controllers {
 		public function get targetSpeed():Number
 		{
 			return _targetSpeed;
+		}
+		
+		public function get paused():Boolean
+		{
+			return _paused;
+		}
+		
+		public function get active():Boolean
+		{
+			return _active;
 		}
 	
 	}
