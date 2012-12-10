@@ -33,12 +33,12 @@
 		protected var _newState:IState;
 		protected var _stateDisplayIndex:uint = 0;
 		protected var _playing:Boolean = true;
+		protected var _input:Input;
 		
 		private var _levelManager:LevelManager;
 		private var _startTime:Number;
 		private var _gameTime:Number;
 		private var _gameData:AGameData;
-		protected var _input:Input;
 		private var _sound:SoundManager;
 		private var _console:Console;
 		
