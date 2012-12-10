@@ -1,7 +1,6 @@
 package com.citrusengine.input.controllers {
 
 	import com.citrusengine.input.InputController;
-	import com.citrusengine.objects.NapePhysicsObject;
 	import org.osflash.signals.Signal;
 	
 	/**
@@ -104,18 +103,6 @@ package com.citrusengine.input.controllers {
 			else
 				if(bufferSet.object && (bufferSet.continuous || bufferSet.discrete))
 					_BufferSets.push(bufferSet);
-		}
-		
-		/**
-		 * Simple temporary helper function that returns a bufferSet format for known objects
-		 */
-		public static function bufferSetTemplate(object:Object):Object
-		{
-			if (object is NapePhysicsObject)
-			{
-				return {object:object, continuous:["x","y","velocity"], discrete:["animation","inverted"] };
-			}
-			return null;
 		}
 		
 		/**
