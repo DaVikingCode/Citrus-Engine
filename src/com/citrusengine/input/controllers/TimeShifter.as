@@ -11,6 +11,7 @@ package com.citrusengine.input.controllers {
 		public var onSpeedChanged:Signal;
 		public var onActivated:Signal;
 		public var onDeactivated:Signal;
+		public var paused:Boolean = false;
 		
 		protected var _active:Boolean = false;
 		
@@ -147,15 +148,25 @@ package com.citrusengine.input.controllers {
 			_input.startRouting(16);
 		}
 		
-		protected function startManualControl():void
+		public function pause():void
 		{
-			_bufferPosition = _previousBufferIndex = _bufferLength - 1;
-			_nextBufferIndex = _bufferLength - 2;
+			_bufferPosition = _previousBufferIndex = _nextBufferIndex = _Buffer.length - 2;
+			onActivated.dispatch();
+			_currentSpeed = 0;
+			onSpeedChanged.dispatch(0);
+			_active = true;
+			paused = true;
+		}
+		
+		public function startManualControl(startSpeed:Number):void
+		{
+			_bufferPosition = _previousBufferIndex =_Buffer.length - 1;
+			_nextBufferIndex =_Buffer.length - 2;
 			_active = true;
 			onActivated.dispatch();
 			_input.startRouting(16);
-			_currentSpeed = 0;
-			onSpeedChanged.dispatch(-1);
+			_currentSpeed = startSpeed;
+			onSpeedChanged.dispatch(startSpeed);
 		}
 		
 		protected function onSpeedChange(value:Number):void
@@ -166,10 +177,11 @@ package com.citrusengine.input.controllers {
 		
 		protected function checkActions():void
 		{	
-			if (_input.justDid("timeshift", 16) && !_active)
+			if (_input.justDid("timeshift", 16) && (!_active || paused))
 			{
 				_manualMode = true;
-				startManualControl();
+				paused = false;
+				startManualControl( -1);
 			}
 			
 			//speed change on playback and when input is routed on manual mode.
@@ -181,7 +193,7 @@ package com.citrusengine.input.controllers {
 			
 			//Key up
 			
-			if (!_input.isDoing("timeshift", 16) && _active && _manualMode)
+			if (!_input.isDoing("timeshift", 16) && (_active || !paused) && _manualMode)
 			{
 				_manualMode = false;
 				reset();
@@ -246,7 +258,6 @@ package com.citrusengine.input.controllers {
 		 */
 		protected function moveBufferPosition():void
 		{
-				
 			if (Math.ceil(_bufferPosition + _currentSpeed) < _bufferLength - 1 && Math.floor(_bufferPosition + _currentSpeed) > 0 )
 			{
 				_previousBufferIndex = (_currentSpeed - _previousSpeed < 0) ? Math.floor(_bufferPosition + _currentSpeed) : Math.ceil(_bufferPosition + _currentSpeed);
@@ -314,6 +325,8 @@ package com.citrusengine.input.controllers {
 		 */
 		protected function processSpeed():void
 		{	
+			if (paused)
+				return;
 			if (_easeTimer < _easeDuration)
 			{
 				_easeTimer++;
@@ -321,6 +334,7 @@ package com.citrusengine.input.controllers {
 				easeFactor = 	1 - Math.abs(_currentSpeed - _targetSpeed);
 			}
 			_previousSpeed = _currentSpeed;
+			
 		}
 		
 		/*
@@ -339,7 +353,8 @@ package com.citrusengine.input.controllers {
 			
 			if (!_active)
 			{
-				writeBuffer();
+				if(!paused)
+					writeBuffer();
 				
 				if(_doDelay)
 					if (_playbackDelay > 0 )
