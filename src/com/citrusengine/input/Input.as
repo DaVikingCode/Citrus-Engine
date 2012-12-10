@@ -336,7 +336,7 @@ package com.citrusengine.input {
 			{
 				for each (a in actions)
 					for each (ia in _actions)
-						if (ia.name == a.name && (_routeActions ? (_routeChannel == a.channel) : ia.channel == a.channel) && ia.phase == InputAction.BEGIN)
+						if (ia.name == a.name && (_routeActions ? (_routeChannel == ((a.channel<0)?keyboard.defaultChannel:a.channel)) : ia.channel == ((a.channel<0)?keyboard.defaultChannel:a.channel)) && ia.phase == InputAction.BEGIN)
 							return true;
 				return false;
 			}
@@ -358,7 +358,7 @@ package com.citrusengine.input {
 			{
 				for each (a in actions)
 					for each (ia in _actions)
-						if (ia.name == a.name && (_routeActions ? (_routeChannel == a.channel) : ia.channel == a.channel) && ia.phase < InputAction.ON)
+						if (ia.name == a.name && (_routeActions ? (_routeChannel == ((a.channel<0)?keyboard.defaultChannel:a.channel)) : ia.channel == ((a.channel<0)?keyboard.defaultChannel:a.channel)) && ia.phase < InputAction.ON)
 							return true;
 				return false;
 			}
