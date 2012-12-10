@@ -38,9 +38,8 @@ package com.citrusengine.view.starlingview {
 
 			for each (var animation:String in animations) {
 				
-				if (_textureAtlas.getTextures(animation).length == 0) {
+				if (_textureAtlas.getTextures(animation).length == 0)
 					throw new Error("One object doesn't have the " + animation + " animation in its TextureAtlas");
-				}
 				
 				_mcSequences[animation] = new MovieClip(_textureAtlas.getTextures(animation));
 				
@@ -63,10 +62,8 @@ package com.citrusengine.view.starlingview {
 		 */
 		public function changeAnimation(animation:String, animLoop:Boolean):void {
 			
-			if (!(_mcSequences[animation])) {
+			if (!(_mcSequences[animation]))
 				throw new Error("One object doesn't have the " + animation + " animation set up in its initial array");
-				return;
-			}
 			
 			removeChild(_mcSequences[_previousAnimation]);
 			Starling.juggler.remove(_mcSequences[_previousAnimation]);
