@@ -66,7 +66,6 @@ package com.citrusengine.input.controllers.displaylist {
 			
 			if (!knob)
 			{
-				//draw knob
 				knob = new Sprite();
 				
 				knob.graphics.beginFill(0xEE0000, 0.85);
@@ -76,14 +75,10 @@ package com.citrusengine.input.controllers.displaylist {
 			graphic.addChild(back);
 			graphic.addChild(knob);
 			
-			//move joystick
 			graphic.x = _x;
 			graphic.y = _y;
 			
-			//Add graphic
 			_ce.stage.addChild(graphic);
-			
-			// MOUSE EVENTS
 			
 			graphic.addEventListener(MouseEvent.MOUSE_DOWN, handleMouseEvent);
 		}
@@ -162,8 +157,6 @@ package com.citrusengine.input.controllers.displaylist {
 		override public function destroy():void
 		{
 			graphic.removeEventListener(MouseEvent.MOUSE_DOWN, handleMouseEvent);
-			graphic.removeEventListener(MouseEvent.MOUSE_MOVE, handleMouseEvent);
-			graphic.removeEventListener(MouseEvent.MOUSE_UP, handleMouseEvent);
 			
 			_ce.stage.removeChild(graphic);
 			
