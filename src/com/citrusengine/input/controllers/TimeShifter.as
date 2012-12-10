@@ -9,7 +9,9 @@ package com.citrusengine.input.controllers {
 	 */
 	public class TimeShifter extends InputController
 	{
-		public var manualSpeedChange:Signal;
+		public var onSpeedChanged:Signal;
+		public var onActivated:Signal;
+		public var onDeactivated:Signal;
 		
 		protected var _active:Boolean = false;
 		
@@ -74,7 +76,7 @@ package com.citrusengine.input.controllers {
 		
 		protected var _manualMode:Boolean = false;
 		
-		public function TimeShifter(bufferInSeconds:uint, ... objects)
+		public function TimeShifter(bufferInSeconds:uint)
 		{
 			super("TimeShifter Controller", 16);
 			
@@ -85,8 +87,10 @@ package com.citrusengine.input.controllers {
 			
 			_easeFunc = Tween_easeOut;
 			
-			manualSpeedChange = new Signal();
-			manualSpeedChange.add(onManualSpeedChange);
+			onSpeedChanged = new Signal();
+			onActivated = new Signal();
+			onDeactivated = new Signal();
+			onSpeedChanged.add(onSpeedChange);
 		}
 		
 		/**
@@ -123,7 +127,7 @@ package com.citrusengine.input.controllers {
 			_playbackDelay = (delay < 0) ? Math.abs(delay) * _ce.stage.frameRate : delay * _ce.stage.frameRate;
 			_doDelay = true;
 			_delayedFunc = replay;
-			(speed < 0) ? manualSpeedChange.dispatch(-speed) : manualSpeedChange.dispatch(speed) ;
+			(speed < 0) ? onSpeedChanged.dispatch(-speed) : onSpeedChanged.dispatch(speed) ;
 		}
 		
 		/**
@@ -135,7 +139,7 @@ package com.citrusengine.input.controllers {
 			_playbackDelay = (delay < 0) ? Math.abs(delay) * _ce.stage.frameRate : delay * _ce.stage.frameRate;
 			_doDelay = true;
 			_delayedFunc = rewind;
-			(speed < 0) ? manualSpeedChange.dispatch(speed) : manualSpeedChange.dispatch(-speed) ;
+			(speed < 0) ? onSpeedChanged.dispatch(speed) : onSpeedChanged.dispatch(-speed) ;
 		}
 		
 		protected function replay():void
@@ -143,6 +147,7 @@ package com.citrusengine.input.controllers {
 			_bufferPosition = _previousBufferIndex = 0;
 			_nextBufferIndex = 1;
 			_active = true;
+			onActivated.dispatch();
 			_input.startRouting(16);
 		}
 		
@@ -151,6 +156,7 @@ package com.citrusengine.input.controllers {
 			_bufferPosition = _previousBufferIndex = _bufferLength - 1;
 			_nextBufferIndex = _bufferLength - 2;
 			_active = true;
+			onActivated.dispatch();
 			_input.startRouting(16);
 		}
 		
@@ -159,12 +165,13 @@ package com.citrusengine.input.controllers {
 			_bufferPosition = _previousBufferIndex = _bufferLength - 1;
 			_nextBufferIndex = _bufferLength - 2;
 			_active = true;
+			onActivated.dispatch();
 			_input.startRouting(16);
 			_currentSpeed = 0;
-			manualSpeedChange.dispatch(-1);
+			onSpeedChanged.dispatch(-1);
 		}
 		
-		protected function onManualSpeedChange(value:Number):void
+		protected function onSpeedChange(value:Number):void
 		{
 			_easeTimer = 0;
 			_targetSpeed = value;
@@ -181,9 +188,9 @@ package com.citrusengine.input.controllers {
 			//speed change on playback and when input is routed on manual mode.
 			
 			if (_input.justDid("down", 16) && _active && _manualMode)
-				manualSpeedChange.dispatch(_targetSpeed - 1);
+				onSpeedChanged.dispatch(_targetSpeed - 1);
 			if (_input.justDid("up", 16) && _active && _manualMode)
-				manualSpeedChange.dispatch(_targetSpeed + 1);
+				onSpeedChanged.dispatch(_targetSpeed + 1);
 			
 			//Key up
 			
@@ -393,6 +400,7 @@ package com.citrusengine.input.controllers {
 			_targetSpeed = 0;
 			
 			_active = false;
+			onDeactivated.dispatch();
 			_doDelay = false;
 			
 			_input.resetActions();
