@@ -89,12 +89,12 @@ package com.citrusengine.input.controllers.displaylist {
 				switch (e.target.parent)
 				{
 					case button1:
-						triggerON(button1Action, 1);
+						triggerON(button1Action, 1, button1Channel);
 						button1.removeChildAt(0);
 						button1.addChild(button1DownGraphic);
 						break;
 					case button2:
-						triggerON(button2Action, 1);
+						triggerON(button2Action, 0, button2Channel);
 						button2.removeChildAt(0);
 						button2.addChild(button2DownGraphic);
 						break;
@@ -107,13 +107,13 @@ package com.citrusengine.input.controllers.displaylist {
 				switch (e.target.parent)
 				{
 					case button1:
-						triggerOFF(button1Action);
+						triggerOFF(button1Action, 0, button1Channel);
 						button1.removeChildAt(0);
 						button1.addChild(button1UpGraphic);
 						break;
 						
 					case button2:
-						triggerOFF(button2Action);
+						triggerOFF(button2Action, 0, button2Channel);
 						button2.removeChildAt(0);
 						button2.addChild(button2UpGraphic);
 						break;
