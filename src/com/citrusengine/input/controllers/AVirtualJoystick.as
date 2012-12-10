@@ -63,14 +63,15 @@ package com.citrusengine.input.controllers {
 			
 			//register default actions to value intervals
 			
-			_xAxisActions.push({name: "left", start: -1, end: 0});
-			_xAxisActions.push({name: "right", start: 0, end: 1});
-			_yAxisActions.push({name: "up", start: -1, end: 0});
-			_yAxisActions.push({name: "down", start: 0, end: 1});
+			_xAxisActions.push({name: "left", start: -1, end: -0.3});
+			_xAxisActions.push({name: "right", start: 0.3, end: 1});
+			_yAxisActions.push({name: "up", start: -1, end: -0.3});
+			_yAxisActions.push({name: "down", start: 0.3, end: 1});
 			
 			//other action
 			
 			_yAxisActions.push({name: "duck", start: 0.8, end: 1});
+			_yAxisActions.push({name: "jump", start: -1, end: -0.8});
 		
 		}
 		
