@@ -86,31 +86,32 @@ package com.citrusengine.input.controllers.displaylist {
 			// MOUSE EVENTS
 			
 			graphic.addEventListener(MouseEvent.MOUSE_DOWN, handleMouseEvent);
-			graphic.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseEvent);
-			graphic.addEventListener(MouseEvent.MOUSE_UP, handleMouseEvent);
 		}
 		
 		private function handleMouseEvent(e:MouseEvent):void
 		{
-			if (e.type == MouseEvent.MOUSE_DOWN)
+			if (e.type == MouseEvent.MOUSE_DOWN && !_grabbed)
 			{
 				_grabbed = true;
 				_centered = false;
 				handleGrab(graphic.mouseX, graphic.mouseY);
+				
 				_ce.stage.addEventListener(MouseEvent.MOUSE_UP, handleMouseEvent);
 				_ce.stage.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseEvent);
+				
+				graphic.removeEventListener(MouseEvent.MOUSE_DOWN, handleMouseEvent);
 			}
 			
-			if (e.type == MouseEvent.MOUSE_MOVE)
-			{
-				if (_grabbed)
+			if (e.type == MouseEvent.MOUSE_MOVE && _grabbed)
 				handleGrab(graphic.mouseX, graphic.mouseY);
-			} 
 			
-			if (e.type == MouseEvent.MOUSE_UP)
+			if (e.type == MouseEvent.MOUSE_UP && _grabbed)
 			{
+				graphic.addEventListener(MouseEvent.MOUSE_DOWN, handleMouseEvent);
+				
 				_ce.stage.removeEventListener(MouseEvent.MOUSE_UP, handleMouseEvent);
 				_ce.stage.removeEventListener(MouseEvent.MOUSE_MOVE, handleMouseEvent);
+				
 				handleGrab(graphic.mouseX, graphic.mouseY);
 				reset();
 				_grabbed = false;
