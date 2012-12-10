@@ -8,8 +8,8 @@ package com.citrusengine.input {
 		
 		public var enabled:Boolean = true;
 		public var name:String;
+		public var defaultChannel:uint = 0;
 		
-		protected var defaultChannel:uint = 0;
 		protected var _ce:CitrusEngine;
 		protected var _input:Input;
 		protected var _initialized:Boolean;

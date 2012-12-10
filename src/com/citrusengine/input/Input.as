@@ -55,7 +55,7 @@ package com.citrusengine.input {
 				return;
 			
 			//default keyboard
-			keyboard = new Keyboard("keyboard", 0);
+			keyboard = new Keyboard("keyboard");
 			
 			_initialized = true;
 		}

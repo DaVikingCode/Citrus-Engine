@@ -16,9 +16,9 @@ package com.citrusengine.input.controllers
 	{
 		protected var _keyActions:Dictionary;
 		
-		public function Keyboard(name:String, channel:uint = 0)
+		public function Keyboard(name:String, params:Object = null)
 		{
-			super(name, channel);
+			super(name, params);
 			
 			_keyActions = new Dictionary();
 			
@@ -41,7 +41,9 @@ package com.citrusengine.input.controllers
 			{
 				var a:Object;
 				for each (a in _keyActions[e.keyCode])
-					triggerON(a.name, 1, a.channel);
+				{
+					triggerON(a.name, 1, (a.channel < 0 ) ? defaultChannel : a.channel);
+				}
 			}
 		}
 		
@@ -51,7 +53,9 @@ package com.citrusengine.input.controllers
 			{
 				var a:Object;
 				for each (a in _keyActions[e.keyCode])
-					triggerOFF(a.name, 0, a.channel);
+				{
+					triggerOFF(a.name, 0, (a.channel < 0 ) ? defaultChannel : a.channel);
+				}
 			}
 		}
 		
@@ -70,8 +74,8 @@ package com.citrusengine.input.controllers
 						return;
 			}
 			
-			if (channel < 0)
-				channel = defaultChannel;
+			/*if (channel < 0)
+				channel = defaultChannel;*/
 			
 			_keyActions[keyCode].push({name: actionName, channel: channel});
 		}
