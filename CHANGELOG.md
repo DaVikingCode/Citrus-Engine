@@ -1,5 +1,6 @@
 V 3.1.0, Work in progress
 -------------------------
+- The LevelManager can load levels made with Flash Pro on iOS using a LoaderContext.
 - The setUpStarling function may take the flash stage as an argument (useful if not the root class).
 - AnimationSequence's dictionary is now accessible thanks to a getter.
 - Changed _input to protected to allow custom Input.

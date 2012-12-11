@@ -6,6 +6,9 @@ package com.citrusengine.utils {
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
+	import flash.system.SecurityDomain;
 
 	/**
 	 * The LevelManager is a complex but powerful class, you can use simple states for levels with SWC/SWF/XML.
@@ -50,6 +53,14 @@ package com.citrusengine.utils {
 		static private var _instance:LevelManager;
 
 		public var onLevelChanged:Signal;
+		
+		public var checkPolicyFile:Boolean = false;
+		
+		/**
+		 * If you want to load your SWF level on iOS, set it to ApplicationDomain.currentDomain.
+		 */
+		public var applicationDomain:ApplicationDomain = null;
+		public var securityDomain:SecurityDomain = null;
 		
 		private var _ALevel:Class;
 		private var _levels:Array;
@@ -137,8 +148,9 @@ package com.citrusengine.utils {
 				} else {
 					
 					var loader:Loader = new Loader();
-					loader.load(new URLRequest(_levels[_currentIndex][1]));
-					loader.contentLoaderInfo.addEventListener(Event.COMPLETE,_levelLoaded);
+					var loaderContext:LoaderContext = new LoaderContext(checkPolicyFile, applicationDomain, securityDomain);
+					loader.load(new URLRequest(_levels[_currentIndex][1]), loaderContext);
+					loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _levelLoaded);
 				}
 			}
 		}
