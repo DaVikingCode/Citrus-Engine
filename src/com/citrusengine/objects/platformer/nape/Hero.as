@@ -5,10 +5,12 @@ package com.citrusengine.objects.platformer.nape {
 	import nape.callbacks.InteractionCallback;
 	import nape.callbacks.InteractionListener;
 	import nape.callbacks.InteractionType;
+	import nape.dynamics.InteractionFilter;
 	import nape.geom.Vec2;
 	import nape.phys.Body;
 
 	import com.citrusengine.objects.NapePhysicsObject;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
 
 	import org.osflash.signals.Signal;
 
@@ -204,16 +206,16 @@ package com.citrusengine.objects.platformer.nape {
 			{
 				var moveKeyPressed:Boolean = false;
 				
-				_ducking = (_ce.input.isDoing("duck",inputChannel) && _onGround && canDuck);
+				_ducking = (_ce.input.isDoing("duck", inputChannel) && _onGround && canDuck);
 				
-				if (_ce.input.isDoing("right",inputChannel)  && !_ducking)
+				if (_ce.input.isDoing("right", inputChannel)  && !_ducking)
 				{
 					//velocity.addeq(getSlopeBasedMoveAngle());
 					velocity.x += acceleration;
 					moveKeyPressed = true;
 				}
 				
-				if (_ce.input.isDoing("left",inputChannel) && !_ducking)
+				if (_ce.input.isDoing("left", inputChannel) && !_ducking)
 				{
 					//velocity.subeq(getSlopeBasedMoveAngle());
 					velocity.x -= acceleration;
@@ -234,7 +236,7 @@ package com.citrusengine.objects.platformer.nape {
 				}
 				
 				//
-				if (_ce.input.justDid("jump",inputChannel) && _onGround && !_ducking)
+				if (_ce.input.justDid("jump", inputChannel) && _onGround && !_ducking)
 				{
 					velocity.y = -jumpHeight;
 					_onGround = false;
@@ -242,7 +244,7 @@ package com.citrusengine.objects.platformer.nape {
 				}
 				
 				//
-				if (_ce.input.isDoing("jump",inputChannel) && !_onGround && velocity.y < 0)
+				if (_ce.input.isDoing("jump", inputChannel) && !_onGround && velocity.y < 0)
 				{
 					velocity.y -= jumpAcceleration;
 				}
@@ -287,6 +289,11 @@ package com.citrusengine.objects.platformer.nape {
 			super.createMaterial();
 			
 			_material.elasticity = 0;
+		}
+		
+		override protected function createFilter():void {
+			
+			_body.setShapeFilters(new InteractionFilter(PhysicsCollisionCategories.Get("GoodGuys"), PhysicsCollisionCategories.GetAll()));
 		}
 		
 		override public function handleBeginContact(e:InteractionCallback):void {

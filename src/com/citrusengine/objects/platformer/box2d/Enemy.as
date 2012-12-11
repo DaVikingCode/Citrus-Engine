@@ -57,9 +57,6 @@ package com.citrusengine.objects.platformer.box2d {
 		protected var _hurtTimeoutID:Number = 0;
 		protected var _hurt:Boolean = false;
 		protected var _enemyClass:* = Hero;
-		protected var _lastXPos:Number;
-		protected var _lastTimeTurnedAround:Number = 0;
-		protected var _waitTimeBeforeTurningAround:Number = 1000;
 		
 		protected var _leftSensorShape:b2PolygonShape;
 		protected var _rightSensorShape:b2PolygonShape;
@@ -106,7 +103,6 @@ package com.citrusengine.objects.platformer.box2d {
 			super.update(timeDelta);
 			
 			var position:b2Vec2 = _body.GetPosition();
-			_lastXPos = position.x;
 			
 			//Turn around when they pass their left/right bounds
 			if ((_inverted && position.x * _box2D.scale < leftBound) || (!_inverted && position.x * _box2D.scale > rightBound))
@@ -139,7 +135,6 @@ package com.citrusengine.objects.platformer.box2d {
 		public function turnAround():void
 		{
 			_inverted = !_inverted;
-			_lastTimeTurnedAround = new Date().time;
 		}
 		
 		override protected function createBody():void

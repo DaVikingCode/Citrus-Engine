@@ -10,7 +10,7 @@ package com.citrusengine.input.controllers
 	 *  The default Keyboard controller.
 	 * 	A single key can trigger multiple actions, each of these can be sent to different channels.
 	 *
-	 *  Keyboard holds static keycodes constants (see bottom)
+	 *  Keyboard holds static keycodes constants (see bottom).
 	 */
 	public class Keyboard extends InputController
 	{
@@ -103,7 +103,7 @@ package com.citrusengine.input.controllers
 		 */
 		public function removeAction(actionName:String):void
 		{
-			var actions:Vector.<Object>
+			var actions:Vector.<Object>;
 			var i:String;
 			for each (actions in _keyActions)
 				for (i in actions)
@@ -141,7 +141,7 @@ package com.citrusengine.input.controllers
 		}
 		
 		/**
-		 * removes all actions on a key.
+		 * Removes all actions on a key.
 		 */
 		public function removeKeyActions(keyCode:uint):void
 		{
@@ -149,7 +149,7 @@ package com.citrusengine.input.controllers
 		}
 		
 		/**
-		 * returns all actions on a key in Vector format or returns null if none.
+		 * Returns all actions on a key in Vector format or returns null if none.
 		 */
 		public function getActionsByKey(keyCode:uint):Vector.<Object>
 		{

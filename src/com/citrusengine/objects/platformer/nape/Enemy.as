@@ -2,9 +2,12 @@ package com.citrusengine.objects.platformer.nape {
 
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
+	import nape.dynamics.InteractionFilter;
 	import nape.geom.Vec2;
 
 	import com.citrusengine.objects.NapePhysicsObject;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.nape.NapeUtils;
 
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
@@ -26,8 +29,8 @@ package com.citrusengine.objects.platformer.nape {
 		[Inspectable(defaultValue="39")]
 		public var speed:Number = 39;
 		
-		[Inspectable(defaultValue="3")]
-		public var enemyKillVelocity:Number = 3;
+		[Inspectable(defaultValue="-3")]
+		public var enemyKillVelocity:Number = -3;
 		
 		[Inspectable(defaultValue="left",enumeration="left,right")]
 		public var startingDirection:String = "left";
@@ -44,9 +47,6 @@ package com.citrusengine.objects.platformer.nape {
 		protected var _hurtTimeoutID:Number = 0;
 		protected var _hurt:Boolean = false;
 		protected var _enemyClass:* = Hero;
-		protected var _lastXPos:Number;
-		protected var _lastTimeTurnedAround:Number = 0;
-		protected var _waitTimeBeforeTurningAround:Number = 1000;
 		
 		public function Enemy(name:String, params:Object=null) {
 			
@@ -85,7 +85,6 @@ package com.citrusengine.objects.platformer.nape {
 			super.update(timeDelta);
 			
 			var position:Vec2 = _body.position;
-			_lastXPos = position.x;
 			
 			//Turn around when they pass their left/right bounds
 			if ((_inverted && position.x < leftBound) || (!_inverted && position.x > rightBound))
@@ -103,16 +102,21 @@ package com.citrusengine.objects.platformer.nape {
 			updateAnimation();
 		}
 		
+		/**
+		 * The enemy is hurt, start the time out with <code>hurtDuration</code> value. Then it called <code>endHurtState</code>'s function.
+		 */
 		public function hurt():void {
 			
 			_hurt = true;
 			_hurtTimeoutID = setTimeout(endHurtState, hurtDuration);
 		}
 		
+		/**
+		 * Change enemy's direction
+		 */
 		public function turnAround():void {
 			
 			_inverted = !_inverted;
-			_lastTimeTurnedAround = new Date().time;
 		}
 		
 		override protected function createBody():void {
@@ -120,6 +124,11 @@ package com.citrusengine.objects.platformer.nape {
 			super.createBody();
 			
 			_body.allowRotation = false;
+		}
+		
+		override protected function createFilter():void {
+			
+			_body.setShapeFilters(new InteractionFilter(PhysicsCollisionCategories.Get("BadGuys"), PhysicsCollisionCategories.GetAll()));
 		}
 		
 		override protected function createConstraint():void {
@@ -130,9 +139,9 @@ package com.citrusengine.objects.platformer.nape {
 			
 		override public function handleBeginContact(callback:InteractionCallback):void {
 			
-			var collider:NapePhysicsObject = callback.int2.castBody.userData.myData;
+			var collider:NapePhysicsObject = NapeUtils.CollisionGetOther(this, callback);
 			
-			if (collider is _enemyClass && collider.body.velocity.y > enemyKillVelocity)
+			if (collider is _enemyClass && collider.body.velocity.y < enemyKillVelocity)
 				hurt();
 			else if (collider is Platform || collider is Enemy)
 				turnAround();
@@ -143,6 +152,9 @@ package com.citrusengine.objects.platformer.nape {
 			_animation = _hurt ? "die" : "walk";
 		}
 		
+		/**
+		 * The enemy is no more hurt, but it is killed. Override this function to prevent enemy's death.
+		 */
 		protected function endHurtState():void {
 			
 			_hurt = false;

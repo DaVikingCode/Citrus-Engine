@@ -2,9 +2,11 @@ package com.citrusengine.objects.platformer.nape {
 
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
+	import nape.dynamics.InteractionFilter;
 	import nape.geom.Vec2;
 
 	import com.citrusengine.objects.NapePhysicsObject;
+	import com.citrusengine.physics.PhysicsCollisionCategories;
 
 	import org.osflash.signals.Signal;
 
@@ -125,9 +127,9 @@ package com.citrusengine.objects.platformer.nape {
 			
 			_exploded = true;
 			
-			//TODO Not collideable with anything anymore.
-			//_fixture.SetFilterData({ maskBits: Box2DCollisionCategories.GetNone() });
-			//_body.setShapeFilters(filter) ?
+			var filter:InteractionFilter = new InteractionFilter();
+			filter.collisionMask = PhysicsCollisionCategories.GetNone();
+			_body.setShapeFilters(filter);
 			
 			onExplode.dispatch(this, _contact);
 			
