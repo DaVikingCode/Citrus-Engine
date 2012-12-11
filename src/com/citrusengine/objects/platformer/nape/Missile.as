@@ -1,6 +1,5 @@
 package com.citrusengine.objects.platformer.nape {
 
-	import com.citrusengine.physics.nape.NapeUtils;
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
 	import nape.dynamics.InteractionFilter;
@@ -8,6 +7,7 @@ package com.citrusengine.objects.platformer.nape {
 
 	import com.citrusengine.objects.NapePhysicsObject;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.nape.NapeUtils;
 
 	import org.osflash.signals.Signal;
 

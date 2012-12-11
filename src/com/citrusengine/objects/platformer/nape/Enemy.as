@@ -26,11 +26,11 @@ package com.citrusengine.objects.platformer.nape {
 		
 		public static const ENEMY:CbType = new CbType();
 		
-		[Inspectable(defaultValue="39")]
-		public var speed:Number = 39;
+		[Inspectable(defaultValue="51.8")]
+		public var speed:Number = 51.8;
 		
-		[Inspectable(defaultValue="-3")]
-		public var enemyKillVelocity:Number = -3;
+		[Inspectable(defaultValue="-90")]
+		public var enemyKillVelocity:Number = -90;
 		
 		[Inspectable(defaultValue="left",enumeration="left,right")]
 		public var startingDirection:String = "left";
@@ -141,10 +141,15 @@ package com.citrusengine.objects.platformer.nape {
 			
 			var collider:NapePhysicsObject = NapeUtils.CollisionGetOther(this, callback);
 			
-			if (collider is _enemyClass && collider.body.velocity.y < enemyKillVelocity)
-				hurt();
-			else if (collider is Platform || collider is Enemy)
-				turnAround();
+			if (callback.arbiters.length > 0 && callback.arbiters.at(0).collisionArbiter) {
+				
+				var collisionAngle:Number = callback.arbiters.at(0).collisionArbiter.normal.angle * 180 / Math.PI;
+				
+				if (collider is _enemyClass && collider.body.velocity.y != 0 && collider.body.velocity.y > enemyKillVelocity)
+					hurt();
+				else if ((collider is Platform && collisionAngle != 90) || collider is Enemy)
+					turnAround();
+			}
 		}
 		
 		protected function updateAnimation():void {

@@ -1,20 +1,19 @@
 package com.citrusengine.objects.platformer.nape {
 
-	import nape.callbacks.CbEvent;
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
-	import nape.callbacks.InteractionListener;
-	import nape.callbacks.InteractionType;
 	import nape.dynamics.InteractionFilter;
 	import nape.geom.Vec2;
-	import nape.phys.Body;
 
 	import com.citrusengine.objects.NapePhysicsObject;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
+	import com.citrusengine.physics.nape.NapeUtils;
 
 	import org.osflash.signals.Signal;
 
+	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
+	import flash.utils.setTimeout;
 
 	/**
 	 * This is a common, simple, yet solid implementation of a side-scrolling Hero. 
@@ -26,6 +25,8 @@ package com.citrusengine.objects.platformer.nape {
 	 * as current coin count). The hero should be re-created each time a state is created or reset.
 	 */
 	public class Hero extends NapePhysicsObject {
+		
+		public static const HERO:CbType = new CbType();		
 		
 		//properties
 		/**
@@ -51,6 +52,42 @@ package com.citrusengine.objects.platformer.nape {
 		 */
 		[Inspectable(defaultValue="9")]
 		public var jumpAcceleration:Number = 9;
+		
+		/**
+		 * This is the y velocity that the hero must be travelling in order to kill an Enemy.
+		 */
+		[Inspectable(defaultValue="-90")]
+		public var killVelocity:Number = -90;
+		
+		/**
+		 * The y velocity that the hero will spring when he kills an enemy. 
+		 */
+		[Inspectable(defaultValue="240")]
+		public var enemySpringHeight:Number = 240;
+		
+		/**
+		 * The y velocity that the hero will spring when he kills an enemy while pressing the jump button. 
+		 */
+		[Inspectable(defaultValue="270")]
+		public var enemySpringJumpHeight:Number = 270;
+		
+		/**
+		 * How long the hero is in hurt mode for. 
+		 */
+		[Inspectable(defaultValue="1000")]
+		public var hurtDuration:Number = 1000;
+		
+		/**
+		 * The amount of kick-back that the hero jumps when he gets hurt. 
+		 */
+		[Inspectable(defaultValue="180")]
+		public var hurtVelocityX:Number = 180;
+		
+		/**
+		 * The amount of kick-back that the hero jumps when he gets hurt. 
+		 */
+		[Inspectable(defaultValue="300")]
+		public var hurtVelocityY:Number = 300;
 		
 		/**
 		 * Determines whether or not the hero's ducking ability is enabled.
@@ -96,12 +133,6 @@ package com.citrusengine.objects.platformer.nape {
 		protected var _controlsEnabled:Boolean = true;
 		protected var _ducking:Boolean = false;
 		protected var _combinedGroundAngle:Number = 0;
-		
-		// interaction listeners
-		private var _beginContactListener:InteractionListener;
-		private var _endContactListener:InteractionListener;
-		
-		public static const HERO:CbType = new CbType();		
 
 		public function Hero(name:String, params:Object = null) {
 
@@ -117,30 +148,17 @@ package com.citrusengine.objects.platformer.nape {
 			
 			super.createConstraint();
 			
-			_beginContactListener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, HERO, CbType.ANY_BODY, handleBeginContact);
-			_endContactListener = new InteractionListener(CbEvent.END, InteractionType.COLLISION, HERO, CbType.ANY_BODY, handleEndContact);
 			_body.cbTypes.add(HERO);
-			_body.space.listeners.add(_beginContactListener);
-			_body.space.listeners.add(_endContactListener);
 		}
 
 		override public function destroy():void {
-
+			
+			clearTimeout(_hurtTimeoutID);
 			onJump.removeAll();
 			onGiveDamage.removeAll();
 			onTakeDamage.removeAll();
 			onAnimationChange.removeAll();
 			
-			if (_beginContactListener) {
-				_beginContactListener.space = null;
-				_beginContactListener = null;
-			}
-			
-			if (_endContactListener) {
-				_endContactListener.space = null;
-				_endContactListener = null;
-			}
-
 			super.destroy();
 		}
 
@@ -235,28 +253,25 @@ package com.citrusengine.objects.platformer.nape {
 					_material.dynamicFriction = _dynamicFriction; //Add friction so that he stops running
 				}
 				
-				//
-				if (_ce.input.justDid("jump", inputChannel) && _onGround && !_ducking)
+				if (_onGround && _ce.input.justDid("jump", inputChannel) && !_ducking)
 				{
 					velocity.y = -jumpHeight;
-					_onGround = false;
 					onJump.dispatch();
 				}
 				
-				//
 				if (_ce.input.isDoing("jump", inputChannel) && !_onGround && velocity.y < 0)
 				{
 					velocity.y -= jumpAcceleration;
 				}
 				
-				/*if (_springOffEnemy != -1)
+				if (_springOffEnemy != -1)
 				{
-					if (_ce.input.isDoing("jump",inputChannel))
+					if (_ce.input.isDoing("jump", inputChannel))
 						velocity.y = -enemySpringJumpHeight;
 					else
 						velocity.y = -enemySpringHeight;
 					_springOffEnemy = -1;
-				}*/
+				}
 				
 				//Cap velocities
 				if (velocity.x > (maxVelocity))
@@ -275,6 +290,24 @@ package com.citrusengine.objects.platformer.nape {
 			
 			return new Vec2(acceleration, 0);
 			//return new Vec2(acceleration, 0).rotate(_combinedGroundAngle);
+		}
+		
+		/**
+		 * Hurts the hero, disables his controls for a little bit, and dispatches the onTakeDamage signal. 
+		 */		
+		public function hurt():void
+		{
+			_hurt = true;
+			controlsEnabled = false;
+			_hurtTimeoutID = setTimeout(endHurtState, hurtDuration);
+			onTakeDamage.dispatch();
+			
+			//Makes sure that the hero is not frictionless while his control is disabled
+			if (_playerMovingHero)
+			{
+				_playerMovingHero = false;
+				_material.dynamicFriction = _dynamicFriction;
+			}
 		}
 		
 		override protected function createBody():void {
@@ -296,27 +329,67 @@ package com.citrusengine.objects.platformer.nape {
 			_body.setShapeFilters(new InteractionFilter(PhysicsCollisionCategories.Get("GoodGuys"), PhysicsCollisionCategories.GetAll()));
 		}
 		
-		override public function handleBeginContact(e:InteractionCallback):void {
+		override public function handleBeginContact(callback:InteractionCallback):void {
 			
-			//trace("------------------------------");
-			//trace("begin contact:", e.int2.castBody.userData.myData);
-			var body2:Body = e.int2.castBody;
-			_groundContacts.push(body2);
-			//trace("ground contacts:", _groundContacts.length);
+			var collider:NapePhysicsObject = NapeUtils.CollisionGetOther(this, callback);
 			
-			if (e.arbiters.length > 0 && e.arbiters.at(0).collisionArbiter) {
-				var angle:Number = e.arbiters.at(0).collisionArbiter.normal.angle * 180 / Math.PI;
-				if ((45 < angle) && (angle < 135)) {
+			if (_enemyClass && collider is _enemyClass)
+			{
+				if ((_body.velocity.y == 0 || _body.velocity.y < killVelocity) && !_hurt)
+				{
+					hurt();
+					
+					//fling the hero
+					var hurtVelocity:Vec2 = _body.velocity;
+					hurtVelocity.y = -hurtVelocityY;
+					hurtVelocity.x = hurtVelocityX;
+					if (collider.x > x)
+						hurtVelocity.x = -hurtVelocityX;
+					_body.velocity = hurtVelocity;
+				}
+				else
+				{
+					_springOffEnemy = collider.y - height;
+					onGiveDamage.dispatch();
+				}
+			}
+			
+			if (callback.arbiters.length > 0 && callback.arbiters.at(0).collisionArbiter) {
+				
+				var collisionAngle:Number = callback.arbiters.at(0).collisionArbiter.normal.angle * 180 / Math.PI;
+				
+				if ((collisionAngle > 45 && collisionAngle < 135) || (collisionAngle > -30 && collisionAngle < 10 && collisionAngle != 0) || collisionAngle == -90)
+				{
+					//we don't want the Hero to be set up as onGround if it touches a cloud.
+					if (collider is Platform && (collider as Platform).oneWay && collisionAngle == -90)
+						return;
+					
+					_groundContacts.push(collider.body);
 					_onGround = true;
+					//updateCombinedGroundAngle();
 				}
 			}
 		}
 		
-		override public function handleEndContact(e:InteractionCallback):void {
-			//trace("****************************");
-			//trace("end contact:", e.int2.castBody.userData.myData);
-			_groundContacts.splice(_groundContacts.indexOf(e.int2.castBody), 1);
-			//trace("ground contacts:", _groundContacts.length);
+		override public function handleEndContact(callback:InteractionCallback):void {
+			
+			var collider:NapePhysicsObject = NapeUtils.CollisionGetOther(this, callback);
+			
+			//Remove from ground contacts, if it is one.
+			var index:int = _groundContacts.indexOf(collider.body);
+			if (index != -1)
+			{
+				_groundContacts.splice(index, 1);
+				if (_groundContacts.length == 0)
+					_onGround = false;
+				//updateCombinedGroundAngle();
+			}
+		}
+		
+		protected function endHurtState():void {
+			
+			_hurt = false;
+			controlsEnabled = true;
 		}
 		
 		protected function updateAnimation():void {

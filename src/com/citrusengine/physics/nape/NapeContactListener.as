@@ -23,13 +23,8 @@ package com.citrusengine.physics.nape {
 			
 			_space = space;
 			
-			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.SENSOR, Sensor.SENSOR, CbType.ANY_BODY, onInteractionBegin));
-			_space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.SENSOR, Sensor.SENSOR, CbType.ANY_BODY, onInteractionEnd));
-			
-			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, Enemy.ENEMY, CbType.ANY_BODY, onInteractionBegin));
-			
-			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, Missile.MISSILE, CbType.ANY_BODY, onInteractionBegin));
-			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, MissileWithExplosion.MISSILE, CbType.ANY_BODY, onInteractionBegin));
+			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, onInteractionBegin));
+			_space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, onInteractionEnd));
 		}
 		
 		public function destroy():void {
@@ -38,11 +33,8 @@ package com.citrusengine.physics.nape {
 		}
 		
 		public function onInteractionBegin(interactionCallback:InteractionCallback):void {
-			
 			interactionCallback.int1.userData.myData.handleBeginContact(interactionCallback);
-			
-			if (interactionCallback.int1.cbTypes.at(1) != Missile.MISSILE)
-				interactionCallback.int2.userData.myData.handleBeginContact(interactionCallback);
+			interactionCallback.int2.userData.myData.handleBeginContact(interactionCallback);
 		}
 		
 		public function onInteractionEnd(interactionCallback:InteractionCallback):void {

@@ -89,6 +89,7 @@ package com.citrusengine.objects.platformer.nape {
 			_sliceVectorConstructor[2].y = _nextYPoint - currentYPoint;
 			var slicePolygon:Polygon = new Polygon(_sliceVectorConstructor);
 			_body = new Body(BodyType.STATIC);
+			_body.userData.myData = this;
 			_body.shapes.add(slicePolygon);
 			_body.position.x = _slicesCreated * sliceWidth;
 			_body.position.y = currentYPoint;

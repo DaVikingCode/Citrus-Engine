@@ -6,12 +6,14 @@ package com.citrusengine.objects.platformer.box2d {
 	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
 
+	import com.citrusengine.math.MathVector;
 	import com.citrusengine.objects.Box2DPhysicsObject;
 	import com.citrusengine.physics.PhysicsCollisionCategories;
 	import com.citrusengine.physics.box2d.Box2DShapeMaker;
 	import com.citrusengine.physics.box2d.Box2DUtils;
 	import com.citrusengine.physics.box2d.IBox2DPhysicsObject;
 
+	import flash.geom.Point;
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;
@@ -195,9 +197,16 @@ package com.citrusengine.objects.platformer.box2d {
 			
 			if (_body.GetLinearVelocity().x > 0 && (contact.GetFixtureA() == _leftSensorFixture || contact.GetFixtureB() == _leftSensorFixture))
 				return;
+			
+			if (contact.GetManifold().m_localPoint) {
 				
-			if (collider is Platform || collider is Enemy)
-				turnAround();
+				var normalPoint:Point = new Point(contact.GetManifold().m_localPoint.x, contact.GetManifold().m_localPoint.y);
+				var collisionAngle:Number = new MathVector(normalPoint.x, normalPoint.y).angle * 180 / Math.PI;
+				
+				if ((collider is Platform && collisionAngle != 90) || collider is Enemy)
+					turnAround();
+			}
+				
 		}
 		
 		protected function updateAnimation():void
