@@ -142,7 +142,9 @@ package com.citrusengine.view.starlingview {
 				
 				(_view as Armature).dispose();
 				content.dispose();
-			}
+				
+			} else if (content is DisplayObject)
+				content.dispose();
 			
 		}
 		
