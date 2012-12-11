@@ -1,12 +1,11 @@
 package com.citrusengine.objects.platformer.nape {
 
-	import com.citrusengine.objects.NapePhysicsObject;
-
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
-	import nape.dynamics.InteractionFilter;
 	import nape.phys.BodyType;
-	
+
+	import com.citrusengine.objects.NapePhysicsObject;
+
 	import org.osflash.signals.Signal;
 
 	/**

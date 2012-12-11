@@ -155,7 +155,8 @@ package com.citrusengine.objects.platformer.box2d
 		override public function handleBeginContact(contact:b2Contact):void {
 			
 			_contact = Box2DUtils.CollisionGetOther(this, contact);
-			if (!contact.GetFixtureB().IsSensor())
+			
+			if (!contact.GetFixtureA().IsSensor() && !contact.GetFixtureB().IsSensor())
 				explode();
 		}
 		

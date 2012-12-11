@@ -1,5 +1,6 @@
 package com.citrusengine.objects.platformer.nape {
 
+	import com.citrusengine.physics.nape.NapeUtils;
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
 	import nape.dynamics.InteractionFilter;
@@ -153,9 +154,10 @@ package com.citrusengine.objects.platformer.nape {
 		
 		override public function handleBeginContact(callback:InteractionCallback):void {
 			
-			_contact = callback.int2.castBody.userData.myData;
+			_contact = NapeUtils.CollisionGetOther(this, callback);
 			
-			explode();
+			if (!callback.arbiters.at(0).shape1.sensorEnabled && !callback.arbiters.at(0).shape2.sensorEnabled)
+				explode();
 		}
 		
 		protected function updateAnimation():void {

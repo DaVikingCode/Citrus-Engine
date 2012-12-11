@@ -104,9 +104,8 @@ package com.citrusengine.objects.platformer.nape {
 
 		protected function _damage(missile:Missile, contact:NapePhysicsObject):void {
 
-			if (contact != null) {
+			if (contact != null)
 				onGiveDamage.dispatch(contact);
-			}
 		}
 
 		public function startFire():void {
@@ -130,11 +129,10 @@ package com.citrusengine.objects.platformer.nape {
 
 			var missile:Missile;
 
-			if (startingDirection == "right") {
+			if (startingDirection == "right")
 				missile = new Missile("Missile", {x:x + width, y:y, width:missileWidth, height:missileHeight, speed:missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:missileView});
-			} else {
+			else
 				missile = new Missile("Missile", {x:x - width, y:y, width:missileWidth, height:missileHeight, speed:-missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:missileView});
-			}
 			
 			_ce.state.add(missile);
 			missile.onExplode.addOnce(_damage);
