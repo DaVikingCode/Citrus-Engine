@@ -1,6 +1,7 @@
 package com.citrusengine.input.controllers {
 
 	import com.citrusengine.input.InputController;
+
 	import org.osflash.signals.Signal;
 	
 	/**
@@ -416,11 +417,18 @@ package com.citrusengine.input.controllers {
 		override public function destroy():void
 		{
 			reset();
+			
 			_BufferSets.length = 0;
 			_bufferLength = _Buffer.length = 0;
 			_previousBufferFrame = null;
 			_nextBufferFrame = null;
 			_delayedFunc = null;
+			
+			onSpeedChanged.removeAll();
+			onActivated.removeAll();
+			onDeactivated.removeAll();
+			onEndOfBuffer.removeAll();
+			
 			super.destroy();
 		}
 		
