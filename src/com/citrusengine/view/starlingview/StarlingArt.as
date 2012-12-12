@@ -131,7 +131,7 @@ package com.citrusengine.view.starlingview {
 			} else if (content is PDParticleSystem) {
 				
 				Starling.juggler.remove(content as PDParticleSystem);
-				(content as PDParticleSystem).stop(true);
+				(content as PDParticleSystem).stop();
 				content.dispose();
 				
 			} else if (content is StarlingTileSystem) {

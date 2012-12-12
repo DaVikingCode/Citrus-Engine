@@ -15,8 +15,10 @@ package starling.extensions.particles
     import flash.display3D.Context3D;
     import flash.display3D.Context3DBlendFactor;
     import flash.display3D.Context3DProgramType;
+    import flash.display3D.Context3DTextureFormat;
     import flash.display3D.Context3DVertexBufferFormat;
     import flash.display3D.IndexBuffer3D;
+    import flash.display3D.Program3D;
     import flash.display3D.VertexBuffer3D;
     import flash.geom.Matrix;
     import flash.geom.Point;
@@ -32,18 +34,18 @@ package starling.extensions.particles
     import starling.utils.MatrixUtil;
     import starling.utils.VertexData;
     
+    /** Dispatched when emission of particles is finished. */
+    [Event(name="complete", type="starling.events.Event")]
+    
     public class ParticleSystem extends DisplayObject implements IAnimatable
     {
-        private static const PROGRAM_MIPMAP:String    = "PS_mm";
-        private static const PROGRAM_NO_MIPMAP:String = "PS_nm";
-        
         private var mTexture:Texture;
         private var mParticles:Vector.<Particle>;
         private var mFrameTime:Number;
         
+        private var mProgram:Program3D;
         private var mVertexData:VertexData;
         private var mVertexBuffer:VertexBuffer3D;
-        
         private var mIndices:Vector.<uint>;
         private var mIndexBuffer:IndexBuffer3D;
         
@@ -84,26 +86,28 @@ package starling.extensions.particles
             mBlendFactorSource = blendFactorSource ||
                 (mPremultipliedAlpha ? Context3DBlendFactor.ONE : Context3DBlendFactor.SOURCE_ALPHA);
             
-            registerPrograms();
+            createProgram();
             raiseCapacity(initialCapacity);
             
             // handle a lost device context
-            Starling.current.addEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
+            Starling.current.stage3D.addEventListener(Event.CONTEXT3D_CREATE, 
+                onContextCreated, false, 0, true);
         }
         
         public override function dispose():void
         {
+            Starling.current.stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
+            
             if (mVertexBuffer) mVertexBuffer.dispose();
             if (mIndexBuffer)  mIndexBuffer.dispose();
-            
-            Starling.current.removeEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
+            if (mProgram)      mProgram.dispose();
             
             super.dispose();
         }
         
-        private function onContextCreated(event:Event):void
+        private function onContextCreated(event:Object):void
         {
-            registerPrograms();
+            createProgram();
             raiseCapacity(0);
         }
         
@@ -150,10 +154,17 @@ package starling.extensions.particles
             for (var i:int=oldCapacity; i<newCapacity; ++i)  
             {
                 var numVertices:int = i * 4;
-                mParticles.push(createParticle());
+                var numIndices:int  = i * 6;
+                
+                mParticles[i] = createParticle();
                 mVertexData.append(baseVertexData);
-                mIndices.push(numVertices,     numVertices + 1, numVertices + 2, 
-                              numVertices + 1, numVertices + 3, numVertices + 2);
+                
+                mIndices[    numIndices   ] = numVertices;
+                mIndices[int(numIndices+1)] = numVertices + 1;
+                mIndices[int(numIndices+2)] = numVertices + 2;
+                mIndices[int(numIndices+3)] = numVertices + 1;
+                mIndices[int(numIndices+4)] = numVertices + 3;
+                mIndices[int(numIndices+5)] = numVertices + 2;
             }
             
             mParticles.fixed = true;
@@ -171,16 +182,24 @@ package starling.extensions.particles
             mIndexBuffer.uploadFromVector(mIndices, 0, newCapacity * 6);
         }
         
+        /** Starts the sysytem for a certain time. @default infinite time */
         public function start(duration:Number=Number.MAX_VALUE):void
         {
             if (mEmissionRate != 0)                
                 mEmissionTime = duration;
         }
         
-        public function stop(clear:Boolean=false):void
+        /** Stops the system and removes all existing particles. */
+        public function stop():void
         {
             mEmissionTime = 0.0;
-            if (clear) mNumParticles = 0;
+            mNumParticles = 0;
+        }
+        
+        /** Pauses the system; when you 'start' again, it will continue from the old state. */
+        public function pause():void
+        {
+            mEmissionTime = 0.0;
         }
         
         /** Returns an empty rectangle at the particle system's position. Calculating the
@@ -220,8 +239,8 @@ package starling.extensions.particles
                 {
                     if (particleIndex != mNumParticles - 1)
                     {
-                        var nextParticle:Particle = mParticles[mNumParticles - 1] as Particle;
-                        mParticles[mNumParticles-1] = particle;
+                        var nextParticle:Particle = mParticles[int(mNumParticles-1)] as Particle;
+                        mParticles[int(mNumParticles-1)] = particle;
                         mParticles[particleIndex] = nextParticle;
                     }
                     
@@ -246,7 +265,7 @@ package starling.extensions.particles
                         if (mNumParticles == capacity)
                             raiseCapacity(capacity);
                     
-                        particle = mParticles[mNumParticles++] as Particle;
+                        particle = mParticles[int(mNumParticles++)] as Particle;
                         initParticle(particle);
                         advanceParticle(particle, mFrameTime);
                     }
@@ -327,7 +346,6 @@ package starling.extensions.particles
             
             alpha *= this.alpha;
             
-            var program:String = mTexture.mipMapping ? PROGRAM_MIPMAP : PROGRAM_NO_MIPMAP;
             var context:Context3D = Starling.context;
             var pma:Boolean = texture.premultipliedAlpha;
             
@@ -342,7 +360,7 @@ package starling.extensions.particles
             context.setBlendFactors(mBlendFactorSource, mBlendFactorDestination);
             context.setTextureAt(0, mTexture.base);
             
-            context.setProgram(Starling.current.getProgram(program));
+            context.setProgram(mProgram);
             context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, support.mvpMatrix3D, true);
             context.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, sRenderAlpha, 1);
             context.setVertexBufferAt(0, mVertexBuffer, VertexData.POSITION_OFFSET, Context3DVertexBufferFormat.FLOAT_2); 
@@ -359,36 +377,41 @@ package starling.extensions.particles
         
         // program management
         
-        private static function registerPrograms():void
+        private function createProgram():void
         {
-            var target:Starling = Starling.current;
-            if (target.hasProgram(PROGRAM_MIPMAP)) return; // already registered
+            var mipmap:Boolean = mTexture.mipMapping;
+            var textureFormat:String = mTexture.format;
+            var context:Context3D = Starling.context;
             
-            for each (var mipmap:Boolean in [true, false])
-            {            
-                // create vertex and fragment programs - from assembly.
+            if (context == null) throw new MissingContextError();
+            if (mProgram) mProgram.dispose();
+            
+            // create vertex and fragment programs from assembly.
+            
+            var textureOptions:String = "2d, clamp, linear, " + (mipmap ? "mipnearest" : "mipnone");
+            
+            if (textureFormat == Context3DTextureFormat.COMPRESSED)
+                textureOptions += ", dxt1";
+            else if (textureFormat == "compressedAlpha")
+                textureOptions += ", dxt5";
+            
+            var vertexProgramCode:String =
+                "m44 op, va0, vc0 \n" + // 4x4 matrix transform to output clipspace
+                "mul v0, va1, vc4 \n" + // multiply color with alpha and pass to fragment program
+                "mov v1, va2      \n";  // pass texture coordinates to fragment program
+            
+            var fragmentProgramCode:String =
+                "tex ft1, v1, fs0 <" + textureOptions + "> \n" + // sample texture 0
+                "mul oc, ft1, v0";                               // multiply color with texel color
+            
+            var vertexProgramAssembler:AGALMiniAssembler = new AGALMiniAssembler();
+            vertexProgramAssembler.assemble(Context3DProgramType.VERTEX, vertexProgramCode);
+            
+            var fragmentProgramAssembler:AGALMiniAssembler = new AGALMiniAssembler();
+            fragmentProgramAssembler.assemble(Context3DProgramType.FRAGMENT, fragmentProgramCode);
                 
-                var programName:String = mipmap ? PROGRAM_MIPMAP : PROGRAM_NO_MIPMAP;
-                var textureOptions:String = "2d, clamp, linear, " + (mipmap ? "mipnearest" : "mipnone"); 
-                
-                var vertexProgramCode:String =
-                    "m44 op, va0, vc0 \n" + // 4x4 matrix transform to output clipspace
-                    "mul v0, va1, vc4 \n" + // multiply color with alpha and pass to fragment program
-                    "mov v1, va2      \n";  // pass texture coordinates to fragment program
-                
-                var fragmentProgramCode:String =
-                    "tex ft1, v1, fs0 <" + textureOptions + "> \n" + // sample texture 0
-                    "mul oc, ft1, v0";                               // multiply color with texel color
-                
-                var vertexProgramAssembler:AGALMiniAssembler = new AGALMiniAssembler();
-                vertexProgramAssembler.assemble(Context3DProgramType.VERTEX, vertexProgramCode);
-                
-                var fragmentProgramAssembler:AGALMiniAssembler = new AGALMiniAssembler();
-                fragmentProgramAssembler.assemble(Context3DProgramType.FRAGMENT, fragmentProgramCode);
-                
-                target.registerProgram(programName, vertexProgramAssembler.agalcode,
-                                                    fragmentProgramAssembler.agalcode);
-            }
+            mProgram = context.createProgram();
+            mProgram.upload(vertexProgramAssembler.agalcode, fragmentProgramAssembler.agalcode);
         }
         
         public function get capacity():int { return mVertexData.numVertices / 4; }
@@ -413,5 +436,6 @@ package starling.extensions.particles
         public function set blendFactorDestination(value:String):void { mBlendFactorDestination = value; }
         
         public function get texture():Texture { return mTexture; }
+        public function set texture(value:Texture):void { mTexture = value; createProgram(); }
     }
 }

@@ -17,6 +17,20 @@ package starling.extensions.particles
         public var blue:Number;
         public var alpha:Number;
         
+        public static function fromRgb(color:uint):ColorArgb
+        {
+            var rgb:ColorArgb = new ColorArgb();
+            rgb.fromRgb(color);
+            return rgb;
+        }
+        
+        public static function fromArgb(color:uint):ColorArgb
+        {
+            var argb:ColorArgb = new ColorArgb();
+            argb.fromArgb(color);
+            return argb;
+        }
+        
         public function ColorArgb(red:Number=0, green:Number=0, blue:Number=0, alpha:Number=0)
         {
             this.red = red;
@@ -42,6 +56,29 @@ package starling.extensions.particles
             var b:Number = blue;  if (b < 0.0) b = 0.0; else if (b > 1.0) b = 1.0;
             
             return int(a * 255) << 24 | int(r * 255) << 16 | int(g * 255) << 8 | int(b * 255);
+        }
+        
+        public function fromRgb(color:uint):void
+        {
+            red = (color >> 16 & 0xFF) / 255.0;
+            green = (color >> 8 & 0xFF) / 255.0;
+            blue = (color & 0xFF) / 255.0;
+        }
+        
+        public function fromArgb(color:uint):void
+        {
+            red = (color >> 16 & 0xFF) / 255.0;
+            green = (color >> 8 & 0xFF) / 255.0;
+            blue = (color & 0xFF) / 255.0;
+            alpha = (color >> 24 & 0xFF) / 255.0;
+        }
+        
+        public function copyFrom(argb:ColorArgb):void
+        {
+            red = argb.red;
+            green = argb.green;
+            blue = argb.blue;
+            alpha = argb.alpha;
         }
     }
 }
