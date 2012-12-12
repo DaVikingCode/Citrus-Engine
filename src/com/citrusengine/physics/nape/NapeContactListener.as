@@ -6,11 +6,6 @@ package com.citrusengine.physics.nape {
 	import nape.callbacks.InteractionListener;
 	import nape.callbacks.InteractionType;
 	import nape.space.Space;
-
-	import com.citrusengine.objects.platformer.nape.Enemy;
-	import com.citrusengine.objects.platformer.nape.Missile;
-	import com.citrusengine.objects.platformer.nape.MissileWithExplosion;
-	import com.citrusengine.objects.platformer.nape.Sensor;
 		
 	/**
 	 * Used to determine the contact's interaction between objects. It calls function in NapePhysicsObject.
