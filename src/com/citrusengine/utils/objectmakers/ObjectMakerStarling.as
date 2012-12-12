@@ -118,6 +118,12 @@ package com.citrusengine.utils.objectmakers {
 					params.y = objectTmx.y + objectTmx.height * 0.5;
 					params.width = objectTmx.width;
 					params.height = objectTmx.height;
+					
+					// Polygon/Polyline support
+					if (objectTmx.shapeType != null) {
+						//params.shapeType = objectTmx.shapeType;
+						params.points = objectTmx.points;
+					}
 
 					object = new objectClass(objectTmx.name, params);
 					objects.push(object);

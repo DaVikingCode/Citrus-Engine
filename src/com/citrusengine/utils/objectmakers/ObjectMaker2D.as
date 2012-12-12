@@ -222,7 +222,7 @@ package com.citrusengine.utils.objectmakers {
 					params.height = objectTmx.height;
 					
 					// Polygon/Polyline support
-					if(objectTmx.shapeType != null) {
+					if (objectTmx.shapeType != null) {
 						//params.shapeType = objectTmx.shapeType;
 						params.points = objectTmx.points;
 					}
