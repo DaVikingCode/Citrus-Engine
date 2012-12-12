@@ -11,6 +11,7 @@ package com.citrusengine.input.controllers {
 		public var onSpeedChanged:Signal;
 		public var onActivated:Signal;
 		public var onDeactivated:Signal;
+		public var onEndOfBuffer:Signal;
 		
 		protected var _paused:Boolean = false;
 		protected var _active:Boolean = false;
@@ -90,6 +91,7 @@ package com.citrusengine.input.controllers {
 			onSpeedChanged = new Signal();
 			onActivated = new Signal();
 			onDeactivated = new Signal();
+			onEndOfBuffer = new Signal();
 			onSpeedChanged.add(onSpeedChange);
 		}
 		
@@ -371,6 +373,8 @@ package com.citrusengine.input.controllers {
 				moveBufferPosition();
 				readBuffer();
 				
+				if (_bufferPosition <= 0 || _bufferPosition >= _bufferLength - 1)
+					onEndOfBuffer.dispatch();
 				
 				if (!_manualMode)
 					if (_bufferLength > 0 && (_bufferPosition < 0 || _bufferPosition > _bufferLength - 1))
