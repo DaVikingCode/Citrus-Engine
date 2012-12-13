@@ -13,6 +13,7 @@ V 3.1.0, Work in progress
 - Now we can easily read the velocity of a body thanks to a getter.
 - Thanks to ObjectMaker we can define vertices using Tiled Map Editor software.
 - StarlingArt is now able to dispose automatically basic DisplayObject.
+- Starling's AnimationSequence has a clone method.
 
 V 3.0.4, 11 29 2012
 -------------------

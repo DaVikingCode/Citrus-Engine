@@ -15,6 +15,11 @@ package com.citrusengine.view.starlingview {
 
 		private var _textureAtlas:TextureAtlas;
 		private var _animations:Array;
+		private var _firstAnimation:String;
+		private var _animFps:Number;
+		private var _firstAnimLoop:Boolean;
+		private var _smoothing:String;
+		
 		private var _mcSequences:Dictionary;
 		private var _previousAnimation:String;
 		
@@ -31,27 +36,30 @@ package com.citrusengine.view.starlingview {
 			super();
 
 			_textureAtlas = textureAtlas;
-
 			_animations = animations;
-
+			_firstAnimation = firstAnimation;
+			_animFps = animFps;
+			_firstAnimLoop = firstAnimLoop;
+			_smoothing = smoothing;
+			
 			_mcSequences = new Dictionary();
 
-			for each (var animation:String in animations) {
+			for each (var animation:String in _animations) {
 				
 				if (_textureAtlas.getTextures(animation).length == 0)
 					throw new Error("One object doesn't have the " + animation + " animation in its TextureAtlas");
 				
 				_mcSequences[animation] = new MovieClip(_textureAtlas.getTextures(animation));
 				
-				_mcSequences[animation].fps = animFps;
-				_mcSequences[animation].smoothing = smoothing;
+				_mcSequences[animation].fps = _animFps;
+				_mcSequences[animation].smoothing = _smoothing;
 			}
 			
-			addChild(_mcSequences[firstAnimation]);
-			Starling.juggler.add(_mcSequences[firstAnimation]);
-			_mcSequences[firstAnimation].loop = firstAnimLoop;
+			addChild(_mcSequences[_firstAnimation]);
+			Starling.juggler.add(_mcSequences[_firstAnimation]);
+			_mcSequences[_firstAnimation].loop = _firstAnimLoop;
 				
-			_previousAnimation = firstAnimation;			
+			_previousAnimation = _firstAnimation;			
 		}
 		
 		/**
@@ -89,7 +97,7 @@ package com.citrusengine.view.starlingview {
 			removeChild(_mcSequences[_previousAnimation]);
 			Starling.juggler.remove(_mcSequences[_previousAnimation]);
 			
-			for each (var animation : String in _animations)
+			for each (var animation:String in _animations)
 				_mcSequences[animation].dispose();
 			
 			_mcSequences = null;
@@ -100,6 +108,11 @@ package com.citrusengine.view.starlingview {
 		 */
 		public function get mcSequences():Dictionary {
 			return _mcSequences;
+		}
+		
+		public function clone():AnimationSequence {
+			
+			return new AnimationSequence(_textureAtlas, _animations, _firstAnimation, _animFps, _firstAnimLoop, _smoothing);
 		}
 	}
 }
