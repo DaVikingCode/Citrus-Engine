@@ -67,6 +67,9 @@ package com.citrusengine.input.controllers {
 		protected var _easeTimer:uint = 0;
 		protected var _easeDuration:uint = 80;
 		
+		public var isAtEOFLeft:Boolean = false;
+		public var isAtEOFRight:Boolean = false;
+		
 		/**
 		 * saves a factor accessible on speed transitions.
 		 */
@@ -374,11 +377,29 @@ package com.citrusengine.input.controllers {
 				moveBufferPosition();
 				readBuffer();
 				
-				if (_bufferPosition <= 0 || _bufferPosition >= _bufferLength - 1)
+				if (_bufferPosition <= 0)
+				{
+					isAtEOFRight = false;
+					isAtEOFLeft = true;
+				}
+				else if (_bufferPosition >= _bufferLength - 1)
+				{
+					isAtEOFRight = true;
+					isAtEOFLeft = false;	
+				}
+				else if (_bufferPosition > 0 && _bufferPosition < _bufferLength - 1)
+				{
+					isAtEOFRight = false;
+					isAtEOFLeft = false;
+				}
+				
+				if (isAtEOFLeft || isAtEOFRight)
+				{	
 					onEndOfBuffer.dispatch();
+				}
 				
 				if (!_manualMode)
-					if (_bufferLength > 0 && (_bufferPosition < 0 || _bufferPosition > _bufferLength - 1))
+					if (_bufferLength > 0 && (isAtEOFLeft || isAtEOFRight))
 						reset();
 			
 				_elapsedFrameCount++;
@@ -405,6 +426,9 @@ package com.citrusengine.input.controllers {
 			_previousSpeed = 0;
 			_currentSpeed = 0;
 			_targetSpeed = 0;
+			
+			isAtEOFRight = false;
+			isAtEOFLeft = false;
 			
 			_active = false;
 			onDeactivated.dispatch();
