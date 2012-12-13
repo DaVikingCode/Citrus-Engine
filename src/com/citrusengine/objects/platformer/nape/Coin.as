@@ -1,9 +1,11 @@
 package com.citrusengine.objects.platformer.nape {
-	
-	import flash.utils.getDefinitionByName;
-	
+
 	import nape.callbacks.InteractionCallback;
 
+	import com.citrusengine.physics.nape.NapeUtils;
+
+	import flash.utils.getDefinitionByName;
+	
 	/**
 	 * Coin is basically a sensor that destroys itself when a particular class type touches it. 
 	 */
@@ -37,9 +39,8 @@ package com.citrusengine.objects.platformer.nape {
 			
 			super.handleBeginContact(interactionCallback);
 			
-			if (_collectorClass && interactionCallback.int2.userData.myData is _collectorClass) {
+			if (_collectorClass && NapeUtils.CollisionGetOther(this, interactionCallback) is _collectorClass)
 				kill = true;
-			}
 		}
 	}
 }
