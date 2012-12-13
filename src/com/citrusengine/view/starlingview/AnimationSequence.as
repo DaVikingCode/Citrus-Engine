@@ -110,8 +110,10 @@ package com.citrusengine.view.starlingview {
 			return _mcSequences;
 		}
 		
-		public function clone():AnimationSequence {
-			
+		/**
+		 * Return a clone of the current AnimationSequence.
+		 */
+		public function clone():AnimationSequence {	
 			return new AnimationSequence(_textureAtlas, _animations, _firstAnimation, _animFps, _firstAnimLoop, _smoothing);
 		}
 	}
