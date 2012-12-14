@@ -1,5 +1,6 @@
 package citrus.input.controllers {
 
+	import citrus.input.InputAction;
 	import citrus.input.InputController;
 
 	import org.osflash.signals.Signal;
@@ -323,6 +324,9 @@ package citrus.input.controllers {
 					}
 				}
 			}
+			
+			for each (obj in _previousBufferFrame.actionbuffer)
+				_input.addOrSetAction(obj as InputAction);
 			
 		}
 		
