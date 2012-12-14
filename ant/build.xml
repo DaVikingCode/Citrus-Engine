@@ -276,7 +276,7 @@
 
 	<target name="Starling + DragonBones SWC" description="Generates Starling + DragonBones SWC">
 
-		<echo>Generating Box2D SWC</echo>
+		<echo>Generating Starling + DragonBones SWC</echo>
 		<exec executable="${compc.exe}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/libraries/Starling-DragonBones.swc" />
@@ -290,7 +290,7 @@
 
 	<target name="Away3D + AwayPhysics SWC" description="Generates Away3D + AwayPhysics SWC">
 
-		<echo>Generating AwayPhysics SWC</echo>
+		<echo>Generating Away3D + AwayPhysics SWC</echo>
 		<exec executable="${compc.exe}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/libraries/Away3D-AwayPhysics.swc" />

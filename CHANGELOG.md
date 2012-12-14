@@ -6,12 +6,13 @@ V 3.1.0, Work in progress
 - Changed _input to protected to allow custom Input.
 - Added the new input package supporting keyboard, joystick, button, channel, key action...
 - Added a TimeShifter à la Braid! Allow also to replay an action.
-- Upgraded on Nape 2.0 and Starling RC 1.3
+- Upgraded on Nape 2.0.
 - Nape's gravity is equal to Box2D's gravity.
 - Nape's object physics behavior are closed to Box2d one (friction, speed, hero & enemy interaction...)
 - refreshPoolObjectArt handles the startIndex.
 - Now we can easily read the velocity of a body thanks to a getter.
 - Thanks to ObjectMaker we can define vertices using Tiled Map Editor software.
+- Update on Starling RC 1.3 + added its new AssetManager class.
 - StarlingArt is now able to dispose automatically basic DisplayObject.
 - Starling's AnimationSequence has a clone method.
 - Starling's AnimationSequence dispatch onAnimationComplete Signal
