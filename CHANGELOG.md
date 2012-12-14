@@ -14,6 +14,8 @@ V 3.1.0, Work in progress
 - Thanks to ObjectMaker we can define vertices using Tiled Map Editor software.
 - StarlingArt is now able to dispose automatically basic DisplayObject.
 - Starling's AnimationSequence has a clone method.
+- Starling's AnimationSequence dispatch onAnimationComplete Signal
+
 
 V 3.0.4, 11 29 2012
 -------------------

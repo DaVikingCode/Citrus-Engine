@@ -3,7 +3,10 @@ package com.citrusengine.view.starlingview {
 	import starling.core.Starling;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	import starling.textures.TextureAtlas;
+
+	import org.osflash.signals.Signal;
 
 	import flash.utils.Dictionary;
 
@@ -12,6 +15,11 @@ package com.citrusengine.view.starlingview {
 	 * Example : <code>var hero:Hero = new Hero("Hero", {x:400, width:60, height:130, view:new AnimationSequence(textureAtlas, ["walk", "duck", "idle", "jump"], "idle")});</code>
 	 */
 	public class AnimationSequence extends Sprite {
+		
+		/**
+		 * The signal is dispatched each time an animation is completed, giving the animation name as argument.
+		 */
+		public var onAnimationComplete:Signal;
 
 		private var _textureAtlas:TextureAtlas;
 		private var _animations:Array;
@@ -34,6 +42,8 @@ package com.citrusengine.view.starlingview {
 		public function AnimationSequence(textureAtlas:TextureAtlas, animations:Array, firstAnimation:String, animFps:Number = 30, firstAnimLoop:Boolean = false, smoothing:String = "bilinear") {
 
 			super();
+			
+			onAnimationComplete = new Signal(String);
 
 			_textureAtlas = textureAtlas;
 			_animations = animations;
@@ -49,9 +59,10 @@ package com.citrusengine.view.starlingview {
 				if (_textureAtlas.getTextures(animation).length == 0)
 					throw new Error("One object doesn't have the " + animation + " animation in its TextureAtlas");
 				
-				_mcSequences[animation] = new MovieClip(_textureAtlas.getTextures(animation));
+				_mcSequences[animation] = new MovieClip(_textureAtlas.getTextures(animation), _animFps);
 				
-				_mcSequences[animation].fps = _animFps;
+				_mcSequences[animation].name = animation;
+				_mcSequences[animation].addEventListener(Event.COMPLETE, _animationComplete);
 				_mcSequences[animation].smoothing = _smoothing;
 			}
 			
@@ -94,11 +105,15 @@ package com.citrusengine.view.starlingview {
 		
 		public function destroy():void {
 			
+			onAnimationComplete.removeAll();
+			
 			removeChild(_mcSequences[_previousAnimation]);
 			Starling.juggler.remove(_mcSequences[_previousAnimation]);
 			
-			for each (var animation:String in _animations)
+			for each (var animation:String in _animations) {
+				_mcSequences[animation].removeEventListener(Event.COMPLETE, _animationComplete);
 				_mcSequences[animation].dispose();
+			}
 			
 			_mcSequences = null;
 		}
@@ -115,6 +130,10 @@ package com.citrusengine.view.starlingview {
 		 */
 		public function clone():AnimationSequence {	
 			return new AnimationSequence(_textureAtlas, _animations, _firstAnimation, _animFps, _firstAnimLoop, _smoothing);
+		}
+		
+		private function _animationComplete(evt:Event):void {
+			onAnimationComplete.dispatch((evt.target as MovieClip).name);
 		}
 	}
 }
