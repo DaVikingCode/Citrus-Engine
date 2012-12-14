@@ -63,15 +63,13 @@ package citrus.input.controllers {
 			
 			//register default actions to value intervals
 			
-			_xAxisActions.push({name: "left", start: -1, end: -0.3});
-			_xAxisActions.push({name: "right", start: 0.3, end: 1});
-			_yAxisActions.push({name: "up", start: -1, end: -0.3});
-			_yAxisActions.push({name: "down", start: 0.3, end: 1});
+			addAxisAction("x", "left", -1, -0.3);
+			addAxisAction("x", "right", 0.3, 1);
+			addAxisAction("y", "up", -1, -0.3);
+			addAxisAction("y", "down", 0.3, 1);
 			
-			//other action
-			
-			_yAxisActions.push({name: "duck", start: 0.8, end: 1});
-			_yAxisActions.push({name: "jump", start: -1, end: -0.8});
+			addAxisAction("y", "duck", 0.8, 1);
+			addAxisAction("y", "jump", -1, -0.8);
 		
 		}
 		
@@ -87,6 +85,9 @@ package citrus.input.controllers {
 				throw(new Error("VirtualJoystick::addAxisAction() invalid axis parameter (only x and y are accepted)"));
 				return;
 			}
+			
+			if ( (start < 0 && end > 0) || (start > 0 && end < 0) || start == end )
+				throw(new Error("VirtualJoystick::addAxisAction() start and end values must have the same sign and not be equal"));
 			
 			if (!((start < -1 || start > 1) || (end < -1 || end > 1)))
 				actionlist.push({name: name, start: start, end: end});
@@ -145,13 +146,16 @@ package citrus.input.controllers {
 			else
 			{
 				var a:Object; //action 
+				var ratio:Number;
+				var val:Number;
 				
 				if (_xAxisActions.length > 0)
 					for each (a in _xAxisActions)
 					{
-						
+						ratio = 1 / (a.end - a.start);
+						val = _xAxis <0 ? 1 - Math.abs((_xAxis - a.start)*ratio) : Math.abs((_xAxis - a.start) * ratio);
 						if ((_xAxis >= a.start) && (_xAxis <= a.end))
-							triggerVALUECHANGE(a.name, Math.abs(_xAxis));
+							triggerVALUECHANGE(a.name, val);
 						else
 							triggerOFF(a.name, 0);
 					}
@@ -159,8 +163,10 @@ package citrus.input.controllers {
 				if (_yAxisActions.length > 0)
 					for each (a in _yAxisActions)
 					{
+						ratio = 1 / (a.start - a.end);
+						val = _yAxis <0 ? Math.abs((_yAxis - a.end)*ratio) : 1 - Math.abs((_yAxis - a.end) * ratio);
 						if ((_yAxis >= a.start) && (_yAxis <= a.end))
-							triggerVALUECHANGE(a.name, Math.abs(_yAxis));
+							triggerVALUECHANGE(a.name, val);
 						else
 							triggerOFF(a.name, 0);
 					}
