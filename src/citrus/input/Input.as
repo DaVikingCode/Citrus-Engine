@@ -91,6 +91,9 @@ package citrus.input {
 			return null;
 		}
 		
+		/**
+		 * Returns true if the action has been triggered OFF in this frame or in the previous frame.
+		 */
 		public function hasDone(actionName:String, channel:uint = 0):Boolean
 		{
 			var a:InputAction;
@@ -100,6 +103,9 @@ package citrus.input {
 			return false;
 		}
 		
+		/**
+		 * Returns true if action has just been triggered, or is still on.
+		 */
 		public function isDoing(actionName:String, channel:uint = 0):Boolean
 		{
 			var a:InputAction;
@@ -109,6 +115,9 @@ package citrus.input {
 			return false;
 		}
 		
+		/**
+		 * Returns true if action has been triggered in this frame.
+		 */
 		public function justDid(actionName:String, channel:uint = 0):Boolean
 		{
 			var a:InputAction;
@@ -118,6 +127,9 @@ package citrus.input {
 			return false;
 		}
 		
+		/**
+		 * Call this right after justDid, isDoing or hasDone to get the action's value in the current frame.
+		 */
 		public function getActionValue(actionName:String, channel:uint = 0):Number
 		{
 			var a:InputAction;
@@ -267,18 +279,27 @@ package citrus.input {
 			return snapshot;
 		}
 		
+		/**
+		 * Start routing all actions to a single channel - used for pause menus or generally overriding the Input system.
+		 */
 		public function startRouting(channel:uint):void
 		{
 			_routeActions = true;
 			_routeChannel = channel;
 		}
 		
+		/**
+		 * Stop routing actions.
+		 */
 		public function stopRouting():void
 		{
 			_routeActions = false;
 			_routeChannel = 0;
 		}
 		
+		/**
+		 * Helps knowing if Input is routing actions or not.
+		 */
 		public function isRouting():Boolean
 		{
 			return _routeActions;
@@ -321,8 +342,8 @@ package citrus.input {
 		}
 		
 		/**
-		 * Limited backwards compatibilty for justPressed and isDown .
-		 * /!\ only works with defined key actions in the default keyboard instance
+		 * Limited backwards compatibilty for the deprecated justPressed method.
+		 * /!\ only works with default key actions defined in the default keyboard instance
 		 * (up, down, right, left, up, spacebar)
 		 * ultimately, you'll have to convert to the new system :)
 		 */
@@ -348,6 +369,12 @@ package citrus.input {
 			}
 		}
 		
+		/**
+		 * Limited backwards compatibilty for the deprecated isDown method.
+		 * /!\ only works with default key actions defined in the default keyboard instance
+		 * (up, down, right, left, up, spacebar)
+		 * ultimately, you'll have to convert to the new system :)
+		 */
 		public function isDown(keyCode:uint):Boolean
 		{
 			var keyboard:Keyboard = getControllerByName("keyboard") as Keyboard;

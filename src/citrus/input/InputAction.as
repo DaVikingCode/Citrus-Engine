@@ -54,6 +54,9 @@ package citrus.input
 			this.phase = phase;
 		}
 		
+		/**
+		 * Clones the action and returns a new InputAction instance with the same properties.
+		 */
 		public function clone():InputAction
 		{
 			return new InputAction(_name, _controller,_channel, value, phase);
