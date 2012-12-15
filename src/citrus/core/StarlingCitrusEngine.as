@@ -35,7 +35,8 @@ package citrus.core {
 					var debugView:DisplayObject = _starling.nativeStage.getChildByName("debug view");
 					if (debugView)
 						 _starling.nativeStage.removeChild(debugView);		
-
+					
+					_starling.root.dispose();
 					_starling.dispose();
 				}
 			}
