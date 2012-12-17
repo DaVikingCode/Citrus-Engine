@@ -84,7 +84,8 @@ package citrus.input.controllers {
 		
 		public function TimeShifter(bufferInSeconds:uint)
 		{
-			super("TimeShifter Controller", { defaultChannel:16 } );
+			super("TimeShifter Controller");
+			defaultChannel = 16;
 			
 			_maxBufferLength = bufferInSeconds * _ce.stage.frameRate;
 			
@@ -143,7 +144,7 @@ package citrus.input.controllers {
 			_nextBufferIndex = 1;
 			_active = true;
 			onActivated.dispatch();
-			_input.startRouting(16);
+			_input.startRouting(defaultChannel);
 		}
 		
 		protected function rewind():void
@@ -152,7 +153,7 @@ package citrus.input.controllers {
 			_nextBufferIndex = _bufferLength - 2;
 			_active = true;
 			onActivated.dispatch();
-			_input.startRouting(16);
+			_input.startRouting(defaultChannel);
 		}
 		
 		public function pause():void
@@ -171,7 +172,7 @@ package citrus.input.controllers {
 			_nextBufferIndex =_Buffer.length - 2;
 			_active = true;
 			onActivated.dispatch();
-			_input.startRouting(16);
+			_input.startRouting(defaultChannel);
 			_currentSpeed = startSpeed;
 			onSpeedChanged.dispatch(startSpeed);
 		}
@@ -184,7 +185,7 @@ package citrus.input.controllers {
 		
 		protected function checkActions():void
 		{	
-			if (_input.justDid("timeshift", 16) && (!_active || _paused))
+			if (_input.justDid("timeshift", defaultChannel) && (!_active || _paused))
 			{
 				_manualMode = true;
 				_paused = false;
@@ -193,14 +194,14 @@ package citrus.input.controllers {
 			
 			//speed change on playback and when input is routed on manual mode.
 			
-			if (_input.justDid("down", 16) && _active && _manualMode)
+			if (_input.justDid("down", defaultChannel) && _active && _manualMode)
 				onSpeedChanged.dispatch(_targetSpeed - 1);
-			if (_input.justDid("up", 16) && _active && _manualMode)
+			if (_input.justDid("up", defaultChannel) && _active && _manualMode)
 				onSpeedChanged.dispatch(_targetSpeed + 1);
 			
 			//Key up
 			
-			if (!_input.isDoing("timeshift", 16) && (_active || !_paused) && _manualMode)
+			if (!_input.isDoing("timeshift", defaultChannel) && (_active || !_paused) && _manualMode)
 			{
 				_manualMode = false;
 				reset();
