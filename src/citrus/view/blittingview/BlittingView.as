@@ -72,7 +72,7 @@ package citrus.view.blittingview
 			{
 				//Update camera position
 				var diffX:Number = (cameraTarget.x - cameraOffset.x) - _cameraPosition.x;
-				var diffY:Number = (cameraTarget.y - cameraOffset.x) - _cameraPosition.y;
+				var diffY:Number = (cameraTarget.y - cameraOffset.y) - _cameraPosition.y;
 				var velocityX:Number = diffX * cameraEasing.x;
 				var velocityY:Number = diffY * cameraEasing.y;
 				_cameraPosition.x += velocityX;
