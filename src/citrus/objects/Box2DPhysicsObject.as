@@ -138,6 +138,7 @@ package citrus.objects {
 			_fixtureDef.filter.categoryBits = PhysicsCollisionCategories.Get("Level");
 			_fixtureDef.filter.maskBits = PhysicsCollisionCategories.GetAll();
 			
+			// Used by the Tiled Map Editor software, if we defined a polygon/polyline
 			if (points && points.length > 1) {
 				
 				_createVerticesFromPoint();

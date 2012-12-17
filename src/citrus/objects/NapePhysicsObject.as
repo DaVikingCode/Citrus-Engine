@@ -10,13 +10,17 @@ package citrus.objects {
 	import nape.callbacks.PreCallback;
 	import nape.callbacks.PreFlag;
 	import nape.dynamics.InteractionFilter;
+	import nape.geom.GeomPoly;
+	import nape.geom.GeomPolyList;
 	import nape.geom.Vec2;
+	import nape.geom.Vec2List;
 	import nape.phys.Body;
 	import nape.phys.BodyType;
 	import nape.phys.Material;
 	import nape.shape.Circle;
 	import nape.shape.Polygon;
 	import nape.shape.Shape;
+	import nape.shape.ValidationResult;
 
 	/**
 	 * You should extend this class to take advantage of Nape. This class provides template methods for defining
@@ -35,6 +39,11 @@ package citrus.objects {
 		
 		protected var _width:Number = 30;
 		protected var _height:Number = 30;
+		
+		/**
+		 * Used to define vertices' x and y points.
+		 */
+		public var points:Array;
 
 		/**
 		 * Creates an instance of a NapePhysicsObject. Natively, this object does not default to any graphical representation,
@@ -130,10 +139,39 @@ package citrus.objects {
 		 */	
 		protected function createShape():void {
 			
-			if (_radius != 0)
-				_shape = new Circle(_radius, null, _material);
-			else
-				_shape = new Polygon(Polygon.box(_width, _height), _material);
+			// Used by the Tiled Map Editor software, if we defined a polygon/polyline
+			if (points && points.length > 1) {
+				
+				var verts:Vec2List = new Vec2List();
+
+				for each (var point:Object in points)
+					verts.push(new Vec2(point.x as Number, point.y as Number));
+
+				var polygon:Polygon = new Polygon(verts, _material);
+				var validation:ValidationResult = polygon.validity();
+
+				if (validation == ValidationResult.VALID)
+					_shape = polygon;
+					
+				else if (validation == ValidationResult.CONCAVE) {
+					
+					var concave:GeomPoly = new GeomPoly(verts);
+					var convex:GeomPolyList = concave.convexDecomposition();
+					convex.foreach(function(p:GeomPoly):void {
+						_body.shapes.add(new Polygon(p));
+					});
+					return;
+					
+				} else
+					throw new Error("Invalid polygon/polyline");
+				
+			} else {
+			
+				if (_radius != 0)
+					_shape = new Circle(_radius, null, _material);
+				else
+					_shape = new Polygon(Polygon.box(_width, _height), _material);
+			}
 			
 			_body.shapes.add(_shape);
 		}
