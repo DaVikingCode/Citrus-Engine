@@ -84,7 +84,7 @@ package citrus.input.controllers {
 		
 		public function TimeShifter(bufferInSeconds:uint)
 		{
-			super("TimeShifter Controller", 16);
+			super("TimeShifter Controller", { defaultChannel:16 } );
 			
 			_maxBufferLength = bufferInSeconds * _ce.stage.frameRate;
 			
