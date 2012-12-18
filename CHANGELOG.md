@@ -1,3 +1,12 @@
+V 3.1.1, Work in progress
+-------------------------
+- added Nape parser for polygon/polyline.
+- AVirtualJoystick : action value scaling.
+- TimeShifter now listens to and routes input to his defaultChannel which remains channel 16 when instanciated.
+- fixed a bug where Starling couldn't dispose.
+- fixed a bug on TimeShifter using params.
+- fixed camera offset for BlittingView.
+
 V 3.1.0, 12 14 2012
 -------------------
 - Renamed package "com" and "citrusengine" into "citrus".
