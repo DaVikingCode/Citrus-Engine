@@ -144,10 +144,7 @@ package citrus.view {
 		public function getArt(citrusObject:Object):Object
 		{
 			if (!citrusObject is _viewInterface)
-			{
 				throw new Error("The object " + citrusObject + " does not have a graphical counterpart because it does not implement " + _viewInterface + ".");
-				return null;
-			}
 			
 			return _viewObjects[citrusObject];
 		}
@@ -189,7 +186,7 @@ package citrus.view {
 		
 		/**
 		 * A CitrusView subclass will extend this method to provide specifics on how to create the graphical representation of a CitrusObject.
-		 * @param object The object for which to create the art.
+		 * @param citrusObject The object for which to create the art.
 		 * @return The art object.
 		 * 
 		 */		
@@ -200,7 +197,7 @@ package citrus.view {
 		
 		/**
 		 * A CitrusView subclass will extend this method to update the graphical representation for each CitrusObject.
-		 * @param object A CitrusObject whose graphical counterpart needs to be updated.
+		 * @param citrusObject A CitrusObject whose graphical counterpart needs to be updated.
 		 * @param art The graphics object that will be updated based on the provided CitrusObject.
 		 */		
 		protected function updateArt(citrusObject:Object, art:Object):void

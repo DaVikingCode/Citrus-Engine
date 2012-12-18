@@ -65,7 +65,7 @@ package citrus.physics.box2d {
 		/**
 		 * This is hard to grasp, but Box2D does not use pixels for its physics values. Cutely, it uses meters
 		 * and forces us to convert those meter values to pixels by multiplying by 30. If you don't multiple Box2D
-		 * values by 30, your objecs will look very small and will appear to move very slowly, if at all.
+		 * values by 30, your objects will look very small and will appear to move very slowly, if at all.
 		 * This is a reference to the scale number by which you must multiply your values to properly display physics objects. 
 		 */		
 		public function get scale():Number

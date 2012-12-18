@@ -42,9 +42,6 @@ package citrus.objects.platformer.box2d {
 				return;
 			
 			_oneWay = value;
-			
-			if (!_fixture)
-				return;
 		}
 		
 		override protected function defineBody():void

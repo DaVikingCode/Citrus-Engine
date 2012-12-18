@@ -33,7 +33,7 @@ package citrus.view.starlingview {
 	 * then all your graphics will be an instance of this class. 
 	 * <ul>There are 2 ways to manage MovieClip/animations :
 	 * <li>specify a "object.swf" in the view property of your object's creation.</li>
-	 * <li>add an AnimationSequence to your view property of your object's creation, see the AnimationSequence for more informations about it.</li>
+	 * <li>add an AnimationSequence to your view property of your object's creation, see the AnimationSequence for more information about it.</li>
 	 * The AnimationSequence is more optimized than the .swf (which creates textures "on the fly" thanks to the DynamicAtlas class). You can also use the awesome 
 	 * <a href="http://dragonbones.github.com/">DragonBones</a> 2D skeleton animation solution.</ul>
 	 * 
@@ -58,7 +58,7 @@ package citrus.view.starlingview {
 		public var content:DisplayObject;
 
 		/**
-		 * For objects that are loaded at runtime, this is the object that loades them. Then, once they are loaded, the content
+		 * For objects that are loaded at runtime, this is the object that load them. Then, once they are loaded, the content
 		 * property is assigned to loader.content.
 		 */
 		public var loader:Loader;
@@ -249,10 +249,8 @@ package citrus.view.starlingview {
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(content);
 					
-				} else {
+				} else 
 					throw new Error("StarlingArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
-					return;
-				}
 
 				if (content && content.hasOwnProperty("initialize"))
 					content["initialize"](_citrusObject);

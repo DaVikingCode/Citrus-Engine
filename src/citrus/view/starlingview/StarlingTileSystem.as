@@ -29,7 +29,7 @@ package citrus.view.starlingview {
 		
 		private var _imagesMC:MovieClip;
 		private var _imagesArray:Array;
-		private var _liveTiles:Array = new Array();
+		private var _liveTiles:Array = [];
 		
 		public var parallax:Number = 1;
 		
@@ -118,11 +118,11 @@ package citrus.view.starlingview {
 			var bitmapData:BitmapData;
 			var bitmap:Bitmap;
 			var rect:Rectangle;
-			var array:Array = new Array();
+			var array:Array = [];
 			
 			for (var ri:uint = 0; ri < numRows; ri ++) {
 				
-				array[ri] = new Array();
+				array[ri] = [];
 				
 				for (var ci:uint = 0; ci < numColumns; ci ++) {
 					bitmapData = new BitmapData(pWidth, pHeight, true);

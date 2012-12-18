@@ -8,7 +8,7 @@ package citrus.objects.platformer.box2d {
 	import org.osflash.signals.Signal;
 
 	/**
-	 * Sensors simply listen for when an object begins and ends contact with them. They disaptch a signal
+	 * Sensors simply listen for when an object begins and ends contact with them. They dispatch a signal
 	 * when contact is made or ended, and this signal can be used to perform custom game logic such as
 	 * triggering a scripted event, ending a level, popping up a dialog box, and virtually anything else.
 	 * 

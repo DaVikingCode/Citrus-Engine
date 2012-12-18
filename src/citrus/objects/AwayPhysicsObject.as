@@ -54,10 +54,8 @@ package citrus.objects {
 
 			super.initialize(poolObjectParams);
 
-			if (!_awayPhysics) {
+			if (!_awayPhysics)
 				throw new Error("Cannot create a AwayPhysicsObject when a AwayPhysics object has not been added to the state.");
-				return;
-			}
 
 			// Override these to customize your AwayPhysics initialization. Things must be done in this order.
 			createShape();
@@ -74,7 +72,7 @@ package citrus.objects {
 		}
 		
 		/**
-		 * This method will often need to be overriden to customize the AwayPhysics shape object.
+		 * This method will often need to be overridden to customize the AwayPhysics shape object.
 		 * The PhysicsObject creates a rectangle by default if the radius it not defined, but you can replace this method's
 		 * definition and instead create a custom shape, such as a line or circle.
 		 */
@@ -87,7 +85,7 @@ package citrus.objects {
 		}
 		
 		/**
-		 * This method will often need to be overriden to provide additional definition to the AwayPhysics body object. 
+		 * This method will often need to be overridden to provide additional definition to the AwayPhysics body object. 
 		 */
 		protected function defineBody():void {
 
@@ -95,7 +93,7 @@ package citrus.objects {
 		}
 		
 		/**
-		 * This method will often need to be overriden to customize the AwayPhysics body object.
+		 * This method will often need to be overridden to customize the AwayPhysics body object.
 		 */
 		protected function createBody():void {
 			
@@ -105,7 +103,7 @@ package citrus.objects {
 		}
 		
 		/**
-		 * This method will often need to be overriden to customize the AwayPhysics constraint object. 
+		 * This method will often need to be overridden to customize the AwayPhysics constraint object. 
 		 */
 		protected function createConstraint():void {
 		}

@@ -68,10 +68,8 @@ package citrus.objects {
 			
 			super.initialize(poolObjectParams);
 			
-			if (!_nape) {
+			if (!_nape)
 				throw new Error("Cannot create a NapePhysicsObject when a Nape object has not been added to the state.");
-				return;
-			}
 			
 			//Override these to customize your Nape initialization. Things must be done in this order.
 			defineBody();
@@ -106,7 +104,7 @@ package citrus.objects {
 		}
 		
 		/**
-		 * This method will often need to be overriden to provide additional definition to the Nape body object. 
+		 * This method will often need to be overridden to provide additional definition to the Nape body object. 
 		 */
 		protected function defineBody():void {
 			
@@ -114,7 +112,7 @@ package citrus.objects {
 		}
 		
 		/**
-		 * This method will often need to be overriden to customize the Nape body object. 
+		 * This method will often need to be overridden to customize the Nape body object. 
 		 */
 		protected function createBody():void {
 			
@@ -125,7 +123,7 @@ package citrus.objects {
 		}
 		
 		/**
-		 * This method will often need to be overriden to customize the Nape material object. 
+		 * This method will often need to be overridden to customize the Nape material object. 
 		 */
 		protected function createMaterial():void {
 			
@@ -133,7 +131,7 @@ package citrus.objects {
 		}
 		
 		/**
-		 * This method will often need to be overriden to customize the Nape shape object.
+		 * This method will often need to be overridden to customize the Nape shape object.
 		 * The PhysicsObject creates a rectangle by default if the radius it not defined, but you can replace this method's
 		 * definition and instead create a custom shape, such as a line or circle.
 		 */	
@@ -177,7 +175,7 @@ package citrus.objects {
 		}
 		
 		/**
-		 * This method will often need to be overriden to customize the Nape filter object. 
+		 * This method will often need to be overridden to customize the Nape filter object. 
 		 */
 		protected function createFilter():void {
 			
@@ -185,7 +183,7 @@ package citrus.objects {
 		}
 		
 		/**
-		 * This method will often need to be overriden to customize the Nape constraint object. 
+		 * This method will often need to be overridden to customize the Nape constraint object. 
 		 */
 		protected function createConstraint():void {
 			

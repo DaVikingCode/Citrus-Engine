@@ -4,7 +4,7 @@ package citrus.physics
 	 * Physics Engine uses bits to represent collision categories.
 	 * 
 	 * <p>If you don't understand binary and bit shifting, then it may get kind of confusing trying to work 
-	 * with physics engine categories, so I've created this classso that those bits can be accessed by 
+	 * with physics engine categories, so I've created this class that those bits can be accessed by 
 	 * creating and referring to String representations.</p>
 	 * 
 	 * <p>The bit system is actually really great because any combination of categories can actually be
@@ -22,7 +22,7 @@ package citrus.physics
 		private static var _allCategories:uint = 0;
 		private static var _numCategories:uint = 0;
 		private static var _categoryIndexes:Array = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384];
-		private static var _categoryNames:Object = new Object();
+		private static var _categoryNames:Object = {};
 		
 		/**
 		 * Returns true if the categories in the first parameter contain the category(s) in the second parameter.
@@ -41,10 +41,7 @@ package citrus.physics
 		public static function Add(categoryName:String):void
 		{
 			if (_numCategories == 15)
-			{
 				throw new Error("You can only have 15 categories.");
-				return;
-			}
 			
 			if (_categoryNames[categoryName])
 				return;
@@ -57,7 +54,7 @@ package citrus.physics
 		/**
 		 * Gets the category(s) integer by name. You can pass in multiple category names, and it will return the appropriate integer.
 		 * @param	...args The categories that you want the integer for.
-		 * @return A signle integer representing the category(s) you passed in.
+		 * @return A single integer representing the category(s) you passed in.
 		 */
 		public static function Get(...args):uint
 		{

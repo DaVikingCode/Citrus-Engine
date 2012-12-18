@@ -12,7 +12,7 @@ package citrus.physics.simple {
 	 * 
 	 * <p>The CitrusSolver is not useful for the following cases: 1) Rotated (non-axis-aligned) objects, angular velocity, mass-based collision reactions, and dynamic-to-dynamic object
 	 * collisions (only static-to-dynamic works). If you need any of those physics features, you should use Box2D instead.
-	 * If you only need to know if an overlap occured and you don't need to solve the collision, then you may test collisions between two dynamic
+	 * If you only need to know if an overlap occurred and you don't need to solve the collision, then you may test collisions between two dynamic
 	 * (moving) objects.</p>
 	 * 
 	 * <p>After you create your CitrusSolver instance, you will want to call the <code>collide</code> and/or <code>overlap</code> methods to tell the solver which object types to test for collisions/overlaps
@@ -21,8 +21,8 @@ package citrus.physics.simple {
 	public class SimpleCitrusSolver extends CitrusObject {
 
 		private var _ce:CitrusEngine;
-		private var _collideChecks:Array = new Array();
-		private var _overlapChecks:Array = new Array();
+		private var _collideChecks:Array = [];
+		private var _overlapChecks:Array = [];
 
 		public function SimpleCitrusSolver(name:String, params:Object = null) {
 			
@@ -34,7 +34,7 @@ package citrus.physics.simple {
 		/**
 		 * Call this method once after the CitrusSolver constructor to tell the solver to report (and solve) collisions between the two specified objects.
 		 * The CitrusSolver will then automatically test collisions between any game object of the specified type once per frame.
-		 * You can only test collisions between a dynamic (movable) object and a static (non-moviable) object.
+		 * You can only test collisions between a dynamic (movable) object and a static (non-movable) object.
 		 * @param	dynamicObjectType The object that will be moved away from overlapping during a collision (probably your hero or something else that moves).
 		 * @param	staticObjectType The object that does not move (probably your platform or wall, etc).
 		 */

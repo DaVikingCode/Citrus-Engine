@@ -45,7 +45,7 @@ package citrus.view.spriteview
 		public var content:DisplayObject;
 		
 		/**
-		 * For objects that are loaded at runtime, this is the object that loades them. Then, once they are loaded, the content
+		 * For objects that are loaded at runtime, this is the object that load them. Then, once they are loaded, the content
 		 * property is assigned to loader.content.
 		 */
 		public var loader:Loader;
@@ -175,10 +175,7 @@ package citrus.view.spriteview
 					addChild(content);
 				} 
 				else
-				{
 					throw new Error("SpriteArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
-					return;
-				}
 				
 				if (content && content.hasOwnProperty("initialize"))
 					content["initialize"](_citrusObject);

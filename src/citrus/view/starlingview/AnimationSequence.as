@@ -76,7 +76,6 @@ package citrus.view.starlingview {
 		/**
 		 * Called by StarlingArt, managed the MC's animations.
 		 * @param animation the MC's animation
-		 * @param fps the MC's fps
 		 * @param animLoop true if the MC is a loop
 		 */
 		public function changeAnimation(animation:String, animLoop:Boolean):void {

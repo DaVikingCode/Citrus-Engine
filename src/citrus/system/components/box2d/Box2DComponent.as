@@ -80,10 +80,8 @@ package citrus.system.components.box2d {
 			
 			super.initialize();
 			
-			if (!_box2D) {
+			if (!_box2D)
 				throw new Error("Cannot create a Box2DPhysicsObject when a Box2D object has not been added to the state.");
-				return;
-			}
 			
 			_collisionComponent = entity.components['collision'];
 			
@@ -226,7 +224,7 @@ package citrus.system.components.box2d {
 		}
 		
 		/**
-		 * This method will often need to be overriden to provide additional definition to the Box2D body object. 
+		 * This method will often need to be overridden to provide additional definition to the Box2D body object. 
 		 */		
 		protected function defineBody():void
 		{
@@ -237,7 +235,7 @@ package citrus.system.components.box2d {
 		}
 		
 		/**
-		 * This method will often need to be overriden to customize the Box2D body object. 
+		 * This method will often need to be overridden to customize the Box2D body object. 
 		 */	
 		protected function createBody():void
 		{
@@ -246,7 +244,7 @@ package citrus.system.components.box2d {
 		}
 		
 		/**
-		 * This method will often need to be overriden to customize the Box2D shape object.
+		 * This method will often need to be overridden to customize the Box2D shape object.
 		 * The PhysicsObject creates a rectangle by default if the radius it not defined, but you can replace this method's
 		 * definition and instead create a custom shape, such as a line or circle.
 		 */	
@@ -262,7 +260,7 @@ package citrus.system.components.box2d {
 		}
 		
 		/**
-		 * This method will often need to be overriden to provide additional definition to the Box2D fixture object. 
+		 * This method will often need to be overridden to provide additional definition to the Box2D fixture object. 
 		 */	
 		protected function defineFixture():void
 		{
@@ -276,7 +274,7 @@ package citrus.system.components.box2d {
 		}
 		
 		/**
-		 * This method will often need to be overriden to customize the Box2D fixture object. 
+		 * This method will often need to be overridden to customize the Box2D fixture object. 
 		 */	
 		protected function createFixture():void
 		{
@@ -284,7 +282,7 @@ package citrus.system.components.box2d {
 		}
 		
 		/**
-		 * This method will often need to be overriden to provide additional definition to the Box2D joint object.
+		 * This method will often need to be overridden to provide additional definition to the Box2D joint object.
 		 * A joint is not automatically created, because joints require two bodies. Therefore, if you need to create a joint,
 		 * you will also need to create additional bodies, fixtures and shapes, and then also instantiate a new b2JointDef
 		 * and b2Joint object.
@@ -295,7 +293,7 @@ package citrus.system.components.box2d {
 		}
 		
 		/**
-		 * This method will often need to be overriden to customize the Box2D joint object. 
+		 * This method will often need to be overridden to customize the Box2D joint object. 
 		 * A joint is not automatically created, because joints require two bodies. Therefore, if you need to create a joint,
 		 * you will also need to create additional bodies, fixtures and shapes, and then also instantiate a new b2JointDef
 		 * and b2Joint object.

@@ -18,7 +18,7 @@ package citrus.objects.platformer.box2d
 	import flash.utils.getDefinitionByName;
 
 	/**
-	 * The Reward class is meant to pop out of a RewardBox when the player bumps it. A Reward object is the equivelant of a "mushroom"
+	 * The Reward class is meant to pop out of a RewardBox when the player bumps it. A Reward object is the equivalent of a "mushroom"
 	 * "fire flower", or "invincible star" in the Mario games.
 	 * 
 	 * <p>For each reward that you want in your game, you should make a class that extends this Reward class. If you want an ExtraLifeReward,

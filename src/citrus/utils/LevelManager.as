@@ -26,7 +26,7 @@ package citrus.utils {
 	 * <li><code>levelManager.levels = [[Level1, Level1_SWC], [level2, Level2_SWC]];</code></li>
 	 * </ul></p>
 	 * 
-	 * <p>An instanciation exemple in your Main class (you may also use the AGameData to store your levels) :
+	 * <p>An instantiation example in your Main class (you may also use the AGameData to store your levels) :
 	 * <code>levelManager = new LevelManager(ALevel);
 	 * levelManager.onLevelChanged.add(_onLevelChanged);
 	 * levelManager.levels = [Level1, Level2];
@@ -109,7 +109,7 @@ package citrus.utils {
 
 		/**
 		 * Call the LevelManager instance's gotoLevel() function to launch your first level, or you may specify it.
-		 * @param index : the level index from 1 to ... ; different from the levels' array indexes.
+		 * @param index the level index from 1 to ... ; different from the levels' array indexes.
 		 */
 		public function gotoLevel(index:uint = 0):void {
 

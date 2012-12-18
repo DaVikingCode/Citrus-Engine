@@ -87,7 +87,7 @@ package citrus.view
 		 * is loaded at runtime, then assign <code>view</code> a String URL relative to your game's SWF, just like you would
 		 * if you were loading any file in Flash. (graphic = "graphics/Hero.swf")</p>
 		 * 
-		 * <p>If your graphic is embeddeded into the SWF, you can assign the <code>view</code> property in two ways: Either by package string
+		 * <p>If your graphic is embedded into the SWF, you can assign the <code>view</code> property in two ways: Either by package string
 		 * notation (view = "com.myGame.MyHero"), or by using a direct class reference (graphic = MyHero). The first method, String notation, is useful
 		 * when you are using a level editor such as the Flash IDE or GLEED2D because all data must come through in String form. However, if you
 		 * are hardcoding your graphic class, you can simply pass a direct reference to the class.
@@ -109,7 +109,7 @@ package citrus.view
 		
 		/**
 		 * A string representing the current animation state that your object is in, such as "run", "jump", "attack", etc.
-		 * The SpriteView checks this property every frame and, if your graphic is a SWF, attemps to "gotoAndPlay()" to a
+		 * The SpriteView checks this property every frame and, if your graphic is a SWF, attempts to "gotoAndPlay()" to a
 		 * label with the name of the <code>animation</code> property.
 		 * 
 		 * If you want your graphic to not loop, you should call stop() on the last frame of your animation from within your SWF file.

@@ -44,7 +44,7 @@ package citrus.view.blittingview {
 		 * This is the graphical representation of your CitrusObject when using the Blitting view. a BlittingArt object
 		 * should contain one or more AnimationSequences. If your object is does not need to animate (such as a background),
 		 * you can simply pass in a class that creates your graphic. The class that you pass in must create a BitmapData object.
-		 * @param	defaultGraphic For objects without aimation, you can pass in a single BitmapData class. Useful for creating
+		 * @param	defaultGraphic For objects without animation, you can pass in a single BitmapData class. Useful for creating
 		 * backgrounds.
 		 */
 		public function BlittingArt(defaultGraphic:Class = null) 

@@ -6,7 +6,7 @@ package citrus.utils {
 	import flash.system.Capabilities;
 
 	/**
-	 * This class provides mobile devices informations.
+	 * This class provides mobile devices information.
 	 */
 	public class Mobile {
 		
@@ -40,7 +40,7 @@ package citrus.utils {
 			if (!_STAGE)
 				_STAGE = CitrusEngine.getInstance().stage;
 
-			return _STAGE.fullScreenWidth > _STAGE.fullScreenHeight ? true : false;
+			return (_STAGE.fullScreenWidth > _STAGE.fullScreenHeight);
 		}
 		
 		static public function isRetina():Boolean {

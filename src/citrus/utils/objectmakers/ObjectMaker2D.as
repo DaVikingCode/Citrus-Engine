@@ -85,7 +85,7 @@ package citrus.utils.objectmakers {
 					params.rotation = child.rotation;
 
 					// Adding properties from the component inspector
-					for (var metatags:Object in child) {
+					for (var metatags:String in child) {
 						if (metatags != "componentInspectorSetting" && metatags != "className") {
 							params[metatags] = child[metatags];
 						}

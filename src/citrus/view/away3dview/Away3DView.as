@@ -32,7 +32,7 @@ package citrus.view.away3dview {
 
 		/**
 		 * @param root the state class, most of the time <code>this</code>.
-		 * @param mode defines 2D or 3D physics / logics usage, default is 3D.
+		 * @param mode defines 2D or 3D physics / logic usage, default is 3D.
 		 * @param antiAlias defines the Away3D's antiAlias value, default is 4.
 		 */
 		public function Away3DView(root:Sprite, mode:String = "3D", antiAlias:uint = 4) {

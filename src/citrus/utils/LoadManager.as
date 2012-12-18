@@ -96,7 +96,7 @@ package citrus.utils {
 				
 			} else if (potentialLoader is flash.display.Sprite) {
 				
-				var searchDepth:Number = searchDepth - 1;
+				var searchDepth:Number = recursionDepth - 1;
 				var n:Number = flash.display.Sprite(potentialLoader).numChildren;
 				
 				for (var i:int = 0; i < n; i++) {

@@ -48,12 +48,12 @@ package citrus.objects.common
 		public var gravityY:Number = 0;
 		
 		/**
-		 * A number between 0 and 1 to create air resistence. Lower numbers create slow floatiness like a feather.
+		 * A number between 0 and 1 to create air resistance. Lower numbers create slow floatiness like a feather.
 		 */
 		public var dampingX:Number = 1;
 		
 		/**
-		 * A number between 0 and 1 to create air resistence. Lower numbers create slow floatiness like a feather.
+		 * A number between 0 and 1 to create air resistance. Lower numbers create slow floatiness like a feather.
 		 */
 		public var dampingY:Number = 1;
 		
@@ -78,7 +78,7 @@ package citrus.objects.common
 		public var maxImpulseY:Number = 10;
 		
 		/**
-		 * In miliseconds, how long the emitter lasts before destroying itself. If the value is -1, it lasts forever.
+		 * In milliseconds, how long the emitter lasts before destroying itself. If the value is -1, it lasts forever.
 		 */
 		public var emitterLifeSpan:int = -1;
 		
@@ -93,7 +93,7 @@ package citrus.objects.common
 		public var emitAreaHeight:Number = 0;
 		
 		private var _particles:Vector.<EmitterParticle> = new Vector.<EmitterParticle>();
-		private var _recycle:Array = new Array();
+		private var _recycle:Array = [];
 		private var _graphic:*;
 		private var _particlesCreated:uint = 0;
 		private var _lastEmission:Number = 0;
@@ -111,13 +111,13 @@ package citrus.objects.common
 		 * @param	particleLifeSpan In milliseconds, how long the particles will last before being recycled.
 		 * @param	gravityX The X force applied to particle velocity, in pixels per frame.
 		 * @param	gravityY The Y force applied to particle velocity, in pixels per frame.
-		 * @param	dampingX A number between 0 and 1 to create air resistence. Lower numbers create slow floatiness like a feather.
-		 * @param	dampingY A number between 0 and 1 to create air resistence. Lower numbers create slow floatiness like a feather.
+		 * @param	dampingX A number between 0 and 1 to create air resistance. Lower numbers create slow floatiness like a feather.
+		 * @param	dampingY A number between 0 and 1 to create air resistance. Lower numbers create slow floatiness like a feather.
 		 * @param	minImpulseX The minimum initial impulse velocity that a particle can have via the randomly generated impulse on the X axis.
 		 * @param	maxImpulseX The maximum initial impulse velocity that a particle can have via the randomly generated impulse on the X axis.
 		 * @param	minImpulseY The minimum initial impulse velocity that a particle can have via the randomly generated impulse on the Y axis.
 		 * @param	maxImpulseY The maximum initial impulse velocity that a particle can have via the randomly generated impulse on the Y axis.
-		 * @param	emitterLifeSpan In miliseconds, how long the emitter lasts before destroying itself. If the value is -1, it lasts forever.
+		 * @param	emitterLifeSpan In milliseconds, how long the emitter lasts before destroying itself. If the value is -1, it lasts forever.
 		 * @param	emitAreaWidth The width deviation from the x position that a particle can be created via a randomly generated number.
 		 * @param	emitAreaHeight The height deviation from the y position that a particle can be created via a randomly generated number.
 		 * @return An emitter.

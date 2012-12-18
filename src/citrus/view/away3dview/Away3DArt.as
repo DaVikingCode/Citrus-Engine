@@ -158,10 +158,8 @@ package citrus.view.away3dview {
 					content = _view;
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(content);
-				} else {
+				} else
 					throw new Error("Away3DArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
-					return;
-				}
 
 				if (content && content.hasOwnProperty("initialize"))
 					content["initialize"](_citrusObject);
