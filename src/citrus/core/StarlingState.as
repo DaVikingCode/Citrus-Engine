@@ -157,7 +157,7 @@ package citrus.core {
 
 		/**
 		 * Call this method to add a CitrusObject to this state. All visible game objects and physics objects
-		 * will need to be created and added via this method so that they can be properly creatd, managed, updated, and destroyed. 
+		 * will need to be created and added via this method so that they can be properly created, managed, updated, and destroyed. 
 		 * @return The CitrusObject that you passed in. Useful for linking commands together.
 		 */
 		public function add(object:CitrusObject):CitrusObject {
@@ -170,7 +170,7 @@ package citrus.core {
 
 		/**
 		 * Call this method to add an Entity to this state. All entities will need to be created
-		 * and added via this method so that they can be properly creatd, managed, updated, and destroyed.
+		 * and added via this method so that they can be properly created, managed, updated, and destroyed.
 		 * @param view an Entity is designed for complex objects, most of the time they have a view component.
 		 * @return The Entity that you passed in. Useful for linking commands together.
 		 */
@@ -184,7 +184,7 @@ package citrus.core {
 		
 		/**
 		 * Call this method to add a PoolObject to this state. All pool objects and  will need to be created 
-		 * and added via this method so that they can be properly creatd, managed, updated, and destroyed.
+		 * and added via this method so that they can be properly created, managed, updated, and destroyed.
 		 * @param poolObject The PoolObject isCitrusObjectPool's value must be true to be render through the State.
 		 * @return The PoolObject that you passed in. Useful for linking commands together.
 		 */

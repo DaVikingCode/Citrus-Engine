@@ -118,8 +118,8 @@ package citrus.core {
 		}
 		
 		/**
-		 * A reference to the active game state. Acutally, that's not entirely true. If you've recently changed states and a tick
-		 * hasn't occured yet, then this will reference your new state; this is because actual state-changes only happen pre-tick.
+		 * A reference to the active game state. Actually, that's not entirely true. If you've recently changed states and a tick
+		 * hasn't occurred yet, then this will reference your new state; this is because actual state-changes only happen pre-tick.
 		 * That way you don't end up changing states in the middle of a state's tick, effectively fucking stuff up. 
 		 */		
 		public function get state():IState
@@ -164,7 +164,7 @@ package citrus.core {
 		
 		/**
 		 * A reference to the Abstract GameData instance. Use it if you want.
-		 * It's a dynamic class, so you don't have problem to access informations in its extended class.
+		 * It's a dynamic class, so you don't have problem to access information in its extended class.
 		 */
 		public function get gameData():AGameData {
 			return _gameData;

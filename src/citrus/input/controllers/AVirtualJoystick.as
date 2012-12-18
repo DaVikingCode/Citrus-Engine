@@ -81,10 +81,7 @@ package citrus.input.controllers {
 			else if (axis.toLowerCase() == "y")
 				actionlist = _yAxisActions;
 			else
-			{
 				throw(new Error("VirtualJoystick::addAxisAction() invalid axis parameter (only x and y are accepted)"));
-				return;
-			}
 			
 			if ( (start < 0 && end > 0) || (start > 0 && end < 0) || start == end )
 				throw(new Error("VirtualJoystick::addAxisAction() start and end values must have the same sign and not be equal"));

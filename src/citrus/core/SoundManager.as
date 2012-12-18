@@ -14,7 +14,7 @@ package citrus.core {
 		public var sounds:Dictionary;
 		public var currPlayingSounds:Dictionary;
 
-		public function SoundManager(pvt:PrivateClass) {
+		public function SoundManager() {
 			
 			sounds = new Dictionary();
 			currPlayingSounds = new Dictionary();
@@ -23,7 +23,7 @@ package citrus.core {
 		public static function getInstance():SoundManager {
 			
 			if (!_instance)
-				_instance = new SoundManager(new PrivateClass());
+				_instance = new SoundManager();
 				
 			return _instance;
 		}
@@ -151,7 +151,6 @@ package citrus.core {
 					return SoundChannel(currPlayingSounds[id].channel);
 			}
 			throw Error("You are trying to get a non-existent soundChannel. Play it first in order to assign a channel");
-			return null;
 		}
 
 		public function getSoundTransform(id:String):SoundTransform {
@@ -161,7 +160,6 @@ package citrus.core {
 					return SoundChannel(currPlayingSounds[id].channel).soundTransform;
 			}
 			throw Error("You are trying to get a non-existent soundTransform. Play it first in order to assign a transform");
-			return null;
 		}
 
 		public function getSoundVolume(id:String):Number {
@@ -171,7 +169,6 @@ package citrus.core {
 					return currPlayingSounds[id].volume;
 			}
 			throw Error("You are trying to get a non-existent volume. Play it first in order to assign a volume.");
-			return NaN;
 		}
 
 		private function handleLoadError(e:IOErrorEvent):void {
@@ -179,7 +176,4 @@ package citrus.core {
 			trace("Sound manager failed to load a sound: " + e.text);
 		}
 	}
-}
-
-class PrivateClass {
 }

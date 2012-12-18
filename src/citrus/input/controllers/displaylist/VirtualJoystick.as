@@ -12,7 +12,7 @@ package citrus.input.controllers.displaylist {
 	{
 		public var graphic:Sprite; //main Sprite container.
 		
-		//seperate joystick elements
+		//separate joystick elements
 		protected var back:Sprite;
 		protected var knob:Sprite;
 		

@@ -90,7 +90,7 @@ package citrus.datastructures {
 
 		/**
 		 * Prepend a node to the list.
-		 * @param data an object of any type added at the beginning of the list.
+		 * @param node a DoublyLinkedListNode object of any type added at the beginning of the list.
 		 * @return returns the doublyLinkedList.
 		 */
 		public function prependNode(node:DoublyLinkedListNode):DoublyLinkedList {

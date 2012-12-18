@@ -45,10 +45,10 @@ package citrus.core {
 		/**
 		 * You should call this function to create your Starling view. The RootClass is internal, it is never used elsewhere. 
 		 * StarlingState is added on the starling stage : <code>_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);</code>
-		 * @param debugMode : If true, display a Stats class instance.
-		 * @param antiAliasing : The antialiasing value allows you to set the anti-aliasing (0 - 16), generally a value of 1 is totally acceptable.
-		 * @param flashStage : If you don't use this class as your root class you need to give a reference to your actual stage.
-		 * @param viewPort : Starling's viewport, default is (0, 0, stage.stageWidth, stage.stageHeight, change to (0, 0, stage.fullScreenWidth, stage.fullScreenHeight) for mobile.
+		 * @param debugMode If true, display a Stats class instance.
+		 * @param antiAliasing The antialiasing value allows you to set the anti-aliasing (0 - 16), generally a value of 1 is totally acceptable.
+		 * @param flashStage If you don't use this class as your root class you need to give a reference to your actual stage.
+		 * @param viewPort Starling's viewport, default is (0, 0, stage.stageWidth, stage.stageHeight, change to (0, 0, stage.fullScreenWidth, stage.fullScreenHeight) for mobile.
 		 */
 		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, flashStage:Stage = null, viewPort:Rectangle = null):void {
 			

@@ -20,7 +20,7 @@ package citrus.input.controllers.starling {
 	{
 		public var graphic:starling.display.Sprite; //main Sprite container.
 		
-		//seperate joystick elements
+		//separate joystick elements
 		protected var back:Image;
 		protected var knob:Image;
 		

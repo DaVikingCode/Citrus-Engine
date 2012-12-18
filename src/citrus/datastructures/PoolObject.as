@@ -6,7 +6,7 @@ package citrus.datastructures {
 	 * Object pooling is a data structure based on a simple observation : the ‘new’ operator is costly, 
 	 * memory allocation necessary for the object creation is a slow process. And Garbage Collection too!
 	 * So object pooling idea is really simple :
-	 * - create lots of object at the beginning of your level, if there is FPS reduction it shouldn’t be a big problem.
+	 * - create lots of object at the beginning of your level, if there is FPS reduction it shouldn't be a big problem.
 	 * - if you need more objects during the game create many of them that can be use later. 
 	 * - destroy your object if you don’t need it anymore, but keep a link to it! So it will be reassign!
 	 * - destroy all your objects and set them to null at the end of your level (garbage collector will work).
@@ -138,7 +138,7 @@ package citrus.datastructures {
 		}
 		
 		/** Get a node from its data, working with MouseEvent...
-		 * @param node's data
+		 * @param data node's data
 		 * @return the node
 		 */
 		public function getNodeFromData(data:*):DoublyLinkedListNode {

@@ -68,10 +68,7 @@ package citrus.input
 		 */
 		public function comp(action:InputAction):Boolean
 		{
-			if (_name ==  action.name && _channel == action.channel)
-				return true;
-			else
-				return false;
+			return _name == action.name && _channel == action.channel;
 		}
 		
 		/**
@@ -80,10 +77,7 @@ package citrus.input
 		 */
 		public function eq(action:InputAction):Boolean
 		{
-			if (_name ==  action.name && _controller == action.controller && _channel == action.channel)
-				return true;
-			else
-				return false;
+			return _name == action.name && _controller == action.controller && _channel == action.channel;
 		}
 		
 		public function toString():String

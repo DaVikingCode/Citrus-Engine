@@ -116,7 +116,7 @@ package citrus.input.controllers {
 		
 		/**
 		 * starts replay with an optional delay.
-		 * @param	delay in seconds
+		 * @param delay in seconds
 		 */
 		public function startReplay(delay:Number = 0, speed:Number = 1):void
 		{
@@ -128,7 +128,7 @@ package citrus.input.controllers {
 		
 		/**
 		 * starts rewind with an optional delay.
-		 * @param	delay in seconds
+		 * @param delay in seconds
 		 */
 		public function startRewind(delay:Number = 0, speed:Number = 1):void
 		{

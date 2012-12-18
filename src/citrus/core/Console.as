@@ -67,9 +67,9 @@ package citrus.core {
 			_shared = SharedObject.getLocal("history");
 			
 			this.openKey = openKey;
-			_executeKey = flash.ui.Keyboard.ENTER;
-			_prevHistoryKey = flash.ui.Keyboard.UP;
-			_nextHistoryKey = flash.ui.Keyboard.DOWN;
+			_executeKey = Keyboard.ENTER;
+			_prevHistoryKey = Keyboard.UP;
+			_nextHistoryKey = Keyboard.DOWN;
 			_historyMax = 25;
 			_showing = false;
 			_currHistoryIndex = 0;

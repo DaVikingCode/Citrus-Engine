@@ -9,7 +9,7 @@ package citrus.input {
 	 * A class managing input of any controllers that is an InputController.
 	 * Actions are inspired by Midi signals, but they carry an InputAction object.
 	 * "action signals" are either ON, OFF, or VALUECHANGE.
-	 * to track action status, and check wether action was just triggered or is still on,
+	 * to track action status, and check whether action was just triggered or is still on,
 	 * actions have phases (see InputAction).
 	 **/	
 	public class Input
