@@ -3,6 +3,7 @@ package citrus.view.away3dview {
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.Scene3D;
 	import away3d.containers.View3D;
+	import away3d.core.managers.Stage3DProxy;
 
 	import citrus.core.CitrusEngine;
 	import citrus.physics.APhysicsEngine;
@@ -35,7 +36,7 @@ package citrus.view.away3dview {
 		 * @param mode defines 2D or 3D physics / logic usage, default is 3D.
 		 * @param antiAlias defines the Away3D's antiAlias value, default is 4.
 		 */
-		public function Away3DView(root:Sprite, mode:String = "3D", antiAlias:uint = 4) {
+		public function Away3DView(root:Sprite, mode:String = "3D", antiAlias:uint = 4, stage3DProxy:Stage3DProxy = null) {
 
 			super(root, ISpriteView);
 
@@ -48,6 +49,12 @@ package citrus.view.away3dview {
 			_scene.addChild(_container);
 
 			_viewRoot = new View3D(_scene);
+			
+			if (stage3DProxy) {
+				_viewRoot.stage3DProxy = stage3DProxy;
+				_viewRoot.shareContext = true;
+			}
+			
 			_viewRoot.antiAlias = antiAlias;
 			root.addChild(_viewRoot);
 
