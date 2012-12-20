@@ -7,7 +7,7 @@ package citrus.view.away3dview {
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
 	import citrus.core.IState;
-	import citrus.core.State;
+	import citrus.core.away3d.Away3DCitrusEngine;
 	import citrus.physics.APhysicsEngine;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ISpriteView;
@@ -231,26 +231,26 @@ package citrus.view.away3dview {
 				
 					(content as Away3DPhysicsDebugView).update();
 					
-					physicsDebugArt = (_ce.state as State).getChildByName("debug view") as DisplayObject;
+					physicsDebugArt = _ce.stage.getChildByName("debug view") as DisplayObject;
 					
 					if (stateView.cameraTarget) {
 						
-						physicsDebugArt.x = stateView.container.x;
-						physicsDebugArt.y = stateView.container.y;
+						physicsDebugArt.x = stateView.viewRoot.x;
+						physicsDebugArt.y = stateView.viewRoot.y;
 					}
 					
 					physicsDebugArt.visible = _citrusObject.visible;
 					
 				} else if (_physicsComponent) {
 	
-					x = _citrusObject.x - stateView.viewRoot.width * 0.5 + (-stateView.container.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
-					y = -1 * (_citrusObject.y - stateView.viewRoot.height * 0.5 + (-stateView.container.y * (1 - _citrusObject.parallax)) - _citrusObject.offsetY);
+					x = _citrusObject.x - (_ce as Away3DCitrusEngine).away3D.width * 0.5 + (-stateView.viewRoot.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
+					y = -1 * (_citrusObject.y - (_ce as Away3DCitrusEngine).away3D.height * 0.5 + (-stateView.viewRoot.y * (1 - _citrusObject.parallax)) - _citrusObject.offsetY);
 					rotationZ = -_citrusObject.rotation;
 	
 				} else {
 					
-					x = _citrusObject.x - stateView.viewRoot.width * 0.5 + (-stateView.container.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
-					y = -1 * (_citrusObject.y - stateView.viewRoot.height * 0.5 + (-stateView.container.y * (1 - _citrusObject.parallax)) - _citrusObject.offsetY);
+					x = _citrusObject.x - (_ce as Away3DCitrusEngine).away3D.width * 0.5 + (-stateView.viewRoot.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
+					y = -1 * (_citrusObject.y - (_ce as Away3DCitrusEngine).away3D.height * 0.5 + (-stateView.viewRoot.y * (1 - _citrusObject.parallax)) - _citrusObject.offsetY);
 					rotationZ = -_citrusObject.rotation;
 				}
 			}

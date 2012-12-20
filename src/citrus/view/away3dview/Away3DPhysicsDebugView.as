@@ -27,7 +27,7 @@ package citrus.view.away3dview {
 			_debugView = new _physicsEngine.realDebugView();
 			
 			if ((_ce.state.view as Away3DView).mode != "3D") {
-				(_ce.state as State).addChild(_debugView as Sprite);
+				_ce.stage.addChild(_debugView as Sprite);
 				(_debugView as Sprite).name = "debug view";
 			}
 		}

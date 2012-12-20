@@ -1,117 +1,79 @@
 package citrus.view.away3dview {
 
 	import away3d.containers.ObjectContainer3D;
-	import away3d.containers.Scene3D;
-	import away3d.containers.View3D;
-	import away3d.core.managers.Stage3DProxy;
 
-	import citrus.core.CitrusEngine;
 	import citrus.physics.APhysicsEngine;
 	import citrus.view.CitrusView;
 	import citrus.view.ISpriteView;
 
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
-	import flash.events.Event;
 	
 	/**
 	 * Away3DView is based on Adobe Stage3D and the <a href="http://away3d.com/">Away3D</a> framework to render graphics. 
-	 * You must use this view to create a 3D game. Note that you can create a 3D game with a 2D logic/physics. 
-	 * To specify Away3DView, override the <code>state.createView</code> method and <code>return 
-	 * new Away3DView(this)</code>. Check the demo for an example.
+	 * You must use this view to create a 3D game. Note that you can create a 3D game with a 2D logic/physics.
+	 * It is automatically set up when you extend Away3DState.
 	 */
 	public class Away3DView extends CitrusView {
 
-		private var _ce:CitrusEngine;
+		private var _viewRoot:ObjectContainer3D;
 
 		private var _mode:String;
-
-		private var _viewRoot:View3D;
-		private var _scene:Scene3D;
-
-		private var _container:ObjectContainer3D;
-
+		
 		/**
-		 * @param root the state class, most of the time <code>this</code>.
-		 * @param mode defines 2D or 3D physics / logic usage, default is 3D.
-		 * @param antiAlias defines the Away3D's antiAlias value, default is 4.
+		 * @param root The state class, most of the time <code>this</code> which is your game state.
+		 * @param mode A string which determines if arts are used in 2D mode or 3D.
 		 */
-		public function Away3DView(root:Sprite, mode:String = "3D", antiAlias:uint = 4, stage3DProxy:Stage3DProxy = null) {
+		public function Away3DView(root:ObjectContainer3D, mode:String = "3D") {
 
 			super(root, ISpriteView);
 
-			_ce = CitrusEngine.getInstance();
-
 			_mode = mode;
-
-			_scene = new Scene3D();
-			_container = new ObjectContainer3D();
-			_scene.addChild(_container);
-
-			_viewRoot = new View3D(_scene);
 			
-			if (stage3DProxy) {
-				_viewRoot.stage3DProxy = stage3DProxy;
-				_viewRoot.shareContext = true;
-			}
-			
-			_viewRoot.antiAlias = antiAlias;
+			_viewRoot = new ObjectContainer3D();
 			root.addChild(_viewRoot);
-
-			_ce.stage.addEventListener(Event.RESIZE, _onResize);
 		}
 
 		override public function destroy():void {
 
-			_ce.stage.removeEventListener(Event.RESIZE, _onResize);
+			_viewRoot.dispose();
 
 			super.destroy();
 		}
 
-		public function get viewRoot():View3D {
+		public function get viewRoot():ObjectContainer3D {
 			return _viewRoot;
 		}
 
 		public function get mode():String {
 			return _mode;
 		}
-		
-		/**
-		 *With Away3D we don't use the viewRoot as the main container for our objects because we shouldn't move the View3D. 
-		 *So we use an ObjectContainer3D to add all our objects in.
-		 */
-		public function get container():ObjectContainer3D {
-			return _container;
-		}
 
 		override public function update():void {
 
 			super.update();
 
-			_viewRoot.render();
-
 			// Update Camera
 			if (cameraTarget) {
-				var diffX:Number = (-cameraTarget.x + cameraOffset.x) - _container.position.x;
-				var diffY:Number = (-cameraTarget.y + cameraOffset.y) - _container.position.y;
+				var diffX:Number = (-cameraTarget.x + cameraOffset.x) - _viewRoot.position.x;
+				var diffY:Number = (-cameraTarget.y + cameraOffset.y) - _viewRoot.position.y;
 				var velocityX:Number = diffX * cameraEasing.x;
 				var velocityY:Number = diffY * cameraEasing.y;
 
-				_container.x += velocityX;
-				_container.y -= velocityY;
+				_viewRoot.x += velocityX;
+				_viewRoot.y -= velocityY;
 
 				// Constrain to camera bounds
 				if (cameraBounds) {
 
-					if (-_container.x <= cameraBounds.left || cameraBounds.width < cameraLensWidth)
-						_container.x = -cameraBounds.left;
-					else if (-_container.x + cameraLensWidth >= cameraBounds.right)
-						_container.x = -cameraBounds.right + cameraLensWidth;
+					if (-_viewRoot.x <= cameraBounds.left || cameraBounds.width < cameraLensWidth)
+						_viewRoot.x = -cameraBounds.left;
+					else if (-_viewRoot.x + cameraLensWidth >= cameraBounds.right)
+						_viewRoot.x = -cameraBounds.right + cameraLensWidth;
 
-					if (-_container.y <= cameraBounds.top || cameraBounds.height < cameraLensHeight)
-						_container.y = -cameraBounds.top;
-					else if (-_container.y + cameraLensHeight >= cameraBounds.bottom)
-						_container.y = -cameraBounds.bottom + cameraLensHeight;
+					if (-_viewRoot.y <= cameraBounds.top || cameraBounds.height < cameraLensHeight)
+						_viewRoot.y = -cameraBounds.top;
+					else if (-_viewRoot.y + cameraLensHeight >= cameraBounds.bottom)
+						_viewRoot.y = -cameraBounds.bottom + cameraLensHeight;
 				}
 			}
 
@@ -154,17 +116,11 @@ package citrus.view.away3dview {
 		private function updateGroupForSprite(sprite:Away3DArt):void {
 
 			// Create the container sprite (group) if it has not been created yet.
-			while (sprite.group >= _container.numChildren)
-				_container.addChild(new ObjectContainer3D());
+			while (sprite.group >= _viewRoot.numChildren)
+				_viewRoot.addChild(new ObjectContainer3D());
 
 			// Add the sprite to the appropriate group
-			ObjectContainer3D(_container.getChildAt(sprite.group)).addChild(sprite);
-		}
-
-		private function _onResize(evt:Event):void {
-
-			_viewRoot.width = _ce.stage.stageWidth;
-			_viewRoot.height = _ce.stage.stageHeight;
+			ObjectContainer3D(_viewRoot.getChildAt(sprite.group)).addChild(sprite);
 		}
 	}
 }
