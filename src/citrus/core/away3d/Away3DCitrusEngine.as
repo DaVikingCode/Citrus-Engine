@@ -30,6 +30,9 @@ package citrus.core.away3d {
 			
 			stage.removeEventListener(Event.RESIZE, _onResize);
 			
+			if (_away3D.stage3DProxy)				
+				_away3D.stage3DProxy.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+			
 			super.destroy();
 		}
 		
@@ -48,6 +51,10 @@ package citrus.core.away3d {
 			if (stage3DProxy) {
 				_away3D.stage3DProxy = stage3DProxy;
 				_away3D.shareContext = true;
+				
+				// we're probably using Starling for a 2D menu/interface, we must listen the enter frame on Stage3DProxy
+				_away3D.stage3DProxy.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+				removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
 			}
 			
 			addChildAt(_away3D, _stateDisplayIndex);
@@ -87,7 +94,7 @@ package citrus.core.away3d {
 			
 			if (_state && _playing)
 				_away3D.render();
-			
+				
 			super.handleEnterFrame(e);
 		}
 		
