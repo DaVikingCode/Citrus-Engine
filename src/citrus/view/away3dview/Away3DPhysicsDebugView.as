@@ -3,7 +3,6 @@ package citrus.view.away3dview {
 	import away3d.containers.ObjectContainer3D;
 
 	import citrus.core.CitrusEngine;
-	import citrus.core.State;
 	import citrus.physics.APhysicsEngine;
 	import citrus.physics.IDebugView;
 

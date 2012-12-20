@@ -1,5 +1,7 @@
-V 3.1.1, Work in progress
--------------------------
+V 3.1.1, 12 20 2012
+-------------------
+- created starling and away3d package in citrus.core for StarlingCitrusEngine, StarlingState, Away3DCitrusEngine and Away3DState classes.
+- removed stage argument in setUpStarling function, override the handleAddedToStage method to call setUpStarling function instead.
 - added Nape parser for polygon/polyline.
 - AVirtualJoystick : action value scaling.
 - TimeShifter now listens to and routes input to his defaultChannel which remains channel 16 when instanciated.
@@ -26,7 +28,6 @@ V 3.1.0, 12 14 2012
 - StarlingArt is now able to dispose automatically basic DisplayObject.
 - Starling's AnimationSequence has a clone method.
 - Starling's AnimationSequence dispatch onAnimationComplete Signal
-
 
 V 3.0.4, 11 29 2012
 -------------------

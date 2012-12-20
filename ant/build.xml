@@ -148,8 +148,7 @@
 			<arg line="-output ../bin/CE${VERSION}-Starling.swc" />
 
 			<!-- Include all of the AS3 files in LIBRARY -->
-			<arg line="-include-sources ../src/citrus/core/StarlingCitrusEngine.as" />
-			<arg line="-include-sources ../src/citrus/core/StarlingState.as" />
+			<arg line="-include-sources ../src/citrus/core/starling" />
 			
 			<arg line="-include-sources ../src/citrus/input/controllers/starling/VirtualButtons.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/starling/VirtualJoystick.as" />
@@ -201,6 +200,8 @@
 			<arg line="-output ../bin/CE${VERSION}-Away3D.swc" />
 
 			<!-- Include all of the AS3 files in LIBRARY -->
+			
+			<arg line="-include-sources ../src/citrus/core/away3d" />
 			
 			<!--<arg line="-include-sources ../src/citrus/utils/ObjectMaker3D.as" />-->
 

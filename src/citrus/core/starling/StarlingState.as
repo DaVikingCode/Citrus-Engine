@@ -1,5 +1,8 @@
-package citrus.core {
+package citrus.core.starling {
 
+	import citrus.core.CitrusEngine;
+	import citrus.core.CitrusObject;
+	import citrus.core.IState;
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
 	import citrus.input.Input;
