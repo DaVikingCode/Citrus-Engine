@@ -37,12 +37,14 @@ package citrus.core {
 		/*
 		 * The sound is a path to a file or an embedded sound 
 		 */
-		public function addSound(id:String, url:String = "", embeddedClass:Class = null):void {
+		public function addSound(id:String, sound:*):void {
 			
-			if (url != "")
-				sounds[id] = url;
+			if (sound is String && sound != "")
+				sounds[id] = sound;
+			else if (sound is Class)
+				sounds[id] = sound;
 			else
-				sounds[id] = embeddedClass;
+				throw new Error("Sound Manager doesn't know how to add the " + id + " sound: " + sound);
 		}
 
 		public function removeSound(id:String):void {
