@@ -15,6 +15,7 @@ It offers many options, you may use :
 
 Games References
 ----------------
+[![Santa Rush](http://aymericlamboley.fr/blog/wp-content/uploads/2012/12/Santa Rush.png)](https://play.google.com/store/apps/details?id=air.com.studio3wg.SantaRush)
 [![Kepher](http://aymericlamboley.fr/blog/wp-content/uploads/2012/12/Kepher.png)](http://www.daarboven.net/kepher_comingsoon.html)
 [![Stack of Defence](http://aymericlamboley.fr/blog/wp-content/uploads/2012/11/stackofdefence.png)](http://www.newgrounds.com/portal/view/606457)
 [![Music Game](http://aymericlamboley.fr/blog/wp-content/uploads/2012/11/cynic.png)](http://cynicmusic.com/citrus/)
