@@ -28,6 +28,8 @@ use namespace b2internal;
 */
 public class b2OBB
 {
+	public function b2OBB() {}
+	
 	/** The rotation matrix */
 	public var R:b2Mat22 = new b2Mat22();
 	/** The local centroid */

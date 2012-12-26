@@ -27,6 +27,8 @@ use namespace b2internal;
 */
 public class Features
 {
+	public function Features() {}
+	
 	/**
 	* The edge that defines the outward contact normal.
 	*/

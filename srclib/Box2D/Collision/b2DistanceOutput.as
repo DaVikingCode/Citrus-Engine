@@ -25,6 +25,8 @@ package Box2D.Collision
 	 */
 	public class b2DistanceOutput 
 	{
+		public function b2DistanceOutput() {}
+		
 	/** Closest point on shapea */	public var  pointA:b2Vec2 = new b2Vec2();	/** Closest point on shapeb */	public var pointB:b2Vec2 = new b2Vec2();		public var distance:Number;
 	/** Number of gjk iterations used */	public var iterations:int;	}
 	

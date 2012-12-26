@@ -24,6 +24,8 @@ package Box2D.Collision
 
 internal class b2SimplexVertex
 {
+	public function b2SimplexVertex() {}
+	
 	public function Set(other:b2SimplexVertex):void
 	{
 		wA.SetV(other.wA);

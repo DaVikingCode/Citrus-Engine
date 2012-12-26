@@ -25,6 +25,9 @@ package Box2D.Collision
 	 */
 	public class b2SimplexCache 
 	{
+		
+		public function b2SimplexCache() {}
+		
 	/** Length or area */	
 	public var metric:Number;		
 	public var count:uint;

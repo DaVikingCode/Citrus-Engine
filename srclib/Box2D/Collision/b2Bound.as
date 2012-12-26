@@ -23,6 +23,9 @@ package Box2D.Collision {
 * @private
 */
 public class b2Bound{
+	
+	public function b2Bound() {}
+	
 	public function IsLower():Boolean { return (value & 1) == 0; }
 	public function IsUpper():Boolean { return (value & 1) == 1; }
 	public function Swap(b:b2Bound) : void{

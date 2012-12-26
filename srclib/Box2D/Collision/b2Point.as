@@ -29,6 +29,8 @@ use namespace b2internal;
 */
 public class b2Point
 {
+	public function b2Point() {}
+	
 	public function Support(xf:b2Transform, vX:Number, vY:Number) : b2Vec2
 	{
 		return p;

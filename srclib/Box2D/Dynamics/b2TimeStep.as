@@ -24,6 +24,8 @@ package Box2D.Dynamics{
 */
 public class b2TimeStep
 {
+	public function b2TimeStep() {}
+	
 	public function Set(step:b2TimeStep):void
 	{
 		dt = step.dt;

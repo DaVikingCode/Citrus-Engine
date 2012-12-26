@@ -28,6 +28,8 @@ package Box2D.Dynamics.Controllers{
  */
 public class b2TensorDampingController extends b2Controller
 {	
+	public function b2TensorDampingController() {}
+	
 	/**
 	 * Tensor to use in damping model
 	 */

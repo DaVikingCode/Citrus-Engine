@@ -29,6 +29,8 @@ use namespace b2internal;
 */
 public class b2Jacobian
 {
+	public function b2Jacobian() {}
+	
 	public var linearA:b2Vec2 = new b2Vec2();
 	public var angularA:Number;
 	public var linearB:b2Vec2 = new b2Vec2();

@@ -26,6 +26,9 @@ package Box2D.Collision
 	 */
 	public class b2TOIInput 
 	{
+		
+		public function b2TOIInput() {}
+		
 		public var proxyA:b2DistanceProxy = new b2DistanceProxy();
 		public var proxyB:b2DistanceProxy = new b2DistanceProxy();
 		public var sweepA:b2Sweep = new b2Sweep();

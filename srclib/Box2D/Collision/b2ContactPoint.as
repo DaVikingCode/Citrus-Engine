@@ -29,6 +29,8 @@ use namespace b2internal;
 */
 public class b2ContactPoint
 {
+	public function b2ContactPoint() {}
+	
 	/** The first shape */
 	public var shape1:b2Shape;
 	/** The second shape */

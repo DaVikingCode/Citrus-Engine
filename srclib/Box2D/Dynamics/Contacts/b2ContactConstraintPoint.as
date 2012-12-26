@@ -29,6 +29,8 @@ use namespace b2internal;
 */
 public class b2ContactConstraintPoint
 {
+	public function b2ContactConstraintPoint() {}
+	
 	public var localPoint:b2Vec2=new b2Vec2();
 	public var rA:b2Vec2=new b2Vec2();
 	public var rB:b2Vec2=new b2Vec2();

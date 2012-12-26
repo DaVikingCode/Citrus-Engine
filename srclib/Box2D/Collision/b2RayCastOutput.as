@@ -26,6 +26,9 @@ package Box2D.Collision
 	
 	public class b2RayCastOutput 
 	{
+		
+		public function b2RayCastOutput() {}
+		
 		/**
 		 * The normal at the point of collision
 		 */

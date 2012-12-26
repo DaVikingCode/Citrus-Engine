@@ -28,6 +28,9 @@ use namespace b2internal;
 */
 public class b2AABB
 {
+	
+	public function b2AABB() {}
+	
 	/**
 	* Verify that the bounds are sorted.
 	*/

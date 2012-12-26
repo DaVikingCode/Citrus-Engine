@@ -28,6 +28,8 @@ package Box2D.Dynamics
 	 */
 	public class b2ContactImpulse 
 	{
+		
+		public function b2ContactImpulse() {}
 		public var normalImpulses:Vector.<Number> = new Vector.<Number>(b2Settings.b2_maxManifoldPoints);
 		public var tangentImpulses:Vector.<Number> = new Vector.<Number>(b2Settings.b2_maxManifoldPoints);
 		

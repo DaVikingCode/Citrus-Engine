@@ -28,6 +28,8 @@ use namespace b2internal;
 */
 public class b2Segment
 {
+	public function b2Segment() {}
+	
 	/**
 	* Ray cast against this segment with another segment
 	* @param xf the shape world transform.

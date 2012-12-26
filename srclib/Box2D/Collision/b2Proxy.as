@@ -27,6 +27,9 @@ use namespace b2internal;
 * @private
 */
 public class b2Proxy{
+	
+	public function b2Proxy() {}
+	
 	public function IsValid():Boolean { return overlapCount != b2BroadPhase.b2_invalid; }
 
 	public var lowerBounds:Vector.<uint> = new Vector.<uint>(2);

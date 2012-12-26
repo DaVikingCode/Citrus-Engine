@@ -34,6 +34,7 @@ use namespace b2internal;
 
 public class b2JointEdge
 {
+	public function b2JointEdge() {}
 	
 	/** Provides quick access to the other body attached. */
 	public var other:b2Body;

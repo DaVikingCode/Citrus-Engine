@@ -31,6 +31,8 @@ use namespace b2internal;
  	 */
 	public class b2DistanceProxy 
 	{
+		public function b2DistanceProxy() {}
+		
  		/**
  		 * Initialize the proxy using the given shape. The shape
  		 * must remain in scope while the proxy is in use.

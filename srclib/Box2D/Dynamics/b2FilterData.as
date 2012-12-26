@@ -29,6 +29,8 @@ use namespace b2internal;
 */
 public class b2FilterData
 {
+	public function b2FilterData() {}
+	
 	public function Copy() : b2FilterData {
 		var copy: b2FilterData = new b2FilterData();
 		copy.categoryBits = categoryBits;

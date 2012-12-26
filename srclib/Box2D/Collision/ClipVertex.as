@@ -30,6 +30,8 @@ use namespace b2internal;
 */
 public class ClipVertex
 {
+	public function ClipVertex() {}
+	
 	public function Set(other:ClipVertex):void
 	{
 		v.SetV(other.v);

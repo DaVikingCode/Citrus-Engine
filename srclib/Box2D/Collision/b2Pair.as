@@ -33,7 +33,7 @@ use namespace b2internal;
  */
 public class b2Pair
 {
-	
+	public function b2Pair() {}
 
 	public function SetBuffered() : void	{ status |= e_pairBuffered; }
 	public function ClearBuffered() : void	{ status &= ~e_pairBuffered; }

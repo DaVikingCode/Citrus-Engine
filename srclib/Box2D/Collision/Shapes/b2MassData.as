@@ -30,6 +30,8 @@ use namespace b2internal;
 */
 public class b2MassData
 {
+	public function b2MassData() {}
+	
 	/**
 	* The mass of the shape, usually in kilograms.
 	*/

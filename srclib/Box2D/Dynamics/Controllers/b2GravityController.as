@@ -27,6 +27,8 @@ package Box2D.Dynamics.Controllers{
  */
 public class b2GravityController extends b2Controller
 {	
+	public function b2GravityController() {}
+	
 	/**
 	 * Specifies the strength of the gravitiation force
 	 */

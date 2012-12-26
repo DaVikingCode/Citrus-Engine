@@ -27,6 +27,8 @@ package Box2D.Collision
 	 */
 	public class b2DistanceInput 
 	{
+		public function b2DistanceInput() {}
+		
 		public var proxyA:b2DistanceProxy;
 		public var proxyB:b2DistanceProxy;
 		public var transformA:b2Transform;

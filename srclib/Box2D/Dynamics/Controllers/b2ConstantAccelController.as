@@ -27,6 +27,8 @@ package Box2D.Dynamics.Controllers{
  */
 public class b2ConstantAccelController extends b2Controller
 {	
+	public function b2ConstantAccelController() {}
+	
 	/**
 	 * The acceleration to apply
 	 */

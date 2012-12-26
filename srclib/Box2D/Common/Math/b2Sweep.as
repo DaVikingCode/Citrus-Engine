@@ -29,6 +29,8 @@ package Box2D.Common.Math{
 */
 public class b2Sweep
 {
+	public function b2Sweep() {}
+	
 	public function Set(other:b2Sweep):void
 	{
 		localCenter.SetV(other.localCenter);

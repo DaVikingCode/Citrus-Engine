@@ -29,6 +29,8 @@ use namespace b2internal;
  */
 public class b2Controller 
 {
+	public function b2Controller() {}
+	
 	public virtual function Step(step:b2TimeStep):void {}
 		
 	public virtual function Draw(debugDraw:b2DebugDraw):void { }

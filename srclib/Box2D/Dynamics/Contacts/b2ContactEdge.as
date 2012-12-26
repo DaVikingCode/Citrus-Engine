@@ -33,6 +33,8 @@ use namespace b2internal;
 */
 public class b2ContactEdge
 {
+	public function b2ContactEdge() {}
+	
 	public var other:b2Body;
 	public var contact:b2Contact;
 	public var prev:b2ContactEdge;

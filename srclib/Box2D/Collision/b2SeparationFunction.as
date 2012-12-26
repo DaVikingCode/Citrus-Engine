@@ -26,6 +26,8 @@ package Box2D.Collision
 
 internal class b2SeparationFunction
 {
+	public function b2SeparationFunction() {}
+	
 	//enum Type
 	public static const e_points:int = 0x01;
 	public static const e_faceA:int = 0x02;

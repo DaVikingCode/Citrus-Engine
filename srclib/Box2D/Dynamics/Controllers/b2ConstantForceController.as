@@ -27,6 +27,8 @@ package Box2D.Dynamics.Controllers{
  */
 public class b2ConstantForceController extends b2Controller
 {	
+	public function b2ConstantForceController() {}
+	
 	/**
 	 * The force to apply
 	 */

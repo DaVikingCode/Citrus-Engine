@@ -25,6 +25,8 @@ package Box2D.Collision
 	 */
 	public class b2DynamicTreeNode 
 	{
+		public function b2DynamicTreeNode() {}
+		
 		public function IsLeaf():Boolean
 		{
 			return child1 == null;
