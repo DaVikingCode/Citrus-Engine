@@ -61,7 +61,6 @@ package citrus.view {
 		 */		
 		public function update():void
 		{
-			camera.update();
 		}
 		
 		/**

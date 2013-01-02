@@ -37,6 +37,8 @@ package citrus.view.spriteview {
 		{
 			super.update();
 			
+			camera.update();
+			
 			//Update art positions
 			for each (var sprite:SpriteArt in _viewObjects)
 			{

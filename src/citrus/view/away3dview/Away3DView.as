@@ -54,6 +54,8 @@ package citrus.view.away3dview {
 		override public function update():void {
 
 			super.update();
+			
+			camera.update(mode);
 
 			// Update art positions
 			for each (var sprite:Away3DArt in _viewObjects) {

@@ -44,6 +44,8 @@ package citrus.view.starlingview {
 		override public function update():void {
 			
 			super.update();
+			
+			camera.update();
 
 			// Update art positions
 			for each (var sprite:StarlingArt in _viewObjects) {
