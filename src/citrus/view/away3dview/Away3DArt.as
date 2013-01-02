@@ -233,7 +233,7 @@ package citrus.view.away3dview {
 					
 					physicsDebugArt = _ce.stage.getChildByName("debug view") as DisplayObject;
 					
-					if (stateView.cameraTarget) {
+					if (stateView.camera.target) {
 						
 						physicsDebugArt.x = stateView.viewRoot.x;
 						physicsDebugArt.y = stateView.viewRoot.y;

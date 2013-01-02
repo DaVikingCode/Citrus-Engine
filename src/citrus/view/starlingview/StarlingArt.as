@@ -317,7 +317,7 @@ package citrus.view.starlingview {
 				// So we need to move their views here, not in the StarlingView.
 				physicsDebugArt = (Starling.current.nativeStage.getChildByName("debug view") as flash.display.DisplayObject);
 				
-				if (stateView.cameraTarget) {
+				if (stateView.camera.target) {
 
 					physicsDebugArt.x = stateView.viewRoot.x;
 					physicsDebugArt.y = stateView.viewRoot.y;

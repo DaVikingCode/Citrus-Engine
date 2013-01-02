@@ -1,3 +1,8 @@
+V 3.1.2, Work In Progress
+-------------------------
+- Outsourced camera stuff into a CitrusCamera class.
+- addSound has now two arguments : the id (String) and the sound (*, String or Class).
+
 V 3.1.1, 12 20 2012
 -------------------
 - created starling and away3d package in citrus.core for StarlingCitrusEngine, StarlingState, Away3DCitrusEngine and Away3DState classes.

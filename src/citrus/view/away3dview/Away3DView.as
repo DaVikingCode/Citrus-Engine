@@ -3,6 +3,7 @@ package citrus.view.away3dview {
 	import away3d.containers.ObjectContainer3D;
 
 	import citrus.physics.APhysicsEngine;
+	import citrus.view.CitrusCamera;
 	import citrus.view.CitrusView;
 	import citrus.view.ISpriteView;
 
@@ -31,6 +32,8 @@ package citrus.view.away3dview {
 			
 			_viewRoot = new ObjectContainer3D();
 			root.addChild(_viewRoot);
+			
+			camera = new CitrusCamera(_viewRoot);
 		}
 
 		override public function destroy():void {
@@ -51,31 +54,6 @@ package citrus.view.away3dview {
 		override public function update():void {
 
 			super.update();
-
-			// Update Camera
-			if (cameraTarget) {
-				var diffX:Number = (-cameraTarget.x + cameraOffset.x) - _viewRoot.position.x;
-				var diffY:Number = (-cameraTarget.y + cameraOffset.y) - _viewRoot.position.y;
-				var velocityX:Number = diffX * cameraEasing.x;
-				var velocityY:Number = diffY * cameraEasing.y;
-
-				_viewRoot.x += velocityX;
-				_viewRoot.y -= velocityY;
-
-				// Constrain to camera bounds
-				if (cameraBounds) {
-
-					if (-_viewRoot.x <= cameraBounds.left || cameraBounds.width < cameraLensWidth)
-						_viewRoot.x = -cameraBounds.left;
-					else if (-_viewRoot.x + cameraLensWidth >= cameraBounds.right)
-						_viewRoot.x = -cameraBounds.right + cameraLensWidth;
-
-					if (-_viewRoot.y <= cameraBounds.top || cameraBounds.height < cameraLensHeight)
-						_viewRoot.y = -cameraBounds.top;
-					else if (-_viewRoot.y + cameraLensHeight >= cameraBounds.bottom)
-						_viewRoot.y = -cameraBounds.bottom + cameraLensHeight;
-				}
-			}
 
 			// Update art positions
 			for each (var sprite:Away3DArt in _viewObjects) {

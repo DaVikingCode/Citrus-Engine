@@ -1,6 +1,7 @@
 package citrus.view.starlingview {
 
 	import citrus.physics.APhysicsEngine;
+	import citrus.view.CitrusCamera;
 	import citrus.view.CitrusView;
 	import citrus.view.ISpriteView;
 	import citrus.view.SpriteDebugArt;
@@ -25,6 +26,8 @@ package citrus.view.starlingview {
 
 			_viewRoot = new Sprite();
 			root.addChild(_viewRoot);
+			
+			camera = new CitrusCamera(_viewRoot);
 		}
 
 		public function get viewRoot():Sprite {
@@ -41,29 +44,6 @@ package citrus.view.starlingview {
 		override public function update():void {
 			
 			super.update();
-
-			// Update Camera
-			if (cameraTarget) {
-				var diffX:Number = (-cameraTarget.x + cameraOffset.x) - _viewRoot.x;
-				var diffY:Number = (-cameraTarget.y + cameraOffset.y) - _viewRoot.y;
-				var velocityX:Number = diffX * cameraEasing.x;
-				var velocityY:Number = diffY * cameraEasing.y;
-				_viewRoot.x += velocityX;
-				_viewRoot.y += velocityY;
-
-				// Constrain to camera bounds
-				if (cameraBounds) {
-					if (-_viewRoot.x <= cameraBounds.left || cameraBounds.width < cameraLensWidth)
-						_viewRoot.x = -cameraBounds.left;
-					else if (-_viewRoot.x + cameraLensWidth >= cameraBounds.right)
-						_viewRoot.x = -cameraBounds.right + cameraLensWidth;
-
-					if (-_viewRoot.y <= cameraBounds.top || cameraBounds.height < cameraLensHeight)
-						_viewRoot.y = -cameraBounds.top;
-					else if (-_viewRoot.y + cameraLensHeight >= cameraBounds.bottom)
-						_viewRoot.y = -cameraBounds.bottom + cameraLensHeight;
-				}
-			}
 
 			// Update art positions
 			for each (var sprite:StarlingArt in _viewObjects) {
