@@ -8,7 +8,7 @@ package citrus.core.starling {
 	import citrus.input.Input;
 	import citrus.system.Entity;
 	import citrus.system.components.ViewComponent;
-	import citrus.view.CitrusView;
+	import citrus.view.ACitrusView;
 	import citrus.view.starlingview.StarlingView;
 
 	import starling.display.Sprite;
@@ -26,7 +26,7 @@ package citrus.core.starling {
 
 		private var _objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 		private var _poolObjects:Vector.<PoolObject> = new Vector.<PoolObject>();
-		private var _view:CitrusView;
+		private var _view:ACitrusView;
 		private var _input:Input;
 		
 		/**
@@ -73,7 +73,7 @@ package citrus.core.starling {
 		/**
 		 * Gets a reference to this state's view manager. Take a look at the class definition for more information about this. 
 		 */
-		public function get view():CitrusView {
+		public function get view():ACitrusView {
 			return _view;
 		}
 
@@ -287,7 +287,7 @@ package citrus.core.starling {
 		/**
 		 * Override this method if you want a state to create an instance of a custom view. 
 		 */
-		protected function createView():CitrusView {
+		protected function createView():ACitrusView {
 			return new StarlingView(this);
 		}
 	}

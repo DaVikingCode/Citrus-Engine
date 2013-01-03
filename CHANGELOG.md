@@ -1,6 +1,7 @@
 V 3.1.2, Work In Progress
 -------------------------
-- Outsourced camera stuff into a CitrusCamera class.
+- outsourced camera stuff into a ACitrusCamera class and one camera by view : BlittingCamera, SpriteCamera, StarlingCamera and Away3DCamera2D.
+- renamed CitrusView into ACitrusView class.
 - addSound has now two arguments : the id (String) and the sound (*, String or Class).
 
 V 3.1.1, 12 20 2012

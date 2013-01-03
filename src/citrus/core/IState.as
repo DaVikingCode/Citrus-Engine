@@ -2,7 +2,7 @@ package citrus.core {
 
 	import citrus.system.Entity;
 	import citrus.system.components.ViewComponent;
-	import citrus.view.CitrusView;
+	import citrus.view.ACitrusView;
 	
 	/**
 	 * Take a look on the 2 respective states to have some information on the functions.
@@ -11,7 +11,7 @@ package citrus.core {
 		
 		function destroy():void;
 		
-		function get view():CitrusView;
+		function get view():ACitrusView;
 		
 		function initialize():void;
 		

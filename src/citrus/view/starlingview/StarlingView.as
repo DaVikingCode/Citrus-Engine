@@ -1,8 +1,7 @@
 package citrus.view.starlingview {
 
 	import citrus.physics.APhysicsEngine;
-	import citrus.view.CitrusCamera;
-	import citrus.view.CitrusView;
+	import citrus.view.ACitrusView;
 	import citrus.view.ISpriteView;
 	import citrus.view.SpriteDebugArt;
 	import citrus.view.StarlingSpriteDebugArt;
@@ -16,7 +15,7 @@ package citrus.view.starlingview {
 	 * It creates and manages graphics like the traditional Flash display list (but on the GPU!!) thanks to Starling :
 	 * (addChild(), removeChild()) using Starling DisplayObjects (MovieClip, Image, Sprite, Quad etc).
 	 */	
-	public class StarlingView extends CitrusView {
+	public class StarlingView extends ACitrusView {
 
 		private var _viewRoot:Sprite;
 
@@ -27,7 +26,7 @@ package citrus.view.starlingview {
 			_viewRoot = new Sprite();
 			root.addChild(_viewRoot);
 			
-			camera = new CitrusCamera(_viewRoot);
+			camera = new StarlingCamera(_viewRoot);
 		}
 
 		public function get viewRoot():Sprite {

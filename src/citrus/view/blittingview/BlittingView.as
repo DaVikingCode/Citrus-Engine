@@ -1,12 +1,12 @@
 package citrus.view.blittingview 
 {
+
 	import citrus.core.CitrusEngine;
 	import citrus.math.MathVector;
 	import citrus.physics.APhysicsEngine;
 	import citrus.physics.IDebugView;
 	import citrus.physics.simple.SimpleCitrusSolver;
-	import citrus.view.CitrusCamera;
-	import citrus.view.CitrusView;
+	import citrus.view.ACitrusView;
 	import citrus.view.ISpriteView;
 	import citrus.view.SpriteDebugArt;
 
@@ -30,7 +30,7 @@ package citrus.view.blittingview
 	 * new BlittingView(this)</code>. Also don't forget to call <code>BlittingView(view).updateCanvas();</code> to set up the blitting canvas. 
 	 * Check the demo for an example.</p>
 	 */	
-	public class BlittingView extends CitrusView
+	public class BlittingView extends ACitrusView
 	{
 		public var backgroundColor:Number = 0xffffffff;
 		
@@ -59,7 +59,7 @@ package citrus.view.blittingview
 			_debugView = new Sprite();
 			root.addChild(_debugView);
 			
-			camera = new CitrusCamera(_cameraPosition);
+			camera = new BlittingCamera(_cameraPosition);
 		}
 		
 		public function get cameraPosition():MathVector
@@ -71,7 +71,7 @@ package citrus.view.blittingview
 		{
 			super.update();
 			
-			camera.update("blitting");			
+			camera.update();			
 			
 			if (_debuggerPhysicsObject) {
 				_debugView.visible = _debuggerPhysicsObject.visible;

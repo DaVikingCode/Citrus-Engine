@@ -1,7 +1,6 @@
 package citrus.view.spriteview {
 
-	import citrus.view.CitrusCamera;
-	import citrus.view.CitrusView;
+	import citrus.view.ACitrusView;
 	import citrus.view.ISpriteView;
 
 	import flash.display.Sprite;
@@ -14,7 +13,7 @@ package citrus.view.spriteview {
 	 * prefer to use other rendering methods. The most common alternative is called "blitting", which is what Flixel uses. There are
 	 * also Stage3D to render graphics 2D graphics via <a href="http://gamua.com/starling/">Starling</a> or 3D graphics thanks to <a href="http://away3d.com/">Away3D</a>.</p>
 	 */	
-	public class SpriteView extends CitrusView
+	public class SpriteView extends ACitrusView
 	{
 		private var _viewRoot:Sprite;
 		
@@ -25,7 +24,7 @@ package citrus.view.spriteview {
 			_viewRoot = new Sprite();
 			root.addChild(_viewRoot);
 			
-			camera = new CitrusCamera(_viewRoot);
+			camera = new SpriteCamera(_viewRoot);
 		}
 		
 		public function get viewRoot():Sprite

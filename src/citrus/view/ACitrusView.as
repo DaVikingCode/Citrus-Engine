@@ -16,7 +16,7 @@ package citrus.view {
 	 * <p>The CitrusView was meant to be extended to support multiple rendering methods, such as blitting, or even Stage3D thanks to Starling and Away3D. 
 	 * The goal is to provide as much decoupling as possible of the data/logic from the view.</p> 
 	 */	
-	public class CitrusView
+	public class ACitrusView
 	{
 		/**
 		 * This is the manager object that keeps track of the asynchronous load progress of all graphics objects that are loading.
@@ -29,7 +29,7 @@ package citrus.view {
 		 */		
 		public var loadManager:LoadManager;
 		
-		public var camera:CitrusCamera;
+		public var camera:ACitrusCamera;
 		
 		protected var _viewObjects:Dictionary = new Dictionary();
 		protected var _root:*;
@@ -41,7 +41,7 @@ package citrus.view {
 		 * Thanks to the State class, you have access to traditional flash display list, blitting and Away3D. 
 		 * If you want to target Starling you have to use the StarlingState class.
 		 */		
-		public function CitrusView(root:*, viewInterface:Class)
+		public function ACitrusView(root:*, viewInterface:Class)
 		{
 			_root = root;
 			_viewInterface = viewInterface;

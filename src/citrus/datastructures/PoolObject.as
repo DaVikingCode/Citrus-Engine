@@ -1,6 +1,6 @@
 package citrus.datastructures {
 
-	import citrus.view.CitrusView;
+	import citrus.view.ACitrusView;
 
 	/**
 	 * Object pooling is a data structure based on a simple observation : the ‘new’ operator is costly, 
@@ -126,7 +126,7 @@ package citrus.datastructures {
 
 		}
 		
-		public function updateArt(stateView:CitrusView):void {
+		public function updateArt(stateView:ACitrusView):void {
 
 			var tmpHead:DoublyLinkedListNode = head;
 

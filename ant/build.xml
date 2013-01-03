@@ -85,8 +85,9 @@
 			<arg line="-include-sources ../src/citrus/utils/Mobile.as" />
 			<arg line="-include-sources ../src/citrus/utils/objectmakers/ObjectMaker2D.as" />
 			<arg line="-include-sources ../src/citrus/utils/objectmakers/tmx" />
-
-			<arg line="-include-sources ../src/citrus/view/CitrusView.as" />
+			
+			<arg line="-include-sources ../src/citrus/view/ACitrusCamera.as" />
+			<arg line="-include-sources ../src/citrus/view/ACitrusView.as" />
 			<arg line="-include-sources ../src/citrus/view/ISpriteView.as" />
 			<arg line="-include-sources ../src/citrus/view/SpriteDebugArt.as" />
 			<arg line="-include-sources ../src/citrus/view/blittingview" />
