@@ -1,12 +1,13 @@
 package citrus.math {
-
+	
 	import flash.display.DisplayObject;
+	import flash.geom.Rectangle;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	
 	public class MathUtils {
 		
-		public static function DistanceBetweenTwoPoints(x1:Number, x2:Number,  y1:Number, y2:Number):Number {
+		public static function DistanceBetweenTwoPoints(x1:Number, x2:Number, y1:Number, y2:Number):Number {
 			
 			var dx:Number = x1 - x2;
 			var dy:Number = y1 - y2;
@@ -31,10 +32,52 @@ package citrus.math {
 			var m:Matrix = object.transform.matrix;
 			
 			m.translate(-pointToRotateAround.x, -pointToRotateAround.y);
-		    m.rotate(rotation * (Math.PI / 180));
-    		m.translate(pointToRotateAround.x, pointToRotateAround.y);
+			m.rotate(rotation * (Math.PI / 180));
+			m.translate(pointToRotateAround.x, pointToRotateAround.y);
 			
-			object.transform.matrix = m;	
+			object.transform.matrix = m;
+		}
+		
+		/**
+		 * Creates the axis aligned bounding box for a rotated rectangle.
+		 * @param w width of the rotated rectangle
+		 * @param h height of the rotated rectangle
+		 * @param a angle of rotation around the topLeft point in radian
+		 * @return flash.geom.Rectangle
+		 */
+		public static function createAABB(x:Number, y:Number, w:Number, h:Number, a:Number = 0):Rectangle {
+			var aabb:Rectangle = new Rectangle(x, y, w, h);
+			if (a == 0)
+				return aabb;
+				
+			var c:Number = Math.cos(a);
+			var s:Number = Math.sin(a);
+			var cpos:Boolean;
+			var spos:Boolean;
+			
+			if (s < 0) { s = -s; spos = false } else { spos = true; }
+			if (c < 0) { c = -c; cpos = false } else { cpos = true; }
+			
+			aabb.width = h * s + w * c;
+			aabb.height = h * c + w * s;
+			
+			if (cpos)
+				if (spos)
+					aabb.x -= h * s;
+				else
+					aabb.y -= w * s;
+			else if (spos)
+			{
+				aabb.x -= w * c + h * s;
+				aabb.y -= h * c;
+			}
+			else
+			{
+				aabb.x -= w * c;
+				aabb.y -= w * s + h * c;
+			}
+			
+			return aabb;
 		}
 	}
 }
