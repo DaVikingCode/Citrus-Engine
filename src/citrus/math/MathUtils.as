@@ -46,7 +46,9 @@ package citrus.math {
 		 * @return flash.geom.Rectangle
 		 */
 		public static function createAABB(x:Number, y:Number, w:Number, h:Number, a:Number = 0):Rectangle {
+			
 			var aabb:Rectangle = new Rectangle(x, y, w, h);
+			
 			if (a == 0)
 				return aabb;
 				
@@ -55,8 +57,8 @@ package citrus.math {
 			var cpos:Boolean;
 			var spos:Boolean;
 			
-			if (s < 0) { s = -s; spos = false } else { spos = true; }
-			if (c < 0) { c = -c; cpos = false } else { cpos = true; }
+			if (s < 0) { s = -s; spos = false; } else { spos = true; }
+			if (c < 0) { c = -c; cpos = false; } else { cpos = true; }
 			
 			aabb.width = h * s + w * c;
 			aabb.height = h * c + w * s;
