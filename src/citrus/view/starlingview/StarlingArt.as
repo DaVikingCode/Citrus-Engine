@@ -319,8 +319,10 @@ package citrus.view.starlingview {
 				
 				if (stateView.camera.target) {
 
-					physicsDebugArt.x = stateView.viewRoot.x;
-					physicsDebugArt.y = stateView.viewRoot.y;
+					//temporarily using the StarlingCamera cameraLens property.
+					physicsDebugArt.x = -(stateView.camera as StarlingCamera).cameraLens.rect.x;
+					physicsDebugArt.y = -(stateView.camera as StarlingCamera).cameraLens.rect.y;
+					physicsDebugArt.scaleX = physicsDebugArt.scaleY = (stateView.camera as StarlingCamera).cameraLens.zoom;
 				}
 
 				physicsDebugArt.visible = _citrusObject.visible;
