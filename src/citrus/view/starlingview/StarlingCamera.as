@@ -29,7 +29,7 @@ package citrus.view.starlingview {
 		 * camera Lens's rect will also be scaled according to the zoom factor.
 		 * it holds the current zoom and rotation (seperately from _zoom and _rotation) for easing.
 		 */
-		protected var _cameraLens:Object = { rect:null,zoom:2,rotation:0 };
+		protected var _cameraLens:Object = { rect:null,zoom:1,rotation:0 };
 		
 		protected var _zoomEasing:Number = 0.03;
 		
@@ -129,20 +129,20 @@ package citrus.view.starlingview {
 					_cameraLens.zoom = lhratio;
 			}
 			
-			/**
-			 * follow target position.
-			 */
-			var diffX:Number = (target.x * _cameraLens.zoom - rotatedOffset.x) - _cameraLens.rect.x - _aabbData.offsetX;
-			var diffY:Number = (target.y * _cameraLens.zoom - rotatedOffset.y) - _cameraLens.rect.y - _aabbData.offsetY;
-			var velocityX:Number = diffX * easing.x;
-			var velocityY:Number = diffY * easing.y;
+			//follow target position.
 			
-			_cameraLens.rect.x += velocityX;
-			_cameraLens.rect.y += velocityY;
+			if (target)
+			{
+				var diffX:Number = (target.x * _cameraLens.zoom - rotatedOffset.x) - _cameraLens.rect.x - _aabbData.offsetX;
+				var diffY:Number = (target.y * _cameraLens.zoom - rotatedOffset.y) - _cameraLens.rect.y - _aabbData.offsetY;
+				var velocityX:Number = diffX * easing.x;
+				var velocityY:Number = diffY * easing.y;
+				
+				_cameraLens.rect.x += velocityX;
+				_cameraLens.rect.y += velocityY;
+			}
 			
-			/**
-			 * move aabb rect with us
-			 */
+			// move aabb rect with us;
 			_aabbData.rect.x = _cameraLens.rect.x;
 			_aabbData.rect.y = _cameraLens.rect.y
 			
@@ -164,25 +164,6 @@ package citrus.view.starlingview {
 			_viewRoot.scaleX = _viewRoot.scaleY = _cameraLens.zoom;
 			_viewRoot.rotation = _cameraLens.rotation;
 			
-			renderDebugDraw(Main.debugSprite);
-			
-			/*Main.printClr();
-			Main.print(rotatedOffset.x, rotatedOffset.y);
-			Main.print("CAMERA LENS");
-			Main.print("x :",_cameraLens.rect.x);
-			Main.print("y :", _cameraLens.rect.y);
-			Main.print("w :", _cameraLens.rect.width);
-			Main.print("h :", _cameraLens.rect.height);
-			Main.print("zoom :", _cameraLens.zoom);
-			Main.print("rot :", _cameraLens.rotation);
-			Main.print("CAMERA AABB");
-			Main.print("offX :",_aabbData.offsetX);
-			Main.print("offY :",_aabbData.offsetY);
-			Main.print("w :",_aabbData.rect.width);
-			Main.print("h :", _aabbData.rect.height);
-			Main.print("ROTATED OFFSET");
-			Main.print("x :",rotatedOffset.x);
-			Main.print("y :",rotatedOffset.y);*/
 		}
 		
 		/**
