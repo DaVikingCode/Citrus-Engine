@@ -14,6 +14,21 @@ package citrus.physics.nape {
 	 */
 	public class Nape extends APhysicsEngine implements ISpriteView {
 		
+		/**
+		 * timeStep the amount of time to simulate, this should not vary.
+		 */
+		public var timeStep:Number = 1 / 20;
+		
+		/**
+		 * velocityIterations for the velocity constraint solver.
+		 */
+		public var velocityIterations:uint = 8;
+		
+		/**
+		 *positionIterations for the position constraint solver.
+		 */
+		public var positionIterations:uint = 8;
+		
 		private var _space:Space;
 		private var _gravity:Vec2 = new Vec2(0, 450);
 		private var _contactListener:NapeContactListener;
@@ -90,8 +105,7 @@ package citrus.physics.nape {
 			
 			super.update(timeDelta);
 			
-			// 0.05 = 1 / 20
-			_space.step(0.05, 8, 8);
+			_space.step(timeStep, velocityIterations, positionIterations);
 		}
 	}
 }

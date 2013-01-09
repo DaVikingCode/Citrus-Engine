@@ -15,6 +15,21 @@ package citrus.physics.awayphysics {
 	 */
 	public class AwayPhysics extends APhysicsEngine implements ISpriteView {
 		
+		/**
+		 * timeStep the amount of time to simulate, this should not vary.
+		 */
+		public var timeStep:Number = 1 / 60;
+		
+		/**
+		 * maxSubSteps the maximum number of steps that AwayPhysics is allowed to take each time you call it.
+		 */
+		public var maxSubSteps:uint = 1;
+		
+		/**
+		 * fixedTimeStep is the size of that internal step.
+		 */
+		 public var fixedTimeStep:Number = 1 / 60;
+		
 		private var _world:AWPDynamicsWorld;
 		private var _gravity:Vector3D = new Vector3D(0, -10, 0);
 		
@@ -85,8 +100,7 @@ package citrus.physics.awayphysics {
 			
 			super.update(timeDelta);
 			
-			// 0.01667 = 1 / 60
-			_world.step(0.01667, 1, 0.01667);
+			_world.step(timeStep, maxSubSteps, fixedTimeStep);
 		}
 	}
 }

@@ -14,6 +14,21 @@ package citrus.physics.box2d {
 	 */	
 	public class Box2D extends APhysicsEngine implements ISpriteView
 	{	
+		/**
+		 * timeStep the amount of time to simulate, this should not vary.
+		 */
+		public var timeStep:Number = 1 / 20;
+		
+		/**
+		 * velocityIterations for the velocity constraint solver.
+		 */
+		public var velocityIterations:uint = 8;
+		
+		/**
+		 *positionIterations for the position constraint solver.
+		 */
+		public var positionIterations:uint = 8;
+		
 		private var _scale:Number = 30;
 		private var _world:b2World;
 		private var _gravity:b2Vec2 = new b2Vec2(0, 15);
@@ -94,8 +109,7 @@ package citrus.physics.box2d {
 		{
 			super.update(timeDelta);
 			
-			// 0.05 = 1 / 20
-			_world.Step(0.05, 8, 8);
+			_world.Step(timeStep, velocityIterations, positionIterations);
 			_world.ClearForces();
 		}
 	}

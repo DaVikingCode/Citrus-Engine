@@ -4,6 +4,7 @@ V 3.1.2, Work In Progress
 - renamed CitrusView into ACitrusView class.
 - addSound method has now two arguments : the id (String) and the sound (*, String or Class).
 - added createAABB method in MathUtils package.
+- you can change physics step thanks to their public var.
 
 V 3.1.1, 12 20 2012
 -------------------
