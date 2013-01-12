@@ -10,10 +10,12 @@ package citrus.view.starlingview {
 	/**
 	 * The Camera for the StarlingView.
 	 *
+	 * TODO LIST (to do after validation)
 	 * - more optimization needed.
-	 * - take care of Starling's content scale factor for different devices (should need to affect _camProxy.scale)
-	 * - needs room for camera effects such as shaking. (which can currently be achieved by shaking the ghostTarget point)
-	 *
+	 * - port directly to SpriteCamera (no difference)
+	 * - take care of Starling's content scale factor for different devices (should need to affect _camProxy.scale maybe)
+	 * - needs room for camera effects such as shaking. (which can currently be achieved by shaking the ghostTarget point
+	 * internally, or setting a manualPosition externally and shake it... both seem like dodgy approaches though.)
 	 */
 	public class StarlingCamera extends ACitrusCamera
 	{
@@ -36,8 +38,16 @@ package citrus.view.starlingview {
 		 * _aabb holds the axis aligned bounding box of the camera in rect
 		 * and its relative position to it (with offsetX and offsetY)
 		 */
-		protected var _aabbData:Object = {};
+		protected var _aabbData:Object = { };
+		
+		/**
+		 * the targeted rotation value.
+		 */
 		protected var _rotation:Number = 0;
+		
+		/**
+		 * the targeted zoom value.
+		 */
 		protected var _zoom:Number = 1;
 		
 		/**
@@ -46,8 +56,8 @@ package citrus.view.starlingview {
 		protected var _ghostTarget:Point = new Point();
 		
 		/**
-		 * target pos is the position of the target that will be restricted inside inner bounds to prevent
-		 * the camera from going offscreen.
+		 * targetPos is used for calculating ghostTarget.
+		 * (not sure if really necessary)
 		 */
 		protected var _targetPos:Point = new Point();
 		
@@ -71,7 +81,7 @@ package citrus.view.starlingview {
 		}
 		
 		/**
-		 * sets the target rotation to angle.
+		 * sets the targeted rotation value to angle.
 		 * @param	angle in radians.
 		 */
 		public function setRotation(angle:Number):void
@@ -80,7 +90,8 @@ package citrus.view.starlingview {
 		}
 		
 		/**
-		 * rotates the target rotation by angle.
+		 * rotates the camera by the angle.
+		 * adds angle to targeted rotation value.
 		 * @param	angle in radians.
 		 */
 		public function rotate(angle:Number):void
@@ -94,7 +105,7 @@ package citrus.view.starlingview {
 		}
 		
 		/**
-		 * sets zoom target to factor.
+		 * sets the targeted zoom value to factor.
 		 * @param	factor
 		 */
 		public function setZoom(factor:Number):void
@@ -103,7 +114,7 @@ package citrus.view.starlingview {
 		}
 		
 		/**
-		 * multiplies factor by current zoom target.
+		 * multiplies the targeted zoom value by factor.
 		 * @param	factor
 		 */
 		public function zoom(factor:Number):void
