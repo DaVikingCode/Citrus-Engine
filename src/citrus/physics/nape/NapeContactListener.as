@@ -41,5 +41,6 @@ package citrus.physics.nape {
 		public function onInteractionOngoing(interactionCallback:InteractionCallback):void {
 			interactionCallback.int1.userData.myData.handleOngoingContact(interactionCallback);
 			interactionCallback.int2.userData.myData.handleOngoingContact(interactionCallback);
+		}
 	}
 }
