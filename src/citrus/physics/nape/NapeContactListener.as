@@ -20,6 +20,7 @@ package citrus.physics.nape {
 			
 			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, onInteractionBegin));
 			_space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, onInteractionEnd));
+			_space.listeners.add(new InteractionListener(CbEvent.ONGOING, InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, onInteractionOngoing));
 		}
 		
 		public function destroy():void {
@@ -36,5 +37,9 @@ package citrus.physics.nape {
 			interactionCallback.int1.userData.myData.handleEndContact(interactionCallback);
 			interactionCallback.int2.userData.myData.handleEndContact(interactionCallback);
 		}
+		
+		public function onInteractionOngoing(interactionCallback:InteractionCallback):void {
+			interactionCallback.int1.userData.myData.handleOngoingContact(interactionCallback);
+			interactionCallback.int2.userData.myData.handleOngoingContact(interactionCallback);
 	}
 }
