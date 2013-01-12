@@ -19,8 +19,8 @@ package citrus.view.spriteview {
 
 			if (target) {
 				
-				var diffX:Number = (-target.x + offset.x) - _viewRoot.x;
-				var diffY:Number = (-target.y + offset.y) - _viewRoot.y;
+				var diffX:Number = (-_target.x + offset.x) - _viewRoot.x;
+				var diffY:Number = (-_target.y + offset.y) - _viewRoot.y;
 				var velocityX:Number = diffX * easing.x;
 				var velocityY:Number = diffY * easing.y;
 				

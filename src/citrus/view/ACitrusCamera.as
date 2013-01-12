@@ -2,6 +2,7 @@ package citrus.view {
 
 	import citrus.core.CitrusEngine;
 	import citrus.math.MathVector;
+	import flash.geom.Point;
 
 	import flash.geom.Rectangle;
 
@@ -14,9 +15,14 @@ package citrus.view {
 
 		// Camera properties
 		/**
-		 * The thing that the camera will follow. 
+		 * The thing that the camera will follow if a manual position is not set.
 		 */
-		public var target:Object;
+		protected var _target:Object;
+		
+		/**
+		 * The camera position to be set manually if target is not set.
+		 */
+		protected var _manualPosition:Point;
 
 		/**
 		 * The distance from the top-left corner of the screen that the camera should offset the target. 
@@ -58,6 +64,22 @@ package citrus.view {
 		 * Update the camera.
 		 */
 		public function update():void {
+		}
+		
+		public function set target(o:Object):void {	
+			_target = o;
+		}
+		
+		public function get target():Object {	
+			return _target;
+		}
+		
+		public function set manualPosition(p:Point):void {
+			_manualPosition = p;
+		}
+		
+		public function get manualPosition():Point {	
+			return _manualPosition;
 		}
 	}
 }
