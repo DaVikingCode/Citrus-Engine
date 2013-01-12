@@ -240,9 +240,8 @@ package citrus.view.starlingview {
 		 * the MathUtils.createAABBData method.
 		 * @param	sprite a flash display sprite to render to.
 		 */
-		private function renderDebug(sprite:*):void
+		public function renderDebug(sprite:*):void
 		{
-			Main.printClr();
 			
 			sprite.x = cameraLensWidth>>1 - bounds.width>>1;
 			sprite.y = cameraLensHeight>>1 - bounds.height>>1;
