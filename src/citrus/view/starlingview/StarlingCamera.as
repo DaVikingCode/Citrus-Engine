@@ -22,7 +22,7 @@ package citrus.view.starlingview {
 		/**
 		 * should we restrict zoom to bounds?
 		 */
-		public var restrictZoom:Boolean = true;
+		public var restrictZoom:Boolean = false;
 		
 		/**
 		 * the ease factor for zoom
@@ -211,13 +211,13 @@ package citrus.view.starlingview {
 				var newAABBPos:Point = new Point(_aabbData.rect.x,_aabbData.rect.y);
 				
 				//x
-				if (_aabbData.rect.left <= bounds.left)
+				if (_aabbData.rect.left <= bounds.left || _aabbData.rect.width >= bounds.width)
 					newAABBPos.x = bounds.left;
 				else if (_aabbData.rect.right >= bounds.right)
 					newAABBPos.x = bounds.right - _aabbData.rect.width;
 				
 				//y
-				if (_aabbData.rect.top <= bounds.top)
+				if (_aabbData.rect.top <= bounds.top || _aabbData.rect.height >= bounds.height)
 					newAABBPos.y = bounds.top;
 				else if (_aabbData.rect.bottom >= bounds.bottom)
 					newAABBPos.y = bounds.bottom - _aabbData.rect.height;
