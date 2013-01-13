@@ -66,7 +66,6 @@ package citrus.view.starlingview {
 
 		// properties :
 		
-		// determines animations playing in loop. You can add one in your state class : StarlingArt.setLoopAnimations(["walk", "climb"]);
 		private static var _loopAnimation:Dictionary = new Dictionary();
 		
 		private var _citrusObject:ISpriteView;
@@ -160,6 +159,9 @@ package citrus.view.starlingview {
 			}
 		}
 		
+		/**
+		 * Determines animations playing in loop. You can add one in your state class: <code>StarlingArt.setLoopAnimations(["walk", "climb"])</code>;
+		 */
 		static public function get loopAnimation():Dictionary {
 			return _loopAnimation;
 		}
