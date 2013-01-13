@@ -103,13 +103,6 @@ package citrus.objects {
 		public function handleEndContact(callback:InteractionCallback):void {
 		}
 		
-		
-		/**
-		 * Override this method to handle ongoing contact collision.
-		 */
-		public function handleOngoingContact(callback:InteractionCallback):void {
-		}
-		
 		/**
 		 * This method will often need to be overridden to provide additional definition to the Nape body object. 
 		 */
