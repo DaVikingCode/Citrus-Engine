@@ -6,6 +6,7 @@ package citrus.view.starlingview {
 	import citrus.physics.APhysicsEngine;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ISpriteView;
+	import flash.geom.Point;
 
 	import dragonBones.Armature;
 
@@ -309,6 +310,9 @@ package citrus.view.starlingview {
 			
 			var physicsDebugArt:flash.display.DisplayObject;
 			
+			var cam:StarlingCamera = (stateView.camera as StarlingCamera);
+			var camPosition:Point = cam.pointFromLocal(new Point(cam.offset.x/cam.getZoom(), cam.offset.y/cam.getZoom()));
+			
 			if (content is StarlingPhysicsDebugView) {
 				
 				(content as StarlingPhysicsDebugView).update();
@@ -317,11 +321,11 @@ package citrus.view.starlingview {
 				// So we need to move their views here, not in the StarlingView.
 				physicsDebugArt = (Starling.current.nativeStage.getChildByName("debug view") as flash.display.DisplayObject);
 				
-				if (stateView.camera.target) {
+				if (stateView.camera.target || stateView.camera.manualPosition) {
 
 					//temporarily using the StarlingCamera cameraLens property.
-					physicsDebugArt.x = (stateView.camera as StarlingCamera).camProxy.x;
-					physicsDebugArt.y = (stateView.camera as StarlingCamera).camProxy.y;
+					physicsDebugArt.x = cam.camProxy.x;
+					physicsDebugArt.y = cam.camProxy.y;
 					physicsDebugArt.scaleX = physicsDebugArt.scaleY = (stateView.camera as StarlingCamera).camProxy.scale;
 					physicsDebugArt.rotation = (stateView.camera as StarlingCamera).camProxy.rotation * 180/Math.PI;
 				}
@@ -330,14 +334,14 @@ package citrus.view.starlingview {
 				
 			} else if (_physicsComponent) {
 				
-				x = _physicsComponent.x + (-stateView.viewRoot.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
-				y = _physicsComponent.y + (-stateView.viewRoot.y * (1 - _citrusObject.parallax)) + _citrusObject.offsetY;
+				x = _physicsComponent.x + (camPosition.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX;
+				y = _physicsComponent.y + (camPosition.y * (1 - _citrusObject.parallax)) + _citrusObject.offsetY;
 				rotation = deg2rad(_physicsComponent.rotation);
 
 			} else {
 
-				x = _citrusObject.x + (-stateView.viewRoot.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
-				y = _citrusObject.y + (-stateView.viewRoot.y * (1 - _citrusObject.parallax)) + _citrusObject.offsetY;
+				x = _citrusObject.x + (camPosition.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX;
+				y = _citrusObject.y + (camPosition.y * (1 - _citrusObject.parallax)) + _citrusObject.offsetY;
 				rotation = deg2rad(_citrusObject.rotation);
 			}
 			
