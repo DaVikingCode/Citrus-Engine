@@ -86,12 +86,13 @@ package citrus.view.starlingview {
 		}
 
 		private function updateGroupForSprite(sprite:StarlingArt):void {
+			
 			// Create the container sprite (group) if it has not been created yet.
-			while (sprite.group >= _viewRoot.numChildren)
+			while (sprite.citrusObject.group >= _viewRoot.numChildren)
 				_viewRoot.addChild(new Sprite());
 
 			// Add the sprite to the appropriate group
-			Sprite(_viewRoot.getChildAt(sprite.group)).addChild(sprite);
+			Sprite(_viewRoot.getChildAt(sprite.citrusObject.group)).addChild(sprite);
 		}
 	}
 }
