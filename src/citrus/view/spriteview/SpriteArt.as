@@ -55,7 +55,7 @@ package citrus.view.spriteview
 		private var _registration:String;
 		private var _view:*;
 		private var _animation:String;
-		private var _group:int;
+		public var group:uint;
 		
 		public function SpriteArt(object:ISpriteView = null) 
 		{
@@ -201,16 +201,6 @@ package citrus.view.spriteview
 				if (_animation != null && _animation != "" && hasAnimation(_animation))
 					mc.gotoAndStop(_animation);
 			}
-		}
-		
-		public function get group():int
-		{
-			return _group;
-		}
-		
-		public function set group(value:int):void
-		{
-			_group = value;
 		}
 		
 		public function get citrusObject():ISpriteView

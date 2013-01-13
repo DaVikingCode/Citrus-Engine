@@ -35,7 +35,7 @@ package citrus.objects
 		protected var _velocity:MathVector = new MathVector();
 		protected var _parallax:Number = 1;
 		protected var _rotation:Number = 0;
-		protected var _group:Number = 0;
+		protected var _group:uint = 0;
 		protected var _visible:Boolean = true;
 		protected var _view:* = SpriteDebugArt;
 		protected var _inverted:Boolean = false;
@@ -150,13 +150,13 @@ package citrus.objects
 		/**
 		 * The group is similar to a z-index sorting. Default is 0, 1 is over.
 		 */
-		public function get group():Number
+		public function get group():uint
 		{
 			return _group;
 		}
 		
 		[Inspectable(defaultValue="0")]
-		public function set group(value:Number):void
+		public function set group(value:uint):void
 		{
 			_group = value;
 		}

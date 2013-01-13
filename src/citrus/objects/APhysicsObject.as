@@ -23,7 +23,7 @@ package citrus.objects {
 		protected var _rotation:Number = 0;
 		protected var _radius:Number = 0;
 
-		private var _group:Number = 0;
+		private var _group:uint = 0;
 		private var _offsetX:Number = 0;
 		private var _offsetY:Number = 0;
 		private var _registration:String = "center";
@@ -108,12 +108,12 @@ package citrus.objects {
 		/**
 		 * The group is similar to a z-index sorting. Default is 0, 1 is over.
 		 */
-		public function get group():Number {
+		public function get group():uint {
 			return _group;
 		}
 		
 		[Inspectable(defaultValue="0")]
-		public function set group(value:Number):void {
+		public function set group(value:uint):void {
 			_group = value;
 		}
 		

@@ -71,7 +71,7 @@ package citrus.view
 		 * Note that groups and parallax are unrelated, so be careful not to have an object have a lower parallax value than an object 
 		 * in a group below it.
 		 */
-		function get group():Number;
+		function get group():uint;
 		
 		/**
 		 * The visibility of the object. 

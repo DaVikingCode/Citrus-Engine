@@ -8,7 +8,7 @@ package citrus.physics {
 	public class APhysicsEngine extends CitrusObject {
 		
 		protected var _visible:Boolean = false;
-		protected var _group:Number = 1;
+		protected var _group:uint = 1;
 		protected var _view:*;
 		protected var _realDebugView:*;
 
@@ -68,11 +68,11 @@ package citrus.physics {
 			return 0;
 		}
 
-		public function get group():Number {
+		public function get group():uint {
 			return _group;
 		}
 
-		public function set group(value:Number):void {
+		public function set group(value:uint):void {
 			_group = value;
 		}
 
