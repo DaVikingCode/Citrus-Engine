@@ -77,6 +77,8 @@ package citrus.view.spriteview {
 			
 			//Add the sprite to the appropriate group
 			Sprite(_viewRoot.getChildAt(sprite.citrusObject.group)).addChild(sprite);
+			
+			// The sprite.group will be updated in the update method like all its other values. This function is called after the updateGroupForSprite method.
 		}
 	}
 }

@@ -90,9 +90,11 @@ package citrus.view.starlingview {
 			// Create the container sprite (group) if it has not been created yet.
 			while (sprite.citrusObject.group >= _viewRoot.numChildren)
 				_viewRoot.addChild(new Sprite());
-
+			
 			// Add the sprite to the appropriate group
 			Sprite(_viewRoot.getChildAt(sprite.citrusObject.group)).addChild(sprite);
+			
+			// The sprite.group will be updated in the update method like all its other values. This function is called after the updateGroupForSprite method.
 		}
 	}
 }

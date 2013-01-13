@@ -101,6 +101,8 @@ package citrus.view.away3dview {
 
 			// Add the sprite to the appropriate group
 			ObjectContainer3D(_viewRoot.getChildAt(sprite.citrusObject.group)).addChild(sprite);
+			
+			// The sprite.group will be updated in the update method like all its other values. This function is called after the updateGroupForSprite method.
 		}
 	}
 }
