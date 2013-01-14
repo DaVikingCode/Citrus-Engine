@@ -5,6 +5,7 @@ V 3.1.2, Work In Progress
 - addSound method has now two arguments : the id (String) and the sound (*, String or Class).
 - added createAABB method in MathUtils package.
 - you can change physics step thanks to their public var.
+- updated on Starling 1.3.
 - fixed a bug where the group property wasn't updated using Away3DView, SpriteView and StarlingView.
 
 V 3.1.1, 12 20 2012
