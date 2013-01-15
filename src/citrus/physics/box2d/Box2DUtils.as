@@ -12,8 +12,8 @@ package citrus.physics.box2d {
 		 * In Box2D we are blind concerning the collision, we are never sure which body is the collider. This function should help.
 		 * Call this function to obtain the colliding physics object.
 		 * @param self in CE's code, we give this. In your code it will be your hero, a sensor, ...
-		 * @param the contact
-		 * @return the collider
+		 * @param the contact.
+		 * @return the collider.
 		 */
 		static public function CollisionGetOther(self:IBox2DPhysicsObject, contact:b2Contact):IBox2DPhysicsObject {
 			return self == contact.GetFixtureA().GetBody().GetUserData() ? contact.GetFixtureB().GetBody().GetUserData() : contact.GetFixtureA().GetBody().GetUserData();
@@ -23,11 +23,22 @@ package citrus.physics.box2d {
 		 * In Box2D we are blind concerning the collision, we are never sure which body is the collider. This function should help.
 		 * Call this function to obtain the collided physics object.
 		 * @param self in CE's code, we give this. In your code it will be your hero, a sensor, ...
-		 * @param the contact
-		 * @return the collided
+		 * @param the contact.
+		 * @return the collided.
 		 */
 		static public function CollisionGetSelf(self:IBox2DPhysicsObject, contact:b2Contact):IBox2DPhysicsObject {
 			return self == contact.GetFixtureA().GetBody().GetUserData() ? contact.GetFixtureA().GetBody().GetUserData() : contact.GetFixtureB().GetBody().GetUserData();
+		}
+		
+		/**
+		 * In Box2D we are blind concerning the collision, we are never sure which body is the collider. This function should help.
+		 * Call this function to obtain the object of the type wanted.
+		 * @param objectClass the class whose you want to pick up the object.
+		 * @param callback the InteractionCallback.
+		 * @return the object of the class desired.
+		 */
+		static public function CollisionGetObjectByType(objectClass:Class, contact:b2Contact):IBox2DPhysicsObject {
+			return contact.GetFixtureA().GetBody().GetUserData() is objectClass ? contact.GetFixtureA().GetBody().GetUserData() : contact.GetFixtureB().GetBody().GetUserData();
 		}
 		
 		/**
