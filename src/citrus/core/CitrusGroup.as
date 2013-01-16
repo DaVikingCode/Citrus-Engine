@@ -8,7 +8,7 @@ package citrus.core {
 	 */
 	public class CitrusGroup extends Entity {
 
-		public var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
+		protected var _groupObjects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 
 		public function CitrusGroup(name:String, params:Object = null) {
 			super(name, params);
@@ -16,23 +16,23 @@ package citrus.core {
 
 		public function addObject(object:CitrusObject):void {
 
-			objects.push(object);
+			_groupObjects.push(object);
 		}
 
 		public function removeObject(object:CitrusObject):void {
 
-			objects.splice(objects.indexOf(object), 1);
+			_groupObjects.splice(_groupObjects.indexOf(object), 1);
 		}
 
 		public function setParamsOnObjects(param:Object):void {
 
-			for each (var object:CitrusObject in objects)				
+			for each (var object:CitrusObject in _groupObjects)				
 				setParams(object, param);
 		}
 		
 		public function setParamsOnViews(param:Object):void {
 			
-			for each (var object:ISpriteView in objects)				
+			for each (var object:ISpriteView in _groupObjects)				
 				setParams(object.view, param);
 		}
 		
@@ -43,7 +43,7 @@ package citrus.core {
 		 */
 		public function getObjectByName(name:String):CitrusObject {
 
-			for each (var object:CitrusObject in objects) {
+			for each (var object:CitrusObject in _groupObjects) {
 				if (object.name == name)
 					return object;
 			}
@@ -61,7 +61,7 @@ package citrus.core {
 
 			var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 
-			for each (var object:CitrusObject in objects) {
+			for each (var object:CitrusObject in _groupObjects) {
 				if (object.name == name)
 					objects.push(object);
 			}
@@ -76,7 +76,7 @@ package citrus.core {
 		 */
 		public function getFirstObjectByType(type:Class):CitrusObject {
 
-			for each (var object:CitrusObject in objects) {
+			for each (var object:CitrusObject in _groupObjects) {
 				if (object is type)
 					return object;
 			}
@@ -94,13 +94,17 @@ package citrus.core {
 
 			var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 
-			for each (var object:CitrusObject in objects) {
+			for each (var object:CitrusObject in _groupObjects) {
 				if (object is type) {
 					objects.push(object);
 				}
 			}
 
 			return objects;
+		}
+
+		public function get groupObjects():Vector.<CitrusObject> {
+			return _groupObjects;
 		}
 		
 	}
