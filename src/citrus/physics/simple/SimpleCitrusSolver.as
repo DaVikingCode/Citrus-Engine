@@ -20,7 +20,6 @@ package citrus.physics.simple {
 	 */
 	public class SimpleCitrusSolver extends CitrusObject {
 
-		private var _ce:CitrusEngine;
 		private var _collideChecks:Array = [];
 		private var _overlapChecks:Array = [];
 

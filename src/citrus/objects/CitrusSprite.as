@@ -27,7 +27,6 @@ package citrus.objects
 		public var onPersist:Signal = new Signal(CitrusSprite, CitrusSprite, MathVector);
 		public var onSeparate:Signal = new Signal(CitrusSprite, CitrusSprite);
 		
-		protected var _ce:CitrusEngine;
 		protected var _x:Number = 0;
 		protected var _y:Number = 0;
 		protected var _width:Number = 30;

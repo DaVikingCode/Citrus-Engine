@@ -26,6 +26,7 @@ package citrus.core
 		public var className:String = "";
 		
 		protected var _initialized:Boolean = false;
+		protected var _ce:CitrusEngine;
 		
 		private var _params:Object;
 		
@@ -61,7 +62,7 @@ package citrus.core
 				_params = poolObjectParams;
 			
 			if (_params)
-				setParams(_params);
+				setParams(this, _params);
 			else
 				_initialized = true;					
 		}
@@ -88,19 +89,19 @@ package citrus.core
 		
 		/**
 		 * The initialize method usually calls this.
-		 */		
-		protected function setParams(object:Object):void
+		 */
+		public function setParams(object:Object, params:Object):void
 		{
-			for (var param:String in object)
+			for (var param:String in params)
 			{
 				try
 				{
-					if (object[param] == "true")
-						this[param] = true;
-					else if (object[param] == "false")
-						this[param] = false;
+					if (params[param] == "true")
+						object[param] = true;
+					else if (params[param] == "false")
+						object[param] = false;
 					else
-						this[param] = object[param];
+						object[param] = params[param];
 				}
 				catch (e:Error)
 				{

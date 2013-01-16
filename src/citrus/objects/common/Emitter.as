@@ -98,7 +98,6 @@ package citrus.objects.common
 		private var _particlesCreated:uint = 0;
 		private var _lastEmission:Number = 0;
 		private var _birthTime:Number = -1;
-		private var _ce:CitrusEngine;
 		
 		/**
 		 * Makes a particle emitter. 

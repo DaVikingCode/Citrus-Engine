@@ -12,8 +12,6 @@ package citrus.system {
 	public class Component extends CitrusObject {
 		
 		public var entity:Entity;
-		
-		protected var _ce:CitrusEngine;
 
 		public function Component(name:String, params:Object = null) {
 			
