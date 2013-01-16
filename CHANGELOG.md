@@ -5,6 +5,7 @@ V 3.1.2, Work In Progress
 - addSound method has now two arguments : the id (String) and the sound (*, String or Class).
 - added createAABB method in MathUtils package.
 - added CollisionGetObjectByType into Box2DUtils and NapeUtils.
+- added getObjectsByName method.
 - you can change physics step thanks to their public var.
 - updated on Starling 1.3.
 - fixed a bug where the group property wasn't updated using Away3DView, SpriteView and StarlingView.

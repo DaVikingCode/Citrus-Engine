@@ -250,6 +250,24 @@ package citrus.core.away3d {
 
 			return null;
 		}
+		
+		/**
+		 * This returns a vector of all objects of a particular name. This is useful for adding an event handler
+		 * to objects that aren't similar but have the same name. For instance, you can track the collection of 
+		 * coins plus enemies that you've named exactly the same. Then you'd loop through the returned vector to change properties or whatever you want.
+		 * @param name The name property of the object you want to get a reference to.
+		 */
+		public function getObjectsByName(name:String):Vector.<CitrusObject> {
+
+			var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
+
+			for each (var object:CitrusObject in _objects) {
+				if (object.name == name)
+					objects.push(object);
+			}
+
+			return objects;
+		}
 
 		/**
 		 * Returns the first instance of a CitrusObject that is of the class that you pass in. 
@@ -267,9 +285,10 @@ package citrus.core.away3d {
 		}
 
 		/**
-		 * This returns an array of all objects of a particular type. This is useful for adding an event handler
+		 * This returns a vector of all objects of a particular type. This is useful for adding an event handler
 		 * to all similar objects. For instance, if you want to track the collection of coins, you can get all objects
-		 * of type "Coin" via this method. Then you'd loop through the returned array to add your listener to the coins' event. 
+		 * of type "Coin" via this method. Then you'd loop through the returned array to add your listener to the coins' event.
+		 * @param type The class of the object you want to get a reference to.
 		 */
 		public function getObjectsByType(type:Class):Vector.<CitrusObject> {
 
