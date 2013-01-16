@@ -3,6 +3,6 @@ Components.fla file contains several Citrus Object using Box2D and Nape ready to
 Don't forget that you can always defined objects thanks to some code inside your MovieClip, for example:
 <pre>var className = "citrus.objects.platformer.box2d.Enemy";
 var params = {
-	view: "characters/bulzor.swf",
+	view: "characters/enemy.swf",
 	leftBound: -300
 }</pre>
