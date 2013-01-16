@@ -9,6 +9,7 @@ V 3.1.2, Work In Progress
 - you can change physics step thanks to their public var.
 - updated on Starling 1.3.
 - fixed a bug where the group property wasn't updated using Away3DView, SpriteView and StarlingView.
+- fixed on StarlingArt, the object's view changed but animation doesn't update on the new view.
 
 V 3.1.1, 12 20 2012
 -------------------

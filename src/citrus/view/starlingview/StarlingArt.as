@@ -77,6 +77,8 @@ package citrus.view.starlingview {
 
 		private var _texture:Texture;
 		private var _textureAtlas:TextureAtlas;
+		
+		private var _viewHasChanged:Boolean = false; // when the view changed, the animation wasn't updated if it was the same name. This var fix that.
 
 		public function StarlingArt(object:ISpriteView = null) {
 			
@@ -102,9 +104,9 @@ package citrus.view.starlingview {
 			}
 		}
 
-		public function destroy(viewChanged:Boolean = false):void {
+		public function destroy():void {
 			
-			if (viewChanged)
+			if (_viewHasChanged)
 				removeChild(content);
 			else
 				CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
@@ -200,8 +202,10 @@ package citrus.view.starlingview {
 			if (_view == value)
 				return;
 				
-			if (content && content.parent)
-				destroy(true);
+			if (content && content.parent) {
+				_viewHasChanged = true;
+				destroy();
+			}
 
 			_view = value;
 
@@ -267,7 +271,7 @@ package citrus.view.starlingview {
 
 		public function set animation(value:String):void {
 
-			if (_animation == value)
+			if (_animation == value && !_viewHasChanged)
 				return;
 
 			_animation = value;
@@ -291,6 +295,8 @@ package citrus.view.starlingview {
 				else if (_view is Armature)
 					(_view as Armature).animation.gotoAndPlay(value); 
 			}
+			
+			_viewHasChanged = false;
 		}
 
 		public function get citrusObject():ISpriteView {
