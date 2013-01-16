@@ -1,11 +1,12 @@
 package citrus.core {
 
+	import citrus.system.Entity;
 	import citrus.view.ISpriteView;
 
 	/**
 	 * @author Aymeric
 	 */
-	public class CitrusGroup extends CitrusObject {
+	public class CitrusGroup extends Entity {
 
 		public var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 
@@ -13,12 +14,12 @@ package citrus.core {
 			super(name, params);
 		}
 
-		public function add(object:CitrusObject):void {
+		public function addObject(object:CitrusObject):void {
 
 			objects.push(object);
 		}
 
-		public function remove(object:CitrusObject):void {
+		public function removeObject(object:CitrusObject):void {
 
 			objects.splice(objects.indexOf(object), 1);
 		}

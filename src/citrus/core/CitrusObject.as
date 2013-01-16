@@ -28,7 +28,7 @@ package citrus.core
 		protected var _initialized:Boolean = false;
 		protected var _ce:CitrusEngine;
 		
-		private var _params:Object;
+		protected var _params:Object;
 		
 		/**
 		 * Every Citrus Object needs a name. It helps if it's unique, but it won't blow up if it's not.
