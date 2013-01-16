@@ -13,6 +13,13 @@ package citrus.core {
 		public function CitrusGroup(name:String, params:Object = null) {
 			super(name, params);
 		}
+			
+		override public function destroy():void {
+			
+			_groupObjects.length = 0;
+			
+			super.destroy();
+		}
 
 		public function addObject(object:CitrusObject):void {
 
