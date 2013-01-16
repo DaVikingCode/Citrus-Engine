@@ -4,7 +4,8 @@ package citrus.core {
 	import citrus.view.ISpriteView;
 
 	/**
-	 * @author Aymeric
+	 * A CitrusGroup defines a group of objects which may be of different kind. It extends Entity class, it means that you can easily add components to 
+	 * a CitrusGroup to define different behaviors. You can also set quickly different params to all group's objects and their view.
 	 */
 	public class CitrusGroup extends Entity {
 
@@ -20,23 +21,45 @@ package citrus.core {
 			
 			super.destroy();
 		}
-
-		public function addObject(object:CitrusObject):void {
+		
+		/**
+		 * Add an object to the group.
+		 * @param object An object to add to the group.
+		 * @return return the CitrusGroup for chained operation.
+		 */
+		public function addObject(object:CitrusObject):CitrusGroup {
 
 			_groupObjects.push(object);
+			
+			return this;
 		}
-
-		public function removeObject(object:CitrusObject):void {
+		
+		/**
+		 * Remove an object of the group.
+		 * @param object An object to remove from the group.
+		 * @return return the CitrusGroup for chained operation.
+		 */
+		public function removeObject(object:CitrusObject):CitrusGroup {
 
 			_groupObjects.splice(_groupObjects.indexOf(object), 1);
+			
+			return this;
 		}
-
+		
+		/**
+		 * Define properties for all objects into the group like we do for a CitrusObject.
+		 * @param param An object where properties and value are defined.
+		 */
 		public function setParamsOnObjects(param:Object):void {
 
 			for each (var object:CitrusObject in _groupObjects)				
 				setParams(object, param);
 		}
 		
+		/**
+		 * Define properties for all objects' view into the group like we do for a CitrusObject.
+		 * @param param An object where properties and value are defined.
+		 */
 		public function setParamsOnViews(param:Object):void {
 			
 			for each (var object:ISpriteView in _groupObjects)				
@@ -109,7 +132,10 @@ package citrus.core {
 
 			return objects;
 		}
-
+		
+		/**
+		 * groupObjects is a vector containing all the objects registered into the group.
+		 */
 		public function get groupObjects():Vector.<CitrusObject> {
 			return _groupObjects;
 		}

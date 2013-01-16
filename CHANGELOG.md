@@ -3,6 +3,7 @@ V 3.1.2, Work In Progress
 - outsourced camera stuff into a ACitrusCamera class and one camera by view : BlittingCamera, SpriteCamera, StarlingCamera and Away3DCamera2D.
 - renamed CitrusView into ACitrusView class.
 - addSound method has now two arguments : the id (String) and the sound (*, String or Class).
+- added CitrusGroup class to group different kind of objects.
 - added createAABB method in MathUtils package.
 - added CollisionGetObjectByType into Box2DUtils and NapeUtils.
 - added getObjectsByName method.
