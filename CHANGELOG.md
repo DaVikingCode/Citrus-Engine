@@ -1,5 +1,5 @@
-V 3.1.2, Work In Progress
--------------------------
+V 3.1.2, 01 17 2013
+-------------------
 - improved physics performance removing the update call to the debug view if it isn't visible.
 - outsourced camera stuff into a ACitrusCamera class and one camera by view : BlittingCamera, SpriteCamera, StarlingCamera and Away3DCamera2D.
 - renamed CitrusView into ACitrusView class.
@@ -8,6 +8,7 @@ V 3.1.2, Work In Progress
 - added createAABB method in MathUtils package.
 - added CollisionGetObjectByType into Box2DUtils and NapeUtils.
 - added getObjectsByName method.
+- added a fla with Citrus objects components to create quickly objects using Flash Pro as a level editor.
 - you can change physics step thanks to their public var.
 - updated on Starling 1.3.
 - fixed a bug where the group property wasn't updated using Away3DView, SpriteView and StarlingView.

@@ -9,6 +9,10 @@ package awayphysics {
 		protected static var memUser : MemUser;
 		protected static var alchemyMemory : ByteArray;
 		private static var initialized : Boolean = false;
+		
+		public function AWPBase() {
+			
+		}
 
 		/**
 		 * Initialize the Alchemy Memory and get the pointer of the buffer
