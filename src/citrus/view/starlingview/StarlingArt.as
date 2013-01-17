@@ -311,7 +311,7 @@ package citrus.view.starlingview {
 			var physicsDebugArt:flash.display.DisplayObject;
 			
 			var cam:StarlingCamera = (stateView.camera as StarlingCamera);
-			var camPosition:Point = cam.pointFromLocal(new Point(cam.offset.x/cam.getZoom(), cam.offset.y/cam.getZoom()));
+			var camPosition:Point = cam.pointFromLocal(new Point(cam.offset.x, cam.offset.y));
 			
 			if (content is StarlingPhysicsDebugView) {
 				
@@ -326,8 +326,8 @@ package citrus.view.starlingview {
 					//temporarily using the StarlingCamera cameraLens property.
 					physicsDebugArt.x = cam.camProxy.x;
 					physicsDebugArt.y = cam.camProxy.y;
-					physicsDebugArt.scaleX = physicsDebugArt.scaleY = (stateView.camera as StarlingCamera).camProxy.scale;
-					physicsDebugArt.rotation = (stateView.camera as StarlingCamera).camProxy.rotation * 180/Math.PI;
+					physicsDebugArt.scaleX = physicsDebugArt.scaleY = cam.camProxy.scale;
+					physicsDebugArt.rotation = cam.camProxy.rotation * 180/Math.PI;
 				}
 
 				physicsDebugArt.visible = _citrusObject.visible;
