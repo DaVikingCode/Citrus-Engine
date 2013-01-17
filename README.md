@@ -29,7 +29,7 @@ Repository Setup
 ----------------
 - ant : an Ant file to build the different swcs.
 - bin : CE's swcs produced with all libraries included.
-- fla : a Components.fla file including several classes for box2d and nape objects ready to import in your own fla to make a level with Flash Pro.
+- fla : a Components.fla file including several classes for box2d and nape objects ready to import in your own fla to make quickly a level with Flash Pro.
 - lib : the different swcs used.
 - src : Citrus Engine's source code.
 - srclib : as3 files of some libraries.

@@ -19,12 +19,6 @@ package citrus.core
 		 */
 		public var type:String = "classicObject";
 		
-		/**
-		 * used in Flash Pro Level Editor
-		 */
-		[Inspectable(defaultValue="")]
-		public var className:String = "";
-		
 		protected var _initialized:Boolean = false;
 		protected var _ce:CitrusEngine;
 		

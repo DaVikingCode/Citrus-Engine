@@ -1,5 +1,6 @@
 V 3.1.2, Work In Progress
 -------------------------
+- improved physics performance removing the update call to the debug view if it isn't visible.
 - outsourced camera stuff into a ACitrusCamera class and one camera by view : BlittingCamera, SpriteCamera, StarlingCamera and Away3DCamera2D.
 - renamed CitrusView into ACitrusView class.
 - addSound method has now two arguments : the id (String) and the sound (*, String or Class).
