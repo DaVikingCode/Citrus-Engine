@@ -1,3 +1,9 @@
+V 3.1.3, Work In Progress
+-------------------------
+- input uses its own update loop using Event.FRAME_CONSTRUCTED.
+- fixed a bug in Keyboard's input where some actions weren't performed.
+- fixed a problem with parallax when zooming.
+
 V 3.1.2, 01 17 2013
 -------------------
 - improved physics performance removing the update call to the debug view if it isn't visible.

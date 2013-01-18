@@ -49,7 +49,7 @@ package citrus.input {
 			
 			_ce = CitrusEngine.getInstance();
 			
-			_ce.stage.addEventListener(Event.FRAME_CONSTRUCTED,update);
+			_ce.stage.addEventListener(Event.FRAME_CONSTRUCTED, update);
 		}
 		
 		public function initialize():void
@@ -207,7 +207,7 @@ package citrus.input {
 		 * advances actions phases by one if not phase 2 (phase two can only be voluntarily advanced by
 		 * doActionOFF.) and removes actions of phase 4 (this happens one frame after doActionOFF was called.)
 		 */
-		public function update(e:Event):void
+		protected function update(e:Event):void
 		{
 			if (!_enabled)
 				return;

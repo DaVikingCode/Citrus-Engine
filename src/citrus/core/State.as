@@ -89,7 +89,7 @@ package citrus.core
 		/**
 		 * This method calls update on all the CitrusObjects that are attached to this state.
 		 * The update method also checks for CitrusObjects that are ready to be destroyed and kills them.
-		 * Finally, this method updates the Input and View managers. 
+		 * Finally, this method updates the View manager. 
 		 */		
 		public function update(timeDelta:Number):void {
 			
