@@ -151,9 +151,6 @@ package citrus.core.starling {
 			for each (var poolObject:PoolObject in _poolObjects)
 				poolObject.updatePhysics(timeDelta);
 
-			// Update the input object
-			_input.update();
-
 			// Update the state's view
 			_view.update();
 		}

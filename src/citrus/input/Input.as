@@ -2,6 +2,7 @@ package citrus.input {
 
 	import citrus.core.CitrusEngine;
 	import citrus.input.controllers.Keyboard;
+	import flash.events.Event;
 
 	import org.osflash.signals.Signal;
 	
@@ -47,6 +48,8 @@ package citrus.input {
 			actionTriggeredVALUECHANGE.add(doActionVALUECHANGE);
 			
 			_ce = CitrusEngine.getInstance();
+			
+			_ce.stage.addEventListener(Event.FRAME_CONSTRUCTED,update);
 		}
 		
 		public function initialize():void
@@ -98,7 +101,7 @@ package citrus.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && a.channel == (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase > InputAction.ON)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase > InputAction.ON)
 					return true;
 			return false;
 		}
@@ -122,7 +125,7 @@ package citrus.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase == InputAction.BEGIN)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase <= InputAction.BEGAN)
 					return true;
 			return false;
 		}
@@ -204,7 +207,7 @@ package citrus.input {
 		 * advances actions phases by one if not phase 2 (phase two can only be voluntarily advanced by
 		 * doActionOFF.) and removes actions of phase 4 (this happens one frame after doActionOFF was called.)
 		 */
-		public function update():void
+		public function update(e:Event):void
 		{
 			if (!_enabled)
 				return;
@@ -339,6 +342,8 @@ package citrus.input {
 			actionTriggeredON.removeAll();
 			actionTriggeredOFF.removeAll();
 			actionTriggeredVALUECHANGE.removeAll();
+			
+			_ce.stage.removeEventListener(Event.FRAME_CONSTRUCTED,update);
 		}
 		
 		/**
