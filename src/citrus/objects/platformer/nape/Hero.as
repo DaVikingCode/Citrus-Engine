@@ -320,7 +320,7 @@ package citrus.objects.platformer.nape {
 		override protected function createMaterial():void {
 			
 			super.createMaterial();
-			
+			_material.staticFriction = 0;
 			_material.elasticity = 0;
 		}
 		
