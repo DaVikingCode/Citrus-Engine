@@ -4,6 +4,7 @@ V 3.1.3, Work In Progress
 - fixed a bug in Keyboard's input where some actions weren't performed.
 - fixed a problem with parallax when zooming.
 - Nape's Hero no longer has a static friction.
+- fixed Nape's Hero was able if the collisionAngle was really close to 0.
 - moved SpriteDebugArt and StarlingSpriteDebugArt into their respective package.
 - SpriteArt/StarlingArt/Away3DArt content property becomes private with a getter. It should only be set internally.
 

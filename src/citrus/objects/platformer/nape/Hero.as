@@ -358,15 +358,17 @@ package citrus.objects.platformer.nape {
 				
 				var collisionAngle:Number = callback.arbiters.at(0).collisionArbiter.normal.angle * 180 / Math.PI;
 				
-				if ((collisionAngle > 45 && collisionAngle < 135) || (collisionAngle > -30 && collisionAngle < 10 && collisionAngle != 0) || collisionAngle == -90)
+				if ((collisionAngle > 45 && collisionAngle < 135) || (collisionAngle > -30 && collisionAngle < 10) || collisionAngle == -90)
 				{
-					//we don't want the Hero to be set up as onGround if it touches a cloud.
-					if (collider is Platform && (collider as Platform).oneWay && collisionAngle == -90)
-						return;
-					
-					_groundContacts.push(collider.body);
-					_onGround = true;
-					//updateCombinedGroundAngle();
+					if (collisionAngle > 1 || collisionAngle < -1) {
+						//we don't want the Hero to be set up as onGround if it touches a cloud.
+						if (collider is Platform && (collider as Platform).oneWay && collisionAngle == -90)
+							return;
+						
+						_groundContacts.push(collider.body);
+						_onGround = true;
+						//updateCombinedGroundAngle();
+					}
 				}
 			}
 		}
