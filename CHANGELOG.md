@@ -3,7 +3,7 @@ V 3.1.3, Work In Progress
 - input uses its own update loop using Event.FRAME_CONSTRUCTED.
 - fixed a bug in Keyboard's input where some actions weren't performed.
 - fixed a problem with parallax when zooming.
-- Nape's Hero has a static friction.
+- Nape's Hero no longer has a static friction.
 - moved SpriteDebugArt and StarlingSpriteDebugArt into their respective package.
 - SpriteArt/StarlingArt/Away3DArt content property becomes private with a getter. It should only be set internally.
 
