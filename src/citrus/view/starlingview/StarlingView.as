@@ -3,8 +3,7 @@ package citrus.view.starlingview {
 	import citrus.physics.APhysicsEngine;
 	import citrus.view.ACitrusView;
 	import citrus.view.ISpriteView;
-	import citrus.view.SpriteDebugArt;
-	import citrus.view.StarlingSpriteDebugArt;
+	import citrus.view.spriteview.SpriteDebugArt;
 
 	import starling.display.Sprite;
 

@@ -8,7 +8,7 @@ package citrus.view.blittingview
 	import citrus.physics.simple.SimpleCitrusSolver;
 	import citrus.view.ACitrusView;
 	import citrus.view.ISpriteView;
-	import citrus.view.SpriteDebugArt;
+	import citrus.view.spriteview.SpriteDebugArt;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;

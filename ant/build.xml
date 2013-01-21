@@ -90,7 +90,6 @@
 			<arg line="-include-sources ../src/citrus/view/ACitrusCamera.as" />
 			<arg line="-include-sources ../src/citrus/view/ACitrusView.as" />
 			<arg line="-include-sources ../src/citrus/view/ISpriteView.as" />
-			<arg line="-include-sources ../src/citrus/view/SpriteDebugArt.as" />
 			<arg line="-include-sources ../src/citrus/view/blittingview" />
 			<arg line="-include-sources ../src/citrus/view/spriteview" />
 
@@ -157,7 +156,6 @@
 			
 			<arg line="-include-sources ../src/citrus/utils/objectmakers/ObjectMakerStarling.as" />
 			
-			<arg line="-include-sources ../src/citrus/view/StarlingSpriteDebugArt.as" />
 			<arg line="-include-sources ../src/citrus/view/starlingview" />
 
 			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />

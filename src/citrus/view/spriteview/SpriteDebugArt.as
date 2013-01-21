@@ -1,23 +1,19 @@
-package citrus.view 
+package citrus.view.spriteview 
 {
 
 	import citrus.core.CitrusObject;
 	import citrus.objects.CitrusSprite;
 
 	import flash.display.MovieClip;
-	import flash.events.Event;
 	
+	/**
+	 * This class is created by the SpriteView if a CitrusSprite has no view mentionned. It is made for a quick debugging object's view.
+	 */
 	public class SpriteDebugArt extends MovieClip 
 	{
 		
 		public function SpriteDebugArt() 
 		{
-			addEventListener(Event.ADDED, handleAddedToParent);
-		}
-		
-		private function handleAddedToParent(e:Event):void 
-		{
-			
 		}
 		
 		public function initialize(object:CitrusObject):void

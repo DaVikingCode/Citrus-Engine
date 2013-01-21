@@ -4,7 +4,7 @@ package citrus.objects
 	import citrus.core.CitrusObject;
 	import citrus.math.MathVector;
 	import citrus.view.ISpriteView;
-	import citrus.view.SpriteDebugArt;
+	import citrus.view.spriteview.SpriteDebugArt;
 
 	import org.osflash.signals.Signal;
 
