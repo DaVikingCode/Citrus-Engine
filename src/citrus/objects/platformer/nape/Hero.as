@@ -208,7 +208,7 @@ package citrus.objects.platformer.nape {
 			return _dynamicFriction;
 		}
 		
-		[Inspectable(defaultValue="1.7")]
+		[Inspectable(defaultValue="0.77")]
 		public function set dynamicFriction(value:Number):void {
 			
 			_material.dynamicFriction = _dynamicFriction = value;
