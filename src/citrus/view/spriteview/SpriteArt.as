@@ -37,12 +37,8 @@ package citrus.view.spriteview
 	 **/
 	public class SpriteArt extends Sprite
 	{
-		/**
-		 * The content property is the actual display object that your game object is using. For graphics that are loaded at runtime
-		 * (not embedded), the content property will not be available immediately. You can listen to the COMPLETE event on the loader
-		 * (or rather, the loader's contentLoaderInfo) if you need to know exactly when the graphic will be loaded.
-		 */
-		public var content:DisplayObject;
+		// The reference to your art via the view.
+		private var _content:DisplayObject;
 		
 		/**
 		 * For objects that are loaded at runtime, this is the object that load them. Then, once they are loaded, the content
@@ -77,14 +73,23 @@ package citrus.view.spriteview
 			this.name = (_citrusObject as CitrusObject).name;
 		}
 		
+		/**
+		 * The content property is the actual display object that your game object is using. For graphics that are loaded at runtime
+		 * (not embedded), the content property will not be available immediately. You can listen to the COMPLETE event on the loader
+		 * (or rather, the loader's contentLoaderInfo) if you need to know exactly when the graphic will be loaded.
+		 */
+		public function get content():DisplayObject {
+			return _content;
+		}
+		
 		public function destroy(viewChanged:Boolean = false):void {
 			
 			if (viewChanged) {
 				
 				if (_view is String)
-					removeChild(content.loaderInfo.loader);
-				else if (content && content.parent)
-					removeChild(content.parent);
+					removeChild(_content.loaderInfo.loader);
+				else if (_content && _content.parent)
+					removeChild(_content.parent);
 				
 			} else {
 				
@@ -96,11 +101,11 @@ package citrus.view.spriteview
 		public function moveRegistrationPoint(registrationPoint:String):void {
 			
 			if (registrationPoint == "topLeft") {
-				content.x = 0;
-				content.y = 0;
+				_content.x = 0;
+				_content.y = 0;
 			} else if (registrationPoint == "center") {
-				content.x = -content.width / 2;
-				content.y = -content.height / 2;
+				_content.x = -_content.width / 2;
+				_content.y = -_content.height / 2;
 			}
 			
 		}
@@ -112,7 +117,7 @@ package citrus.view.spriteview
 		
 		public function set registration(value:String):void 
 		{
-			if (_registration == value || !content)
+			if (_registration == value || !_content)
 				return;
 				
 			_registration = value;
@@ -130,7 +135,7 @@ package citrus.view.spriteview
 			if (_view == value)
 				return;
 				
-			if (content && content.parent)
+			if (_content && _content.parent)
 				destroy(true);
 			
 			_view = value;
@@ -155,30 +160,30 @@ package citrus.view.spriteview
 					else
 					{
 						var artClass:Class = getDefinitionByName(classString) as Class;
-						content = new artClass();
+						_content = new artClass();
 						moveRegistrationPoint(_citrusObject.registration);
-						addChild(content);
+						addChild(_content);
 					}
 				}
 				else if (_view is Class)
 				{
 					//view property is a class reference
-					content = new citrusObject.view();
+					_content = new citrusObject.view();
 					moveRegistrationPoint(_citrusObject.registration);
-					addChild(content);
+					addChild(_content);
 				}
 				else if (_view is DisplayObject)
 				{
 					// view property is a Display Object reference
-					content = _view;
+					_content = _view;
 					moveRegistrationPoint(_citrusObject.registration);
-					addChild(content);
+					addChild(_content);
 				} 
 				else
 					throw new Error("SpriteArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
 				
-				if (content && content.hasOwnProperty("initialize"))
-					content["initialize"](_citrusObject);
+				if (_content && _content.hasOwnProperty("initialize"))
+					_content["initialize"](_citrusObject);
 					
 			}
 		}
@@ -195,9 +200,9 @@ package citrus.view.spriteview
 			
 			_animation = value;
 			
-			if (content is MovieClip)
+			if (_content is MovieClip)
 			{
-				var mc:MovieClip = content as MovieClip;
+				var mc:MovieClip = _content as MovieClip;
 				if (_animation != null && _animation != "" && hasAnimation(_animation))
 					mc.gotoAndStop(_animation);
 			}
@@ -213,9 +218,9 @@ package citrus.view.spriteview
 			scaleX = _citrusObject.inverted ? -1 : 1;
 			//position = object position + (camera position * inverse parallax)
 			
-			if (content is IDebugView) {
+			if (_content is IDebugView) {
 				
-				(content as IDebugView).update();
+				(_content as IDebugView).update();
 				
 			} else if (_physicsComponent) {
 				
@@ -239,7 +244,7 @@ package citrus.view.spriteview
 		
 		public function hasAnimation(animation:String):Boolean
 		{
-			for each (var anim:FrameLabel in MovieClip(content).currentLabels)
+			for each (var anim:FrameLabel in (_content as MovieClip).currentLabels)
 			{
 				if (anim.name == animation)
 					return true;
@@ -253,17 +258,17 @@ package citrus.view.spriteview
 		 */
 		private function _pauseAnimation(value:Boolean):void {
 			
-			if (content is MovieClip)
+			if (_content is MovieClip)
 				if (hasAnimation(_animation))
-				value ? MovieClip(content).gotoAndStop(_animation) : MovieClip(content).stop();
+				value ? (_content as MovieClip).gotoAndStop(_animation) : (_content as MovieClip).stop();
 		}
 		
 		private function handleContentLoaded(e:Event):void
 		{
-			content = e.target.loader.content;
+			_content = e.target.loader.content;
 			
-			if (content is Bitmap)
-				Bitmap(content).smoothing = true;
+			if (_content is Bitmap)
+				(_content as Bitmap).smoothing = true;
 				
 			moveRegistrationPoint(_citrusObject.registration);
 		}

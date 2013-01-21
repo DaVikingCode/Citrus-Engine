@@ -5,6 +5,7 @@ V 3.1.3, Work In Progress
 - fixed a problem with parallax when zooming.
 - Nape's Hero has a static friction.
 - moved SpriteDebugArt and StarlingSpriteDebugArt into their respective package.
+- SpriteArt/StarlingArt/Away3DArt content property becomes private with a getter. It should only be set internally.
 
 V 3.1.2, 01 17 2013
 -------------------

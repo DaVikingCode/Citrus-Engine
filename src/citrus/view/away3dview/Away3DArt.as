@@ -25,8 +25,9 @@ package citrus.view.away3dview {
 	 * @author Aymeric
 	 */
 	public class Away3DArt extends ObjectContainer3D {
-
-		public var content:ObjectContainer3D;
+		
+		// The reference to your art via the view.
+		private var _content:ObjectContainer3D;
 		
 		public var loader:Loader;
 		public var loader3D:Loader3D;
@@ -61,15 +62,24 @@ package citrus.view.away3dview {
 
 			this.name = (_citrusObject as CitrusObject).name;
 		}
+		
+		/**
+		 * The content property is the actual display object that your game object is using. For graphics that are loaded at runtime
+		 * (not embedded), the content property will not be available immediately. You can listen to the COMPLETE event on the loader
+		 * (or rather, the loader's contentLoaderInfo) if you need to know exactly when the graphic will be loaded.
+		 */
+		public function get content():ObjectContainer3D {
+			return _content;
+		}
 
 		public function destroy(viewChanged:Boolean = false):void {
 
 			if (viewChanged) {
 				
 				/*if (_view is String)
-				removeChild(content.loaderInfo.loader);
+				removeChild(_content.loaderInfo.loader);
 				else
-				removeChild(content);*/
+				removeChild(_content);*/
 
 			} else {
 
@@ -81,11 +91,11 @@ package citrus.view.away3dview {
 		public function moveRegistrationPoint(registrationPoint:String):void {
 			
 			if (registrationPoint == "topLeft") {
-				//content.x = 0;
-				//content.y = 0;
+				//_content.x = 0;
+				//_content.y = 0;
 			} else if (registrationPoint == "center") {
-				//content.x = -content.width / 2;
-				//content.y = -content.height / 2;
+				//_content.x = -_content.width / 2;
+				//_content.y = -_content.height / 2;
 			}
 
 		}
@@ -96,7 +106,7 @@ package citrus.view.away3dview {
 
 		public function set registration(value:String):void {
 			
-			if (_registration == value || !content)
+			if (_registration == value || !_content)
 				return;
 
 			_registration = value;
@@ -113,7 +123,7 @@ package citrus.view.away3dview {
 			if (_view == value)
 				return;
 
-			if (content && content.parent)
+			if (_content && _content.parent)
 				destroy(true);
 
 			_view = value;
@@ -143,26 +153,26 @@ package citrus.view.away3dview {
 					// view property is a fully qualified class name in string form. 
 					else {
 						var artClass:Class = getDefinitionByName(classString) as Class;
-						content = new artClass();
+						_content = new artClass();
 						moveRegistrationPoint(_citrusObject.registration);
-						addChild(content);
+						addChild(_content);
 					}
 				} else if (_view is Class) {
 					// view property is a class reference
-					content = new citrusObject.view();
+					_content = new citrusObject.view();
 					moveRegistrationPoint(_citrusObject.registration);
-					addChild(content);
+					addChild(_content);
 					
 				} else if (_view is ObjectContainer3D) {
 					// view property is a Display Object reference
-					content = _view;
+					_content = _view;
 					moveRegistrationPoint(_citrusObject.registration);
-					addChild(content);
+					addChild(_content);
 				} else
 					throw new Error("Away3DArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
 
-				if (content && content.hasOwnProperty("initialize"))
-					content["initialize"](_citrusObject);
+				if (_content && _content.hasOwnProperty("initialize"))
+					_content["initialize"](_citrusObject);
 			}
 		}
 
@@ -177,8 +187,8 @@ package citrus.view.away3dview {
 
 			_animation = value;
 
-			if (content is AnimationSequence) {
-				var animationSequence:AnimationSequence = content as AnimationSequence;
+			if (_content is AnimationSequence) {
+				var animationSequence:AnimationSequence = _content as AnimationSequence;
 				if (_animation != null && _animation != "" && animationSequence.mesh)
 					animationSequence.changeAnimation(_animation);
 			}
@@ -192,14 +202,14 @@ package citrus.view.away3dview {
 			
 			if (stateView.mode == "3D") {
 				
-				if (content is Away3DPhysicsDebugView) {
+				if (_content is Away3DPhysicsDebugView) {
 				
-					(content as Away3DPhysicsDebugView).update();
+					(_content as Away3DPhysicsDebugView).update();
 					
 					if (_citrusObject.visible)
-						(content as Away3DPhysicsDebugView).debugMode(9);
+						(_content as Away3DPhysicsDebugView).debugMode(9);
 					else
-						(content as Away3DPhysicsDebugView).debugMode(0);
+						(_content as Away3DPhysicsDebugView).debugMode(0);
 					
 				} else {
 					
@@ -219,9 +229,9 @@ package citrus.view.away3dview {
 				
 				var physicsDebugArt:DisplayObject;
 				
-				if (content is Away3DPhysicsDebugView) {
+				if (_content is Away3DPhysicsDebugView) {
 				
-					(content as Away3DPhysicsDebugView).update();
+					(_content as Away3DPhysicsDebugView).update();
 					
 					physicsDebugArt = _ce.stage.getChildByName("debug view") as DisplayObject;
 					
@@ -259,23 +269,23 @@ package citrus.view.away3dview {
 		 */
 		private function _pauseAnimation(value:Boolean):void {
 
-			if (content is MovieClip)
-				value ? MovieClip(content).gotoAndStop(_animation) : MovieClip(content).stop();
+			if (_content is MovieClip)
+				value ? MovieClip(_content).gotoAndStop(_animation) : MovieClip(_content).stop();
 		}
 
 		private function handleContentLoaded(e:Event):void {
 			
-			content = e.target.loader.content;
+			_content = e.target.loader.content;
 
-			if (content is Bitmap)
-				Bitmap(content).smoothing = true;
+			if (_content is Bitmap)
+				Bitmap(_content).smoothing = true;
 
 			moveRegistrationPoint(_citrusObject.registration);
 		}
 		
 		private function handle3DContentLoaded(e:LoaderEvent):void {
 			
-			content = e.target.loader.content;
+			_content = e.target.loader.content;
 			
 			//moveRegistrationPoint(_citrusObject.registration);
 		}

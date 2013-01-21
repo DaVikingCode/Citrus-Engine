@@ -51,12 +51,8 @@ package citrus.view.starlingview {
 	 **/
 	public class StarlingArt extends Sprite {
 		
-		/**
-		 * The content property is the actual display object that your game object is using. For graphics that are loaded at runtime
-		 * (not embedded), the content property will not be available immediately. You can listen to the COMPLETE event on the loader
-		 * (or rather, the loader's contentLoaderInfo) if you need to know exactly when the graphic will be loaded.
-		 */
-		public var content:DisplayObject;
+		// The reference to your art via the view.
+		private var _content:DisplayObject;
 
 		/**
 		 * For objects that are loaded at runtime, this is the object that load them. Then, once they are loaded, the content
@@ -103,50 +99,59 @@ package citrus.view.starlingview {
 				_loopAnimation["walk"] = true;
 			}
 		}
+		
+		/**
+		 * The content property is the actual display object that your game object is using. For graphics that are loaded at runtime
+		 * (not embedded), the content property will not be available immediately. You can listen to the COMPLETE event on the loader
+		 * (or rather, the loader's contentLoaderInfo) if you need to know exactly when the graphic will be loaded.
+		 */
+		public function get content():DisplayObject {
+			return _content;
+		}
 
 		public function destroy():void {
 			
 			if (_viewHasChanged)
-				removeChild(content);
+				removeChild(_content);
 			else
 				CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
 			
-			if (content is MovieClip) {
+			if (_content is MovieClip) {
 					
-				Starling.juggler.remove(content as MovieClip);
+				Starling.juggler.remove(_content as MovieClip);
 				if (_textureAtlas)
 					_textureAtlas.dispose();
-				content.dispose();
+				_content.dispose();
 			
-			} else if (content is AnimationSequence) {
+			} else if (_content is AnimationSequence) {
 				
-				(content as AnimationSequence).destroy();
-				content.dispose();
+				(_content as AnimationSequence).destroy();
+				_content.dispose();
 				
-			} else if (content is Image) {
+			} else if (_content is Image) {
 				
 				if (_texture)
 					_texture.dispose();
 					
-				content.dispose();
+				_content.dispose();
 				
-			} else if (content is PDParticleSystem) {
+			} else if (_content is PDParticleSystem) {
 				
-				Starling.juggler.remove(content as PDParticleSystem);
-				(content as PDParticleSystem).stop();
-				content.dispose();
+				Starling.juggler.remove(_content as PDParticleSystem);
+				(_content as PDParticleSystem).stop();
+				_content.dispose();
 				
-			} else if (content is StarlingTileSystem) {
-				(content as StarlingTileSystem).destroy();
-				content.dispose();
+			} else if (_content is StarlingTileSystem) {
+				(_content as StarlingTileSystem).destroy();
+				_content.dispose();
 				
 			} else if (_view is Armature) {
 				
 				(_view as Armature).dispose();
-				content.dispose();
+				_content.dispose();
 				
-			} else if (content is DisplayObject)
-				content.dispose();
+			} else if (_content is DisplayObject)
+				_content.dispose();
 			
 		}
 		
@@ -171,11 +176,11 @@ package citrus.view.starlingview {
 		public function moveRegistrationPoint(registrationPoint:String):void {
 			
 			if (registrationPoint == "topLeft") {
-				content.x = 0;
-				content.y = 0;
+				_content.x = 0;
+				_content.y = 0;
 			} else if (registrationPoint == "center") {
-				content.x = -content.width / 2;
-				content.y = -content.height / 2;
+				_content.x = -_content.width / 2;
+				_content.y = -_content.height / 2;
 			}
 		}
 
@@ -185,7 +190,7 @@ package citrus.view.starlingview {
 
 		public function set registration(value:String):void {
 
-			if (_registration == value || !content)
+			if (_registration == value || !_content)
 				return;
 
 			_registration = value;
@@ -202,7 +207,7 @@ package citrus.view.starlingview {
 			if (_view == value)
 				return;
 				
-			if (content && content.parent) {
+			if (_content && _content.parent) {
 				_viewHasChanged = true;
 				destroy();
 			}
@@ -223,44 +228,44 @@ package citrus.view.starlingview {
 					// view property is a fully qualified class name in string form. 
 					else {
 						var artClass:Class = getDefinitionByName(classString) as Class;
-						content = new artClass();
+						_content = new artClass();
 						moveRegistrationPoint(_citrusObject.registration);
-						addChild(content);
+						addChild(_content);
 					}
 					
 				} else if (_view is Class) {
 					// view property is a class reference
-					content = new citrusObject.view();
+					_content = new citrusObject.view();
 					moveRegistrationPoint(_citrusObject.registration);
-					addChild(content);
+					addChild(_content);
 
 				} else if (_view is DisplayObject) {
 					// view property is a Display Object reference
-					content = _view;
+					_content = _view;
 					moveRegistrationPoint(_citrusObject.registration);
-					addChild(content);
+					addChild(_content);
 					
 					if (_view is MovieClip)
-						Starling.juggler.add(content as MovieClip);
+						Starling.juggler.add(_content as MovieClip);
 					else if (_view is PDParticleSystem)
-						Starling.juggler.add(content as PDParticleSystem);
+						Starling.juggler.add(_content as PDParticleSystem);
 				
 				} else if (_view is Bitmap) {
 					//TODO : cut bitmap if size > 2048 * 2048, use StarlingTileSystem?
-					content = Image.fromBitmap(_view);
+					_content = Image.fromBitmap(_view);
 					moveRegistrationPoint(_citrusObject.registration);
-					addChild(content);
+					addChild(_content);
 					
 				} else if (_view is Armature) {
-					content = (_view as Armature).display as Sprite;
+					_content = (_view as Armature).display as Sprite;
 					moveRegistrationPoint(_citrusObject.registration);
-					addChild(content);
+					addChild(_content);
 					
 				} else 
 					throw new Error("StarlingArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
 
-				if (content && content.hasOwnProperty("initialize"))
-					content["initialize"](_citrusObject);
+				if (_content && _content.hasOwnProperty("initialize"))
+					_content["initialize"](_citrusObject);
 					
 			}
 		}
@@ -280,17 +285,17 @@ package citrus.view.starlingview {
 				
 				var animLoop:Boolean = _loopAnimation[_animation];
 				
-				if (content is MovieClip && _textureAtlas) {
-					Starling.juggler.remove(content as MovieClip);
-					removeChild(content);
-					content = new MovieClip(_textureAtlas.getTextures(_animation), 30);
+				if (_content is MovieClip && _textureAtlas) {
+					Starling.juggler.remove(_content as MovieClip);
+					removeChild(_content);
+					_content = new MovieClip(_textureAtlas.getTextures(_animation), 30);
 					moveRegistrationPoint(_citrusObject.registration);
-					addChild(content);
-					Starling.juggler.add(content as MovieClip);
-					(content as MovieClip).loop = animLoop;
+					addChild(_content);
+					Starling.juggler.add(_content as MovieClip);
+					(_content as MovieClip).loop = animLoop;
 					
-				} else if (content is AnimationSequence)
-					(content as AnimationSequence).changeAnimation(_animation, animLoop);
+				} else if (_content is AnimationSequence)
+					(_content as AnimationSequence).changeAnimation(_animation, animLoop);
 					
 				else if (_view is Armature)
 					(_view as Armature).animation.gotoAndPlay(value); 
@@ -313,9 +318,9 @@ package citrus.view.starlingview {
 			var cam:StarlingCamera = (stateView.camera as StarlingCamera);
 			var camPosition:Point = cam.pointFromLocal(new Point(cam.offset.x, cam.offset.y));
 			
-			if (content is StarlingPhysicsDebugView) {
+			if (_content is StarlingPhysicsDebugView) {
 				
-				(content as StarlingPhysicsDebugView).update();
+				(_content as StarlingPhysicsDebugView).update();
 
 				// Box2D & Nape debug views are not on the Starling display list, but on the classical flash display list.
 				// So we need to move their views here, not in the StarlingView.
@@ -360,12 +365,12 @@ package citrus.view.starlingview {
 		 */
 		private function _pauseAnimation(value:Boolean):void {
 			
-			if (content is MovieClip)
-				value ? Starling.juggler.add(content as MovieClip) : Starling.juggler.remove(content as MovieClip);
-			else if (content is AnimationSequence)
-				(content as AnimationSequence).pauseAnimation(value);
-			else if (content is PDParticleSystem)
-				value ? Starling.juggler.add(content as PDParticleSystem) : Starling.juggler.remove(content as PDParticleSystem);
+			if (_content is MovieClip)
+				value ? Starling.juggler.add(_content as MovieClip) : Starling.juggler.remove(_content as MovieClip);
+			else if (_content is AnimationSequence)
+				(_content as AnimationSequence).pauseAnimation(value);
+			else if (_content is PDParticleSystem)
+				value ? Starling.juggler.add(_content as PDParticleSystem) : Starling.juggler.remove(_content as PDParticleSystem);
 			else if (_view is Armature)
 				value ? (_view as Armature).animation.play() : (_view as Armature).animation.stop();
 		}
@@ -375,19 +380,19 @@ package citrus.view.starlingview {
 			if (evt.target.loader.content is flash.display.MovieClip) {
 
 				_textureAtlas = DynamicAtlas.fromMovieClipContainer(evt.target.loader.content, 1, 0, true, true);
-				content = new MovieClip(_textureAtlas.getTextures(animation), 30);
-				Starling.juggler.add(content as MovieClip);
+				_content = new MovieClip(_textureAtlas.getTextures(animation), 30);
+				Starling.juggler.add(_content as MovieClip);
 			}
 
 			if (evt.target.loader.content is Bitmap) {
 				
 				_texture = Texture.fromBitmap(evt.target.loader.content);
-				content = new Image(_texture);
+				_content = new Image(_texture);
 			}
 			
 			moveRegistrationPoint(_citrusObject.registration);
 			
-			addChild(content);
+			addChild(_content);
 		}
 
 		private function handleContentIOError(evt:IOErrorEvent):void {
