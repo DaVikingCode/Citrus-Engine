@@ -3,7 +3,7 @@ V 3.1.3, Work In Progress
 - input uses its own update loop using Event.FRAME_CONSTRUCTED.
 - fixed a bug in Keyboard's input where some actions weren't performed.
 - fixed a problem with parallax when zooming.
-- fixed a bug where Nape's Missile wasn't in radian.
+- fixed a bug where Nape Missile's angle wasn't in radian.
 - Nape's Hero no longer has a static friction.
 - fixed Nape's Hero was able if the collisionAngle was really close to 0.
 - moved SpriteDebugArt and StarlingSpriteDebugArt into their respective package.
