@@ -263,10 +263,10 @@ package citrus.view.starlingview {
 					
 				} else 
 					throw new Error("StarlingArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
-
+				
+				// Call the initialize function if it exists on the custom art class.
 				if (_content && _content.hasOwnProperty("initialize"))
 					_content["initialize"](_citrusObject);
-					
 			}
 		}
 
