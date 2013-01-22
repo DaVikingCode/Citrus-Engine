@@ -83,7 +83,7 @@ package citrus.objects.platformer.box2d
 			super.initialize(poolObjectParams);
 			
 			_velocity = new b2Vec2(speed, 0);
-			_velocity = Box2DUtils.Rotateb2Vec2(_velocity, angle* Math.PI / 180);
+			_velocity = Box2DUtils.Rotateb2Vec2(_velocity, angle * Math.PI / 180);
 			_inverted = speed < 0;
 			
 			_fuseDurationTimeoutID = setTimeout(explode, fuseDuration);

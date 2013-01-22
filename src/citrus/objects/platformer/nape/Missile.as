@@ -84,7 +84,7 @@ package citrus.objects.platformer.nape {
 			super.initialize(poolObjectParams);
 			
 			_velocity = new Vec2(speed, 0);
-			_velocity.rotate(angle);
+			_velocity.rotate(angle * Math.PI / 180);
 			_inverted = speed < 0;
 			
 			_fuseDurationTimeoutID = setTimeout(explode, fuseDuration);

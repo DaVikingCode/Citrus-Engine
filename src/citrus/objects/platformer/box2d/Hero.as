@@ -328,6 +328,7 @@ package citrus.objects.platformer.box2d
 		override protected function defineBody():void
 		{
 			super.defineBody();
+			
 			_bodyDef.fixedRotation = true;
 			_bodyDef.allowSleep = false;
 		}
