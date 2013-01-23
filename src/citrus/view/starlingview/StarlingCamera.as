@@ -1,6 +1,7 @@
 package citrus.view.starlingview {
 	
 	import citrus.view.ACitrusCamera;
+	import flash.geom.Rectangle;
 	
 	import starling.display.Sprite;
 	
@@ -23,6 +24,16 @@ package citrus.view.starlingview {
 		 * should we restrict zoom to bounds?
 		 */
 		public var restrictZoom:Boolean = false;
+		
+		/**
+		 * Is the camera allowed to Zoom?
+		 */
+		protected var _allowZoom:Boolean = false;
+		
+		/**
+		 * Is the camera allowed to Rotate?
+		 */
+		protected var _allowRotation:Boolean = false;
 		
 		/**
 		 * the ease factor for zoom
@@ -65,7 +76,12 @@ package citrus.view.starlingview {
 		 * the _camProxy object is used as a container to hold the data to be applied to the _viewroot.
 		 * it can be accessible publicly so that debugView can be correctly displaced, rotated and scaled as _viewroot will be.
 		 */
-		protected var _camProxy:Object = {x: 0, y: 0, offsetX: 0, offsetY: 0, scale: 1, rotation: 0};
+		protected var _camProxy:Object = { x: 0, y: 0, offsetX: 0, offsetY: 0, scale: 1, rotation: 0 };
+		
+		/**
+		 * projected camera position + offset. (used internally)
+		 */
+		internal var camPos:Point = new Point();
 		
 		public function StarlingCamera(viewRoot:Sprite)
 		{
@@ -81,12 +97,15 @@ package citrus.view.starlingview {
 		}
 		
 		/**
-		 * sets the targeted rotation value to angle.
-		 * @param	angle in radians.
+		 * multiplies the targeted zoom value by factor.
+		 * @param	factor
 		 */
-		public function setRotation(angle:Number):void
+		public function zoom(factor:Number):void
 		{
-			_rotation = angle;
+			if(_allowZoom)
+				_zoom *= factor;
+			else
+				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
 		}
 		
 		/**
@@ -96,12 +115,22 @@ package citrus.view.starlingview {
 		 */
 		public function rotate(angle:Number):void
 		{
-			_rotation += angle;
+			if(_allowRotation)
+				_rotation += angle;
+			else
+				throw(new Error(this+"is not allowed to rotate. please set allowRotation to true."));
 		}
 		
-		public function getRotation():Number
+		/**
+		 * sets the targeted rotation value to angle.
+		 * @param	angle in radians.
+		 */
+		public function setRotation(angle:Number):void
 		{
-			return _rotation;
+			if(_allowRotation)
+				_rotation = angle;
+			else
+				throw(new Error(this+"is not allowed to rotate. please set allowRotation to true."));
 		}
 		
 		/**
@@ -110,16 +139,10 @@ package citrus.view.starlingview {
 		 */
 		public function setZoom(factor:Number):void
 		{
-			_zoom = factor;
-		}
-		
-		/**
-		 * multiplies the targeted zoom value by factor.
-		 * @param	factor
-		 */
-		public function zoom(factor:Number):void
-		{
-			_zoom *= factor;
+			if(_allowZoom)
+				_zoom = factor;
+			else
+				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
 		}
 		
 		public function getZoom():Number
@@ -127,24 +150,59 @@ package citrus.view.starlingview {
 			return _zoom;
 		}
 		
+		public function getRotation():Number
+		{
+			return _rotation;
+		}
+		
+		/**
+		 * Recreates the AABB of the camera.
+		 * will use Math.Utils.createAABBData when allowRotation = true.
+		 */
 		public function resetAABBData():void
 		{
-			_aabbData = MathUtils.createAABBData(_ghostTarget.x , _ghostTarget.y, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale, - _camProxy.rotation);
+			if (!_allowZoom && !_allowRotation)
+			{
+				_aabbData.offsetX = _aabbData.offsetY = 0;
+				_aabbData.rect = new Rectangle(_ghostTarget.x, _ghostTarget.y, cameraLensWidth, cameraLensHeight);
+				return;
+			}
+			
+			if (_allowZoom && !_allowRotation)
+			{
+				_aabbData.offsetX = _aabbData.offsetY = 0;
+				_aabbData.rect = new Rectangle(_ghostTarget.x, _ghostTarget.y, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale);
+				return;
+			}
+			
+			if (_allowRotation && _allowZoom)
+			{
+				_aabbData = MathUtils.createAABBData(_ghostTarget.x , _ghostTarget.y, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale, - _camProxy.rotation);
+				return;
+			}
+		
+			if (!_allowZoom && _allowRotation)
+			{
+				_aabbData = MathUtils.createAABBData(_ghostTarget.x , _ghostTarget.y, cameraLensWidth, cameraLensHeight, - _camProxy.rotation);
+				return;
+			}
 		}
 		
 		override public function update():void
 		{
+			if (_allowRotation)
+			{
+				var diffRot:Number = _rotation - _camProxy.rotation;
+				var velocityRot:Number = diffRot * rotationEasing;
+				_camProxy.rotation += velocityRot;
+			}
 			
-			var diffRot:Number = _rotation - _camProxy.rotation;
-			var velocityRot:Number = diffRot * rotationEasing;
-			_camProxy.rotation += velocityRot;
-			
-			var diffZoom:Number = _zoom - _camProxy.scale;
-			var velocityZoom:Number = diffZoom * zoomEasing;
-			_camProxy.scale += velocityZoom;
-			
-			_camProxy.offsetX = offset.x;
-			_camProxy.offsetY = offset.y;
+			if (_allowZoom)
+			{
+				var diffZoom:Number = _zoom - _camProxy.scale;
+				var velocityZoom:Number = diffZoom * zoomEasing;
+				_camProxy.scale += velocityZoom;
+			}
 			
 			var invRotTarget:Point;
 			
@@ -161,28 +219,24 @@ package citrus.view.starlingview {
 				_ghostTarget.x += velocityX;
 				_ghostTarget.y += velocityY;
 				
-				invRotTarget = rotatePoint(new Point(_ghostTarget.x, _ghostTarget.y), -_camProxy.rotation);
-				
-				_camProxy.x = -invRotTarget.x * _camProxy.scale;
-				_camProxy.y = -invRotTarget.y * _camProxy.scale;
-				
 			}
 			else if (_manualPosition)
 			{
 				_ghostTarget.x = _manualPosition.x;
 				_ghostTarget.y = _manualPosition.y;
-				
-				invRotTarget = rotatePoint(new Point(_ghostTarget.x, _ghostTarget.y), -_camProxy.rotation);
-				
-				_camProxy.x = -invRotTarget.x * _camProxy.scale;
-				_camProxy.y = -invRotTarget.y * _camProxy.scale;
 			}
+			
+			invRotTarget = (_allowRotation) ? MathUtils.rotatePoint(new Point(_ghostTarget.x, _ghostTarget.y), -_camProxy.rotation) : new Point(_ghostTarget.x, _ghostTarget.y);
+				
+			_camProxy.x = -invRotTarget.x * _camProxy.scale;
+			_camProxy.y = -invRotTarget.y * _camProxy.scale;
+			
+			_camProxy.offsetX = offset.x;
+			_camProxy.offsetY = offset.y;
 			
 			_camProxy.x += _camProxy.offsetX;
 			_camProxy.y += _camProxy.offsetY;
 			
-			
-			//reset AABBData because we changed rotation, zoom and ghost target position.
 			resetAABBData();
 			
 			if (bounds && restrictZoom)
@@ -197,9 +251,11 @@ package citrus.view.starlingview {
 				
 			}
 			
-			var rotScaledOffset:Point = rotatePoint(
-			new Point(offset.x / _camProxy.scale, offset.y / _camProxy.scale),
-			_camProxy.rotation);
+			var rotScaledOffset:Point;
+			
+			rotScaledOffset = (_allowRotation) ?
+				MathUtils.rotatePoint( new Point(offset.x / _camProxy.scale, offset.y / _camProxy.scale), _camProxy.rotation) :
+				new Point(offset.x / _camProxy.scale, offset.y / _camProxy.scale);
 			
 			// move aabb
 			_aabbData.rect.x -= rotScaledOffset.x;
@@ -230,7 +286,8 @@ package citrus.view.starlingview {
 				newGTPos.x += rotScaledOffset.x;
 				newGTPos.y += rotScaledOffset.y;
 				
-				var invGT:Point = rotatePoint(new Point(newGTPos.x, newGTPos.y), -_camProxy.rotation);
+				var invGT:Point;
+				invGT = (_allowRotation) ? MathUtils.rotatePoint(new Point(newGTPos.x, newGTPos.y), -_camProxy.rotation) : new Point(newGTPos.x, newGTPos.y);
 				_camProxy.x = -invGT.x * _camProxy.scale + _camProxy.offsetX;
 				_camProxy.y = -invGT.y * _camProxy.scale + _camProxy.offsetY;
 				
@@ -242,22 +299,19 @@ package citrus.view.starlingview {
 			_viewRoot.x = _camProxy.x;
 			_viewRoot.y = _camProxy.y;
 			
+			
+			camPos = pointFromLocal(new Point(offset.x, offset.y));
+			
 		}
 		
 		/**
 		 * This function renders what's happening with the camera in screen space.
-		 * helped a great deal at figuring out collision with bounds when rotating
-		 * which in turn might help anyone implementing AABB collision detection using
-		 * the MathUtils.createAABBData method.
+		 * This is helpful for debugging and/or creating a minimap of your level
+		 * in that same Sprite. you have to position it and scale it yourself!
 		 * @param	sprite a flash display sprite to render to.
 		 */
 		public function renderDebug(sprite:*):void
 		{
-			
-			sprite.x = cameraLensWidth>>1 - bounds.width>>1;
-			sprite.y = cameraLensHeight>>1 - bounds.height>>1;
-			sprite.scaleX =  0.2;
-			sprite.scaleY = 0.2;
 			
 			var xo:Number, yo:Number, w:Number, h:Number;
 			
@@ -288,7 +342,7 @@ package citrus.view.starlingview {
 			sprite.graphics.drawCircle(_ghostTarget.x, _ghostTarget.y, 10);
 			
 			//rotate and scale offset.
-			var rotScaledOffset:Point = rotatePoint(
+			var rotScaledOffset:Point = MathUtils.rotatePoint(
 			new Point(offset.x / _camProxy.scale, offset.y / _camProxy.scale),
 			_camProxy.rotation);
 			
@@ -398,7 +452,7 @@ package citrus.view.starlingview {
 		}
 		
 		/**
-		 * The idea of pointFromLocal and pointToLocal was to manually do the calculations
+		 * The idea of pointFromLocal and pointToLocal is to manually do the calculations
 		 * for globalToLocal and localToGlobal and have understandable alternatives.
 		 * 
 		 * if using globalToLocal from _viewroot inside the update function and before setting viewroot's position
@@ -413,7 +467,7 @@ package citrus.view.starlingview {
 		public function pointFromLocal(p:Point):Point
 		{
 			
-			return rotatePoint(
+			return MathUtils.rotatePoint(
 			new Point(
 			(p.x - _camProxy.x - _camProxy.offsetX) /_camProxy.scale, 
 			(p.y - _camProxy.y - _camProxy.offsetY) /_camProxy.scale)
@@ -428,16 +482,6 @@ package citrus.view.starlingview {
 		public function pointToLocal(p:Point):Point
 		{
 			return (_viewRoot as Sprite).localToGlobal(p);
-		}
-		
-		/**
-		 * local helper to rotate points - should be moved to MathUtils ?
-		 */
-		private function rotatePoint(p:Point, a:Number):Point
-		{
-			var c:Number = Math.cos(a);
-			var s:Number = Math.sin(a);
-			return new Point(p.x * c + p.y * s, -p.x * s + p.y * c);
 		}
 		
 		/**
@@ -458,6 +502,16 @@ package citrus.view.starlingview {
 			return _ghostTarget;
 		}
 		
+		public function get allowZoom():Boolean
+		{
+			return _allowZoom;
+		}
+		
+		public function get allowRotation():Boolean
+		{
+			return _allowRotation;
+		}
+		
 		override public function set manualPosition(p:Point):void
 		{
 			_target = null;
@@ -468,6 +522,26 @@ package citrus.view.starlingview {
 		{
 			_manualPosition = null;
 			_target = o;
+		}
+		
+		public function set allowZoom(value:Boolean):void
+		{
+			if (!value)
+			{
+				_zoom = 1;
+				_camProxy.scale = 1;
+			}
+			_allowZoom = value;
+		}
+		
+		public function set allowRotation(value:Boolean):void
+		{
+			if (!value)
+			{
+				_rotation = 0;
+				_camProxy.rotation = 0;
+			}
+			_allowRotation = value;
 		}
 	
 	}

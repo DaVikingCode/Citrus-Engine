@@ -316,7 +316,7 @@ package citrus.view.starlingview {
 			var physicsDebugArt:flash.display.DisplayObject;
 			
 			var cam:StarlingCamera = (stateView.camera as StarlingCamera);
-			var camPosition:Point = cam.pointFromLocal(new Point(cam.offset.x, cam.offset.y));
+			var camPosition:Point = cam.camPos;
 			
 			if (_content is StarlingPhysicsDebugView) {
 				

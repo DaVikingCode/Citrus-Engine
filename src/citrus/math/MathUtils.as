@@ -39,6 +39,19 @@ package citrus.math {
 		}
 		
 		/**
+		 * Rotates a flash Point around Origin (like MathVector.rotate() )
+		 * @param	p flash.geom.Point
+		 * @param	a angle in radians
+		 * @return	returns a new rotated point.
+		 */
+		public static  function rotatePoint(p:Point, a:Number):Point
+		{
+			var c:Number = Math.cos(a);
+			var s:Number = Math.sin(a);
+			return new Point(p.x * c + p.y * s, -p.x * s + p.y * c);
+		}
+		
+		/**
 		 * Creates the axis aligned bounding box for a rotated rectangle.
 		 * @param w width of the rotated rectangle
 		 * @param h height of the rotated rectangle
