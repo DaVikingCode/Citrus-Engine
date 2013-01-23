@@ -129,10 +129,16 @@ package citrus.input.controllers.starling {
 			
 			graphic.removeEventListener(TouchEvent.TOUCH, handleTouch);
 			
+			graphic.removeChildren();
+			
+			Starling.current.stage.removeChild(graphic);
+			
 			buttonUpTexture.dispose();
 			buttonDownTexture.dispose();
 			button1.dispose();
 			button2.dispose();
+			
+			super.destroy();
 		}
 	}
 

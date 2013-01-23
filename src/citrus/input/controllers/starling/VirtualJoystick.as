@@ -195,12 +195,17 @@ package citrus.input.controllers.starling {
 		
 		override public function destroy():void
 		{
-			back.dispose();
-			knob.dispose();
-			graphic.dispose();
 			
 			_xAxisActions = null;
 			_yAxisActions = null;
+			
+			graphic.removeChildren();
+			
+			Starling.current.stage.removeChild(graphic);
+			
+			back.dispose();
+			knob.dispose();
+			graphic.dispose();
 			
 			super.destroy();
 		}
