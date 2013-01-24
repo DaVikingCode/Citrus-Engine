@@ -20,30 +20,6 @@ package citrus.view.starlingview {
 	 */
 	public class StarlingCamera extends ACitrusCamera
 	{
-		/**
-		 * should we restrict zoom to bounds?
-		 */
-		public var restrictZoom:Boolean = false;
-		
-		/**
-		 * Is the camera allowed to Zoom?
-		 */
-		protected var _allowZoom:Boolean = false;
-		
-		/**
-		 * Is the camera allowed to Rotate?
-		 */
-		protected var _allowRotation:Boolean = false;
-		
-		/**
-		 * the ease factor for zoom
-		 */
-		public var zoomEasing:Number = 0.05;
-		
-		/**
-		 * the ease factor for rotation
-		 */
-		public var rotationEasing:Number = 0.05;
 		
 		/**
 		 * _aabb holds the axis aligned bounding box of the camera in rect
@@ -86,6 +62,10 @@ package citrus.view.starlingview {
 		public function StarlingCamera(viewRoot:Sprite)
 		{
 			super(viewRoot);
+		}
+		
+		override public function init():void {
+			super.init();// setup camera lens normally
 			
 			/*fix for different starling content scale factors. but super has already calculated cameraLensWidth and Height
 			so might need to be applied in a different way.
@@ -239,7 +219,7 @@ package citrus.view.starlingview {
 			
 			resetAABBData();
 			
-			if (bounds && restrictZoom)
+			if (bounds && _restrictZoom)
 			{
 				var lwratio:Number = _aabbData.rect.width*_camProxy.scale / bounds.width;
 				var lhratio:Number = _aabbData.rect.height*_camProxy.scale / bounds.height;
@@ -502,29 +482,17 @@ package citrus.view.starlingview {
 			return _ghostTarget;
 		}
 		
-		public function get allowZoom():Boolean
+		override public function get allowZoom():Boolean
 		{
 			return _allowZoom;
 		}
 		
-		public function get allowRotation():Boolean
+		override public function get allowRotation():Boolean
 		{
 			return _allowRotation;
 		}
 		
-		override public function set manualPosition(p:Point):void
-		{
-			_target = null;
-			_manualPosition = p;
-		}
-		
-		override public function set target(o:Object):void
-		{
-			_manualPosition = null;
-			_target = o;
-		}
-		
-		public function set allowZoom(value:Boolean):void
+		override public function set allowZoom(value:Boolean):void
 		{
 			if (!value)
 			{
@@ -534,7 +502,7 @@ package citrus.view.starlingview {
 			_allowZoom = value;
 		}
 		
-		public function set allowRotation(value:Boolean):void
+		override public function set allowRotation(value:Boolean):void
 		{
 			if (!value)
 			{
@@ -542,6 +510,16 @@ package citrus.view.starlingview {
 				_camProxy.rotation = 0;
 			}
 			_allowRotation = value;
+		}
+		
+		override public function set restrictZoom(value:Boolean):void
+		{
+			_restrictZoom = value;
+		}
+		
+		override public function get restrictZoom():Boolean
+		{
+			return _restrictZoom;
 		}
 	
 	}

@@ -10,6 +10,31 @@ package citrus.view {
 	 * Citrus's camera.
 	 */
 	public class ACitrusCamera {
+		
+		/**
+		 * should we restrict zoom to bounds?
+		 */
+		protected var _restrictZoom:Boolean = false;
+		
+		/**
+		 * Is the camera allowed to Zoom?
+		 */
+		protected var _allowZoom:Boolean = false;
+		
+		/**
+		 * Is the camera allowed to Rotate?
+		 */
+		protected var _allowRotation:Boolean = false;
+		
+		/**
+		 * the ease factor for zoom
+		 */
+		public var zoomEasing:Number = 0.05;
+		
+		/**
+		 * the ease factor for rotation
+		 */
+		public var rotationEasing:Number = 0.05;
 
 		protected var _viewRoot:*;
 
@@ -53,11 +78,18 @@ package citrus.view {
 		public function ACitrusCamera(viewRoot:*) {
 
 			_viewRoot = viewRoot;
-
+			init();
+		}
+		
+		/**
+		 * Override this function to change the way camera lens dimensions are calculated 
+		 * or to set other inital properties for the camera type.
+		 */
+		public function init():void {
+			
 			var ce:CitrusEngine = CitrusEngine.getInstance();
-
 			cameraLensWidth = ce.stage.stageWidth;
-			cameraLensHeight = ce.stage.stageHeight;
+			cameraLensHeight = ce.stage.stageHeight;	
 		}
 		
 		/**
@@ -66,7 +98,12 @@ package citrus.view {
 		public function update():void {
 		}
 		
+		/*
+		 * Getters and setters
+		 */
+		
 		public function set target(o:Object):void {	
+			_manualPosition = null;
 			_target = o;
 		}
 		
@@ -75,11 +112,37 @@ package citrus.view {
 		}
 		
 		public function set manualPosition(p:Point):void {
+			_target = null;
 			_manualPosition = p;
 		}
 		
 		public function get manualPosition():Point {	
 			return _manualPosition;
 		}
+		
+		public function set restrictZoom(value:Boolean):void {
+			throw(new Error(this + " cannot zoom."));
+		}
+		
+		public function get restrictZoom():Boolean {
+			throw(new Error(this + " cannot zoom."));
+		}
+		
+		public function set allowRotation(value:Boolean):void {
+			throw(new Error(this + " cannot rotate."));
+		}
+		
+		public function set allowZoom(value:Boolean):void {
+			throw(new Error(this + " cannot zoom."));
+		}
+		
+		public function get allowZoom():Boolean {
+			throw(new Error(this + " cannot zoom."));
+		}
+		
+		public function get allowRotation():Boolean {
+			throw(new Error(this + " cannot rotate."));
+		}
+		
 	}
 }
