@@ -2,8 +2,8 @@ package citrus.view {
 
 	import citrus.core.CitrusEngine;
 	import citrus.math.MathVector;
-	import flash.geom.Point;
 
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
 	/**
@@ -128,6 +128,25 @@ package citrus.view {
 			var ce:CitrusEngine = CitrusEngine.getInstance();
 			cameraLensWidth = ce.stage.stageWidth;
 			cameraLensHeight = ce.stage.stageHeight;	
+		}
+		
+		/**
+		 * This is a non-critical helper function that allows you to quickly set all the available camera properties in one place. 
+		 * @param target The thing that the camera should follow.
+		 * @param offset The distance from the upper-left corner that you want the camera to be offset from the target.
+		 * @param bounds The rectangular bounds that the camera should not extend beyond.
+		 * @param easing The x and y percentage of distance that the camera will travel toward the target per tick. Lower numbers are slower. The number should not go beyond 1.
+		 */		
+		public function setUp(target:Object = null, offset:MathVector = null, bounds:Rectangle = null, easing:MathVector = null):void
+		{
+			if (target)
+				this.target = target;
+			if (offset)
+				this.offset = offset;
+			if (bounds)
+				this.bounds = bounds;
+			if (easing)
+				this.easing = easing;
 		}
 		
 		public function zoom(factor:Number):void {

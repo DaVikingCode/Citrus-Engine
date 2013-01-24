@@ -129,25 +129,6 @@ package citrus.view {
 		}
 		
 		/**
-		 * This is a non-critical helper function that allows you to quickly set all the available camera properties in one place. 
-		 * @param target The thing that the camera should follow.
-		 * @param offset The distance from the upper-left corner that you want the camera to be offset from the target.
-		 * @param bounds The rectangular bounds that the camera should not extend beyond.
-		 * @param easing The x and y percentage of distance that the camera will travel toward the target per tick. Lower numbers are slower. The number should not go beyond 1.
-		 */		
-		public function setupCamera(target:Object = null, offset:MathVector = null, bounds:Rectangle = null, easing:MathVector = null):void
-		{
-			if (target)
-				camera.target = target;
-			if (offset)
-				camera.offset = offset;
-			if (bounds)
-				camera.bounds = bounds;
-			if (easing)
-				camera.easing = easing;
-		}
-		
-		/**
 		 * A CitrusView subclass will extend this method to provide specifics on how to create the graphical representation of a CitrusObject.
 		 * @param citrusObject The object for which to create the art.
 		 * @return The art object.

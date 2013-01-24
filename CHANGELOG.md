@@ -1,5 +1,6 @@
 V 3.1.3, Work In Progress
 -------------------------
+- new Camera system ready! you don't call anymore view.setupCamera function, now it is view.camera.setUp
 - input uses its own update loop using Event.FRAME_CONSTRUCTED.
 - fixed tiled map parser's problem where the layer index might be wrong.
 - fixed a bug in Keyboard's input where some actions weren't performed.

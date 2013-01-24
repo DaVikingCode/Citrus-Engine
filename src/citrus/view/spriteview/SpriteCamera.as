@@ -1,13 +1,11 @@
 package citrus.view.spriteview {
 
+	import citrus.math.MathUtils;
 	import citrus.view.ACitrusCamera;
 
 	import flash.display.Sprite;
-	
-	import flash.geom.Rectangle;
 	import flash.geom.Point;
-	
-	import citrus.math.MathUtils;
+	import flash.geom.Rectangle;
 
 	/**
 	 * The Camera for the SpriteView.
@@ -20,6 +18,7 @@ package citrus.view.spriteview {
 		
 		override public function init():void {
 			super.init();
+			
 			_aabbData = MathUtils.createAABBData(0, 0, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale, _camProxy.rotation);
 		}
 		
@@ -29,7 +28,7 @@ package citrus.view.spriteview {
 		 */
 		override public function zoom(factor:Number):void
 		{
-			if(_allowZoom)
+			if (_allowZoom)
 				_zoom *= factor;
 			else
 				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
@@ -42,7 +41,7 @@ package citrus.view.spriteview {
 		 */
 		override public function rotate(angle:Number):void
 		{
-			if(_allowRotation)
+			if (_allowRotation)
 				_rotation += angle;
 			else
 				throw(new Error(this+"is not allowed to rotate. please set allowRotation to true."));
@@ -54,7 +53,7 @@ package citrus.view.spriteview {
 		 */
 		override public function setRotation(angle:Number):void
 		{
-			if(_allowRotation)
+			if (_allowRotation)
 				_rotation = angle;
 			else
 				throw(new Error(this+"is not allowed to rotate. please set allowRotation to true."));
@@ -66,7 +65,7 @@ package citrus.view.spriteview {
 		 */
 		override public function setZoom(factor:Number):void
 		{
-			if(_allowZoom)
+			if (_allowZoom)
 				_zoom = factor;
 			else
 				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
@@ -190,7 +189,7 @@ package citrus.view.spriteview {
 			_aabbData.rect.x -= rotScaledOffset.x;
 			_aabbData.rect.y -= rotScaledOffset.y;
 			
-			boundscheck: if ( bounds && !bounds.containsRect(_aabbData.rect) )
+			if ( bounds && !bounds.containsRect(_aabbData.rect) )
 			{
 				
 				var newAABBPos:Point = new Point(_aabbData.rect.x,_aabbData.rect.y);

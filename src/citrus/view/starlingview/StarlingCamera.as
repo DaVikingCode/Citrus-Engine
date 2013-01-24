@@ -1,12 +1,13 @@
 package citrus.view.starlingview {
-	
-	import citrus.view.ACitrusCamera;
-	import flash.geom.Rectangle;
-	
-	import starling.display.Sprite;
-	
-	import flash.geom.Point;
+
 	import citrus.math.MathUtils;
+	import citrus.view.ACitrusCamera;
+
+	import starling.display.Sprite;
+
+	import flash.display.Sprite;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	/**
 	 * The Camera for the StarlingView.
@@ -21,7 +22,7 @@ package citrus.view.starlingview {
 	public class StarlingCamera extends ACitrusCamera
 	{
 		
-		public function StarlingCamera(viewRoot:Sprite)
+		public function StarlingCamera(viewRoot:starling.display.Sprite)
 		{
 			super(viewRoot);
 		}
@@ -44,7 +45,7 @@ package citrus.view.starlingview {
 		 */
 		override public function zoom(factor:Number):void
 		{
-			if(_allowZoom)
+			if (_allowZoom)
 				_zoom *= factor;
 			else
 				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
@@ -57,7 +58,7 @@ package citrus.view.starlingview {
 		 */
 		override public function rotate(angle:Number):void
 		{
-			if(_allowRotation)
+			if (_allowRotation)
 				_rotation += angle;
 			else
 				throw(new Error(this+"is not allowed to rotate. please set allowRotation to true."));
@@ -69,7 +70,7 @@ package citrus.view.starlingview {
 		 */
 		override public function setRotation(angle:Number):void
 		{
-			if(_allowRotation)
+			if (_allowRotation)
 				_rotation = angle;
 			else
 				throw(new Error(this+"is not allowed to rotate. please set allowRotation to true."));
@@ -81,7 +82,7 @@ package citrus.view.starlingview {
 		 */
 		override public function setZoom(factor:Number):void
 		{
-			if(_allowZoom)
+			if (_allowZoom)
 				_zoom = factor;
 			else
 				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
@@ -203,7 +204,7 @@ package citrus.view.starlingview {
 			_aabbData.rect.x -= rotScaledOffset.x;
 			_aabbData.rect.y -= rotScaledOffset.y;
 			
-			boundscheck: if ( bounds && !bounds.containsRect(_aabbData.rect) )
+			if ( bounds && !bounds.containsRect(_aabbData.rect) )
 			{
 				
 				var newAABBPos:Point = new Point(_aabbData.rect.x,_aabbData.rect.y);
@@ -252,7 +253,7 @@ package citrus.view.starlingview {
 		 * in that same Sprite. you have to position it and scale it yourself!
 		 * @param	sprite a flash display sprite to render to.
 		 */
-		public function renderDebug(sprite:*):void
+		public function renderDebug(sprite:flash.display.Sprite):void
 		{
 			
 			var xo:Number, yo:Number, w:Number, h:Number;
@@ -279,7 +280,7 @@ package citrus.view.starlingview {
 			
 			//draw targets
 			sprite.graphics.lineStyle(20, 0xFF0000);
-			if(_target)
+			if (_target)
 				sprite.graphics.drawCircle(_target.x, _target.y, 10);
 			sprite.graphics.drawCircle(_ghostTarget.x, _ghostTarget.y, 10);
 			
@@ -423,7 +424,7 @@ package citrus.view.starlingview {
 		 */
 		public function pointToLocal(p:Point):Point
 		{
-			return (_viewRoot as Sprite).localToGlobal(p);
+			return (_viewRoot as starling.display.Sprite).localToGlobal(p);
 		}
 		
 		override public function get allowZoom():Boolean
