@@ -18,6 +18,8 @@ package citrus.utils.objectmakers.tmx {
 		public var layers:Object = {};
 		public var tileSets:Object = {};
 		public var objectGroups:Object = {};
+		
+		public var layers_ordered:Vector.<String>;
 
 		public function TmxMap(source:XML) {
 			// map header
@@ -27,16 +29,23 @@ package citrus.utils.objectmakers.tmx {
 			height = source.@height;
 			tileWidth = source.@tilewidth;
 			tileHeight = source.@tileheight;
+			
 			// read properties
 			for each (node in source.properties)
 				properties = properties ? properties.extend(node) : new TmxPropertySet(node);
+				
 			// load tilesets
 			var node:XML = null;
 			for each (node in source.tileset)
 				tileSets[node.@name] = new TmxTileSet(node, this);
-			// load layer
-			for each (node in source.layer)
+				
+			// load layers
+			layers_ordered = new Vector.<String>();
+			for each (node in source.layer) {
 				layers[node.@name] = new TmxLayer(node, this);
+				layers_ordered.push(node.@name);
+			}
+			
 			// load object group
 			for each (node in source.objectgroup)
 				objectGroups[node.@name] = new TmxObjectGroup(node, this);

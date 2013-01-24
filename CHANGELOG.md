@@ -1,7 +1,9 @@
 V 3.1.3, Work In Progress
 -------------------------
 - input uses its own update loop using Event.FRAME_CONSTRUCTED.
+- fixed tiled map parser's problem where the layer index might be wrong.
 - fixed a bug in Keyboard's input where some actions weren't performed.
+- fixed Starling VirtualButtons and VirtualJoystick 's destroy method.
 - fixed a problem with parallax when zooming.
 - fixed a bug where Nape Missile's angle wasn't in radian.
 - Nape's Hero no longer has a static friction.

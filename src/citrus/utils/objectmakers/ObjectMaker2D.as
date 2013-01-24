@@ -138,8 +138,9 @@ package citrus.utils.objectmakers {
 
 			var mapTilesX:uint, mapTilesY:uint;
 
-			for (var layer:String in tmx.layers) {
-
+			for (var layer_num:uint = 0; layer_num < tmx.layers_ordered.length; ++layer_num) {
+				
+				var layer:String = tmx.layers_ordered[layer_num];
 				mapTiles = tmx.getLayer(layer).tileGIDs;
 
 				mapTilesX = mapTiles.length;
