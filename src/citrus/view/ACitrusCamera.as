@@ -27,6 +27,44 @@ package citrus.view {
 		protected var _allowRotation:Boolean = false;
 		
 		/**
+		 * the targeted rotation value.
+		 */
+		protected var _rotation:Number = 0;
+		
+		/**
+		 * the targeted zoom value.
+		 */
+		protected var _zoom:Number = 1;
+		
+		/**
+		 * _aabb holds the axis aligned bounding box of the camera in rect
+		 * and its relative position to it (with offsetX and offsetY)
+		 */
+		protected var _aabbData:Object = { };
+		
+		/**
+		 * ghostTarget is the eased position of target.
+		 */
+		protected var _ghostTarget:Point = new Point();
+		
+		/**
+		 * targetPos is used for calculating ghostTarget.
+		 * (not sure if really necessary)
+		 */
+		protected var _targetPos:Point = new Point();
+		
+		/**
+		 * the _camProxy object is used as a container to hold the data to be applied to the _viewroot.
+		 * it can be accessible publicly so that debugView can be correctly displaced, rotated and scaled as _viewroot will be.
+		 */
+		protected var _camProxy:Object = { x: 0, y: 0, offsetX: 0, offsetY: 0, scale: 1, rotation: 0 };
+		
+		/**
+		 * projected camera position + offset. (used internally)
+		 */
+		protected var _camPos:Point = new Point();
+		
+		/**
 		 * the ease factor for zoom
 		 */
 		public var zoomEasing:Number = 0.05;
@@ -92,6 +130,30 @@ package citrus.view {
 			cameraLensHeight = ce.stage.stageHeight;	
 		}
 		
+		public function zoom(factor:Number):void {
+			throw(new Error("Warning: " + this + " cannot zoom."));
+		}
+		
+		public function rotate(angle:Number):void {
+			throw(new Error("Warning: " + this + " cannot rotate."));
+		}
+		
+		public function setRotation(angle:Number):void {
+			throw(new Error("Warning: " + this + " cannot rotate."));
+		}
+		
+		public function setZoom(factor:Number):void {
+			throw(new Error("Warning: " + this + " cannot zoom."));
+		}
+		
+		public function getZoom():Number {
+			throw(new Error("Warning: " + this + " cannot zoom."));
+		}
+		
+		public function getRotation():Number {
+			throw(new Error("Warning: " + this + " cannot rotate."));
+		}
+		
 		/**
 		 * Update the camera.
 		 */
@@ -111,6 +173,10 @@ package citrus.view {
 			return _target;
 		}
 		
+		public function get camPos():Point {
+			return _camPos;
+		}
+		
 		public function set manualPosition(p:Point):void {
 			_target = null;
 			_manualPosition = p;
@@ -121,27 +187,43 @@ package citrus.view {
 		}
 		
 		public function set restrictZoom(value:Boolean):void {
-			throw(new Error(this + " cannot zoom."));
+			throw(new Error("Warning: " + this + " cannot zoom."));
 		}
 		
 		public function get restrictZoom():Boolean {
-			throw(new Error(this + " cannot zoom."));
+			throw(new Error("Warning: " + this + " cannot zoom."));
 		}
 		
 		public function set allowRotation(value:Boolean):void {
-			throw(new Error(this + " cannot rotate."));
+			throw(new Error("Warning: " + this + " cannot rotate."));
 		}
 		
 		public function set allowZoom(value:Boolean):void {
-			throw(new Error(this + " cannot zoom."));
+			throw(new Error("Warning: " + this + " cannot zoom."));
 		}
 		
 		public function get allowZoom():Boolean {
-			throw(new Error(this + " cannot zoom."));
+			throw(new Error("Warning: " + this + " cannot zoom."));
 		}
 		
 		public function get allowRotation():Boolean {
-			throw(new Error(this + " cannot rotate."));
+			throw(new Error("Warning: " + this + " cannot rotate."));
+		}
+		
+		/**
+		 * camProxy is read only.
+		 * contains the data to be applied to container layers (_viewRoot and debug views).
+		 */
+		public function get camProxy():Object {
+			return _camProxy;
+		}
+		
+		/**
+		 * read-only to get the eased position of the target, which is the actual point the camera
+		 * is looking at ( - the offset )
+		 */
+		public function get ghostTarget():Point {
+			return _ghostTarget;
 		}
 		
 	}

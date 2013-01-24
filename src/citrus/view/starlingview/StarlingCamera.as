@@ -21,44 +21,6 @@ package citrus.view.starlingview {
 	public class StarlingCamera extends ACitrusCamera
 	{
 		
-		/**
-		 * _aabb holds the axis aligned bounding box of the camera in rect
-		 * and its relative position to it (with offsetX and offsetY)
-		 */
-		protected var _aabbData:Object = { };
-		
-		/**
-		 * the targeted rotation value.
-		 */
-		protected var _rotation:Number = 0;
-		
-		/**
-		 * the targeted zoom value.
-		 */
-		protected var _zoom:Number = 1;
-		
-		/**
-		 * ghostTarget is the eased position of target.
-		 */
-		protected var _ghostTarget:Point = new Point();
-		
-		/**
-		 * targetPos is used for calculating ghostTarget.
-		 * (not sure if really necessary)
-		 */
-		protected var _targetPos:Point = new Point();
-		
-		/**
-		 * the _camProxy object is used as a container to hold the data to be applied to the _viewroot.
-		 * it can be accessible publicly so that debugView can be correctly displaced, rotated and scaled as _viewroot will be.
-		 */
-		protected var _camProxy:Object = { x: 0, y: 0, offsetX: 0, offsetY: 0, scale: 1, rotation: 0 };
-		
-		/**
-		 * projected camera position + offset. (used internally)
-		 */
-		internal var camPos:Point = new Point();
-		
 		public function StarlingCamera(viewRoot:Sprite)
 		{
 			super(viewRoot);
@@ -80,7 +42,7 @@ package citrus.view.starlingview {
 		 * multiplies the targeted zoom value by factor.
 		 * @param	factor
 		 */
-		public function zoom(factor:Number):void
+		override public function zoom(factor:Number):void
 		{
 			if(_allowZoom)
 				_zoom *= factor;
@@ -93,7 +55,7 @@ package citrus.view.starlingview {
 		 * adds angle to targeted rotation value.
 		 * @param	angle in radians.
 		 */
-		public function rotate(angle:Number):void
+		override public function rotate(angle:Number):void
 		{
 			if(_allowRotation)
 				_rotation += angle;
@@ -105,7 +67,7 @@ package citrus.view.starlingview {
 		 * sets the targeted rotation value to angle.
 		 * @param	angle in radians.
 		 */
-		public function setRotation(angle:Number):void
+		override public function setRotation(angle:Number):void
 		{
 			if(_allowRotation)
 				_rotation = angle;
@@ -117,7 +79,7 @@ package citrus.view.starlingview {
 		 * sets the targeted zoom value to factor.
 		 * @param	factor
 		 */
-		public function setZoom(factor:Number):void
+		override public function setZoom(factor:Number):void
 		{
 			if(_allowZoom)
 				_zoom = factor;
@@ -125,12 +87,12 @@ package citrus.view.starlingview {
 				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
 		}
 		
-		public function getZoom():Number
+		override public function getZoom():Number
 		{
 			return _zoom;
 		}
 		
-		public function getRotation():Number
+		override public function getRotation():Number
 		{
 			return _rotation;
 		}
@@ -280,7 +242,7 @@ package citrus.view.starlingview {
 			_viewRoot.y = _camProxy.y;
 			
 			
-			camPos = pointFromLocal(new Point(offset.x, offset.y));
+			_camPos = pointFromLocal(new Point(offset.x, offset.y));
 			
 		}
 		
@@ -462,24 +424,6 @@ package citrus.view.starlingview {
 		public function pointToLocal(p:Point):Point
 		{
 			return (_viewRoot as Sprite).localToGlobal(p);
-		}
-		
-		/**
-		 * camProxy is read only.
-		 * contains the data to be applied to container layers (_viewRoot and debug views).
-		 */
-		public function get camProxy():Object
-		{
-			return _camProxy;
-		}
-		
-		/**
-		 * read-only to get the eased position of the target, which is the actual point the camera
-		 * is looking at ( - the offset )
-		 */
-		public function get ghostTarget():Point
-		{
-			return _ghostTarget;
 		}
 		
 		override public function get allowZoom():Boolean
