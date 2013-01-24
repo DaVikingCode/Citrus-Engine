@@ -328,7 +328,6 @@ package citrus.view.starlingview {
 				
 				if (stateView.camera.target || stateView.camera.manualPosition) {
 
-					//temporarily using the StarlingCamera cameraLens property.
 					physicsDebugArt.x = cam.camProxy.x;
 					physicsDebugArt.y = cam.camProxy.y;
 					physicsDebugArt.scaleX = physicsDebugArt.scaleY = cam.camProxy.scale;

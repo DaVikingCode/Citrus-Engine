@@ -8,6 +8,7 @@ package citrus.view.spriteview
 	import citrus.physics.IDebugView;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ISpriteView;
+	import flash.geom.Point;
 
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
@@ -216,7 +217,9 @@ package citrus.view.spriteview
 		public function update(stateView:SpriteView):void
 		{
 			scaleX = _citrusObject.inverted ? -1 : 1;
-			//position = object position + (camera position * inverse parallax)
+			
+			var cam:SpriteCamera = (stateView.camera as SpriteCamera);
+			var camPosition:Point = cam.camPos;
 			
 			if (_content is IDebugView) {
 				
@@ -224,14 +227,14 @@ package citrus.view.spriteview
 				
 			} else if (_physicsComponent) {
 				
-				x = _physicsComponent.x + (-stateView.viewRoot.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
-				y = _physicsComponent.y + (-stateView.viewRoot.y * (1 - _citrusObject.parallax)) + _citrusObject.offsetY;
+				x = _physicsComponent.x + (camPosition.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
+				y = _physicsComponent.y + (camPosition.y * (1 - _citrusObject.parallax)) + _citrusObject.offsetY;
 				rotation = _physicsComponent.rotation;
 				
 			} else {
 				
-				x = _citrusObject.x + (-stateView.viewRoot.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
-				y = _citrusObject.y + (-stateView.viewRoot.y * (1 - _citrusObject.parallax)) + _citrusObject.offsetY;
+				x = _citrusObject.x + (camPosition.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
+				y = _citrusObject.y + (camPosition.y * (1 - _citrusObject.parallax)) + _citrusObject.offsetY;
 				rotation = _citrusObject.rotation;
 			}
 			

@@ -411,8 +411,8 @@ package citrus.view.starlingview {
 			
 			return MathUtils.rotatePoint(
 			new Point(
-			(p.x - _camProxy.x - _camProxy.offsetX) /_camProxy.scale, 
-			(p.y - _camProxy.y - _camProxy.offsetY) /_camProxy.scale)
+			(p.x - _camProxy.x) /_camProxy.scale, 
+			(p.y - _camProxy.y) /_camProxy.scale)
 			, _camProxy.rotation);
 			
 			//return (_viewRoot as Sprite).globalToLocal(p);
