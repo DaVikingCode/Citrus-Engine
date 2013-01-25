@@ -1,3 +1,7 @@
+V 3.1.4, Work In Progress
+-------------------------
+- Nape's Hero has a static friction removed when the player move, and set when it stops moving (to prevent sliding).
+
 V 3.1.3, 01 24 2013
 -------------------
 - new Camera system ready! you don't call anymore view.setupCamera function, now it is view.camera.setUp
