@@ -2,6 +2,7 @@ V 3.1.4, Work In Progress
 -------------------------
 - Nape's Hero has a static friction removed when the player move, and set when it stops moving (to prevent sliding).
 - Added Panning to SoundManager
+- Added zoomFit() to StarlingCamera and SpriteCamera
 
 V 3.1.3, 01 24 2013
 -------------------

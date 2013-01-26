@@ -34,6 +34,18 @@ package citrus.view.spriteview {
 				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
 		}
 		
+		override public function zoomFit(width:Number,height:Number):void
+		{
+			if (_allowZoom)
+			{
+				var ratioX:Number =  width/cameraLensWidth;
+				var ratioY:Number = height/cameraLensHeight;
+				_zoom = 1/( (ratioX >= ratioY) ? ratioY : ratioX );
+			}
+			else
+				throw(new Error(this+" is not allowed to zoom. please set allowZoom to true."));
+		}
+		
 		/**
 		 * rotates the camera by the angle.
 		 * adds angle to targeted rotation value.
