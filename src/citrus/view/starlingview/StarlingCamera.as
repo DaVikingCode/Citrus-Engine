@@ -48,7 +48,19 @@ package citrus.view.starlingview {
 			if (_allowZoom)
 				_zoom *= factor;
 			else
-				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
+				throw(new Error(this+" is not allowed to zoom. please set allowZoom to true."));
+		}
+		
+		override public function zoomFit(width:Number,height:Number):void
+		{
+			if (_allowZoom)
+			{
+				var ratioX:Number =  width/cameraLensWidth;
+				var ratioY:Number = height/cameraLensHeight;
+				_zoom = 1/( (ratioX >= ratioY) ? ratioY : ratioX );
+			}
+			else
+				throw(new Error(this+" is not allowed to zoom. please set allowZoom to true."));
 		}
 		
 		/**
@@ -61,7 +73,7 @@ package citrus.view.starlingview {
 			if (_allowRotation)
 				_rotation += angle;
 			else
-				throw(new Error(this+"is not allowed to rotate. please set allowRotation to true."));
+				throw(new Error(this+" is not allowed to rotate. please set allowRotation to true."));
 		}
 		
 		/**
@@ -73,7 +85,7 @@ package citrus.view.starlingview {
 			if (_allowRotation)
 				_rotation = angle;
 			else
-				throw(new Error(this+"is not allowed to rotate. please set allowRotation to true."));
+				throw(new Error(this+" is not allowed to rotate. please set allowRotation to true."));
 		}
 		
 		/**
@@ -85,7 +97,7 @@ package citrus.view.starlingview {
 			if (_allowZoom)
 				_zoom = factor;
 			else
-				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
+				throw(new Error(this+" is not allowed to zoom. please set allowZoom to true."));
 		}
 		
 		override public function getZoom():Number

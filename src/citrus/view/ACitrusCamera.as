@@ -157,6 +157,14 @@ package citrus.view {
 			throw(new Error("Warning: " + this + " cannot zoom."));
 		}
 		
+		/**
+		 * fit inside width and height by zooming in or out.
+		 * (centered on the target)
+		 */
+		public function zoomFit(width:Number, height:Number):void {
+			throw(new Error("Warning: " + this + " cannot zoomFit."));
+		}
+		
 		public function rotate(angle:Number):void {
 			throw(new Error("Warning: " + this + " cannot rotate."));
 		}
