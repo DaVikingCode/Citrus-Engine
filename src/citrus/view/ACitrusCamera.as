@@ -140,7 +140,11 @@ package citrus.view {
 		public function setUp(target:Object = null, offset:MathVector = null, bounds:Rectangle = null, easing:MathVector = null):void
 		{
 			if (target)
+			{
 				this.target = target;
+				_ghostTarget.x = target.x;
+				_ghostTarget.y = target.y;
+			}
 			if (offset)
 				this.offset = offset;
 			if (bounds)
