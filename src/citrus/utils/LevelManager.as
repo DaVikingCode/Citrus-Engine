@@ -4,6 +4,7 @@ package citrus.utils {
 
 	import flash.display.Loader;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
@@ -143,7 +144,7 @@ package citrus.utils {
 					
 					var urlLoader:URLLoader = new URLLoader();
 					urlLoader.load(new URLRequest(_levels[_currentIndex][1]));
-					urlLoader.addEventListener(Event.COMPLETE,_levelLoaded);
+					urlLoader.addEventListener(Event.COMPLETE, _levelLoaded);
 					
 				} else {
 					
@@ -151,6 +152,7 @@ package citrus.utils {
 					var loaderContext:LoaderContext = new LoaderContext(checkPolicyFile, applicationDomain, securityDomain);
 					loader.load(new URLRequest(_levels[_currentIndex][1]), loaderContext);
 					loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _levelLoaded);
+					loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _handleLoaderError);
 				}
 			}
 		}
@@ -161,14 +163,23 @@ package citrus.utils {
 			
 			_currentLevel.lvlEnded.add(_onLevelEnded);
 			onLevelChanged.dispatch(_currentLevel);
-			evt.target.removeEventListener(Event.COMPLETE, _levelLoaded);
 			
-			if (evt.target is Loader)
-				evt.target.loader.unloadAndStop();
+			if (evt.target is Loader) {
+				
+				evt.target.contentLoaderInfo.addEventListener(Event.COMPLETE, _levelLoaded);
+				evt.target.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _handleLoaderError);
+				evt.target.loader.unloadAndStop();		
+					
+			} else if (evt.target is URLLoader)
+				evt.target.removeEventListener(Event.COMPLETE, _levelLoaded);
 		}
 
 		private function _onLevelEnded():void {
 
+		}
+		
+		private function _handleLoaderError(evt:IOErrorEvent):void {
+			trace(evt.type + " - " + evt.text);
 		}
 		
 		public function get levels():Array {
