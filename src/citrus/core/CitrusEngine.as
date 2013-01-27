@@ -60,6 +60,7 @@ package citrus.core {
 			_console = new Console(9); //Opens with tab key by default
 			_console.onShowConsole.add(handleShowConsole);
 			_console.addCommand("set", handleConsoleSetCommand);
+			_console.addCommand("get", handleConsoleGetCommand);
 			addChild(_console);
 			
 			//timekeeping
@@ -307,6 +308,22 @@ package citrus.core {
 			
 			if (object.hasOwnProperty(paramName))
 				object[paramName] = value;
+			else
+				trace("Warning: " + objectName + " has no parameter named " + paramName + ".");
+		}
+		
+		private function handleConsoleGetCommand(objectName:String, paramName:String):void
+		{
+			var object:CitrusObject = _state.getObjectByName(objectName);
+			
+			if (!object)
+			{
+				trace("Warning: There is no object named " + objectName);
+				return;
+			}
+			
+			if (object.hasOwnProperty(paramName))
+				trace(objectName + " property:" + paramName + "=" + object[paramName]);	
 			else
 				trace("Warning: " + objectName + " has no parameter named " + paramName + ".");
 		}
