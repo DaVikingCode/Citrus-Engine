@@ -94,6 +94,9 @@ package citrus.view.away3dview {
 		}
 
 		private function updateGroupForSprite(sprite:Away3DArt):void {
+			
+			if (sprite.citrusObject.group > _viewRoot.numChildren + 10)
+				trace("the group property value of " + sprite.citrusObject + ":" + sprite.citrusObject.group + " is higher than +10 to the current max group value and may perform a crash");
 
 			// Create the container sprite (group) if it has not been created yet.
 			while (sprite.citrusObject.group >= _viewRoot.numChildren)
