@@ -136,8 +136,9 @@ package citrus.view {
 		 * @param offset The distance from the upper-left corner that you want the camera to be offset from the target.
 		 * @param bounds The rectangular bounds that the camera should not extend beyond.
 		 * @param easing The x and y percentage of distance that the camera will travel toward the target per tick. Lower numbers are slower. The number should not go beyond 1.
+		 * @return this The Instance of the ACitrusCamera.
 		 */		
-		public function setUp(target:Object = null, offset:MathVector = null, bounds:Rectangle = null, easing:MathVector = null):void
+		public function setUp(target:Object = null, offset:MathVector = null, bounds:Rectangle = null, easing:MathVector = null):ACitrusCamera
 		{
 			if (target)
 			{
@@ -151,6 +152,8 @@ package citrus.view {
 				this.bounds = bounds;
 			if (easing)
 				this.easing = easing;
+				
+			return this;
 		}
 		
 		public function zoom(factor:Number):void {

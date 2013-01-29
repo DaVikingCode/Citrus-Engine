@@ -5,6 +5,7 @@ V 3.1.4, Work In Progress
 - Added zoomFit() to StarlingCamera and SpriteCamera
 - Added a get function command for the console
 - Added a trace to inform if we create a group with a high value
+- view.camera.setUp returns the instance of the ACitrusCamera.
 
 V 3.1.3, 01 24 2013
 -------------------
