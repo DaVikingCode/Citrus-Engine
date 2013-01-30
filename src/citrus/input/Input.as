@@ -48,14 +48,14 @@ package citrus.input {
 			actionTriggeredVALUECHANGE.add(doActionVALUECHANGE);
 			
 			_ce = CitrusEngine.getInstance();
-			
-			_ce.stage.addEventListener(Event.FRAME_CONSTRUCTED, update);
 		}
 		
 		public function initialize():void
 		{
 			if (_initialized)
 				return;
+				
+			_ce.stage.addEventListener(Event.FRAME_CONSTRUCTED, update);
 			
 			//default keyboard
 			keyboard = new Keyboard("keyboard");
