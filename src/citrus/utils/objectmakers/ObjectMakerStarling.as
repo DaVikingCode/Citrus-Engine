@@ -14,6 +14,7 @@ package citrus.utils.objectmakers {
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
+	import flash.display.MovieClip;
 	import flash.utils.getDefinitionByName;
 
 	/**
@@ -28,6 +29,91 @@ package citrus.utils.objectmakers {
 	public class ObjectMakerStarling {
 
 		public function ObjectMakerStarling() {
+		}
+		
+		/**
+		 * You can pass a custom-created MovieClip object into this method to auto-create CitrusObjects.
+		 * This method looks at all the children of the MovieClip you passed in, and creates a CitrusObject with the
+		 * x, y, width, height, name, and rotation of the of MovieClip.
+		 * 
+		 * <p>You may use the powerful Inspectable metadata tag : in your fla file, add the path to the libraries and 
+		 * the swcs. Then create your MovieClip, right click on it and convert as a component. Inform the package and class. 
+		 * You will have access to all its properties.</p>
+		 * 
+		 * <p>You can also add properties directly in your MovieClips, follow this step :</p>
+		 * 
+		 * <p>In order for this to properly create a CitrusObject from a MovieClip, the MovieClip needs to have a variable
+		 * called <code>classPath</code> on it, which will provide, in String form, the full
+		 * package and class name of the Citrus Object that it is supposed to create (such as "myGame.MyHero"). You can specify
+		 * this in frame 1 of the MovieClip asset in Flash.</p>
+		 * 
+		 * <p>You can also initialize your CitrusObject's parameters by creating a "params" variable (of type Object)
+		 * on your MovieClip. The "params" object will be passed into the newly created CitrusObject.</p>
+		 * 
+		 * <p>So, within the first frame of each child-MovieClip of the "layout" MovieClip,
+		 * you should specify something like the following:</p>
+		 * 
+		 * <p><code>var classPath="citrus.objects.platformer.Hero";</code></p>
+		 * 
+		 * <p><code>var params={view: "Patch.swf", jumpHeight: 14};</code></p>
+		 * 
+		 * <p>This Starling version enables you to use a String for the view which is a texture name coming from your texture atlas.</p>
+		 * 
+		 * @param textureAtlas A TextureAtlas containing textures which are used in your level maker.
+		 */
+		public static function FromMovieClip(mc:MovieClip, textureAtlas:TextureAtlas, addToCurrentState:Boolean = true):Array {
+			var a:Array = [];
+			var n:Number = mc.numChildren;
+			var child:MovieClip;
+			for (var i:uint = 0; i < n; ++i) {
+				child = mc.getChildAt(i) as MovieClip;
+				if (child) {
+					if (!child.className)
+						continue;
+
+					var objectClass:Class = getDefinitionByName(child.className) as Class;
+					var params:Object = {};
+
+					if (child.params)
+						params = child.params;
+
+					params.x = child.x;
+					params.y = child.y;
+
+					// We need to unrotate the object to get its true width/height. Then rotate it back.
+					var rotation:Number = child.rotation;
+					child.rotation = 0;
+					params.width = child.width;
+					params.height = child.height;
+					child.rotation = rotation;
+
+					params.rotation = child.rotation;
+
+					// Adding properties from the component inspector
+					for (var metatags:String in child) {
+						if (metatags != "componentInspectorSetting" && metatags != "className") {
+							params[metatags] = child[metatags];
+						}
+					}
+					
+					if (params.view) {
+					
+						var suffix:String = params.view.substring(params.view.length - 4).toLowerCase();
+						if (!(suffix == ".swf" || suffix == ".png" || suffix == ".gif" || suffix == ".jpg"))
+							params.view = new Image(textureAtlas.getTexture(params.view));
+					}
+
+					var object:CitrusObject = new objectClass(child.name, params);
+					a.push(object);
+				}
+			}
+
+			if (addToCurrentState) {
+				var ce:CitrusEngine = CitrusEngine.getInstance();
+				for each (object in a) ce.state.add(object);
+			}
+
+			return a;
 		}
 
 		/**

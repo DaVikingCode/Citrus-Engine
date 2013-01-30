@@ -37,7 +37,7 @@ package citrus.utils.objectmakers {
 		 * 
 		 * <p>You may use the powerful Inspectable metadata tag : in your fla file, add the path to the libraries and 
 		 * the swcs. Then create your MovieClip, right click on it and convert as a component. Inform the package and class. 
-		 * You will have access to all its properties. Don't forget to put the className with path!</p>
+		 * You will have access to all its properties.</p>
 		 * 
 		 * <p>You can also add properties directly in your MovieClips, follow this step :</p>
 		 * 
@@ -60,7 +60,7 @@ package citrus.utils.objectmakers {
 			var a:Array = [];
 			var n:Number = mc.numChildren;
 			var child:MovieClip;
-			for (var i:int = 0; i < n; i++) {
+			for (var i:uint = 0; i < n; ++i) {
 				child = mc.getChildAt(i) as MovieClip;
 				if (child) {
 					if (!child.className)
