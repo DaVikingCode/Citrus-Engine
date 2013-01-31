@@ -3,6 +3,7 @@ V 3.1.4, Work In Progress
 - Nape's Hero has a static friction removed when the player move, and set when it stops moving (to prevent sliding).
 - ObjectMakerStarling has a FromMovieClip function. The second argument is the TextureAtlas. Objects made in Flash Pro can use a texture name for their view.
 - Added Panning to SoundManager
+- Added a camera lens parameter to view.camera.setUp function.
 - Added zoomFit() to StarlingCamera and SpriteCamera
 - Added a get function command for the console
 - Added a trace to inform if we create a group with a high value

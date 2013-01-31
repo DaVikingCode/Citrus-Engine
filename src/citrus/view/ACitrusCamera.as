@@ -112,22 +112,24 @@ package citrus.view {
 		 * The height of the visible game screen. This will usually be the same as your stage width unless your game has a border.
 		 */
 		public var cameraLensHeight:Number;
+		
+		protected var _ce:CitrusEngine;
 
 		public function ACitrusCamera(viewRoot:*) {
 
 			_viewRoot = viewRoot;
-			init();
+			initialize();
 		}
 		
 		/**
 		 * Override this function to change the way camera lens dimensions are calculated 
 		 * or to set other inital properties for the camera type.
 		 */
-		public function init():void {
+		protected function initialize():void {
 			
-			var ce:CitrusEngine = CitrusEngine.getInstance();
-			cameraLensWidth = ce.stage.stageWidth;
-			cameraLensHeight = ce.stage.stageHeight;	
+			_ce = CitrusEngine.getInstance();
+			cameraLensWidth = _ce.stage.stageWidth;
+			cameraLensHeight = _ce.stage.stageHeight;	
 		}
 		
 		/**
@@ -136,9 +138,10 @@ package citrus.view {
 		 * @param offset The distance from the upper-left corner that you want the camera to be offset from the target.
 		 * @param bounds The rectangular bounds that the camera should not extend beyond.
 		 * @param easing The x and y percentage of distance that the camera will travel toward the target per tick. Lower numbers are slower. The number should not go beyond 1.
+		 * @param cameraLens The width and height of the visible game screen. Default is the same as your stage width and height.
 		 * @return this The Instance of the ACitrusCamera.
 		 */		
-		public function setUp(target:Object = null, offset:MathVector = null, bounds:Rectangle = null, easing:MathVector = null):ACitrusCamera
+		public function setUp(target:Object = null, offset:MathVector = null, bounds:Rectangle = null, easing:MathVector = null, cameraLens:MathVector = null):ACitrusCamera
 		{
 			if (target)
 			{
@@ -152,6 +155,10 @@ package citrus.view {
 				this.bounds = bounds;
 			if (easing)
 				this.easing = easing;
+			if (cameraLens) {
+				cameraLensWidth = cameraLens.x;
+				cameraLensHeight = cameraLens.y;
+			}
 				
 			return this;
 		}

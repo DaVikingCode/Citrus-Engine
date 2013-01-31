@@ -16,8 +16,8 @@ package citrus.view.spriteview {
 			super(viewRoot);
 		}
 		
-		override public function init():void {
-			super.init();
+		override protected function initialize():void {
+			super.initialize();
 			
 			_aabbData = MathUtils.createAABBData(0, 0, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale, _camProxy.rotation);
 		}

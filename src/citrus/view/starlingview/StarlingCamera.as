@@ -27,8 +27,8 @@ package citrus.view.starlingview {
 			super(viewRoot);
 		}
 		
-		override public function init():void {
-			super.init();// setup camera lens normally
+		override protected function initialize():void {
+			super.initialize();// setup camera lens normally
 			
 			/*fix for different starling content scale factors. but super has already calculated cameraLensWidth and Height
 			so might need to be applied in a different way.
