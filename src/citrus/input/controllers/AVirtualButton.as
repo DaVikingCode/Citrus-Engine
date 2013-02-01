@@ -2,7 +2,7 @@ package citrus.input.controllers {
 
 	import citrus.input.InputController;
 
-	public class AVirtualButtons extends InputController
+	public class AVirtualButton extends InputController
 	{
 		//Common graphic properties
 		protected var _x:int;
@@ -14,12 +14,10 @@ package citrus.input.controllers {
 		
 		protected var _buttonradius:int = 50;
 		
-		public var button1Action:String = "button1";
-		public var button1Channel:int = -1;
-		public var button2Action:String = "button2";
-		public var button2Channel:int = -1;
+		public var buttonAction:String = "button";
+		public var buttonChannel:int = -1;
 		
-		public function AVirtualButtons(name:String, params:Object = null)
+		public function AVirtualButton(name:String, params:Object = null)
 		{
 			super(name, params);
 			

@@ -1,6 +1,6 @@
 package citrus.input.controllers.starling {
 
-	import citrus.input.controllers.AVirtualButtons;
+	import citrus.input.controllers.AVirtualButton;
 
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -12,18 +12,17 @@ package citrus.input.controllers.starling {
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 
-	public class VirtualButtons extends AVirtualButtons {
+	public class VirtualButton extends AVirtualButton {
 
 		public var graphic:starling.display.Sprite;
 		// main Sprite container.
 
-		protected var button1:Image;
-		protected var button2:Image;
+		protected var button:Image;
 
 		public var buttonUpTexture:Texture;
 		public var buttonDownTexture:Texture;
 
-		public function VirtualButtons(name:String, params:Object = null) {
+		public function VirtualButton(name:String, params:Object = null) {
 			super(name, params);
 		}
 
@@ -59,22 +58,16 @@ package citrus.input.controllers.starling {
 				tempBitmapData2 = null;
 			}
 
-			button1 = new Image(buttonUpTexture);
-			button1.pivotX = button1.pivotY = _buttonradius;
-
-			button2 = new Image(buttonUpTexture);
-			button2.pivotX = button2.pivotY = _buttonradius;
+			button = new Image(buttonUpTexture);
+			button.pivotX = button.pivotY = _buttonradius;
 
 			tempSprite = null;
 			tempBitmapData = null;
 
-			button2.x += _margin;
-
 			graphic.x = _x;
 			graphic.y = _y;
 
-			graphic.addChild(button1);
-			graphic.addChild(button2);
+			graphic.addChild(button);
 
 			Starling.current.stage.addChild(graphic);
 
@@ -83,37 +76,20 @@ package citrus.input.controllers.starling {
 
 		private function handleTouch(e:TouchEvent):void {
 			
-			var b1:Touch = e.getTouch(button1);
-			var b2:Touch = e.getTouch(button2);
+			var buttonTouch:Touch = e.getTouch(button);
 
-			if (b1) {
+			if (buttonTouch) {
 				
-				switch (b1.phase) {
+				switch (buttonTouch.phase) {
 					
 					case TouchPhase.BEGAN:
-						(b1.target as Image).texture = buttonDownTexture;
-						triggerON(button1Action, 1, button1Channel);
+						(buttonTouch.target as Image).texture = buttonDownTexture;
+						triggerON(buttonAction, 1, buttonChannel);
 						break;
 						
 					case TouchPhase.ENDED:
-						(b1.target as Image).texture = buttonUpTexture;
-						triggerOFF(button1Action, 0, button1Channel);
-						break;
-				}
-			}
-
-			if (b2) {
-				
-				switch (b2.phase) {
-					
-					case TouchPhase.BEGAN:
-						(b2.target as Image).texture = buttonDownTexture;
-						triggerON(button2Action, 1, button2Channel);
-						break;
-						
-					case TouchPhase.ENDED:
-						(b2.target as Image).texture = buttonUpTexture;
-						triggerOFF(button2Action, 0,button2Channel);
+						(buttonTouch.target as Image).texture = buttonUpTexture;
+						triggerOFF(buttonAction, 0, buttonChannel);
 						break;
 				}
 			}
@@ -135,8 +111,7 @@ package citrus.input.controllers.starling {
 			
 			buttonUpTexture.dispose();
 			buttonDownTexture.dispose();
-			button1.dispose();
-			button2.dispose();
+			button.dispose();
 			
 			super.destroy();
 		}
