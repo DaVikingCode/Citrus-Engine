@@ -73,6 +73,22 @@ package citrus.input.controllers {
 		
 		}
 		
+		public function removeAxisAction(axis:String, name:String):void
+		{
+			var actionlist:Vector.<Object>;
+			if (axis.toLowerCase() == "x")
+				actionlist = _xAxisActions;
+			else if (axis.toLowerCase() == "y")
+				actionlist = _yAxisActions;
+			else
+				throw(new Error("VirtualJoystick::removeAxisAction() invalid axis parameter (only x and y are accepted)"));
+			
+			var i:String;
+			for (i in actionlist)
+				if (actionlist[i].name == name)
+					actionlist.splice(uint(i),1);
+		}
+		
 		public function addAxisAction(axis:String, name:String, start:Number, end:Number):void
 		{
 			var actionlist:Vector.<Object>;
