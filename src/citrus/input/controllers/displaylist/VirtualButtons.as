@@ -12,8 +12,8 @@ package citrus.input.controllers.displaylist {
 		protected var button1:Sprite;
 		protected var button2:Sprite;
 		
-		protected var button1UpGraphic:Sprite;
-		protected var button1DownGraphic:Sprite;
+		public var button1UpGraphic:Sprite;
+		public var button1DownGraphic:Sprite;
 		
 		public var button2UpGraphic:Sprite;
 		public var button2DownGraphic:Sprite;
