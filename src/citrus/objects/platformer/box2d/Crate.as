@@ -4,8 +4,7 @@ package citrus.objects.platformer.box2d
 	import citrus.objects.Box2DPhysicsObject;
 	
 	/**
-	 * A very simple physics object. I just needed to add bullet mode and zero restitution
-	 * to make it more stable, otherwise it gets very jittery. 
+	 * An object made for Continuous Collision Detection. It should only be used for very fast, small moving dynamic bodies. 
 	 */	
 	public class Crate extends Box2DPhysicsObject
 	{
