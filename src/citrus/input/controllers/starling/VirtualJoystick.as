@@ -21,8 +21,8 @@ package citrus.input.controllers.starling {
 		public var graphic:starling.display.Sprite; //main Sprite container.
 		
 		//separate joystick elements
-		protected var back:Image;
-		protected var knob:Image;
+		public var back:Image;
+		public var knob:Image;
 		
 		public function VirtualJoystick(name:String, params:Object = null)
 		{

@@ -13,8 +13,8 @@ package citrus.input.controllers.displaylist {
 		public var graphic:Sprite; //main Sprite container.
 		
 		//separate joystick elements
-		protected var back:Sprite;
-		protected var knob:Sprite;
+		public var back:Sprite;
+		public var knob:Sprite;
 		
 		public function VirtualJoystick(name:String, params:Object = null)
 		{

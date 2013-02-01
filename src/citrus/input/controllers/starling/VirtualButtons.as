@@ -20,8 +20,8 @@ package citrus.input.controllers.starling {
 		protected var button1:Image;
 		protected var button2:Image;
 
-		protected var buttonUpTexture:Texture;
-		protected var buttonDownTexture:Texture;
+		public var buttonUpTexture:Texture;
+		public var buttonDownTexture:Texture;
 
 		public function VirtualButtons(name:String, params:Object = null) {
 			super(name, params);
