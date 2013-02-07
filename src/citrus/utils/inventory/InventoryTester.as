@@ -3,10 +3,9 @@
  * Date: 2/6/13
  * Time: 4:41 PM
  */
-package {
+package citrus.utils.inventory{
 
 	import citrus.core.CitrusEngine;
-	import citrus.objects.CitrusSprite;
 
 	public class InventoryTester extends CitrusEngine{
 		public function InventoryTester() {

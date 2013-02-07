@@ -3,7 +3,7 @@
  * Date: 2/6/13
  * Time: 10:49 AM
  */
-package items {
+package citrus.utils.inventory.items {
 
 	import citrus.utils.inventory.core.GameObject;
 

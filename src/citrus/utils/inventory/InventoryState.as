@@ -3,17 +3,15 @@
  * Date: 2/6/13
  * Time: 4:42 PM
  */
-package {
+package citrus.utils.inventory {
 
-	import citrus.core.CitrusEngine;
 	import citrus.core.State;
-	import citrus.objects.CitrusSprite;
 	import citrus.utils.inventory.core.InventoryManager;
-
-	import flash.text.TextField;
 
 	import items.Car;
 	import items.Key;
+
+	import flash.text.TextField;
 
 	public class InventoryState extends State {
 		public function InventoryState()
