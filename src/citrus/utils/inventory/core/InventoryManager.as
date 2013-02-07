@@ -29,22 +29,34 @@ package citrus.utils.inventory.core {
 		public function add(gameObject:GameObject):void {
 			if (!slots[gameObject.name]) {
 				slots[gameObject.name] = gameObject;
+			}else{
+				slots[gameObject.name].quantity++;
 			}
 		}
 
 		public function remove(gameObject:GameObject):void {
 			if (slots[gameObject.name]) {
-				slots[gameObject.name] = null;
+				slots[gameObject.name].quantity--;
+				if(slots[gameObject.name].quantity==0){
+					slots[gameObject.name] = null;
+				}
 			}
 		}
 
-		public function get(name:String, state:int = 0):GameObject {
+		public function get(name:String):GameObject {
 			return  slots[name] as GameObject;
 		}
 
 		public function status(name:String, ...flags):Boolean{
 			if(slots[name]){
 				return  slots[name].hasFlags(flags);
+			}
+			return false;
+		}
+
+		public function hasAnyFlags(name:String,  ...flags):Boolean{
+			if(slots[name]){
+				return  slots[name].hasAnyFlags(flags);
 			}
 			return false;
 		}

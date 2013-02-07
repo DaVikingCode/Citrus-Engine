@@ -15,12 +15,17 @@ package citrus.utils.inventory.core {
 
 		public var name:String;
 		protected var bitFlag:BitFlag;
+		public var quantity:int = 1;
 
 		public function GameObject() {
 		}
 
 		public function toggleState(... flags ):void {
 			bitFlag.toggleFlags(flags);
+		}
+
+		public function hasAnyFlags(...flags):Boolean{
+			return bitFlag.hasAnyFlags(flags);
 		}
 
 		 public function hasFlags( ... flags ):Boolean{
