@@ -2,7 +2,7 @@
  * A class for using bit flags in an object
  * @author Damian Connolly - http://divillysausages.com
  */
-package citrus.utils.inventory.core {
+package citrus.datastructures {
 
 	import flash.system.System;
 	import flash.utils.Dictionary;

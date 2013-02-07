@@ -5,6 +5,8 @@
  */
 package citrus.utils.inventory.core {
 
+	import citrus.datastructures.BitFlag;
+
 	import flash.utils.getDefinitionByName;
 
 	public class GameObject{
