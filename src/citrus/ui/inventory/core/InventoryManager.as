@@ -3,7 +3,7 @@
  * Date: 12/5/12
  * Time: 1:26 PM
  */
-package citrus.utils.inventory.core {
+package citrus.ui.inventory.core {
 
 	import flash.utils.Dictionary;
 

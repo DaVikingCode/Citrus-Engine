@@ -3,7 +3,7 @@
  * Date: 11/28/12
  * Time: 4:43 PM
  */
-package citrus.utils.inventory.core {
+package citrus.ui.inventory.core {
 
 	import citrus.datastructures.BitFlag;
 
@@ -34,6 +34,7 @@ package citrus.utils.inventory.core {
 
 		//override this to add parameters
 		public function init():GameObject {
+			
 			bitFlag = new BitFlag(getDefinitionByName(name) as Class);
 			return this;
 		}
