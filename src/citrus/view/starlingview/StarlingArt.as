@@ -252,7 +252,7 @@ package citrus.view.starlingview {
 				
 				} else if (_view is Bitmap) {
 					//TODO : cut bitmap if size > 2048 * 2048, use StarlingTileSystem?
-					_content = Image.fromBitmap(_view);
+					_content = Image.fromBitmap(_view, false);
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(_content);
 					
