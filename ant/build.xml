@@ -73,6 +73,8 @@
 			<arg line="-include-sources ../src/citrus/physics/IDebugView.as" />
 			<arg line="-include-sources ../src/citrus/physics/PhysicsCollisionCategories.as" />
 			<arg line="-include-sources ../src/citrus/physics/simple" />
+			
+			<arg line="-include-sources ../src/citrus/ui/inventory" />
 
 			<arg line="-include-sources ../src/citrus/system/Component.as" />
 			<arg line="-include-sources ../src/citrus/system/Entity.as" />
@@ -151,6 +153,8 @@
 			<arg line="-include-sources ../src/citrus/core/starling" />
 			
 			<arg line="-include-sources ../src/citrus/input/controllers/starling" />
+			
+			<arg line="-include-sources ../src/citrus/ui/starling" />
 			
 			<arg line="-include-sources ../src/citrus/utils/objectmakers/ObjectMakerStarling.as" />
 			
