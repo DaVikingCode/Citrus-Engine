@@ -9,27 +9,42 @@ package citrus.objects.platformer.nape
     import nape.phys.Body;
     import nape.phys.BodyType;
 
+	/**
+	 * A platform that moves between two points. The MovingPlatform has several properties that can customize it.
+	 * 
+	 * <ul>Properties:
+	 * <li>speed - The speed at which the moving platform travels.</li>
+	 * <li>enabled - Whether or not the MovingPlatform can move, no matter the condition.</li>
+	 * <li>startX -  The initial starting X position of the MovingPlatform, and the place it returns to when it reaches the end destination.</li>
+	 * <li>startY -  The initial starting Y position of the MovingPlatform, and the place it returns to when it reaches the end destination.</li>
+	 * <li>endX -  The ending X position of the MovingPlatform, and the place it returns to when it reaches the start destination.</li>
+	 * <li>endY -  The ending Y position of the MovingPlatform, and the place it returns to when it reaches the start destination.</li>
+	 * <li>waitForPassenger - If set to true, MovingPlatform will not move unless there is a passenger. If set to false, it continually moves.</li></ul>
+	 */	
     public class MovingPlatform extends Platform
     {
-        private var _speed:Number = 1;
+		protected var _speed:Number = 1;
 
-        private var _enabled:Boolean = true;
+		protected var _enabled:Boolean = true;
 
-        private var _waitForPassangers:Boolean = false;
+		protected var _waitForPassangers:Boolean = false;
 
-        private var _passangers:Vector.<Body> = new Vector.<Body>;
+		protected var _passangers:Vector.<Body> = new Vector.<Body>;
 
-        private var _forward:Boolean = true;
+		protected var _forward:Boolean = true;
 
-        private var _start:MathVector = new MathVector();
+		protected var _start:MathVector = new MathVector();
 
-        private var _end:MathVector = new MathVector();
+        protected var _end:MathVector = new MathVector();
 
         public function MovingPlatform(name:String, params:Object = null)
         {
             super(name, params);
         }
 
+		/**
+		 * The speed at which the moving platform travels. 
+		 */
         public function get speed():Number
         {
             return _speed;
@@ -40,6 +55,9 @@ package citrus.objects.platformer.nape
             _speed = value;
         }
 
+		/**
+		 * Whether or not the MovingPlatform can move, no matter the condition. 
+		 */	
         public function get enabled():Boolean
         {
             return _enabled;
@@ -50,6 +68,9 @@ package citrus.objects.platformer.nape
             _enabled = value;
         }
 
+		/**
+		 * If set to true, the MovingPlatform will not move unless there is a passenger. 
+		 */
         public function get waitForPassangers():Boolean
         {
             return _waitForPassangers;
@@ -60,6 +81,10 @@ package citrus.objects.platformer.nape
             _waitForPassangers = value;
         }
 
+		/**
+		 * The initial starting X position of the MovingPlatform, and the place it returns to when it reaches
+		 * the end destination.
+		 */		
         public function get startX():Number
         {
             return _start.x;
@@ -70,6 +95,10 @@ package citrus.objects.platformer.nape
             _start.x = value;
         }
 
+		/**
+		 * The initial starting Y position of the MovingPlatform, and the place it returns to when it reaches
+		 * the end destination.
+		 */		
         public function get startY():Number
         {
             return _start.y;
@@ -80,6 +109,9 @@ package citrus.objects.platformer.nape
             _start.y = value;
         }
 
+		/**
+		 * The ending X position of the MovingPlatform.
+		 */		
         public function get endX():Number
         {
             return _end.x;
@@ -90,6 +122,9 @@ package citrus.objects.platformer.nape
             _end.x = value;
         }
 
+		/**
+		 * The ending Y position of the MovingPlatform.
+		 */	
         public function get endY():Number
         {
             return _end.y;
@@ -132,7 +167,7 @@ package citrus.objects.platformer.nape
                 }
             }
 
-            _body.velocity.set(velocity);
+            _body.velocity.set(velocity);			
         }
 
         override protected function defineBody():void
