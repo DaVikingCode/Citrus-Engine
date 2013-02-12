@@ -124,6 +124,24 @@ package citrus.datastructures {
 			for ( var i:int = 0; i < len; i++ )
 				this.m_flags &= ( this.m_flagClass != null ) ? ~this._cleanFlags( flags[i] ) : ~flags[i];
 		}
+		
+		/**
+		 * Simple utility to remove all flags at once.
+		 */
+		public function removeAllFlags():void
+		{
+			this.m_flags = 0;
+		}
+		
+		/**
+		 * removes all previous flags and sets new flag/flags
+		 * @param	flag a flag or a list of flags (piped).
+		 */
+		public function setFlags( flag:uint ):void
+		{
+			// clean the flags if needed
+			this.m_flags = ( this.m_flagClass != null ) ? this._cleanFlags( flag ) : flag;
+		}
 
 		/**
 		 * Toggles a specific flag. If the current flag is false, this will set
