@@ -64,6 +64,18 @@ package citrus.math {
 		}
 		
 		/**
+		 * Linear interpolation function
+		 * @param	a start value
+		 * @param	b end value
+		 * @param	ratio interpolation amount
+		 * @return
+		 */
+		public static function lerp(a:Number,b:Number,ratio:Number):Number
+		{
+			return a + (b - a) * ratio;
+		}
+		
+		/**
 		 * Creates the axis aligned bounding box for a rotated rectangle.
 		 * @param w width of the rotated rectangle
 		 * @param h height of the rotated rectangle
