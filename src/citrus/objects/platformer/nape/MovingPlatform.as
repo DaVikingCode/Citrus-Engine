@@ -178,25 +178,30 @@ package citrus.objects.platformer.nape
 
                 destination.subeq(body.position);
                 velocity = destination;
-
-                if (velocity.length > _speed)
+				
+                if (velocity.length >= 1)
                 {
                     // Still has futher to go. Normalize the velocity to the speed
                     velocity.normalise();
-                    velocity.muleq(_speed);
+                    velocity.muleq(_speed);	
                 }
                 else
                 {
+					
                     // Destination is very close. Switch travelling direction 
                     if (_path)
                     {
+						
+						trace(_pathIndex);
                         if (_path.isPolygon)
                         {
-                            _pathIndex++;
-                            if (_pathIndex == _path.length)
+                            _pathIndex++;						
+                            
+							if (_pathIndex == _path.length)
                             {
                                 _pathIndex = 0;
-                            }
+								_forward = true;
+                            }													
                         }
                         else
                         {
@@ -227,8 +232,6 @@ package citrus.objects.platformer.nape
                 }
             }
 
-            trace(_pathIndex);
-
             _body.velocity.set(velocity);
         }
 
@@ -250,4 +253,4 @@ package citrus.objects.platformer.nape
             _passangers.splice(_passangers.indexOf(other.body), 1);
         }
     }
-}
+}	

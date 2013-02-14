@@ -27,7 +27,7 @@ package citrus.objects.common
 
         public function add(x:Number, y:Number):void
         {
-            _nodes.push(new MathVector(x, y));
+            _nodes.push(new MathVector(x, y));			
         }
 
         public function addPoint(value:MathVector):void
