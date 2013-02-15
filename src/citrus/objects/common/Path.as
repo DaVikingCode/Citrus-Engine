@@ -1,8 +1,13 @@
-package citrus.objects.common
-{
-    import citrus.core.CitrusObject;
-    import citrus.math.MathVector;
+package citrus.objects.common {
 
+	import citrus.core.CitrusObject;
+	import citrus.math.MathVector;
+	
+	/**
+	 * This class defines a set of points (MathVector) that can be used with the MovingPlatform or other objects. 
+	 * Don't call the State's add method on this object, because you don't want to create a graphic object neither than calling 
+	 * an no needed update method. Also don't forget to call yourself the destroy method!
+	 */
     public class Path extends CitrusObject
     {
         private var _nodes:Vector.<MathVector>;
@@ -14,6 +19,13 @@ package citrus.objects.common
             super(name, params);
             _nodes = new Vector.<MathVector>;
         }
+			
+		override public function destroy():void {
+			
+			_nodes.length = 0;
+			
+			super.destroy();
+		}
 
         /**
          * Determines if the path is a continuous polygon.
