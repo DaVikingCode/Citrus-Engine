@@ -2,49 +2,64 @@ package citrus.objects.platformer.nape
 {
     import citrus.math.MathVector;
     import citrus.objects.NapePhysicsObject;
+    import citrus.objects.common.Path;
     import citrus.physics.nape.NapeUtils;
-    
+
     import nape.callbacks.InteractionCallback;
     import nape.geom.Vec2;
     import nape.phys.Body;
     import nape.phys.BodyType;
 
-	/**
-	 * A platform that moves between two points. The MovingPlatform has several properties that can customize it.
-	 * 
-	 * <ul>Properties:
-	 * <li>speed - The speed at which the moving platform travels.</li>
-	 * <li>enabled - Whether or not the MovingPlatform can move, no matter the condition.</li>
-	 * <li>startX -  The initial starting X position of the MovingPlatform, and the place it returns to when it reaches the end destination.</li>
-	 * <li>startY -  The initial starting Y position of the MovingPlatform, and the place it returns to when it reaches the end destination.</li>
-	 * <li>endX -  The ending X position of the MovingPlatform, and the place it returns to when it reaches the start destination.</li>
-	 * <li>endY -  The ending Y position of the MovingPlatform, and the place it returns to when it reaches the start destination.</li>
-	 * <li>waitForPassenger - If set to true, MovingPlatform will not move unless there is a passenger. If set to false, it continually moves.</li></ul>
-	 */	
+    /**
+     * A platform that moves between two points. The MovingPlatform has several properties that can customize it.
+     *
+     * <ul>Properties:
+     * <li>speed - The speed at which the moving platform travels.</li>
+     * <li>enabled - Whether or not the MovingPlatform can move, no matter the condition.</li>
+     * <li>startX -  The initial starting X position of the MovingPlatform, and the place it returns to when it reaches the end destination.</li>
+     * <li>startY -  The initial starting Y position of the MovingPlatform, and the place it returns to when it reaches the end destination.</li>
+     * <li>endX -  The ending X position of the MovingPlatform, and the place it returns to when it reaches the start destination.</li>
+     * <li>endY -  The ending Y position of the MovingPlatform, and the place it returns to when it reaches the start destination.</li>
+     * <li>waitForPassenger - If set to true, MovingPlatform will not move unless there is a passenger. If set to false, it continually moves.</li></ul>
+     */
     public class MovingPlatform extends Platform
     {
-		protected var _speed:Number = 1;
+        protected var _speed:Number = 1;
 
-		protected var _enabled:Boolean = true;
+        protected var _enabled:Boolean = true;
 
-		protected var _waitForPassangers:Boolean = false;
+        protected var _waitForPassangers:Boolean = false;
 
-		protected var _passangers:Vector.<Body> = new Vector.<Body>;
+        protected var _passangers:Vector.<Body> = new Vector.<Body>;
 
-		protected var _forward:Boolean = true;
+        protected var _forward:Boolean = true;
 
-		protected var _start:MathVector = new MathVector();
+        protected var _start:MathVector = new MathVector();
 
         protected var _end:MathVector = new MathVector();
+
+        protected var _path:Path;
+
+        protected var _pathIndex:int = 0;
 
         public function MovingPlatform(name:String, params:Object = null)
         {
             super(name, params);
         }
 
-		/**
-		 * The speed at which the moving platform travels. 
-		 */
+        public function get path():Path
+        {
+            return _path;
+        }
+
+        public function set path(value:Path):void
+        {
+            _path = value;
+        }
+
+        /**
+         * The speed at which the moving platform travels.
+         */
         public function get speed():Number
         {
             return _speed;
@@ -55,9 +70,9 @@ package citrus.objects.platformer.nape
             _speed = value;
         }
 
-		/**
-		 * Whether or not the MovingPlatform can move, no matter the condition. 
-		 */	
+        /**
+         * Whether or not the MovingPlatform can move, no matter the condition.
+         */
         public function get enabled():Boolean
         {
             return _enabled;
@@ -68,9 +83,9 @@ package citrus.objects.platformer.nape
             _enabled = value;
         }
 
-		/**
-		 * If set to true, the MovingPlatform will not move unless there is a passenger. 
-		 */
+        /**
+         * If set to true, the MovingPlatform will not move unless there is a passenger.
+         */
         public function get waitForPassangers():Boolean
         {
             return _waitForPassangers;
@@ -81,10 +96,10 @@ package citrus.objects.platformer.nape
             _waitForPassangers = value;
         }
 
-		/**
-		 * The initial starting X position of the MovingPlatform, and the place it returns to when it reaches
-		 * the end destination.
-		 */		
+        /**
+         * The initial starting X position of the MovingPlatform, and the place it returns to when it reaches
+         * the end destination.
+         */
         public function get startX():Number
         {
             return _start.x;
@@ -95,10 +110,10 @@ package citrus.objects.platformer.nape
             _start.x = value;
         }
 
-		/**
-		 * The initial starting Y position of the MovingPlatform, and the place it returns to when it reaches
-		 * the end destination.
-		 */		
+        /**
+         * The initial starting Y position of the MovingPlatform, and the place it returns to when it reaches
+         * the end destination.
+         */
         public function get startY():Number
         {
             return _start.y;
@@ -109,9 +124,9 @@ package citrus.objects.platformer.nape
             _start.y = value;
         }
 
-		/**
-		 * The ending X position of the MovingPlatform.
-		 */		
+        /**
+         * The ending X position of the MovingPlatform.
+         */
         public function get endX():Number
         {
             return _end.x;
@@ -122,9 +137,9 @@ package citrus.objects.platformer.nape
             _end.x = value;
         }
 
-		/**
-		 * The ending Y position of the MovingPlatform.
-		 */	
+        /**
+         * The ending Y position of the MovingPlatform.
+         */
         public function get endY():Number
         {
             return _end.y;
@@ -149,12 +164,22 @@ package citrus.objects.platformer.nape
             else
             {
                 // Move the platform according to its destination
-                var destination:Vec2 = _forward ? new Vec2(_end.x, _end.y) : new Vec2(_start.x, _start.y);
-                destination.subeq(body.position);
+                var destination:Vec2;
 
+                if (_path)
+                {
+                    var dmv:MathVector = _path.getPointAt(_pathIndex);
+                    destination = new Vec2(dmv.x, dmv.y);
+                }
+                else
+                {
+                    destination = _forward ? new Vec2(_end.x, _end.y) : new Vec2(_start.x, _start.y);
+                }
+
+                destination.subeq(body.position);
                 velocity = destination;
 
-                if (velocity.length > _speed)
+                if (velocity.length >= 1)
                 {
                     // Still has futher to go. Normalize the velocity to the speed
                     velocity.normalise();
@@ -162,12 +187,48 @@ package citrus.objects.platformer.nape
                 }
                 else
                 {
-                    // Destination is very close. Switch travelling direction 
-                    _forward = !_forward;
+                    if (_path)
+                    {
+                        if (_path.isPolygon)
+                        {
+                            _pathIndex++;
+
+                            if (_pathIndex == _path.length)
+                            {
+                                _pathIndex = 0;
+                                _forward = true;
+                            }
+                        }
+                        else
+                        {
+                            if (_forward)
+                            {
+                                _pathIndex++;
+                                if (_pathIndex == _path.length)
+                                {
+                                    _forward = false;
+                                    _pathIndex = _path.length - 2;
+                                }
+                            }
+                            else
+                            {
+                                _pathIndex--;
+                                if (_pathIndex == -1)
+                                {
+                                    _forward = true;
+                                    _pathIndex = 1;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _forward = !_forward;
+                    }
                 }
             }
 
-            _body.velocity.set(velocity);			
+            _body.velocity.set(velocity);
         }
 
         override protected function defineBody():void
