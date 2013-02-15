@@ -1,6 +1,7 @@
 package citrus.core.starling {
 
 	import citrus.core.CitrusEngine;
+	import citrus.core.State;
 
 	import starling.core.Starling;
 	import starling.events.Event;
@@ -85,24 +86,37 @@ package citrus.core.starling {
 				if (_starling.isStarted && _starling.context) {
 					
 					if (_state) {
-
-						_state.destroy();
-						_starling.stage.removeChild(_state as StarlingState);
 						
-						// Remove Box2D or Nape debug view
-						var debugView:DisplayObject = _starling.nativeStage.getChildByName("debug view");
-						if (debugView)
-							 _starling.nativeStage.removeChild(debugView);
+						if (_state is StarlingState) {
+						
+							_state.destroy();
+							_starling.stage.removeChild(_state as StarlingState);
+							
+							// Remove Box2D or Nape debug view
+							var debugView:DisplayObject = _starling.nativeStage.getChildByName("debug view");
+							if (debugView)
+								 _starling.nativeStage.removeChild(debugView);
+								 
+						} else {
+							
+							_state.destroy();
+							removeChild(_state as State);
+						}
+						
 					}
-					_state = _newState;
-					_newState = null;
-
-					_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);
-					_state.initialize();
+					
+					if (_newState is StarlingState) {
+						
+						_state = _newState;
+						_newState = null;
+			
+						_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);
+						_state.initialize();
+					}
 				}
-
+			
 			}
-
+			
 			super.handleEnterFrame(e);
 		}
 		

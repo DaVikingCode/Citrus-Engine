@@ -1,6 +1,7 @@
 V 3.1.4, Work In Progress
 -------------------------
 - Renamed AVirtualButtons and VirtualButtons classes into AVirtualButton and VirtualButton. Yes, they just add one button now. Easier to add many ;)
+- StarlingCitrusEngine and Away3DCitrusEngine accepts State, useful to display quickly a state with graphics from a swf, ect.
 - Nape's Hero has a static friction removed when the player move, and set when it stops moving (to prevent sliding).
 - ObjectMakerStarling has a FromMovieClip function. The second argument is the TextureAtlas. Objects made in Flash Pro can use a texture name for their view.
 - Added Panning to SoundManager

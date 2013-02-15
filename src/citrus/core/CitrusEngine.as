@@ -233,8 +233,8 @@ package citrus.core {
 			{
 				if (_newState is State) {
 					
-					if (_state) {
-							
+					if (_state && _state is State) {
+						
 						_state.destroy();
 						removeChild(_state as State);
 					}
