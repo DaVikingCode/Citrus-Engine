@@ -12,9 +12,10 @@ V 3.1.4, Work In Progress
 - StarlingArt doesn't generate mipmaps if view is a Bitmap.
 - Added Crate object to Nape.
 - Added a UI package for inventory and lifebar.
-- Added Nape version of the Moving Platform.
-- Added line equation to MathUtils
-- Added linear interpolation function to MathUtils
+- Added a Path class which is a set of points (MathVector) that can be used with the MovingPlatform.
+- Added Nape version of the Moving Platform managing also a Path if it's specified.
+- Added line equation to MathUtils.
+- Added linear interpolation function to MathUtils.
 
 
 V 3.1.3, 01 24 2013

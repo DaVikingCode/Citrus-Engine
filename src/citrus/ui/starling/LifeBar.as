@@ -5,7 +5,10 @@ package citrus.ui.starling {
 	import starling.textures.Texture;
 
 	import flash.geom.Point;
-
+	
+	/**
+	 * A simple way to display a life bar. It removes life from right to left using its <code>ratio</code> variable between 0 and 1.
+	 */
 	public class LifeBar extends Sprite {
 
 		private var mImage:Image;
