@@ -56,7 +56,7 @@ package citrus.objects.platformer.box2d {
 		[Inspectable(defaultValue="2")]
 		public var wallSensorHeight:Number = 2;
 		
-		protected var _hurtTimeoutID:Number = 0;
+		protected var _hurtTimeoutID:uint = 0;
 		protected var _hurt:Boolean = false;
 		protected var _enemyClass:* = Hero;
 		

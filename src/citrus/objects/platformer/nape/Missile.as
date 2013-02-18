@@ -68,8 +68,8 @@ package citrus.objects.platformer.nape {
 		
 		protected var _velocity:Vec2;
 		protected var _exploded:Boolean = false;
-		protected var _explodeTimeoutID:Number = 0;
-		protected var _fuseDurationTimeoutID:Number = 0;
+		protected var _explodeTimeoutID:uint = 0;
+		protected var _fuseDurationTimeoutID:uint = 0;
 		protected var _contact:NapePhysicsObject;
 		
 		public function Missile(name:String, params:Object = null) {

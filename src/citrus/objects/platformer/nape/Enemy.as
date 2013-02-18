@@ -44,7 +44,7 @@ package citrus.objects.platformer.nape {
 		[Inspectable(defaultValue="100000")]
 		public var rightBound:Number = 100000;
 		
-		protected var _hurtTimeoutID:Number = 0;
+		protected var _hurtTimeoutID:uint = 0;
 		protected var _hurt:Boolean = false;
 		protected var _enemyClass:* = Hero;
 		

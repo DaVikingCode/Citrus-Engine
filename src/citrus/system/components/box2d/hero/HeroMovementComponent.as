@@ -95,7 +95,7 @@ package citrus.system.components.box2d.hero {
 		
 		protected var _onGround:Boolean = false;
 		protected var _springOffEnemy:Number = -1;
-		protected var _hurtTimeoutID:Number;
+		protected var _hurtTimeoutID:uint;
 		protected var _isHurt:Boolean = false;
 		protected var _controlsEnabled:Boolean = true;
 		protected var _playerMovingHero:Boolean = false;

@@ -67,8 +67,8 @@ package citrus.objects.platformer.box2d
 		
 		protected var _velocity:b2Vec2;
 		protected var _exploded:Boolean = false;
-		protected var _explodeTimeoutID:Number = 0;
-		protected var _fuseDurationTimeoutID:Number = 0;
+		protected var _explodeTimeoutID:uint = 0;
+		protected var _fuseDurationTimeoutID:uint = 0;
 		protected var _contact:IBox2DPhysicsObject;
 		
 		public function Missile(name:String, params:Object = null) 

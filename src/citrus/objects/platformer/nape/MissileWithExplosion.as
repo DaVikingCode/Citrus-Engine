@@ -64,8 +64,8 @@ package citrus.objects.platformer.nape
 		
 		private var _velocity:Vec2;
 		private var _exploded:Boolean = false;
-		private var _explodeTimeoutID:Number = 0;
-		private var _fuseDurationTimeoutID:Number = 0;
+		private var _explodeTimeoutID:uint = 0;
+		private var _fuseDurationTimeoutID:uint = 0;
 		private var _contact:NapePhysicsObject;
 		
 		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, angle:Number, view:* = null, speed:Number = 200, fuseDuration:Number = 10000, explodeDuration:Number = 1000, useForce:Boolean = true):MissileWithExplosion

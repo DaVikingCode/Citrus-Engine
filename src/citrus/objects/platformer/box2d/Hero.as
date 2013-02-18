@@ -129,7 +129,7 @@ package citrus.objects.platformer.box2d
 		protected var _enemyClass:Class = Enemy;
 		protected var _onGround:Boolean = false;
 		protected var _springOffEnemy:Number = -1;
-		protected var _hurtTimeoutID:Number;
+		protected var _hurtTimeoutID:uint;
 		protected var _hurt:Boolean = false;
 		protected var _friction:Number = 0.75;
 		protected var _playerMovingHero:Boolean = false;

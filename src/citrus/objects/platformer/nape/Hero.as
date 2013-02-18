@@ -126,7 +126,7 @@ package citrus.objects.platformer.nape {
 		protected var _enemyClass:Class = Enemy;
 		protected var _onGround:Boolean = false;
 		protected var _springOffEnemy:Number = -1;
-		protected var _hurtTimeoutID:Number;
+		protected var _hurtTimeoutID:uint;
 		protected var _hurt:Boolean = false;
 		protected var _dynamicFriction:Number = 0.77;
 		protected var _staticFriction:Number = 1.2;
