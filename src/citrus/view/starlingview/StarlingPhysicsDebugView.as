@@ -29,6 +29,10 @@ package citrus.view.starlingview {
 		public function update():void {
 			_debugView.update();
 		}
+		
+		public function debugMode(flags:uint):void {
+			_debugView.debugMode(flags);
+		}
 
 		public function get debugView():flash.display.Sprite {
 			return _debugView as flash.display.Sprite;

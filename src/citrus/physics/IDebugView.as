@@ -13,6 +13,6 @@ package citrus.physics {
 		/**
 		 * change the debug mode when available, e.g. show only joints, or raycasts...
 		 */
-		function debugMode(mode:uint):void
+		function debugMode(flags:uint):void
 	}
 }

@@ -38,8 +38,8 @@ package citrus.physics.awayphysics {
 				debugDrawer.debugDrawWorld();
 		}
 		
-		public function debugMode(mode:uint):void {
-			debugDrawer.debugMode = mode;
+		public function debugMode(flags:uint):void {
+			debugDrawer.debugMode = flags;
 		}
 	}
 }

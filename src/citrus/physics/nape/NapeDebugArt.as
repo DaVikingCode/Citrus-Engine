@@ -44,8 +44,7 @@ package citrus.physics.nape {
 			}
 		}
 		
-		public function debugMode(mode:uint):void {
-			
+		public function debugMode(flags:uint):void {
 		}
 	}
 }

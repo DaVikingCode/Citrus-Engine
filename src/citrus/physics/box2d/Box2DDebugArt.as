@@ -37,8 +37,8 @@ package citrus.physics.box2d {
 				_box2D.world.DrawDebugData();
 		}
 		
-		public function debugMode(mode:uint):void {
-			
+		public function debugMode(flags:uint):void {
+			_debugDrawer.SetFlags(flags);
 		}
 	}
 }
