@@ -24,22 +24,30 @@ package citrus.objects.platformer.nape
      */
     public class MovingPlatform extends Platform
     {
-        protected var _speed:Number = 1;
-
-        protected var _enabled:Boolean = true;
-
-        protected var _waitForPassangers:Boolean = false;
-
-        protected var _passangers:Vector.<Body> = new Vector.<Body>;
-
-        protected var _forward:Boolean = true;
-
-        protected var _start:MathVector = new MathVector();
-
-        protected var _end:MathVector = new MathVector();
+        /**
+		 * The speed at which the moving platform travels. 
+		 */
+		[Inspectable(defaultValue="1")]
+		public var speed:Number = 1;
+		
+		/**
+		 * Whether or not the MovingPlatform can move, no matter the condition. 
+		 */		
+		[Inspectable(defaultValue="true")]
+		public var enabled:Boolean = true;
+		
+		/**
+		 * If set to true, the MovingPlatform will not move unless there is a passenger. 
+		 */
+		[Inspectable(defaultValue="false")]
+		public var waitForPassenger:Boolean = false;
+		
+		protected var _start:MathVector = new MathVector();
+		protected var _end:MathVector = new MathVector();
+		protected var _forward:Boolean = true;
+		protected var _passangers:Vector.<Body> = new Vector.<Body>();
 
         protected var _path:Path;
-
         protected var _pathIndex:int = 0;
 
         public function MovingPlatform(name:String, params:Object = null)
@@ -55,45 +63,6 @@ package citrus.objects.platformer.nape
         public function set path(value:Path):void
         {
             _path = value;
-        }
-
-        /**
-         * The speed at which the moving platform travels.
-         */
-        public function get speed():Number
-        {
-            return _speed;
-        }
-
-        public function set speed(value:Number):void
-        {
-            _speed = value;
-        }
-
-        /**
-         * Whether or not the MovingPlatform can move, no matter the condition.
-         */
-        public function get enabled():Boolean
-        {
-            return _enabled;
-        }
-
-        public function set enabled(value:Boolean):void
-        {
-            _enabled = value;
-        }
-
-        /**
-         * If set to true, the MovingPlatform will not move unless there is a passenger.
-         */
-        public function get waitForPassangers():Boolean
-        {
-            return _waitForPassangers;
-        }
-
-        public function set waitForPassangers(value:Boolean):void
-        {
-            _waitForPassangers = value;
         }
 
         /**
@@ -156,7 +125,7 @@ package citrus.objects.platformer.nape
 
             var velocity:Vec2;
 
-            if ((waitForPassangers && _passangers.length == 0) || !enabled)
+            if ((waitForPassenger && _passangers.length == 0) || !enabled)
             {
                 // Platform should not move
                 velocity = new Vec2();
@@ -183,7 +152,7 @@ package citrus.objects.platformer.nape
                 {
                     // Still has futher to go. Normalize the velocity to the speed
                     velocity.normalise();
-                    velocity.muleq(_speed);
+                    velocity.muleq(speed);
                 }
                 else
                 {
