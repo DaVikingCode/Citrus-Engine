@@ -64,6 +64,20 @@ package citrus.objects.platformer.nape
         {
             _path = value;
         }
+		
+		override public function set x(value:Number):void
+		{
+			super.x = value;
+			
+			_start.x = value;
+		}
+		
+		override public function set y(value:Number):void
+		{
+			super.y = value;
+			
+			_start.y = value;
+		}
 
         /**
          * The initial starting X position of the MovingPlatform, and the place it returns to when it reaches
@@ -73,7 +87,8 @@ package citrus.objects.platformer.nape
         {
             return _start.x;
         }
-
+		
+		[Inspectable(defaultValue="0")]
         public function set startX(value:Number):void
         {
             _start.x = value;
@@ -87,7 +102,8 @@ package citrus.objects.platformer.nape
         {
             return _start.y;
         }
-
+		
+		[Inspectable(defaultValue="0")]
         public function set startY(value:Number):void
         {
             _start.y = value;
@@ -100,7 +116,8 @@ package citrus.objects.platformer.nape
         {
             return _end.x;
         }
-
+		
+		[Inspectable(defaultValue="0")]
         public function set endX(value:Number):void
         {
             _end.x = value;
@@ -113,7 +130,8 @@ package citrus.objects.platformer.nape
         {
             return _end.y;
         }
-
+		
+		[Inspectable(defaultValue="0")]
         public function set endY(value:Number):void
         {
             _end.y = value;
