@@ -42,7 +42,7 @@ package citrus.objects.platformer.box2d{
 			if (b == null) texture = Texture.empty(_width*2, _height*2, 0xff000000 + Math.random()*0xffffff);
 			else {
 				// Texture is sclaed to fit the width of the elements, so your image ratio should generally fit the segments
-				texture = Texture.fromBitmapData(b, false, false, b.width/((_width)*2));
+				texture = Texture.fromBitmapData(b, true, false, b.width/((_width)*2));
 			}
 			
 			_vecSprites = new Vector.<CitrusSprite>();
