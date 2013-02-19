@@ -18,6 +18,7 @@ V 3.1.4, Work In Progress
 - Added line equation to MathUtils.
 - Added linear interpolation function to MathUtils.
 - Added Tools class with a print_r function to display objects and arrays content.
+- Improved the Timer's cannon: it is paused if the CE is not playing.
 
 V 3.1.3, 01 24 2013
 -------------------
