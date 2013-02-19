@@ -40,7 +40,7 @@ package citrus.objects.platformer.box2d{
 		public var restitution:Number = 1;
 		
 		private var widthSegment:uint;
-		private var ws:Number;//worldscale
+		private var ws:Number; //worldscale
 		private var display:BridgeDisplay;
 		
 		private var _vecBodyDefChain:Vector.<b2BodyDef>;
