@@ -15,6 +15,16 @@ package citrus.objects.platformer.box2d{
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.physics.PhysicsCollisionCategories;
 	
+	/**
+	 * A Bridge consists of Box2dPhysicsObjects connected with RevoluteJoints and is build between two Objects (usually platforms).
+	 * Sometimes you will not properly stand on the bridge because of rotating etc., to solve this modify your Heros's handleBeginContact() function
+	 * <ul>Properties:
+	 * <li>bridgeLength : If not set it's calculated automatically.</li>
+	 * <li>useTexture : set false for debugging</li>
+	 * <li>segmentBitmapData : BitmapData for creating the texture for Bridgeelements. It get's scaled with keeping the proportion
+	 * of with and height</li></ul>
+	 * 
+	 */
 	public class Bridge extends Box2DPhysicsObject {
 		
 		public var leftAnchor:Box2DPhysicsObject;
@@ -26,6 +36,8 @@ package citrus.objects.platformer.box2d{
 		public var useTexture:Boolean = false;		
 		public var segmentBitmapData:BitmapData;
 		public var density:Number = 1;
+		public var friction:Number = 1;
+		public var restitution:Number = 1;
 		
 		private var widthSegment:uint;
 		private var ws:Number;//worldscale
@@ -52,16 +64,14 @@ package citrus.objects.platformer.box2d{
 			ws = _box2D.scale
 			if (!bridgeLength)
 			{
-				//				var distance:Number = Math.abs((rightAnchor.x - int(rightAnchor.width/2)) - (leftAnchor.x + int(leftAnchor.width/2)))/2;
 				var distance:Number = MathUtils.DistanceBetweenTwoPoints(rightAnchor.x - int(rightAnchor.width/2), leftAnchor.x + int(leftAnchor.width/2), rightAnchor.y, leftAnchor.y)/2;
-				bridgeLength = distance;// + distance*0.1;
+				bridgeLength = distance;
 			}
 			widthSegment = bridgeLength/numSegments
 			if (useTexture)
 			{
 				display = new BridgeDisplay();
 				(segmentBitmapData == null) ? display.init(numSegments, widthSegment, heightSegment) : display.init(numSegments, widthSegment, heightSegment, segmentBitmapData);
-//				CitrusEngine.getInstance().state.add(display);
 			}
 			_vecBodyDefChain = new Vector.<b2BodyDef>();
 			var bodyDefChain:b2BodyDef;
@@ -101,8 +111,8 @@ package citrus.objects.platformer.box2d{
 				fixtureDefChain = new b2FixtureDef();
 				fixtureDefChain.shape = _shapeChain;
 				fixtureDefChain.density = density;
-				fixtureDefChain.friction = 1;
-				fixtureDefChain.restitution = 1;	
+				fixtureDefChain.friction = friction;
+				fixtureDefChain.restitution = restitution;	
 				fixtureDefChain.filter.maskBits = PhysicsCollisionCategories.Get("GoodGuys");
 				_vecFixtureDefChain.push(fixtureDefChain);
 			}
