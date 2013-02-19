@@ -12,6 +12,9 @@ package citrus.objects.platformer.box2d{
 	import starling.textures.Texture;
 	import starling.utils.rad2deg;
 	
+	/**
+	 * Display Class for the Bridge Object, it uses CitrusSprites for showing Art
+	 */
 	public class BridgeDisplay extends CitrusSprite
 	{
 		private var _numChain:uint;
@@ -29,14 +32,17 @@ package citrus.objects.platformer.box2d{
 		public function init(numChain:uint, width:uint, height:uint, b:BitmapData = null):void 
 		{
 			_numChain = numChain;
-			_width = width;// + 5;
+			_width = width;
 			_height = height;
 			var texture:Texture
 			
+			/**
+			 * If useTexture set to true but no bitmapData provided the segments will get a random color
+			 */
 			if (b == null) texture = Texture.empty(_width*2, _height*2, 0xff000000 + Math.random()*0xffffff);
 			else {
-				
-				texture = Texture.fromBitmapData(b, true, false, b.width/((_width)*2));
+				// Texture is sclaed to fit the width of the elements, so your image ratio should generally fit the segments
+				texture = Texture.fromBitmapData(b, false, false, b.width/((_width)*2));
 			}
 			
 			_vecSprites = new Vector.<CitrusSprite>();
