@@ -29,16 +29,26 @@ package citrus.core {
 		 */
 		public var onPlayingChange:Signal;
 		
+		/**
+		 * You may use a class to store your game's data, this is already an abstract class made for that. 
+		 * It's also a dynamic class, so you won't have problem to access information in its extended class.
+		 */
+		public var gameData:AGameData;
+		
+		/**
+		 * You may use the Citrus Engine's level manager if you have several levels to handle. Take a look on its class for more information.
+		 */
+		public var levelManager:LevelManager;
+		
 		protected var _state:IState;
 		protected var _newState:IState;
 		protected var _stateDisplayIndex:uint = 0;
 		protected var _playing:Boolean = true;
 		protected var _input:Input;
 		
-		private var _levelManager:LevelManager;
 		private var _startTime:Number;
 		private var _gameTime:Number;
-		private var _gameData:AGameData;
+		
 		private var _sound:SoundManager;
 		private var _console:Console;
 		
@@ -105,20 +115,6 @@ package citrus.core {
 		}
 		
 		/**
-		 * Return the level manager, use it if you want. Take a look on its class for more information.
-		 */
-		public function get levelManager():LevelManager {
-			return _levelManager;
-		}
-		
-		/**
-		 * You may use the Citrus Engine's level manager if you have several levels. Take a look on its class for more information.
-		 */
-		public function set levelManager(value:LevelManager):void {
-			_levelManager = value;
-		}
-		
-		/**
 		 * A reference to the active game state. Actually, that's not entirely true. If you've recently changed states and a tick
 		 * hasn't occurred yet, then this will reference your new state; this is because actual state-changes only happen pre-tick.
 		 * That way you don't end up changing states in the middle of a state's tick, effectively fucking stuff up. 
@@ -161,21 +157,6 @@ package citrus.core {
 				_gameTime = new Date().time;
 			
 			onPlayingChange.dispatch(_playing);
-		}
-		
-		/**
-		 * A reference to the Abstract GameData instance. Use it if you want.
-		 * It's a dynamic class, so you don't have problem to access information in its extended class.
-		 */
-		public function get gameData():AGameData {
-			return _gameData;
-		}
-
-		/**
-		 * You may use a class to store your game's data, there is already an abstract class for that :
-		 */
-		public function set gameData(gameData:AGameData):void {
-			_gameData = gameData;
 		}
 		
 		/**
