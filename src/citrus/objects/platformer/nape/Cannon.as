@@ -88,6 +88,7 @@ package citrus.objects.platformer.nape {
 		override public function destroy():void {
 
 			onGiveDamage.removeAll();
+			_ce.onPlayingChange.remove(_playingChanged);
 
 			_timer.stop();
 			_timer.removeEventListener(TimerEvent.TIMER, _fire);
@@ -115,6 +116,8 @@ package citrus.objects.platformer.nape {
 			_timer = new Timer(fireRate);
 			_timer.addEventListener(TimerEvent.TIMER, _fire);
 			_timer.start();
+			
+			_ce.onPlayingChange.add(_playingChanged);
 		}
 
 		public function stopFire():void {
@@ -123,6 +126,8 @@ package citrus.objects.platformer.nape {
 
 			_timer.stop();
 			_timer.removeEventListener(TimerEvent.TIMER, _fire);
+			
+			_ce.onPlayingChange.remove(_playingChanged);
 		}
 
 		protected function _fire(tEvt:TimerEvent):void {
@@ -140,11 +145,15 @@ package citrus.objects.platformer.nape {
 
 		protected function _updateAnimation():void {
 
-			if (_firing) {
-				_animation = "fire";
-			} else {
-				_animation = "normal";
-			}
+			_animation = _firing ? "fire" : "normal";
+		}
+		
+		/**
+		 * Start or stop the timer. Automatically called by the engine when the game is paused/unpaused.
+		 */
+		protected function _playingChanged(playing:Boolean):void {
+			
+			playing ? _timer.start() : _timer.stop();
 		}
 	}
 }
