@@ -21,8 +21,8 @@ package citrus.objects.platformer.box2d{
 	 * <ul>Properties:
 	 * <li>bridgeLength : If not set it's calculated automatically.</li>
 	 * <li>useTexture : set false for debugging</li>
-	 * <li>segmentBitmapData : BitmapData for creating the texture for Bridgeelements. It get's scaled with keeping the proportion
-	 * of with and height</li></ul>
+	 * <li>segmentBitmapData : BitmapData for creating the texture for Bridgeelements. It get's scaled with keeping 
+	 * proportion between width and height</li></ul>
 	 * 
 	 */
 	public class Bridge extends Box2DPhysicsObject {
