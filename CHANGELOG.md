@@ -17,7 +17,7 @@ V 3.1.4, Work In Progress
 - Added Nape version of the Moving Platform managing also a Path if it's specified.
 - Added line equation to MathUtils.
 - Added linear interpolation function to MathUtils.
-
+- Added Tools class with a print_r function to display objects and arrays content.
 
 V 3.1.3, 01 24 2013
 -------------------
