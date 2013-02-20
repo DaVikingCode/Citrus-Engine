@@ -61,7 +61,7 @@ package citrus.objects.complex.box2dstarling {
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
 			if (display)
-				display.updateSegmentDisplay();
+				updateSegmentDisplay();
 		}
 
 		override protected function defineBody():void {
@@ -74,7 +74,6 @@ package citrus.objects.complex.box2dstarling {
 			widthSegment = bridgeLength / numSegments
 			if (useTexture) {
 				initDisplay();
-				(segmentBitmapData == null) ? display.init(numSegments, widthSegment, heightSegment) : display.init(numSegments, widthSegment, heightSegment, segmentBitmapData);
 			}
 			_vecBodyDefBridge = new Vector.<b2BodyDef>();
 			var bodyDefChain:b2BodyDef;
