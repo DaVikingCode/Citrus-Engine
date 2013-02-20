@@ -175,8 +175,6 @@
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-Starling-Box2D.swc" />
 			
-			<arg line="-include-sources ../src/citrus/objects/complex/box2dstarling" />
-			
 			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
 			<arg line="-include-libraries ../bin/CE${VERSION}-Box2D.swc" />
 			<arg line="-include-libraries ../bin/CE${VERSION}-Starling.swc" />
