@@ -61,7 +61,7 @@ package citrus.objects.complex.box2dstarling {
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
 			if (display)
-				display.updateSegmentDisplay();
+				updateSegmentDisplay();
 		}
 
 		override protected function defineBody():void {
