@@ -124,15 +124,12 @@ package citrus.core {
 		}
 
 		public function muteAll(mute:Boolean = true):void {
-			
-			if (mute) {
-				setGlobalVolume(0);
-			} else {
-				for (var currID:String in currPlayingSounds) {
-					var s:SoundTransform = new SoundTransform(currPlayingSounds[currID].volume);
+			var s:SoundTransform;
+			var currID:String;
+				for (currID in currPlayingSounds) {
+					s = new SoundTransform(mute ? 0 : currPlayingSounds[currID].volume);
 					SoundChannel(currPlayingSounds[currID].channel).soundTransform = s;
 				}
-			}
 		}
 
 		public function setVolume(id:String, volume:Number):void {
