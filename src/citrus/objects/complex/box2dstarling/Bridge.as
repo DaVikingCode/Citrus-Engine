@@ -60,22 +60,27 @@ package citrus.objects.complex.box2dstarling {
 
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
+			
 			if (display)
-				display.updateSegmentDisplay();
+				updateSegmentDisplay();
 		}
 
 		override protected function defineBody():void {
 			super.defineBody();
-			ws = _box2D.scale
+			
+			ws = _box2D.scale;
+			
 			if (!bridgeLength) {
 				var distance:Number = MathUtils.DistanceBetweenTwoPoints(rightAnchor.x - int(rightAnchor.width / 2), leftAnchor.x + int(leftAnchor.width / 2), rightAnchor.y, leftAnchor.y) / 2;
 				bridgeLength = distance;
 			}
-			widthSegment = bridgeLength / numSegments
+			
+			widthSegment = bridgeLength / numSegments;
 			if (useTexture) {
 				initDisplay();
 				(segmentBitmapData == null) ? display.init(numSegments, widthSegment, heightSegment) : display.init(numSegments, widthSegment, heightSegment, segmentBitmapData);
 			}
+			
 			_vecBodyDefBridge = new Vector.<b2BodyDef>();
 			var bodyDefChain:b2BodyDef;
 			for (var i:uint = 0; i < numSegments; ++i) {
@@ -88,6 +93,7 @@ package citrus.objects.complex.box2dstarling {
 
 		override protected function createBody():void {
 			super.createBody();
+			
 			_vecBodyBridge = new Vector.<b2Body>();
 			var bodyChain:b2Body;
 			for each (var bodyDefChain:b2BodyDef in _vecBodyDefBridge) {
@@ -99,12 +105,14 @@ package citrus.objects.complex.box2dstarling {
 
 		override protected function createShape():void {
 			super.createShape();
+			
 			_shapeSegment = new b2PolygonShape();
 			b2PolygonShape(_shapeSegment).SetAsBox(widthSegment / ws, heightSegment / ws);
 		}
 
 		override protected function defineFixture():void {
 			super.defineFixture();
+			
 			_vecFixtureDefBridge = new Vector.<b2FixtureDef>();
 			var fixtureDefChain:b2FixtureDef;
 			for (var i:uint = 0; i < numSegments; ++i) {
@@ -120,6 +128,7 @@ package citrus.objects.complex.box2dstarling {
 
 		override protected function createFixture():void {
 			super.createFixture();
+			
 			var i:uint = 0;
 			for each (var fixtureDefChain:b2FixtureDef in _vecFixtureDefBridge) {
 				_vecBodyBridge[i].CreateFixture(fixtureDefChain);
@@ -129,6 +138,7 @@ package citrus.objects.complex.box2dstarling {
 
 		override protected function defineJoint():void {
 			_vecRevoluteJointDef = new Vector.<b2RevoluteJointDef>();
+			
 			for (var i:uint = 0; i < numSegments; ++i) {
 
 				if (i == 0)
@@ -141,6 +151,7 @@ package citrus.objects.complex.box2dstarling {
 		}
 
 		private function revoluteJoint(bodyA:b2Body, bodyB:b2Body, anchorA:b2Vec2, anchorB:b2Vec2):void {
+			
 			var revoluteJointDef:b2RevoluteJointDef = new b2RevoluteJointDef();
 			revoluteJointDef.localAnchorA.Set(anchorA.x, anchorA.y);
 			revoluteJointDef.localAnchorB.Set(anchorB.x, anchorB.y);
@@ -161,10 +172,9 @@ package citrus.objects.complex.box2dstarling {
 
 		public function initDisplay():void {
 			display = true;
-			var texture:Texture
-			/**
-			 * If useTexture set to true but no bitmapData provided the segments will get a random color
-			 */
+			var texture:Texture;
+			
+			// If useTexture set to true but no bitmapData provided the segments will get a random color
 
 			if (segmentBitmapData == null) texture = Texture.empty(widthSegment * 2, heightSegment * 2, 0xff000000 + Math.random() * 0xffffff);
 			// Texture is sclaed to fit the width of the elements, so your image ratio should generally fit the segments
