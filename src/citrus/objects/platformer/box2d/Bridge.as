@@ -165,10 +165,7 @@ package citrus.objects.platformer.box2d{
 		}
 		
 		public function initDisplay():void{
-			_width = width;;
-			_height = height;
 			var texture:Texture
-			
 			/**
 			 * If useTexture set to true but no bitmapData provided the segments will get a random color
 			 */
