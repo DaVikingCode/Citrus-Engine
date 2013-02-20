@@ -61,7 +61,7 @@ package citrus.objects.platformer.box2d{
 			override public function update(timeDelta:Number):void {
 				super.update(timeDelta);
 				if (display)
-					display.updateSegmentDisplay(_vecBodyBridge, ws);
+					display.updateSegmentDisplay();
 			}
 			
 			override protected function defineBody():void {
