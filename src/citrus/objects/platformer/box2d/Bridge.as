@@ -13,7 +13,12 @@ package citrus.objects.platformer.box2d{
 	import citrus.core.CitrusEngine;
 	import citrus.math.MathUtils;
 	import citrus.objects.Box2DPhysicsObject;
+	import citrus.objects.CitrusSprite;
 	import citrus.physics.PhysicsCollisionCategories;
+	
+	import starling.display.Image;
+	import starling.textures.Texture;
+	import starling.utils.rad2deg;
 	
 	/**
 	 * A Bridge consists of Box2dPhysicsObjects connected with RevoluteJoints and is build between two Objects (usually platforms).
@@ -156,6 +161,36 @@ package citrus.objects.platformer.box2d{
 		override protected function createJoint():void {
 			for each (var revoluteJointDef:b2RevoluteJointDef in _vecRevoluteJointDef) {
 				_box2D.world.CreateJoint(revoluteJointDef);
+			}
+		}
+		
+		public function initDisplay():void{
+			_width = width;;
+			_height = height;
+			var texture:Texture
+			
+			/**
+			 * If useTexture set to true but no bitmapData provided the segments will get a random color
+			 */
+			if (segmentBitmapData == null) texture = Texture.empty(widthSegment*2, heightSegment*2, 0xff000000 + Math.random()*0xffffff);
+			// Texture is sclaed to fit the width of the elements, so your image ratio should generally fit the segments
+			else texture = Texture.fromBitmapData(segmentBitmapData, true, false, segmentBitmapData.width/((widthSegment)*2));
+			_vecSprites = new Vector.<CitrusSprite>();
+			
+			for (var i:uint = 0; i < numSegments; ++i) {
+				var image:CitrusSprite = new CitrusSprite(i.toString(), {group:2, width:_width*2, height:_height*2, view:new Image(texture), registration:"center"});
+				_ce.state.add(image);
+				_vecSprites.push(image);
+			}
+		}
+		
+		public function updateSegmentDisplay():void {
+			var i:uint = 0;
+			for each (var body:b2Body in _vecBodySegment) {
+				_vecSprites[i].x = body.GetPosition().x * ws;
+				_vecSprites[i].y = body.GetPosition().y * ws;
+				_vecSprites[i].rotation = rad2deg(body.GetAngle());
+				++i;
 			}
 		}
 	}
