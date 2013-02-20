@@ -44,8 +44,7 @@ package citrus.objects.complex.box2dstarling {
 		public var restitution:Number = 1;
 
 		private var widthSegment:uint;
-		private var ws:Number;
-		// worldscale
+		private var ws:Number;// worldscale
 		private var display:Boolean = false;
 
 		private var _vecBodyDefBridge:Vector.<b2BodyDef>;
