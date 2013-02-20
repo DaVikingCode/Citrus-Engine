@@ -53,6 +53,7 @@ package citrus.objects.platformer.box2d{
 		private var _vecFixtureDefChain:Vector.<b2FixtureDef>;
 		private var _vecRevoluteJointDef:Vector.<b2RevoluteJointDef>;
 		private var _shapeChain:b2Shape;
+		private var _vecSprites:Vector.<CitrusSprite>;
 		
 		public function Bridge(name:String, params:Object = null) {
 			super(name, params);
