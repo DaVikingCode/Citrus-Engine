@@ -299,6 +299,35 @@ package citrus.core.away3d {
 
 			return objects;
 		}
+		
+		/**
+		 * Destroy all the objects added to the State and not already killed.
+		 * @param except CitrusObjects you want to save.
+		 */
+		public function killAllObjects(...except):void {
+			
+			for each (var objectToKill:CitrusObject in _objects) {
+				
+				objectToKill.kill = true;
+				
+				for each (var objectToPreserve:CitrusObject in except) {
+					
+					if (objectToKill == objectToPreserve) {
+						
+						objectToPreserve.kill = false;
+						except.splice(except.indexOf(objectToPreserve), 1);
+						break;
+					}
+				}				
+			}
+		}
+		
+		/**
+		 * Contains all the objects added to the State and not killed.
+		 */
+		public function get objects():Vector.<CitrusObject> {
+			return _objects;
+		}
 
 		/**
 		 * Override this method if you want a state to create an instance of a custom view. 
