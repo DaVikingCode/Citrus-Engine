@@ -45,7 +45,7 @@ package citrus.objects.platformer.box2d{
 			
 			private var widthSegment:uint;
 			private var ws:Number; //worldscale
-			private var display:BridgeDisplay;
+			private var display:Boolean = false;
 			
 			private var _vecBodyDefBridge:Vector.<b2BodyDef>;
 			private var _vecBodyBridge:Vector.<b2Body>;
@@ -75,7 +75,7 @@ package citrus.objects.platformer.box2d{
 				widthSegment = bridgeLength/numSegments
 				if (useTexture)
 				{
-					display = new BridgeDisplay();
+					initDisplay();
 					(segmentBitmapData == null) ? display.init(numSegments, widthSegment, heightSegment) : display.init(numSegments, widthSegment, heightSegment, segmentBitmapData);
 				}
 				_vecBodyDefBridge = new Vector.<b2BodyDef>();
@@ -165,6 +165,7 @@ package citrus.objects.platformer.box2d{
 			}
 			
 			public function initDisplay():void{
+				display = true;
 				var texture:Texture
 				/**
 				 * If useTexture set to true but no bitmapData provided the segments will get a random color
