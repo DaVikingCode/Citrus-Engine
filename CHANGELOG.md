@@ -19,6 +19,7 @@ V 3.1.4, Work In Progress
 - Added linear interpolation function to MathUtils.
 - Added Tools class with a print_r function to display objects and arrays content.
 - Improved the Timer's cannon: it is paused if the CE is not playing.
+- Added a Bridge object, into the new objects.complex.box2dstarling package.
 
 V 3.1.3, 01 24 2013
 -------------------
