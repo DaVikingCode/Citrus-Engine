@@ -19,6 +19,12 @@ package citrus.core
 	 */	
 	public class State extends Sprite implements IState
 	{
+		
+		/**
+		 * Get a direct references to the Citrus Engine in your State.
+		 */
+		protected var _ce:CitrusEngine;
+		
 		private var _objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 		private var _poolObjects:Vector.<PoolObject> = new Vector.<PoolObject>();
 		private var _view:ACitrusView;
@@ -38,7 +44,7 @@ package citrus.core
 		
 		public function State()
 		{
-			
+			_ce = CitrusEngine.getInstance();
 		}
 		
 		/**
@@ -83,7 +89,7 @@ package citrus.core
 		public function initialize():void
 		{
 			_view = createView();
-			_input = CitrusEngine.getInstance().input;
+			_input = _ce.input;
 		}
 		
 		/**

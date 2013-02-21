@@ -23,6 +23,11 @@ package citrus.core.away3d {
 	 * state via the CitrusEngine class.</p>
 	 */
 	public class Away3DState extends ObjectContainer3D implements IState {
+		
+		/**
+		 * Get a direct references to the Citrus Engine in your State.
+		 */
+		protected var _ce:CitrusEngine;
 
 		private var _objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 		private var _poolObjects:Vector.<PoolObject> = new Vector.<PoolObject>();
@@ -85,7 +90,7 @@ package citrus.core.away3d {
 		public function initialize():void {
 
 			_view = createView();
-			_input = CitrusEngine.getInstance().input;
+			_input = _ce.input;
 		}
 
 		/**

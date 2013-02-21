@@ -23,6 +23,11 @@ package citrus.core.starling {
 	 * state via the CitrusEngine class.</p>
 	 */
 	public class StarlingState extends Sprite implements IState {
+		
+		/**
+		 * Get a direct references to the Citrus Engine in your State.
+		 */
+		protected var _ce:CitrusEngine;
 
 		private var _objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 		private var _poolObjects:Vector.<PoolObject> = new Vector.<PoolObject>();
@@ -42,7 +47,8 @@ package citrus.core.starling {
 		private var _accumulator:Number = 0;		
 
 		public function StarlingState() {
-
+			
+			_ce = CitrusEngine.getInstance();
 		}
 
 		/**
@@ -85,7 +91,7 @@ package citrus.core.starling {
 		public function initialize():void {
 
 			_view = createView();
-			_input = CitrusEngine.getInstance().input;
+			_input = _ce.input;
 		}
 
 		/**
