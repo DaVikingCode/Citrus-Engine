@@ -47,7 +47,8 @@ package citrus.core.away3d {
 		private var _accumulator:Number = 0;		
 
 		public function Away3DState() {
-
+			
+			_ce = CitrusEngine.getInstance();
 		}
 
 		/**
