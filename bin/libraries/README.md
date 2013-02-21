@@ -1,1 +1,1 @@
-This is some swcs mostly used to generate the api doc. They are never used in the engine. You may grab them if you want.
+This is some swcs mostly used to generate the api doc using [ASDocr](http://gskinner.com/blog/archives/2010/05/asdocr_update_f_1.html). They are never used in the engine. You may grab them if you want.
