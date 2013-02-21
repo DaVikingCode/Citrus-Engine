@@ -7,8 +7,8 @@ The [Citrus Engine](http://citrusengine.com/) is a professional-grade, scalable 
 The [Citrus Engine](http://citrusengine.com/) is not only made for platformer games, but for all type of games. It offers a nice way to separate logic/physics from art.
 
 It offers many options, you may use :
-- select between : the classic flash display list, blitting, [Starling](http://gamua.com/starling/) and [Away3D](http://away3d.com/).
-- select between : [Box2D](http://www.box2d.org/manual.html), [Nape](http://deltaluca.me.uk/docnew/), [AwayPhysics](https://github.com/away3d/awayphysics-core-fp11) and a Simple math based collision detection.
+- select between : the classic flash display list, blitting, [Starling](http://gamua.com/starling/) (including [Feathers](http://feathersui.com/)) and [Away3D](http://away3d.com/).
+- select between : [Box2D](http://www.box2d.org/manual.html), [Nape](http://napephys.com/), [AwayPhysics](https://github.com/away3d/awayphysics-core-fp11) and a Simple math based collision detection.
 - a simple way to manage object creation, and for advanced developers : an entity/component system and object pooling.
 - a LevelManager and a LoadManager which may use Flash Pro as a level editor.
 - a Console, Sound management class, Keyboard and input handler...
