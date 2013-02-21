@@ -255,7 +255,7 @@ package citrus.view.starlingview {
 			_viewRoot.y = _camProxy.y;
 			
 			
-			_camPos = pointFromLocal(new Point(offset.x, offset.y));
+			_camPos = pointFromLocal(new Point(0, 0));
 			
 		}
 		
