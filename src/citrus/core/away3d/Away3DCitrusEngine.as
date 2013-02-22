@@ -23,7 +23,11 @@ package citrus.core.away3d {
 		public function Away3DCitrusEngine() {
 			
 			super();
-			
+		}
+		
+		override protected function handleAddedToStage(e:Event):void 
+		{
+			super.handleAddedToStage(e);
 			stage.addEventListener(Event.RESIZE, _onResize);
 		}
 
