@@ -57,6 +57,18 @@ package citrus.objects.complex.box2dstarling {
 		public function Bridge(name:String, params:Object = null) {
 			super(name, params);
 		}
+		
+		
+		override public function destroy():void
+		{
+			var i:uint = 0;
+			for each (var bodyChain:b2Body in _vecBodyBridge) {
+				_box2D.world.DestroyBody(bodyChain);
+				_ce.state.remove(_vecSprites[i]);
+				++i;
+			}
+			super.destroy();
+		}
 
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
