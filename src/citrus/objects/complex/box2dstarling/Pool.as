@@ -98,11 +98,13 @@ package citrus.objects.complex.box2dstarling{
 			_shape = new b2PolygonShape();
 			b2PolygonShape(_shape).SetAsOrientedBox(wallThickness/_box2D.scale, poolHeight/_box2D.scale, 
 				new b2Vec2((poolWidth+wallThickness)/_box2D.scale, (-poolHeight+wallThickness)/_box2D.scale));
+			poolFixtureDef.shape = _shape;
 			pool.CreateFixture(poolFixtureDef);
 			
 			//bottom
 			_shape = new b2PolygonShape();
 			b2PolygonShape(_shape).SetAsBox(poolWidth/_box2D.scale, wallThickness/_box2D.scale);
+			poolFixtureDef.shape = _shape;
 			pool.CreateFixture(poolFixtureDef);
 			
 			buoyancyController.normal.Set(0,-1);
