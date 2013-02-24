@@ -1,5 +1,5 @@
-package
-{
+package citrus.objects.complex.box2dstarling{
+	
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
@@ -8,7 +8,6 @@ package
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.Contacts.b2Contact;
 	import Box2D.Dynamics.Controllers.b2BuoyancyController;
-	import Box2D.Dynamics.Controllers.b2ControllerEdge;
 	
 	import citrus.objects.Box2DPhysicsObject;
 	
@@ -24,8 +23,8 @@ package
 		
 		// These are the parameters for the water area
 		public var density:Number = 1.8;
-		public var linearDrag=3;
-		public var angularDrag=2;
+		public var linearDrag:Number=3;
+		public var angularDrag:Number=2;
 		
 		private var pool:b2Body;
 		private var poolFixtureDef:b2FixtureDef;
