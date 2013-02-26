@@ -48,7 +48,6 @@ package{
 		 * Bitmapdata for the segments's texture  
 		 */
 		public var segmentBitmapData:BitmapData;
-		public var hero:Hero;
 		/**
 		 * The position where the hero is connected, relative to his origin 
 		 */
@@ -59,6 +58,7 @@ package{
 		public var leaveImpulse:b2Vec2;
 		public var maxSwingVelocity:Number;
 		
+		private var hero:Hero;
 		private var ws:Number = 30;//worldscale
 		private var heightSegment:uint;
 		private var maxV:Number;
@@ -167,6 +167,8 @@ package{
 					revoluteJoint(_vecBodyRope[i - 1], _vecBodyRope[i],new b2Vec2(0, (heightSegment-2)/ws), new b2Vec2(0, -heightSegment/ws));
 			}
 			_body.SetActive(false);
+			hero = _ce.state.getFirstObjectByType(Hero) as Hero;
+			maxV = hero.maxVelocity;
 		}
 		
 		private function revoluteJoint(bodyA:b2Body,bodyB:b2Body,anchorA:b2Vec2,anchorB:b2Vec2):void {
