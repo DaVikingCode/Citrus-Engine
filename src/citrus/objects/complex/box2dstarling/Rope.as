@@ -166,9 +166,6 @@ package{
 				else
 					revoluteJoint(_vecBodyRope[i - 1], _vecBodyRope[i],new b2Vec2(0, (heightSegment-2)/ws), new b2Vec2(0, -heightSegment/ws));
 			}
-			_body.SetActive(false);
-			hero = _ce.state.getFirstObjectByType(Hero) as Hero;
-			maxV = hero.maxVelocity;
 		}
 		
 		private function revoluteJoint(bodyA:b2Body,bodyB:b2Body,anchorA:b2Vec2,anchorB:b2Vec2):void {
@@ -191,6 +188,8 @@ package{
 			if (heroAnchorOffset == null) heroAnchorOffset = new b2Vec2();
 			else heroAnchorOffset.Multiply(1/30);
 			if (leaveImpulse == null) leaveImpulse = new b2Vec2(0, -100);
+			_body.SetActive(false);
+			hero = _ce.state.getFirstObjectByType(Hero) as Hero;
 			maxV = hero.maxVelocity;
 		}
 		
