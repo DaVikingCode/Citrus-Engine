@@ -89,6 +89,17 @@ package{
 			onHangEnd = new Signal;
 		}
 		
+		override public function destroy():void
+		{
+			var i:uint = 0;
+			for each (var bodyRope:b2Body in _vecBodyRope) {
+				_box2D.world.DestroyBody(bodyRope);
+				_ce.state.remove(_vecSprites[i]);
+				++i;
+			}
+			super.destroy();
+		}
+		
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
 			if (displayReady)
@@ -216,6 +227,7 @@ package{
 		
 		//when startClimbing() is called, a timer starts and onTick the hero travels up or down 
 		//till he reaches end of the rope or stopClimbing() is called 
+		//other solutions are welcome ;)
 		protected function onMoveTimer(event:TimerEvent=null):void
 		{
 			if (up && targetJointIndex >= 1) 
