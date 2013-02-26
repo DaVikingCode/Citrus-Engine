@@ -18,7 +18,6 @@ package citrus.objects.complex.box2dstarling {
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.box2d.Hero;
-	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.box2d.Box2DUtils;
 	
 	import org.osflash.signals.Signal;
