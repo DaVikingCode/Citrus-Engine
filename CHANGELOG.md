@@ -1,6 +1,7 @@
-V 3.1.4, Work In Progress
+V 3.1.4, 02 27 2013
 -------------------------
 - Renamed AVirtualButtons and VirtualButtons classes into AVirtualButton and VirtualButton. Yes, they just add one button now. Easier to add many ;)
+- Added Starling's simple trick to avoid the state changes (alpha 0.999).
 - StarlingCitrusEngine and Away3DCitrusEngine accepts State, useful to display quickly a state with graphics from a swf, ect.
 - States classes have a new method killAllObjects(...except). The _objects variable has also a getter.
 - States classes have a protected variable _ce which refers to the Citrus Engine.
@@ -21,7 +22,8 @@ V 3.1.4, Work In Progress
 - Added linear interpolation function to MathUtils.
 - Added Tools class with a print_r function to display objects and arrays content.
 - Improved the Timer's cannon: it is paused if the CE is not playing.
-- Added a Bridge object, into the new objects.complex.box2dstarling package.
+- Added a Bridge, Rope and Pool objects, into the new objects.complex.box2dstarling package.
+- Added a Multiply2 function into Box2DUtils.
 
 V 3.1.3, 01 24 2013
 -------------------

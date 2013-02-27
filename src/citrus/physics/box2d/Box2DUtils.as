@@ -52,5 +52,17 @@ package citrus.physics.box2d {
 			var sin:Number = Math.sin(angle);
 			return new b2Vec2(vector.x * cos - vector.y * sin, vector.x * sin + vector.y * cos);
 		}
+		
+		/**
+		 * Multiply a b2Vec2 vector by an other.
+		 * @param a the b2Vec2 to be multiplied.
+		 * @param b the b2Vec2 multiplier.
+		 * @return the multiplied vector.
+		 */
+		static public function Multiply2(a:b2Vec2, b:b2Vec2):b2Vec2 {
+			a.x *= b.x;
+			a.y *= b.y;
+			return a;
+		}
 	}
 }
