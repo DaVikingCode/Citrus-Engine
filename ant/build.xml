@@ -285,7 +285,7 @@
 		<echo>Generating Starling + DragonBones SWC</echo>
 		<exec executable="${compc.exe}">
 			<!-- Set the output path -->
-			<arg line="-output ../bin/libraries/Starling-DragonBones.swc" />
+			<arg line="-output ../bin/libraries/Starling-Feathers-DragonBones.swc" />
 
 			<!-- Include all of the AS3 files in LIBRARY -->
 			<arg line="-include-sources ../srclib/starling" />

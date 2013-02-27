@@ -27,7 +27,6 @@ package citrus.objects.complex.box2dstarling {
 	 * <li>useTexture : Oset false for debugging</li>
 	 * <li>segmentBitmapData : BitmapData for creating the texture for Bridgeelements. It get's scaled with keeping 
 	 * proportion between width and height</li></ul>
-	 * 
 	 */
 	public class Bridge extends Box2DPhysicsObject {
 

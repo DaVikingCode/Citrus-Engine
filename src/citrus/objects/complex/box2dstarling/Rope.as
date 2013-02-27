@@ -1,31 +1,32 @@
-package{
-	import flash.display.BitmapData;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
-	import flash.utils.setTimeout;
-	
-	import Box2D.Collision.b2Manifold;
+package citrus.objects.complex.box2dstarling {
+
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Collision.Shapes.b2Shape;
+	import Box2D.Collision.b2Manifold;
 	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.b2Body;
-	import Box2D.Dynamics.b2BodyDef;
-	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.Contacts.b2Contact;
 	import Box2D.Dynamics.Joints.b2Joint;
 	import Box2D.Dynamics.Joints.b2RevoluteJointDef;
-	
+	import Box2D.Dynamics.b2Body;
+	import Box2D.Dynamics.b2BodyDef;
+	import Box2D.Dynamics.b2FixtureDef;
+
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.box2d.Hero;
 	import citrus.physics.box2d.Box2DUtils;
-	
-	import org.osflash.signals.Signal;
-	
+
 	import starling.display.Image;
 	import starling.textures.Texture;
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
+
+	import org.osflash.signals.Signal;
+
+	import flash.display.BitmapData;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+	import flash.utils.setTimeout;
 	
 	/**
 	 * A hanging rope where you can hang on and swing...
@@ -276,7 +277,10 @@ package{
 			_box2D.world.DestroyJoint(connectingJoint);
 			_vecRevoluteJointDef[_vecRevoluteJointDef.length-1] = null;
 			connectingJoint = null;
-			(hero as HeroSnowman).isHanging = false;
+			
+			/// TO MANAGE IN YOUR HERO CLASS ///
+			// (hero as HeroSnowman).isHanging = false;
+			
 			onHangEnd.dispatch();
 			hero.body.ApplyImpulse(leaveImpulse, hero.body.GetWorldCenter());
 			hero.body.SetAngle(deg2rad(0));
