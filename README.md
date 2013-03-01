@@ -15,6 +15,7 @@ It offers many options, you may use :
 
 Games References
 ----------------
+[![Shotgun vs Zombies](http://aymericlamboley.fr/blog/wp-content/uploads/2013/03/Shotgun-vs-Zombies.png)](http://armorgames.com/play/14737/shotgun-vs-zombies)
 [![Gérard](http://aymericlamboley.fr/blog/wp-content/uploads/2013/02/gerard.png)](https://play.google.com/store/apps/details?id=air.com.studio3wg.gerard)
 [![Santa Rush](http://aymericlamboley.fr/blog/wp-content/uploads/2012/12/Santa Rush.png)](https://play.google.com/store/apps/details?id=air.com.studio3wg.SantaRush)
 [![Kepher](http://aymericlamboley.fr/blog/wp-content/uploads/2012/12/Kepher.png)](http://www.daarboven.net/kepher_comingsoon.html)
