@@ -85,13 +85,17 @@ package{
 			super(name, params);
 			moveTimer = new Timer(50, 0);
 			moveTimer.addEventListener(TimerEvent.TIMER, onMoveTimer);
-			onHang = new Signal;
-			onHangEnd = new Signal;
+			onHang = new Signal();
+			onHangEnd = new Signal();
 		}
 		
 		override public function destroy():void
 		{
 			var i:uint = 0;
+			
+			onHang.removeAll();
+			onHangEnd.removeAll();
+			
 			for each (var bodyRope:b2Body in _vecBodyRope) {
 				_box2D.world.DestroyBody(bodyRope);
 				_ce.state.remove(_vecSprites[i]);
