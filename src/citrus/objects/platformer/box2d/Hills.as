@@ -25,9 +25,22 @@ package citrus.objects.platformer.box2d {
 		 */
 		public var rider:Box2DPhysicsObject;
 		
+		/**
+		 * This is the width of a slice.
+		 */
+		public var sliceWidth:uint = 10;
+		
+		/**
+		 * A factor that defined the roundness of the hills 
+		 * 
+		 */
+		public var roundFactor:uint = 24;
+		
 		private var realHeight:Number = 240;
 		private var nextHill:Number = 240;
 		private var realWidth:Number = 0;
+		
+		
 
 		public function Hills(name:String, params:Object = null) {
 			super(name, params);
@@ -38,16 +51,26 @@ package citrus.objects.platformer.box2d {
 			super.initialize(poolObjectParams);
 			
 			while (realWidth < widthHills) {
-				nextHill = drawHill(10, realWidth, nextHill);
+				nextHill = drawHill(sliceWidth, realWidth, nextHill);
 			}
 		}
 		
 		private function drawHill(pixelStep:int, xOffset:Number, yOffset:Number):Number {
 
 			var hillStartY:Number = yOffset;
-			var hillWidth:Number = 120 + Math.ceil(Math.random() * 26) * 20;
+			
+			if(roundFactor == 0) ++roundFactor;			
+			
+			var hillWidth:Number = (pixelStep * roundFactor + Math.ceil(Math.random() * roundFactor) * pixelStep);
 			realWidth += hillWidth;
 			var numberOfSlices:Number = hillWidth / pixelStep;
+			
+			if (numberOfSlices % 2 != 0) 
+			{
+				realWidth += pixelStep;
+				++numberOfSlices;
+			}
+			
 			var hillVector:Vector.<b2Vec2>;
 			var randomHeight:Number;
 			if (xOffset == 0) {
@@ -59,6 +82,7 @@ package citrus.objects.platformer.box2d {
 			}
 			realHeight += randomHeight;
 			hillStartY -= randomHeight;
+			
 			for (var j:uint = 0; j < numberOfSlices * 0.5; ++j) {
 				hillVector = new Vector.<b2Vec2>();
 				hillVector.push(new b2Vec2((j * pixelStep + xOffset) / _box2D.scale, 480 / _box2D.scale));
@@ -89,7 +113,7 @@ package citrus.objects.platformer.box2d {
 			}
 			realHeight -= randomHeight;
 			hillStartY += randomHeight;
-
+			
 			for (j = numberOfSlices * 0.5; j < numberOfSlices; ++j) {
 				hillVector = new Vector.<b2Vec2>();
 				hillVector.push(new b2Vec2((j * pixelStep + xOffset) / _box2D.scale, 480 / _box2D.scale));
@@ -111,7 +135,9 @@ package citrus.objects.platformer.box2d {
 				_body.CreateFixture(sliceFixture);
 			}
 			hillStartY = hillStartY + randomHeight;
+
 			return (hillStartY);
+			
 		}
 			
 		override public function update(timeDelta:Number):void {
@@ -124,7 +150,7 @@ package citrus.objects.platformer.box2d {
 			if (rider.x > realWidth - widthHills) {
 				
 				while (realWidth < rider.x + widthHills)
-					nextHill = drawHill(10, realWidth, nextHill);
+					nextHill = drawHill(sliceWidth, realWidth, nextHill);
 			}
 			
 			for (var currentBody:b2Body = _box2D.world.GetBodyList(); currentBody; currentBody = currentBody.GetNext()) {
