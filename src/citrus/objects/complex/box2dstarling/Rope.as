@@ -37,6 +37,9 @@ package citrus.objects.complex.box2dstarling {
 	 */
 	public class Rope extends Box2DPhysicsObject {
 		
+		public var onHang:Signal;
+		public var onHangEnd:Signal;
+		
 		/**
 		 * The object where the rope is attached(centered)  
 		 */
@@ -79,19 +82,22 @@ package citrus.objects.complex.box2dstarling {
 		private var up:Boolean;
 		private var moveTimer:Timer;
 		
-		public var onHang:Signal;
-		public var onHangEnd:Signal;
-		
 		public function Rope(name:String, params:Object = null) {
+			
 			super(name, params);
+			
+			onHang = new Signal();
+			onHangEnd = new Signal();
+			
 			moveTimer = new Timer(50, 0);
 			moveTimer.addEventListener(TimerEvent.TIMER, onMoveTimer);
-			onHang = new Signal;
-			onHangEnd = new Signal;
 		}
 		
 		override public function destroy():void
 		{
+			onHang.removeAll();
+			onHangEnd.removeAll();
+			
 			var i:uint = 0;
 			for each (var bodyRope:b2Body in _vecBodyRope) {
 				_box2D.world.DestroyBody(bodyRope);
