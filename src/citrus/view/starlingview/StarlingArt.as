@@ -249,6 +249,12 @@ package citrus.view.starlingview {
 						Starling.juggler.add(_content as MovieClip);
 					else if (_view is PDParticleSystem)
 						Starling.juggler.add(_content as PDParticleSystem);
+						
+				} else if (_view is Texture) {
+				
+					_content = new Image(_view);
+					moveRegistrationPoint(_citrusObject.registration);
+					addChild(_content);
 				
 				} else if (_view is Bitmap) {
 					//TODO : cut bitmap if size > 2048 * 2048, use StarlingTileSystem?

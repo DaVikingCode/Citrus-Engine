@@ -1,5 +1,9 @@
-V 3.1.4, 02 27 2013
+V 3.1.5, Work In Progress
 -------------------------
+- StarlingArt handles Texture view. It creates an Image.
+
+V 3.1.4, 02 27 2013
+-------------------
 - Renamed AVirtualButtons and VirtualButtons classes into AVirtualButton and VirtualButton. Yes, they just add one button now. Easier to add many ;)
 - Added Starling's simple trick to avoid the state changes (alpha 0.999).
 - StarlingCitrusEngine and Away3DCitrusEngine accepts State, useful to display quickly a state with graphics from a swf, ect.
