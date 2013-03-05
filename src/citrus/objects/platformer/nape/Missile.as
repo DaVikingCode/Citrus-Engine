@@ -77,11 +77,6 @@ package citrus.objects.platformer.nape {
 			super(name, params);
 			
 			onExplode = new Signal(Missile, NapePhysicsObject);
-		}
-		
-		override public function initialize(poolObjectParams:Object = null):void {
-			
-			super.initialize(poolObjectParams);
 			
 			_velocity = new Vec2(speed, 0);
 			_velocity.rotate(angle * Math.PI / 180);
@@ -109,11 +104,8 @@ package citrus.objects.platformer.nape {
 			
 			super.update(timeDelta);
 			
-			if (!_exploded) {
-				_body.velocity =_velocity;
-			} else {
+			if (_exploded) 
 				_body.velocity = new Vec2();
-			}
 			
 			updateAnimation();
 		}

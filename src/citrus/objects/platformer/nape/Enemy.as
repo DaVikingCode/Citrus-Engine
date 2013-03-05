@@ -97,8 +97,6 @@ package citrus.objects.platformer.nape {
 			else
 				velocity.x = 0;
 			
-			_body.velocity = velocity;
-			
 			updateAnimation();
 		}
 		

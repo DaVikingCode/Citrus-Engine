@@ -127,8 +127,6 @@ package citrus.objects.platformer.box2d
 				else
 					velocity.x = speed;
 			}
-			
-			_body.SetLinearVelocity(velocity);
 		}
 		
 		override protected function defineBody():void

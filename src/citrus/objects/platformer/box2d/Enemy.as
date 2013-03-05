@@ -117,8 +117,6 @@ package citrus.objects.platformer.box2d {
 			else
 				velocity.x = 0;
 			
-			_body.SetLinearVelocity(velocity);
-			
 			updateAnimation();
 		}
 		

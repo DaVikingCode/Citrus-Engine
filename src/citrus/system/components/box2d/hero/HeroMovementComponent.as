@@ -181,8 +181,6 @@ package citrus.system.components.box2d.hero {
 					_velocity.x = maxVelocity;
 				else if (_velocity.x < -maxVelocity)
 					_velocity.x = -maxVelocity;
-				
-				_physicsComponent.body.SetLinearVelocity(_velocity);
 			}
 		}
 		

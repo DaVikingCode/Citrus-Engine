@@ -2,6 +2,8 @@ V 3.1.5, Work In Progress
 -------------------------
 - StarlingArt handles Texture view. It creates an Image.
 - Added a FluidBox into complex objects using ThresholdFilter, metaballs effect.
+- Removed set velocity on Box2D and Nape dynamic objects since we already use a reference.
+- Nape MovingPlatform's default speed is 30.
 
 V 3.1.4, 02 27 2013
 -------------------

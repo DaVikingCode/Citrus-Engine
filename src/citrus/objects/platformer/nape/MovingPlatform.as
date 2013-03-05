@@ -27,8 +27,8 @@ package citrus.objects.platformer.nape
         /**
 		 * The speed at which the moving platform travels. 
 		 */
-		[Inspectable(defaultValue="1")]
-		public var speed:Number = 1;
+		[Inspectable(defaultValue="30")]
+		public var speed:Number = 30;
 		
 		/**
 		 * Whether or not the MovingPlatform can move, no matter the condition. 

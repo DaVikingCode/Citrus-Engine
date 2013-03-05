@@ -235,6 +235,7 @@ package citrus.objects.platformer.nape {
 		{
 			super.update(timeDelta);
 			
+			// we get a reference to the actual velocity vector
 			var velocity:Vec2 = _body.velocity;
 			
 			if (controlsEnabled)
@@ -297,9 +298,6 @@ package citrus.objects.platformer.nape {
 					velocity.x = maxVelocity;
 				else if (velocity.x < (-maxVelocity))
 					velocity.x = -maxVelocity;
-				
-				//update physics with new velocity
-				_body.velocity = velocity;
 			}
 			
 			updateAnimation();

@@ -76,11 +76,6 @@ package citrus.objects.platformer.box2d
 			super(name, params);
 			
 			onExplode = new Signal(Missile, Box2DPhysicsObject);
-		}
-			
-		override public function initialize(poolObjectParams:Object = null):void {
-			
-			super.initialize(poolObjectParams);
 			
 			_velocity = new b2Vec2(speed, 0);
 			_velocity = Box2DUtils.Rotateb2Vec2(_velocity, angle * Math.PI / 180);
@@ -114,7 +109,7 @@ package citrus.objects.platformer.box2d
 			
 			_body.ApplyForce(removeGravity, _body.GetWorldCenter());
 			
-			if (!_exploded)
+			if (_exploded)
 				_body.SetLinearVelocity(_velocity);
 			else
 				_body.SetLinearVelocity(new b2Vec2());
