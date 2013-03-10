@@ -78,7 +78,11 @@ package citrus.core {
 				if (currID == id) {
 					var c:SoundChannel = currPlayingSounds[id].channel as SoundChannel;
 					var s:Sound = currPlayingSounds[id].sound as Sound;
-					t = new SoundTransform(volume,panning);
+					t = new SoundTransform(volume, panning);
+					
+					if (s.isBuffering)
+						break;
+					
 					c = s.play(0, timesToRepeat);
 					c.soundTransform = t;
 					currPlayingSounds[id] = {channel:c, sound:s, volume:volume};
@@ -96,11 +100,13 @@ package citrus.core {
 				soundFactory.load(new URLRequest(sounds[id]));
 			}
 
-
 			var channel:SoundChannel = new SoundChannel();
 			channel = soundFactory.play(0, timesToRepeat);
+			
+			if (!channel)
+				return;
 
-			t = new SoundTransform(volume,panning);
+			t = new SoundTransform(volume, panning);
 			channel.soundTransform = t;
 
 			currPlayingSounds[id] = {channel:channel, sound:soundFactory, volume:volume};
