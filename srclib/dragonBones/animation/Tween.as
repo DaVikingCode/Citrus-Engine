@@ -1,4 +1,4 @@
-package dragonBones.animation
+﻿package dragonBones.animation
 {
 	import dragonBones.Armature;
 	import dragonBones.Bone;
@@ -7,52 +7,71 @@ package dragonBones.animation
 	import dragonBones.events.SoundEventManager;
 	import dragonBones.objects.FrameData;
 	import dragonBones.objects.MovementBoneData;
-	import dragonBones.objects.TweenNode;
 	import dragonBones.objects.Node;
+	import dragonBones.utils.TransformUtils;
 	import dragonBones.utils.dragonBones_internal;
+	
+	import flash.geom.ColorTransform;
 	
 	use namespace dragonBones_internal;
 	
-	/**
-	 * A core object that can control the state of a bone
-	 * @see dragonBones.Bone
-	 */
-	final public class Tween extends ProcessBase
+	/** @private */
+	final public class Tween
 	{
 		private static const HALF_PI:Number = Math.PI * 0.5;
 		
 		private static var _soundManager:SoundEventManager = SoundEventManager.getInstance();
 		
+		//NaN: no tweens;  -1: ease out; 0: linear; 1: ease in; 2: ease in&out
+		public static function getEaseValue(value:Number, easing:Number):Number
+		{
+			var valueEase:Number = 0;
+			if(isNaN(easing))
+			{
+				return valueEase;
+			}
+			else if (easing > 1)
+			{
+				valueEase = 0.5 * (1 - Math.cos(value * Math.PI )) - value;
+				easing -= 1;
+			}
+			else if (easing > 0)
+			{
+				valueEase = Math.sin(value * HALF_PI) - value;
+			}
+			else if (easing < 0)
+			{
+				valueEase = 1 - Math.cos(value * HALF_PI) - value;
+				easing *= -1;
+			}
+			return valueEase * easing + value;
+		}
+		
 		private var _bone:Bone;
-		
-		/** @private */
-		dragonBones_internal var _node:Node;
-		
-		private var _from:Node;
-		private var _between:TweenNode;
 		
 		private var _movementBoneData:MovementBoneData;
 		
-		private var _currentKeyFrame:FrameData;
-		private var _nextKeyFrame:FrameData;
-		private var _isTweenKeyFrame:Boolean;
-		private var _betweenDuration:int;
-		private var _totalDuration:int;
+		private var _node:Node;
+		private var _colorTransform:ColorTransform;
+		
+		private var _currentNode:Node;
+		private var _currentColorTransform:ColorTransform;
+		
+		private var _offSetNode:Node;
+		private var _offSetColorTransform:ColorTransform;
+		
+		private var _currentFrameData:FrameData;
+		private var _tweenEasing:Number;
 		private var _frameTweenEasing:Number;
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function set timeScale(value:Number):void
-		{
-			super.timeScale = value;
-			
-			var childArmature:Armature = _bone.childArmature;
-			if(childArmature)
-			{
-				childArmature.animation.timeScale = value;
-			}
-		}
+		private var _isPause:Boolean;
+		private var _rawDuration:Number;
+		private var _nextFrameDataTimeEdge:Number;
+		private var _frameDuration:Number;
+		private var _nextFrameDataID:int;
+		private var _loop:int;
+		
+		dragonBones_internal var _differentColorTransform:Boolean;
 		
 		/**
 		 * Creates a new <code>Tween</code>
@@ -61,361 +80,317 @@ package dragonBones.animation
 		public function Tween(bone:Bone)
 		{
 			super();
+			
 			_bone = bone;
-			_node = new Node();
-			_from = new Node();
-			_between = new TweenNode();
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			super.dispose();
-			_bone = null;
-			_node = null;
-			_from = null;
-			_between = null;
+			_node = _bone._tweenNode;
+			_colorTransform = _bone._tweenColorTransform;
 			
-			_movementBoneData = null;
-			_currentKeyFrame = null;
-			_nextKeyFrame = null;
+			_currentNode = new Node();
+			_currentColorTransform = new ColorTransform();
+			
+			_offSetNode = new Node();
+			_offSetColorTransform = new ColorTransform();
 		}
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function gotoAndPlay(movementBoneData:Object, durationTo:int = 0, durationTween:int = 0, loop:* = false, tweenEasing:Number = NaN):void
+		/** @private */
+		internal function gotoAndPlay(movementBoneData:MovementBoneData, rawDuration:Number, loop:Boolean, tweenEasing:Number):void
 		{
-			_movementBoneData = movementBoneData as MovementBoneData;
-			if(!_movementBoneData)
+			if(!movementBoneData)
 			{
 				return;
 			}
-			_currentKeyFrame = null;
-			_nextKeyFrame = null;
-			_isTweenKeyFrame = false;
-			super.gotoAndPlay(null, durationTo, durationTween, loop, tweenEasing);
-			//
-			_totalDuration = 0;
-			_betweenDuration = 0;
-			_toIndex = 0;
+			_movementBoneData = movementBoneData;
+			var totalFrames:uint = _movementBoneData._frameList.length;
+			if(totalFrames == 0)
+			{
+				_bone.changeDisplay(-1);
+				stop();
+				return;
+			}
+			
+			_node.skewX %= 360;
 			_node.skewY %= 360;
-			var frameData:FrameData;
-			var length:uint = _movementBoneData._frameList.length;
+			_isPause = false;
+			_currentFrameData = null;
+			_loop = loop?0:-1;
 			
-			if (length == 1)
+			_nextFrameDataTimeEdge = 0;
+			_nextFrameDataID = 0;
+			_rawDuration = rawDuration;
+			_tweenEasing = tweenEasing;
+			
+			var nextFrameData:FrameData;
+			if (totalFrames == 1)
 			{
-				_loop = SINGLE;
-				_nextKeyFrame = _movementBoneData._frameList[0];
-				setBetween(_node, _nextKeyFrame);
-				_isTweenKeyFrame = true;
 				_frameTweenEasing = 1;
+				_rawDuration = 0;
+				nextFrameData = _movementBoneData._frameList[0];
+				setOffset(_node, _colorTransform, nextFrameData.node, nextFrameData.colorTransform);
 			}
-			else if (length > 1)
+			else if (loop && _movementBoneData.delay != 0)
 			{
-				if (loop) {
-					_loop = LIST_LOOP_START;
-					_duration = _movementBoneData.duration;
-				}else {
-					_loop = LIST_START;
-					_duration = _movementBoneData.duration - 1;
-				}
-				_durationTween = durationTween * _movementBoneData.scale;
-				if (loop && _movementBoneData.delay != 0)
-				{
-					setBetween(_node, tweenNodeTo(updateFrameData(1 -_movementBoneData.delay), _between));
-				}
-				else
-				{
-					_nextKeyFrame = _movementBoneData._frameList[0];
-					setBetween(_node, _nextKeyFrame);
-					_isTweenKeyFrame = true;
-				}
-			}
-		}
-		/**
-		 * @inheritDoc
-		 */
-		override public function play():void
-		{
-			if (!_movementBoneData)
-			{
-				return;
-			}
-			
-			if(_isPause)
-			{
-				super.play();
-				var childArmature:Armature = _bone.childArmature;
-				if(childArmature)
-				{
-					childArmature.animation.play();
-				}
-			}
-			else if(_isComplete)
-			{
-				gotoAndPlay(_movementBoneData);
-			}
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function stop():void
-		{
-			super.stop();
-			var childArmature:Armature = _bone.childArmature;
-			if(childArmature)
-			{
-				childArmature.animation.stop();
-			}
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function updateHandler():void
-		{
-			if (_currentPrecent >= 1)
-			{
-				switch(_loop)
-				{
-					case SINGLE:
-						_currentKeyFrame = _nextKeyFrame;
-						_currentPrecent = 1;
-						_isComplete = true;
-						break;
-					case LIST_START:
-						_loop = LIST;
-						if (_durationTween <= 0)
-						{
-							_currentPrecent = 1;
-						}
-						else
-						{
-							_currentPrecent = (_currentPrecent - 1) * _totalFrames / _durationTween;
-						}
-						
-						if (_currentPrecent >= 1)
-						{
-							//the speed of playing is too fast or the durationTween is too short
-							_currentPrecent = 1;
-							_isComplete = true;
-							break;
-						}
-						_totalFrames = _durationTween;
-						_totalDuration = 0;
-						break;
-					case LIST:
-						_currentPrecent = 1;
-						_isComplete = true;
-						break;
-					case LIST_LOOP_START:
-						_loop = 0;
-						_totalFrames = _durationTween > 0?_durationTween:1;
-						if (_movementBoneData.delay != 0)
-						{
-							//
-							_currentFrame = (1 - _movementBoneData.delay) * _totalFrames;
-							_currentPrecent += _currentFrame / _totalFrames;
-						}
-						_currentPrecent %= 1;
-						break;
-					default:
-						//change the loop
-						_loop += int(_currentPrecent);
-						_currentPrecent %= 1;
-						
-						_totalDuration = 0;
-						_betweenDuration = 0;
-						_toIndex = 0;
-						break;
-				}
-			}
-			else if (_loop < -1)
-			{
-				_currentPrecent = Math.sin(_currentPrecent * HALF_PI);
-			}
-			
-			if (_loop >= LIST)
-			{
-				//multiple key frame process
-				_currentPrecent = updateFrameData(_currentPrecent, true);
-			}
-			
-			if (!isNaN(_frameTweenEasing))
-			{
-				tweenNodeTo(_currentPrecent);
-			}
-			else if(_currentKeyFrame)
-			{
-				tweenNodeTo(0);
-			}
-			
-			if(_currentKeyFrame)
-			{
-				//arrived
-				var displayIndex:int = _currentKeyFrame.displayIndex;
-				if(displayIndex >= 0)
-				{
-					if(_bone.global.z != _currentKeyFrame.z)
-					{
-						_bone.global.z = _currentKeyFrame.z;
-						if(_bone.armature)
-						{
-							_bone.armature._bonesIndexChanged = true;
-						}
-					}
-				}
-				_bone.changeDisplay(displayIndex);
-				
-				if(_currentKeyFrame.event && _bone._armature.hasEventListener(FrameEvent.BONE_FRAME_EVENT))
-				{
-					
-					var frameEvent:FrameEvent = new FrameEvent(FrameEvent.BONE_FRAME_EVENT);
-					frameEvent.movementID = _bone._armature.animation.movementID;
-					frameEvent.frameLabel = _currentKeyFrame.event;
-					frameEvent._bone = _bone;
-					_bone._armature.dispatchEvent(frameEvent);
-				}
-				if(_currentKeyFrame.sound && _soundManager.hasEventListener(SoundEvent.SOUND))
-				{
-					var soundEvent:SoundEvent = new SoundEvent(SoundEvent.SOUND);
-					soundEvent.movementID = _bone._armature.animation.movementID;
-					soundEvent.sound = _currentKeyFrame.sound;
-					soundEvent._armature = _bone._armature;
-					soundEvent._bone = _bone;
-					_soundManager.dispatchEvent(soundEvent);
-				}
-				if(_currentKeyFrame.movement)
-				{
-					var childAramture:Armature = _bone.childArmature;
-					if(childAramture)
-					{
-						childAramture.animation.gotoAndPlay(_currentKeyFrame.movement);
-					}
-				}
-				_currentKeyFrame = null;
-			}
-			if(_isTweenKeyFrame)
-			{
-				//to
-				/*if(nextKeyFrame.displayIndex < 0){
-					//bone.changeDisplay(nextKeyFrame.displayIndex);
-					if(bone.armature){
-						//bone.armature.bonesIndexChanged = true;
-					}
-				}*/
-				_isTweenKeyFrame = false;
-			}
-		}
-		
-		private function setBetween(from:Node, to:Node):void
-		{
-			_from.copy(from);
-			if(to is FrameData)
-			{
-				if((to as FrameData).displayIndex < 0)
-				{
-					_between.subtract(from, from);
-					return;
-				}
-			}
-			_between.subtract(from, to);
-		}
-		
-		private function tweenNodeTo(value:Number, node:Node = null):Node
-		{
-			node = node || _node;
-			node.x = _from.x + value * _between.x;
-			node.y = _from.y + value * _between.y;
-			node.scaleX = _from.scaleX + value * _between.scaleX;
-			node.scaleY = _from.scaleY + value * _between.scaleY;
-			node.skewX = _from.skewX + value * _between.skewX;
-			node.skewY = _from.skewY + value * _between.skewY;
-			return node;
-		}
-		
-		private function updateFrameData(currentPrecent:Number, activeFrame:Boolean = false):Number
-		{
-			var played:Number = _duration * currentPrecent;
-			var from:FrameData;
-			var to:FrameData;
-			//refind the current frame
-			if (played >= _totalDuration || played < _totalDuration - _betweenDuration)
-			{
-				var length:int = _movementBoneData._frameList.length;
-				do {
-					_betweenDuration = _movementBoneData._frameList[_toIndex].duration;
-					_totalDuration += _betweenDuration;
-					var fromIndex:int = _toIndex;
-					if (++_toIndex >= length)
-					{
-						_toIndex = 0;
-					}
-				}while (played >= _totalDuration);
-				var isListEnd:Boolean = _loop == LIST && _toIndex == 0;
-				if(isListEnd)
-				{
-					to = from = _movementBoneData._frameList[fromIndex];
-				}
-				else
-				{
-					from = _movementBoneData._frameList[fromIndex];
-					to = _movementBoneData._frameList[_toIndex];
-				}
-				
-				_frameTweenEasing = from.tweenEasing;
-				if (activeFrame)
-				{
-					_currentKeyFrame = _nextKeyFrame;
-					if(!isListEnd)
-					{
-						_nextKeyFrame = to;
-						_isTweenKeyFrame = true;
-					}
-				}
-				setBetween(from, to);
-			}
-			currentPrecent = 1 - (_totalDuration - played) / _betweenDuration;
-			
-			//NaN: no tweens;  -1: ease out; 0: linear; 1: ease in; 2: ease in&out
-			var tweenEasing:Number;
-			if (!isNaN(_frameTweenEasing))
-			{
-				tweenEasing = isNaN(_tweenEasing)?_frameTweenEasing:_tweenEasing;
-				if (tweenEasing)
-				{
-					currentPrecent = getEaseValue(currentPrecent, tweenEasing);
-				}
-			}
-			if(currentPrecent < 0)
-			{
-				currentPrecent %= 1;
-				currentPrecent += 1;
-			}
-			return currentPrecent;
-		}
-		
-		private function getEaseValue(value:Number, easing:Number):Number
-		{
-			if (easing > 1)
-			{
-				value = 0.5 * (1 - Math.cos(value * Math.PI ));
-				easing -= 1;
-			}
-			else if (easing > 0)
-			{
-				value = Math.sin(value * HALF_PI);
+				getLoopListNode();
+				setOffset(_node, _colorTransform, _offSetNode, _offSetColorTransform);
 			}
 			else
 			{
-				value = 1 - Math.cos(value * HALF_PI);
-				easing = -easing;
+				nextFrameData = _movementBoneData._frameList[0];
+				setOffset(_node, _colorTransform, nextFrameData.node, nextFrameData.colorTransform);
 			}
-			return value * easing + (1 - easing);
+			
+			if(nextFrameData)
+			{
+				updateBoneDisplayIndex(nextFrameData);
+			}
+		}
+		
+		private function getLoopListNode():void
+		{
+			var playedTime:Number = _rawDuration * _movementBoneData.delay;
+			var length:int = _movementBoneData._frameList.length;
+			var nextFrameDataID:int = 0;
+			var nextFrameDataTimeEdge:Number = 0;
+			do 
+			{
+				var currentFrameDataID:int = nextFrameDataID;
+				var frameDuration:Number = _movementBoneData._frameList[currentFrameDataID].duration;
+				nextFrameDataTimeEdge += frameDuration;
+				if (++ nextFrameDataID >= length)
+				{
+					nextFrameDataID = 0;
+				}
+			}
+			while (playedTime >= nextFrameDataTimeEdge);
+			
+			var currentFrameData:FrameData = _movementBoneData._frameList[currentFrameDataID];
+			var nextFrameData:FrameData = _movementBoneData._frameList[nextFrameDataID];
+			
+			setOffset(currentFrameData.node, currentFrameData.colorTransform, nextFrameData.node, nextFrameData.colorTransform);
+		
+			var progress:Number = 1 - (nextFrameDataTimeEdge - playedTime) / frameDuration;
+			
+			var tweenEasing:Number = isNaN(_tweenEasing)?currentFrameData.tweenEasing:_tweenEasing;
+			if (tweenEasing)
+			{
+				progress = getEaseValue(progress, tweenEasing);
+			}
+			
+			TransformUtils.setOffSetNode(currentFrameData.node, nextFrameData.node, _offSetNode);
+			TransformUtils.setTweenNode(_currentNode, _offSetNode, _offSetNode, progress);
+			
+			TransformUtils.setOffSetColorTransform(currentFrameData.colorTransform, nextFrameData.colorTransform, _offSetColorTransform);
+			TransformUtils.setTweenColorTransform(_currentColorTransform, _offSetColorTransform, _offSetColorTransform, progress);
+
+		}
+		
+		/** @private */
+		internal function stop():void
+		{
+			_isPause = true;
+		}
+		
+		/** @private */
+		internal function advanceTime(progress:Number, playType:int):void
+		{
+			if(_isPause)
+			{
+				return;
+			}
+			
+			if(_rawDuration == 0)
+			{
+				playType = Animation.SINGLE;
+				if(progress == 0)
+				{
+					progress = 1;
+				}
+			}
+			
+			if(playType == Animation.LOOP)
+			{
+				progress /= _movementBoneData.scale;
+				progress += _movementBoneData.delay;
+				var loop:int = progress;
+				if(_loop != loop)
+				{
+					_nextFrameDataTimeEdge = 0;
+					_nextFrameDataID = 0;
+					_loop = loop;
+				}
+				progress -= loop;
+				progress = updateFrameData(progress, true);
+			}
+			else if (playType == Animation.LIST)
+			{
+				progress = updateFrameData(progress, true, true);
+			}
+			else if (playType == Animation.SINGLE && progress == 1)
+			{
+				_currentFrameData = _movementBoneData._frameList[0];
+				_isPause = true;
+			}
+			else
+			{
+				progress = Math.sin(progress * HALF_PI);
+			}
+			
+			
+			if (!isNaN(_frameTweenEasing) || _currentFrameData)
+			{
+				TransformUtils.setTweenNode(_currentNode, _offSetNode, _node, progress);
+				
+				if(_differentColorTransform)
+				{
+					TransformUtils.setTweenColorTransform(_currentColorTransform, _offSetColorTransform, _colorTransform, progress);
+				}
+			}
+			
+			if(_currentFrameData)
+			{
+				arriveFrameData(_currentFrameData);
+				_currentFrameData = null;
+			}
+		}
+		
+		private function setOffset(currentNode:Node, currentColorTransform:ColorTransform, nextNode:Node, nextColorTransform:ColorTransform, tweenRotate:int = 0):void
+		{
+			_currentNode.copy(currentNode);
+			TransformUtils.setOffSetNode(_currentNode, nextNode, _offSetNode, tweenRotate);
+			
+			_currentColorTransform.alphaOffset = currentColorTransform.alphaOffset;
+			_currentColorTransform.redOffset = currentColorTransform.redOffset;
+			_currentColorTransform.greenOffset = currentColorTransform.greenOffset;
+			_currentColorTransform.blueOffset = currentColorTransform.blueOffset;
+			_currentColorTransform.alphaMultiplier = currentColorTransform.alphaMultiplier;
+			_currentColorTransform.redMultiplier = currentColorTransform.redMultiplier;
+			_currentColorTransform.greenMultiplier = currentColorTransform.greenMultiplier;
+			_currentColorTransform.blueMultiplier = currentColorTransform.blueMultiplier;
+			
+			TransformUtils.setOffSetColorTransform(_currentColorTransform, nextColorTransform, _offSetColorTransform);
+			
+			if(
+				_offSetColorTransform.alphaOffset != 0 ||
+				_offSetColorTransform.redOffset != 0 ||
+				_offSetColorTransform.greenOffset != 0 ||
+				_offSetColorTransform.blueOffset != 0 ||
+				_offSetColorTransform.alphaMultiplier != 0 ||
+				_offSetColorTransform.redMultiplier != 0 ||
+				_offSetColorTransform.greenMultiplier != 0 ||
+				_offSetColorTransform.blueMultiplier != 0
+			)
+			{
+				_differentColorTransform = true;
+			}
+			else
+			{
+				_differentColorTransform = false;
+			}
+		}
+		
+		private function updateBoneDisplayIndex(frameData:FrameData):void
+		{
+			var displayIndex:int = frameData.displayIndex;
+			if(displayIndex >= 0)
+			{
+				if(_node.z != frameData.node.z)
+				{
+					_node.z = frameData.node.z;
+					if(_bone.armature)
+					{
+						_bone.armature._bonesIndexChanged = true;
+					}
+				}
+			}
+			_bone.changeDisplay(displayIndex);
+		}
+		
+		private function arriveFrameData(frameData:FrameData):void
+		{
+			updateBoneDisplayIndex(frameData);
+			_bone._visible = frameData.visible;
+			
+			if(frameData.event && _bone._armature.hasEventListener(FrameEvent.BONE_FRAME_EVENT))
+			{
+				var frameEvent:FrameEvent = new FrameEvent(FrameEvent.BONE_FRAME_EVENT, false, _bone);
+				frameEvent.movementID = _bone._armature.animation.movementID;
+				frameEvent.frameLabel = frameData.event;
+				_bone._armature.dispatchEvent(frameEvent);
+			}
+			if(frameData.sound && _soundManager.hasEventListener(SoundEvent.SOUND))
+			{
+				var soundEvent:SoundEvent = new SoundEvent(SoundEvent.SOUND);
+				soundEvent.movementID = _bone._armature.animation.movementID;
+				soundEvent.sound = frameData.sound;
+				soundEvent._armature = _bone._armature;
+				soundEvent._bone = _bone;
+				_soundManager.dispatchEvent(soundEvent);
+			}
+			if(frameData.movement)
+			{
+				var childArmature:Armature = _bone.childArmature;
+				if(childArmature)
+				{
+					childArmature.animation.gotoAndPlay(frameData.movement);
+				}
+			}
+		}
+		
+		private function updateFrameData(progress:Number, activeFrame:Boolean = false, isList:Boolean= false):Number
+		{
+			var playedTime:Number = _rawDuration * progress;
+			if (playedTime >= _nextFrameDataTimeEdge)
+			{
+				var length:int = _movementBoneData._frameList.length;
+				do 
+				{
+					var currentFrameDataID:int = _nextFrameDataID;
+					_frameDuration = _movementBoneData._frameList[currentFrameDataID].duration;
+					_nextFrameDataTimeEdge += _frameDuration;
+					if (++ _nextFrameDataID >= length)
+					{
+						_nextFrameDataID = 0;
+					}
+				}
+				while (playedTime >= _nextFrameDataTimeEdge);
+				
+				var currentFrameData:FrameData = _movementBoneData._frameList[currentFrameDataID];
+				var nextFrameData:FrameData = _movementBoneData._frameList[_nextFrameDataID];
+				
+				if(nextFrameData.displayIndex >= 0 && _bone.armature.animation.tweenEnabled)
+				{
+					_frameTweenEasing = currentFrameData.tweenEasing;
+				}
+				else
+				{
+					_frameTweenEasing = NaN;
+				}
+				
+				setOffset(currentFrameData.node, currentFrameData.colorTransform, nextFrameData.node, nextFrameData.colorTransform, nextFrameData.tweenRotate);
+				
+				if (activeFrame)
+				{
+					_currentFrameData = currentFrameData;
+				}
+				
+				if(isList && _nextFrameDataID == 0)
+				{
+					_isPause = true;
+					return 0;
+				}
+			}
+			
+			progress = 1 - (_nextFrameDataTimeEdge - playedTime) / _frameDuration;
+			
+			if (!isNaN(_frameTweenEasing))
+			{
+				var tweenEasing:Number = isNaN(_tweenEasing)?_frameTweenEasing:_tweenEasing;
+				if (tweenEasing)
+				{
+					progress = getEaseValue(progress, tweenEasing);
+				}
+			}
+			progress = getEaseValue(progress, _frameTweenEasing);
+			return progress;
 		}
 	}
 }

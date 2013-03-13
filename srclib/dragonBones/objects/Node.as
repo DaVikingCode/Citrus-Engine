@@ -6,34 +6,42 @@ package dragonBones.objects
 	 */
 	public class Node
 	{
-		
 		public var x:Number;
 		public var y:Number;
 		public var scaleX:Number;
 		public var scaleY:Number;
 		public var skewX:Number;
 		public var skewY:Number;
+		public var pivotX:Number;
+		public var pivotY:Number;
 		public var z:Number;
 		
 		public function get rotation():Number
 		{
-			return skewY;
+			return skewX;
 		}
 		public function set rotation(value:Number):void
 		{
 			skewX = skewY = value;
 		}
 		
-		public function Node(_x:Number = 0, _y:Number = 0, _skewX:Number = 0, _skewY:Number = 0, _scaleX:Number = 1, _scaleY:Number = 1)
+		public function Node()
 		{
-			x = _x || 0;
-			y = _y || 0;
-			skewX = _skewX || 0;
-			skewY = _skewY || 0;
-			scaleX = _scaleX;
-			scaleY = _scaleY;
+			setValues();
+		}
+		
+		public function setValues(x:Number = 0, y:Number = 0, skewX:Number = 0, skewY:Number = 0, scaleX:Number = 0, scaleY:Number = 0, pivotX:Number = 0, pivotY:Number = 0, z:int = 0):void
+		{
+			this.x = x || 0;
+			this.y = y || 0;
+			this.skewX = skewX || 0;
+			this.skewY = skewY || 0;
+			this.scaleX = scaleX || 0;
+			this.scaleY = scaleY || 0;
 			
-			z = 0;
+			this.pivotX = pivotX || 0;
+			this.pivotY = pivotY || 0;
+			this.z = z;
 		}
 		
 		public function copy(node:Node):void
@@ -44,13 +52,15 @@ package dragonBones.objects
 			scaleY = node.scaleY;
 			skewX = node.skewX;
 			skewY = node.skewY;
+			pivotX = node.pivotX;
+			pivotY = node.pivotY;
 			z = node.z;
 		}
 		
-		public function toString():String {
-			var _str:String = "";
-			_str += "x:" + x + " y:" + y + " skewX:" + skewX + " skewY:" + skewY + " scaleX:" + scaleX + " scaleY:" + scaleY;
-			return _str;
+		public function toString():String 
+		{
+			var string:String = "x:" + x + " y:" + y + " skewX:" + skewX + " skewY:" + skewY + " scaleX:" + scaleX + " scaleY:" + scaleY;
+			return string;
 		}
 	}
 }

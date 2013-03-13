@@ -1,108 +1,79 @@
-package dragonBones.objects {
+package dragonBones.objects 
+{
+	import dragonBones.utils.dragonBones_internal;
 	
-	import flash.utils.ByteArray;
+	use namespace dragonBones_internal;
 	
-
 	/**
-	 * A set of armature datas and animation datas
+	 * A set of armature data and animation data
 	 */
 	public class SkeletonData
 	{
-		private var _armatureDatas:Object;
-		private var _animationDatas:Object;
-		private var _armatureList:Vector.<String>;
-		private var _animationList:Vector.<String>;
+		dragonBones_internal var _armatureDataList:DataList;
+		dragonBones_internal var _animationDataList:DataList;
+		dragonBones_internal var _displayDataList:DataList;
 		
-		internal var _name:String;
+		dragonBones_internal var _name:String;
 		public function get name():String
 		{
 			return _name;
 		}
 		
-		public function get totalArmatures():uint
+		dragonBones_internal var _frameRate:uint;
+		public function get frameRate():uint
 		{
-			return _armatureList.length;
+			return _frameRate;
 		}
 		
-		public function get totalAnimation():uint
+		public function get armatureNames():Vector.<String>
 		{
-			return _animationList.length;
+			return _armatureDataList.dataNames.concat();
 		}
 		
-		public function get armatureList():Vector.<String>
+		public function get animationNames():Vector.<String>
 		{
-			return _armatureList.concat();
-		}
-		
-		public function get animationList():Vector.<String>
-		{
-			return _animationList.concat();
+			return _animationDataList.dataNames.concat();
 		}
 		
 		public function SkeletonData()
 		{
-			_armatureDatas = { };
-			_animationDatas = { };
-			_armatureList = new Vector.<String>;
-			_animationList = new Vector.<String>;
+			_armatureDataList = new DataList();
+			_animationDataList = new DataList();
+			_displayDataList = new DataList();
 		}
 		
 		public function dispose():void
 		{
-			for each(var armatureData:ArmatureData in _armatureDatas)
+			for each(var armatureName:String in _armatureDataList.dataNames)
 			{
+				var armatureData:ArmatureData = _armatureDataList.getData(armatureName) as ArmatureData;
 				armatureData.dispose();
 			}
-			for each(var animationData:AnimationData in _animationDatas)
+			
+			for each(var animationName:String in _animationDataList.dataNames)
 			{
+				var animationData:AnimationData = _animationDataList.getData(animationName) as AnimationData;
 				animationData.dispose();
 			}
-			_armatureDatas = null;
-			_animationDatas = null;
-			_armatureList = null;
-			_animationList = null;
+			
+			_armatureDataList.dispose();
+			_animationDataList.dispose();
+			_displayDataList.dispose();
 		}
 		
 		public function getArmatureData(name:String):ArmatureData
 		{
-			return _armatureDatas[name];
-		}
-		
-		public function getAramtureDataAt(index:int):ArmatureData
-		{
-			var name:String = _armatureList.length > index?_armatureList[index]:null;
-			return getArmatureData(name);
+			return _armatureDataList.getData(name) as ArmatureData;
 		}
 		
 		public function getAnimationData(name:String):AnimationData
 		{
-			return _animationDatas[name];
+			return _animationDataList.getData(name) as AnimationData;
 		}
 		
-		public function getAnimationDataAt(index:int):AnimationData
+		public function getDisplayData(name:String):DisplayData
 		{
-			var name:String = _animationList.length > index?_animationList[index]:null;
-			return getAnimationData(name);
-		}
-		
-		internal function addArmatureData(data:ArmatureData):void
-		{
-			var name:String = data.name;
-			_armatureDatas[name] = data;
-			if(_armatureList.indexOf(name) < 0)
-			{
-				_armatureList.push(name);
-			}
-		}
-		
-		internal function addAnimationData(data:AnimationData):void
-		{
-			var name:String = data.name;
-			_animationDatas[name] = data;
-			if(_animationList.indexOf(name) < 0)
-			{
-				_animationList.push(name);
-			}
+			return _displayDataList.getData(name) as DisplayData;
 		}
 	}
 }

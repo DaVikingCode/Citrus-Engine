@@ -1,12 +1,9 @@
 package dragonBones.utils {
 	
-	import flash.utils.ByteArray;
-	
 	/** @private */
 	final public class ConstValues {
-		public static const VERSION:String = "1.4";
-		
-		public static const ANGLE_TO_RADIAN:Number = Math.PI / 180;
+		public static const VERSION_14:String = "1.4";
+		public static const VERSION:String = "2.0";
 		
 		public static const SKELETON:String = "skeleton";
 
@@ -19,6 +16,7 @@ package dragonBones.utils {
 		public static const ANIMATION:String = "animation";
 		public static const MOVEMENT:String = "mov";
 		public static const FRAME:String = "f";
+		public static const COLOR_TRANSFORM:String = "colorTransform";
 
 		public static const TEXTURE_ATLAS:String = "TextureAtlas";
 		public static const SUB_TEXTURE:String = "SubTexture";
@@ -27,7 +25,6 @@ package dragonBones.utils {
 		public static const A_VERSION:String = "version";
 		public static const A_FRAME_RATE:String = "frameRate";
 		public static const A_NAME:String = "name";
-		public static const A_START:String = "st";
 		public static const A_DURATION:String = "dr";
 		public static const A_DURATION_TO:String = "to";
 		public static const A_DURATION_TWEEN:String = "drTW";
@@ -49,6 +46,7 @@ package dragonBones.utils {
 		public static const A_TWEEN_ROTATE:String ="twR";
 		public static const A_IS_ARMATURE:String = "isArmature";
 		public static const A_MOVEMENT:String = "mov";
+		public static const A_VISIBLE:String = "visible";
 
 		public static const A_X:String = "x";
 		public static const A_Y:String = "y";
@@ -56,6 +54,16 @@ package dragonBones.utils {
 		public static const A_HEIGHT:String = "height";
 		public static const A_PIVOT_X:String = "pX";
 		public static const A_PIVOT_Y:String = "pY";
+		
+		public static const A_ALPHA:String = "a";
+		public static const A_RED:String = "r";
+		public static const A_GREEN:String = "g";
+		public static const A_BLUE:String = "b";
+
+		public static const A_ALPHA_MULTIPLIER:String = "aM";
+		public static const A_RED_MULTIPLIER:String = "rM";
+		public static const A_GREEN_MULTIPLIER:String = "gM";
+		public static const A_BLUE_MULTIPLIER:String = "bM";
 
 		public static const V_SOUND_LEFT:String = "l";
 		public static const V_SOUND_RIGHT:String = "r";

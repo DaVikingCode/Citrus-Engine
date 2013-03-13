@@ -6,9 +6,9 @@ package citrus.view.starlingview {
 	import citrus.physics.APhysicsEngine;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ISpriteView;
-	import flash.geom.Point;
 
 	import dragonBones.Armature;
+	import dragonBones.animation.WorldClock;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -25,6 +25,7 @@ package citrus.view.starlingview {
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
@@ -146,7 +147,7 @@ package citrus.view.starlingview {
 				_content.dispose();
 				
 			} else if (_view is Armature) {
-				
+				WorldClock.clock.remove(_view);
 				(_view as Armature).dispose();
 				_content.dispose();
 				
@@ -266,6 +267,7 @@ package citrus.view.starlingview {
 					_content = (_view as Armature).display as Sprite;
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(_content);
+					WorldClock.clock.add(_view);
 					
 				} else 
 					throw new Error("StarlingArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
@@ -360,9 +362,6 @@ package citrus.view.starlingview {
 			view = _citrusObject.view;
 			animation = _citrusObject.animation;
 			group = _citrusObject.group;
-			
-			if (_view is Armature)
-				(_view as Armature).update();
 		}
 		
 		/**

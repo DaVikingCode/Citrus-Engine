@@ -3,8 +3,7 @@ package dragonBones.objects
 	/** @private */
 	public class MovementFrameData
 	{
-		public var start:int;
-		public var duration:int;
+		public var duration:Number;
 		public var movement:String;
 		public var event:String;
 		public var sound:String;
@@ -14,9 +13,8 @@ package dragonBones.objects
 		{
 		}
 		
-		public function setValues(start:int, duration:int, movement:String, event:String, sound:String):void
+		public function setValues(duration:Number, movement:String, event:String, sound:String):void
 		{
-			this.start = start;
 			this.duration = duration;
 			this.movement = movement;
 			this.event = event;

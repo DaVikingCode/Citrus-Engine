@@ -3,25 +3,28 @@ package dragonBones.factorys
 	import dragonBones.Armature;
 	import dragonBones.Bone;
 	import dragonBones.display.NativeDisplayBridge;
-	import dragonBones.display.PivotBitmap;
 	import dragonBones.objects.AnimationData;
 	import dragonBones.objects.ArmatureData;
 	import dragonBones.objects.BoneData;
+	import dragonBones.objects.DecompressedData;
 	import dragonBones.objects.DisplayData;
-	import dragonBones.objects.FrameData;
-	import dragonBones.objects.Node;
-	import dragonBones.objects.SkeletonAndTextureAtlasData;
 	import dragonBones.objects.SkeletonData;
-	import dragonBones.objects.SubTextureData;
-	import dragonBones.objects.TextureAtlasData;
 	import dragonBones.objects.XMLDataParser;
-	import dragonBones.utils.ConstValues;
+	import dragonBones.textures.ITextureAtlas;
+	import dragonBones.textures.NativeTextureAtlas;
+	import dragonBones.textures.SubTextureData;
+	import dragonBones.utils.BytesType;
 	import dragonBones.utils.dragonBones_internal;
-	import flash.events.EventDispatcher;
 	
+	import flash.display.Bitmap;
+	import flash.display.Loader;
 	import flash.display.MovieClip;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.geom.Matrix;
+	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
 	
 	use namespace dragonBones_internal;
@@ -35,80 +38,17 @@ package dragonBones.factorys
 	 */
 	public class BaseFactory extends EventDispatcher
 	{
-		/** @private */
-		public static function getTextureDisplay(textureAtlasData:TextureAtlasData, fullName:String):Object
-		{
-			var clip:MovieClip = textureAtlasData.clip;
-			if (clip)
-			{
-				clip.gotoAndStop(clip.totalFrames);
-				clip.gotoAndStop(fullName);
-				if (clip.numChildren > 0)
-				{
-					try
-					{
-						var displaySWF:Object = clip.getChildAt(0);
-						displaySWF.x = 0;
-						displaySWF.y = 0;
-						return displaySWF;
-					}
-					catch(e:Error)
-					{
-						trace("can not get the clip, please make sure the version of the resource compatible with app version！");
-					}
-				}
-			}
-			else if(textureAtlasData.bitmap)
-			{
-				var subTextureData:SubTextureData = textureAtlasData.getSubTextureData(fullName);
-				if (subTextureData)
-				{
-					var displayBitmap:PivotBitmap = new PivotBitmap(textureAtlasData.bitmap.bitmapData);
-					displayBitmap.smoothing = true;
-					displayBitmap.scrollRect = subTextureData;
-					displayBitmap.pivotX = subTextureData.pivotX;
-					displayBitmap.pivotY = subTextureData.pivotY;
-					return displayBitmap;
-				}
-			}
-			return null;
-		}
+		private static var _loaderContext:LoaderContext = new LoaderContext(false);
+		protected static var _helpMatirx:Matrix = new Matrix();
 		
-		protected var _skeletonData:SkeletonData;
+		protected var _skeletonDataDic:Object;
+		protected var _textureAtlasDic:Object;
+		protected var _textureAtlasLoadingDic:Object;
 		
-		/**
-		 * A set of armature datas and animation datas
-		 */
-		public function get skeletonData():SkeletonData
-		{
-			return _skeletonData;
-		}
-		public function set skeletonData(value:SkeletonData):void
-		{
-			_skeletonData = value;
-		}
-		
-		protected var _textureAtlasData:TextureAtlasData;
-		
-		/**
-		 * A set of texture datas
-		 */
-		public function get textureAtlasData():TextureAtlasData
-		{
-			return _textureAtlasData;
-		}
-		public function set textureAtlasData(value:TextureAtlasData):void
-		{
-			if(_textureAtlasData)
-			{
-				_textureAtlasData.removeEventListener(Event.COMPLETE, textureCompleteHandler);
-			}
-			_textureAtlasData = value;
-			if(_textureAtlasData)
-			{
-				_textureAtlasData.addEventListener(Event.COMPLETE, textureCompleteHandler);
-			}
-		}
+		protected var _currentSkeletonData:SkeletonData;
+		protected var _currentTextureAtlas:Object;
+		protected var _currentSkeletonName:String;
+		protected var _currentTextureAtlasName:String;
 		
 		/**
 		 * Creates a new <code>BaseFactory</code>
@@ -117,27 +57,109 @@ package dragonBones.factorys
 		public function BaseFactory()
 		{
 			super();
+			_skeletonDataDic = {};
+			_textureAtlasDic = {};
+			_textureAtlasLoadingDic = {};
+			
+			_loaderContext.allowCodeImport = true;
 		}
 		
 		/**
 		 * Pareses the raw data.
 		 * @param	bytes Represents the raw data for the whole skeleton system.
 		 */
-		public function parseData(bytes:ByteArray):void
+		public function parseData(bytes:ByteArray, skeletonName:String = null):SkeletonData
 		{
-			var sat:SkeletonAndTextureAtlasData = XMLDataParser.parseXMLData(bytes);
-			skeletonData = sat.skeletonData;
-			textureAtlasData = sat.textureAtlasData;
-			sat.dispose();
+			var decompressedData:DecompressedData = XMLDataParser.decompressData(bytes);
+			
+			var skeletonData:SkeletonData = XMLDataParser.parseSkeletonData(decompressedData.skeletonXML);
+			skeletonName = skeletonName || skeletonData.name;
+			addSkeletonData(skeletonData, skeletonName);
+			
+			var loader:Loader = new Loader();
+			loader.name = skeletonName;
+			_textureAtlasLoadingDic[skeletonName] = decompressedData.textureAtlasXML;
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loaderCompleteHandler);
+			loader.loadBytes(decompressedData.textureBytes, _loaderContext);
+			
+			decompressedData.dispose();
+			return skeletonData;
+		}
+		
+		public function getSkeletonData(name:String):SkeletonData
+		{
+			return _skeletonDataDic[name];
+		}
+		
+		public function addSkeletonData(skeletonData:SkeletonData, name:String = null):void
+		{
+			name = name || skeletonData.name;
+			if(!name)
+			{
+				throw new ArgumentError("Unnamed data!");
+			}
+			if(skeletonData)
+			{
+				_skeletonDataDic[name] = skeletonData;
+			}
+		}
+		
+		public function removeSkeletonData(name:String):void
+		{
+			delete _skeletonDataDic[name];
+		}
+		
+		public function getTextureAtlas(name:String):Object
+		{
+			return _textureAtlasDic[name];
+		}
+		
+		public function addTextureAtlas(textureAtlas:Object, name:String = null):void
+		{
+			if(!name && textureAtlas is ITextureAtlas)
+			{
+				name = textureAtlas.name;
+			}
+			
+			if(!name)
+			{
+				throw new ArgumentError("Unnamed data!");
+			}
+			if(textureAtlas)
+			{
+				_textureAtlasDic[name] = textureAtlas;
+			}
+		}
+		
+		public function removeTextureAtlas(name:String):void
+		{
+			delete _textureAtlasDic[name];
 		}
 		
 		/**
 		 * Cleans up any resources used by the current object.
 		 */
-		public function dispose():void
+		public function dispose(disposeData:Boolean = true):void
 		{
-			skeletonData = null;
-			textureAtlasData = null;
+			if(disposeData)
+			{
+				for each(var skeletonData:SkeletonData in _skeletonDataDic)
+				{
+					skeletonData.dispose();
+				}
+				for each(var textureAtlas:Object in _textureAtlasDic)
+				{
+					textureAtlas.dispose();
+				}
+			}
+			_skeletonDataDic = {};
+			_textureAtlasDic = {};
+			_textureAtlasLoadingDic = {};
+			
+			_currentSkeletonData = null;
+			_currentTextureAtlas = null;
+			_currentSkeletonName = null;
+			_currentTextureAtlasName = null;
 		}
 		
 		/**
@@ -145,32 +167,189 @@ package dragonBones.factorys
 		 * @param	armatureName
 		 * @return
 		 */
-		public function buildArmature(armatureName:String):Armature
+		public function buildArmature(armatureName:String, animationName:String = null, skeletonName:String = null, textureAtlasName:String = null):Armature
 		{
-			var armatureData:ArmatureData = skeletonData.getArmatureData(armatureName);
+			animationName = animationName || armatureName;
+			
+			var skeletonData:SkeletonData;
+			var armatureData:ArmatureData;
+			if(skeletonName)
+			{
+				skeletonData = _skeletonDataDic[skeletonName];
+				if(skeletonData)
+				{
+					armatureData = skeletonData.getArmatureData(armatureName);
+				}
+			}
+			else
+			{
+				for (skeletonName in _skeletonDataDic)
+				{
+					skeletonData = _skeletonDataDic[skeletonName];
+					armatureData = skeletonData.getArmatureData(armatureName);
+					if(armatureData)
+					{
+						break;
+					}
+				}
+			}
 			if(!armatureData)
 			{
 				return null;
 			}
-			var animationData:AnimationData = skeletonData.getAnimationData(armatureName);
-			var armature:Armature = generateArmature();
-			armature.name = armatureName;
-			if (armature)
+			_currentSkeletonName = skeletonName;
+			_currentSkeletonData = skeletonData;
+
+			_currentTextureAtlasName = textureAtlasName || skeletonName;
+			_currentTextureAtlas = _textureAtlasDic[_currentTextureAtlasName];
+			
+			var animationData:AnimationData = _currentSkeletonData.getAnimationData(animationName);
+			
+			if(!animationData)
 			{
-				armature.animation.setData(animationData);
-				var boneList:Array = armatureData.boneList;
-				for each(var boneName:String in boneList)
+				for (skeletonName in _skeletonDataDic)
 				{
-					var boneData:BoneData = armatureData.getBoneData(boneName);
-					var bone:Bone = buildBone(boneData);
-					if(bone)
+					skeletonData = _skeletonDataDic[skeletonName];
+					animationData = skeletonData.getAnimationData(animationName);
+					if(animationData)
 					{
-						armature.addBone(bone, boneData.parent);
+						break;
 					}
 				}
 			}
+			
+			var armature:Armature = generateArmature();
+			armature.name = armatureName;
+			armature.animation.animationData = animationData;
+			var boneNames:Vector.<String> = armatureData.boneNames;
+			for each(var boneName:String in boneNames)
+			{
+				var boneData:BoneData = armatureData.getBoneData(boneName);
+				if(boneData)
+				{
+					var bone:Bone = buildBone(boneData);
+					bone.name = boneName;
+					armature.addBone(bone, boneData.parent);
+				}
+			}
+			armature._bonesIndexChanged = true;
 			armature.update();
 			return armature;
+		}
+		
+		public function getTextureDisplay(textureName:String, textureAtlasName:String = null, pivotX:Number = NaN, pivotY:Number = NaN):Object
+		{
+			var textureAtlas:Object;
+			if(textureAtlasName)
+			{
+				textureAtlas = _textureAtlasDic[textureAtlasName];
+			}
+			else
+			{
+				for (textureAtlasName in _textureAtlasDic)
+				{
+					textureAtlas = _textureAtlasDic[textureAtlasName];
+					if(textureAtlas.getRegion(textureName))
+					{
+						break;
+					}
+					textureAtlas = null;
+				}
+			}
+			if(textureAtlas)
+			{
+				if(isNaN(pivotX) || isNaN(pivotY))
+				{
+					var skeletonData:SkeletonData = _skeletonDataDic[textureAtlasName];
+					if(skeletonData)
+					{
+						var displayData:DisplayData = skeletonData.getDisplayData(textureName);
+						if(displayData)
+						{
+							pivotX = pivotX || displayData.pivotX;
+							pivotY = pivotY || displayData.pivotY;
+						}
+					}
+				}
+				
+				return generateTextureDisplay(textureAtlas, textureName, pivotX, pivotY);
+			}
+			return null;
+		}
+		
+		protected function buildBone(boneData:BoneData):Bone
+		{
+			var bone:Bone = generateBone();
+			bone.origin.copy(boneData.node);
+			
+			var displayData:DisplayData;
+			for(var i:int = boneData._displayNames.length - 1;i >= 0;i --)
+			{
+				var displayName:String = boneData._displayNames[i];
+				displayData = _currentSkeletonData.getDisplayData(displayName);
+				bone.changeDisplay(i);
+				if (displayData.isArmature)
+				{
+					var childArmature:Armature = buildArmature(displayName, null, _currentSkeletonName, _currentTextureAtlasName);
+					if(childArmature)
+					{
+						childArmature.animation.play();
+						bone.display = childArmature;
+					}
+				}
+				else
+				{
+					bone.display = generateTextureDisplay(_currentTextureAtlas, displayName, displayData.pivotX, displayData.pivotY);
+				}
+			}
+			return bone;
+		}
+		
+		protected function loaderCompleteHandler(e:Event):void
+		{
+			e.target.removeEventListener(Event.COMPLETE, loaderCompleteHandler);
+			var loader:Loader = e.target.loader;
+			var content:Object = e.target.content;
+			loader.unloadAndStop();
+			
+			var skeletonName:String = loader.name;
+			var textureAtlasXML:XML = _textureAtlasLoadingDic[skeletonName];
+			delete _textureAtlasLoadingDic[skeletonName];
+			if(skeletonName && textureAtlasXML)
+			{
+				if (content is Bitmap)
+				{
+					content =  (content as Bitmap).bitmapData;
+				}
+				else if (content is Sprite)
+				{
+					content = (content as Sprite).getChildAt(0) as MovieClip;
+				}
+				else
+				{
+					//
+				}
+				
+				var textureAtlas:Object = generateTextureAtlas(content, textureAtlasXML);
+				addTextureAtlas(textureAtlas, skeletonName);
+				
+				skeletonName = null;
+				for(skeletonName in _textureAtlasLoadingDic)
+				{
+					break;
+				}
+				//
+				if(!skeletonName && hasEventListener(Event.COMPLETE))
+				{
+					dispatchEvent(new Event(Event.COMPLETE));
+				}
+			}
+		}
+		
+		protected function generateTextureAtlas(content:Object, textureAtlasXML:XML):Object
+		{
+			var textureAtlas:NativeTextureAtlas = new NativeTextureAtlas(content, textureAtlasXML);
+			return textureAtlas;
 		}
 		
 		protected function generateArmature():Armature
@@ -180,46 +359,60 @@ package dragonBones.factorys
 			return armature;
 		}
 		
-		protected function buildBone(boneData:BoneData):Bone
-		{
-			var bone:Bone = generateBone();
-			bone.origin.copy(boneData);
-			bone.name = boneData.name;
-			
-			var length:uint = boneData.displayLength;
-			var displayData:DisplayData;
-			for(var i:int = length - 1;i >=0;i --)
-			{
-				displayData = boneData.getDisplayDataAt(i);
-				bone.changeDisplay(i);
-				if (displayData.isArmature)
-				{
-					var childArmature:Armature = buildArmature(displayData.name);
-					childArmature.animation.play();
-					bone.display = childArmature;
-				}
-				else
-				{
-					bone.display = getBoneTextureDisplay(displayData.name);
-				}
-			}
-			return bone;
-		}
-		
-		protected function getBoneTextureDisplay(textureName:String):Object
-		{
-			return getTextureDisplay(_textureAtlasData, textureName);
-		}
-		
 		protected function generateBone():Bone
 		{
 			var bone:Bone = new Bone(new NativeDisplayBridge());
 			return bone;
 		}
 		
-		private function textureCompleteHandler(e:Event):void
+		protected function generateTextureDisplay(textureAtlas:Object, fullName:String, pivotX:int, pivotY:int):Object
 		{
-			dispatchEvent(e);
+			var nativeTextureAtlas:NativeTextureAtlas = textureAtlas as NativeTextureAtlas;
+			if(nativeTextureAtlas){
+				var movieClip:MovieClip = nativeTextureAtlas.movieClip;
+				if (movieClip && movieClip.totalFrames >= 3)
+				{
+					movieClip.gotoAndStop(movieClip.totalFrames);
+					movieClip.gotoAndStop(fullName);
+					if (movieClip.numChildren > 0)
+					{
+						try
+						{
+							var displaySWF:Object = movieClip.getChildAt(0);
+							displaySWF.x = 0;
+							displaySWF.y = 0;
+							return displaySWF;
+						}
+						catch(e:Error)
+						{
+							throw "Can not get the movie clip, please make sure the version of the resource compatible with app version!";
+						}
+					}
+				}
+				else if(nativeTextureAtlas.bitmapData)
+				{
+					var subTextureData:SubTextureData = nativeTextureAtlas.getRegion(fullName) as SubTextureData;
+					if (subTextureData)
+					{
+						var displayShape:Shape = new Shape();
+						//1.4
+						pivotX = pivotX || subTextureData.pivotX;
+						pivotY = pivotY || subTextureData.pivotY;
+						_helpMatirx.a = 1;
+						_helpMatirx.b = 0;
+						_helpMatirx.c = 0;
+						_helpMatirx.d = 1;
+						_helpMatirx.scale(nativeTextureAtlas.scale, nativeTextureAtlas.scale);
+						_helpMatirx.tx = -subTextureData.x - pivotX;
+						_helpMatirx.ty = -subTextureData.y - pivotY;
+						
+						displayShape.graphics.beginBitmapFill(nativeTextureAtlas.bitmapData, _helpMatirx, false, true);
+						displayShape.graphics.drawRect(-pivotX, -pivotY, subTextureData.width, subTextureData.height);
+						return displayShape;
+					}
+				}
+			}
+			return null;
 		}
 	}
 }

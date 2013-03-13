@@ -7,59 +7,40 @@ package dragonBones.objects
 	/** @private */
 	public class MovementData
 	{
-		private var _movementBoneDatas:Object;
+		dragonBones_internal var _movementBoneDataList:DataList;
 		dragonBones_internal var _movementFrameList:Vector.<MovementFrameData>;
 		
-		internal var _name:String;
-		public function get name():String
-		{
-			return _name;
-		}
-		
-		public var duration:int;
-		public var durationTo:int;
-		public var durationTween:int;
+		public var duration:Number;
+		public var durationTo:Number;
+		public var durationTween:Number;
 		public var loop:Boolean;
 		public var tweenEasing:Number;
 		
 		public function MovementData()
 		{
-			duration = 1;
+			duration = 0;
 			durationTo = 0;
 			durationTween = 0;
-			_movementBoneDatas = { };
+			
+			_movementBoneDataList = new DataList();
 			_movementFrameList = new Vector.<MovementFrameData>;
-		}
-		
-		public function setValues(_duration:int = 1, _durationTo:int = 0, _durationTween:int = 0, _loop:Boolean = false, _tweenEasing:Number = NaN):void
-		{
-			duration = _duration > 0?_duration:1;
-			durationTo = _durationTo >= 0?_durationTo:0;
-			durationTween = _durationTween >= 0?_durationTween:0;
-			loop = _loop;
-			//the default NaN means no tween
-			tweenEasing = _tweenEasing;
 		}
 		
 		public function dispose():void
 		{
-			for each(var movementBoneData:MovementBoneData in _movementBoneDatas)
+			for each(var movementBoneName:String in _movementBoneDataList.dataNames)
 			{
+				var movementBoneData:MovementBoneData = _movementBoneDataList.getData(movementBoneName) as MovementBoneData;
 				movementBoneData.dispose();
 			}
-			movementBoneData = null;
-			_movementFrameList = null;
+			
+			_movementBoneDataList.dispose();
+			_movementFrameList.length = 0;
 		}
 		
 		public function getMovementBoneData(name:String):MovementBoneData
 		{
-			return _movementBoneDatas[name];
-		}
-		
-		internal function addMovementBoneData(data:MovementBoneData):void
-		{
-			var name:String = data.name;
-			_movementBoneDatas[name] = data;
+			return _movementBoneDataList.getData(name) as MovementBoneData;
 		}
 	}
 	

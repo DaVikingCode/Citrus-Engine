@@ -3,7 +3,7 @@ package dragonBones.events
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	
-	[Event(name="soundFrame", type="dragonBones.events.SoundEvent")]
+	[Event(name="sound", type="dragonBones.events.SoundEvent")]
 	
 	/**
 	 * A manager object control the sound event.

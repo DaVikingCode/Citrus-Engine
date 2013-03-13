@@ -1,13 +1,14 @@
-package dragonBones
+﻿package dragonBones
 {
 	import dragonBones.animation.Tween;
 	import dragonBones.display.IDisplayBridge;
-	import dragonBones.objects.BoneData;
 	import dragonBones.objects.Node;
 	import dragonBones.utils.dragonBones_internal;
-	import flash.events.EventDispatcher;
 	
+	import flash.events.EventDispatcher;
+	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
+	import flash.geom.Point;
 	
 	use namespace dragonBones_internal;
 	
@@ -18,6 +19,7 @@ package dragonBones
 	 */
 	public class Bone extends EventDispatcher
 	{
+		private static var _helpPoint:Point = new Point();
 		/**
 		 * The name of the Armature.
 		 */
@@ -27,38 +29,31 @@ package dragonBones
 		 */
 		public var userData:Object;
 		
-		/**
-		 * The transform information relative to the armature's coordinates.
-		 */
 		public var global:Node;
-		
-		/**
-		 * The transform information relative to the local coordinates.
-		 */
+		public var origin:Node;
 		public var node:Node;
 		
 		/** @private */
-		dragonBones_internal var origin:BoneData;
-		/** @private */
 		dragonBones_internal var _tween:Tween;
+		/** @private */
+		dragonBones_internal var _tweenNode:Node;
+		/** @private */
+		dragonBones_internal var _tweenColorTransform:ColorTransform;
 		/** @private */
 		dragonBones_internal var _children:Vector.<Bone>;
 		/** @private */
 		dragonBones_internal var _displayBridge:IDisplayBridge;
-		
-		private var _globalTransformMatrix:Matrix = new Matrix;
-		private var _transformMatrixForChildren:Matrix = new Matrix;
-		
-		private var _displayList:Array;
-		private var _displayIndex:int;
-		
 		/** @private */
-		dragonBones_internal var _displayVisible:Boolean;
+		dragonBones_internal var _isOnStage:Boolean;
+		/** @private */
+		dragonBones_internal var _visible:Boolean;
 		/** @private */
 		dragonBones_internal var _armature:Armature;
 		
-		/** @private */
-		protected var _parent:Bone;
+		private var _globalTransformMatrix:Matrix;
+		private var _displayList:Array;
+		private var _displayIndex:int;
+		private var _parent:Bone;
 		
 		/**
 		 * The armature holding this bone.
@@ -75,8 +70,6 @@ package dragonBones
 		{
 			return _displayList[_displayIndex] as Armature;
 		}
-		
-		
 		
 		/**
 		 * Indicates the bone that contains this bone.
@@ -113,29 +106,34 @@ package dragonBones
 		{
 			if(displayIndex < 0)
 			{
-				if(_displayVisible)
+				if(_isOnStage)
 				{
-					_displayVisible = false;
-					//hide
+					_isOnStage = false;
+					//removeFromStage
 					_displayBridge.removeDisplay();
 				}
 			}
 			else
 			{
-				if(!_displayVisible)
+				if(!_isOnStage)
 				{
-					_displayVisible = true;
-					//show
+					_isOnStage = true;
+					//addToStage
 					if(_armature)
 					{
 						_displayBridge.addDisplay(_armature.display, global.z);
 						_armature._bonesIndexChanged = true;
 					}
 				}
-				
 				if(_displayIndex != displayIndex)
 				{
+					var length:uint = _displayList.length;
+					if(displayIndex >= length && length > 0)
+					{
+						displayIndex = length - 1;
+					}
 					_displayIndex = displayIndex;
+					
 					//change
 					display = _displayList[_displayIndex];
 				}
@@ -148,20 +146,37 @@ package dragonBones
 		 */
 		public function Bone(displayBrideg:IDisplayBridge)
 		{
-			_displayBridge = displayBrideg;
+			origin = new Node();
+			global = new Node();
+			node = new Node();
 			
-			_tween = new Tween(this);
+			_displayBridge = displayBrideg;
 			
 			_children = new Vector.<Bone>;
 			
+			_globalTransformMatrix = new Matrix();
 			_displayList = [];
 			_displayIndex = -1;
+			_visible = true;
 			
-			origin = new BoneData();
-			global = new Node();
-			node = new Node();
-			node.scaleX = 0;
-			node.scaleY = 0;
+			_tweenNode = new Node();
+			_tweenColorTransform = new ColorTransform();
+			
+			_tween = new Tween(this);
+		}
+		
+		public function changeDisplayList(displayList:Array):void
+		{
+			var indexBackup:int = _displayIndex;
+			
+			var length:uint = Math.min(_displayList.length, displayList.length);
+			for(var i:int = 0;i < length;i ++)
+			{
+				changeDisplay(i);
+				display = displayList[i];
+			}
+			
+			changeDisplay(indexBackup);
 		}
 		
 		/**
@@ -174,92 +189,36 @@ package dragonBones
 				_child.dispose();
 			}
 			
-			setParent(null);
-			_tween.dispose();
-			
-			userData = null;
-			origin = null;
-			global = null;
-			node = null;
-			
-			_globalTransformMatrix = null;
-			_transformMatrixForChildren = null;
-			
-			//_displayBridge = null;
-			_displayList = null;
-			
-			_tween = null;
-			_children = null;
+			_displayList.length = 0;
+			_children.length = 0;
+			//_displayBridge.display = null;
 			
 			_armature = null;
 			_parent = null;
+			
+			//_tween.dispose();
+			//_tween = null;
+			
+			userData = null;
 		}
 		
-		/**
-		 * Updates the state of the bone.
-		 */
-		public function update():void
+		public function contains(bone:Bone, deepLevel:Boolean = false):Boolean
 		{
-			_tween.update();
-			
-			//trace(_tween._node);
-			global.x = origin.x + node.x + _tween._node.x;
-			global.y = origin.y + node.y + _tween._node.y;
-			global.skewX = origin.skewX + node.skewX + _tween._node.skewX;
-			global.skewY = origin.skewY + node.skewY + _tween._node.skewY;
-			global.scaleX = node.scaleX + _tween._node.scaleX;
-			global.scaleY = node.scaleX + _tween._node.scaleY;
-			//origin.scaleX + node.scaleX + tweenNode.scaleX;
-			//origin.scaleY + node.scaleY + tweenNode.scaleY;
-			
-			//Note: this formula of transform is defined by Flash pro
-			var cosX:Number = Math.cos(global.skewX);
-			var sinX:Number = Math.sin(global.skewX);
-			var cosY:Number = Math.cos(global.skewY);
-			var sinY:Number = Math.sin(global.skewY);
-			
-			var currentDisplay:Object = _displayBridge.display;
-			if (_children.length > 0 || (_displayVisible && currentDisplay))
+			if(deepLevel)
 			{
-				_globalTransformMatrix.a = global.scaleX * cosY;
-				_globalTransformMatrix.b = global.scaleX * sinY;
-				_globalTransformMatrix.c = -global.scaleY * sinX;
-				_globalTransformMatrix.d = global.scaleY * cosX;
-				_globalTransformMatrix.tx = global.x;
-				_globalTransformMatrix.ty = global.y;
-				if(_parent)
+				var ancestor:Bone = this;
+				while (ancestor != bone && ancestor != null)
 				{
-					_globalTransformMatrix.concat(_parent._transformMatrixForChildren);
+					ancestor = ancestor.parent;
 				}
-				if(_displayVisible && currentDisplay)
+				if (ancestor == bone)
 				{
-					_displayBridge.update(_globalTransformMatrix);
-					var childArmature:Armature = this.childArmature;
-					if(childArmature)
-					{
-						childArmature.update();
-					}
+					return true;
 				}
+				return false;
 			}
 			
-			if (_children.length > 0)
-			{
-				//no scale transform for children
-				_transformMatrixForChildren.a = cosY;
-				_transformMatrixForChildren.b = sinY;
-				_transformMatrixForChildren.c = -sinX;
-				_transformMatrixForChildren.d = cosX;
-				_transformMatrixForChildren.tx = global.x;
-				_transformMatrixForChildren.ty = global.y;
-				if (_parent)
-				{
-					_transformMatrixForChildren.concat(_parent._transformMatrixForChildren);
-				}
-				for each(var child:Bone in _children)
-				{
-					child.update();
-				}
-			}
+			return bone.parent == this;
 		}
 		
 		/** @private */
@@ -293,6 +252,7 @@ package dragonBones
 				_children.splice(index, 1);
 			}
 		}
+		
 		/** @private */
 		public function removeFromParent():void
 		{
@@ -302,21 +262,90 @@ package dragonBones
 			}
 		}
 		
+		/** @private */
+		dragonBones_internal function update():void
+		{
+			//update node and matirx
+			if (_children.length > 0 || _isOnStage)
+			{
+				//update global
+				global.x = origin.x + node.x + _tweenNode.x;
+				global.y = origin.y + node.y + _tweenNode.y;
+				global.skewX = origin.skewX + node.skewX + _tweenNode.skewX;
+				global.skewY = origin.skewY + node.skewY + _tweenNode.skewY;
+				global.scaleX = origin.scaleX + node.scaleX + _tweenNode.scaleX;
+				global.scaleY = origin.scaleY + node.scaleY + _tweenNode.scaleY;
+				global.pivotX = origin.pivotX + node.pivotX + _tweenNode.pivotX;
+				global.pivotY = origin.pivotY + node.pivotY + _tweenNode.pivotY;
+				global.z = origin.z + node.z + _tweenNode.z;
+				//transform
+				if(_parent)
+				{
+					_helpPoint.x = global.x;
+					_helpPoint.y = global.y;
+					_helpPoint = _parent._globalTransformMatrix.transformPoint(_helpPoint);
+					global.x = _helpPoint.x
+					global.y = _helpPoint.y;
+					global.skewX += _parent.global.skewX;
+					global.skewY += _parent.global.skewY;
+				}
+				
+				//Note: this formula of transform is defined by Flash pro
+				_globalTransformMatrix.a = global.scaleX * Math.cos(global.skewY);
+				_globalTransformMatrix.b = global.scaleX * Math.sin(global.skewY);
+				_globalTransformMatrix.c = -global.scaleY * Math.sin(global.skewX);
+				_globalTransformMatrix.d = global.scaleY * Math.cos(global.skewX);
+				_globalTransformMatrix.tx = global.x;
+				_globalTransformMatrix.ty = global.y;
+				
+				//update children
+				if (_children.length > 0)
+				{
+					for each(var child:Bone in _children)
+					{
+						child.update();
+					}
+				}
+				
+				var childArmature:Armature = this.childArmature;
+				if(childArmature)
+				{
+					childArmature.update();
+				}
+				
+				var currentDisplay:Object = _displayBridge.display;
+				//update display
+				if(_isOnStage && currentDisplay)
+				{
+					//colorTransform
+					var colorTransform:ColorTransform;
+					
+					if(_tween._differentColorTransform)
+					{
+						if(_armature.colorTransform)
+						{
+							_tweenColorTransform.concat(_armature.colorTransform);
+						}
+						colorTransform = _tweenColorTransform;
+					}
+					else if(_armature._colorTransformChange)
+					{
+						colorTransform = _armature.colorTransform;
+						_armature._colorTransformChange = false;
+					}
+					
+					_displayBridge.update(_globalTransformMatrix, global, colorTransform, _visible);
+				}
+			}
+		}
+		
 		private function setParent(parent:Bone):void
 		{
-			var ancestor:Bone = parent;
-			while (ancestor != this && ancestor != null)
-			{
-				ancestor = ancestor.parent;
-			}
-			if (ancestor == this)
+			if (parent && parent.contains(this, true))
 			{
 				throw new ArgumentError("An Bone cannot be added as a child to itself or one of its children (or children's children, etc.)");
 			}
-			else
-			{
-				_parent = parent;
-			}
+			_parent = parent;
 		}
 	}
 }

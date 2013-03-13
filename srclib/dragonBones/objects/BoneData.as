@@ -1,53 +1,31 @@
 package dragonBones.objects
 {
+	import dragonBones.utils.dragonBones_internal;
+	
+	use namespace dragonBones_internal;
 	
 	/** @private */
-	final public class BoneData extends Node
+	final public class BoneData
 	{
-		internal var _displayList:Vector.<DisplayData>;
+		dragonBones_internal var _displayNames:Vector.<String>;
 		
-		internal var _name:String;
-		public function get name():String
-		{
-			return _name;
-		}
-		
-		internal var _parent:String;
+		dragonBones_internal var _parent:String;
 		public function get parent():String
 		{
 			return _parent;
 		}
 		
-		public function get displayLength():uint
-		{
-			return _displayList.length;
-		}
+		public var node:Node;
 		
 		public function BoneData()
 		{
-			super();
-			_displayList = new Vector.<DisplayData>;
+			_displayNames = new Vector.<String>;
+			node = new Node();
 		}
 		
 		public function dispose():void
 		{
-			_displayList = null;
-		}
-		
-		override public function copy(node:Node):void
-		{
-			super.copy(node);
-			var boneData:BoneData = node as BoneData;
-			if(boneData)
-			{
-				_name = boneData.name;
-				_parent = boneData.parent;
-			}
-		}
-		
-		public function getDisplayDataAt(index:int):DisplayData
-		{
-			return _displayList.length > index?_displayList[index]:null;
+			_displayNames.length = 0;
 		}
 	}
 }

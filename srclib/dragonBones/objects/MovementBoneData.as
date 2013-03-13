@@ -7,19 +7,9 @@ package dragonBones.objects
 	/** @private */
 	public class MovementBoneData
 	{
+		dragonBones_internal static const HIDE_DATA:MovementBoneData = new MovementBoneData();
+		
 		dragonBones_internal var _frameList:Vector.<FrameData>;
-		
-		internal var _duration:int;
-		public function get duration():int
-		{
-			return _duration;
-		}
-		
-		internal var _name:String;
-		public function get name():String
-		{
-			return _name;
-		}
 		
 		public var scale:Number;
 		public var delay:Number;
@@ -34,19 +24,19 @@ package dragonBones.objects
 		
 		public function dispose():void
 		{
-			_frameList = null;
+			_frameList.length = 0;
 		}
 		
-		public function setValues(_scale:Number = 1, _delay:Number = 0):void
+		public function setValues(scale:Number = 1, delay:Number = 0):void
 		{
-			scale = _scale > 0?_scale:1;
-			delay = (_delay || 0) % 1;
-			if (delay > 0)
+			this.scale = scale > 0?scale:1;
+			this.delay = (delay || 0) % 1;
+			if (this.delay > 0)
 			{
-				delay -= 1;
+				this.delay -= 1;
 			}
+			this.delay *= -1;
 		}
-		
 	}
 	
 }

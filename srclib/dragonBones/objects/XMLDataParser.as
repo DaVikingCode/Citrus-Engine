@@ -1,27 +1,34 @@
 package dragonBones.objects
 {
+	import dragonBones.animation.Tween;
+	import dragonBones.animation.WorldClock;
 	import dragonBones.errors.UnknownDataError;
-	import dragonBones.utils.ConstValues;
-	import dragonBones.utils.TransfromUtils;
-	import dragonBones.utils.dragonBones_internal;
 	import dragonBones.utils.BytesType;
+	import dragonBones.utils.ConstValues;
+	import dragonBones.utils.TransformUtils;
+	import dragonBones.utils.dragonBones_internal;
 	
+	import flash.geom.ColorTransform;
 	import flash.utils.ByteArray;
-	import flash.display.Loader;
-	import flash.events.Event;
-	import flash.system.LoaderContext;
 	
 	use namespace dragonBones_internal;
 	
-	/** @private */
 	public class XMLDataParser
 	{
-		private static var helpNode:Node = new Node();
+		private static const ANGLE_TO_RADIAN:Number = Math.PI / 180;
+		private static const HALF_PI:Number = Math.PI * 0.5;
+		
+		private static var _currentSkeletonData:SkeletonData;
+		private static var _helpNode:Node = new Node();
+		private static var _helpFrameData:FrameData = new FrameData();
 		
 		private static function checkSkeletonXMLVersion(skeletonXML:XML):void
 		{
 			var version:String = skeletonXML.attribute(ConstValues.A_VERSION);
-			switch(version){
+			switch(version)
+			{
+				case ConstValues.VERSION_14:
+					break;
 				case ConstValues.VERSION:
 					break;
 				default:
@@ -29,14 +36,15 @@ package dragonBones.objects
 			}
 		}
 		
-		private static function getElementByAttribute(xmlList:XMLList, attribute:String, value:String):XMLList
+		/** @private */
+		public static function getElementsByAttribute(xmlList:XMLList, attribute:String, value:String):XMLList
 		{
 			var result:XMLList = new XMLList();
 			var length:uint = xmlList.length();
 			for (var i:int = 0; i < length; i++ )
 			{
 				var xml:XML = xmlList[i];
-				if (xml["@" + attribute].toString() == value)
+				if (xml.@[attribute].toString() == value)
 				{
 					result[result.length()] = xmlList[i];
 				}
@@ -44,7 +52,8 @@ package dragonBones.objects
 			return result;
 		}
 		
-		public static function compressionData(skeletonXML:XML, textureAtlasXML:XML, byteArray:ByteArray):ByteArray {
+		public static function compressData(skeletonXML:XML, textureAtlasXML:XML, byteArray:ByteArray):ByteArray 
+		{
 			var byteArrayCopy:ByteArray = new ByteArray();
 			byteArrayCopy.writeBytes(byteArray);
 			
@@ -67,7 +76,7 @@ package dragonBones.objects
 			return byteArrayCopy;
 		}
 		
-		public static function parseXMLData(compressedByteArray:ByteArray):SkeletonAndTextureAtlasData
+		public static function decompressData(compressedByteArray:ByteArray):DecompressedData
 		{
 			var dataType:String = BytesType.getType(compressedByteArray);
 			switch(dataType)
@@ -75,7 +84,8 @@ package dragonBones.objects
 				case BytesType.SWF:
 				case BytesType.PNG:
 				case BytesType.JPG:
-					try {
+					try 
+					{
 						compressedByteArray.position = compressedByteArray.length - 4;
 						var strSize:int = compressedByteArray.readInt();
 						var position:uint = compressedByteArray.length - 4 - strSize;
@@ -99,13 +109,17 @@ package dragonBones.objects
 					}
 					catch (e:Error)
 					{
-						throw new Error("Uncompression error!");
+						throw new Error("Decompress error!");
 					}
 					
-					var sat:SkeletonAndTextureAtlasData = new SkeletonAndTextureAtlasData(skeletonXML, textureAtlasXML, compressedByteArray);
-					return sat;
+					var decompressedData:DecompressedData = new DecompressedData(
+						skeletonXML, 
+						textureAtlasXML, 
+						compressedByteArray
+					);
+					return decompressedData;
 				case BytesType.ZIP:
-					throw new Error("Can not uncompression zip!");
+					throw new Error("Can not decompress zip!");
 				default:
 					throw new UnknownDataError();
 			}
@@ -118,308 +132,379 @@ package dragonBones.objects
 			
 			var skeletonData:SkeletonData = new SkeletonData();
 			skeletonData._name = skeletonXML.attribute(ConstValues.A_NAME);
+			skeletonData._frameRate = int(skeletonXML.attribute(ConstValues.A_FRAME_RATE));
+			_currentSkeletonData = skeletonData;
 			
 			for each(var armatureXML:XML in skeletonXML.elements(ConstValues.ARMATURES).elements(ConstValues.ARMATURE))
 			{
-				var armatureData:ArmatureData = parseAramtureData(armatureXML);
-				skeletonData.addArmatureData(armatureData);
+				var armatureName:String = armatureXML.attribute(ConstValues.A_NAME);
+				var armatureData:ArmatureData = skeletonData.getArmatureData(animationName);
+				if(armatureData)
+				{
+					parseArmatureData(armatureXML, armatureData);
+				}
+				else
+				{
+					armatureData = new ArmatureData();
+					parseArmatureData(armatureXML, armatureData);
+					skeletonData._armatureDataList.addData(armatureData, armatureName);
+				}
 			}
 			
 			for each(var animationXML:XML in skeletonXML.elements(ConstValues.ANIMATIONS).elements(ConstValues.ANIMATION))
 			{
-				var animationData:AnimationData = parseAnimationData(animationXML, skeletonData);
-				skeletonData.addAnimationData(animationData);
+				var animationName:String = animationXML.attribute(ConstValues.A_NAME);
+				armatureData = skeletonData.getArmatureData(animationName);
+				
+				var animationData:AnimationData = skeletonData.getAnimationData(animationName);
+				if(animationData)
+				{
+					parseAnimationData(
+						animationXML, 
+						animationData, 
+						armatureData
+					);
+				}
+				else
+				{
+					animationData = new AnimationData();
+					parseAnimationData(
+						animationXML, 
+						animationData, 
+						armatureData
+					);
+					skeletonData._animationDataList.addData(animationData, animationName);
+				}
 			}
+			_currentSkeletonData = null;
 			return skeletonData;
 		}
 		
-		private static function parseAramtureData(armatureXML:XML):ArmatureData
+		private static function parseArmatureData(armatureXML:XML, armatureData:ArmatureData):void
 		{
-			var aramtureData:ArmatureData = new ArmatureData();
-			aramtureData._name = armatureXML.attribute(ConstValues.A_NAME);
-			
 			var boneXMLList:XMLList = armatureXML.elements(ConstValues.BONE);
 			for each(var boneXML:XML in boneXMLList)
 			{
 				var boneName:String = boneXML.attribute(ConstValues.A_NAME);
 				var parentName:String = boneXML.attribute(ConstValues.A_PARENT);
-				var parentXML:XML = getElementByAttribute(boneXMLList, ConstValues.A_NAME, parentName)[0];
-				var boneData:BoneData = aramtureData.getBoneData(boneName);
-				boneData = parseBoneData(boneXML, parentXML, boneData);
-				aramtureData.addBoneData(boneData);
+				var parentXML:XML = getElementsByAttribute(boneXMLList, ConstValues.A_NAME, parentName)[0];
+				var boneData:BoneData = armatureData.getBoneData(boneName);
+				if(boneData)
+				{
+					parseBoneData(boneXML, parentXML, boneData);
+				}
+				else
+				{
+					boneData = new BoneData();
+					parseBoneData(boneXML, parentXML, boneData);
+					armatureData._boneDataList.addData(boneData, boneName);
+				}
 			}
-				
-			aramtureData.updateBoneList();
-			return aramtureData;
+			
+			armatureData.updateBoneList();
 		}
 		
-		dragonBones_internal static function parseBoneData(boneXML:XML, parentXML:XML, boneData:BoneData = null):BoneData
+		/** @private */
+		dragonBones_internal static function parseBoneData(boneXML:XML, parentXML:XML, boneData:BoneData):void
 		{
-			if(!boneData){
-				boneData = new BoneData();
-			}
-			boneData._name = boneXML.attribute(ConstValues.A_NAME);
-			
-			boneData.x = Number(boneXML.attribute(ConstValues.A_X));
-			boneData.y = Number(boneXML.attribute(ConstValues.A_Y));
-			boneData.skewX = Number(boneXML.attribute(ConstValues.A_SKEW_X)) * ConstValues.ANGLE_TO_RADIAN;
-			boneData.skewY = Number(boneXML.attribute(ConstValues.A_SKEW_Y)) * ConstValues.ANGLE_TO_RADIAN;
-			//boneData.scaleX = Number(boneXML.attribute(ConstValues.A_SCALE_X));
-			//boneData.scaleY = Number(boneXML.attribute(ConstValues.A_SCALE_Y));
-			boneData.z = int(boneXML.attribute(ConstValues.A_Z));
-			
-			var displayXMLList:XMLList = boneXML.elements(ConstValues.DISPLAY);
-			var length:uint = displayXMLList.length();
-			for(var i:int = 0;i < length;i ++)
-			{
-				var displayXML:XML = displayXMLList[i];
-				var displayData:DisplayData = boneData.getDisplayDataAt(i);
-				boneData._displayList[i] = parseDisplayData(displayXML, displayData);
-			}
-			
+			parseNode(boneXML, boneData.node);
 			if(parentXML)
 			{
 				boneData._parent = parentXML.attribute(ConstValues.A_NAME);
-				helpNode.x = Number(parentXML.attribute(ConstValues.A_X));
-				helpNode.y = Number(parentXML.attribute(ConstValues.A_Y));
-				helpNode.skewX = Number(parentXML.attribute(ConstValues.A_SKEW_X)) * ConstValues.ANGLE_TO_RADIAN;
-				helpNode.skewY = Number(parentXML.attribute(ConstValues.A_SKEW_Y)) * ConstValues.ANGLE_TO_RADIAN;
-				//helpNode.scaleX = Number(parentXML.attribute(ConstValues.A_SCALE_X));
-				//helpNode.scaleY = Number(parentXML.attribute(ConstValues.A_SCALE_Y));
-				
-				TransfromUtils.transfromPointWithParent(boneData, helpNode);
+				parseNode(parentXML, _helpNode);
+				TransformUtils.transformPointWithParent(boneData.node, _helpNode);
 			}
-			return boneData;
+			else
+			{
+				boneData._parent = null;
+			}
+			if(_currentSkeletonData)
+			{
+				var displayXMLList:XMLList = boneXML.elements(ConstValues.DISPLAY);
+				var length:uint = displayXMLList.length();
+				for(var i:int = 0;i < length;i ++)
+				{
+					var displayXML:XML = displayXMLList[i];
+					var displayName:String = displayXML.attribute(ConstValues.A_NAME);
+					boneData._displayNames[i] = displayName;
+					var displayData:DisplayData = _currentSkeletonData.getDisplayData(displayName);
+					if(displayData)
+					{
+						parseDisplayData(displayXML, displayData);
+					}
+					else
+					{
+						displayData = new DisplayData();
+						parseDisplayData(displayXML, displayData);
+						_currentSkeletonData._displayDataList.addData(displayData, displayName);
+					}
+				}
+			}
 		}
 		
-		private static function parseDisplayData(displayXML:XML, displayData:DisplayData = null):DisplayData
+		private static function parseDisplayData(displayXML:XML, displayData:DisplayData):void
 		{
-			if(!displayData)
-			{
-				displayData = new DisplayData();
-			}
-			displayData._name = displayXML.attribute(ConstValues.A_NAME);
 			displayData._isArmature = Boolean(int(displayXML.attribute(ConstValues.A_IS_ARMATURE)));
-			return displayData;
+			displayData.pivotX = int(displayXML.attribute(ConstValues.A_PIVOT_X));
+			displayData.pivotY = int(displayXML.attribute(ConstValues.A_PIVOT_Y));
 		}
 		
-		dragonBones_internal static function parseAnimationData(animationXML:XML, skeletonData:SkeletonData):AnimationData
+		/** @private */
+		dragonBones_internal static function parseAnimationData(animationXML:XML, animationData:AnimationData, armatureData:ArmatureData):void
 		{
-			var animationName:String = animationXML.attribute(ConstValues.A_NAME);
-			var animationData:AnimationData = skeletonData.getAnimationData(animationName);
-			if(!animationData)
-			{
-				animationData = new AnimationData();
-				animationData._name = animationName;
-			}
-			
-			var armatureData:ArmatureData = skeletonData.getArmatureData(animationData.name);
 			for each(var movementXML:XML in animationXML.elements(ConstValues.MOVEMENT))
 			{
 				var movementName:String = movementXML.attribute(ConstValues.A_NAME);
 				var movementData:MovementData = animationData.getMovementData(movementName);
-				movementData = parseMovementData(movementXML, armatureData, movementData);
-				animationData.addMovementData(movementData);
+				if(movementData)
+				{
+					parseMovementData(movementXML, armatureData, movementData);
+				}
+				else
+				{
+					movementData = new MovementData();
+					parseMovementData(movementXML, armatureData, movementData);
+					animationData._movementDataList.addData(movementData, movementName);
+				}
 			}
-			return animationData;
 		}
 		
-		private static function parseMovementData(movementXML:XML, armatureData:ArmatureData, movementData:MovementData = null):MovementData
+		private static function parseMovementData(movementXML:XML, armatureData:ArmatureData, movementData:MovementData):void
 		{
-			if(!movementData){
-				movementData = new MovementData();
+			if(_currentSkeletonData)
+			{
+				var frameRate:uint = _currentSkeletonData._frameRate;
+				var duration:int = int(movementXML.attribute(ConstValues.A_DURATION));
+				
+				movementData.duration = (duration > 1)?(duration / frameRate):0;
+				movementData.durationTo = int(movementXML.attribute(ConstValues.A_DURATION_TO)) / frameRate;
+				movementData.durationTween = int(movementXML.attribute(ConstValues.A_DURATION_TWEEN)) / frameRate;
+				movementData.loop = Boolean(int(movementXML.attribute(ConstValues.A_LOOP)) == 1);
+				movementData.tweenEasing = Number(movementXML.attribute(ConstValues.A_TWEEN_EASING)[0]);
 			}
 			
-			movementData._name = movementXML.attribute(ConstValues.A_NAME);
-			
-			movementData.setValues(
-				int(movementXML.attribute(ConstValues.A_DURATION)),
-				int(movementXML.attribute(ConstValues.A_DURATION_TO)),
-				int(movementXML.attribute(ConstValues.A_DURATION_TWEEN)),
-				Boolean(int(movementXML.attribute(ConstValues.A_LOOP)) == 1),
-				Number(movementXML.attribute(ConstValues.A_TWEEN_EASING)[0])
-			);
+			var boneNames:Vector.<String> = armatureData.boneNames;
 			
 			var movementBoneXMLList:XMLList = movementXML.elements(ConstValues.BONE);
 			for each(var movementBoneXML:XML in movementBoneXMLList)
 			{
 				var boneName:String = movementBoneXML.attribute(ConstValues.A_NAME);
 				var boneData:BoneData = armatureData.getBoneData(boneName);
-				var parentXML:XML = getElementByAttribute(movementBoneXMLList, ConstValues.A_NAME, boneData.parent)[0];
+				var parentMovementBoneXML:XML = getElementsByAttribute(movementBoneXMLList, ConstValues.A_NAME, boneData.parent)[0];
 				var movementBoneData:MovementBoneData = movementData.getMovementBoneData(boneName);
-				movementBoneData = parseMovementBoneData(movementBoneXML, parentXML, boneData, movementBoneData);
-				movementData.addMovementBoneData(movementBoneData);
+				if(movementBoneXML)
+				{
+					if(movementBoneData)
+					{
+						parseMovementBoneData(movementBoneXML, parentMovementBoneXML, boneData, movementBoneData);
+					}
+					else
+					{
+						movementBoneData = new MovementBoneData();
+						parseMovementBoneData(movementBoneXML, parentMovementBoneXML, boneData, movementBoneData);
+						movementData._movementBoneDataList.addData(movementBoneData, boneName);
+					}
+				}
+				
+				var index:int = boneNames.indexOf(boneName);
+				if(index >= 0)
+				{
+					boneNames.splice(index, 1);
+				}
+			}
+			
+			for each(boneName in boneNames)
+			{
+				movementData._movementBoneDataList.addData(MovementBoneData.HIDE_DATA, boneName);
 			}
 			
 			var movementFrameXMLList:XMLList = movementXML.elements(ConstValues.FRAME);
 			var length:uint = movementFrameXMLList.length();
+			var movementFrameList:Vector.<MovementFrameData> = movementData._movementFrameList;
 			for(var i:int = 0;i < length;i ++)
 			{
 				var movementFrameXML:XML = movementFrameXMLList[i];
-				var movementFrameData:MovementFrameData = movementData._movementFrameList.length > i?movementData._movementFrameList[i]:null;
-				movementFrameData = parseMovementFrameData(movementFrameXML, movementFrameData);
-				movementData._movementFrameList[i] = movementFrameData;
+				var movementFrameData:MovementFrameData = movementFrameList.length > i?movementFrameList[i]:null;
+				
+				if(movementFrameData)
+				{
+					parseMovementFrameData(movementFrameXML, movementFrameData);
+				}
+				else
+				{
+					movementFrameData = new MovementFrameData();
+					parseMovementFrameData(movementFrameXML, movementFrameData)
+					if(movementFrameList.indexOf(movementFrameData) < 0)
+					{
+						movementFrameList.push(movementFrameData);
+					}
+				}
 			}
-			return movementData;
 		}
 		
-		private static function parseMovementBoneData(movementBoneXML:XML, parentXML:XML, boneData:BoneData, movementBoneData:MovementBoneData = null):MovementBoneData
+		private static function parseMovementBoneData(movementBoneXML:XML, parentMovementBoneXML:XML, boneData:BoneData, movementBoneData:MovementBoneData):void
 		{
-			if(!movementBoneData){
-				movementBoneData = new MovementBoneData();
-			}
-			movementBoneData._name = movementBoneXML.attribute(ConstValues.A_NAME);
-			
-			movementBoneData._duration = 0;
 			movementBoneData.setValues(
 				Number(movementBoneXML.attribute(ConstValues.A_MOVEMENT_SCALE)),
 				Number(movementBoneXML.attribute(ConstValues.A_MOVEMENT_DELAY))
 			);
 			
-			if(parentXML){
-				var xmlList:XMLList = parentXML.elements(ConstValues.FRAME);
+			var i:uint = 0;
+			var parentTotalDuration:uint = 0;
+			var totalDuration:uint = 0;
+			var currentDuration:uint = 0;
+			if(parentMovementBoneXML)
+			{
+				var parentFrameXMLList:XMLList = parentMovementBoneXML.elements(ConstValues.FRAME);
+				var parentFrameCount:uint = parentFrameXMLList.length();
 				var parentFrameXML:XML;
-				var parentLength:uint = xmlList.length();
-				var i:uint = 0;
-				var parentTotalDuration:uint = 0;
-				var currentDuration:uint = 0;
 			}
 			
-			var totalDuration:uint = 0;
+			
 			var frameXMLList:XMLList = movementBoneXML.elements(ConstValues.FRAME);
-			var length:uint = frameXMLList.length();
-			for(var j:int = 0;j < length;j ++)
+			var frameCount:uint = frameXMLList.length();
+			var frameList:Vector.<FrameData> = movementBoneData._frameList;
+			
+			for(var j:int = 0;j < frameCount;j ++)
 			{
 				var frameXML:XML = frameXMLList[j];
-				if(parentXML){
-					while(i < parentLength && (parentFrameXML?(totalDuration < parentTotalDuration || totalDuration >= parentTotalDuration + currentDuration):true))
+				var frameData:FrameData = frameList.length > j?frameList[j]:null;
+				
+				if(frameData)
+				{
+					parseFrameData(frameXML, frameData);
+				}
+				else
+				{
+					frameData = new FrameData();
+					parseFrameData(frameXML, frameData);
+					if(frameList.indexOf(frameData) < 0)
 					{
-						parentFrameXML = xmlList[i];
+						frameList.push(frameData);
+					}
+				}
+				
+				if(parentMovementBoneXML)
+				{
+					while(i < parentFrameCount && (parentFrameXML?(totalDuration < parentTotalDuration || totalDuration >= parentTotalDuration + currentDuration):true))
+					{
+						parentFrameXML = parentFrameXMLList[i];
 						parentTotalDuration += currentDuration;
 						currentDuration = int(parentFrameXML.attribute(ConstValues.A_DURATION));
 						i++;
 					}
+					
+					parseFrameData(parentFrameXML, _helpFrameData);
+					
+					var tweenFrameXML:XML = parentFrameXMLList[i];
+					var progress:Number;
+					if(tweenFrameXML)
+					{
+						progress = (totalDuration - parentTotalDuration) / currentDuration;
+					}
+					else
+					{
+						tweenFrameXML = parentFrameXML;
+						progress = 0;
+					}
+					if(isNaN(_helpFrameData.tweenEasing))
+					{
+						progress = 0;
+					}
+					else
+					{
+						progress = Tween.getEaseValue(progress, _helpFrameData.tweenEasing);
+					}
+					
+					parseNode(tweenFrameXML, _helpNode);
+					TransformUtils.setOffSetNode(_helpFrameData.node, _helpNode, _helpNode, _helpFrameData.tweenRotate);
+					
+					_helpNode.setValues(
+						_helpFrameData.node.x + progress * _helpNode.x,
+						_helpFrameData.node.y + progress * _helpNode.y,
+						_helpFrameData.node.skewX + progress * _helpNode.skewX,
+						_helpFrameData.node.skewY + progress * _helpNode.skewY,
+						_helpFrameData.node.scaleX + progress * _helpNode.scaleX,
+						_helpFrameData.node.scaleY + progress * _helpNode.scaleY,
+						_helpFrameData.node.pivotX + progress * _helpNode.pivotX,
+						_helpFrameData.node.pivotY + progress * _helpNode.pivotY
+					);
+					
+					TransformUtils.transformPointWithParent(frameData.node, _helpNode);
 				}
-				var frameData:FrameData = movementBoneData._frameList.length > j?movementBoneData._frameList[j]:null;
-				frameData = parseFrameData(frameXML, parentFrameXML, boneData, frameData);
-				movementBoneData._frameList[j] = frameData;
-				movementBoneData._duration += frameData.duration;
-				totalDuration += frameData.duration;
+				totalDuration += int(frameXML.attribute(ConstValues.A_DURATION));
+				
+				frameData.node.x -= boneData.node.x;
+				frameData.node.y -= boneData.node.y;
+				frameData.node.skewX -= boneData.node.skewX;
+				frameData.node.skewY -= boneData.node.skewY;
+				frameData.node.scaleX -= boneData.node.scaleX;
+				frameData.node.scaleY -= boneData.node.scaleY;
+				frameData.node.pivotX -= boneData.node.pivotX;
+				frameData.node.pivotY -= boneData.node.pivotY;
+				frameData.node.z -= boneData.node.z;
 			}
-			return movementBoneData;
 		}
 		
-		private static function parseMovementFrameData(movementFrameXML:XML, movementFrameData:MovementFrameData = null):MovementFrameData
+		private static function parseMovementFrameData(movementFrameXML:XML, movementFrameData:MovementFrameData):void
 		{
-			if(!movementFrameData){
-				movementFrameData = new MovementFrameData();
-			}
-			
 			movementFrameData.setValues(
-				int(movementFrameXML.attribute(ConstValues.A_START)),
-				int(movementFrameXML.attribute(ConstValues.A_DURATION)),
+				Number(movementFrameXML.attribute(ConstValues.A_DURATION)) / _currentSkeletonData._frameRate,
 				movementFrameXML.attribute(ConstValues.A_MOVEMENT),
 				movementFrameXML.attribute(ConstValues.A_EVENT),
 				movementFrameXML.attribute(ConstValues.A_SOUND)
 			);
-			return movementFrameData;
-		}
-	
-		private static function parseFrameData(frameXML:XML, parentFrameXML:XML, boneData:BoneData, frameData:FrameData = null):FrameData
-		{
-			if(!frameData){
-				frameData = new FrameData();
-			}
-				
-			frameData.x = Number(frameXML.attribute(ConstValues.A_X));
-			frameData.y = Number(frameXML.attribute(ConstValues.A_Y));
-			frameData.skewX = Number(frameXML.attribute(ConstValues.A_SKEW_X)) * ConstValues.ANGLE_TO_RADIAN;
-			frameData.skewY = Number(frameXML.attribute(ConstValues.A_SKEW_Y)) * ConstValues.ANGLE_TO_RADIAN;
-			frameData.z = int(frameXML.attribute(ConstValues.A_Z));
-			frameData.duration = int(frameXML.attribute(ConstValues.A_DURATION));
-			frameData.tweenEasing = Number(frameXML.attribute(ConstValues.A_TWEEN_EASING));
-			frameData.tweenRotate = int(frameXML.attribute(ConstValues.A_TWEEN_ROTATE));
-			frameData.displayIndex = int(frameXML.attribute(ConstValues.A_DISPLAY_INDEX));
-			frameData.movement = String(frameXML.attribute(ConstValues.A_MOVEMENT));
-				
-			frameData.event = String(frameXML.attribute(ConstValues.A_EVENT));
-			frameData.sound = String(frameXML.attribute(ConstValues.A_SOUND));
-			frameData.soundEffect = String(frameXML.attribute(ConstValues.A_SOUND_EFFECT));
-				
-				
-			if(parentFrameXML){
-				helpNode.x = Number(parentFrameXML.attribute(ConstValues.A_X));
-				helpNode.y = Number(parentFrameXML.attribute(ConstValues.A_Y));
-				helpNode.skewX = Number(parentFrameXML.attribute(ConstValues.A_SKEW_X)) * ConstValues.ANGLE_TO_RADIAN;
-				helpNode.skewY = Number(parentFrameXML.attribute(ConstValues.A_SKEW_Y)) * ConstValues.ANGLE_TO_RADIAN;
-				//helpNode.scaleX = Number(parentFrameXML.attribute(ConstValues.A_SCALE_X));
-				//helpNode.scaleY = Number(parentFrameXML.attribute(ConstValues.A_SCALE_Y));
-				
-				TransfromUtils.transfromPointWithParent(frameData, helpNode);
-			}
-			
-			frameData.x -=	boneData.x;
-			frameData.y -=	boneData.y;
-			frameData.skewX -=	boneData.skewX;
-			frameData.skewY -=boneData.skewY;
-			frameData.scaleX = Number(frameXML.attribute(ConstValues.A_SCALE_X));
-			frameData.scaleY = Number(frameXML.attribute(ConstValues.A_SCALE_Y));
-			//frameData.scaleX -= boneData.scaleX;
-			//frameData.scaleY -= boneData.scaleY;
-			
-			return frameData;
 		}
 		
-		public static function parseTextureAtlasData(textureAtlasXML:XML, textureBytes:ByteArray):TextureAtlasData
+		/** @private */
+		dragonBones_internal static function parseFrameData(frameXML:XML, frameData:FrameData):void
 		{
-			var textureAtlasData:TextureAtlasData = new TextureAtlasData();
-			textureAtlasData._name = textureAtlasXML.attribute(ConstValues.A_NAME);
-			textureAtlasData._width = int(textureAtlasXML.attribute(ConstValues.A_WIDTH));
-			textureAtlasData._height = int(textureAtlasXML.attribute(ConstValues.A_HEIGHT));
-			
-			
-			for each(var subTextureXML:XML in textureAtlasXML.elements(ConstValues.SUB_TEXTURE))
+			parseNode(frameXML, frameData.node);
+			if(_currentSkeletonData)
 			{
-				var subTextureData:SubTextureData = parseSubTextureData(subTextureXML);
-				textureAtlasData.addSubTextureData(subTextureData);
+				var colorTransformXML:XML = frameXML.elements(ConstValues.COLOR_TRANSFORM)[0];
+				if(colorTransformXML)
+				{
+					parseColorTransform(colorTransformXML, frameData.colorTransform);
+				}
+				frameData.duration = int(frameXML.attribute(ConstValues.A_DURATION)) / _currentSkeletonData._frameRate;
+				frameData.tweenEasing = Number(frameXML.attribute(ConstValues.A_TWEEN_EASING));
+				frameData.tweenRotate = int(frameXML.attribute(ConstValues.A_TWEEN_ROTATE));
+				frameData.displayIndex = int(frameXML.attribute(ConstValues.A_DISPLAY_INDEX));
+				frameData.movement = String(frameXML.attribute(ConstValues.A_MOVEMENT));
+				
+				frameData.event = String(frameXML.attribute(ConstValues.A_EVENT));
+				frameData.sound = String(frameXML.attribute(ConstValues.A_SOUND));
+				frameData.soundEffect = String(frameXML.attribute(ConstValues.A_SOUND_EFFECT));
+				
+				var visibleStr:String = String(frameXML.attribute(ConstValues.A_VISIBLE));
+				frameData.visible = (visibleStr == "1" || visibleStr =="");
 			}
-			
-			var dataType:String = BytesType.getType(textureBytes);
-			textureAtlasData._dataType = dataType;
-			textureAtlasData._rawData = textureBytes;
-			switch(dataType)
-			{
-				case BytesType.SWF:
-				case BytesType.PNG:
-				case BytesType.JPG:
-					var loader:Loader = new Loader();
-					var loaderContext:LoaderContext = new LoaderContext(false);
-					loaderContext.allowCodeImport = true;
-					loader.contentLoaderInfo.addEventListener(Event.COMPLETE, textureAtlasData.loaderCompleteHandler);
-					loader.loadBytes(textureBytes, loaderContext);
-					break;
-				case BytesType.ATF:
-					textureAtlasData.completeHandler();
-					break;
-				default:
-					throw new UnknownDataError();
-					break;
-			}
-			return textureAtlasData;
 		}
 		
-		private static function parseSubTextureData(subTextureXML:XML):SubTextureData
+		private static function parseNode(xml:XML, node:Node):void
 		{
-			var subTextureData:SubTextureData = new SubTextureData();
-			subTextureData.name = subTextureXML.attribute(ConstValues.A_NAME);
-			subTextureData.x = int(subTextureXML.attribute(ConstValues.A_X));
-			subTextureData.y = int(subTextureXML.attribute(ConstValues.A_Y));
-			subTextureData.width = int(subTextureXML.attribute(ConstValues.A_WIDTH));
-			subTextureData.height = int(subTextureXML.attribute(ConstValues.A_HEIGHT));
-			subTextureData.pivotX = int(subTextureXML.attribute(ConstValues.A_PIVOT_X));
-			subTextureData.pivotY = int(subTextureXML.attribute(ConstValues.A_PIVOT_Y));
-			return subTextureData;
+			node.x = Number(xml.attribute(ConstValues.A_X));
+			node.y = Number(xml.attribute(ConstValues.A_Y));
+			node.skewX = Number(xml.attribute(ConstValues.A_SKEW_X)) * ANGLE_TO_RADIAN;
+			node.skewY = Number(xml.attribute(ConstValues.A_SKEW_Y)) * ANGLE_TO_RADIAN;
+			node.scaleX = Number(xml.attribute(ConstValues.A_SCALE_X));
+			node.scaleY = Number(xml.attribute(ConstValues.A_SCALE_Y));
+			node.pivotX =  int(xml.attribute(ConstValues.A_PIVOT_X));
+			node.pivotY =  int(xml.attribute(ConstValues.A_PIVOT_Y));
+			node.z = int(xml.attribute(ConstValues.A_Z));
+		}
+		
+		private static function parseColorTransform(xml:XML, colorTransform:ColorTransform):void
+		{
+			colorTransform.alphaOffset = int(xml.attribute(ConstValues.A_ALPHA));
+			colorTransform.redOffset = int(xml.attribute(ConstValues.A_RED));
+			colorTransform.greenOffset = int(xml.attribute(ConstValues.A_GREEN));
+			colorTransform.blueOffset = int(xml.attribute(ConstValues.A_BLUE));
+			colorTransform.alphaMultiplier = int(xml.attribute(ConstValues.A_ALPHA_MULTIPLIER)) * 0.01;
+			colorTransform.redMultiplier = int(xml.attribute(ConstValues.A_RED_MULTIPLIER)) * 0.01;
+			colorTransform.greenMultiplier = int(xml.attribute(ConstValues.A_GREEN_MULTIPLIER)) * 0.01;
+			colorTransform.blueMultiplier = int(xml.attribute(ConstValues.A_BLUE_MULTIPLIER)) * 0.01;
 		}
 	}
-	
 }

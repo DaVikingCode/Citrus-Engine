@@ -1,8 +1,13 @@
-package dragonBones.display
+﻿package dragonBones.display
 {
+	import dragonBones.objects.Node;
+	
+	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
+	
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
+	import starling.display.Quad;
 	
 	/**
 	 * A display bridge for Starling engine
@@ -19,7 +24,6 @@ package dragonBones.display
 		{
 			return _display;
 		}
-		
 		
 		public function set display(value:Object):void
 		{
@@ -48,14 +52,29 @@ package dragonBones.display
 		/**
 		 * @inheritDoc
 		 */
-		public function update(matrix:Matrix):void
+		public function update(matrix:Matrix, node:Node, colorTransform:ColorTransform, visible:Boolean):void
 		{
-			if (_display.pivotX != 0 || _display.pivotY != 0)
+			var pivotX:Number = node.pivotX + _display.pivotX;
+			var pivotY:Number = node.pivotY + _display.pivotY;
+			matrix.tx -= matrix.a * pivotX + matrix.c * pivotY;
+			matrix.ty -= matrix.b * pivotX + matrix.d * pivotY;
+			
+			//if(updateStarlingDisplay)
+			//{
+				//_display.transformationMatrix = matrix;
+			//}
+			//else
+			//{
+				_display.transformationMatrix.copyFrom(matrix);
+			//}
+				
+			if(colorTransform && _display is Quad)
 			{
-				matrix.tx -= matrix.a * _display.pivotX + matrix.c * _display.pivotY;
-				matrix.ty -= matrix.b * _display.pivotX + matrix.d * _display.pivotY;
+				(_display as Quad).alpha = colorTransform.alphaMultiplier;
+				(_display as Quad).color = (uint(colorTransform.redMultiplier * 0xff)<<16) + (uint(colorTransform.greenMultiplier * 0xff)<<8) + uint(colorTransform.blueMultiplier * 0xff);
 			}
-			_display.transformationMatrix.copyFrom(matrix);
+			//
+			_display.visible = visible;
 		}
 		
 		/**

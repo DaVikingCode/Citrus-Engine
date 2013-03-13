@@ -1,80 +1,70 @@
 package dragonBones.objects
 {
+	import dragonBones.utils.dragonBones_internal;
+	
+	use namespace dragonBones_internal;
 	
 	/** @private */
 	public class ArmatureData
 	{
-		private var _boneDatas:Object;
-		private var _boneList:Array;
+		dragonBones_internal var _boneDataList:DataList;
 		
-		internal var _name:String;
-		public function get name():String
+		public function get boneNames():Vector.<String>
 		{
-			return _name;
-		}
-		
-		public function get totalBonws():uint
-		{
-			return _boneList.length;
-		}
-		
-		public function get boneList():Array
-		{
-			return _boneList.concat();
+			return _boneDataList.dataNames.concat();
 		}
 		
 		public function ArmatureData()
 		{
-			_name = name;
-			_boneDatas = { };
+			_boneDataList = new DataList();
 		}
 		
 		public function dispose():void
 		{
-			for each(var boneData:BoneData in _boneDatas)
+			for each(var boneName:String in _boneDataList.dataNames)
 			{
+				var boneData:BoneData = _boneDataList.getData(boneName) as BoneData;
 				boneData.dispose();
 			}
-			_boneDatas = null;
-			_boneList = null;
+			
+			_boneDataList.dispose();
 		}
 		
 		public function getBoneData(name:String):BoneData
 		{
-			return _boneDatas[name];
+			return _boneDataList.getData(name) as BoneData;
 		}
 		
-		public function getBoneDataAt(index:uint):BoneData
+		public function updateBoneList():void
 		{
-			return _boneDatas[_boneList[index]];
-		}
-		
-		internal function addBoneData(data:BoneData):void
-		{
-			var name:String = data.name;
-			_boneDatas[name] = data;
-		}
-		
-		internal function updateBoneList():void
-		{
-			_boneList = [];
-			for(var boneName:String in _boneDatas)
-			{
-				var depth:int = 0;
-				var parentData:BoneData = _boneDatas[boneName];
-				while(parentData)
-				{
-					depth ++;
-					parentData = _boneDatas[parentData.parent];
-				}
-				_boneList.push({depth:depth, boneName:boneName});
-			}
-			_boneList.sortOn("depth", Array.NUMERIC);
+			var boneNames:Vector.<String> = _boneDataList.dataNames;
 			
-			var i:int = _boneList.length;
-			while(-- i >= 0)
+			var sortList:Array = [];
+			for each(var boneName:String in boneNames)
 			{
-				_boneList[i] = _boneList[i].boneName;
+				var boneData:BoneData = _boneDataList.getData(boneName) as BoneData;
+				var levelValue:int = boneData.node.z;
+				var level:int = 0;
+				while(boneData)
+				{
+					level ++;
+					levelValue += 1000 * level;
+					boneData = getBoneData(boneData.parent);
+				}
+				sortList.push({level:levelValue, boneName:boneName});
+			}
+			
+			var length:int = sortList.length;
+			if(length > 0)
+			{
+				sortList.sortOn("level", Array.NUMERIC);
+				boneNames.length = 0;
+				var i:int = 0;
+				while(i < length)
+				{
+					boneNames[i] = sortList[i].boneName;
+					i ++;
+				}
 			}
 		}
 	}

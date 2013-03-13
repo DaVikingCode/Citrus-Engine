@@ -1,8 +1,12 @@
 package dragonBones
 {
 	import dragonBones.animation.Animation;
+	import dragonBones.animation.IAnimatable;
+	import dragonBones.events.ArmatureEvent;
 	import dragonBones.utils.dragonBones_internal;
+	
 	import flash.events.EventDispatcher;
+	import flash.geom.ColorTransform;
 	
 	use namespace dragonBones_internal;
 	/**
@@ -13,17 +17,17 @@ package dragonBones
 	/**
 	 * Dispatched when the playback of a animation starts.
 	 */
-	[Event(name="animationStart", type="dragonBones.events.AnimationEvent")]
+	[Event(name="start", type="dragonBones.events.AnimationEvent")]
 	
 	/**
 	 * Dispatched when the playback of a movement stops.
 	 */
-	[Event(name="movementComplete", type="dragonBones.events.AnimationEvent")]
+	[Event(name="complete", type="dragonBones.events.AnimationEvent")]
 	
 	/**
 	 * Dispatched when the playback of a movement completes a loop.
 	 */
-	[Event(name="movementLoopComplete", type="dragonBones.events.AnimationEvent")]
+	[Event(name="loopComplete", type="dragonBones.events.AnimationEvent")]
 	
 	/**
 	 * Dispatched when the animation of the armatrue enter a frame.
@@ -41,34 +45,60 @@ package dragonBones
 	 * @see dragonBones.Bone
 	 * @see dragonBones.animation.Animation
 	 */
-	public class Armature extends EventDispatcher
+	public class Armature extends EventDispatcher implements IAnimatable
 	{
 		/**
 		 * The name of the Armature.
 		 */
 		public var name:String;
+		
 		/**
 		 * An object that can contain any extra data.
 		 */
 		public var userData:Object;
-		/**
-		 * An object can change the playback state of the armature.
-		 */
-		public var animation:Animation;
 		
+		/** @private */
 		dragonBones_internal var _bonesIndexChanged:Boolean;
-		dragonBones_internal var _boneDepthList:Vector.<Bone>;
 		
-		private var _rootBoneList:Vector.<Bone>;
+		/** @private */
+		dragonBones_internal var _boneDepthList:Vector.<Bone>;
+		/** @private */
+		protected var _rootBoneList:Vector.<Bone>;
+		
+		
+		/** @private */
+		dragonBones_internal var _colorTransformChange:Boolean;
+		/** @private */
+		protected var _colorTransform:ColorTransform;
+		
+		public function get colorTransform():ColorTransform
+		{
+			return _colorTransform;
+		}
+		public function set colorTransfrom(value:ColorTransform):void
+		{
+			_colorTransform = value;
+			_colorTransformChange = true;
+		}
 		
 		/** @private */
 		protected var _display:Object;
-		
 		/**
 		 * An display object which is dependent on specific display engine.
 		 */
-		public function get display():Object{
+		public function get display():Object
+		{
 			return _display;
+		}
+		
+		/** @private */
+		protected var _animation:Animation;
+		/**
+		 * An object can change the playback state of the armature.
+		 */
+		public function get animation():Animation
+		{
+			return _animation;
 		}
 		
 		/**
@@ -84,7 +114,7 @@ package dragonBones
 			_boneDepthList = new Vector.<Bone>;
 			_rootBoneList = new Vector.<Bone>;
 			
-			animation = new Animation(this);
+			_animation = new Animation(this);
 			_bonesIndexChanged = false;
 		}
 		
@@ -98,29 +128,13 @@ package dragonBones
 				bone.dispose();
 			}
 			
-			animation.dispose();
-			animation = null;
+			_boneDepthList.length = 0;
+			_rootBoneList.length = 0;
+			
+			_animation.dispose();
+			_animation = null;
+			
 			//_display = null;
-			
-			_boneDepthList = null;
-			_rootBoneList = null;
-		}
-		
-		/**
-		 * Updates the state of the armature. Should be called every frame manually.
-		 */
-		public function update():void
-		{
-			for each(var bone:Bone in _rootBoneList)
-			{
-				bone.update();
-			}
-			animation.update();
-			
-			if(_bonesIndexChanged)
-			{
-				updateBonesZ();
-			}
 		}
 		
 		/**
@@ -150,35 +164,47 @@ package dragonBones
 		 */
 		public function getBoneByDisplay(display:Object):Bone
 		{
-			for each(var eachBone:Bone in _boneDepthList)
+			if(display)
 			{
-				if(eachBone.display == display)
+				for each(var bone:Bone in _boneDepthList)
 				{
-					return eachBone;
+					if(bone.display == display)
+					{
+						return bone;
+					}
 				}
 			}
 			return null;
 		}
 		
-		/** @private */
+		/**
+		 * Gets bones.
+		 * @return
+		 */
+		public function getBones():Vector.<Bone>
+		{
+			return _boneDepthList.concat();
+		}
+		
 		public function addBone(bone:Bone, parentName:String = null):void
 		{
-			var boneParent:Bone = getBone(parentName);
-			if (boneParent)
+			if (bone)
 			{
-				boneParent.addChild(bone);
-			}
-			else
-			{
-				bone.removeFromParent();
-				addToBones(bone, true);
+				var boneParent:Bone = getBone(parentName);
+				if (boneParent)
+				{
+					boneParent.addChild(bone);
+				}
+				else
+				{
+					bone.removeFromParent();
+					addToBones(bone, true);
+				}
 			}
 		}
 		
-		/** @private */
-		public function removeBone(boneName:String):void
+		public function removeBone(bone:Bone):void
 		{
-			var bone:Bone = getBone(boneName);
 			if (bone)
 			{
 				if(bone.parent)
@@ -191,6 +217,54 @@ package dragonBones
 				}
 			}
 		}
+		
+		public function removeBoneByName(boneName:String):void
+		{
+			var bone:Bone = getBone(boneName);
+			removeBone(bone);
+		}
+		
+		public function advanceTime(passedTime:Number):void
+		{
+			animation.advanceTime(passedTime);
+			update();
+		}
+		
+		/**
+		 * Sorts the display objects by z value.
+		 */
+		public function updateBonesZ():void
+		{
+			_boneDepthList.sort(sortBoneZIndex);
+			for each(var bone:Bone in _boneDepthList)
+			{
+				if(bone._isOnStage)
+				{
+					bone._displayBridge.addDisplay(_display);
+				}
+			}
+			_bonesIndexChanged = false;
+			
+			if(hasEventListener(ArmatureEvent.Z_ORDER_UPDATED))
+			{
+				dispatchEvent(new ArmatureEvent(ArmatureEvent.Z_ORDER_UPDATED));
+			}
+		}
+		
+		/** @private */
+		dragonBones_internal function update():void
+		{
+			for each(var bone:Bone in _rootBoneList)
+			{
+				bone.update();
+			}
+			
+			if(_bonesIndexChanged)
+			{
+				updateBonesZ();
+			}
+		}
+		
 		/** @private */
 		dragonBones_internal function addToBones(bone:Bone, _root:Boolean = false):void
 		{
@@ -207,7 +281,8 @@ package dragonBones
 				{
 					_rootBoneList.push(bone);
 				}
-			}else if(boneIndex >= 0)
+			}
+			else if(boneIndex >= 0)
 			{
 				_rootBoneList.splice(boneIndex, 1);
 			}
@@ -218,6 +293,7 @@ package dragonBones
 			{
 				addToBones(child);
 			}
+			_bonesIndexChanged = true;
 		}
 		
 		/** @private */
@@ -241,22 +317,7 @@ package dragonBones
 			{
 				removeFromBones(child);
 			}
-		}
-		
-		/**
-		 * Sorts the display objects by z value.
-		 */
-		public function updateBonesZ():void
-		{
-			_boneDepthList.sort(sortBoneZIndex);
-			for each(var bone:Bone in _boneDepthList)
-			{
-				if(bone._displayVisible)
-				{
-					bone._displayBridge.addDisplay(_display);
-				}
-			}
-			_bonesIndexChanged = false;
+			_bonesIndexChanged = true;
 		}
 		
 		private function sortBoneZIndex(bone1:Bone, bone2:Bone):int

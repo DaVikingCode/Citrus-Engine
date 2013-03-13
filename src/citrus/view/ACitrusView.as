@@ -1,9 +1,7 @@
 package citrus.view {
 
-	import citrus.math.MathVector;
 	import citrus.utils.LoadManager;
 
-	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	
 	/**

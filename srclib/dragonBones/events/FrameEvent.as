@@ -2,11 +2,8 @@ package dragonBones.events
 {
 	import dragonBones.Armature;
 	import dragonBones.Bone;
-	import dragonBones.utils.dragonBones_internal;
 	
 	import flash.events.Event;
-	
-	use namespace dragonBones_internal;
 	
 	/**
 	 * Dispatched when processing a frame.
@@ -35,7 +32,7 @@ package dragonBones.events
 		}
 		
 		/** @private */
-		dragonBones_internal var _bone:Bone;
+		private var _bone:Bone;
 		
 		/**
 		 * The bone that is the subject of this event.
@@ -50,9 +47,10 @@ package dragonBones.events
 		 * @param	type
 		 * @param	cancelable
 		 */
-		public function FrameEvent(type:String, cancelable:Boolean=false)
+		public function FrameEvent(type:String, cancelable:Boolean = false, bone:Bone = null)
 		{
 			super(type, false, cancelable);
+			_bone = bone;
 		}
 		
 		/**

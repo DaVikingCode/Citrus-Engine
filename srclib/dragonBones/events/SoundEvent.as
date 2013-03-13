@@ -13,7 +13,7 @@ package dragonBones.events
 		/**
 		 * Dispatched when the animation of the animation enter a frame containing sound labels.
 		 */
-		public static const SOUND:String = "soundFrame";
+		public static const SOUND:String = "sound";
 		
 		public var movementID:String;
 		
