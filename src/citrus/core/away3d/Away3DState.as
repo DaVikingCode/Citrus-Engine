@@ -158,7 +158,7 @@ package citrus.core.away3d {
 				poolObject.updatePhysics(timeDelta);
 
 			// Update the state's view
-			_view.update();
+			_view.update(timeDelta);
 		}
 
 		/**

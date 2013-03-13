@@ -156,7 +156,7 @@ package citrus.core
 				poolObject.updatePhysics(timeDelta);
 
 			// Update the state's view
-			_view.update();
+			_view.update(timeDelta);
 		}
 		
 		/**

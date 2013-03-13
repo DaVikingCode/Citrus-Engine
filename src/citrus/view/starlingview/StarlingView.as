@@ -5,6 +5,8 @@ package citrus.view.starlingview {
 	import citrus.view.ISpriteView;
 	import citrus.view.spriteview.SpriteDebugArt;
 
+	import dragonBones.animation.WorldClock;
+
 	import starling.display.Sprite;
 
 	import flash.display.MovieClip;
@@ -41,9 +43,9 @@ package citrus.view.starlingview {
 			super.destroy();
 		}
 
-		override public function update():void {
+		override public function update(timeDelta:Number):void {
 			
-			super.update();
+			super.update(timeDelta);
 			
 			camera.update();
 
@@ -54,6 +56,8 @@ package citrus.view.starlingview {
 
 				sprite.update(this);
 			}
+			
+			WorldClock.clock.advanceTime(timeDelta);
 		}
 
 		override protected function createArt(citrusObject:Object):Object {

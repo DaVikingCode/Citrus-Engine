@@ -32,9 +32,9 @@ package citrus.view.spriteview {
 			return _viewRoot;
 		}
 			
-		override public function update():void
+		override public function update(timeDelta:Number):void
 		{
-			super.update();
+			super.update(timeDelta);
 			
 			camera.update();
 			

@@ -67,9 +67,9 @@ package citrus.view.blittingview
 			return _cameraPosition;
 		}
 		
-		override public function update():void
+		override public function update(timeDelta:Number):void
 		{
-			super.update();
+			super.update(timeDelta);
 			
 			camera.update();			
 			

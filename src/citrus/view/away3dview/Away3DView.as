@@ -51,9 +51,9 @@ package citrus.view.away3dview {
 			return _mode;
 		}
 
-		override public function update():void {
+		override public function update(timeDelta:Number):void {
 
-			super.update();
+			super.update(timeDelta);
 			
 			camera.update();
 
