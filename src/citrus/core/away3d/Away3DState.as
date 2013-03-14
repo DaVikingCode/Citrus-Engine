@@ -2,10 +2,10 @@ package citrus.core.away3d {
 
 	import away3d.containers.ObjectContainer3D;
 
+	import citrus.core.AState;
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
 	import citrus.core.IState;
-	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
 	import citrus.input.Input;
 	import citrus.system.Entity;
@@ -14,13 +14,7 @@ package citrus.core.away3d {
 	import citrus.view.away3dview.Away3DView;
 
 	/**
-	 * The Away3DState class is very similar to the State class. It is just the same class adapted for Away3D :
-	 * 
-	 * <p>The Away3DState class is very important. It usually contains the logic for a particular state the game is in.
-	 * There can only ever be one state running at a time. You should extend the Away3DState class
-	 * to create logic and scripts for your levels. You can build one state for each level, or
-	 * create a state that represents all your levels. You can get and set the reference to your active
-	 * state via the CitrusEngine class.</p>
+	* Away3DState class is just a wrapper for the AState class. It's important to notice it extends ObjectContainer3D.
 	 */
 	public class Away3DState extends ObjectContainer3D implements IState {
 		
@@ -28,59 +22,30 @@ package citrus.core.away3d {
 		 * Get a direct references to the Citrus Engine in your State.
 		 */
 		protected var _ce:CitrusEngine;
-
-		private var _objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
-		private var _poolObjects:Vector.<PoolObject> = new Vector.<PoolObject>();
-		private var _view:ACitrusView;
+		
+		protected var _realState:AState;
+		
 		private var _input:Input;
-		
-		/**
-		 * Set this variable to true to enable frame rate independent motion. If you don't know what FRIM is, take a look <a target="_blank" href="http://actionsnippet.com/swfs/qbox_FRIM.html">there</a>.
-		 */
-		protected var _frim:Boolean = false;
-		
-		/**
-		 * The time step you would perform using FRIM.
-		 */
-		protected var _timeStep:Number = 1 / 60;
-
-		private var _accumulator:Number = 0;		
 
 		public function Away3DState() {
 			
 			_ce = CitrusEngine.getInstance();
+
+			_realState = new AState();
 		}
 
 		/**
 		 * Called by the Citrus Engine.
 		 */
 		public function destroy():void {
-
-			// Call destroy on all objects, and remove all art from the stage.
-			var n:uint = _objects.length;
-			for (var i:int = n - 1; i >= 0; --i) {
-				var object:CitrusObject = _objects[i];
-				object.destroy();
-
-				_view.removeArt(object);
-			}
-			_objects.length = 0;
-			
-			for each (var poolObject:PoolObject in _poolObjects) {
-				refreshPoolObjectArt(poolObject, poolObject.length);
-				poolObject.clear();
-			}
-			
-			_poolObjects.length = 0;
-			
-			_view.destroy();
+			_realState.destroy();
 		}
 
 		/**
 		 * Gets a reference to this state's view manager. Take a look at the class definition for more information about this. 
 		 */
 		public function get view():ACitrusView {
-			return _view;
+			return _realState.view;
 		}
 
 		/**
@@ -89,8 +54,7 @@ package citrus.core.away3d {
 		 * state in the constructur. You should call it in this initialize() method. 
 		 */
 		public function initialize():void {
-
-			_view = createView();
+			_realState.view = createView();
 			_input = _ce.input;
 		}
 
@@ -101,64 +65,7 @@ package citrus.core.away3d {
 		 */
 		public function update(timeDelta:Number):void {
 
-			// Search objects to destroy
-			var garbage:Array = [];
-			var n:uint = _objects.length;
-
-			for (var i:uint = 0; i < n; ++i) {
-				
-				var object:CitrusObject = _objects[i];
-				
-				if (object.kill)
-					garbage.push(object);
-					
-				// if we don't use the frim, we update all objects.
-				else if (!_frim)
-					object.update(timeDelta);
-			}
-
-			// Destroy all objects marked for destroy
-			// TODO There might be a limit on the number of Box2D bodies that you can destroy in one tick?
-			n = garbage.length;
-			for (i = 0; i < n; ++i) {
-				var garbageObject:CitrusObject = garbage[i];
-				_objects.splice(_objects.indexOf(garbageObject), 1);
-
-				if (garbageObject is Entity)
-					_view.removeArt((garbageObject as Entity).components["view"]);
-				else
-					_view.removeArt(garbageObject);
-
-				garbageObject.destroy();
-			}
-
-			// Call update on all objects using the frim
-			if (_frim) {
-				
-				n = _objects.length;
-
-				if (timeDelta > 0.25)
-					timeDelta = 0.25;
-
-				_accumulator += timeDelta;
-
-				while (_accumulator >= _timeStep) {
-
-					for (i = 0; i < n; ++i) {
-						object = _objects[i];
-						object.update(0.05);
-					}
-
-					_accumulator -= _timeStep;
-				}
-
-			}
-			
-			for each (var poolObject:PoolObject in _poolObjects)
-				poolObject.updatePhysics(timeDelta);
-
-			// Update the state's view
-			_view.update(timeDelta);
+			_realState.update(timeDelta);
 		}
 
 		/**
@@ -167,11 +74,7 @@ package citrus.core.away3d {
 		 * @return The CitrusObject that you passed in. Useful for linking commands together.
 		 */
 		public function add(object:CitrusObject):CitrusObject {
-
-			_objects.push(object);
-			_view.addArt(object);
-
-			return object;
+			return _realState.add(object);
 		}
 
 		/**
@@ -182,12 +85,9 @@ package citrus.core.away3d {
 		 */
 		public function addEntity(entity:Entity, view:ViewComponent = null):Entity {
 
-			_objects.push(entity);
-			_view.addArt(view);
-
-			return entity;
+			return _realState.addEntity(entity, view);
 		}
-		
+
 		/**
 		 * Call this method to add a PoolObject to this state. All pool objects and  will need to be created 
 		 * and added via this method so that they can be properly created, managed, updated, and destroyed.
@@ -195,16 +95,10 @@ package citrus.core.away3d {
 		 * @return The PoolObject that you passed in. Useful for linking commands together.
 		 */
 		public function addPoolObject(poolObject:PoolObject):PoolObject {
-		
-			if (poolObject.isCitrusObjectPool) {
-		
-				_poolObjects.push(poolObject);
-		
-				return poolObject;
-		
-			} else return null;
+
+			return _realState.addPoolObject(poolObject);
 		}
-		
+
 		/**
 		 * Call this function each time you make an operation (add or delete) on the PoolObject to refresh its graphics.
 		 * @param poolObject the PoolObject which need to refresh its graphics.
@@ -213,22 +107,7 @@ package citrus.core.away3d {
 		 */
 		public function refreshPoolObjectArt(poolObject:PoolObject, nmbrToDelete:uint = 0, startIndex:uint = 0):void {
 
-			var tmpHead:DoublyLinkedListNode = poolObject.head;
-			var i:uint, j:uint = 0;
-
-			while (tmpHead != null) {
-
-				if (nmbrToDelete > 0 && i >= startIndex && j < nmbrToDelete) {
-					
-					_view.removeArt(tmpHead.data);
-					++j;
-					
-				} else if (!_view.getArt(tmpHead.data))
-					_view.addArt(tmpHead.data);
-				
-				tmpHead = tmpHead.next;
-				++i;
-			}
+			_realState.refreshPoolObjectArt(poolObject, nmbrToDelete, startIndex);
 		}
 
 		/**
@@ -236,7 +115,7 @@ package citrus.core.away3d {
 		 * Alternatively, you can just set the object's kill property to true. That's all this method does at the moment. 
 		 */
 		public function remove(object:CitrusObject):void {
-			object.kill = true;
+			_realState.remove(object);
 		}
 
 		/**
@@ -246,14 +125,9 @@ package citrus.core.away3d {
 		 */
 		public function getObjectByName(name:String):CitrusObject {
 
-			for each (var object:CitrusObject in _objects) {
-				if (object.name == name)
-					return object;
-			}
-
-			return null;
+			return _realState.getObjectByName(name);
 		}
-		
+
 		/**
 		 * This returns a vector of all objects of a particular name. This is useful for adding an event handler
 		 * to objects that aren't similar but have the same name. For instance, you can track the collection of 
@@ -262,14 +136,7 @@ package citrus.core.away3d {
 		 */
 		public function getObjectsByName(name:String):Vector.<CitrusObject> {
 
-			var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
-
-			for each (var object:CitrusObject in _objects) {
-				if (object.name == name)
-					objects.push(object);
-			}
-
-			return objects;
+			return _realState.getObjectsByName(name);
 		}
 
 		/**
@@ -279,12 +146,7 @@ package citrus.core.away3d {
 		 */
 		public function getFirstObjectByType(type:Class):CitrusObject {
 
-			for each (var object:CitrusObject in _objects) {
-				if (object is type)
-					return object;
-			}
-
-			return null;
+			return _realState.getFirstObjectByType(type);
 		}
 
 		/**
@@ -295,44 +157,23 @@ package citrus.core.away3d {
 		 */
 		public function getObjectsByType(type:Class):Vector.<CitrusObject> {
 
-			var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
-
-			for each (var object:CitrusObject in _objects) {
-				if (object is type) {
-					objects.push(object);
-				}
-			}
-
-			return objects;
+			return _realState.getObjectsByType(type);
 		}
-		
+
 		/**
 		 * Destroy all the objects added to the State and not already killed.
 		 * @param except CitrusObjects you want to save.
 		 */
 		public function killAllObjects(...except):void {
-			
-			for each (var objectToKill:CitrusObject in _objects) {
-				
-				objectToKill.kill = true;
-				
-				for each (var objectToPreserve:CitrusObject in except) {
-					
-					if (objectToKill == objectToPreserve) {
-						
-						objectToPreserve.kill = false;
-						except.splice(except.indexOf(objectToPreserve), 1);
-						break;
-					}
-				}				
-			}
+
+			_realState.killAllObjects(except);
 		}
-		
+
 		/**
 		 * Contains all the objects added to the State and not killed.
 		 */
 		public function get objects():Vector.<CitrusObject> {
-			return _objects;
+			return _realState.objects;
 		}
 
 		/**

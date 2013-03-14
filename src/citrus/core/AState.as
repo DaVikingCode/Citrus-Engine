@@ -1,61 +1,62 @@
-package citrus.core.starling {
+package citrus.core {
 
-	import citrus.core.AState;
-	import citrus.core.CitrusEngine;
-	import citrus.core.CitrusObject;
-	import citrus.core.IState;
+	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
-	import citrus.input.Input;
 	import citrus.system.Entity;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ACitrusView;
-	import citrus.view.starlingview.StarlingView;
-
-	import starling.display.Sprite;
 
 	/**
-	 * StarlingState class is just a wrapper for the AState class. It's important to notice it extends Starling Sprite.
+	 * The AState class is very important. It usually contains the logic for a particular state the game is in.
+	 * It is an abstract class, you should never instanciate it by your own. It's used via a wrapper: State or StarlingState or Away3DState.
+	 * There can only ever be one state running at a time. You should extend the State class
+	 * to create logic and scripts for your levels. You can build one state for each level, or
+	 * create a state that represents all your levels. You can get and set the reference to your active
+	 * state via the CitrusEngine class.
 	 */
-	public class StarlingState extends Sprite implements IState {
-		
-		/**
-		 * Get a direct references to the Citrus Engine in your State.
-		 */
-		protected var _ce:CitrusEngine;
-		
-		protected var _realState:AState;
+	public class AState {
 
-		private var _input:Input;	
+		private var _objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
+		private var _poolObjects:Vector.<PoolObject> = new Vector.<PoolObject>();
+		private var _view:ACitrusView;
 
-		public function StarlingState() {
-			
-			_ce = CitrusEngine.getInstance();
-
-			_realState = new AState();
+		public function AState() {
 		}
 
 		/**
 		 * Called by the Citrus Engine.
 		 */
 		public function destroy():void {
-			_realState.destroy();
+			// Call destroy on all objects, and remove all art from the stage.
+			var n:uint = _objects.length;
+			for (var i:int = n - 1; i >= 0; --i) {
+				var object:CitrusObject = _objects[i];
+				object.destroy();
+
+				_view.removeArt(object);
+			}
+			_objects.length = 0;
+
+			for each (var poolObject:PoolObject in _poolObjects) {
+				refreshPoolObjectArt(poolObject, poolObject.length);
+				poolObject.clear();
+			}
+
+			_poolObjects.length = 0;
+
+			_view.destroy();
 		}
 
 		/**
 		 * Gets a reference to this state's view manager. Take a look at the class definition for more information about this. 
 		 */
 		public function get view():ACitrusView {
-			return _realState.view;
+			return _view;
 		}
 
-		/**
-		 * You'll most definitely want to override this method when you create your own State class. This is where you should
-		 * add all your CitrusObjects and pretty much make everything. Please note that you can't successfully call add() on a 
-		 * state in the constructur. You should call it in this initialize() method. 
-		 */
-		public function initialize():void {
-			_realState.view = createView();
-			_input = _ce.input;
+		public function set view(value:ACitrusView):void {
+			
+			_view = value;
 		}
 
 		/**
@@ -65,7 +66,40 @@ package citrus.core.starling {
 		 */
 		public function update(timeDelta:Number):void {
 
-			_realState.update(timeDelta);
+			// Search objects to destroy
+			var garbage:Array = [];
+			var n:uint = _objects.length;
+
+			for (var i:uint = 0; i < n; ++i) {
+
+				var object:CitrusObject = _objects[i];
+
+				if (object.kill)
+					garbage.push(object);
+				else
+					object.update(timeDelta);
+			}
+
+			// Destroy all objects marked for destroy
+			// TODO There might be a limit on the number of Box2D bodies that you can destroy in one tick?
+			n = garbage.length;
+			for (i = 0; i < n; ++i) {
+				var garbageObject:CitrusObject = garbage[i];
+				_objects.splice(_objects.indexOf(garbageObject), 1);
+
+				if (garbageObject is Entity)
+					_view.removeArt((garbageObject as Entity).components["view"]);
+				else
+					_view.removeArt(garbageObject);
+
+				garbageObject.destroy();
+			}
+
+			for each (var poolObject:PoolObject in _poolObjects)
+				poolObject.updatePhysics(timeDelta);
+
+			// Update the state's view
+			_view.update(timeDelta);
 		}
 
 		/**
@@ -74,7 +108,9 @@ package citrus.core.starling {
 		 * @return The CitrusObject that you passed in. Useful for linking commands together.
 		 */
 		public function add(object:CitrusObject):CitrusObject {
-			return _realState.add(object);
+			_objects.push(object);
+			_view.addArt(object);
+			return object;
 		}
 
 		/**
@@ -85,7 +121,9 @@ package citrus.core.starling {
 		 */
 		public function addEntity(entity:Entity, view:ViewComponent = null):Entity {
 
-			return _realState.addEntity(entity, view);
+			_objects.push(entity);
+			_view.addArt(view);
+			return entity;
 		}
 
 		/**
@@ -96,7 +134,13 @@ package citrus.core.starling {
 		 */
 		public function addPoolObject(poolObject:PoolObject):PoolObject {
 
-			return _realState.addPoolObject(poolObject);
+			if (poolObject.isCitrusObjectPool) {
+
+				_poolObjects.push(poolObject);
+
+				return poolObject;
+
+			} else return null;
 		}
 
 		/**
@@ -107,7 +151,22 @@ package citrus.core.starling {
 		 */
 		public function refreshPoolObjectArt(poolObject:PoolObject, nmbrToDelete:uint = 0, startIndex:uint = 0):void {
 
-			_realState.refreshPoolObjectArt(poolObject, nmbrToDelete, startIndex);
+			var tmpHead:DoublyLinkedListNode = poolObject.head;
+			var i:uint, j:uint = 0;
+
+			while (tmpHead != null) {
+
+				if (nmbrToDelete > 0 && i >= startIndex && j < nmbrToDelete) {
+
+					_view.removeArt(tmpHead.data);
+					++j;
+
+				} else if (!_view.getArt(tmpHead.data))
+					_view.addArt(tmpHead.data);
+
+				tmpHead = tmpHead.next;
+				++i;
+			}
 		}
 
 		/**
@@ -115,7 +174,7 @@ package citrus.core.starling {
 		 * Alternatively, you can just set the object's kill property to true. That's all this method does at the moment. 
 		 */
 		public function remove(object:CitrusObject):void {
-			_realState.remove(object);
+			object.kill = true;
 		}
 
 		/**
@@ -125,7 +184,12 @@ package citrus.core.starling {
 		 */
 		public function getObjectByName(name:String):CitrusObject {
 
-			return _realState.getObjectByName(name);
+			for each (var object:CitrusObject in _objects) {
+				if (object.name == name)
+					return object;
+			}
+
+			return null;
 		}
 
 		/**
@@ -136,7 +200,14 @@ package citrus.core.starling {
 		 */
 		public function getObjectsByName(name:String):Vector.<CitrusObject> {
 
-			return _realState.getObjectsByName(name);
+			var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
+
+			for each (var object:CitrusObject in _objects) {
+				if (object.name == name)
+					objects.push(object);
+			}
+
+			return objects;
 		}
 
 		/**
@@ -146,7 +217,12 @@ package citrus.core.starling {
 		 */
 		public function getFirstObjectByType(type:Class):CitrusObject {
 
-			return _realState.getFirstObjectByType(type);
+			for each (var object:CitrusObject in _objects) {
+				if (object is type)
+					return object;
+			}
+
+			return null;
 		}
 
 		/**
@@ -157,30 +233,44 @@ package citrus.core.starling {
 		 */
 		public function getObjectsByType(type:Class):Vector.<CitrusObject> {
 
-			return _realState.getObjectsByType(type);
+			var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
+
+			for each (var object:CitrusObject in _objects) {
+				if (object is type) {
+					objects.push(object);
+				}
+			}
+
+			return objects;
 		}
 
 		/**
 		 * Destroy all the objects added to the State and not already killed.
 		 * @param except CitrusObjects you want to save.
 		 */
-		public function killAllObjects(...except):void {
+		public function killAllObjects(except:Array):void {
 
-			_realState.killAllObjects(except);
+			for each (var objectToKill:CitrusObject in _objects) {
+
+				objectToKill.kill = true;
+
+				for each (var objectToPreserve:CitrusObject in except) {
+
+					if (objectToKill == objectToPreserve) {
+
+						objectToPreserve.kill = false;
+						except.splice(except.indexOf(objectToPreserve), 1);
+						break;
+					}
+				}
+			}
 		}
 
 		/**
 		 * Contains all the objects added to the State and not killed.
 		 */
 		public function get objects():Vector.<CitrusObject> {
-			return _realState.objects;
-		}
-
-		/**
-		 * Override this method if you want a state to create an instance of a custom view. 
-		 */
-		protected function createView():ACitrusView {
-			return new StarlingView(this);
+			return _objects;
 		}
 	}
 }

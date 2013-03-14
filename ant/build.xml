@@ -43,6 +43,7 @@
 			<arg line="-output ../bin/CE${VERSION}-Core.swc" />
 
 			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../src/citrus/core/AState.as" />
 			<arg line="-include-sources ../src/citrus/core/CitrusEngine.as" />
 			<arg line="-include-sources ../src/citrus/core/CitrusGroup.as" />
 			<arg line="-include-sources ../src/citrus/core/CitrusObject.as" />
