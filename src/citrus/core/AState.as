@@ -14,7 +14,7 @@ package citrus.core {
 	 * create a state that represents all your levels. You can get and set the reference to your active
 	 * state via the CitrusEngine class.
 	 */
-	public class AState {
+	final public class AState {
 
 		private var _objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 		private var _poolObjects:Vector.<PoolObject> = new Vector.<PoolObject>();
