@@ -166,7 +166,7 @@ package citrus.view.spriteview {
 				_ghostTarget.y = _manualPosition.y;
 			}
 			
-			invRotTarget = (_allowRotation) ? MathUtils.rotatePoint(new Point(_ghostTarget.x, _ghostTarget.y), -_camProxy.rotation) : new Point(_ghostTarget.x, _ghostTarget.y);
+			(_allowRotation) ? MathUtils.rotatePoint(_ghostTarget.x, _ghostTarget.y, -_camProxy.rotation) : invRotTarget = _ghostTarget as Point;
 				
 			_camProxy.x = -invRotTarget.x * _camProxy.scale;
 			_camProxy.y = -invRotTarget.y * _camProxy.scale;
@@ -194,7 +194,7 @@ package citrus.view.spriteview {
 			var rotScaledOffset:Point;
 			
 			rotScaledOffset = (_allowRotation) ?
-				MathUtils.rotatePoint( new Point(offset.x / _camProxy.scale, offset.y / _camProxy.scale), _camProxy.rotation) :
+				MathUtils.rotatePoint( offset.x / _camProxy.scale, offset.y / _camProxy.scale, _camProxy.rotation) :
 				new Point(offset.x / _camProxy.scale, offset.y / _camProxy.scale);
 			
 			// move aabb
@@ -227,7 +227,7 @@ package citrus.view.spriteview {
 				newGTPos.y += rotScaledOffset.y;
 				
 				var invGT:Point;
-				invGT = (_allowRotation) ? MathUtils.rotatePoint(new Point(newGTPos.x, newGTPos.y), -_camProxy.rotation) : new Point(newGTPos.x, newGTPos.y);
+				invGT = (_allowRotation) ? MathUtils.rotatePoint(newGTPos.x, newGTPos.y, -_camProxy.rotation) : new Point(newGTPos.x, newGTPos.y);
 				_camProxy.x = -invGT.x * _camProxy.scale + _camProxy.offsetX;
 				_camProxy.y = -invGT.y * _camProxy.scale + _camProxy.offsetY;
 				
@@ -239,18 +239,17 @@ package citrus.view.spriteview {
 			_viewRoot.x = _camProxy.x;
 			_viewRoot.y = _camProxy.y;
 			
-			_camPos = pointFromLocal(new Point(0, 0));
+			pointFromLocal(0,0,_camPos);
 
 		}
 		
-		public function pointFromLocal(p:Point):Point
+		public function pointFromLocal(x:Number,y:Number,resultPoint:Point):Point
 		{
 			
 			return MathUtils.rotatePoint(
-			new Point(
-			(p.x - _camProxy.x) /_camProxy.scale, 
-			(p.y - _camProxy.y) /_camProxy.scale)
-			, _camProxy.rotation);
+			(x - _camProxy.x) /_camProxy.scale, 
+			(y - _camProxy.y) /_camProxy.scale
+			, _camProxy.rotation,resultPoint);
 			
 			//return (_viewRoot as Sprite).globalToLocal(p);
 		}

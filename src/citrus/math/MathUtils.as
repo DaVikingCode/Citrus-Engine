@@ -39,16 +39,23 @@ package citrus.math {
 		}
 		
 		/**
-		 * Rotates a flash Point around Origin (like MathVector.rotate() )
+		 * Rotates x,y around Origin (like MathVector.rotate() ) 
+		 * if resultPoint is define, will set resultPoint to new values, otherwise, it will return a new point.
 		 * @param	p flash.geom.Point
 		 * @param	a angle in radians
 		 * @return	returns a new rotated point.
 		 */
-		public static  function rotatePoint(p:Point, a:Number):Point
+		public static  function rotatePoint(x:Number,y:Number, a:Number , resultPoint:Point = null):Point
 		{
 			var c:Number = Math.cos(a);
 			var s:Number = Math.sin(a);
-			return new Point(p.x * c + p.y * s, -p.x * s + p.y * c);
+			if (resultPoint)
+			{
+				resultPoint.setTo(x * c + y * s , -x * s + y * c );
+				return null;
+			}
+			else
+				return new Point(x * c + y * s, -x * s + y * c);
 		}
 		
 		/**
