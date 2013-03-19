@@ -419,15 +419,12 @@ package citrus.view.starlingview {
 		/**
 		 *  equivalent of  globalToLocal.
 		 */
-		public function pointFromLocal(x:Number,y:Number,resultPoint:Point):Point
+		public function pointFromLocal(x:Number,y:Number,resultPoint:Point = null):Point
 		{
-			
 			return MathUtils.rotatePoint(
 			(x - _camProxy.x) /_camProxy.scale, 
 			(y - _camProxy.y) /_camProxy.scale
 			, _camProxy.rotation,resultPoint);
-			
-			//return (_viewRoot as Sprite).globalToLocal(p);
 		}
 		
 		/**
