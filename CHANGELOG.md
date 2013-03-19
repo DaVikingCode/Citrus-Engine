@@ -1,7 +1,7 @@
 V 3.1.5, Work In Progress
 -------------------------
 - Update on DragonBones V2.0
-- No more duplicated code between States class, all use the same basis: AState. Now States class are just wrapper.
+- No more duplicated code between States class, all use the same basis: MediatorState. Now States class are just wrapper.
 - ACitrusView.update has the delta time in argument (and so its children).
 - SoundManager can handles more than 32 sounds.
 - StarlingArt handles Texture view. It creates an Image.

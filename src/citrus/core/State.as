@@ -19,7 +19,7 @@ package citrus.core {
 		 */
 		protected var _ce:CitrusEngine;
 
-		protected var _realState:AState;
+		protected var _realState:MediatorState;
 
 		private var _input:Input;
 
@@ -27,7 +27,7 @@ package citrus.core {
 			
 			_ce = CitrusEngine.getInstance();
 
-			_realState = new AState();
+			_realState = new MediatorState();
 		}
 
 		/**

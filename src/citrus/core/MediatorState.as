@@ -7,20 +7,20 @@ package citrus.core {
 	import citrus.view.ACitrusView;
 
 	/**
-	 * The AState class is very important. It usually contains the logic for a particular state the game is in.
-	 * It is an abstract class, you should never instanciate it by your own. It's used via a wrapper: State or StarlingState or Away3DState.
+	 * The MediatorState class is very important. It usually contains the logic for a particular state the game is in.
+	 * You should never instanciate/extend this class by your own. It's used via a wrapper: State or StarlingState or Away3DState.
 	 * There can only ever be one state running at a time. You should extend the State class
 	 * to create logic and scripts for your levels. You can build one state for each level, or
 	 * create a state that represents all your levels. You can get and set the reference to your active
 	 * state via the CitrusEngine class.
 	 */
-	final public class AState {
+	final public class MediatorState {
 
 		private var _objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 		private var _poolObjects:Vector.<PoolObject> = new Vector.<PoolObject>();
 		private var _view:ACitrusView;
 
-		public function AState() {
+		public function MediatorState() {
 		}
 
 		/**

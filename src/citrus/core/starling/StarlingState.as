@@ -1,9 +1,9 @@
 package citrus.core.starling {
 
-	import citrus.core.AState;
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
 	import citrus.core.IState;
+	import citrus.core.MediatorState;
 	import citrus.datastructures.PoolObject;
 	import citrus.input.Input;
 	import citrus.system.Entity;
@@ -23,7 +23,7 @@ package citrus.core.starling {
 		 */
 		protected var _ce:CitrusEngine;
 		
-		protected var _realState:AState;
+		protected var _realState:MediatorState;
 
 		private var _input:Input;	
 
@@ -31,7 +31,7 @@ package citrus.core.starling {
 			
 			_ce = CitrusEngine.getInstance();
 
-			_realState = new AState();
+			_realState = new MediatorState();
 		}
 
 		/**
