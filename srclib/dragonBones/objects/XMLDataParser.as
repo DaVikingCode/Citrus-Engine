@@ -1,13 +1,12 @@
-package dragonBones.objects
-{
+package dragonBones.objects {
+
 	import dragonBones.animation.Tween;
-	import dragonBones.animation.WorldClock;
 	import dragonBones.errors.UnknownDataError;
 	import dragonBones.utils.BytesType;
 	import dragonBones.utils.ConstValues;
 	import dragonBones.utils.TransformUtils;
 	import dragonBones.utils.dragonBones_internal;
-	
+
 	import flash.geom.ColorTransform;
 	import flash.utils.ByteArray;
 	
