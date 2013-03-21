@@ -81,7 +81,7 @@ package citrus.view.starlingview {
 		public function changeAnimation(animation:String, animLoop:Boolean):void {
 			
 			if (!(_mcSequences[animation]))
-				throw new Error("One object doesn't have the " + animation + " animation set up in its initial array");
+				throw new Error(this.parent.name + " doesn't have the " + animation + " animation set up in its initial array");
 			
 			removeChild(_mcSequences[_previousAnimation]);
 			Starling.juggler.remove(_mcSequences[_previousAnimation]);
