@@ -62,6 +62,9 @@ package citrus.objects.platformer.box2d {
 		protected var _realWidth:Number = 0;
 		
 		public function Hills(name:String, params:Object = null) {
+			
+			updateCallEnabled = true;
+			
 			super(name, params);
 		}
 		

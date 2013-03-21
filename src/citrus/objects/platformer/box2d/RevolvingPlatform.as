@@ -28,6 +28,9 @@ package citrus.objects.platformer.box2d {
 		protected var _passengers:Vector.<b2Body> = new Vector.<b2Body>();
 
 		public function RevolvingPlatform(name:String, params:Object = null) {
+			
+			updateCallEnabled = true;
+			
 			super(name, params);
 		}
 

@@ -136,6 +136,8 @@ package citrus.objects.platformer.nape {
 		protected var _combinedGroundAngle:Number = 0;
 
 		public function Hero(name:String, params:Object = null) {
+			
+			updateCallEnabled = true;
 
 			super(name, params);
 

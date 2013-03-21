@@ -50,12 +50,9 @@ package citrus.objects.platformer.nape {
 		
 		public function Enemy(name:String, params:Object=null) {
 			
+			updateCallEnabled = true;
+			
 			super(name, params);
-		}
-			
-		override public function initialize(poolObjectParams:Object = null):void {
-			
-			super.initialize(poolObjectParams);
 			
 			if (startingDirection == "left")
 				_inverted = true;

@@ -15,6 +15,8 @@ package citrus.objects.platformer.simple {
 
 		public function Hero(name:String, params:Object = null) {
 			
+			updateCallEnabled = true;
+			
 			super(name, params);
 		}
 			

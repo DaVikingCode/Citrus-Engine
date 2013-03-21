@@ -96,13 +96,6 @@ package citrus.objects.platformer.nape {
 			super.destroy();
 		}
 
-		override public function update(timeDelta:Number):void {
-
-			super.update(timeDelta);
-
-			_updateAnimation();
-		}
-
 		protected function _damage(missile:Missile, contact:NapePhysicsObject):void {
 
 			if (contact != null)
@@ -112,6 +105,7 @@ package citrus.objects.platformer.nape {
 		public function startFire():void {
 
 			_firing = true;
+			_updateAnimation();
 
 			_timer = new Timer(fireRate);
 			_timer.addEventListener(TimerEvent.TIMER, _fire);
@@ -123,6 +117,7 @@ package citrus.objects.platformer.nape {
 		public function stopFire():void {
 
 			_firing = false;
+			_updateAnimation();
 
 			_timer.stop();
 			_timer.removeEventListener(TimerEvent.TIMER, _fire);

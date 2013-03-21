@@ -52,6 +52,8 @@ package citrus.objects.platformer.nape
 
         public function MovingPlatform(name:String, params:Object = null)
         {
+			updateCallEnabled = true;
+			
             super(name, params);
         }
 

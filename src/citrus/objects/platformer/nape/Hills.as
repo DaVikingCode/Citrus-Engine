@@ -49,6 +49,9 @@ package citrus.objects.platformer.nape {
 		protected var _sliceVectorConstructor:Vector.<Vec2>;
 
 		public function Hills(name:String, params:Object = null) {
+			
+			updateCallEnabled = true;
+			
 			super(name, params);
 		}
 			

@@ -13,6 +13,9 @@ package citrus.physics {
 		protected var _realDebugView:*;
 
 		public function APhysicsEngine(name:String, params:Object = null) {
+			
+			updateCallEnabled = true;
+			
 			super(name, params);
 		}
 		

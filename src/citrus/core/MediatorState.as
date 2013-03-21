@@ -76,7 +76,7 @@ package citrus.core {
 
 				if (object.kill)
 					garbage.push(object);
-				else
+				else if (object.updateCallEnabled)
 					object.update(timeDelta);
 			}
 

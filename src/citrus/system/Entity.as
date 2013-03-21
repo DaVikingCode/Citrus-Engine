@@ -14,6 +14,8 @@ package citrus.system {
 
 		public function Entity(name:String, params:Object = null) {
 			
+			updateCallEnabled = true;
+			
 			if (params == null)
 				params = {type:"entity"};
 			else

@@ -63,6 +63,8 @@ package citrus.objects.platformer.box2d
 		
 		public function RewardBox(name:String, params:Object = null) 
 		{
+			updateCallEnabled = true;
+			
 			super(name, params);
 			
 			onUse = new Signal(RewardBox);

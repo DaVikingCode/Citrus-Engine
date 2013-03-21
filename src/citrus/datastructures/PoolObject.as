@@ -119,7 +119,7 @@ package citrus.datastructures {
 
 			var tmpHead:DoublyLinkedListNode = head;
 
-			while (tmpHead != null) {
+			while (tmpHead != null && (tmpHead.data as _poolType).updateCallEnabled) {
 				(tmpHead.data as _poolType).update(timeDelta);
 				tmpHead = tmpHead.next;
 			}

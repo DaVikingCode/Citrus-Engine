@@ -60,6 +60,8 @@ package citrus.objects.platformer.awayphysics {
 		protected var _chRotation:Number = 0;
 
 		public function Hero(name:String, params:Object = null) {
+			
+			updateCallEnabled = true;
 
 			super(name, params);
 

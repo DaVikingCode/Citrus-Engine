@@ -74,6 +74,8 @@ package citrus.objects.platformer.nape {
 		
 		public function Missile(name:String, params:Object = null) {
 			
+			updateCallEnabled = true;
+			
 			super(name, params);
 			
 			onExplode = new Signal(Missile, NapePhysicsObject);
@@ -84,6 +86,8 @@ package citrus.objects.platformer.nape {
 			
 			_fuseDurationTimeoutID = setTimeout(explode, fuseDuration);
 			_body.velocity = _velocity;
+			
+			updateAnimation();
 		}
 
 		override public function destroy():void {
@@ -119,6 +123,7 @@ package citrus.objects.platformer.nape {
 				return;
 			
 			_exploded = true;
+			updateAnimation()
 			
 			var filter:InteractionFilter = new InteractionFilter();
 			filter.collisionMask = PhysicsCollisionCategories.GetNone();

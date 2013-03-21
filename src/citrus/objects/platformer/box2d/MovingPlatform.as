@@ -46,6 +46,8 @@ package citrus.objects.platformer.box2d {
 		
 		public function MovingPlatform(name:String, params:Object=null)
 		{
+			updateCallEnabled = true;
+			
 			super(name, params);
 		}
 		

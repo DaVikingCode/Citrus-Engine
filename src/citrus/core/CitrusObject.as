@@ -22,7 +22,7 @@ package citrus.core
 		public var kill:Boolean = false;
 		
 		/**
-		 * TODO: This property prevent the <code>update</code> method to be called by the enter frame, it will save performances. 
+		 * This property prevent the <code>update</code> method to be called by the enter frame, it will save performances. 
 		 * Set it to true if you want to execute code in the <code>update</code> method.
 		 */
 		public var updateCallEnabled:Boolean = false;

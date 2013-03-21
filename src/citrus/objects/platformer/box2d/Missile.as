@@ -73,6 +73,8 @@ package citrus.objects.platformer.box2d
 		
 		public function Missile(name:String, params:Object = null) 
 		{
+			updateCallEnabled = true;
+			
 			super(name, params);
 			
 			onExplode = new Signal(Missile, Box2DPhysicsObject);
@@ -83,6 +85,8 @@ package citrus.objects.platformer.box2d
 			
 			_fuseDurationTimeoutID = setTimeout(explode, fuseDuration);
 			_body.SetLinearVelocity(_velocity);
+			
+			updateAnimation();
 		}
 		
 		override public function destroy():void
@@ -113,8 +117,6 @@ package citrus.objects.platformer.box2d
 				_body.SetLinearVelocity(_velocity);
 			else
 				_body.SetLinearVelocity(new b2Vec2());
-			
-			updateAnimation();
 		}
 		
 		/**
@@ -126,6 +128,8 @@ package citrus.objects.platformer.box2d
 				return;
 			
 			_exploded = true;
+			
+			updateAnimation();
 			
 			//Not collideable with anything anymore.
 			var filter:b2FilterData = new b2FilterData();

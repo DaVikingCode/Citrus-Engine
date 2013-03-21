@@ -142,7 +142,11 @@ package citrus.objects.platformer.box2d
 		 */		
 		public function Hero(name:String, params:Object = null)
 		{
+			updateCallEnabled = true;
+			
 			super(name, params);
+			
+			_animation = "walk";
 			
 			onJump = new Signal();
 			onGiveDamage = new Signal();
