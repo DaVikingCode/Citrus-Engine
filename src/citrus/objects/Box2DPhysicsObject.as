@@ -56,15 +56,13 @@ package citrus.objects {
 		}
 		
 		/**
-		 * All your init physics code must be added in this method, no physics code into the constructor.
+		 * All your init physics code must be added in this method, no physics code into the constructor. It's automatically called when the object is added to the state.
 		 * <p>You'll notice that the Box2DPhysicsObject's initialize method calls a bunch of functions that start with "define" and "create".
 		 * This is how the Box2D objects are created. You should override these methods in your own Box2DPhysicsObject implementation
 		 * if you need additional Box2D functionality. Please see provided examples of classes that have overridden
 		 * the Box2DPhysicsObject.</p>
 		 */
-		override public function initialize(poolObjectParams:Object = null):void {
-			
-			super.initialize(poolObjectParams);
+		override public function addPhysics():void {
 			
 			if (!_box2D)
 				throw new Error("Cannot create a Box2DPhysicsObject when a Box2D object has not been added to the state.");

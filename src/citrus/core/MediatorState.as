@@ -2,6 +2,7 @@ package citrus.core {
 
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
+	import citrus.objects.APhysicsObject;
 	import citrus.system.Entity;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ACitrusView;
@@ -108,8 +109,13 @@ package citrus.core {
 		 * @return The CitrusObject that you passed in. Useful for linking commands together.
 		 */
 		public function add(object:CitrusObject):CitrusObject {
+			
+			if (object is APhysicsObject)
+				(object as APhysicsObject).addPhysics();
+			
 			_objects.push(object);
 			_view.addArt(object);
+			
 			return object;
 		}
 

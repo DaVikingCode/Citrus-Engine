@@ -44,16 +44,14 @@ package citrus.objects {
 		}
 		
 		/**
-		 * All your init physics code must be added in this method, no physics code into the constructor.
+		 * All your init physics code must be added in this method, no physics code into the constructor. It's automatically called when the object is added to the state.
 		 * <p>You'll notice that the AwayPhysicsObject's initialize method calls a bunch of functions that start with "define" and "create".
 		 * This is how the AwayPhysics objects are created. You should override these methods in your own AwayPhysicsObject implementation
 		 * if you need additional AwayPhysics functionality. Please see provided examples of classes that have overridden
 		 * the AwayPhysicsObject.</p>
 		 */
-		override public function initialize(poolObjectParams:Object = null):void {
-
-			super.initialize(poolObjectParams);
-
+		override public function addPhysics():void {
+			
 			if (!_awayPhysics)
 				throw new Error("Cannot create a AwayPhysicsObject when a AwayPhysics object has not been added to the state.");
 

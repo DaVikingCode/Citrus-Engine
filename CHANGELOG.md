@@ -3,6 +3,7 @@ V 3.1.5, Work In Progress
 - Update on DragonBones V2.0
 - No more duplicated code between States class, all use the same basis: MediatorState. Now States class are just wrapper.
 - Added updateCallEnabled property to CitrusObject: This property prevent the update method to be called by the enter frame, it will save performances. Set it to true if you want to execute code in the update method.
+- Now physics is added to objects only when they are added to a state class. It's called addPhysics function. 
 - ACitrusView.update has the delta time in argument (and so its children).
 - SoundManager can handles more than 32 sounds.
 - StarlingArt handles Texture view. It creates an Image.

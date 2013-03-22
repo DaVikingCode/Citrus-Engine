@@ -58,15 +58,13 @@ package citrus.objects {
 		}
 			
 		/**
-		 * All your init physics code must be added in this method, no physics code into the constructor.
+		 * All your init physics code must be added in this method, no physics code into the constructor. It's automatically called when the object is added to the state.
 		 * <p>You'll notice that the NapePhysicsObject's initialize method calls a bunch of functions that start with "define" and "create".
 		 * This is how the Nape objects are created. You should override these methods in your own NapePhysicsObject implementation
 		 * if you need additional Nape functionality. Please see provided examples of classes that have overridden
 		 * the NapePhysicsObject.</p>
-		 */
-		override public function initialize(poolObjectParams:Object = null):void {
-			
-			super.initialize(poolObjectParams);
+		 */	
+		override public function addPhysics():void {
 			
 			if (!_nape)
 				throw new Error("Cannot create a NapePhysicsObject when a Nape object has not been added to the state.");

@@ -30,6 +30,12 @@ package citrus.objects {
 		}
 		
 		/**
+		 * This function will add the physics stuff to the object. It's automatically called when the object is added to the state.
+		 */
+		public function addPhysics():void {
+		}
+		
+		/**
 		 * You should override this method to extend the functionality of your physics object. This is where you will 
 		 * want to do any velocity/force logic. 
 		 */		
