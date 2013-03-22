@@ -55,6 +55,7 @@ package citrus.objects.complex.box2dstarling {
 
 		public function Bridge(name:String, params:Object = null) {
 			super(name, params);
+			updateCallEnabled = true;
 		}
 		
 		

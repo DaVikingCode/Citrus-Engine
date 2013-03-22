@@ -85,6 +85,7 @@ package citrus.objects.complex.box2dstarling {
 		public function Rope(name:String, params:Object = null) {
 			
 			super(name, params);
+			updateCallEnabled = true;
 			
 			onHang = new Signal();
 			onHangEnd = new Signal();
