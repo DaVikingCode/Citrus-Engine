@@ -146,8 +146,6 @@ package citrus.objects.platformer.box2d
 			
 			super(name, params);
 			
-			_animation = "walk";
-			
 			onJump = new Signal();
 			onGiveDamage = new Signal();
 			onTakeDamage = new Signal();
