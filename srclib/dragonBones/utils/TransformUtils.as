@@ -1,8 +1,7 @@
 package dragonBones.utils 
 {
-	import dragonBones.animation.Tween;
 	import dragonBones.objects.Node;
-	
+
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;

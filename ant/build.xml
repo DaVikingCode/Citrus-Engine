@@ -33,6 +33,15 @@
 			<!-- Turn off strict mode -->
 			<!-- <arg line="-strict=false"/> -->
 		</exec>
+
+		<zip destfile="../bin/CE${VERSION}-ALL.swc" update="true">
+			<zipfileset dir="../ce-asdoc/tempdita" prefix="docs">
+				<include name="*.*" />
+				<exclude name="ASDoc_Config.xml" />
+				<exclude name="overviews.xml" />
+			</zipfileset>
+		</zip>
+
 	</target>
 
 	<target name="CE-swc-core" description="Generates the CE core's SWC">
@@ -53,7 +62,7 @@
 			<arg line="-include-sources ../src/citrus/core/State.as" />
 
 			<arg line="-include-sources ../src/citrus/datastructures" />
-			
+
 			<arg line="-include-sources ../src/citrus/input/Input.as" />
 			<arg line="-include-sources ../src/citrus/input/InputAction.as" />
 			<arg line="-include-sources ../src/citrus/input/InputController.as" />
@@ -74,7 +83,7 @@
 			<arg line="-include-sources ../src/citrus/physics/IDebugView.as" />
 			<arg line="-include-sources ../src/citrus/physics/PhysicsCollisionCategories.as" />
 			<arg line="-include-sources ../src/citrus/physics/simple" />
-			
+
 			<arg line="-include-sources ../src/citrus/ui/inventory" />
 
 			<arg line="-include-sources ../src/citrus/system/Component.as" />
@@ -88,7 +97,7 @@
 			<arg line="-include-sources ../src/citrus/utils/Mobile.as" />
 			<arg line="-include-sources ../src/citrus/utils/objectmakers/ObjectMaker2D.as" />
 			<arg line="-include-sources ../src/citrus/utils/objectmakers/tmx" />
-			
+
 			<arg line="-include-sources ../src/citrus/view/ACitrusCamera.as" />
 			<arg line="-include-sources ../src/citrus/view/ACitrusView.as" />
 			<arg line="-include-sources ../src/citrus/view/ISpriteView.as" />
@@ -99,6 +108,16 @@
 			<!--<arg line="-external-library-path+=../lib/signals.swc"/>-->
 			<!--<arg line="-runtime-shared-library-path="/> don't know if needed-->
 		</exec>
+
+		<!-- include the documentation for all SWCs build! -->
+		<zip destfile="../bin/CE${VERSION}-Core.swc" update="true">
+			<zipfileset dir="../ce-asdoc/tempdita" prefix="docs">
+				<include name="*.*" />
+				<exclude name="ASDoc_Config.xml" />
+				<exclude name="overviews.xml" />
+			</zipfileset>
+		</zip>
+
 	</target>
 
 	<target name="CE-swc-box2d" description="Generates the CE's SWC with Box2D">
@@ -122,6 +141,7 @@
 			<arg line="-include-sources ../srclib/Box2D" />
 			<!--<arg line="-external-library-path+=../bin/libraries/Box2D.swc"/>-->
 		</exec>
+
 	</target>
 
 	<target name="CE-swc-nape" description="Generates the CE's SWC with Nape">
@@ -141,6 +161,7 @@
 
 			<arg line="-include-libraries ../lib/nape-release.swc" />
 		</exec>
+
 	</target>
 
 	<target name="CE-swc-starling-feathers" description="Generates the CE's SWC with Starling and Feathers included">
@@ -152,13 +173,13 @@
 
 			<!-- Include all of the AS3 files in LIBRARY -->
 			<arg line="-include-sources ../src/citrus/core/starling" />
-			
+
 			<arg line="-include-sources ../src/citrus/input/controllers/starling" />
-			
+
 			<arg line="-include-sources ../src/citrus/ui/starling" />
-			
+
 			<arg line="-include-sources ../src/citrus/utils/objectmakers/ObjectMakerStarling.as" />
-			
+
 			<arg line="-include-sources ../src/citrus/view/starlingview" />
 
 			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
@@ -168,6 +189,7 @@
 			<arg line="-include-sources ../srclib/starling" />
 			<arg line="-include-sources ../srclib/dragonBones" />
 		</exec>
+
 	</target>
 
 	<target name="CE-swc-starling-feathers-box2d" description="Generates the CE's SWC with Starling and Box2D">
@@ -176,13 +198,14 @@
 		<exec executable="${compc.exe}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-Starling-Feathers-Box2D.swc" />
-			
+
 			<arg line="-include-sources ../src/citrus/objects/complex/box2dstarling" />
-			
+
 			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
 			<arg line="-include-libraries ../bin/CE${VERSION}-Box2D.swc" />
 			<arg line="-include-libraries ../bin/CE${VERSION}-Starling-Feathers.swc" />
 		</exec>
+
 	</target>
 
 	<target name="CE-swc-starling-feathers-nape" description="Generates the CE's SWC with Starling and Nape">
@@ -196,6 +219,7 @@
 			<arg line="-include-libraries ../bin/CE${VERSION}-Nape.swc" />
 			<arg line="-include-libraries ../bin/CE${VERSION}-Starling-Feathers.swc" />
 		</exec>
+
 	</target>
 
 	<target name="CE-swc-away3d" description="Generates the CE's SWC with Away3D">
@@ -206,9 +230,9 @@
 			<arg line="-output ../bin/CE${VERSION}-Away3D.swc" />
 
 			<!-- Include all of the AS3 files in LIBRARY -->
-			
+
 			<arg line="-include-sources ../src/citrus/core/away3d" />
-			
+
 			<!--<arg line="-include-sources ../src/citrus/utils/ObjectMaker3D.as" />-->
 
 			<arg line="-include-sources ../src/citrus/view/away3dview" />
@@ -216,6 +240,7 @@
 			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
 			<arg line="-include-libraries ../lib/away3d.swc" />
 		</exec>
+
 	</target>
 
 	<target name="CE-swc-away3d-box2d" description="Generates the CE's SWC with Away3D and Box2D">
@@ -229,6 +254,7 @@
 			<arg line="-include-libraries ../bin/CE${VERSION}-Away3D.swc" />
 			<arg line="-include-libraries ../bin/CE${VERSION}-Box2D.swc" />
 		</exec>
+
 	</target>
 
 	<target name="CE-swc-away3d-nape" description="Generates the CE's SWC with Away3D and Nape">
@@ -242,6 +268,7 @@
 			<arg line="-include-libraries ../bin/CE${VERSION}-Away3D.swc" />
 			<arg line="-include-libraries ../bin/CE${VERSION}-Nape.swc" />
 		</exec>
+
 	</target>
 
 	<target name="CE-swc-away3d-awayphysics" description="Generates the CE's SWC with Away3D and AwayPhysics">
@@ -267,6 +294,7 @@
 
 			<arg line="-include-sources ../srclib/awayphysics" />
 		</exec>
+
 	</target>
 
 	<target name="Box2D SWC" description="Generates Box2D SWC">
