@@ -11,21 +11,48 @@ package citrus.objects.complex.box2dstarling{
 	
 	import citrus.objects.Box2DPhysicsObject;
 	
-	// Pool uses the BuoyancyController to simulate liquid. 
+	/**
+	 * Pool uses the BuoyancyController to simulate liquid physics. It's a rectangular region in which the controller influences the bodies inside of it
+	 */	
 	
 	public class Pool extends Box2DPhysicsObject
 	{
-		public var poolWidth:Number = 400;
-		public var poolHeight:Number = 200;
-		public var wallThickness:Number = 15;
-		public var waterHeight:Number = 170;
-		public var ws:int = 30;//worldscale
+		/**
+		 *strength of the surrounding bodies
+		 */	
+		[Inspectable(defaultValue="5")]
+		public var wallThickness:Number = 5;
+		
+		/**
+		 *build the left wall?
+		 */	
+		[Inspectable(defaultValue="true")]
+		public var leftWall:Boolean = true;
+		
+		/**
+		 *build the right wall?
+		 */	
+		[Inspectable(defaultValue="true")]
+		public var rightWall:Boolean = true;
+		
+		/**
+		 *build the bottom?
+		 */	
+		[Inspectable(defaultValue="true")]
+		public var bottom:Boolean = true;
 		
 		// These are the parameters for the water area
-		public var density:Number = 1.8;
+		[Inspectable(defaultValue="2")]
+		public var density:Number = 2;
+		
+		[Inspectable(defaultValue="3")]
 		public var linearDrag:Number=3;
+		
+		[Inspectable(defaultValue="2")]
 		public var angularDrag:Number=2;
 		
+		
+		private var ws:int = 30;//worldscale
 		private var pool:b2Body;
 		private var poolFixtureDef:b2FixtureDef;
 		private var poolFixture:b2Fixture;
@@ -64,9 +91,7 @@ package citrus.objects.complex.box2dstarling{
 		override protected function createShape():void
 		{
 			_shape = new b2PolygonShape();
-			//the water shape
-			b2PolygonShape(_shape).SetAsOrientedBox(poolWidth/_box2D.scale, (waterHeight-wallThickness)/_box2D.scale, 
-				new b2Vec2(0, -waterHeight/_box2D.scale));
+			b2PolygonShape(_shape).SetAsOrientedBox(_width/2, _height/2-wallThickness/_box2D.scale, new b2Vec2(0, 0-wallThickness/ws));
 		}
 		
 		override protected function defineFixture():void
@@ -87,32 +112,36 @@ package citrus.objects.complex.box2dstarling{
 			poolFixtureDef.restitution = 0.3;
 			poolFixtureDef.userData = {name:"pool"};
 			
-			//left wall
-			_shape = new b2PolygonShape();
-			b2PolygonShape(_shape).SetAsOrientedBox(wallThickness/_box2D.scale, poolHeight/_box2D.scale, 
-				new b2Vec2((-poolWidth-wallThickness)/_box2D.scale, (-poolHeight+wallThickness)/_box2D.scale));
-			poolFixtureDef.shape = _shape;
-			pool.CreateFixture(poolFixtureDef);
+			if (leftWall)
+			{
+				_shape = new b2PolygonShape();
+				b2PolygonShape(_shape).SetAsOrientedBox(wallThickness/_box2D.scale, _height/2, new b2Vec2(-_width/2-wallThickness/_box2D.scale, 0));
+				poolFixtureDef.shape = _shape;
+				pool.CreateFixture(poolFixtureDef);
+			}
 			
-			//right wall
-			_shape = new b2PolygonShape();
-			b2PolygonShape(_shape).SetAsOrientedBox(wallThickness/_box2D.scale, poolHeight/_box2D.scale, 
-				new b2Vec2((poolWidth+wallThickness)/_box2D.scale, (-poolHeight+wallThickness)/_box2D.scale));
-			poolFixtureDef.shape = _shape;
-			pool.CreateFixture(poolFixtureDef);
+			if(rightWall)
+			{
+				_shape = new b2PolygonShape();
+				b2PolygonShape(_shape).SetAsOrientedBox(wallThickness/_box2D.scale, _height/2, new b2Vec2(_width/2+wallThickness/_box2D.scale, 0));
+				poolFixtureDef.shape = _shape;
+				pool.CreateFixture(poolFixtureDef);
+			}
 			
-			//bottom
-			_shape = new b2PolygonShape();
-			b2PolygonShape(_shape).SetAsBox(poolWidth/_box2D.scale, wallThickness/_box2D.scale);
-			poolFixtureDef.shape = _shape;
-			pool.CreateFixture(poolFixtureDef);
+			if (bottom)
+			{
+				_shape = new b2PolygonShape();
+				b2PolygonShape(_shape).SetAsOrientedBox(_width/2, wallThickness/ws, new b2Vec2(0, _height/2-wallThickness/ws));
+				poolFixtureDef.shape = _shape;
+				pool.CreateFixture(poolFixtureDef);
+			}
 			
 			buoyancyController.normal.Set(0,-1);
-			buoyancyController.offset=-(_bodyDef.position.y - 2*waterHeight/ws + wallThickness/ws);
-			buoyancyController.useDensity=true;
-			buoyancyController.density=1.8;
-			buoyancyController.linearDrag=3;
-			buoyancyController.angularDrag=2;
+			buoyancyController.offset = -(_y - _height/2);
+			buoyancyController.useDensity = true;
+			buoyancyController.density = density;
+			buoyancyController.linearDrag = linearDrag;
+			buoyancyController.angularDrag = angularDrag;
 			_box2D.world.AddController(buoyancyController);
 		}
 		
