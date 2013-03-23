@@ -61,6 +61,10 @@ package citrus.objects.complex.box2dstarling{
 		
 		public function Pool(name:String, params:Object=null)
 		{
+			
+			_beginContactCallEnabled = true;
+			_endContactCallEnabled = true;
+			
 			super(name, params);
 		}
 		

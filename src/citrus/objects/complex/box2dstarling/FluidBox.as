@@ -60,6 +60,9 @@ package citrus.objects.complex.box2dstarling {
 		private var circleData:BitmapData;
 
 		public function FluidBox(name:String, params:Object = null) {
+			
+			updateCallEnabled = true;
+			
 			super(name, params);
 		}
 

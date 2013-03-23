@@ -53,6 +53,8 @@ package citrus.objects.platformer.nape
         public function MovingPlatform(name:String, params:Object = null)
         {
 			updateCallEnabled = true;
+			_beginContactCallEnabled = true;
+			_endContactCallEnabled = true;
 			
             super(name, params);
         }

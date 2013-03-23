@@ -37,6 +37,11 @@ package citrus.objects {
 		protected var _width:Number = 1;
 		protected var _height:Number = 1;
 		
+		protected var _beginContactCallEnabled:Boolean = false;
+		protected var _endContactCallEnabled:Boolean = false;
+		protected var _preContactCallEnabled:Boolean = false;
+		protected var _postContactCallEnabled:Boolean = false;
+		
 		/**
 		 * Used to define vertices' x and y points.
 		 */
@@ -364,6 +369,38 @@ package citrus.objects {
 		
 		public function set velocity(value:Array):void {
 			_body.SetLinearVelocity(new b2Vec2(value[0], value[1]));
+		}
+
+		public function get beginContactCallEnabled():Boolean {
+			return _beginContactCallEnabled;
+		}
+
+		public function set beginContactCallEnabled(beginContactCallEnabled:Boolean):void {
+			_beginContactCallEnabled = beginContactCallEnabled;
+		}
+
+		public function get endContactCallEnabled():Boolean {
+			return _endContactCallEnabled;
+		}
+
+		public function set endContactCallEnabled(value:Boolean):void {
+			_endContactCallEnabled = value;
+		}
+
+		public function get preContactCallEnabled():Boolean {
+			return _preContactCallEnabled;
+		}
+
+		public function set preContactCallEnabled(value:Boolean):void {
+			_preContactCallEnabled = value;
+		}
+
+		public function get postContactCallEnabled():Boolean {
+			return _postContactCallEnabled;
+		}
+
+		public function set postContactCallEnabled(value:Boolean):void {
+			_postContactCallEnabled = value;
 		}
 		
 	}

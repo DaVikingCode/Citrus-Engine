@@ -40,6 +40,9 @@ package citrus.objects.platformer.nape {
 		public var onEndContact:Signal;
 
 		public function Sensor(name:String, params:Object = null) {
+			
+			_beginContactCallEnabled = true;
+			_endContactCallEnabled = true;
 
 			super(name, params);
 			

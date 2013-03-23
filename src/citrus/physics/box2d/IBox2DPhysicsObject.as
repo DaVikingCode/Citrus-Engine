@@ -31,5 +31,13 @@ package citrus.physics.box2d {
 		function get body():b2Body;
 		function getBody():*;
 		
+		function get beginContactCallEnabled():Boolean;
+		function set beginContactCallEnabled(value:Boolean):void;
+		function get endContactCallEnabled():Boolean;
+		function set endContactCallEnabled(value:Boolean):void;
+		function get preContactCallEnabled():Boolean;
+		function set preContactCallEnabled(value:Boolean):void;
+		function get postContactCallEnabled():Boolean;
+		function set postContactCallEnabled(value:Boolean):void;
 	}
 }

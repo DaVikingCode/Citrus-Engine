@@ -143,6 +143,9 @@ package citrus.objects.platformer.box2d
 		public function Hero(name:String, params:Object = null)
 		{
 			updateCallEnabled = true;
+			_preContactCallEnabled = true;
+			_beginContactCallEnabled = true;
+			_endContactCallEnabled = true;
 			
 			super(name, params);
 			

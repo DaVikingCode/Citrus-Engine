@@ -38,6 +38,9 @@ package citrus.objects.platformer.box2d {
 		
 		public function Sensor(name:String, params:Object=null)
 		{
+			_beginContactCallEnabled = true;
+			_endContactCallEnabled = true;
+			
 			super(name, params);
 			onBeginContact = new Signal(b2Contact);
 			onEndContact = new Signal(b2Contact);

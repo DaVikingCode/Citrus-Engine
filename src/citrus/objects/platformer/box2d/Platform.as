@@ -24,6 +24,8 @@ package citrus.objects.platformer.box2d {
 		
 		public function Platform(name:String, params:Object = null )
 		{
+			_preContactCallEnabled = true;
+			
 			super(name, params);
 		}
 		

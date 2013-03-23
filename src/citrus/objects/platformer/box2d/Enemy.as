@@ -69,6 +69,7 @@ package citrus.objects.platformer.box2d {
 		public function Enemy(name:String, params:Object=null)
 		{
 			updateCallEnabled = true;
+			_beginContactCallEnabled = true;
 			
 			super(name, params);
 			

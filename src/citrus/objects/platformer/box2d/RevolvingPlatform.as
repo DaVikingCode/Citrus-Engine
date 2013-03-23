@@ -30,6 +30,8 @@ package citrus.objects.platformer.box2d {
 		public function RevolvingPlatform(name:String, params:Object = null) {
 			
 			updateCallEnabled = true;
+			_beginContactCallEnabled = true;
+			_endContactCallEnabled = true;
 			
 			super(name, params);
 		}

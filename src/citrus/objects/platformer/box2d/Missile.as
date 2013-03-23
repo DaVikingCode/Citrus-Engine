@@ -74,6 +74,7 @@ package citrus.objects.platformer.box2d
 		public function Missile(name:String, params:Object = null) 
 		{
 			updateCallEnabled = true;
+			_beginContactCallEnabled = true;
 			
 			super(name, params);
 			
@@ -82,6 +83,10 @@ package citrus.objects.platformer.box2d
 			_velocity = new b2Vec2(speed, 0);
 			_velocity = Box2DUtils.Rotateb2Vec2(_velocity, angle * Math.PI / 180);
 			_inverted = speed < 0;
+		}
+			
+		override public function addPhysics():void {
+			super.addPhysics();
 			
 			_fuseDurationTimeoutID = setTimeout(explode, fuseDuration);
 			_body.SetLinearVelocity(_velocity);

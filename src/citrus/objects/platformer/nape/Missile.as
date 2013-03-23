@@ -75,6 +75,7 @@ package citrus.objects.platformer.nape {
 		public function Missile(name:String, params:Object = null) {
 			
 			updateCallEnabled = true;
+			_beginContactCallEnabled = true;
 			
 			super(name, params);
 			
@@ -83,6 +84,10 @@ package citrus.objects.platformer.nape {
 			_velocity = new Vec2(speed, 0);
 			_velocity.rotate(angle * Math.PI / 180);
 			_inverted = speed < 0;
+		}
+			
+		override public function addPhysics():void {
+			super.addPhysics();
 			
 			_fuseDurationTimeoutID = setTimeout(explode, fuseDuration);
 			_body.velocity = _velocity;
@@ -123,7 +128,7 @@ package citrus.objects.platformer.nape {
 				return;
 			
 			_exploded = true;
-			updateAnimation()
+			updateAnimation();
 			
 			var filter:InteractionFilter = new InteractionFilter();
 			filter.collisionMask = PhysicsCollisionCategories.GetNone();

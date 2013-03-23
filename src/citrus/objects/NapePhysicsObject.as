@@ -2,6 +2,7 @@ package citrus.objects {
 
 	import citrus.core.CitrusEngine;
 	import citrus.physics.PhysicsCollisionCategories;
+	import citrus.physics.nape.INapePhysicsObject;
 	import citrus.physics.nape.Nape;
 	import citrus.view.ISpriteView;
 
@@ -27,7 +28,7 @@ package citrus.objects {
 	 * and creating Nape bodies, fixtures, shapes, and joints. If you are not familiar with Nape, you should first
 	 * learn about it via the <a href="http://napephys.com/help/manual.html">Nape Manual</a>.
 	 */	
-	public class NapePhysicsObject extends APhysicsObject implements ISpriteView {
+	public class NapePhysicsObject extends APhysicsObject implements ISpriteView, INapePhysicsObject {
 		
 		public static const PHYSICS_OBJECT:CbType = new CbType();
 		
@@ -39,6 +40,9 @@ package citrus.objects {
 		
 		protected var _width:Number = 30;
 		protected var _height:Number = 30;
+		
+		protected var _beginContactCallEnabled:Boolean = false;
+		protected var _endContactCallEnabled:Boolean = false;
 		
 		/**
 		 * Used to define vertices' x and y points.
@@ -332,6 +336,22 @@ package citrus.objects {
 		
 		public function set velocity(value:Array):void {
 			_body.velocity.setxy(value[0], value[1]);
+		}
+
+		public function get beginContactCallEnabled():Boolean {
+			return _beginContactCallEnabled;
+		}
+
+		public function set beginContactCallEnabled(beginContactCallEnabled:Boolean):void {
+			_beginContactCallEnabled = beginContactCallEnabled;
+		}
+
+		public function get endContactCallEnabled():Boolean {
+			return _endContactCallEnabled;
+		}
+
+		public function set endContactCallEnabled(endContactCallEnabled:Boolean):void {
+			_endContactCallEnabled = endContactCallEnabled;
 		}
 	}
 }

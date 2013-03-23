@@ -138,6 +138,8 @@ package citrus.objects.platformer.nape {
 		public function Hero(name:String, params:Object = null) {
 			
 			updateCallEnabled = true;
+			_beginContactCallEnabled = true;
+			_endContactCallEnabled = true;
 
 			super(name, params);
 

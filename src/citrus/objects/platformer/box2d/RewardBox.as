@@ -64,6 +64,7 @@ package citrus.objects.platformer.box2d
 		public function RewardBox(name:String, params:Object = null) 
 		{
 			updateCallEnabled = true;
+			_beginContactCallEnabled = true;
 			
 			super(name, params);
 			
@@ -158,9 +159,7 @@ package citrus.objects.platformer.box2d
 				var collisionAngle:Number = new MathVector(normalPoint.x, normalPoint.y).angle * 180 / Math.PI;
 				if (collisionAngle == -90)
 				{
-					//TODO remove contact listener
-					//_fixture.m_reportBeginContact = false;
-					//_fixture.removeEventListener(ContactEvent.BEGIN_CONTACT, handleBeginContact);
+					_beginContactCallEnabled = false;
 					_createReward = true;
 				}
 			}

@@ -28,13 +28,27 @@ package citrus.physics.nape {
 		}
 		
 		public function onInteractionBegin(interactionCallback:InteractionCallback):void {
-			interactionCallback.int1.userData.myData.handleBeginContact(interactionCallback);
-			interactionCallback.int2.userData.myData.handleBeginContact(interactionCallback);
+			
+			var a:INapePhysicsObject = interactionCallback.int1.userData.myData;
+			var b:INapePhysicsObject = interactionCallback.int2.userData.myData;
+			
+			if (a.beginContactCallEnabled)
+				a.handleBeginContact(interactionCallback);
+				
+			if (b.beginContactCallEnabled)
+				b.handleBeginContact(interactionCallback);
 		}
 		
 		public function onInteractionEnd(interactionCallback:InteractionCallback):void {
-			interactionCallback.int1.userData.myData.handleEndContact(interactionCallback);
-			interactionCallback.int2.userData.myData.handleEndContact(interactionCallback);
+			
+			var a:INapePhysicsObject = interactionCallback.int1.userData.myData;
+			var b:INapePhysicsObject = interactionCallback.int2.userData.myData;
+			
+			if (a.endContactCallEnabled)
+				a.handleEndContact(interactionCallback);
+				
+			if (b.endContactCallEnabled)
+				b.handleEndContact(interactionCallback);
 		}
 	}
 }

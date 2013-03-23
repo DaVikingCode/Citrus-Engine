@@ -54,8 +54,10 @@ package citrus.objects.complex.box2dstarling {
 		private var _vecSprites:Vector.<CitrusSprite>;
 
 		public function Bridge(name:String, params:Object = null) {
-			super(name, params);
+			
 			updateCallEnabled = true;
+			
+			super(name, params);
 		}
 		
 		

@@ -51,6 +51,7 @@ package citrus.objects.platformer.nape {
 		public function Enemy(name:String, params:Object=null) {
 			
 			updateCallEnabled = true;
+			_beginContactCallEnabled = true;
 			
 			super(name, params);
 			

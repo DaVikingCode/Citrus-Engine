@@ -15,25 +15,50 @@ package citrus.physics.box2d {
 
 		override public function BeginContact(contact:b2Contact):void {
 			
-			contact.GetFixtureA().GetBody().GetUserData().handleBeginContact(contact);
-			contact.GetFixtureB().GetBody().GetUserData().handleBeginContact(contact);
+			var a:IBox2DPhysicsObject = contact.GetFixtureA().GetBody().GetUserData();
+			var b:IBox2DPhysicsObject = contact.GetFixtureB().GetBody().GetUserData();
+			
+			if (a.beginContactCallEnabled)
+				a.handleBeginContact(contact);
+				
+			if (b.beginContactCallEnabled)
+				b.handleBeginContact(contact);
 		}
 			
 		override public function EndContact(contact:b2Contact):void {
 			
-			contact.GetFixtureA().GetBody().GetUserData().handleEndContact(contact);
-			contact.GetFixtureB().GetBody().GetUserData().handleEndContact(contact);
+			var a:IBox2DPhysicsObject = contact.GetFixtureA().GetBody().GetUserData();
+			var b:IBox2DPhysicsObject = contact.GetFixtureB().GetBody().GetUserData();
+			
+			if (a.endContactCallEnabled)
+				a.handleEndContact(contact);
+				
+			if (b.endContactCallEnabled)
+				b.handleEndContact(contact);
 		}
 
 		override public function PreSolve(contact:b2Contact, oldManifold:b2Manifold):void {
-			contact.GetFixtureA().GetBody().GetUserData().handlePreSolve(contact, oldManifold);
-			contact.GetFixtureB().GetBody().GetUserData().handlePreSolve(contact, oldManifold);
+			
+			var a:IBox2DPhysicsObject = contact.GetFixtureA().GetBody().GetUserData();
+			var b:IBox2DPhysicsObject = contact.GetFixtureB().GetBody().GetUserData();
+			
+			if (a.preContactCallEnabled)
+				a.handlePreSolve(contact, oldManifold);
+				
+			if (b.preContactCallEnabled)
+				b.handlePreSolve(contact, oldManifold);
 		}
 
 		override public function PostSolve(contact:b2Contact, impulse:b2ContactImpulse):void {
 			
-			contact.GetFixtureA().GetBody().GetUserData().handlePostSolve(contact, impulse);
-			contact.GetFixtureB().GetBody().GetUserData().handlePostSolve(contact, impulse);
+			var a:IBox2DPhysicsObject = contact.GetFixtureA().GetBody().GetUserData();
+			var b:IBox2DPhysicsObject = contact.GetFixtureB().GetBody().GetUserData();
+			
+			if (a.postContactCallEnabled)
+				a.handlePostSolve(contact, impulse);
+				
+			if (b.postContactCallEnabled)
+				b.handlePostSolve(contact, impulse);
 		}
 
 	}
