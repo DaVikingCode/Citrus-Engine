@@ -23,9 +23,7 @@ package citrus.objects.platformer.box2d {
 		private var _oneWay:Boolean = false;
 		
 		public function Platform(name:String, params:Object = null )
-		{
-			_preContactCallEnabled = true;
-			
+		{			
 			super(name, params);
 		}
 		
@@ -43,7 +41,7 @@ package citrus.objects.platformer.box2d {
 			if (_oneWay == value)
 				return;
 			
-			_oneWay = value;
+			_oneWay = _preContactCallEnabled = value;
 		}
 		
 		override protected function defineBody():void
