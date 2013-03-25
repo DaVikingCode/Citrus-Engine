@@ -146,6 +146,7 @@ package citrus.objects.platformer.nape {
 			
 			_body.allowRotation = false;
 			_body.gravMass = 0;
+			_body.rotate(new Vec2(_x, _y), angle * Math.PI / 180);
 		}
 			
 		override protected function createConstraint():void {

@@ -1,5 +1,6 @@
 V 3.1.5, Work In Progress
 -------------------------
+- SWCs include comments!
 - Update on DragonBones V2.0
 - No more duplicated code between States class, all use the same basis: MediatorState. Now States class are just wrapper.
 - Added updateCallEnabled property to CitrusObject: This property prevent the update method to be called by the enter frame, it will save performances. Set it to true if you want to execute code in the update method.
@@ -13,7 +14,7 @@ V 3.1.5, Work In Progress
 - Removed set velocity on Box2D and Nape dynamic objects since we already use a reference.
 - Nape MovingPlatform's default speed is 30.
 - Improved Box2D Hills.
-- SWCs include comments!
+- Fixed a bug on Nape Missile's angle.
 
 V 3.1.4, 02 27 2013
 -------------------

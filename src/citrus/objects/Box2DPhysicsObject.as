@@ -150,7 +150,7 @@ package citrus.objects {
 					polygonShape.SetAsArray(_vertices[i]);
 					_fixtureDef.shape = polygonShape;
 	
-					body.CreateFixture(_fixtureDef);
+					_body.CreateFixture(_fixtureDef);
 				}
 			}
 		}

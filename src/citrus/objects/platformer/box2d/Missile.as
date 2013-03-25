@@ -119,9 +119,9 @@ package citrus.objects.platformer.box2d
 			_body.ApplyForce(removeGravity, _body.GetWorldCenter());
 			
 			if (_exploded)
-				_body.SetLinearVelocity(_velocity);
-			else
 				_body.SetLinearVelocity(new b2Vec2());
+			else
+				_body.SetLinearVelocity(_velocity);
 		}
 		
 		/**
