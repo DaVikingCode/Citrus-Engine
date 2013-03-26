@@ -337,19 +337,31 @@ package citrus.objects {
 		public function set velocity(value:Array):void {
 			_body.velocity.setxy(value[0], value[1]);
 		}
-
+		
+		/**
+		 * This flag determines if the <code>handleBeginContact</code> method is called or not. Default is false, it saves some performances.
+		 */
 		public function get beginContactCallEnabled():Boolean {
 			return _beginContactCallEnabled;
 		}
-
+		
+		/**
+		 * Enable or disable the <code>handleBeginContact</code> method to be called. It doesn't change physics behavior.
+		 */
 		public function set beginContactCallEnabled(beginContactCallEnabled:Boolean):void {
 			_beginContactCallEnabled = beginContactCallEnabled;
 		}
-
+		
+		/**
+		 * This flag determines if the <code>handleEndContact</code> method is called or not. Default is false, it saves some performances.
+		 */
 		public function get endContactCallEnabled():Boolean {
 			return _endContactCallEnabled;
 		}
-
+		
+		/**
+		 * Enable or disable the <code>handleEndContact</code> method to be called. It doesn't change physics behavior.
+		 */
 		public function set endContactCallEnabled(endContactCallEnabled:Boolean):void {
 			_endContactCallEnabled = endContactCallEnabled;
 		}

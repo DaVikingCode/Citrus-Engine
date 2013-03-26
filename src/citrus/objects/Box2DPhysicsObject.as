@@ -370,35 +370,59 @@ package citrus.objects {
 		public function set velocity(value:Array):void {
 			_body.SetLinearVelocity(new b2Vec2(value[0], value[1]));
 		}
-
+		
+		/**
+		 * This flag determines if the <code>handleBeginContact</code> method is called or not. Default is false, it saves some performances.
+		 */
 		public function get beginContactCallEnabled():Boolean {
 			return _beginContactCallEnabled;
 		}
-
+		
+		/**
+		 * Enable or disable the <code>handleBeginContact</code> method to be called. It doesn't change physics behavior.
+		 */
 		public function set beginContactCallEnabled(beginContactCallEnabled:Boolean):void {
 			_beginContactCallEnabled = beginContactCallEnabled;
 		}
-
+		
+		/**
+		 * This flag determines if the <code>handleEndContact</code> method is called or not. Default is false, it saves some performances.
+		 */
 		public function get endContactCallEnabled():Boolean {
 			return _endContactCallEnabled;
 		}
-
+		
+		/**
+		 * Enable or disable the <code>handleEndContact</code> method to be called. It doesn't change physics behavior.
+		 */
 		public function set endContactCallEnabled(value:Boolean):void {
 			_endContactCallEnabled = value;
 		}
-
+		
+		/**
+		 * This flag determines if the <code>handlePreSolve</code> method is called or not. Default is false, it saves some performances.
+		 */
 		public function get preContactCallEnabled():Boolean {
 			return _preContactCallEnabled;
 		}
-
+		
+		/**
+		 * Enable or disable the <code>handlePreSolve</code> method to be called. It doesn't change physics behavior.
+		 */
 		public function set preContactCallEnabled(value:Boolean):void {
 			_preContactCallEnabled = value;
 		}
-
+		
+		/**
+		 * This flag determines if the <code>handlePostSolve</code> method is called or not. Default is false, it saves some performances.
+		 */
 		public function get postContactCallEnabled():Boolean {
 			return _postContactCallEnabled;
 		}
-
+		
+		/**
+		 * Enable or disable the <code>handlePostSolve</code> method to be called. It doesn't change physics behavior.
+		 */
 		public function set postContactCallEnabled(value:Boolean):void {
 			_postContactCallEnabled = value;
 		}
