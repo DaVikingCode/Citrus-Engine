@@ -46,6 +46,7 @@ package citrus.core {
 		}
 
 		public function removeSound(id:String):void {
+			
 			if (soundIsAdded(id)) {
 				delete sounds[id];
 
@@ -62,6 +63,7 @@ package citrus.core {
 		}
 
 		public function soundIsPlaying(id:String):Boolean {
+			
 			for (var currID:String in currPlayingSounds) {
 				if ( currID == id )
 					return true;
@@ -73,6 +75,7 @@ package citrus.core {
 			
 			// Check for an existing sound, and play it.
 			var t:SoundTransform;
+			
 			for (var currID:String in currPlayingSounds) {
 				if (currID == id) {
 					var c:SoundChannel = currPlayingSounds[id].channel as SoundChannel;
@@ -112,12 +115,15 @@ package citrus.core {
 		}
 
 		public function stopSound(id:String):void {
+			
 			if (soundIsPlaying(id))
 				SoundChannel(currPlayingSounds[id].channel).stop();
 		}
 
-		public function setGlobalVolume(volume:Number):void {			
+		public function setGlobalVolume(volume:Number):void {		
+				
 			for (var currID:String in currPlayingSounds) {
+				
 				var s:SoundTransform = new SoundTransform(volume);
 				SoundChannel(currPlayingSounds[currID].channel).soundTransform = s;
 				currPlayingSounds[currID].volume = volume;
@@ -125,9 +131,12 @@ package citrus.core {
 		}
 
 		public function muteAll(mute:Boolean = true):void {
+			
 			var s:SoundTransform;
 			var currID:String;
+			
 			for (currID in currPlayingSounds) {
+				
 				s = new SoundTransform(mute ? 0 : currPlayingSounds[currID].volume);
 				SoundChannel(currPlayingSounds[currID].channel).soundTransform = s;
 			}
@@ -135,15 +144,15 @@ package citrus.core {
 
 		public function setVolume(id:String, volume:Number):void {
 			
-				if (soundIsPlaying(id)){
+				if (soundIsPlaying(id)) {
+					
 					var s:SoundTransform = new SoundTransform(volume);
 					SoundChannel(currPlayingSounds[id].channel).soundTransform = s;
 					currPlayingSounds[id].volume = volume;
 				}
 			}
-		}
 
-		public function tweenVolume(id:String, volume:Number = 0, tweenDuration:Number = 2):void {	
+		/*public function tweenVolume(id:String, volume:Number = 0, tweenDuration:Number = 2):void {	
 			var s:SoundTransform = new SoundTransform();	
 			Starling.juggler.tween(currPlayingSounds[id], tweenDuration, {
 			volume: volume,
@@ -165,7 +174,7 @@ package citrus.core {
 
 			// stop the fade-out sound when its volume is zero
 			Starling.juggler.delayCall(stopSound, tweenDuration, fadeOutId);
-		}
+		}*/
 
 		public function getSoundChannel(id:String):SoundChannel {
 			
