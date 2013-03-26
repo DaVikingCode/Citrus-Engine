@@ -255,7 +255,7 @@ package citrus.input.controllers {
 		public static const NUMPAD_MULTIPLY:uint = 105;
 		public static const NUMPAD_ADD:uint = 107;
 		public static const NUMPAD_ENTER:uint = 13;
-		public static const NUMPAD_SUBSTRACT:uint = 109;
+		public static const NUMPAD_SUBTRACT:uint = 109;
 		public static const NUMPAD_DECIMAL:uint = 110;
 		public static const NUMPAD_DIVIDE:uint = 111;
 		
