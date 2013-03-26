@@ -12,6 +12,11 @@ package citrus.system.components.box2d.hero {
 		protected var _friction:Number = 0.75;
 
 		public function HeroPhysicsComponent(name:String, params:Object = null) {
+			
+			_preContactCallEnabled = true;
+			_beginContactCallEnabled = true;
+			_endContactCallEnabled = true;
+			
 			super(name, params);
 		}
 			

@@ -40,6 +40,11 @@ package citrus.system.components.box2d {
 		protected var _width:Number = 1;
 		protected var _height:Number = 1;
 		protected var _radius:Number = 0;
+		
+		protected var _beginContactCallEnabled:Boolean = false;
+		protected var _endContactCallEnabled:Boolean = false;
+		protected var _preContactCallEnabled:Boolean = false;
+		protected var _postContactCallEnabled:Boolean = false;
 
 		public function Box2DComponent(name:String, params:Object = null) {
 			
@@ -317,6 +322,38 @@ package citrus.system.components.box2d {
 		public function getBody():*
 		{
 			return _body;
+		}
+		
+		public function get beginContactCallEnabled():Boolean {
+			return _beginContactCallEnabled;
+		}
+
+		public function set beginContactCallEnabled(beginContactCallEnabled:Boolean):void {
+			_beginContactCallEnabled = beginContactCallEnabled;
+		}
+
+		public function get endContactCallEnabled():Boolean {
+			return _endContactCallEnabled;
+		}
+
+		public function set endContactCallEnabled(value:Boolean):void {
+			_endContactCallEnabled = value;
+		}
+
+		public function get preContactCallEnabled():Boolean {
+			return _preContactCallEnabled;
+		}
+
+		public function set preContactCallEnabled(value:Boolean):void {
+			_preContactCallEnabled = value;
+		}
+
+		public function get postContactCallEnabled():Boolean {
+			return _postContactCallEnabled;
+		}
+
+		public function set postContactCallEnabled(value:Boolean):void {
+			_postContactCallEnabled = value;
 		}
 	}
 }
