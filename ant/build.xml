@@ -103,7 +103,8 @@
 			<arg line="-include-sources ../src/citrus/view/ISpriteView.as" />
 			<arg line="-include-sources ../src/citrus/view/blittingview" />
 			<arg line="-include-sources ../src/citrus/view/spriteview" />
-
+			
+			<arg line="-include-libraries ../lib/EazeTween.swc" />
 			<arg line="-include-libraries ../lib/signals.swc" />
 			<!--<arg line="-external-library-path+=../lib/signals.swc"/>-->
 			<!--<arg line="-runtime-shared-library-path="/> don't know if needed-->

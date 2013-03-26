@@ -1,6 +1,7 @@
 V 3.1.5, Work In Progress
 -------------------------
 - SWCs include comments!
+- Added EazeTween as the tweening engine.
 - Update on DragonBones V2.0
 - No more duplicated code between States class, all use the same basis: MediatorState. Now States class are just wrapper.
 - Added updateCallEnabled property to CitrusObject: This property prevent the update method to be called by the enter frame, it will save performances. Set it to true if you want to execute code in the update method.
