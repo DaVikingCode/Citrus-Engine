@@ -25,7 +25,7 @@ package citrus.core.starling {
 		
 		protected var _realState:MediatorState;
 
-		private var _input:Input;	
+		protected var _input:Input;	
 
 		public function StarlingState() {
 			
