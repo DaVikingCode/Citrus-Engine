@@ -53,8 +53,9 @@ package citrus.view.starlingview {
 			for each (var sprite:StarlingArt in _viewObjects) {
 				if (sprite.group != sprite.citrusObject.group)
 					updateGroupForSprite(sprite);
-
-				sprite.update(this);
+				
+				if (sprite.updateArtEnabled)
+					sprite.update(this);
 			}
 			
 			WorldClock.clock.advanceTime(timeDelta);

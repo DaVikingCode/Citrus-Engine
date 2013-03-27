@@ -32,6 +32,11 @@ package citrus.view.away3dview {
 		public var loader:Loader;
 		public var loader3D:Loader3D;
 		
+		/**
+		 * Set it to false if you want to prevent the art to be updated. Be careful its properties (x, y, ...) won't be able to change!
+		 */
+		public var updateArtEnabled:Boolean = true;
+		
 		private var _ce:CitrusEngine;
 
 		private var _citrusObject:ISpriteView;

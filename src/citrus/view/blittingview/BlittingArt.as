@@ -41,6 +41,11 @@ package citrus.view.blittingview {
 		public var citrusObject:Object;
 		
 		/**
+		 * Set it to false if you want to prevent the art to be updated. Be careful its properties (x, y, ...) won't be able to change!
+		 */
+		public var updateArtEnabled:Boolean = true;
+		
+		/**
 		 * This is the graphical representation of your CitrusObject when using the Blitting view. a BlittingArt object
 		 * should contain one or more AnimationSequences. If your object is does not need to animate (such as a background),
 		 * you can simply pass in a class that creates your graphic. The class that you pass in must create a BitmapData object.

@@ -93,7 +93,8 @@ package citrus.view.blittingview
 			var n:Number = _spriteOrder.length;
 			for (var j:uint = 0; j < n; ++j)
 			{
-				updateArt(_spriteOrder[j].citrusObject, _spriteOrder[j]);
+				if (_spriteOrder[j].updateArtEnabled)
+					updateArt(_spriteOrder[j].citrusObject, _spriteOrder[j]);
 			}
 			_canvas.unlock();
 		}

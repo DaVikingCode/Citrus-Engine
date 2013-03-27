@@ -62,8 +62,9 @@ package citrus.view.away3dview {
 
 				if (sprite.group != sprite.citrusObject.group)
 					updateGroupForSprite(sprite);
-
-				sprite.update(this);
+				
+				if (sprite.updateArtEnabled)
+					sprite.update(this);
 			}
 		}
 		

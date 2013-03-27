@@ -47,6 +47,11 @@ package citrus.view.spriteview
 		 */
 		public var loader:Loader;
 		
+		/**
+		 * Set it to false if you want to prevent the art to be updated. Be careful its properties (x, y, ...) won't be able to change!
+		 */
+		public var updateArtEnabled:Boolean = true;
+		
 		private var _citrusObject:ISpriteView;
 		private var _physicsComponent:*;
 		private var _registration:String;

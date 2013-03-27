@@ -60,6 +60,11 @@ package citrus.view.starlingview {
 		 * property is assigned to loader.content.
 		 */
 		public var loader:Loader;
+		
+		/**
+		 * Set it to false if you want to prevent the art to be updated. Be careful its properties (x, y, ...) won't be able to change!
+		 */
+		public var updateArtEnabled:Boolean = true;
 
 		// properties :
 		

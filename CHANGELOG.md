@@ -1,11 +1,12 @@
 V 3.1.5, Work In Progress
 -------------------------
 - SWCs include comments!
-- Added EazeTween as the tweening engine.
+- Added EazeTween as the default tweening engine.
 - Update on DragonBones V2.0
 - No more duplicated code between States class, all use the same basis: MediatorState. Now States class are just wrapper.
 - When Starling is set up it picks up fullScreen dimension if it's running on mobile. The Context3DProfile parameter is also added.
 - Added updateCallEnabled property to CitrusObject: This property prevent the update method to be called by the enter frame, it will save performances. Set it to true if you want to execute code in the update method.
+- Added updateArtEnabled property to Art object. Set it to false if you want to prevent the art to be updated. Be careful its properties (x, y, ...) won't be able to change!
 - Add physics flags to prevent running contact if not necessary (beginContactCallEnabled, endContactCallEnabled, etc.).
 - Now physics is added to objects only when they are added to a state class. It's called addPhysics function. 
 - ACitrusView.update has the delta time in argument (and so its children).
