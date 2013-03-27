@@ -1,7 +1,5 @@
 package citrus.objects.complex.box2dstarling {
 
-	import flash.display.BitmapData;
-
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Collision.Shapes.b2Shape;
 	import Box2D.Common.Math.b2Vec2;
@@ -9,12 +7,12 @@ package citrus.objects.complex.box2dstarling {
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.Joints.b2RevoluteJointDef;
-
+	
 	import citrus.math.MathUtils;
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.objects.CitrusSprite;
 	import citrus.physics.PhysicsCollisionCategories;
-
+	
 	import starling.display.Image;
 	import starling.textures.Texture;
 	import starling.utils.rad2deg;
@@ -24,7 +22,7 @@ package citrus.objects.complex.box2dstarling {
 	 * Sometimes you will not properly stand on the bridge because of rotating etc., to solve this modify your Heros's handleBeginContact() function
 	 * <ul>Properties:
 	 * <li>bridgeLength : If not set it's calculated automatically.</li>
-	 * <li>useTexture : Oset false for debugging</li>
+	 * <li>useTexture : set false for debugging</li>
 	 * <li>segmentBitmapData : BitmapData for creating the texture for Bridgeelements. It get's scaled with keeping 
 	 * proportion between width and height</li></ul>
 	 */
@@ -37,10 +35,10 @@ package citrus.objects.complex.box2dstarling {
 		public var numSegments:uint = 9;
 		public var heightSegment:uint = 15;
 		public var useTexture:Boolean = false;
-		public var segmentBitmapData:BitmapData;
 		public var density:Number = 1;
 		public var friction:Number = 1;
 		public var restitution:Number = 1;
+		public var segmentTexture:Texture;
 
 		private var widthSegment:uint;
 		private var ws:Number;// worldscale
@@ -185,16 +183,12 @@ package citrus.objects.complex.box2dstarling {
 		public function initDisplay():void {
 
 			display = true;
-			var texture:Texture;
-			//If useTexture set to true but no bitmapData provided the segments will get a random color
-
-			if (segmentBitmapData == null) texture = Texture.empty(widthSegment * 2, heightSegment * 2, 0xff000000 + Math.random() * 0xffffff);
-			// Texture is sclaed to fit the width of the elements, so your image ratio should generally fit the segments
-			else texture = Texture.fromBitmapData(segmentBitmapData, true, false, segmentBitmapData.width / ((widthSegment) * 2));
 			_vecSprites = new Vector.<CitrusSprite>();
 
 			for (var i:uint = 0; i < numSegments; ++i) {
-				var image:CitrusSprite = new CitrusSprite(i.toString(), {group:2, width:_width * 2, height:_height * 2, view:new Image(texture), registration:"center"});
+				var img:Image = new Image(segmentTexture);
+				img.scaleX = img.scaleY =  (widthSegment) * 2 / segmentTexture.width;
+				var image:CitrusSprite = new CitrusSprite(i.toString(), {group:2, width:_width * 2, height:_height * 2, view:img, registration:"center"});
 				_ce.state.add(image);
 				_vecSprites.push(image);
 			}
