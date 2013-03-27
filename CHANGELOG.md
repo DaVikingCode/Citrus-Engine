@@ -18,6 +18,7 @@ V 3.1.5, Work In Progress
 - Nape MovingPlatform's default speed is 30.
 - Improved Box2D Hills.
 - Fixed a bug on Nape Missile's angle.
+- Prevent to add several time the same object to the state.
 
 V 3.1.4, 02 27 2013
 -------------------

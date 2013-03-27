@@ -110,6 +110,10 @@ package citrus.core {
 		 */
 		public function add(object:CitrusObject):CitrusObject {
 			
+			for each (var objectAdded:CitrusObject in objects) 
+				if (object == objectAdded)
+					throw new Error(object.name + " is already added to the state.");
+			
 			if (object is APhysicsObject)
 				(object as APhysicsObject).addPhysics();
 			
@@ -126,7 +130,11 @@ package citrus.core {
 		 * @return The Entity that you passed in. Useful for linking commands together.
 		 */
 		public function addEntity(entity:Entity, view:ViewComponent = null):Entity {
-
+			
+			for each (var objectAdded:CitrusObject in objects)
+				if (entity == objectAdded)
+					throw new Error(entity.name + " is already added to the state.");
+			
 			_objects.push(entity);
 			_view.addArt(view);
 			return entity;
