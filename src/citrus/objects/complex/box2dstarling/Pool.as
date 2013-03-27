@@ -10,6 +10,7 @@ package citrus.objects.complex.box2dstarling{
 	import Box2D.Dynamics.Controllers.b2BuoyancyController;
 	
 	import citrus.objects.Box2DPhysicsObject;
+	import citrus.physics.box2d.Box2DUtils;
 	
 	/**
 	 * Pool uses the BuoyancyController to simulate liquid physics. It's a rectangular region in which the controller influences the bodies inside of it
@@ -151,22 +152,21 @@ package citrus.objects.complex.box2dstarling{
 		
 		override public function handleBeginContact(contact:b2Contact):void
 		{
-			if(contact && contact.GetFixtureB().GetUserData().name == "water")
+			if(contact.GetFixtureA() == _fixture || contact.GetFixtureB() == _fixture)
 			{
-				var bodyA:b2Body=contact.GetFixtureA().GetBody();
 				//needs better checking if multiple controllers are used 
-				if (bodyA.GetControllerList()==null) {
-					buoyancyController.AddBody(bodyA);
+				if (Box2DUtils.CollisionGetOther(this, contact).body.GetControllerList() == null) {
+					buoyancyController.AddBody(Box2DUtils.CollisionGetOther(this, contact).body);
 				}
 			}
 		}
 		
 		override public function handleEndContact(contact:b2Contact):void
 		{
-			if(contact.GetFixtureB().GetUserData().name == "water")
+			if(contact.GetFixtureA() == _fixture || contact.GetFixtureB() == _fixture)
 			{
-				if (contact.GetFixtureA().GetBody().GetControllerList()!=null) {
-					buoyancyController.RemoveBody(contact.GetFixtureA().GetBody());
+				if (Box2DUtils.CollisionGetOther(this, contact).body.GetControllerList() != null) {
+					buoyancyController.AddBody(Box2DUtils.CollisionGetOther(this, contact).body);
 				}
 			}
 		}

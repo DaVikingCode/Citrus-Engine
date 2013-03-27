@@ -1,32 +1,31 @@
 package citrus.objects.complex.box2dstarling {
 
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+	import flash.utils.setTimeout;
+	
+	import Box2D.Collision.b2Manifold;
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Collision.Shapes.b2Shape;
-	import Box2D.Collision.b2Manifold;
 	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.Contacts.b2Contact;
-	import Box2D.Dynamics.Joints.b2Joint;
-	import Box2D.Dynamics.Joints.b2RevoluteJointDef;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FixtureDef;
-
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.Joints.b2Joint;
+	import Box2D.Dynamics.Joints.b2RevoluteJointDef;
+	
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.box2d.Hero;
 	import citrus.physics.box2d.Box2DUtils;
-
+	
+	import org.osflash.signals.Signal;
+	
 	import starling.display.Image;
 	import starling.textures.Texture;
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
-
-	import org.osflash.signals.Signal;
-
-	import flash.display.BitmapData;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
-	import flash.utils.setTimeout;
 	
 	/**
 	 * A hanging rope where you can hang on and swing...
@@ -49,9 +48,9 @@ package citrus.objects.complex.box2dstarling {
 		public var widthSegment:uint = 15;
 		public var useTexture:Boolean = false;	
 		/**
-		 * Bitmapdata for the segments's texture  
+		 * Texture for the segments  
 		 */
-		public var segmentBitmapData:BitmapData;
+		public var segmentTexture:Texture;
 		/**
 		 * The position where the hero is connected, relative to his origin 
 		 */
@@ -301,16 +300,12 @@ package citrus.objects.complex.box2dstarling {
 		
 		private function initDisplay():void {
 			displayReady = true;
-			var texture:Texture;
-			
-			//If useTexture set to true but no bitmapData provided the segments will get a random color
-			if (segmentBitmapData == null) texture = Texture.empty(heightSegment * 2, widthSegment * 2, 0xff000000 + Math.random() * 0xffffff);
-				// Texture is sclaed to fit the width of the elements, so your image ratio should generally fit the segments
-			else texture = Texture.fromBitmapData(segmentBitmapData, true, false, segmentBitmapData.width / ((heightSegment) * 2));
 			_vecSprites = new Vector.<CitrusSprite>();
 			
 			for (var i:uint = 0; i < numSegments; ++i) {
-				var image:CitrusSprite = new CitrusSprite(i.toString(), {group:2, width:heightSegment * 2, height:widthSegment * 2, view:new Image(texture), registration:"center"});
+				var img:Image = new Image(segmentTexture);
+				img.scaleX = img.scaleY =  (heightSegment) * 2 / segmentTexture.width;
+				var image:CitrusSprite = new CitrusSprite(i.toString(), {group:2, width:heightSegment * 2, height:widthSegment * 2, view:img, registration:"center"});
 				_ce.state.add(image);
 				_vecSprites.push(image);
 			}
