@@ -81,6 +81,14 @@ package citrus.system.components.box2d {
 			_collisionComponent.handlePostSolve(contact, impulse);
 		}
 		
+		/**
+		 * This method doesn't depend of your application enter frame. Ideally, the time between two calls never change. 
+		 * In this method you will apply any velocity/force logic. 
+		 */
+		public function fixedUpdate():void {
+			
+		}
+		
 		override public function initialize(poolObjectParams:Object = null):void {
 			
 			super.initialize();

@@ -14,6 +14,7 @@ package citrus.physics.box2d {
 		function handleEndContact(contact:b2Contact):void;
 		function handlePreSolve(contact:b2Contact, oldManifold:b2Manifold):void;
 		function handlePostSolve(contact:b2Contact, impulse:b2ContactImpulse):void;
+		function fixedUpdate():void;
 		function get x():Number;
 		function set x(value:Number):void;
 		function get y():Number;
