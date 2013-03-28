@@ -156,12 +156,17 @@ package citrus.core {
 		public function tweenVolume(id:String, volume:Number = 0, tweenDuration:Number = 2):void {
 
 			var s:SoundTransform = new SoundTransform();
-			eaze(currPlayingSounds[id]).to(tweenDuration, {volume:volume})
-				.onUpdate(function():void {
-				s.volume = currPlayingSounds[id].volume;
-				SoundChannel(currPlayingSounds[id].channel).soundTransform = s;
-			});
-
+			
+			if (currPlayingSounds[id]) {
+				
+				eaze(currPlayingSounds[id]).to(tweenDuration, {volume:volume})
+					.onUpdate(function():void {
+					s.volume = currPlayingSounds[id].volume;
+					SoundChannel(currPlayingSounds[id].channel).soundTransform = s;
+				});
+				
+			} else 
+				trace("the sound " + id + " is not playing");
 		}
 
 		public function crossFade(fadeOutId:String, fadeInId:String, tweenDuration:Number = 2, fadeInRepetitions:int = 1):void {
