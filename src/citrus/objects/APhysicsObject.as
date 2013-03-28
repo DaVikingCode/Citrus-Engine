@@ -40,8 +40,17 @@ package citrus.objects {
 		 * You should override this method to extend the functionality of your physics object. This is where you will 
 		 * want to do any velocity/force logic. 
 		 */		
-		override public function update(timeDelta:Number):void
-		{
+		override public function update(timeDelta:Number):void {
+			
+			super.update(timeDelta);
+		}
+		
+		/**
+		 * This method doesn't depend of your application enter frame. Ideally, the time between two calls never change. 
+		 * In this method you will apply any velocity/force logic. 
+		 */
+		public function fixedUpdate():void {
+			
 		}
 		
 		/**

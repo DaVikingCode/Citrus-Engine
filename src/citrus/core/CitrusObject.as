@@ -38,6 +38,11 @@ package citrus.core
 		protected var _params:Object;
 		
 		/**
+		 * The time elasped between two update call.
+		 */
+		protected var _timeDelta:Number;
+		
+		/**
 		 * Every Citrus Object needs a name. It helps if it's unique, but it won't blow up if it's not.
 		 * Also, you can pass parameters into the constructor as well. Hopefully you'll commonly be
 		 * creating CitrusObjects via an editor, which will parse your shit and create the params object for you. 
@@ -91,7 +96,7 @@ package citrus.core
 		 */		
 		public function update(timeDelta:Number):void
 		{
-			
+			_timeDelta = timeDelta;
 		}
 		
 		/**

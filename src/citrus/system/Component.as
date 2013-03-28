@@ -46,6 +46,8 @@ package citrus.system {
 		 * Perform an update on the component, called by its entity.
 		 */
 		override public function update(timeDelta:Number):void {
+			
+			super.update(timeDelta);
 		}
 
 	}

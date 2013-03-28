@@ -13,6 +13,7 @@ package citrus.physics.nape {
 		function handleBeginContact(callback:InteractionCallback):void;
 		function handleEndContact(callback:InteractionCallback):void;
 		function handlePreContact(callback:PreCallback):PreFlag;
+		function fixedUpdate():void;
 		function get x():Number;
 		function set x(value:Number):void;
 		function get y():Number;

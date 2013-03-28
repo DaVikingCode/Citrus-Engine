@@ -25,6 +25,8 @@ package citrus.physics.simple {
 
 		public function SimpleCitrusSolver(name:String, params:Object = null) {
 			
+			updateCallEnabled = true;
+			
 			super(name, params);
 			
 			_ce = CitrusEngine.getInstance();
