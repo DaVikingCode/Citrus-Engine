@@ -54,9 +54,14 @@ package citrus.view
 		function get velocity():Array;
 		
 		/**
-		 * The ratio at which the object scrolls in relation to the camera.
+		 * The ratio at which the object scrolls in relation to the camera on the x axis.
 		 */
-		function get parallax():Number;
+		function get parallaxX():Number;
+		
+		/**
+		 * The ratio at which the object scrolls in relation to the camera on the y axis.
+		 */
+		function get parallaxY():Number;
 		
 		/**
 		 * The rotation value of the object.

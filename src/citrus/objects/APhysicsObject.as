@@ -11,7 +11,8 @@ package citrus.objects {
 		
 		protected var _view:* = MovieClip;
 		protected var _inverted:Boolean = false;
-		protected var _parallax:Number = 1;
+		protected var _parallaxX:Number = 1;
+		protected var _parallaxY:Number = 1;
 		protected var _animation:String = "";
 		protected var _visible:Boolean = true;
 		protected var _x:Number = 0;
@@ -96,16 +97,22 @@ package citrus.objects {
 			_visible = value;
 		}
 		
-		/**
-		 * You can set up a parallax, no impact on physics.
-		 */
-		public function get parallax():Number {
-			return _parallax;
+		public function get parallaxX():Number {
+			return _parallaxX;
 		}
 
 		[Inspectable(defaultValue="1")]
-		public function set parallax(value:Number):void {
-			_parallax = value;
+		public function set parallaxX(value:Number):void {
+			_parallaxX = value;
+		}
+		
+		public function get parallaxY():Number {
+			return _parallaxY;
+		}
+
+		[Inspectable(defaultValue="1")]
+		public function set parallaxY(value:Number):void {
+			_parallaxY = value;
 		}
 		
 		/**

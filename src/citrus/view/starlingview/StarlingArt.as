@@ -351,14 +351,14 @@ package citrus.view.starlingview {
 				
 			} else if (_physicsComponent) {
 				
-				x = _physicsComponent.x + (camPosition.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
-				y = _physicsComponent.y + (camPosition.y * (1 - _citrusObject.parallax)) + _citrusObject.offsetY;
+				x = _physicsComponent.x + (camPosition.x * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
+				y = _physicsComponent.y + (camPosition.y * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
 				rotation = deg2rad(_physicsComponent.rotation);
 
 			} else {
 
-				x = _citrusObject.x + (camPosition.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
-				y = _citrusObject.y + (camPosition.y * (1 - _citrusObject.parallax)) + _citrusObject.offsetY;
+				x = _citrusObject.x + (camPosition.x * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
+				y = _citrusObject.y + (camPosition.y * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
 				rotation = deg2rad(_citrusObject.rotation);
 			}
 			

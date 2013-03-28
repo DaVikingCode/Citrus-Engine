@@ -63,7 +63,11 @@ package citrus.physics {
 			return null;
 		}
 
-		public function get parallax():Number {
+		public function get parallaxX():Number {
+			return 1;
+		}
+		
+		public function get parallaxY():Number {
 			return 1;
 		}
 

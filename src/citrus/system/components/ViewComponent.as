@@ -19,7 +19,8 @@ package citrus.system.components {
 		protected var _y:Number = 0;
 		protected var _rotation:Number = 0;
 		protected var _inverted:Boolean = false;
-		protected var _parallax:Number = 1;
+		protected var _parallaxX:Number = 1;
+		protected var _parallaxY:Number = 1;
 		protected var _animation:String = "";
 		protected var _visible:Boolean = true;
 		protected var _view:* = MovieClip;
@@ -95,12 +96,20 @@ package citrus.system.components {
 			_rotation = value;
 		}
 
-		public function get parallax():Number {
-			return _parallax;
+		public function get parallaxX():Number {
+			return _parallaxX;
 		}
 
-		public function set parallax(value:Number):void {
-			_parallax = value;
+		public function set parallaxX(value:Number):void {
+			_parallaxX = value;
+		}
+		
+		public function get parallaxY():Number {
+			return _parallaxY;
+		}
+
+		public function set parallaxY(value:Number):void {
+			_parallaxY = value;
 		}
 		
 		public function get group():uint
