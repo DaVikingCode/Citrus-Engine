@@ -1,4 +1,4 @@
-V 3.1.5, Work In Progress
+V 3.2.0, Work In Progress
 -------------------------
 - SWCs include comments!
 - Added EazeTween as the default tweening engine.
@@ -10,6 +10,7 @@ V 3.1.5, Work In Progress
 - Add physics flags to prevent running contact if not necessary (beginContactCallEnabled, endContactCallEnabled, etc.).
 - Now physics is added to objects only when they are added to a state class. It's called addPhysics function. 
 - ACitrusView.update has the delta time in argument (and so its children).
+- Instead of a simple parallax property, now there are two: parallaxX and parallaxY
 - SoundManager can handles more than 32 sounds.
 - StarlingArt handles Texture view. It creates an Image.
 - AnimationSequence can add new animations and remove them.
