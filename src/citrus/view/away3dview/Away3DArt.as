@@ -251,14 +251,14 @@ package citrus.view.away3dview {
 					
 				} else if (_physicsComponent) {
 	
-					x = _citrusObject.x - (_ce as Away3DCitrusEngine).away3D.width * 0.5 + (-stateView.viewRoot.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
-					y = -1 * (_citrusObject.y - (_ce as Away3DCitrusEngine).away3D.height * 0.5 + (-stateView.viewRoot.y * (1 - _citrusObject.parallax)) - _citrusObject.offsetY);
+					x = _citrusObject.x - (_ce as Away3DCitrusEngine).away3D.width * 0.5 + (-stateView.viewRoot.x * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
+					y = -1 * (_citrusObject.y - (_ce as Away3DCitrusEngine).away3D.height * 0.5 + (-stateView.viewRoot.y * (1 - _citrusObject.parallaxY)) - _citrusObject.offsetY);
 					rotationZ = -_citrusObject.rotation;
 	
 				} else {
 					
-					x = _citrusObject.x - (_ce as Away3DCitrusEngine).away3D.width * 0.5 + (-stateView.viewRoot.x * (1 - _citrusObject.parallax)) + _citrusObject.offsetX * scaleX;
-					y = -1 * (_citrusObject.y - (_ce as Away3DCitrusEngine).away3D.height * 0.5 + (-stateView.viewRoot.y * (1 - _citrusObject.parallax)) - _citrusObject.offsetY);
+					x = _citrusObject.x - (_ce as Away3DCitrusEngine).away3D.width * 0.5 + (-stateView.viewRoot.x * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
+					y = -1 * (_citrusObject.y - (_ce as Away3DCitrusEngine).away3D.height * 0.5 + (-stateView.viewRoot.y * (1 - _citrusObject.parallaxY)) - _citrusObject.offsetY);
 					rotationZ = -_citrusObject.rotation;
 				}
 			}
