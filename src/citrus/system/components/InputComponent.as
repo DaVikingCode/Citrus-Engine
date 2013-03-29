@@ -2,8 +2,6 @@ package citrus.system.components {
 
 	import citrus.system.Component;
 
-	import flash.ui.Keyboard;
-
 	/**
 	 * An input component, it will inform if the key is down, just pressed or just released.
 	 */
@@ -23,11 +21,11 @@ package citrus.system.components {
 			
 			super.update(timeDelta);
 			
-			rightKeyIsDown = _ce.input.isDown(Keyboard.RIGHT);
-			leftKeyIsDown = _ce.input.isDown(Keyboard.LEFT);
-			downKeyIsDown = _ce.input.isDown(Keyboard.DOWN);
-			spaceKeyIsDown = _ce.input.isDown(Keyboard.SPACE);
-			spaceKeyJustPressed = _ce.input.justPressed(Keyboard.SPACE);
+			rightKeyIsDown = _ce.input.isDoing("right");
+			leftKeyIsDown = _ce.input.isDoing("left");
+			downKeyIsDown = _ce.input.isDoing("duck");
+			spaceKeyIsDown = _ce.input.isDoing("jump");
+			spaceKeyJustPressed = _ce.input.justDid("jump");
 		}
 	}
 }
