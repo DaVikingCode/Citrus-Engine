@@ -137,14 +137,14 @@ package citrus.system.components.box2d.hero {
 				
 				var moveKeyPressed:Boolean = false;
 				
-				_ducking = (_inputComponent.downKeyIsDown && _onGround && canDuck);
+				_ducking = (_inputComponent.isDoingDuck && _onGround && canDuck);
 					
-				if (_inputComponent.rightKeyIsDown && !_ducking) {
+				if (_inputComponent.isDoingRight && !_ducking) {
 					_velocity.Add(getSlopeBasedMoveAngle());
 					moveKeyPressed = true;
 				}
 				
-				if (_inputComponent.leftKeyIsDown && !_ducking) {					
+				if (_inputComponent.isDoingLeft && !_ducking) {					
 					_velocity.Subtract(getSlopeBasedMoveAngle());
 					moveKeyPressed = true;
 				}
@@ -160,16 +160,16 @@ package citrus.system.components.box2d.hero {
 					(_physicsComponent as HeroPhysicsComponent).changeFixtureToItsInitialValue(); //Add friction so that he stops running
 				}
 				
-				if (_onGround && _inputComponent.spaceKeyJustPressed && !_ducking) {
+				if (_onGround && _inputComponent.justDidJump && !_ducking) {
 					_velocity.y = -jumpHeight;
 					onJump.dispatch();
 				}
 				
-				if (_inputComponent.spaceKeyIsDown && !_onGround && _velocity.y < 0)
+				if (_inputComponent.isDoingJump && !_onGround && _velocity.y < 0)
 					_velocity.y -= jumpAcceleration;
 					
 				if (_springOffEnemy != -1) {
-					if (_inputComponent.spaceKeyIsDown)
+					if (_inputComponent.isDoingJump)
 						_velocity.y = -enemySpringJumpHeight;
 					else
 						_velocity.y = -enemySpringHeight;

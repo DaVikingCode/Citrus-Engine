@@ -7,11 +7,11 @@ package citrus.system.components {
 	 */
 	public class InputComponent extends Component {
 		
-		public var rightKeyIsDown:Boolean = false;
-		public var leftKeyIsDown:Boolean = false;
-		public var downKeyIsDown:Boolean = false;
-		public var spaceKeyIsDown:Boolean = false;
-		public var spaceKeyJustPressed:Boolean = false;
+		public var isDoingRight:Boolean = false;
+		public var isDoingLeft:Boolean = false;
+		public var isDoingDuck:Boolean = false;
+		public var isDoingJump:Boolean = false;
+		public var justDidJump:Boolean = false;
 
 		public function InputComponent(name:String, params:Object = null) {
 			super(name, params);
@@ -21,11 +21,11 @@ package citrus.system.components {
 			
 			super.update(timeDelta);
 			
-			rightKeyIsDown = _ce.input.isDoing("right");
-			leftKeyIsDown = _ce.input.isDoing("left");
-			downKeyIsDown = _ce.input.isDoing("duck");
-			spaceKeyIsDown = _ce.input.isDoing("jump");
-			spaceKeyJustPressed = _ce.input.justDid("jump");
+			isDoingRight = _ce.input.isDoing("right");
+			isDoingRight = _ce.input.isDoing("left");
+			isDoingDuck = _ce.input.isDoing("duck");
+			isDoingJump = _ce.input.isDoing("jump");
+			justDidJump = _ce.input.justDid("jump");
 		}
 	}
 }
