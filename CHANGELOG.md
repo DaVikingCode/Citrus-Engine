@@ -1,5 +1,6 @@
 V 3.2.0, Work In Progress
 -------------------------
+- Added an Accelerometer Input Controller.
 - SWCs include comments!
 - Added EazeTween as the default tweening engine.
 - Update on DragonBones V2.0
