@@ -221,7 +221,16 @@ package citrus.view.spriteview
 		
 		public function update(stateView:SpriteView):void
 		{
-			scaleX = _citrusObject.inverted ? -1 : 1;
+			if (_citrusObject.inverted) {
+
+				if (scaleX > 0)
+					scaleX = -scaleX;
+
+			} else {
+
+				if (scaleX < 0)
+					scaleX = -scaleX;
+			}
 			
 			var cam:SpriteCamera = (stateView.camera as SpriteCamera);
 			var camPosition:Point = cam.camPos;
