@@ -16,22 +16,52 @@ package citrus.input.controllers
 		private var _taY:Number = 0;
 		private var _taZ:Number = 0;
 		
+		/**
+		 * easing of the accelerometer's X value.
+		 */
 		public var easingX:Number = 0.3;
+		/**
+		 * easing of the accelerometer's Y value.
+		 */
 		public var easingY:Number = 0.3;
+		/**
+		 * easing of the accelerometer's Z value.
+		 */
 		public var easingZ:Number = 0.3;
 		
+		/**
+		 * action name for the rotation on the X axis.
+		 */
 		public static const ROT_X:String = "rotX";
+		/**
+		 * action name for the rotation on the Y axis.
+		 */
 		public static const ROT_Y:String = "rotY";
+		/**
+		 * action name for the rotation on the Z axis.
+		 */
 		public static const ROT_Z:String = "rotZ";
 		
+		/**
+		 * action name for the raw accelerometer X value.
+		 */
 		public static const RAW_X:String = "rawX";
+		/**
+		 * action name for the raw accelerometer Y value.
+		 */
 		public static const RAW_Y:String = "rawY";
+		/**
+		 * action name for the raw accelerometer Z value.
+		 */
 		public static const RAW_Z:String = "rawZ";
 		
 		/**
-		 * send the new values on each frame.
+		 * send the new raw values on each frame.
 		 */
 		public var triggerRawValues:Boolean = false;
+		/**
+		 * send the new rotation values on each frame in radian.
+		 */
 		public var triggerAxisRotation:Boolean = true;
 		
 		public function Accelerometer(name:String,params:Object) 
