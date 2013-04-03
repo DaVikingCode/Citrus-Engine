@@ -1,6 +1,5 @@
-package citrus.objects
-{
-	import citrus.core.CitrusEngine;
+package citrus.objects {
+
 	import citrus.core.CitrusObject;
 	import citrus.math.MathVector;
 	import citrus.view.ISpriteView;
@@ -46,7 +45,6 @@ package citrus.objects
 			
 		public function CitrusSprite(name:String, params:Object = null)
 		{
-			_ce = CitrusEngine.getInstance();
 			
 			super(name, params);
 		}

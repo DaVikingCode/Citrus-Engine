@@ -14,7 +14,6 @@ package citrus.objects {
 	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
 
-	import citrus.core.CitrusEngine;
 	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.box2d.Box2D;
 	import citrus.physics.box2d.IBox2DPhysicsObject;
@@ -53,8 +52,7 @@ package citrus.objects {
 		 * so you will need to set the "view" property in the params parameter.
 		 */		
 		public function Box2DPhysicsObject(name:String, params:Object=null)
-		{			
-			_ce = CitrusEngine.getInstance();
+		{
 			_box2D = _ce.state.getFirstObjectByType(Box2D) as Box2D;
 			
 			super(name, params);
