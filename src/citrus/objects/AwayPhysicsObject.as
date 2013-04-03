@@ -35,8 +35,6 @@ package citrus.objects {
 		 * so you will need to set the "view" property in the params parameter.
 		 */	
 		public function AwayPhysicsObject(name:String, params:Object = null) {
-			
-			_awayPhysics = _ce.state.getFirstObjectByType(AwayPhysics) as AwayPhysics;
 
 			super(name, params);
 		}
@@ -49,6 +47,8 @@ package citrus.objects {
 		 * the AwayPhysicsObject.</p>
 		 */
 		override public function addPhysics():void {
+			
+			_awayPhysics = _ce.state.getFirstObjectByType(AwayPhysics) as AwayPhysics;
 			
 			if (!_awayPhysics)
 				throw new Error("Cannot create a AwayPhysicsObject when a AwayPhysics object has not been added to the state.");

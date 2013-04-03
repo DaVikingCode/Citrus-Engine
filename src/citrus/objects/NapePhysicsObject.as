@@ -54,8 +54,6 @@ package citrus.objects {
 		 */	
 		public function NapePhysicsObject(name:String, params:Object = null) {
 			
-			_nape = _ce.state.getFirstObjectByType(Nape) as Nape;
-			
 			super(name, params);
 		}
 			
@@ -67,6 +65,8 @@ package citrus.objects {
 		 * the NapePhysicsObject.</p>
 		 */	
 		override public function addPhysics():void {
+			
+			_nape = _ce.state.getFirstObjectByType(Nape) as Nape;
 			
 			if (!_nape)
 				throw new Error("Cannot create a NapePhysicsObject when a Nape object has not been added to the state.");

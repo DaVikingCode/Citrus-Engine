@@ -53,8 +53,6 @@ package citrus.objects {
 		 */		
 		public function Box2DPhysicsObject(name:String, params:Object=null)
 		{
-			_box2D = _ce.state.getFirstObjectByType(Box2D) as Box2D;
-			
 			super(name, params);
 		}
 		
@@ -66,6 +64,8 @@ package citrus.objects {
 		 * the Box2DPhysicsObject.</p>
 		 */
 		override public function addPhysics():void {
+			
+			_box2D = _ce.state.getFirstObjectByType(Box2D) as Box2D;
 			
 			if (!_box2D)
 				throw new Error("Cannot create a Box2DPhysicsObject when a Box2D object has not been added to the state.");
