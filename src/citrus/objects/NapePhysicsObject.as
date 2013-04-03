@@ -1,6 +1,5 @@
 package citrus.objects {
 
-	import citrus.core.CitrusEngine;
 	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.nape.INapePhysicsObject;
 	import citrus.physics.nape.Nape;
@@ -55,7 +54,6 @@ package citrus.objects {
 		 */	
 		public function NapePhysicsObject(name:String, params:Object = null) {
 			
-			_ce = CitrusEngine.getInstance();
 			_nape = _ce.state.getFirstObjectByType(Nape) as Nape;
 			
 			super(name, params);
