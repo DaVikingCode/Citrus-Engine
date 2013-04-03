@@ -159,8 +159,6 @@ package citrus.view.starlingview {
 				_camProxy.scale += velocityZoom;
 			}
 			
-			var invRotTarget:Point;
-			
 			if (_target)
 			{
 				_targetPos.x = _target.x;
@@ -181,7 +179,7 @@ package citrus.view.starlingview {
 				_ghostTarget.y = _manualPosition.y;
 			}
 			
-			(_allowRotation) ? MathUtils.rotatePoint(_ghostTarget.x, _ghostTarget.y, -_camProxy.rotation) : invRotTarget = _ghostTarget as Point;
+			var invRotTarget:Point = (_allowRotation) ? MathUtils.rotatePoint(_ghostTarget.x, _ghostTarget.y, -_camProxy.rotation) : _ghostTarget as Point;
 				
 			_camProxy.x = -invRotTarget.x * _camProxy.scale;
 			_camProxy.y = -invRotTarget.y * _camProxy.scale;
