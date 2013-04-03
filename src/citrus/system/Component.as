@@ -1,5 +1,6 @@
 package citrus.system {
 
+	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
 
 	/**
@@ -13,6 +14,8 @@ package citrus.system {
 		public var entity:Entity;
 
 		public function Component(name:String, params:Object = null) {
+			
+			_ce = CitrusEngine.getInstance();
 			
 			if (params == null)
 				params = {type:"component"};

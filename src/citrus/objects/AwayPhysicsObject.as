@@ -5,6 +5,7 @@ package citrus.objects {
 	import awayphysics.collision.shapes.AWPSphereShape;
 	import awayphysics.dynamics.AWPRigidBody;
 
+	import citrus.core.CitrusEngine;
 	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.awayphysics.AwayPhysics;
 	import citrus.view.ISpriteView;
@@ -35,7 +36,8 @@ package citrus.objects {
 		 * so you will need to set the "view" property in the params parameter.
 		 */	
 		public function AwayPhysicsObject(name:String, params:Object = null) {
-			
+
+			_ce = CitrusEngine.getInstance();
 			_awayPhysics = _ce.state.getFirstObjectByType(AwayPhysics) as AwayPhysics;
 
 			super(name, params);

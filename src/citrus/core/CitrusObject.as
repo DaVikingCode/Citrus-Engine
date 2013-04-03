@@ -54,8 +54,6 @@ package citrus.core
 		{
 			this.name = name;
 			
-			_ce = CitrusEngine.getInstance();
-			
 			_params = params;
 			
 			if (params) {
