@@ -2,7 +2,7 @@ package citrus.input.controllers.starling
 {
 	import citrus.input.InputController;
 	import citrus.view.starlingview.StarlingView;
-	import flash.display.Sprite;
+	import starling.display.Sprite;
 	import starling.events.TouchEvent;
 	import starling.events.Touch;
 	import starling.events.TouchPhase;
@@ -45,7 +45,6 @@ package citrus.input.controllers.starling
 					case TouchPhase.BEGAN:
 						triggerON(touchAction, 1, defaultChannel);
 						break;
-					default:
 					case TouchPhase.ENDED:
 						triggerOFF(touchAction, 0, defaultChannel);
 						break;
