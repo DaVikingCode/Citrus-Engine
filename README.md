@@ -15,6 +15,7 @@ It offers many options, you may use :
 
 Games References
 ----------------
+[![Jim loves Mary](http://aymericlamboley.fr/blog/wp-content/uploads/2013/04/jim-mary.png)](http://meowbeast.com/game/jim-loves-mary/)
 [![Chorizos de España](http://aymericlamboley.fr/blog/wp-content/uploads/2013/03/Chorizos.png)](https://play.google.com/store/apps/details?id=air.com.ravalmatic.ChorizosDeEspana)
 [![Shotgun vs Zombies](http://aymericlamboley.fr/blog/wp-content/uploads/2013/03/Shotgun-vs-Zombies.png)](http://armorgames.com/play/14737/shotgun-vs-zombies)
 [![Gérard](http://aymericlamboley.fr/blog/wp-content/uploads/2013/02/gerard.png)](https://play.google.com/store/apps/details?id=air.com.studio3wg.gerard)
