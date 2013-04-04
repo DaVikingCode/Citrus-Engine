@@ -16,10 +16,8 @@ package citrus.input.controllers.starling
 	 */
 	public class ScreenTouch extends InputController
 	{
-		/**
-		 * By default, the touchTarget will be set to the state so that anything outside will not be considered.
-		 */
-		public var touchTarget:Sprite;
+		
+		protected var _touchTarget:Sprite;
 		/**
 		 * touch action is the action triggered on touch, it is jump by default.
 		 */
@@ -29,15 +27,15 @@ package citrus.input.controllers.starling
 		{
 			super(name, params);
 			
-			if (!touchTarget)
-			touchTarget = ((_ce.state.view as StarlingView).viewRoot as Sprite);
+			if (!_touchTarget)
+			_touchTarget = ((_ce.state.view as StarlingView).viewRoot as Sprite);
 			
-			touchTarget.addEventListener(TouchEvent.TOUCH, _handleTouch);
+			_touchTarget.addEventListener(TouchEvent.TOUCH, _handleTouch);
 		}
 		
 		private function _handleTouch(e:TouchEvent):void
 		{
-			var t:Touch = e.getTouch(touchTarget);
+			var t:Touch = e.getTouch(_touchTarget);
 			if (t)
 			{
 				switch (t.phase) {
@@ -53,8 +51,26 @@ package citrus.input.controllers.starling
 		}
 		
 		override public function destroy():void {
-			touchTarget.removeEventListener(TouchEvent.TOUCH, _handleTouch);
+			_touchTarget.removeEventListener(TouchEvent.TOUCH, _handleTouch);
 			super.destroy();
+		}
+		
+		/**
+		 * By default, the touchTarget will be set to the state so that anything outside will not be considered.
+		 */
+		public function get touchTarget():Sprite
+		{
+			return _touchTarget;
+		}
+		
+		public function set touchTarget(s:Sprite):void
+		{
+			if (s != _touchTarget)
+			{
+				_touchTarget.removeEventListener(TouchEvent.TOUCH, _handleTouch);
+				s.addEventListener(TouchEvent.TOUCH, _handleTouch);
+				_touchTarget = s;
+			}
 		}
 		
 	}
