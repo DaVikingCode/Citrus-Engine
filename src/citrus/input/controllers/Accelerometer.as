@@ -1,6 +1,8 @@
 package citrus.input.controllers 
 {
+
 	import citrus.input.InputController;
+
 	import flash.events.AccelerometerEvent;
 	import flash.sensors.Accelerometer;
 	

@@ -66,6 +66,7 @@
 			<arg line="-include-sources ../src/citrus/input/Input.as" />
 			<arg line="-include-sources ../src/citrus/input/InputAction.as" />
 			<arg line="-include-sources ../src/citrus/input/InputController.as" />
+			<arg line="-include-sources ../src/citrus/input/controllers/Accelerometer.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/AVirtualButton.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/AVirtualJoystick.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/Keyboard.as" />
