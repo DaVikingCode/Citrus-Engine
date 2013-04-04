@@ -41,6 +41,8 @@ package citrus.core {
 
 			if (sound is String && sound != "")
 				sounds[id] = sound;
+			else if (sound is Sound)
+				sounds[id] = sound;
 			else if (sound is Class)
 				sounds[id] = sound;
 			else
@@ -97,6 +99,9 @@ package citrus.core {
 			var soundFactory:Sound;
 			if (sounds[id] is Class) {
 				soundFactory = new sounds[id]() as Sound;
+			} else if (sounds[id] is Sound) {
+				soundFactory = sounds[id];
+				
 			} else {
 				soundFactory = new Sound();
 				soundFactory.addEventListener(IOErrorEvent.IO_ERROR, handleLoadError);
