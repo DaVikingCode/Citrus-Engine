@@ -54,7 +54,7 @@ package citrus.input.controllers.starling
 		}
 		
 		override public function destroy():void {
-			touchTarget.addEventListener(TouchEvent.TOUCH, _handleTouch);
+			touchTarget.removeEventListener(TouchEvent.TOUCH, _handleTouch);
 			super.destroy();
 		}
 		
