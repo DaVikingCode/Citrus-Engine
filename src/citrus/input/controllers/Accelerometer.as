@@ -10,26 +10,58 @@ package citrus.input.controllers
 	{
 		private var _accel: flash.sensors.Accelerometer;
 		
-		private var _aX:Number = 0;
-		private var _aY:Number = 0;
-		private var _aZ:Number = 0;
+		//current accel
+		private var _a:Object = { x:0, y:0, z:0 };
+		//target accel
+		private var _t:Object = { x:0, y:0, z:0 };
 		
-		private var _taX:Number = 0;
-		private var _taY:Number = 0;
-		private var _taZ:Number = 0;
+		//rotation
+		private var _rot:Object = { x:0 , y:0 , z:0 };
+		//previous accel
+		private var _prevRot:Object = { x:0 , y:0 , z:0 };
+		
+		//only start calculating when received first events from device.
+		private var receivedFirstAccelUpdate:Boolean = false;
+		
+		/**
+		 * Angle inside which no action is triggered, representing the "center" or the "idle position".
+		 * the more this angle is big, the more the device needs to be rotated to start triggering actions.
+		 */
+		public var idleAngleZ:Number = Math.PI / 8;
+		
+		/**
+		 * Angle inside which no action is triggered, representing the "center" or the "idle position".
+		 * the more this angle is big, the more the device needs to be rotated to start triggering actions.
+		 */
+		public var idleAngleX:Number = Math.PI / 6;
+		
+		/**
+		 * Set this to offset the Z rotation calculations :
+		 */
+		public var offsetZAngle:Number = 0;
+		
+		/**
+		 * Set this to offset the Y rotation calculations :
+		 */
+		public var offsetYAngle:Number = 0;
+		
+		/**
+		 * Set this to offset the X rotation calculations :
+		 */
+		public var offsetXAngle:Number = -Math.PI/2 + Math.PI/4;
 		
 		/**
 		 * easing of the accelerometer's X value.
 		 */
-		public var easingX:Number = 0.3;
+		public var easingX:Number = 0.5;
 		/**
 		 * easing of the accelerometer's Y value.
 		 */
-		public var easingY:Number = 0.3;
+		public var easingY:Number = 0.5;
 		/**
 		 * easing of the accelerometer's Z value.
 		 */
-		public var easingZ:Number = 0.3;
+		public var easingZ:Number = 0.5;
 		
 		/**
 		 * action name for the rotation on the X axis.
@@ -66,6 +98,11 @@ package citrus.input.controllers
 		 */
 		public var triggerAxisRotation:Boolean = true;
 		
+		/**
+		 * if true, on each update values will be computed to send custom Actions (such as left right up down by default)
+		 */
+		public var triggerActions:Boolean = true;
+		
 		public function Accelerometer(name:String,params:Object) 
 		{
 			super(name, params);
@@ -87,31 +124,109 @@ package citrus.input.controllers
 		 */
 		public function onAccelerometerUpdate(e:AccelerometerEvent):void
 		{
-			_taX = e.accelerationX;
-			_taY = e.accelerationY;
-			_taZ = e.accelerationZ;
+			_t.x = e.accelerationX;
+			_t.y = e.accelerationY;
+			_t.z = e.accelerationZ;
+			
+			receivedFirstAccelUpdate = true;
 		}
 		
 		override public function update():void
 		{
+			if (!receivedFirstAccelUpdate)
+				return;
+			
 			//ease values
-			_aX += (_taX -_aX) * easingX;
-			_aY += (_taY -_aY) * easingY;
-			_aZ += (_taZ -_aZ) * easingZ;
+			_a.x += (_t.x -_a.x) * easingX;
+			_a.y += (_t.y -_a.y) * easingY;
+			_a.z += (_t.z -_a.z) * easingZ;
+			
+			_rot.x = Math.atan2(_a.y, _a.z) + offsetXAngle;
+			_rot.y = Math.atan2(_a.x, _a.z) + offsetYAngle;
+			_rot.z = Math.atan2(_a.x, _a.y) + offsetZAngle;
 			
 			if (triggerRawValues)
 			{
-				triggerVALUECHANGE(RAW_X, _aX);
-				triggerVALUECHANGE(RAW_Y, _aY);
-				triggerVALUECHANGE(RAW_Z, _aZ);
+				triggerVALUECHANGE(RAW_X, _a.x);
+				triggerVALUECHANGE(RAW_Y, _a.y);
+				triggerVALUECHANGE(RAW_Z, _a.z);
 			}	
 			
 			if (triggerAxisRotation)
 			{
-				triggerVALUECHANGE(ROT_X, Math.atan2(_aY, _aZ));
-				triggerVALUECHANGE(ROT_Y, Math.atan2(_aX, _aZ));
-				triggerVALUECHANGE(ROT_Z, Math.atan2(_aX, _aY));
+				triggerVALUECHANGE(ROT_X, _rot.x);
+				triggerVALUECHANGE(ROT_Y, _rot.y);
+				triggerVALUECHANGE(ROT_Z, _rot.z);
 			}
+			
+			if (triggerActions)
+				customActions();
+				
+			_prevRot.x = _rot.x;
+			_prevRot.y = _rot.y;
+			_prevRot.z = _rot.z;
+			
+		}
+		
+		/**
+		 * Override this function to customize actions based on orientation
+		 * by default, if triggerActions is set to true, customActions will be called
+		 * in which default actions such as left/right/up/down will be triggered
+		 * based on the actual rotation of the device:
+		 * in landscape mode, pivoting the device to the right will trigger a right action for example.
+		 * to make it available in portrait mode, the offsetZAngle can help rotate that calculation by 90° or more
+		 * depeding on your screen orientation...
+		 * 
+		 * this was mostly tested on a fixed landscape orientation setting.
+		 */
+		protected function customActions():void
+		{
+			//in idle position on Z
+			if (_rot.z < idleAngleZ && _rot.z > - idleAngleZ)
+			{
+				triggerOFF("left", 0);
+				triggerOFF("right", 0);
+			}
+			else
+			{
+				//going right
+				if (_rot.z < 0 && _rot.z > -Math.PI/2)
+				{
+					triggerON("right", 1);
+					triggerOFF("left", 0);
+				}
+				
+				//going left
+				if (_rot.z > 0 && _rot.z < Math.PI / 2)
+				{
+					triggerON("left", 1);
+					triggerOFF("right", 0);
+				}
+			}
+			
+			//in idle position on X
+			if (_rot.x < idleAngleX && _rot.x > - idleAngleX)
+			{
+				triggerOFF("jump", 0);
+				triggerOFF("down", 0);
+			}
+			else
+			{
+				//going up
+				if (_rot.x < 0 && _rot.x > -Math.PI/2)
+				{
+					triggerON("jump", 1);
+					triggerOFF("down", 0);
+				}
+				
+				//going down
+				if (_rot.x > 0 && _rot.x < Math.PI / 2)
+				{
+					triggerON("down", 1);
+					triggerOFF("jump", 0);
+				}
+			}
+			
 			
 		}
 		
