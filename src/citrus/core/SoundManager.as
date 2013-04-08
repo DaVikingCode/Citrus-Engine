@@ -1,6 +1,7 @@
 package citrus.core {
 
 	import aze.motion.eaze;
+	import flash.events.Event;
 
 	import flash.events.IOErrorEvent;
 	import flash.media.Sound;
@@ -15,10 +16,12 @@ package citrus.core {
 
 		public var sounds:Dictionary;
 		public var currPlayingSounds:Dictionary;
+		public var loadingQueue:Vector.<Object>;
 
 		public function SoundManager() {
 			sounds = new Dictionary();
 			currPlayingSounds = new Dictionary();
+			loadingQueue = new Vector.<Object>();
 		}
 
 		public static function getInstance():SoundManager {
@@ -32,6 +35,8 @@ package citrus.core {
 
 			sounds = null;
 			currPlayingSounds = null;
+			loadingQueue.length = 0;
+			loadingQueue = null;
 		}
 
 		/*
@@ -94,15 +99,23 @@ package citrus.core {
 			// Create a new sound
 			var soundFactory:Sound;
 			if (sounds[id] is Class) {
-				soundFactory = new sounds[id]() as Sound;
+				sounds[id] = soundFactory = new sounds[id]() as Sound;
 			} else if (sounds[id] is Sound) {
-				soundFactory = sounds[id];
-				
-			} else {
+				soundFactory = sounds[id];	
+			} else if(sounds[id] is String){
 				soundFactory = new Sound();
 				soundFactory.addEventListener(IOErrorEvent.IO_ERROR, handleLoadError);
+				soundFactory.addEventListener(Event.COMPLETE, handleLoadCompleteAndPlay);
 				soundFactory.load(new URLRequest(sounds[id]));
+				loadingQueue.push({id:id,loading:true,sound:soundFactory,volume:volume,timesToRepeat:timesToRepeat,panning:panning});
+				return;
+			} else if (!(id in sounds))
+			{
+				trace("SoundManager: trying to play a sound not added to the list:",id);
+				return;
 			}
+			else
+				return;
 
 			var channel:SoundChannel = new SoundChannel();
 			channel = soundFactory.play(0, timesToRepeat);
@@ -112,7 +125,7 @@ package citrus.core {
 
 			t = new SoundTransform(volume, panning);
 			channel.soundTransform = t;
-
+			
 			currPlayingSounds[id] = {channel:channel, sound:soundFactory, volume:volume};
 		}
 
@@ -210,8 +223,37 @@ package citrus.core {
 		}
 
 		private function handleLoadError(e:IOErrorEvent):void {
-
 			trace("Sound manager failed to load a sound: " + e.text);
+		}
+		
+		
+		/**
+		 * Called after playSound when sound is loaded if sound was a url.
+		 */
+		private function handleLoadCompleteAndPlay(e:Event):void
+		{
+			var s:String;
+			for (s in loadingQueue)
+				if (loadingQueue[s]["loading"])
+				{
+					if (loadingQueue[s].sound == e.target)
+					{
+						var o:Object = loadingQueue[s];
+						var channel:SoundChannel = new SoundChannel();
+						channel = o.sound.play(0, o.timesToRepeat);
+						if (channel != null)
+						{
+							var t:SoundTransform = new SoundTransform(o.volume, o.panning);
+							channel.soundTransform = t;
+						}
+						currPlayingSounds[o.id] = { channel:channel, sound:o.sound, volume:o.volume };
+						sounds[o.id] = e.target as Sound;
+						loadingQueue.splice(uint(s), 1);
+						return;
+					}
+				}
+					
+			trace("SoundManager: complete loading of", e.target, "but couldn't play.");
 		}
 	}
 }
