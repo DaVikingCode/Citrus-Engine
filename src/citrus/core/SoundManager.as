@@ -237,16 +237,16 @@ package citrus.core {
 					if (loadingQueue[s].sound == e.target)
 					{
 						var o:Object = loadingQueue[s];
-						var channel:SoundChannel = new SoundChannel();
-						channel = o.sound.play(0, o.timesToRepeat);
-						if (channel != null)
-						{
-							var t:SoundTransform = new SoundTransform(o.volume, o.panning);
-							channel.soundTransform = t;
-						}
-						currPlayingSounds[o.id] = { channel:channel, sound:o.sound, volume:o.volume };
 						sounds[o.id] = e.target as Sound;
 						loadingQueue.splice(uint(s), 1);
+						
+						var channel:SoundChannel = new SoundChannel();
+						channel = o.sound.play(0, o.timesToRepeat);
+						if (channel == null)
+							return;
+							var t:SoundTransform = new SoundTransform(o.volume, o.panning);
+							channel.soundTransform = t;
+							currPlayingSounds[o.id] = { channel:channel, sound:o.sound, volume:o.volume };
 						return;
 					}
 					
