@@ -62,16 +62,11 @@ package citrus.core {
 		}
 
 		public function soundIsAdded(id:String):Boolean {
-			return Boolean(sounds[id]);
+			return (id in sounds);
 		}
 
 		public function soundIsPlaying(id:String):Boolean {
-
-			for (var currID:String in currPlayingSounds) {
-				if ( currID == id )
-					return true;
-			}
-			return false;
+			return (id in currPlayingSounds);
 		}
 
 		public function playSound(id:String, volume:Number = 1.0, timesToRepeat:int = 999, panning:Number = 0):void {
@@ -79,22 +74,22 @@ package citrus.core {
 			// Check for an existing sound, and play it.
 			var t:SoundTransform;
 			
-			if (id in currPlayingSounds)
-			{
+				ifsoundexists: if (id in currPlayingSounds)
+				{
 					var s:Sound = currPlayingSounds[id].sound as Sound;
-					
+						
 					if (s.isBuffering)
-						continue;
-						
+						break ifsoundexists;
+							
 					var c:SoundChannel = currPlayingSounds[id].channel as SoundChannel;
-						
+							
 					t = new SoundTransform(volume, panning);
 
 					c = s.play(0, timesToRepeat);
 					c.soundTransform = t;
 					currPlayingSounds[id] = {channel:c, sound:s, volume:volume};
 					return;
-			}
+				}
 
 			// Create a new sound
 			var soundFactory:Sound;
