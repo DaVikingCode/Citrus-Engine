@@ -107,7 +107,7 @@ package citrus.core {
 				soundFactory.addEventListener(IOErrorEvent.IO_ERROR, handleLoadError);
 				soundFactory.addEventListener(Event.COMPLETE, handleLoadCompleteAndPlay);
 				soundFactory.load(new URLRequest(sounds[id]));
-				loadingQueue.push({id:id,loading:true,sound:soundFactory,volume:volume,timesToRepeat:timesToRepeat,panning:panning});
+				loadingQueue.push({id:id,sound:soundFactory,volume:volume,timesToRepeat:timesToRepeat,panning:panning});
 				return;
 			} else if (!(id in sounds))
 			{
@@ -234,8 +234,6 @@ package citrus.core {
 		{
 			var s:String;
 			for (s in loadingQueue)
-				if (loadingQueue[s]["loading"])
-				{
 					if (loadingQueue[s].sound == e.target)
 					{
 						var o:Object = loadingQueue[s];
@@ -251,7 +249,6 @@ package citrus.core {
 						loadingQueue.splice(uint(s), 1);
 						return;
 					}
-				}
 					
 			trace("SoundManager: complete loading of", e.target, "but couldn't play.");
 		}
