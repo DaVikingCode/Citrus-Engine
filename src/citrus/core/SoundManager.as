@@ -78,21 +78,22 @@ package citrus.core {
 
 			// Check for an existing sound, and play it.
 			var t:SoundTransform;
-
-			for (var currID:String in currPlayingSounds) {
-				if (currID == id) {
-					var c:SoundChannel = currPlayingSounds[id].channel as SoundChannel;
+			
+			if (id in currPlayingSounds)
+			{
 					var s:Sound = currPlayingSounds[id].sound as Sound;
-					t = new SoundTransform(volume, panning);
-
+					
 					if (s.isBuffering)
-						break;
+						continue;
+						
+					var c:SoundChannel = currPlayingSounds[id].channel as SoundChannel;
+						
+					t = new SoundTransform(volume, panning);
 
 					c = s.play(0, timesToRepeat);
 					c.soundTransform = t;
 					currPlayingSounds[id] = {channel:c, sound:s, volume:volume};
 					return;
-				}
 			}
 
 			// Create a new sound
