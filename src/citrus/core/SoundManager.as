@@ -223,6 +223,10 @@ package citrus.core {
 		}
 
 		private function handleLoadError(e:IOErrorEvent):void {
+			var s:String;
+			for (s in loadingQueue)
+					if (loadingQueue[s].sound == e.target)
+						loadingQueue.splice(uint(s), 1);
 			trace("Sound manager failed to load a sound: " + e.text);
 		}
 		
