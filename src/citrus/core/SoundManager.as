@@ -90,14 +90,29 @@ package citrus.core {
 			}
 		}
 
+		/**
+		 * tells if the sound is added in the list - but not if its ready to be played.
+		 * @param	id
+		 * @return
+		 */
 		public function soundIsAdded(id:String):Boolean {
 			return (id in sounds);
 		}
-
+		
+		/**
+		 * Tells if a sound is ready to be played from the list of added sounds
+		 * @param	id
+		 * @return
+		 */
 		public function soundIsReady(id:String):Boolean {
 			return (id in readySounds);
 		}
 		
+		/**
+		 * works only for non looping sounds.
+		 * @param	id
+		 * @return
+		 */
 		public function soundIsPlaying(id:String):Boolean {
 			if (id in readySounds)
 				return readySounds[id].playing;
@@ -255,6 +270,7 @@ package citrus.core {
 		}
 
 		private function handleLoadError(e:IOErrorEvent):void {
+			(e.target as Sound).removeEventListener(IOErrorEvent.IO_ERROR, arguments.callee);
 			var s:String;
 			for (s in loadingQueue)
 					if (loadingQueue[s].sound == e.target)
@@ -264,6 +280,7 @@ package citrus.core {
 		
 		private function handleSoundComplete(e:Event):void
 		{
+			(e.target as SoundChannel).removeEventListener(Event.SOUND_COMPLETE, arguments.callee);
 			var s:String;
 			for (s in readySounds)
 			{
@@ -280,6 +297,7 @@ package citrus.core {
 		 */
 		private function handleLoadCompleteAndPlay(e:Event):void
 		{
+			(e.target as Sound).removeEventListener(Event.COMPLETE, arguments.callee);
 			var s:String;
 			for (s in loadingQueue)
 					if (loadingQueue[s].sound == e.target)
@@ -306,6 +324,7 @@ package citrus.core {
 		
 		private function handleLoadCompleteOnly(e:Event):void
 		{
+			(e.target as Sound).removeEventListener(Event.COMPLETE, arguments.callee);
 			var s:String;
 			for (s in loadingQueue)
 					if (loadingQueue[s].sound == e.target)
