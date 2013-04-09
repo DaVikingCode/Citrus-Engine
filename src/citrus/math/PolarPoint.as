@@ -1,5 +1,4 @@
-package  
-{
+package citrus.math {
 	
 	/**
 	 * A simple class to create points with polar coordinates.
@@ -176,7 +175,7 @@ package
 		public function set(r:Number, t:Number):void
 		{
 			_r = r;
-			_t = r;
+			_t = t;
 			updatecartesian();
 		}
 		

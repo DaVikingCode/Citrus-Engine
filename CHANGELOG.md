@@ -20,6 +20,7 @@ V 3.2.0, Work In Progress
 - Improved Box2D Hills.
 - Fixed a bug on Nape Missile's angle.
 - Prevent to add several time the same object to the state.
+- Added a PolarPoint math class.
 - Added an Accelerometer Input Controller.
 - Added a ScreenTouch Input Controller for Starling.
 
