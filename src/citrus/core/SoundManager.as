@@ -53,7 +53,10 @@ package citrus.core {
 			if (sound is String && sound != "")
 				sounds[id] = sound;
 			else if (sound is Sound)
+			{
 				sounds[id] = sound;
+				readySounds[id] = {channel:null, sound:sound, volume:1, playing:false, timesToRepeat:0};
+			}
 			else if (sound is Class)
 				sounds[id] = sound;
 			else
@@ -79,10 +82,11 @@ package citrus.core {
 			var s:String;
 			for (s in sounds)
 			{
-				var soundFactory:Sound;
 				if (sounds[s] is Class) {
-					sounds[s] = soundFactory = new sounds[s]() as Sound;
-				} else if(sounds[s] is String){
+					sounds[s] = new sounds[s]() as Sound;
+					readySounds[s] = {channel:null, sound:sounds[s], volume:1, playing:false, timesToRepeat:0};
+				} else if (sounds[s] is String) {
+					var soundFactory:Sound;
 					soundFactory = new Sound();
 					soundFactory.addEventListener(IOErrorEvent.IO_ERROR, handleLoadError);
 					soundFactory.addEventListener(Event.COMPLETE, handleLoadCompleteOnly);
@@ -141,7 +145,7 @@ package citrus.core {
 					c = s.play(0, timesToRepeat);
 					c.addEventListener(Event.SOUND_COMPLETE, handleSoundComplete);
 					c.soundTransform = t;
-					readySounds[id] = {channel:c, sound:s, volume:volume,playing:true, timesToRepeat:timesToRepeat, completecounter:0};
+					readySounds[id] = {channel:c, sound:s, volume:volume,playing:true, timesToRepeat:timesToRepeat};
 					return;
 				}
 
@@ -156,7 +160,7 @@ package citrus.core {
 				soundFactory.addEventListener(IOErrorEvent.IO_ERROR, handleLoadError);
 				soundFactory.addEventListener(Event.COMPLETE, handleLoadCompleteAndPlay);
 				soundFactory.load(new URLRequest(sounds[id]));
-				loadingQueue.push({id:id,sound:soundFactory,volume:volume,timesToRepeat:timesToRepeat,panning:panning,completecounter:0});
+				loadingQueue.push({id:id,sound:soundFactory,volume:volume,timesToRepeat:timesToRepeat,panning:panning});
 				return;
 			} else if (!(id in sounds))
 			{
@@ -175,7 +179,7 @@ package citrus.core {
 			t = new SoundTransform(volume, panning);
 			channel.soundTransform = t;
 			
-			readySounds[id] = {channel:channel, sound:soundFactory, volume:volume, playing:true, timesToRepeat:timesToRepeat, completecounter:0};
+			readySounds[id] = {channel:channel, sound:soundFactory, volume:volume, playing:true, timesToRepeat:timesToRepeat};
 		}
 
 		public function stopSound(id:String):void {
@@ -183,7 +187,6 @@ package citrus.core {
 			if (soundIsReady(id))
 			{
 				SoundChannel(readySounds[id].channel).stop();
-				readySounds[id].completecounter = 0;
 			}
 		}
 
@@ -285,30 +288,14 @@ package citrus.core {
 		
 		private function handleSoundComplete(e:Event):void
 		{
-			var s:String;
-			for (s in readySounds)
+			var id:String;
+			for (id in readySounds)
 			{
-				if ("playing" in readySounds[s])
+				if (readySounds[id].channel == e.target)
 				{
-					if ("completecounter" in readySounds[s])
-					{	
-						if (readySounds[s].completecounter == 1)
-						{
-							(e.target as SoundChannel).removeEventListener(Event.SOUND_COMPLETE, arguments.callee);
-							readySounds[s].playing = false;
-							readySounds[s].completecounter = 0;
-							onSoundComplete.dispatch(s);
-						}
-						else
-							readySounds[s].playing = true;
-						
-						readySounds[s].completecounter++;
-					}
-					else
-					{
-						readySounds[s].playing = false;
-						(e.target as SoundChannel).removeEventListener(Event.SOUND_COMPLETE, arguments.callee);
-					}
+					(e.target as SoundChannel).removeEventListener(Event.SOUND_COMPLETE, arguments.callee);
+					readySounds[id].playing = false;
+					onSoundComplete.dispatch(id);
 				}
 			}
 		}
@@ -336,7 +323,7 @@ package citrus.core {
 							return;
 							var t:SoundTransform = new SoundTransform(o.volume, o.panning);
 							channel.soundTransform = t;
-							readySounds[o.id] = { channel:channel, sound:o.sound, volume:o.volume ,playing:true ,timesToRepeat:o.timesToRepeat, completecounter:0};
+							readySounds[o.id] = { channel:channel, sound:o.sound, volume:o.volume ,playing:true ,timesToRepeat:o.timesToRepeat};
 						return;
 					}
 					
@@ -353,7 +340,7 @@ package citrus.core {
 						var o:Object = loadingQueue[s];
 						sounds[o.id] = e.target as Sound;
 						loadingQueue.splice(uint(s), 1);
-						readySounds[o.id] = { channel:new SoundChannel(), sound:o.sound, volume:1 , playing:false ,timesToRepeat:0 ,completecounter:0};
+						readySounds[o.id] = { channel:new SoundChannel(), sound:o.sound, volume:1 , playing:false ,timesToRepeat:0};
 						if (loadingQueue.length < 1)
 							onAllLoaded.dispatch();
 						return;
