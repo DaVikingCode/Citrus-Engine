@@ -144,7 +144,7 @@ package
 		 */
 		public function clone():PolarPoint
 		{
-			var pc:PolarCoord = new PolarPoint(this.r, this.t);
+			var pc:PolarPoint = new PolarPoint(this.r, this.t);
 			return pc;
 		}
 		
@@ -154,7 +154,7 @@ package
 		 */
 		public function add(polarPoint:PolarPoint):void
 		{
-			setFromCartesian(cartX + polarcoord.cartX, cartY + polarcoord.cartY);
+			setFromCartesian(cartX + polarPoint.cartX, cartY + polarPoint.cartY);
 			updatecartesian();
 		}
 		
@@ -164,7 +164,7 @@ package
 		 */
 		public function sub(polarPoint:PolarPoint):void
 		{
-			setFromCartesian(cartX - polarcoord.cartX, cartY - polarcoord.cartY);
+			setFromCartesian(cartX - polarPoint.cartX, cartY - polarPoint.cartY);
 			updatecartesian();
 		}
 		
