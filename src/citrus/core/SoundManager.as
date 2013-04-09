@@ -1,12 +1,14 @@
 package citrus.core {
 
 	import aze.motion.eaze;
-	import flash.events.Event;
+
 	import org.osflash.signals.Signal;
 
+	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
+	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
@@ -210,6 +212,17 @@ package citrus.core {
 				s = new SoundTransform(mute ? 0 : readySounds[currID].volume);
 				SoundChannel(readySounds[currID].channel).soundTransform = s;
 			}
+		}
+		
+		/**
+		 * Cut the SoundMixer. No sound will be hear.
+		 */
+		public function muteFlashSound(mute:Boolean = true):void {
+			
+			var s:SoundTransform = SoundMixer.soundTransform;
+			s.volume = mute ? 0 : 1;
+
+			SoundMixer.soundTransform = s;
 		}
 
 		public function setVolume(id:String, volume:Number):void {

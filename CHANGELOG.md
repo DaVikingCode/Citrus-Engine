@@ -1,6 +1,5 @@
 V 3.2.0, Work In Progress
 -------------------------
-- Added an Accelerometer Input Controller.
 - SWCs include comments!
 - Added EazeTween as the default tweening engine.
 - Update on DragonBones V2.0
@@ -21,6 +20,8 @@ V 3.2.0, Work In Progress
 - Improved Box2D Hills.
 - Fixed a bug on Nape Missile's angle.
 - Prevent to add several time the same object to the state.
+- Added an Accelerometer Input Controller.
+- Added a ScreenTouch Input Controller for Starling.
 
 V 3.1.4, 02 27 2013
 -------------------
