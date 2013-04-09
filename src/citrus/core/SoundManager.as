@@ -45,6 +45,9 @@ package citrus.core {
 			readySounds = null;
 			loadingQueue.length = 0;
 			loadingQueue = null;
+			
+			onAllLoaded.removeAll();
+			onSoundComplete.removeAll();
 		}
 
 		/*
