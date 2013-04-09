@@ -226,7 +226,7 @@ package citrus.core {
 
 			var s:SoundTransform = new SoundTransform();
 			
-			if (readySounds[id]) {
+			if (soundIsPlaying(id)) {
 				
 				eaze(readySounds[id]).to(tweenDuration, {volume:volume})
 					.onUpdate(function():void {
@@ -241,7 +241,7 @@ package citrus.core {
 		public function crossFade(fadeOutId:String, fadeInId:String, tweenDuration:Number = 2, fadeInRepetitions:int = 1):void {
 
 			// if the fade-in sound is not already playing, start playing it
-			if (!soundIsReady(fadeInId))
+			if (!soundIsPlaying(fadeInId))
 				playSound(fadeInId, 0, fadeInRepetitions);
 
 			tweenVolume(fadeOutId, 0, tweenDuration);
