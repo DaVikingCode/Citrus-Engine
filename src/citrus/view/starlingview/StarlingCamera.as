@@ -55,9 +55,12 @@ package citrus.view.starlingview {
 		{
 			if (_allowZoom)
 			{
-				var ratioX:Number =  width/cameraLensWidth;
-				var ratioY:Number = height/cameraLensHeight;
-				_zoom = 1/( (ratioX >= ratioY) ? ratioY : ratioX );
+				var ratio:Number;
+				if (cameraLensHeight / cameraLensWidth > height / width)
+					ratio = cameraLensWidth / width;
+				else
+					ratio = cameraLensHeight / height;
+				_zoom = ratio;
 			}
 			else
 				throw(new Error(this+" is not allowed to zoom. please set allowZoom to true."));
