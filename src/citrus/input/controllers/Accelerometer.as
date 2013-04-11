@@ -2,6 +2,7 @@ package citrus.input.controllers
 {
 
 	import citrus.input.InputController;
+	import flash.utils.Dictionary;
 
 	import flash.events.AccelerometerEvent;
 	import flash.sensors.Accelerometer;
@@ -103,6 +104,11 @@ package citrus.input.controllers
 		 */
 		public var triggerActions:Boolean = true;
 		
+		/**
+		 * helps prevent too much calls to triggerON/OFF by keeping track of what action is on/off
+		 */
+		protected var actions:Dictionary;
+		
 		public function Accelerometer(name:String,params:Object) 
 		{
 			super(name, params);
@@ -181,49 +187,86 @@ package citrus.input.controllers
 		 */
 		protected function customActions():void
 		{
+			if (!actions)
+			{
+				actions = new Dictionary();
+				actions["left"] = false;
+				actions["right"] = false;
+				actions["down"] = false;
+				actions["jump"] = false;
+			}
+			
 			//in idle position on Z
 			if (_rot.z < idleAngleZ && _rot.z > - idleAngleZ)
 			{
-				triggerOFF("left", 0);
-				triggerOFF("right", 0);
+				if (actions.left)
+				{
+					triggerOFF("left", 0);
+					actions.left = false;
+				}
+				if (actions.right)
+				{
+					triggerOFF("right", 0);
+					actions.right = false;
+				}
 			}
 			else
 			{
 				//going right
 				if (_rot.z < 0 && _rot.z > -Math.PI/2)
 				{
-					triggerON("right", 1);
-					triggerOFF("left", 0);
+					if (!actions.right)
+					{
+						triggerON("right", 1);
+						actions.right = true;
+					}
 				}
 				
 				//going left
 				if (_rot.z > 0 && _rot.z < Math.PI / 2)
 				{
-					triggerON("left", 1);
-					triggerOFF("right", 0);
+					if (!actions.left)
+					{
+						triggerON("left", 1);
+						actions.left = true;
+					}
 				}
 			}
 			
 			//in idle position on X
 			if (_rot.x < idleAngleX && _rot.x > - idleAngleX)
 			{
-				triggerOFF("jump", 0);
-				triggerOFF("down", 0);
+				if (actions.jump)
+				{
+					triggerOFF("jump", 0);
+					actions.jump = false;
+				}
+				if (actions.down)
+				{
+					triggerOFF("down", 0);
+					actions.down = false;
+				}
 			}
 			else
 			{
 				//going up
 				if (_rot.x < 0 && _rot.x > -Math.PI/2)
 				{
-					triggerON("jump", 1);
-					triggerOFF("down", 0);
+					if (!actions.jump)
+					{
+						triggerON("jump", 1);
+						actions.jump = true;
+					}
 				}
 				
 				//going down
 				if (_rot.x > 0 && _rot.x < Math.PI / 2)
 				{
-					triggerON("down", 1);
-					triggerOFF("jump", 0);
+					if (!actions.down)
+					{
+						triggerON("down", 1);
+						actions.down = true;
+					}
 				}
 			}
 			
