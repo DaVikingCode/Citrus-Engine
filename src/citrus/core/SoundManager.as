@@ -29,7 +29,7 @@ package citrus.core {
 			readySounds = new Dictionary();
 			loadingQueue = new Vector.<Object>();
 			onAllLoaded = new Signal();
-			onSoundComplete = new Signal();
+			onSoundComplete = new Signal(String);
 		}
 
 		public static function getInstance():SoundManager {
@@ -45,6 +45,9 @@ package citrus.core {
 			readySounds = null;
 			loadingQueue.length = 0;
 			loadingQueue = null;
+			
+			onAllLoaded.removeAll();
+			onSoundComplete.removeAll();
 		}
 
 		/*
