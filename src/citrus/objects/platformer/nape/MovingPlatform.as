@@ -45,7 +45,7 @@ package citrus.objects.platformer.nape
 		protected var _start:MathVector = new MathVector();
 		protected var _end:MathVector = new MathVector();
 		protected var _forward:Boolean = true;
-		protected var _passangers:Vector.<Body> = new Vector.<Body>();
+		protected var _passengers:Vector.<Body> = new Vector.<Body>();
 
         protected var _path:Path;
         protected var _pathIndex:int = 0;
@@ -147,7 +147,7 @@ package citrus.objects.platformer.nape
 
             var velocity:Vec2;
 
-            if ((waitForPassenger && _passangers.length == 0) || !enabled)
+            if ((waitForPassenger && _passengers.length == 0) || !enabled)
             {
                 // Platform should not move
                 velocity = new Vec2();
@@ -231,13 +231,13 @@ package citrus.objects.platformer.nape
         override public function handleBeginContact(callback:InteractionCallback):void
         {
             var other:NapePhysicsObject = NapeUtils.CollisionGetOther(this, callback);
-            _passangers.push(other.body);
+            _passengers.push(other.body);
         }
 
         override public function handleEndContact(callback:InteractionCallback):void
         {
             var other:NapePhysicsObject = NapeUtils.CollisionGetOther(this, callback);
-            _passangers.splice(_passangers.indexOf(other.body), 1);
+            _passengers.splice(_passengers.indexOf(other.body), 1);
         }
     }
 }
