@@ -109,7 +109,7 @@ package citrus.input.controllers
 		 */
 		protected var actions:Dictionary;
 		
-		public function Accelerometer(name:String,params:Object) 
+		public function Accelerometer(name:String,params:Object = null) 
 		{
 			super(name, params);
 			if (! flash.sensors.Accelerometer.isSupported)
