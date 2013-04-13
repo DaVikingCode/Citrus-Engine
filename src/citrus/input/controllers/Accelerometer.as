@@ -18,7 +18,7 @@ package citrus.input.controllers
 		
 		//rotation
 		private var _rot:Object = { x:0 , y:0 , z:0 };
-		//previous accel
+		//previous rotation
 		private var _prevRot:Object = { x:0 , y:0 , z:0 };
 		
 		//only start calculating when received first events from device.
@@ -91,18 +91,36 @@ package citrus.input.controllers
 		public static const RAW_Z:String = "rawZ";
 		
 		/**
+		 * action name for the  X angular velocity value.
+		 */
+		public static const VEL_X:String = "velX";
+		/**
+		 * action name for the  Y angular velocity value.
+		 */
+		public static const VEL_Y:String = "velY";
+		/**
+		 * action name for the  Z angular velocity value.
+		 */
+		public static const VEL_Z:String = "velZ";
+		
+		/**
 		 * send the new raw values on each frame.
 		 */
 		public var triggerRawValues:Boolean = false;
 		/**
 		 * send the new rotation values on each frame in radian.
 		 */
-		public var triggerAxisRotation:Boolean = true;
+		public var triggerAxisRotation:Boolean = false;
 		
 		/**
 		 * if true, on each update values will be computed to send custom Actions (such as left right up down by default)
 		 */
-		public var triggerActions:Boolean = true;
+		public var triggerActions:Boolean = false;
+		
+		/**
+		 * if true, on each update values will be computed to send the angular velocity of the device
+		 */
+		public var triggerVelocity:Boolean = false;
 		
 		/**
 		 * helps prevent too much calls to triggerON/OFF by keeping track of what action is on/off
@@ -165,6 +183,13 @@ package citrus.input.controllers
 				triggerVALUECHANGE(ROT_Z, _rot.z);
 			}
 			
+			if (triggerVelocity)
+			{
+				triggerVALUECHANGE(VEL_X, (_rot.x - _prevRot.x) * _ce.stage.frameRate);
+				triggerVALUECHANGE(VEL_Y, (_rot.y - _prevRot.y) * _ce.stage.frameRate);
+				triggerVALUECHANGE(VEL_Z, (_rot.z - _prevRot.z) * _ce.stage.frameRate);
+			}
+			
 			if (triggerActions)
 				customActions();
 				
@@ -193,6 +218,7 @@ package citrus.input.controllers
 				actions["left"] = false;
 				actions["right"] = false;
 				actions["down"] = false;
+				actions["up"] = false;
 				actions["jump"] = false;
 			}
 			
@@ -241,6 +267,11 @@ package citrus.input.controllers
 					triggerOFF("jump", 0);
 					actions.jump = false;
 				}
+				if (actions.up)
+				{
+					triggerOFF("up", 0);
+					actions.up = false;
+				}
 				if (actions.down)
 				{
 					triggerOFF("down", 0);
@@ -256,6 +287,11 @@ package citrus.input.controllers
 					{
 						triggerON("jump", 1);
 						actions.jump = true;
+					}
+					if (!actions.up)
+					{
+						triggerON("up", 1);
+						actions.up = true;
 					}
 				}
 				
