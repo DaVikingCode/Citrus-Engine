@@ -1,5 +1,5 @@
-V 3.2.0, Work In Progress
--------------------------
+V 3.1.5, 04 15 2013
+-------------------
 - SWCs include comments!
 - Added EazeTween as the default tweening engine.
 - Update on DragonBones V2.0
