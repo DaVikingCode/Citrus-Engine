@@ -207,7 +207,7 @@ package citrus.view.spriteview
 		public function set touchable(value:Boolean):void
 		{
 			if (_view is InteractiveObject)
-				(_view as InteractiveObject).mouseEnabled = _touchable;
+				(_view as InteractiveObject).mouseEnabled = value;
 			_touchable = value;
 		}
 		
