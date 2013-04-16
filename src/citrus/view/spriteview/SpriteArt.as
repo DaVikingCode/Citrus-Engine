@@ -57,7 +57,6 @@ package citrus.view.spriteview
 		private var _physicsComponent:*;
 		private var _registration:String;
 		private var _view:*;
-		private var _touchable:Boolean;
 		private var _animation:String;
 		public var group:uint;
 		
