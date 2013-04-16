@@ -61,6 +61,9 @@ public class b2Contact
 		worldManifold.Initialize(m_manifold, bodyA.GetTransform(), shapeA.m_radius, bodyB.GetTransform(), shapeB.m_radius);
 	}
 	
+	public var normal:b2Vec2;
+	public var contactPoints:Vector.<b2Vec2>;
+	
 	/**
 	 * Is this contact touching.
 	 */
