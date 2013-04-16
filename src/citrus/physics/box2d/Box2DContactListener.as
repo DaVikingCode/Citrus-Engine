@@ -18,6 +18,12 @@ package citrus.physics.box2d {
 			var a:IBox2DPhysicsObject = contact.GetFixtureA().GetBody().GetUserData();
 			var b:IBox2DPhysicsObject = contact.GetFixtureB().GetBody().GetUserData();
 			
+			var worldManifold:b2WorldManifold = new b2WorldManifold();
+			contact.GetWorldManifold(worldManifold);
+			
+			contact.normal = worldManifold.m_normal;
+			contact.contactPoints = worldManifold.m_points;
+			
 			if (a.beginContactCallEnabled)
 				a.handleBeginContact(contact);
 				
@@ -29,6 +35,12 @@ package citrus.physics.box2d {
 			
 			var a:IBox2DPhysicsObject = contact.GetFixtureA().GetBody().GetUserData();
 			var b:IBox2DPhysicsObject = contact.GetFixtureB().GetBody().GetUserData();
+			
+			var worldManifold:b2WorldManifold = new b2WorldManifold();
+			contact.GetWorldManifold(worldManifold);
+			
+			contact.normal = worldManifold.m_normal;
+			contact.contactPoints = worldManifold.m_points;
 			
 			if (a.endContactCallEnabled)
 				a.handleEndContact(contact);
@@ -42,6 +54,12 @@ package citrus.physics.box2d {
 			var a:IBox2DPhysicsObject = contact.GetFixtureA().GetBody().GetUserData();
 			var b:IBox2DPhysicsObject = contact.GetFixtureB().GetBody().GetUserData();
 			
+			var worldManifold:b2WorldManifold = new b2WorldManifold();
+			contact.GetWorldManifold(worldManifold);
+			
+			contact.normal = worldManifold.m_normal;
+			contact.contactPoints = worldManifold.m_points;
+			
 			if (a.preContactCallEnabled)
 				a.handlePreSolve(contact, oldManifold);
 				
@@ -53,6 +71,12 @@ package citrus.physics.box2d {
 			
 			var a:IBox2DPhysicsObject = contact.GetFixtureA().GetBody().GetUserData();
 			var b:IBox2DPhysicsObject = contact.GetFixtureB().GetBody().GetUserData();
+			
+			var worldManifold:b2WorldManifold = new b2WorldManifold();
+			contact.GetWorldManifold(worldManifold);
+			
+			contact.normal = worldManifold.m_normal;
+			contact.contactPoints = worldManifold.m_points;
 			
 			if (a.postContactCallEnabled)
 				a.handlePostSolve(contact, impulse);
