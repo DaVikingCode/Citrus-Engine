@@ -84,7 +84,7 @@ package citrus.view
 		function get visible():Boolean;
 		
 		/**
-		 * Can the object interact with touch/mouse. 
+		 * Turn it to true if you want to be able to interact with touch/mouse on the object. 
 		 */
 		function get touchable():Boolean;
 		
