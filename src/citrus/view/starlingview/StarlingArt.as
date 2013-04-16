@@ -372,6 +372,7 @@ package citrus.view.starlingview {
 			}
 
 			visible = _citrusObject.visible;
+			touchable = _citrusObject.touchable;
 			registration = _citrusObject.registration;
 			view = _citrusObject.view;
 			animation = _citrusObject.animation;

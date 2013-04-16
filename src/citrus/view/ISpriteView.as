@@ -84,6 +84,11 @@ package citrus.view
 		function get visible():Boolean;
 		
 		/**
+		 * Can the object interact with touch/mouse. 
+		 */
+		function get touchable():Boolean;
+		
+		/**
 		 * This is where you specify what your graphical representation of your CitrusObject will be.
 		 * 
 		 * <p>You can specify your <code>view</code> value in multiple ways:</p>

@@ -36,6 +36,7 @@ package citrus.objects {
 		protected var _rotation:Number = 0;
 		protected var _group:uint = 0;
 		protected var _visible:Boolean = true;
+		protected var _touchable:Boolean = false;
 		protected var _view:* = SpriteDebugArt;
 		protected var _inverted:Boolean = false;
 		protected var _animation:String = "";
@@ -178,6 +179,16 @@ package citrus.objects {
 		public function set visible(value:Boolean):void
 		{
 			_visible = value;
+		}
+		
+		public function get touchable():Boolean
+		{
+			return _touchable;
+		}
+		
+		public function set touchable(value:Boolean):void
+		{
+			_touchable = value;
 		}
 		
 		/**

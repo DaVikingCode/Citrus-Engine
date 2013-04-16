@@ -8,6 +8,7 @@ package citrus.physics {
 	public class APhysicsEngine extends CitrusObject {
 		
 		protected var _visible:Boolean = false;
+		protected var _touchable:Boolean = false;
 		protected var _group:uint = 1;
 		protected var _view:*;
 		protected var _realDebugView:*;
@@ -89,6 +90,14 @@ package citrus.physics {
 
 		public function set visible(value:Boolean):void {
 			_visible = value;
+		}
+		
+		public function get touchable():Boolean {
+			return _touchable;
+		}
+
+		public function set touchable(value:Boolean):void {
+			_touchable = value;
 		}
 		
 		public function get animation():String {

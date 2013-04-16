@@ -15,6 +15,7 @@ package citrus.objects {
 		protected var _parallaxY:Number = 1;
 		protected var _animation:String = "";
 		protected var _visible:Boolean = true;
+		protected var _touchable:Boolean = false;
 		protected var _x:Number = 0;
 		protected var _y:Number = 0;
 		protected var _z:Number = 0;
@@ -117,6 +118,17 @@ package citrus.objects {
 		
 		public function get parallaxY():Number {
 			return _parallaxY;
+		}
+		
+		public function get touchable():Boolean
+		{
+			return _touchable;
+		}
+		
+		[Inspectable(defaultValue="false")]
+		public function set touchable(value:Boolean):void
+		{	
+			_touchable = value;
 		}
 
 		[Inspectable(defaultValue="1")]

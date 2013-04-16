@@ -8,6 +8,7 @@ package citrus.view.spriteview
 	import citrus.physics.IDebugView;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ISpriteView;
+	import flash.display.InteractiveObject;
 	import flash.geom.Point;
 
 	import flash.display.Bitmap;
@@ -56,6 +57,7 @@ package citrus.view.spriteview
 		private var _physicsComponent:*;
 		private var _registration:String;
 		private var _view:*;
+		private var _touchable:Boolean;
 		private var _animation:String;
 		public var group:uint;
 		
@@ -191,7 +193,22 @@ package citrus.view.spriteview
 				// Call the initialize function if it exists on the custom art class.
 				if (_content && _content.hasOwnProperty("initialize"))
 					_content["initialize"](_citrusObject);
+					
+				if (_view is InteractiveObject)
+					(_view as InteractiveObject).mouseEnabled = _touchable;
 			}
+		}
+		
+		public function get touchable():Boolean
+		{
+			return _touchable;
+		}
+		
+		public function set touchable(value:Boolean):void
+		{
+			if (_view is InteractiveObject)
+				(_view as InteractiveObject).mouseEnabled = _touchable;
+			_touchable = value;
 		}
 		
 		public function get animation():String
@@ -253,6 +270,7 @@ package citrus.view.spriteview
 			}
 			
 			visible = _citrusObject.visible;
+			touchable = _citrusObject.touchable;
 			registration = _citrusObject.registration;
 			view = _citrusObject.view;
 			animation = _citrusObject.animation;
@@ -286,6 +304,9 @@ package citrus.view.spriteview
 			
 			if (_content is Bitmap)
 				(_content as Bitmap).smoothing = true;
+				
+			if (_content is InteractiveObject)
+				(_content as InteractiveObject).mouseEnabled = _touchable;
 				
 			moveRegistrationPoint(_citrusObject.registration);
 		}

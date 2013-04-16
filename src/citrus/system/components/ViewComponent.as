@@ -23,6 +23,7 @@ package citrus.system.components {
 		protected var _parallaxY:Number = 1;
 		protected var _animation:String = "";
 		protected var _visible:Boolean = true;
+		protected var _touchable:Boolean = false;
 		protected var _view:* = MovieClip;
 		
 		private var _group:uint = 0;
@@ -130,6 +131,16 @@ package citrus.system.components {
 		public function set visible(value:Boolean):void
 		{
 			_visible = value;
+		}
+		
+		public function get touchable():Boolean
+		{
+			return _touchable;
+		}
+		
+		public function set touchable(value:Boolean):void
+		{
+			_touchable = value;
 		}
 		
 		public function get view():*
