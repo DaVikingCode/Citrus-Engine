@@ -194,21 +194,7 @@ package citrus.view.spriteview
 				if (_content && _content.hasOwnProperty("initialize"))
 					_content["initialize"](_citrusObject);
 					
-				if (_view is InteractiveObject)
-					(_view as InteractiveObject).mouseEnabled = _touchable;
 			}
-		}
-		
-		public function get touchable():Boolean
-		{
-			return _touchable;
-		}
-		
-		public function set touchable(value:Boolean):void
-		{
-			if (_view is InteractiveObject)
-				(_view as InteractiveObject).mouseEnabled = value;
-			_touchable = value;
 		}
 		
 		public function get animation():String
@@ -270,7 +256,7 @@ package citrus.view.spriteview
 			}
 			
 			visible = _citrusObject.visible;
-			touchable = _citrusObject.touchable;
+			mouseChildren = mouseEnabled = _citrusObject.touchable;
 			registration = _citrusObject.registration;
 			view = _citrusObject.view;
 			animation = _citrusObject.animation;
@@ -304,9 +290,6 @@ package citrus.view.spriteview
 			
 			if (_content is Bitmap)
 				(_content as Bitmap).smoothing = true;
-				
-			if (_content is InteractiveObject)
-				(_content as InteractiveObject).mouseEnabled = _touchable;
 				
 			moveRegistrationPoint(_citrusObject.registration);
 		}
