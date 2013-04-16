@@ -8,7 +8,6 @@ package citrus.view.spriteview
 	import citrus.physics.IDebugView;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ISpriteView;
-	import flash.display.InteractiveObject;
 	import flash.geom.Point;
 
 	import flash.display.Bitmap;
