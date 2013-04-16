@@ -23,8 +23,8 @@ package citrus.system.components.box2d.hero {
 			
 			super.initialize();
 			
-			_physicsComponent = entity.components["physics"];
-			_movementComponent = entity.components["move"];
+			_physicsComponent = entity.lookupComponentByName("physics") as HeroPhysicsComponent;
+			_movementComponent = entity.lookupComponentByName("move") as HeroMovementComponent;
 		}
 
 		override public function update(timeDelta:Number):void {

@@ -36,9 +36,9 @@ package citrus.system.components.box2d.hero {
 			
 			super.initialize();
 			
-			_viewComponent = entity.components["view"];
-			_movementComponent = entity.components["move"];
-			_physicsComponent = entity.components["physics"];
+			_viewComponent = entity.lookupComponentByName("view") as HeroViewComponent;
+			_movementComponent = entity.lookupComponentByName("move") as HeroMovementComponent;
+			_physicsComponent = entity.lookupComponentByName("physics") as HeroPhysicsComponent;
 		}
 			
 		override public function destroy():void {

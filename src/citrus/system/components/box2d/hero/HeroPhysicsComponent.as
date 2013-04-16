@@ -3,6 +3,7 @@ package citrus.system.components.box2d.hero {
 	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.box2d.Box2DShapeMaker;
 	import citrus.system.components.box2d.Box2DComponent;
+	import citrus.system.components.box2d.CollisionComponent;
 
 	/**
 	 * The Box2D Hero physics component add the fixture listener, change its friction, restitution...
@@ -29,7 +30,7 @@ package citrus.system.components.box2d.hero {
 			
 			super.initialize();
 			
-			_collisionComponent = entity.components["collision"];
+			_collisionComponent = entity.lookupComponentByName("collision") as CollisionComponent;
 		}
 
 		override protected function defineBody():void {

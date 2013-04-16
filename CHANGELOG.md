@@ -1,3 +1,7 @@
+V 3.1.6, Work in Progress
+-------------------------
+- An entity uses a Vector to store components instead of a Dictionary.
+
 V 3.1.5, 04 15 2013
 -------------------
 - SWCs include comments!

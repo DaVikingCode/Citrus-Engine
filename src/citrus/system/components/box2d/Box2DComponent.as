@@ -96,7 +96,7 @@ package citrus.system.components.box2d {
 			if (!_box2D)
 				throw new Error("Cannot create a Box2DPhysicsObject when a Box2D object has not been added to the state.");
 			
-			_collisionComponent = entity.components['collision'];
+			_collisionComponent = entity.lookupComponentByName('collision') as CollisionComponent;
 			
 			//Override these to customize your Box2D initialization. Things must be done in this order.
 			defineBody();

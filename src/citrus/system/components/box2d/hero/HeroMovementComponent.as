@@ -114,8 +114,8 @@ package citrus.system.components.box2d.hero {
 			
 			super.initialize();
 			
-			_inputComponent = entity.components["input"];
-			_collisionComponent = entity.components["collision"];
+			_inputComponent = entity.lookupComponentByName("input") as InputComponent;
+			_collisionComponent = entity.lookupComponentByName("collision") as HeroCollisionComponent;
 		}
 			
 		override public function destroy():void {

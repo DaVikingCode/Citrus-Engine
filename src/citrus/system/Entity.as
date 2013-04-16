@@ -10,7 +10,7 @@ package citrus.system {
 	 */
 	public class Entity extends CitrusObject {
 
-		public var components:Dictionary;
+		protected var _components:Vector.<Component>;
 
 		public function Entity(name:String, params:Object = null) {
 			
@@ -23,7 +23,7 @@ package citrus.system {
 			
 			super(name, params);
 
-			components = new Dictionary();
+			_components = new Vector.<Component>();
 		}
 		
 		/**
@@ -31,37 +31,35 @@ package citrus.system {
 		 */
 		public function add(component:Component):Entity {
 			
-			doAddComponent(component, component.name);
+			doAddComponent(component);
 			
 			return this;
 		}
 		
-		protected function doAddComponent(component:Component, componentName:String):Boolean
+		protected function doAddComponent(component:Component):Boolean
 		{
-			if(componentName == "")
+			if(component.name == "")
 			{
 				trace("A component name was not specified. This might cause problems later.");
 			}
 			
-			if(components[componentName])
-				throw Error("A component with name '" + componentName + "' already exists on this entity.");
-			
+			if(lookupComponentByName(component.name))
+				throw Error("A component with name '" + component.name + "' already exists on this entity.");
+ 
 			if(component.entity)
 			{
 				if(component.entity == this)
 				{
-					trace("Component with name '" + componentName + "' already has entity ('" + this.name + "') defined. Manually defining components is no longer needed");
-					components[componentName] = component;
+					trace("Component with name '" + component.name + "' already has entity ('" + this.name + "') defined. Manually defining components is no longer needed");
+					_components.push(component);
 					return true;
 				}
-				
-				throw Error("The component '" + componentName + "' already has an owner. ('" + component.entity.name + "')");
+ 
+				throw Error("The component '" + component.name + "' already has an owner. ('" + component.entity.name + "')");
 			}
-			
-			
-			
+ 
 			component.entity = this;
-			components[componentName] = component;
+			_components.push(component);
 			return true;
 		}
 		
@@ -70,72 +68,111 @@ package citrus.system {
 		 */
 		public function remove(component:Component):void {
 			
-			if (components[component.name]) {
-				component.destroy();
-				delete components[component.name];
-			}
+			var indexOfComponent:int = _components.indexOf(component);
+			if (indexOfComponent != -1)
+				_components.splice(indexOfComponent,1)[0].destroy();
 		}
 		
+		/**
+		 * Search & return first componentType's instance found in components
+		 *
+		 * @param 	Class	componentType  Component instance class we're looking for
+		 * @return 	Component|null
+		 */
 		public function lookupComponentByType(componentType:Class):Component
 		{
-			var component:Component;
-			for each(component in components)
-			{
-				if(component is componentType)
-					return component;
+			var component:Component = null;
+			var filteredComponents:Vector.<Component> = _components.filter(function(item:Component, index:int, vector:Vector.<Component>):Boolean{
+				return item is componentType;
+			});
+ 
+			if (filteredComponents.length != 0) {
+				component =  filteredComponents[0];
 			}
-			
-			return null;
+ 
+			return component;
 		}
 		
-		public function lookupComponentsByType(componentType:Class):Array
+		/**
+		 * Search & return all componentType's instance found in components
+		 *
+		 * @param 	Class	componentType  Component instance class we're looking for
+		 * @return 	Vector.<Component>
+		 */
+		public function lookupComponentsByType(componentType:Class):Vector.<Component>
 		{
-			var list:Array = [];
-			var component:Component;
-			for each(component in components)
-			{
-				if(component is componentType)
-					list.push(component);
+			var filteredComponents : Vector.<Component> = _components.filter(function(item:Component, index:int, vector:Vector.<Component>):Boolean{
+				return item is componentType;
+			});
+ 
+			return filteredComponents;
+		}
+		
+		/**
+		 * Search & return a component using its name
+		 *
+		 * @param 	String				name  	Component's name we're looking for
+		 * @return 	Component|null
+		 */
+		public function lookupComponentByName(name:String):Component
+		{
+			var component : Component = null;
+			var filteredComponents : Vector.<Component> = _components.filter(function(item:Component, index:int, vector:Vector.<Component>):Boolean{
+				return item.name == name;
+			});
+ 
+			if (filteredComponents.length != 0) {
+				component =  filteredComponents[0];
 			}
-			
-			return list;
+ 
+			return component;
 		}
 		
 		/**
 		 * After all the components have been added call this function to perform an init on them.
 		 * Mostly used if you want to access to other components through the entity.
+		 * Components initialization will be perform according order in which components
+		 * has been add to entity
 		 */
 		override public function initialize(poolObjectParams:Object = null):void {
 			
 			super.initialize();
 			
-			for each (var component:Component in components) {
-				component.initialize();
-			}
+			_components.forEach(function(item:Component, index:int, vector:Vector.<Component>):void{
+				item.initialize();
+			});
 		}
 		
 		/**
 		 * Destroy the entity and its components.
+		 * Components destruction will be perform according order in which components
+		 * has been add to entity
 		 */
 		override public function destroy():void {
 			
-			for each (var component:Component in components) {
-				component.destroy();
-			}
-			
-			components = null;
+			_components.forEach(function(item : Component, index:int, vector:Vector.<Component>):void{
+				item.destroy();
+			});
+			_components = null;
 			
 			super.destroy();
 		}
 		
 		/**
 		 * Perform an update on all entity's components.
+		 * Components update will be perform according order in which components
+		 * has been add to entity
 		 */
 		override public function update(timeDelta:Number):void {
 			
-			for each (var component:Component in components) {
-				component.update(timeDelta);
-			}
+			_components.forEach(function(item : Component, index:int, vector:Vector.<Component>):void{
+				item.update(timeDelta);
+			},this);
+		}
+		
+		public function get components():Vector.<Component>
+		{
+			return _components;
 		}
 	}
 }

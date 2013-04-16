@@ -21,7 +21,7 @@ package citrus.system.components.box2d {
 			
 			super.initialize();
 			
-			_physicsComponent = entity.components["physics"];
+			_physicsComponent = entity.lookupComponentByName("physics") as Box2DComponent;
 		}
 
 		override public function update(timeDelta:Number):void {

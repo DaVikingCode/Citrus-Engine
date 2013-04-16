@@ -97,7 +97,7 @@ package citrus.view.starlingview {
 			var ceState:IState = CitrusEngine.getInstance().state;
 
 			if (_citrusObject is ViewComponent && ceState.getFirstObjectByType(APhysicsEngine) as APhysicsEngine)
-				_physicsComponent = (_citrusObject as ViewComponent).entity.components["physics"];
+				_physicsComponent = (_citrusObject as ViewComponent).entity.lookupComponentByName("physics");
 
 			this.name = (_citrusObject as CitrusObject).name;
 
