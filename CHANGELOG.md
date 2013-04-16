@@ -1,5 +1,6 @@
 V 3.1.6, Work in Progress
 -------------------------
+- Box2D contact provided by handleBeginContact, handleEndContact... uses the worldManifold instead of the local (made collision management easier).
 - An entity uses a Vector to store components instead of a Dictionary.
 
 V 3.1.5, 04 15 2013

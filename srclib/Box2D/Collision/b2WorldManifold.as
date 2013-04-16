@@ -173,11 +173,12 @@ public class b2WorldManifold
 	/**
 	 * world vector pointing from A to B
 	 */
-	public var m_normal:b2Vec2 = new b2Vec2();						
+	public var m_normal:b2Vec2 = new b2Vec2(); // added by the CE team!
+	
 	/**
 	 * world contact point (point of intersection)
 	 */
-	public var m_points:Vector.<b2Vec2>;
+	public var m_points:Vector.<b2Vec2>; // added by the CE team!
 	
 }
 	
