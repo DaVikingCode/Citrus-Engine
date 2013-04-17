@@ -1,8 +1,5 @@
 package citrus.utils.objectmakers {
 
-	import flash.display.MovieClip;
-	import flash.utils.getDefinitionByName;
-	
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
 	import citrus.objects.CitrusSprite;
@@ -11,12 +8,16 @@ package citrus.utils.objectmakers {
 	import citrus.utils.objectmakers.tmx.TmxObjectGroup;
 	import citrus.utils.objectmakers.tmx.TmxPropertySet;
 	import citrus.utils.objectmakers.tmx.TmxTileSet;
-	
+
 	import starling.display.Image;
 	import starling.display.QuadBatch;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
+	import starling.utils.AssetManager;
 	import starling.utils.Color;
+
+	import flash.display.MovieClip;
+	import flash.utils.getDefinitionByName;
 
 	/**
 	 * The ObjectMaker is a factory utility class for quickly and easily batch-creating a bunch of CitrusObjects.
@@ -61,8 +62,9 @@ package citrus.utils.objectmakers {
 		 * <p>This Starling version enables you to use a String for the view which is a texture name coming from your texture atlas.</p>
 		 * 
 		 * @param textureAtlas A TextureAtlas containing textures which are used in your level maker.
+		 * @param assetManager A reference to an AssetManager object. Easier to manage if you use several TextureAtlas.
 		 */
-		public static function FromMovieClip(mc:MovieClip, textureAtlas:TextureAtlas, addToCurrentState:Boolean = true):Array {
+		public static function FromMovieClip(mc:MovieClip, textureAtlas:TextureAtlas = null, assetManager:AssetManager = null, addToCurrentState:Boolean = true):Array {
 			var a:Array = [];
 			var n:Number = mc.numChildren;
 			var child:MovieClip;
@@ -100,8 +102,14 @@ package citrus.utils.objectmakers {
 					if (params.view) {
 					
 						var suffix:String = params.view.substring(params.view.length - 4).toLowerCase();
-						if (!(suffix == ".swf" || suffix == ".png" || suffix == ".gif" || suffix == ".jpg"))
-							params.view = new Image(textureAtlas.getTexture(params.view));
+						if (!(suffix == ".swf" || suffix == ".png" || suffix == ".gif" || suffix == ".jpg")) {
+							if (textureAtlas)
+								params.view = new Image(textureAtlas.getTexture(params.view));
+							else if (assetManager)
+								params.view = new Image(assetManager.getTexture(params.view));
+							else
+								throw new Error("ObjectMakerStarling FromMovieClip function needs a TextureAtlas or a reference to an AssetManager!");
+						}
 					}
 
 					var object:CitrusObject = new objectClass(child.name, params);

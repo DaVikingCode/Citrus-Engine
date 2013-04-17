@@ -5,6 +5,7 @@ V 3.1.6, Work in Progress
 - Mouse/Touch are disable on objects to save performances, use touchable new property to be able to interact with touch/mouse on the object. 
 - Box2D contact provided by handleBeginContact, handleEndContact... uses the worldManifold instead of the local (made collision management easier).
 - An entity uses a Vector to store components instead of a Dictionary.
+- ObjectMakerStarling FromMovieClip's function allow to use an AssetManager object!
 
 V 3.1.5, 04 15 2013
 -------------------
