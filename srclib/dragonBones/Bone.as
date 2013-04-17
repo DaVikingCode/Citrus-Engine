@@ -1,8 +1,15 @@
 ﻿package dragonBones
 {
+	/**
+	* Copyright 2012-2013. DragonBones. All Rights Reserved.
+	* @playerversion Flash 10.0
+	* @langversion 3.0
+	* @version 2.0
+	*/
+	
 	import dragonBones.animation.Tween;
 	import dragonBones.display.IDisplayBridge;
-	import dragonBones.objects.Node;
+	import dragonBones.objects.BoneTransform;
 	import dragonBones.utils.dragonBones_internal;
 	
 	import flash.events.EventDispatcher;
@@ -11,42 +18,96 @@
 	import flash.geom.Point;
 	
 	use namespace dragonBones_internal;
-	
+
 	/**
-	 * A object representing a single joint in an armature. It controls the transform of displays in it.
-	 *
-	 * @see dragonBones.Armature
+	 * A Bone instance represents a single joint in an Armature instance. An Armature instance can be made up of many Bone instances.
+	 * @example
+	 * <p>Download the example files <a href='http://dragonbones.github.com/downloads/DragonBones_Tutorial_Assets.zip'>here</a>: </p>
+	 * <p>This example retrieves the Bone instance assiociated with the character's head and apply to its Display property an 0.5 alpha.</p>
+	 * <listing>	
+	 *	package  
+	 *	{
+	 *		import dragonBones.Armature;
+	 *		import dragonBones.factorys.BaseFactory;
+	 *  	import flash.display.Sprite;
+	 *		import flash.events.Event;	
+     *
+	 *		public class DragonAnimation extends Sprite 
+	 *		{		
+	 *			[Embed(source = "Dragon1.swf", mimeType = "application/octet-stream")]  
+	 *			private static const ResourcesData:Class;
+	 *			
+	 *			private var factory:BaseFactory;
+	 *			private var armature:Armature;		
+	 *			
+	 *			public function DragonAnimation() 
+	 *			{				
+	 *				factory = new BaseFactory();
+	 *				factory.addEventListener(Event.COMPLETE, handleParseData);
+	 *				factory.parseData(new ResourcesData(), 'Dragon');
+	 *			}
+	 *			
+	 *			private function handleParseData(e:Event):void 
+	 *			{			
+	 *				armature = factory.buildArmature('Dragon');
+	 *				addChild(armature.display as Sprite); 			
+	 *				armature.animation.play();
+	 * 				var bone:Bone = armature.getBone("head");
+	 * 				bone.display.alpha = 0.5;//make the DisplayObject belonging to this bone semi transparent.
+	 *				addEventListener(Event.ENTER_FRAME, updateAnimation);			
+	 *			}
+	 *			
+	 *			private function updateAnimation(e:Event):void 
+	 *			{
+	 *				armature.advanceTime(stage.frameRate / 1000);
+	 *			}		
+	 *		}
+	 *	}
+	 * </listing>
+	 * @see dragonBones.Bone
+	 * @see dragonBones.animation.Animation
 	 */
 	public class Bone extends EventDispatcher
 	{
 		private static var _helpPoint:Point = new Point();
 		/**
-		 * The name of the Armature.
+		 * The name of this Bone instance's Armature instance.
 		 */
 		public var name:String;
 		/**
-		 * An object that can contain any extra data.
+		 * An object that can contain any user extra data.
 		 */
 		public var userData:Object;
-		
-		public var global:Node;
-		public var origin:Node;
-		public var node:Node;
+		/**
+		 * This Bone instance global Node instance.
+		 * @see dragonBones.objects.Node
+		 */
+		public var global:BoneTransform;
+		/**
+		 * This Bone instance origin Node Instance.
+		 * @see dragonBones.objects.Node
+		 */
+		public var origin:BoneTransform;
+		/**
+		 * This Bone instance Node Instance.
+		 * @see dragonBones.objects.Node
+		 */
+		public var node:BoneTransform;
 		
 		/** @private */
 		dragonBones_internal var _tween:Tween;
 		/** @private */
-		dragonBones_internal var _tweenNode:Node;
+		dragonBones_internal var _tweenNode:BoneTransform;
 		/** @private */
 		dragonBones_internal var _tweenColorTransform:ColorTransform;
+		/** @private */
+		dragonBones_internal var _visible:Boolean;
 		/** @private */
 		dragonBones_internal var _children:Vector.<Bone>;
 		/** @private */
 		dragonBones_internal var _displayBridge:IDisplayBridge;
 		/** @private */
 		dragonBones_internal var _isOnStage:Boolean;
-		/** @private */
-		dragonBones_internal var _visible:Boolean;
 		/** @private */
 		dragonBones_internal var _armature:Armature;
 		
@@ -55,8 +116,53 @@
 		private var _displayIndex:int;
 		private var _parent:Bone;
 		
+		private var _colorTransformChange:Boolean;
+		private var _colorTransform:ColorTransform;
+		private var _boneVisible:Object;
+		
 		/**
-		 * The armature holding this bone.
+		 * @private
+		 */
+		public function set visible(value:Object):void
+		{
+			if(value == null)
+			{
+				_boneVisible = value;
+			}
+			else
+			{
+				_boneVisible = Boolean(value);
+			}
+		}
+		
+		/**
+		 * Whether this Bone instance and its associated DisplayObject are visible or not (true/false/null). null means that the visible will be controled by animation data.
+		 * 
+		 */
+		public function get visible():Object
+		{
+			return _boneVisible;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set colorTransform(value:ColorTransform):void
+		{
+			_colorTransform = value;
+			_colorTransformChange = true;
+		}
+		
+		/**
+		 * The ColorTransform instance assiociated with this Bone instance. null means that the ColorTransform will be controled by animation data.
+		 */
+		public function get colorTransform():ColorTransform
+		{
+			return _colorTransform;
+		}
+		
+		/**
+		 * The armature this Bone instance belongs to.
 		 */
 		public function get armature():Armature
 		{
@@ -64,7 +170,7 @@
 		}
 		
 		/**
-		 * The sub-armature of this bone.
+		 * The sub-armature of this Bone instance.
 		 */
 		public function get childArmature():Armature
 		{
@@ -72,7 +178,7 @@
 		}
 		
 		/**
-		 * Indicates the bone that contains this bone.
+		 * Indicates the Bone instance that directly contains this Bone instance if any.
 		 */
 		public function get parent():Bone
 		{
@@ -80,13 +186,15 @@
 		}
 		
 		/**
-		 * Indicates the display object belonging to this bone.
+		 * The DisplayObject belonging to this Bone instance. Instance type of this object varies from flash.display.DisplayObject to startling.display.DisplayObject and subclasses.
 		 */
 		public function get display():Object
 		{
 			return _displayBridge.display;
 		}
-		
+		/**
+		 * @private
+		 */
 		public function set display(value:Object):void
 		{
 			if(_displayBridge.display == value)
@@ -141,67 +249,63 @@
 		}
 		
 		/**
-		 * Creates a new <code>Bone</code> object
-		 * @param	displayBrideg
+		 * Creates a new Bone instance and attaches to it a IDisplayBridge instance. 
+		 * @param	dragonBones.display.IDisplayBridge
 		 */
 		public function Bone(displayBrideg:IDisplayBridge)
 		{
-			origin = new Node();
-			global = new Node();
-			node = new Node();
-			
-			_displayBridge = displayBrideg;
-			
-			_children = new Vector.<Bone>;
-			
+			origin = new BoneTransform();
+			origin.scaleX = 1;
+			origin.scaleY = 1;
+			global = new BoneTransform();
+			node = new BoneTransform();			
+			_displayBridge = displayBrideg;			
+			_children = new Vector.<Bone>;			
 			_globalTransformMatrix = new Matrix();
 			_displayList = [];
 			_displayIndex = -1;
-			_visible = true;
-			
-			_tweenNode = new Node();
-			_tweenColorTransform = new ColorTransform();
-			
+			_visible = true;			
+			_tweenNode = new BoneTransform();
+			_tweenColorTransform = new ColorTransform();			
 			_tween = new Tween(this);
 		}
-		
+		/**
+		 * Change all DisplayObject attached to this Bone instance.
+		 * @param	displayList An array of valid DisplayObject to attach to this Bone.
+		 */
 		public function changeDisplayList(displayList:Array):void
 		{
 			var indexBackup:int = _displayIndex;
-			
-			var length:uint = Math.min(_displayList.length, displayList.length);
+			var length:uint = displayList.length;
+			_displayList.length = length;
 			for(var i:int = 0;i < length;i ++)
 			{
 				changeDisplay(i);
 				display = displayList[i];
-			}
-			
+			}			
 			changeDisplay(indexBackup);
 		}
 		
 		/**
-		 * Cleans up any resources used by the current object.
+		 * Cleans up any resources used by this Bone instance.
 		 */
 		public function dispose():void
 		{
 			for each(var _child:Bone in _children)
 			{
 				_child.dispose();
-			}
-			
+			}			
 			_displayList.length = 0;
-			_children.length = 0;
-			//_displayBridge.display = null;
-			
+			_children.length = 0;			
 			_armature = null;
-			_parent = null;
-			
-			//_tween.dispose();
-			//_tween = null;
-			
+			_parent = null;			
 			userData = null;
 		}
-		
+		/**
+		 * Returns true if the passed Bone Instance is a child of this Bone instance (deepLevel false) or true if the passed Bone instance is in the child hierarchy of this Bone instance (deepLevel true) false otherwise.
+		 * @param	deepLevel Check against child heirarchy.
+		 * @return
+		 */
 		public function contains(bone:Bone, deepLevel:Boolean = false):Boolean
 		{
 			if(deepLevel)
@@ -216,8 +320,7 @@
 					return true;
 				}
 				return false;
-			}
-			
+			}			
 			return bone.parent == this;
 		}
 		
@@ -265,77 +368,76 @@
 		/** @private */
 		dragonBones_internal function update():void
 		{
-			//update node and matirx
-			if (_children.length > 0 || _isOnStage)
+			//update global
+			global.x = origin.x + node.x + _tweenNode.x;
+			global.y = origin.y + node.y + _tweenNode.y;
+			global.skewX = origin.skewX + node.skewX + _tweenNode.skewX;
+			global.skewY = origin.skewY + node.skewY + _tweenNode.skewY;
+			global.scaleX = origin.scaleX + node.scaleX + _tweenNode.scaleX;
+			global.scaleY = origin.scaleY + node.scaleY + _tweenNode.scaleY;
+			global.pivotX = origin.pivotX + node.pivotX + _tweenNode.pivotX;
+			global.pivotY = origin.pivotY + node.pivotY + _tweenNode.pivotY;
+			global.z = origin.z + node.z + _tweenNode.z;
+			//transform
+			if(_parent)
 			{
-				//update global
-				global.x = origin.x + node.x + _tweenNode.x;
-				global.y = origin.y + node.y + _tweenNode.y;
-				global.skewX = origin.skewX + node.skewX + _tweenNode.skewX;
-				global.skewY = origin.skewY + node.skewY + _tweenNode.skewY;
-				global.scaleX = origin.scaleX + node.scaleX + _tweenNode.scaleX;
-				global.scaleY = origin.scaleY + node.scaleY + _tweenNode.scaleY;
-				global.pivotX = origin.pivotX + node.pivotX + _tweenNode.pivotX;
-				global.pivotY = origin.pivotY + node.pivotY + _tweenNode.pivotY;
-				global.z = origin.z + node.z + _tweenNode.z;
-				//transform
-				if(_parent)
+				_helpPoint.x = global.x;
+				_helpPoint.y = global.y;
+				_helpPoint = _parent._globalTransformMatrix.transformPoint(_helpPoint);
+				global.x = _helpPoint.x
+				global.y = _helpPoint.y;
+				global.skewX += _parent.global.skewX;
+				global.skewY += _parent.global.skewY;
+			}
+			
+			//Note: this formula of transform is defined by Flash pro
+			_globalTransformMatrix.a = global.scaleX * Math.cos(global.skewY);
+			_globalTransformMatrix.b = global.scaleX * Math.sin(global.skewY);
+			_globalTransformMatrix.c = -global.scaleY * Math.sin(global.skewX);
+			_globalTransformMatrix.d = global.scaleY * Math.cos(global.skewX);
+			_globalTransformMatrix.tx = global.x;
+			_globalTransformMatrix.ty = global.y;
+			
+			//update children
+			if (_children.length > 0)
+			{
+				for each(var child:Bone in _children)
 				{
-					_helpPoint.x = global.x;
-					_helpPoint.y = global.y;
-					_helpPoint = _parent._globalTransformMatrix.transformPoint(_helpPoint);
-					global.x = _helpPoint.x
-					global.y = _helpPoint.y;
-					global.skewX += _parent.global.skewX;
-					global.skewY += _parent.global.skewY;
+					child.update();
 				}
+			}
+			
+			var childArmature:Armature = this.childArmature;
+			if(childArmature)
+			{
+				childArmature.update();
+			}
+			
+			var currentDisplay:Object = _displayBridge.display;
+			//update display
+			if(currentDisplay)
+			{
+				//currentColorTransform
+				var currentColorTransform:ColorTransform;
 				
-				//Note: this formula of transform is defined by Flash pro
-				_globalTransformMatrix.a = global.scaleX * Math.cos(global.skewY);
-				_globalTransformMatrix.b = global.scaleX * Math.sin(global.skewY);
-				_globalTransformMatrix.c = -global.scaleY * Math.sin(global.skewX);
-				_globalTransformMatrix.d = global.scaleY * Math.cos(global.skewX);
-				_globalTransformMatrix.tx = global.x;
-				_globalTransformMatrix.ty = global.y;
-				
-				//update children
-				if (_children.length > 0)
+				if(_tween._differentColorTransform)
 				{
-					for each(var child:Bone in _children)
+					if(_colorTransform)
 					{
-						child.update();
+						_tweenColorTransform.concat(_colorTransform);
 					}
-				}
-				
-				var childArmature:Armature = this.childArmature;
-				if(childArmature)
-				{
-					childArmature.update();
-				}
-				
-				var currentDisplay:Object = _displayBridge.display;
-				//update display
-				if(_isOnStage && currentDisplay)
-				{
-					//colorTransform
-					var colorTransform:ColorTransform;
-					
-					if(_tween._differentColorTransform)
+					if(_armature.colorTransform)
 					{
-						if(_armature.colorTransform)
-						{
-							_tweenColorTransform.concat(_armature.colorTransform);
-						}
-						colorTransform = _tweenColorTransform;
+						_tweenColorTransform.concat(_armature.colorTransform);
 					}
-					else if(_armature._colorTransformChange)
-					{
-						colorTransform = _armature.colorTransform;
-						_armature._colorTransformChange = false;
-					}
-					
-					_displayBridge.update(_globalTransformMatrix, global, colorTransform, _visible);
+					currentColorTransform = _tweenColorTransform;
 				}
+				else if(_armature._colorTransformChange || _colorTransformChange)
+				{
+					currentColorTransform = _colorTransform || _armature.colorTransform;
+					_colorTransformChange = false;
+				}
+				_displayBridge.update(_globalTransformMatrix, global, currentColorTransform, (_boneVisible != null)?_boneVisible:_visible);
 			}
 		}
 		
@@ -346,6 +448,11 @@
 				throw new ArgumentError("An Bone cannot be added as a child to itself or one of its children (or children's children, etc.)");
 			}
 			_parent = parent;
+			
+			if(_parent)
+			{
+				_isOnStage = _parent._isOnStage;
+			}			
 		}
 	}
 }

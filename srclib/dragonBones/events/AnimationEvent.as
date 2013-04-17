@@ -1,13 +1,20 @@
 ﻿package dragonBones.events
 {
+	/**
+	* Copyright 2012-2013. DragonBones. All Rights Reserved.
+	* @playerversion Flash 10.0, Flash 10
+	* @langversion 3.0
+	* @version 2.0
+	*/
 	import dragonBones.Armature;
 	
 	import flash.events.Event;
 	
 	/**
-	 * Dispatched to notify state changes in an animation.
+	 * The AnimationEvent provides and defines all events dispatched during an animation.
 	 *
 	 * @see dragonBones.Armature
+	 * @see dragonBones.animation.Animation
 	 */
 	public class AnimationEvent extends Event
 	{
@@ -17,7 +24,7 @@
 		public static const MOVEMENT_CHANGE:String = "movementChange";
 		
 		/**
-		 * Dispatched when the playback of a animation starts.
+		 * Dispatched when the playback of an animation starts.
 		 */
 		public static const START:String = "start";
 		
@@ -30,12 +37,17 @@
 		 * Dispatched when the playback of a movement completes a loop.
 		 */
 		public static const LOOP_COMPLETE:String = "loopComplete";
-		
+		/**
+		 * The preceding MovementData id.
+		 */
 		public var exMovementID:String;
+		/**
+		 * The current MovementData id.
+		 */
 		public var movementID:String;
 		
 		/**
-		 * The armature that is the subject of this event.
+		 * The armature that is the taget of this event.
 		 */
 		public function get armature():Armature
 		{
@@ -43,7 +55,7 @@
 		}
 		
 		/**
-		 * Creates a new <code>AnimationEvent</code>
+		 * Creates a new AnimationEvent instance.
 		 * @param	type
 		 * @param	cancelable
 		 */
@@ -53,9 +65,8 @@
 		}
 		
 		/**
-		 * Clones the event.
-		 *
-		 * @return An exact duplicate of the current object.
+		 * @private
+		 * @return
 		 */
 		override public function clone():Event
 		{

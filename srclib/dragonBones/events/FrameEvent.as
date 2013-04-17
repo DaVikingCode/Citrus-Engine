@@ -1,12 +1,21 @@
 package dragonBones.events
 {
+	/**
+	* Copyright 2012-2013. DragonBones. All Rights Reserved.
+	* @playerversion Flash 10.0, Flash 10
+	* @langversion 3.0
+	* @version 2.0
+	*/
 	import dragonBones.Armature;
 	import dragonBones.Bone;
 	
 	import flash.events.Event;
 	
 	/**
-	 * Dispatched when processing a frame.
+	 * The FrameEvent class provides and defines all events dispatched by an Animation or Bone instance entering a new frame.
+	 *
+	 * 
+	 * @see dragonBones.animation.Animation
 	 */
 	public class FrameEvent extends Event
 	{
@@ -15,16 +24,20 @@ package dragonBones.events
 		 */
 		public static const MOVEMENT_FRAME_EVENT:String = "movementFrameEvent";
 		/**
-		 * Dispatched when a bone of the armatrue enter a frame.
+		 * Dispatched when a bone of the armature enter a frame.
 		 */
 		public static const BONE_FRAME_EVENT:String = "boneFrameEvent";
-		
+		/**
+		 * The id of the MovementData instance.
+		 */
 		public var movementID:String;
-		
+		/**
+		 * The entered frame label.
+		 */
 		public var frameLabel:String;
 		
 		/**
-		 * The armature that is the subject of this event.
+		 * The armature that is the target of this event.
 		 */
 		public function get armature():Armature
 		{
@@ -35,7 +48,7 @@ package dragonBones.events
 		private var _bone:Bone;
 		
 		/**
-		 * The bone that is the subject of this event.
+		 * The bone that is the target of this event.
 		 */
 		public function get bone():Bone
 		{
@@ -43,7 +56,7 @@ package dragonBones.events
 		}
 		
 		/**
-		 * Creates a new <code>FrameEvent</code>
+		 * Creates a new FrameEvent instance.
 		 * @param	type
 		 * @param	cancelable
 		 */
@@ -54,7 +67,7 @@ package dragonBones.events
 		}
 		
 		/**
-		 * Clones the event.
+		 * @private
 		 *
 		 * @return An exact duplicate of the current object.
 		 */

@@ -1,10 +1,16 @@
 package dragonBones.display
 {
-	import dragonBones.objects.Node;
+	/**
+	* Copyright 2012-2013. DragonBones. All Rights Reserved.
+	* @playerversion Flash 10.0
+	* @langversion 3.0
+	* @version 2.0
+	*/
 	
+	import dragonBones.objects.BoneTransform;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
-
+	
 	/**
 	 * Provides an interface for display classes that can be used in this skeleton animation system.
 	 *
@@ -23,7 +29,7 @@ package dragonBones.display
 		 * @param	colorTransform
 		 * @param	visible
 		 */
-		function update(matrix:Matrix, node:Node, colorTransform:ColorTransform, visible:Boolean):void;
+		function update(matrix:Matrix, node:BoneTransform, colorTransform:ColorTransform, visible:Boolean):void;
 		/**
 		 * Adds the original display object to another display object.
 		 * @param	container

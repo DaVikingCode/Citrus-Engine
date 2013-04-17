@@ -1,42 +1,37 @@
-package dragonBones.utils 
+package dragonBones.utils
 {
-	import dragonBones.objects.Node;
 
+	import dragonBones.objects.BoneTransform;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	
 	/** @private */
-	public class TransformUtils 
+	public class TransformUtils
 	{
 		private static const DOUBLE_PI:Number = Math.PI * 2;
-		
 		private static var _helpMatrix:Matrix = new Matrix();
 		private static var _helpPoint:Point = new Point();
 		
-		public static function transformPointWithParent(bone:Node, parent:Node):void 
+		public static function transformPointWithParent(bone:BoneTransform, parent:BoneTransform):void
 		{
 			nodeToMatrix(parent, _helpMatrix);
-			
 			_helpPoint.x = bone.x;
 			_helpPoint.y = bone.y;
-			
 			_helpMatrix.invert();
 			_helpPoint = _helpMatrix.transformPoint(_helpPoint);
 			bone.x = _helpPoint.x;
 			bone.y = _helpPoint.y;
-			
 			bone.skewX -= parent.skewX;
 			bone.skewY -= parent.skewY;
 		}
 		
-		public static function nodeToMatrix(node:Node, matrix:Matrix):void
+		public static function nodeToMatrix(node:BoneTransform, matrix:Matrix):void
 		{
 			matrix.a = node.scaleX * Math.cos(node.skewY)
 			matrix.b = node.scaleX * Math.sin(node.skewY)
 			matrix.c = -node.scaleY * Math.sin(node.skewX);
 			matrix.d = node.scaleY * Math.cos(node.skewX);
-			
 			matrix.tx = node.x;
 			matrix.ty = node.y;
 		}
@@ -65,12 +60,12 @@ package dragonBones.utils
 			tween.blueMultiplier = current.blueMultiplier + progress * offSet.blueMultiplier;
 		}
 		
-		public static function setOffSetNode(from:Node, to:Node, offSet:Node, tweenRotate:int = 0):void
+		public static function setOffSetNode(from:BoneTransform, to:BoneTransform, offSet:BoneTransform, tweenRotate:int = 0):void
 		{
-			offSet.x =	to.x - from.x;
+			offSet.x = to.x - from.x;
 			offSet.y = to.y - from.y;
-			offSet.skewX =	to.skewX - from.skewX;
-			offSet.skewY =	to.skewY - from.skewY;
+			offSet.skewX = to.skewX - from.skewX;
+			offSet.skewY = to.skewY - from.skewY;
 			offSet.scaleX = to.scaleX - from.scaleX;
 			offSet.scaleY = to.scaleY - from.scaleY;
 			offSet.pivotX = to.pivotX - from.pivotX;
@@ -103,20 +98,10 @@ package dragonBones.utils
 			}
 		}
 		
-		public static function setTweenNode(current:Node, offSet:Node, tween:Node, progress:Number):void
+		public static function setTweenNode(current:BoneTransform, offSet:BoneTransform, tween:BoneTransform, progress:Number):void
 		{
-			tween.setValues(
-				current.x + progress * offSet.x,
-				current.y + progress * offSet.y,
-				current.skewX + progress * offSet.skewX,
-				current.skewY + progress * offSet.skewY,
-				current.scaleX + progress * offSet.scaleX,
-				current.scaleY + progress * offSet.scaleY,
-				current.pivotX + progress * offSet.pivotX,
-				current.pivotY + progress * offSet.pivotY,
-				tween.z
-			);
+			tween.setValues(current.x + progress * offSet.x, current.y + progress * offSet.y, current.skewX + progress * offSet.skewX, current.skewY + progress * offSet.skewY, current.scaleX + progress * offSet.scaleX, current.scaleY + progress * offSet.scaleY, current.pivotX + progress * offSet.pivotX, current.pivotY + progress * offSet.pivotY, tween.z);
 		}
 	}
-	
+
 }

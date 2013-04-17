@@ -1,5 +1,13 @@
 package dragonBones.factorys
 {
+	
+	/**
+	* Copyright 2012-2013. DragonBones. All Rights Reserved.
+	* @playerversion Flash 10.0, Flash 10
+	* @langversion 3.0
+	* @version 2.0
+	*/
+	
 	import dragonBones.Armature;
 	import dragonBones.Bone;
 	import dragonBones.display.NativeDisplayBridge;
@@ -29,68 +37,117 @@ package dragonBones.factorys
 	
 	use namespace dragonBones_internal;
 	
-	/** Dispatched when the textureData init completed. */
+	/** Dispatched after a sucessful call to parseData(). */
 	[Event(name="complete", type="flash.events.Event")]
 	
 	/**
-	 * A object managing the set of armature resources for the tranditional DisplayList. It parses the raw data, stores the armature resources and creates armature instrances.
+	 * A BaseFactory instance manages the set of armature resources for the tranditional Flash DisplayList. It parses the raw data (ByteArray), stores the armature resources and creates armature instances.
+	 * <p>Create an instance of the BaseFactory class that way:</p>
+	 * <listing>
+	 * import flash.events.Event; 
+	 * import dragonBones.factorys.BaseFactory;
+	 * 
+	 * [Embed(source = "../assets/Dragon1.swf", mimeType = "application/octet-stream")]  
+	 *	private static const ResourcesData:Class;
+	 * var factory:BaseFactory = new BaseFactory(); 
+	 * factory.addEventListener(Event.COMPLETE, textureCompleteHandler);
+	 * factory.parseData(new ResourcesData());
+	 * </listing>
 	 * @see dragonBones.Armature
 	 */
 	public class BaseFactory extends EventDispatcher
 	{
 		private static var _loaderContext:LoaderContext = new LoaderContext(false);
-		protected static var _helpMatirx:Matrix = new Matrix();
-		
+		/** @private */
+		protected static var _helpMatirx:Matrix = new Matrix();		
+		/** @private */
 		protected var _skeletonDataDic:Object;
+		/** @private */
 		protected var _textureAtlasDic:Object;
-		protected var _textureAtlasLoadingDic:Object;
-		
+		/** @private */
+		protected var _textureAtlasLoadingDic:Object;	
+		/** @private */
 		protected var _currentSkeletonData:SkeletonData;
+		/** @private */
 		protected var _currentTextureAtlas:Object;
+		/** @private */
 		protected var _currentSkeletonName:String;
+		/** @private */
 		protected var _currentTextureAtlasName:String;
 		
 		/**
-		 * Creates a new <code>BaseFactory</code>
-		 *
+		 * Create a Basefactory instance.
+		 * 
+		 * @example 
+		 * <listing>		
+		 * import dragonBones.factorys.BaseFactory;
+		 * var factory:BaseFactory = new BaseFactory(); 
+		 * </listing>
 		 */
 		public function BaseFactory()
 		{
 			super();
 			_skeletonDataDic = {};
 			_textureAtlasDic = {};
-			_textureAtlasLoadingDic = {};
-			
+			_textureAtlasLoadingDic = {};			
 			_loaderContext.allowCodeImport = true;
 		}
 		
 		/**
-		 * Pareses the raw data.
-		 * @param	bytes Represents the raw data for the whole skeleton system.
+		 * Parses the raw data and returns a SkeletonData instance.	
+		 * @example 
+		 * <listing>
+		 * import flash.events.Event; 
+		 * import dragonBones.factorys.BaseFactory;
+		 * 
+		 * [Embed(source = "../assets/Dragon1.swf", mimeType = "application/octet-stream")]  
+		 *	private static const ResourcesData:Class;
+		 * var factory:BaseFactory = new BaseFactory(); 
+		 * factory.addEventListener(Event.COMPLETE, textureCompleteHandler);
+		 * factory.parseData(new ResourcesData());
+		 * </listing>
+		 * @param	ByteArray. Represents the raw data for the whole skeleton system.
+		 * @param	String. (optional) The SkeletonData instance name.
+		 * @return A SkeletonData instance.
 		 */
 		public function parseData(bytes:ByteArray, skeletonName:String = null):SkeletonData
 		{
-			var decompressedData:DecompressedData = XMLDataParser.decompressData(bytes);
-			
+			var decompressedData:DecompressedData = XMLDataParser.decompressData(bytes);			
 			var skeletonData:SkeletonData = XMLDataParser.parseSkeletonData(decompressedData.skeletonXML);
 			skeletonName = skeletonName || skeletonData.name;
-			addSkeletonData(skeletonData, skeletonName);
-			
+			addSkeletonData(skeletonData, skeletonName);			
 			var loader:Loader = new Loader();
 			loader.name = skeletonName;
 			_textureAtlasLoadingDic[skeletonName] = decompressedData.textureAtlasXML;
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loaderCompleteHandler);
-			loader.loadBytes(decompressedData.textureBytes, _loaderContext);
-			
+			loader.loadBytes(decompressedData.textureBytes, _loaderContext);			
 			decompressedData.dispose();
 			return skeletonData;
 		}
 		
+		/**
+		 * Returns a SkeletonData instance.
+		 * @example 
+		 * <listing>
+		 * var skeleton:SkeletonData = factory.getSkeletonData('dragon');
+		 * </listing>
+		 * @param	The name of an existing SkeletonData instance.
+		 * @return A SkeletonData instance with given name (if exist).
+		 */
 		public function getSkeletonData(name:String):SkeletonData
 		{
 			return _skeletonDataDic[name];
 		}
 		
+		/**
+		 * Add a SkeletonData instance to this BaseFactory instance.
+		 * @example 
+		 * <listing>
+		 * factory.addSkeletonData(skeletondata, 'dragon');
+		 * </listing>
+		 * @param	A skeletonData instance.
+		 * @param	(optional) A name for this SkeletonData instance.
+		 */
 		public function addSkeletonData(skeletonData:SkeletonData, name:String = null):void
 		{
 			name = name || skeletonData.name;
@@ -104,16 +161,42 @@ package dragonBones.factorys
 			}
 		}
 		
+		/**
+		 * Remove a SkeletonData instance from this BaseFactory instance.
+		 * @example 
+		 * <listing>
+		 * factory.removeSkeletonData('dragon');
+		 * </listing>
+		 * @param	The name for the SkeletonData instance to remove.
+		 */
 		public function removeSkeletonData(name:String):void
 		{
 			delete _skeletonDataDic[name];
 		}
 		
+		/**
+		 * Return the TextureAtlas by that name.
+		 * @example 
+		 * <listing>
+		 * var atlas:Object = factory.getTextureAtlas('dragon');
+		 * </listing>
+		 * @param	The name of the TextureAtlas to return.
+		 * @return A textureAtlas.
+		 */
 		public function getTextureAtlas(name:String):Object
 		{
 			return _textureAtlasDic[name];
 		}
 		
+		/**
+		 * Add a textureAtlas to this BaseFactory instance.
+		 * @example 
+		 * <listing>
+		 * factory.addTextureAtlas(textureatlas, 'dragon');
+		 * </listing>
+		 * @param	A textureAtlas to add to this BaseFactory instance.
+		 * @param	(optional) A name for this TextureAtlas.
+		 */
 		public function addTextureAtlas(textureAtlas:Object, name:String = null):void
 		{
 			if(!name && textureAtlas is ITextureAtlas)
@@ -131,14 +214,29 @@ package dragonBones.factorys
 			}
 		}
 		
+		/**
+		 * Remove a textureAtlas from this baseFactory instance.
+		 * @example 
+		 * <listing>
+		 * factory.removeTextureAtlas('dragon');
+		 * </listing>
+		 * @param	The name of the TextureAtlas to remove.
+		 */
 		public function removeTextureAtlas(name:String):void
 		{
 			delete _textureAtlasDic[name];
 		}
 		
-		/**
-		 * Cleans up any resources used by the current object.
-		 */
+
+		
+		 /**
+		  * Cleans up resources used by this BaseFactory instance.
+		 * @example 
+		 * <listing>
+		 * factory.dispose();
+		 * </listing>
+		  * @param	(optional) Destroy all internal references.
+		  */
 		public function dispose(disposeData:Boolean = true):void
 		{
 			if(disposeData)
@@ -154,23 +252,28 @@ package dragonBones.factorys
 			}
 			_skeletonDataDic = {};
 			_textureAtlasDic = {};
-			_textureAtlasLoadingDic = {};
-			
+			_textureAtlasLoadingDic = {};			
 			_currentSkeletonData = null;
 			_currentTextureAtlas = null;
 			_currentSkeletonName = null;
 			_currentTextureAtlasName = null;
 		}
 		
-		/**
-		 * Builds a new armature by name
-		 * @param	armatureName
-		 * @return
-		 */
+		 /**
+		  * Build and returns a new Armature instance.
+		 * @example 
+		 * <listing>
+		 * var armature:Armature = factory.buildArmature('dragon');
+		 * </listing>
+		  * @param	The name of this Armature instance.
+		  * @param	The name of this animation.
+		  * @param	The name of this skeleton.
+		  * @param	The name of this textureAtlas.
+		  * @return A Armature instance.
+		  */
 		public function buildArmature(armatureName:String, animationName:String = null, skeletonName:String = null, textureAtlasName:String = null):Armature
 		{
-			animationName = animationName || armatureName;
-			
+			animationName = animationName || armatureName;			
 			var skeletonData:SkeletonData;
 			var armatureData:ArmatureData;
 			if(skeletonName)
@@ -199,12 +302,9 @@ package dragonBones.factorys
 			}
 			_currentSkeletonName = skeletonName;
 			_currentSkeletonData = skeletonData;
-
 			_currentTextureAtlasName = textureAtlasName || skeletonName;
-			_currentTextureAtlas = _textureAtlasDic[_currentTextureAtlasName];
-			
-			var animationData:AnimationData = _currentSkeletonData.getAnimationData(animationName);
-			
+			_currentTextureAtlas = _textureAtlasDic[_currentTextureAtlasName];			
+			var animationData:AnimationData = _currentSkeletonData.getAnimationData(animationName);			
 			if(!animationData)
 			{
 				for (skeletonName in _skeletonDataDic)
@@ -216,8 +316,7 @@ package dragonBones.factorys
 						break;
 					}
 				}
-			}
-			
+			}			
 			var armature:Armature = generateArmature();
 			armature.name = armatureName;
 			armature.animation.animationData = animationData;
@@ -237,6 +336,18 @@ package dragonBones.factorys
 			return armature;
 		}
 		
+		/**
+		 * Return the TextureDisplay.
+		 * @example 
+		 * <listing>
+		 * var texturedisplay:Object = factory.getTextureDisplay('dragon');
+		 * </listing>
+		 * @param	The name of this Texture.
+		 * @param	The name of the TextureAtlas.
+		 * @param	The registration pivotX position.
+		 * @param	The registration pivotY position.
+		 * @return An Object.
+		 */
 		public function getTextureDisplay(textureName:String, textureAtlasName:String = null, pivotX:Number = NaN, pivotY:Number = NaN):Object
 		{
 			var textureAtlas:Object;
@@ -276,7 +387,7 @@ package dragonBones.factorys
 			}
 			return null;
 		}
-		
+		/** @private */
 		protected function buildBone(boneData:BoneData):Bone
 		{
 			var bone:Bone = generateBone();
@@ -304,7 +415,7 @@ package dragonBones.factorys
 			}
 			return bone;
 		}
-		
+		/** @private */
 		protected function loaderCompleteHandler(e:Event):void
 		{
 			e.target.removeEventListener(Event.COMPLETE, loaderCompleteHandler);
@@ -345,27 +456,27 @@ package dragonBones.factorys
 				}
 			}
 		}
-		
+		/** @private */
 		protected function generateTextureAtlas(content:Object, textureAtlasXML:XML):Object
 		{
 			var textureAtlas:NativeTextureAtlas = new NativeTextureAtlas(content, textureAtlasXML);
 			return textureAtlas;
 		}
-		
+		/** @private */
 		protected function generateArmature():Armature
 		{
 			var display:Sprite = new Sprite();
 			var armature:Armature = new Armature(display);
 			return armature;
 		}
-		
+		/** @private */
 		protected function generateBone():Bone
 		{
 			var bone:Bone = new Bone(new NativeDisplayBridge());
 			return bone;
 		}
 		
-		protected function generateTextureDisplay(textureAtlas:Object, fullName:String, pivotX:int, pivotY:int):Object
+		protected function generateTextureDisplay(textureAtlas:Object, fullName:String, pivotX:Number, pivotY:Number):Object
 		{
 			var nativeTextureAtlas:NativeTextureAtlas = textureAtlas as NativeTextureAtlas;
 			if(nativeTextureAtlas){

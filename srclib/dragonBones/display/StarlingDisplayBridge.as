@@ -1,7 +1,14 @@
 ﻿package dragonBones.display
 {
-	import dragonBones.objects.Node;
+	/**
+	* Copyright 2012-2013. DragonBones. All Rights Reserved.
+	* @playerversion Flash 10.0
+	* @langversion 3.0
+	* @version 2.0
+	*/
+
 	
+	import dragonBones.objects.BoneTransform;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	
@@ -10,13 +17,15 @@
 	import starling.display.Quad;
 	
 	/**
-	 * A display bridge for Starling engine
+	 * The StarlingDisplayBridge class is an implementation of the IDisplayBridge interface for starling.display.DisplayObject.
 	 *
 	 */
 	public class StarlingDisplayBridge implements IDisplayBridge
 	{
-		protected var _display:DisplayObject;
-		
+		/**
+		 * @private
+		 */
+		protected var _display:Object;
 		/**
 		 * @inheritDoc
 		 */
@@ -24,26 +33,30 @@
 		{
 			return _display;
 		}
-		
+		/**
+		 * @private
+		 */
 		public function set display(value:Object):void
 		{
-			if(_display == value){
+			if (_display == value)
+			{
 				return;
 			}
-			if(_display)
+			if (_display)
 			{
-				var parent:DisplayObjectContainer = _display.parent;
-				if(parent)
+				var parent:* = _display.parent;
+				if (parent)
 				{
 					var index:int = _display.parent.getChildIndex(_display);
 				}
 				removeDisplay();
 			}
-			_display = value as DisplayObject;
+			_display = value;
 			addDisplay(parent, index);
 		}
+		
 		/**
-		 * Creates a new <code>StarlingDisplayBridge</code> object
+		 * Creates a new StarlingDisplayBridge instance.
 		 */
 		public function StarlingDisplayBridge()
 		{
@@ -52,7 +65,7 @@
 		/**
 		 * @inheritDoc
 		 */
-		public function update(matrix:Matrix, node:Node, colorTransform:ColorTransform, visible:Boolean):void
+		public function update(matrix:Matrix, node:BoneTransform, colorTransform:ColorTransform, visible:Boolean):void
 		{
 			var pivotX:Number = node.pivotX + _display.pivotX;
 			var pivotY:Number = node.pivotY + _display.pivotY;
@@ -61,17 +74,17 @@
 			
 			//if(updateStarlingDisplay)
 			//{
-				//_display.transformationMatrix = matrix;
+			//_display.transformationMatrix = matrix;
 			//}
 			//else
 			//{
-				_display.transformationMatrix.copyFrom(matrix);
+			_display.transformationMatrix.copyFrom(matrix);
 			//}
-				
-			if(colorTransform && _display is Quad)
+			
+			if (colorTransform && _display is Quad)
 			{
 				(_display as Quad).alpha = colorTransform.alphaMultiplier;
-				(_display as Quad).color = (uint(colorTransform.redMultiplier * 0xff)<<16) + (uint(colorTransform.greenMultiplier * 0xff)<<8) + uint(colorTransform.blueMultiplier * 0xff);
+				(_display as Quad).color = (uint(colorTransform.redMultiplier * 0xff) << 16) + (uint(colorTransform.greenMultiplier * 0xff) << 8) + uint(colorTransform.blueMultiplier * 0xff);
 			}
 			//
 			_display.visible = visible;
@@ -82,9 +95,9 @@
 		 */
 		public function addDisplay(container:Object, index:int = -1):void
 		{
-			if(container && _display)
+			if (container && _display)
 			{
-				if(index < 0)
+				if (index < 0)
 				{
 					container.addChild(_display);
 				}
@@ -94,12 +107,13 @@
 				}
 			}
 		}
+		
 		/**
 		 * @inheritDoc
 		 */
 		public function removeDisplay():void
 		{
-			if(_display && _display.parent)
+			if (_display && _display.parent)
 			{
 				_display.parent.removeChild(_display);
 			}

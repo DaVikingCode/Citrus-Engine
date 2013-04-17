@@ -1,36 +1,41 @@
-package dragonBones.objects {
-
+﻿package dragonBones.objects
+{
+	/**
+	* Copyright 2012-2013. DragonBones. All Rights Reserved.
+	* @playerversion Flash 10.0, Flash 10
+	* @langversion 3.0
+	* @version 2.0
+	*/
 	import dragonBones.animation.Tween;
 	import dragonBones.errors.UnknownDataError;
 	import dragonBones.utils.BytesType;
 	import dragonBones.utils.ConstValues;
 	import dragonBones.utils.TransformUtils;
 	import dragonBones.utils.dragonBones_internal;
-
 	import flash.geom.ColorTransform;
 	import flash.utils.ByteArray;
-	
 	use namespace dragonBones_internal;
-	
+	/**
+	 * The XMLDataParser xlass creates and parses xml data from dragonBones generated maps.
+	 */
 	public class XMLDataParser
 	{
 		private static const ANGLE_TO_RADIAN:Number = Math.PI / 180;
 		private static const HALF_PI:Number = Math.PI * 0.5;
-		
 		private static var _currentSkeletonData:SkeletonData;
-		private static var _helpNode:Node = new Node();
+		private static var _helpNode:BoneTransform = new BoneTransform();
 		private static var _helpFrameData:FrameData = new FrameData();
 		
 		private static function checkSkeletonXMLVersion(skeletonXML:XML):void
 		{
 			var version:String = skeletonXML.attribute(ConstValues.A_VERSION);
-			switch(version)
+			switch (version)
 			{
 				case ConstValues.VERSION_14:
-					break;
+				case ConstValues.VERSION_20:
 				case ConstValues.VERSION:
 					break;
-				default:
+				default: 
 					throw new Error("Nonsupport data version!");
 			}
 		}
@@ -40,7 +45,7 @@ package dragonBones.objects {
 		{
 			var result:XMLList = new XMLList();
 			var length:uint = xmlList.length();
-			for (var i:int = 0; i < length; i++ )
+			for (var i:int = 0; i < length; i++)
 			{
 				var xml:XML = xmlList[i];
 				if (xml.@[attribute].toString() == value)
@@ -50,56 +55,57 @@ package dragonBones.objects {
 			}
 			return result;
 		}
-		
-		public static function compressData(skeletonXML:XML, textureAtlasXML:XML, byteArray:ByteArray):ByteArray 
+		/**
+		 * Compress all data into a ByteArray for serialization.
+		 * @param	skeletonXML The Skeleton data.
+		 * @param	textureAtlasXML The TextureAtlas data.
+		 * @param	byteArray The ByteArray representing the map.
+		 * @return ByteArray. A DragonBones compatible ByteArray.
+		 */
+		public static function compressData(skeletonXML:XML, textureAtlasXML:XML, byteArray:ByteArray):ByteArray
 		{
 			var byteArrayCopy:ByteArray = new ByteArray();
 			byteArrayCopy.writeBytes(byteArray);
-			
 			var xmlBytes:ByteArray = new ByteArray();
 			xmlBytes.writeUTFBytes(textureAtlasXML.toXMLString());
 			xmlBytes.compress();
-			
 			byteArrayCopy.position = byteArrayCopy.length;
 			byteArrayCopy.writeBytes(xmlBytes);
 			byteArrayCopy.writeInt(xmlBytes.length);
-			
 			xmlBytes.length = 0;
 			xmlBytes.writeUTFBytes(skeletonXML.toXMLString());
 			xmlBytes.compress();
-			
 			byteArrayCopy.position = byteArrayCopy.length;
 			byteArrayCopy.writeBytes(xmlBytes);
 			byteArrayCopy.writeInt(xmlBytes.length);
-			
 			return byteArrayCopy;
 		}
-		
+		/**
+		 * Decompress a compatible DragonBones data.
+		 * @param	compressedByteArray The ByteArray to decompress.
+		 * @return A DecompressedData instance.
+		 */
 		public static function decompressData(compressedByteArray:ByteArray):DecompressedData
 		{
 			var dataType:String = BytesType.getType(compressedByteArray);
-			switch(dataType)
+			switch (dataType)
 			{
-				case BytesType.SWF:
-				case BytesType.PNG:
-				case BytesType.JPG:
-					try 
+				case BytesType.SWF: 
+				case BytesType.PNG: 
+				case BytesType.JPG: 
+					try
 					{
 						compressedByteArray.position = compressedByteArray.length - 4;
 						var strSize:int = compressedByteArray.readInt();
 						var position:uint = compressedByteArray.length - 4 - strSize;
-						
 						var xmlBytes:ByteArray = new ByteArray();
 						xmlBytes.writeBytes(compressedByteArray, position, strSize);
 						xmlBytes.uncompress();
 						compressedByteArray.length = position;
-						
 						var skeletonXML:XML = XML(xmlBytes.readUTFBytes(xmlBytes.length));
-						
 						compressedByteArray.position = compressedByteArray.length - 4;
 						strSize = compressedByteArray.readInt();
 						position = compressedByteArray.length - 4 - strSize;
-						
 						xmlBytes.length = 0;
 						xmlBytes.writeBytes(compressedByteArray, position, strSize);
 						xmlBytes.uncompress();
@@ -110,35 +116,32 @@ package dragonBones.objects {
 					{
 						throw new Error("Decompress error!");
 					}
-					
-					var decompressedData:DecompressedData = new DecompressedData(
-						skeletonXML, 
-						textureAtlasXML, 
-						compressedByteArray
-					);
+					var decompressedData:DecompressedData = new DecompressedData(skeletonXML, textureAtlasXML, compressedByteArray);
 					return decompressedData;
-				case BytesType.ZIP:
+				case BytesType.ZIP: 
 					throw new Error("Can not decompress zip!");
-				default:
+				default: 
 					throw new UnknownDataError();
 			}
 			return null;
 		}
-		
+		/**
+		 * Parse the SkeletonData.
+		 * @param	skeletonXML The Skeleton xml to parse.
+		 * @return A SkeletonData instance.
+		 */
 		public static function parseSkeletonData(skeletonXML:XML):SkeletonData
 		{
 			checkSkeletonXMLVersion(skeletonXML);
-			
 			var skeletonData:SkeletonData = new SkeletonData();
 			skeletonData._name = skeletonXML.attribute(ConstValues.A_NAME);
 			skeletonData._frameRate = int(skeletonXML.attribute(ConstValues.A_FRAME_RATE));
 			_currentSkeletonData = skeletonData;
-			
-			for each(var armatureXML:XML in skeletonXML.elements(ConstValues.ARMATURES).elements(ConstValues.ARMATURE))
+			for each (var armatureXML:XML in skeletonXML.elements(ConstValues.ARMATURES).elements(ConstValues.ARMATURE))
 			{
 				var armatureName:String = armatureXML.attribute(ConstValues.A_NAME);
 				var armatureData:ArmatureData = skeletonData.getArmatureData(animationName);
-				if(armatureData)
+				if (armatureData)
 				{
 					parseArmatureData(armatureXML, armatureData);
 				}
@@ -150,28 +153,19 @@ package dragonBones.objects {
 				}
 			}
 			
-			for each(var animationXML:XML in skeletonXML.elements(ConstValues.ANIMATIONS).elements(ConstValues.ANIMATION))
+			for each (var animationXML:XML in skeletonXML.elements(ConstValues.ANIMATIONS).elements(ConstValues.ANIMATION))
 			{
 				var animationName:String = animationXML.attribute(ConstValues.A_NAME);
 				armatureData = skeletonData.getArmatureData(animationName);
-				
 				var animationData:AnimationData = skeletonData.getAnimationData(animationName);
-				if(animationData)
+				if (animationData)
 				{
-					parseAnimationData(
-						animationXML, 
-						animationData, 
-						armatureData
-					);
+					parseAnimationData(animationXML, animationData, armatureData);
 				}
 				else
 				{
 					animationData = new AnimationData();
-					parseAnimationData(
-						animationXML, 
-						animationData, 
-						armatureData
-					);
+					parseAnimationData(animationXML, animationData, armatureData);
 					skeletonData._animationDataList.addData(animationData, animationName);
 				}
 			}
@@ -182,13 +176,13 @@ package dragonBones.objects {
 		private static function parseArmatureData(armatureXML:XML, armatureData:ArmatureData):void
 		{
 			var boneXMLList:XMLList = armatureXML.elements(ConstValues.BONE);
-			for each(var boneXML:XML in boneXMLList)
+			for each (var boneXML:XML in boneXMLList)
 			{
 				var boneName:String = boneXML.attribute(ConstValues.A_NAME);
 				var parentName:String = boneXML.attribute(ConstValues.A_PARENT);
 				var parentXML:XML = getElementsByAttribute(boneXMLList, ConstValues.A_NAME, parentName)[0];
 				var boneData:BoneData = armatureData.getBoneData(boneName);
-				if(boneData)
+				if (boneData)
 				{
 					parseBoneData(boneXML, parentXML, boneData);
 				}
@@ -207,7 +201,7 @@ package dragonBones.objects {
 		dragonBones_internal static function parseBoneData(boneXML:XML, parentXML:XML, boneData:BoneData):void
 		{
 			parseNode(boneXML, boneData.node);
-			if(parentXML)
+			if (parentXML)
 			{
 				boneData._parent = parentXML.attribute(ConstValues.A_NAME);
 				parseNode(parentXML, _helpNode);
@@ -217,17 +211,17 @@ package dragonBones.objects {
 			{
 				boneData._parent = null;
 			}
-			if(_currentSkeletonData)
+			if (_currentSkeletonData)
 			{
 				var displayXMLList:XMLList = boneXML.elements(ConstValues.DISPLAY);
 				var length:uint = displayXMLList.length();
-				for(var i:int = 0;i < length;i ++)
+				for (var i:int = 0; i < length; i++)
 				{
 					var displayXML:XML = displayXMLList[i];
 					var displayName:String = displayXML.attribute(ConstValues.A_NAME);
 					boneData._displayNames[i] = displayName;
 					var displayData:DisplayData = _currentSkeletonData.getDisplayData(displayName);
-					if(displayData)
+					if (displayData)
 					{
 						parseDisplayData(displayXML, displayData);
 					}
@@ -244,18 +238,18 @@ package dragonBones.objects {
 		private static function parseDisplayData(displayXML:XML, displayData:DisplayData):void
 		{
 			displayData._isArmature = Boolean(int(displayXML.attribute(ConstValues.A_IS_ARMATURE)));
-			displayData.pivotX = int(displayXML.attribute(ConstValues.A_PIVOT_X));
-			displayData.pivotY = int(displayXML.attribute(ConstValues.A_PIVOT_Y));
+			displayData.pivotX = Number(displayXML.attribute(ConstValues.A_PIVOT_X));
+			displayData.pivotY = Number(displayXML.attribute(ConstValues.A_PIVOT_Y));
 		}
 		
 		/** @private */
 		dragonBones_internal static function parseAnimationData(animationXML:XML, animationData:AnimationData, armatureData:ArmatureData):void
 		{
-			for each(var movementXML:XML in animationXML.elements(ConstValues.MOVEMENT))
+			for each (var movementXML:XML in animationXML.elements(ConstValues.MOVEMENT))
 			{
 				var movementName:String = movementXML.attribute(ConstValues.A_NAME);
 				var movementData:MovementData = animationData.getMovementData(movementName);
-				if(movementData)
+				if (movementData)
 				{
 					parseMovementData(movementXML, armatureData, movementData);
 				}
@@ -270,30 +264,27 @@ package dragonBones.objects {
 		
 		private static function parseMovementData(movementXML:XML, armatureData:ArmatureData, movementData:MovementData):void
 		{
-			if(_currentSkeletonData)
+			if (_currentSkeletonData)
 			{
 				var frameRate:uint = _currentSkeletonData._frameRate;
 				var duration:int = int(movementXML.attribute(ConstValues.A_DURATION));
-				
-				movementData.duration = (duration > 1)?(duration / frameRate):0;
+				movementData.duration = (duration > 1) ? (duration / frameRate) : 0;
 				movementData.durationTo = int(movementXML.attribute(ConstValues.A_DURATION_TO)) / frameRate;
 				movementData.durationTween = int(movementXML.attribute(ConstValues.A_DURATION_TWEEN)) / frameRate;
 				movementData.loop = Boolean(int(movementXML.attribute(ConstValues.A_LOOP)) == 1);
 				movementData.tweenEasing = Number(movementXML.attribute(ConstValues.A_TWEEN_EASING)[0]);
 			}
-			
 			var boneNames:Vector.<String> = armatureData.boneNames;
-			
 			var movementBoneXMLList:XMLList = movementXML.elements(ConstValues.BONE);
-			for each(var movementBoneXML:XML in movementBoneXMLList)
+			for each (var movementBoneXML:XML in movementBoneXMLList)
 			{
 				var boneName:String = movementBoneXML.attribute(ConstValues.A_NAME);
 				var boneData:BoneData = armatureData.getBoneData(boneName);
 				var parentMovementBoneXML:XML = getElementsByAttribute(movementBoneXMLList, ConstValues.A_NAME, boneData.parent)[0];
 				var movementBoneData:MovementBoneData = movementData.getMovementBoneData(boneName);
-				if(movementBoneXML)
+				if (movementBoneXML)
 				{
-					if(movementBoneData)
+					if (movementBoneData)
 					{
 						parseMovementBoneData(movementBoneXML, parentMovementBoneXML, boneData, movementBoneData);
 					}
@@ -304,28 +295,24 @@ package dragonBones.objects {
 						movementData._movementBoneDataList.addData(movementBoneData, boneName);
 					}
 				}
-				
 				var index:int = boneNames.indexOf(boneName);
-				if(index >= 0)
+				if (index >= 0)
 				{
 					boneNames.splice(index, 1);
 				}
 			}
-			
-			for each(boneName in boneNames)
+			for each (boneName in boneNames)
 			{
 				movementData._movementBoneDataList.addData(MovementBoneData.HIDE_DATA, boneName);
 			}
-			
 			var movementFrameXMLList:XMLList = movementXML.elements(ConstValues.FRAME);
 			var length:uint = movementFrameXMLList.length();
 			var movementFrameList:Vector.<MovementFrameData> = movementData._movementFrameList;
-			for(var i:int = 0;i < length;i ++)
+			for (var i:int = 0; i < length; i++)
 			{
 				var movementFrameXML:XML = movementFrameXMLList[i];
-				var movementFrameData:MovementFrameData = movementFrameList.length > i?movementFrameList[i]:null;
-				
-				if(movementFrameData)
+				var movementFrameData:MovementFrameData = movementFrameList.length > i ? movementFrameList[i] : null;
+				if (movementFrameData)
 				{
 					parseMovementFrameData(movementFrameXML, movementFrameData);
 				}
@@ -333,7 +320,7 @@ package dragonBones.objects {
 				{
 					movementFrameData = new MovementFrameData();
 					parseMovementFrameData(movementFrameXML, movementFrameData)
-					if(movementFrameList.indexOf(movementFrameData) < 0)
+					if (movementFrameList.indexOf(movementFrameData) < 0)
 					{
 						movementFrameList.push(movementFrameData);
 					}
@@ -352,24 +339,21 @@ package dragonBones.objects {
 			var parentTotalDuration:uint = 0;
 			var totalDuration:uint = 0;
 			var currentDuration:uint = 0;
-			if(parentMovementBoneXML)
+			if (parentMovementBoneXML)
 			{
 				var parentFrameXMLList:XMLList = parentMovementBoneXML.elements(ConstValues.FRAME);
 				var parentFrameCount:uint = parentFrameXMLList.length();
 				var parentFrameXML:XML;
 			}
-			
-			
 			var frameXMLList:XMLList = movementBoneXML.elements(ConstValues.FRAME);
 			var frameCount:uint = frameXMLList.length();
 			var frameList:Vector.<FrameData> = movementBoneData._frameList;
-			
-			for(var j:int = 0;j < frameCount;j ++)
+			for (var j:int = 0; j < frameCount; j++)
 			{
 				var frameXML:XML = frameXMLList[j];
-				var frameData:FrameData = frameList.length > j?frameList[j]:null;
+				var frameData:FrameData = frameList.length > j ? frameList[j] : null;
 				
-				if(frameData)
+				if (frameData)
 				{
 					parseFrameData(frameXML, frameData);
 				}
@@ -377,27 +361,24 @@ package dragonBones.objects {
 				{
 					frameData = new FrameData();
 					parseFrameData(frameXML, frameData);
-					if(frameList.indexOf(frameData) < 0)
+					if (frameList.indexOf(frameData) < 0)
 					{
 						frameList.push(frameData);
 					}
 				}
-				
-				if(parentMovementBoneXML)
+				if (parentMovementBoneXML)
 				{
-					while(i < parentFrameCount && (parentFrameXML?(totalDuration < parentTotalDuration || totalDuration >= parentTotalDuration + currentDuration):true))
+					while (i < parentFrameCount && (parentFrameXML ? (totalDuration < parentTotalDuration || totalDuration >= parentTotalDuration + currentDuration) : true))
 					{
 						parentFrameXML = parentFrameXMLList[i];
 						parentTotalDuration += currentDuration;
 						currentDuration = int(parentFrameXML.attribute(ConstValues.A_DURATION));
 						i++;
 					}
-					
 					parseFrameData(parentFrameXML, _helpFrameData);
-					
 					var tweenFrameXML:XML = parentFrameXMLList[i];
 					var progress:Number;
-					if(tweenFrameXML)
+					if (tweenFrameXML)
 					{
 						progress = (totalDuration - parentTotalDuration) / currentDuration;
 					}
@@ -406,7 +387,7 @@ package dragonBones.objects {
 						tweenFrameXML = parentFrameXML;
 						progress = 0;
 					}
-					if(isNaN(_helpFrameData.tweenEasing))
+					if (isNaN(_helpFrameData.tweenEasing))
 					{
 						progress = 0;
 					}
@@ -414,7 +395,6 @@ package dragonBones.objects {
 					{
 						progress = Tween.getEaseValue(progress, _helpFrameData.tweenEasing);
 					}
-					
 					parseNode(tweenFrameXML, _helpNode);
 					TransformUtils.setOffSetNode(_helpFrameData.node, _helpNode, _helpNode, _helpFrameData.tweenRotate);
 					
@@ -432,7 +412,6 @@ package dragonBones.objects {
 					TransformUtils.transformPointWithParent(frameData.node, _helpNode);
 				}
 				totalDuration += int(frameXML.attribute(ConstValues.A_DURATION));
-				
 				frameData.node.x -= boneData.node.x;
 				frameData.node.y -= boneData.node.y;
 				frameData.node.skewX -= boneData.node.skewX;
@@ -459,10 +438,10 @@ package dragonBones.objects {
 		dragonBones_internal static function parseFrameData(frameXML:XML, frameData:FrameData):void
 		{
 			parseNode(frameXML, frameData.node);
-			if(_currentSkeletonData)
+			if (_currentSkeletonData)
 			{
 				var colorTransformXML:XML = frameXML.elements(ConstValues.COLOR_TRANSFORM)[0];
-				if(colorTransformXML)
+				if (colorTransformXML)
 				{
 					parseColorTransform(colorTransformXML, frameData.colorTransform);
 				}
@@ -471,17 +450,15 @@ package dragonBones.objects {
 				frameData.tweenRotate = int(frameXML.attribute(ConstValues.A_TWEEN_ROTATE));
 				frameData.displayIndex = int(frameXML.attribute(ConstValues.A_DISPLAY_INDEX));
 				frameData.movement = String(frameXML.attribute(ConstValues.A_MOVEMENT));
-				
 				frameData.event = String(frameXML.attribute(ConstValues.A_EVENT));
 				frameData.sound = String(frameXML.attribute(ConstValues.A_SOUND));
 				frameData.soundEffect = String(frameXML.attribute(ConstValues.A_SOUND_EFFECT));
-				
 				var visibleStr:String = String(frameXML.attribute(ConstValues.A_VISIBLE));
-				frameData.visible = (visibleStr == "1" || visibleStr =="");
+				frameData.visible = (visibleStr == "1" || visibleStr == "");
 			}
 		}
 		
-		private static function parseNode(xml:XML, node:Node):void
+		private static function parseNode(xml:XML, node:BoneTransform):void
 		{
 			node.x = Number(xml.attribute(ConstValues.A_X));
 			node.y = Number(xml.attribute(ConstValues.A_Y));
@@ -489,8 +466,8 @@ package dragonBones.objects {
 			node.skewY = Number(xml.attribute(ConstValues.A_SKEW_Y)) * ANGLE_TO_RADIAN;
 			node.scaleX = Number(xml.attribute(ConstValues.A_SCALE_X));
 			node.scaleY = Number(xml.attribute(ConstValues.A_SCALE_Y));
-			node.pivotX =  int(xml.attribute(ConstValues.A_PIVOT_X));
-			node.pivotY =  int(xml.attribute(ConstValues.A_PIVOT_Y));
+			node.pivotX =  Number(xml.attribute(ConstValues.A_PIVOT_X));
+			node.pivotY =  Number(xml.attribute(ConstValues.A_PIVOT_Y));
 			node.z = int(xml.attribute(ConstValues.A_Z));
 		}
 		
