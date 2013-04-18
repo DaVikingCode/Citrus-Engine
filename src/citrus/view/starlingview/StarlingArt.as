@@ -14,6 +14,7 @@ package citrus.view.starlingview {
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.MovieClip;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.extensions.particles.PDParticleSystem;
 	import starling.extensions.textureAtlas.DynamicAtlas;
@@ -219,7 +220,7 @@ package citrus.view.starlingview {
 			}
 
 			_view = value;
-
+			
 			if (_view) {
 				if (_view is String) {
 					// view property is a path to an image?
@@ -273,6 +274,13 @@ package citrus.view.starlingview {
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(_content);
 					WorldClock.clock.add(_view);
+					
+				} else if (_view is uint) {
+					
+					// TODO : manage radius -> circle
+					_content = new Quad(_citrusObject.width, _citrusObject.height, _view);
+					moveRegistrationPoint(_citrusObject.registration);
+					addChild(_content);
 
 				} else
 					throw new Error("StarlingArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);

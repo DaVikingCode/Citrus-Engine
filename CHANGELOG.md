@@ -1,3 +1,7 @@
+V 3.1.7, Work In Progress
+-------------------------
+- StarlingArt may handle an uint color, it will automatically create a quad.
+
 V 3.1.6, 04 18 2013
 -------------------
 - Updated on Nape 2.0.8
