@@ -1,5 +1,5 @@
-V 3.1.6, Work in Progress
--------------------------
+V 3.1.6, 04 18 2013
+-------------------
 - Updated on Nape 2.0.8
 - Updated on DragonBones 2.1.1
 - Mouse/Touch are disable on objects to save performances, use touchable new property to be able to interact with touch/mouse on the object. 

@@ -2,8 +2,6 @@ package citrus.system {
 
 	import citrus.core.CitrusObject;
 
-	import flash.utils.Dictionary;
-
 	/**
 	 * A game entity is compound by components. The entity serves as a link to communicate between components.
 	 * It extends the CitrusObject class to enjoy its params setter.
@@ -74,10 +72,10 @@ package citrus.system {
 		}
 		
 		/**
-		 * Search & return first componentType's instance found in components
+		 * Search and return first componentType's instance found in components
 		 *
-		 * @param 	Class	componentType  Component instance class we're looking for
-		 * @return 	Component|null
+		 * @param 	componentType  Component instance class we're looking for
+		 * @return 	Component
 		 */
 		public function lookupComponentByType(componentType:Class):Component
 		{
@@ -94,10 +92,9 @@ package citrus.system {
 		}
 		
 		/**
-		 * Search & return all componentType's instance found in components
+		 * Search and return all componentType's instance found in components
 		 *
-		 * @param 	Class	componentType  Component instance class we're looking for
-		 * @return 	Vector.<Component>
+		 * @param 	componentType  Component instance class we're looking for
 		 */
 		public function lookupComponentsByType(componentType:Class):Vector.<Component>
 		{
@@ -109,10 +106,10 @@ package citrus.system {
 		}
 		
 		/**
-		 * Search & return a component using its name
+		 * Search and return a component using its name
 		 *
-		 * @param 	String				name  	Component's name we're looking for
-		 * @return 	Component|null
+		 * @param 	name Component's name we're looking for
+		 * @return 	Component
 		 */
 		public function lookupComponentByName(name:String):Component
 		{

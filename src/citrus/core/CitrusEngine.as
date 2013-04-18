@@ -20,7 +20,7 @@ package citrus.core {
 	 */	
 	public class CitrusEngine extends MovieClip
 	{
-		public static const VERSION:String = "3.1.5";
+		public static const VERSION:String = "3.1.6";
 				
 		private static var _instance:CitrusEngine;
 		
