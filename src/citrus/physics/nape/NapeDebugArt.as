@@ -46,5 +46,14 @@ package citrus.physics.nape {
 		
 		public function debugMode(flags:uint):void {
 		}
+		
+		/**
+		 * nape's ShapeDebug instance.
+		 * use it to set the properties of the debug drawer such as drawConstraints, drawCollisionArbiters etc...
+		 * ShapeDebug properties : http://napephys.com/docs/types/nape/util/ShapeDebug.html#member_var_detail
+		 */
+		public function get debugDrawer():ShapeDebug {
+			return _debugDrawer;
+		}
 	}
 }
