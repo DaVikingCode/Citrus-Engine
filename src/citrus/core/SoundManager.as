@@ -94,7 +94,7 @@ package citrus.core {
 					var soundFactory:Sound;
 					soundFactory = new Sound();
 					soundFactory.addEventListener(IOErrorEvent.IO_ERROR, handleLoadError);
-					soundFactory.addEventListener(Event.COMPLETE, handleLoadCompleteOnly);
+					soundFactory.addEventListener(Event.COMPLETE, handleLoadComplete);
 					soundFactory.load(new URLRequest(sounds[s]));
 					loadingQueue.push({id:s,sound:soundFactory});
 				}
@@ -163,10 +163,9 @@ package citrus.core {
 			} else if(sounds[id] is String){
 				soundFactory = new Sound();
 				soundFactory.addEventListener(IOErrorEvent.IO_ERROR, handleLoadError);
-				soundFactory.addEventListener(Event.COMPLETE, handleLoadCompleteAndPlay);
+				soundFactory.addEventListener(Event.COMPLETE, handleLoadComplete);
 				soundFactory.load(new URLRequest(sounds[id]));
 				loadingQueue.push({id:id,sound:soundFactory,volume:volume,timesToRepeat:timesToRepeat,panning:panning});
-				return;
 			} else if (!(id in sounds))
 			{
 				trace("SoundManager: trying to play a sound not added to the list:",id);
@@ -316,10 +315,7 @@ package citrus.core {
 			}
 		}
 		
-		/**
-		 * Called after playSound when sound is loaded if sound was a url.
-		 */
-		private function handleLoadCompleteAndPlay(e:Event):void
+		private function handleLoadComplete(e:Event):void
 		{
 			(e.target as Sound).removeEventListener(Event.COMPLETE, arguments.callee);
 			var s:String;
@@ -331,38 +327,8 @@ package citrus.core {
 						loadingQueue.splice(uint(s), 1);
 						if (loadingQueue.length < 1)
 							onAllLoaded.dispatch();
-						
-						var channel:SoundChannel = new SoundChannel();
-						channel = o.sound.play(0, o.timesToRepeat);
-						channel.addEventListener(Event.SOUND_COMPLETE, handleSoundComplete);
-						if (channel == null)
-							return;
-							var t:SoundTransform = new SoundTransform(o.volume, o.panning);
-							channel.soundTransform = t;
-							readySounds[o.id] = { channel:channel, sound:o.sound, volume:o.volume ,playing:true ,timesToRepeat:o.timesToRepeat};
 						return;
 					}
-					
-			trace("SoundManager: complete loading of", e.target, "but couldn't play.");
-		}
-		
-		private function handleLoadCompleteOnly(e:Event):void
-		{
-			(e.target as Sound).removeEventListener(Event.COMPLETE, arguments.callee);
-			var s:String;
-			for (s in loadingQueue)
-					if (loadingQueue[s].sound == e.target)
-					{
-						var o:Object = loadingQueue[s];
-						sounds[o.id] = e.target as Sound;
-						loadingQueue.splice(uint(s), 1);
-						readySounds[o.id] = { channel:new SoundChannel(), sound:o.sound, volume:1 , playing:false ,timesToRepeat:0};
-						if (loadingQueue.length < 1)
-							onAllLoaded.dispatch();
-						return;
-					}
-					
-			trace("SoundManager: complete loading of", e.target, "but couldn't add.");
 		}
 	}
 }
