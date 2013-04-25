@@ -236,6 +236,13 @@ package citrus.core {
 				readySounds[id].volume = volume;
 			}
 		}
+				
+		public function stopAllPlayingSounds():void {
+			
+			for (var soundID:String in sounds)
+				if (soundIsPlaying(soundID))
+					stopSound(soundID);
+		}
 
 		public function tweenVolume(id:String, volume:Number = 0, tweenDuration:Number = 2):void {
 
