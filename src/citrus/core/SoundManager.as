@@ -76,7 +76,7 @@ package citrus.core {
 				if (soundIsReady(id))
 					delete readySounds[id];
 			} else {
-				throw Error("The sound you are trying to remove is not in the sound manager");
+				throw Error("The sound: " + id +" you are trying to remove is not in the sound manager");
 			}
 		}
 		
