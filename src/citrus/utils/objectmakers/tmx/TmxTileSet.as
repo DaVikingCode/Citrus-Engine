@@ -79,7 +79,7 @@ package citrus.utils.objectmakers.tmx {
 
 		public function getRect(id:int):Rectangle {
 			// TODO: consider spacing & margin
-			return new Rectangle((id % numCols) * tileWidth, (id / numCols) * tileHeight);
+			return new Rectangle(((id-firstGID) % numCols) * tileWidth, Math.floor((id-firstGID) / numCols) * tileHeight, tileWidth, tileHeight);
 		}
 	}
 }
