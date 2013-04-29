@@ -191,7 +191,7 @@ package citrus.core {
 			if (soundIsReady(id))
 			{
 				SoundChannel(readySounds[id].channel).stop();
-				SoundChannel(readySounds[id].channel).addEventListener(Event.SOUND_COMPLETE, handleSoundComplete);
+				SoundChannel(readySounds[id].channel).removeEventListener(Event.SOUND_COMPLETE, handleSoundComplete);
 				readySounds[id].playing = false;
 			}
 		}
