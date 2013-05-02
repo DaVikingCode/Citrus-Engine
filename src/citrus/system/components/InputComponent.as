@@ -22,7 +22,7 @@ package citrus.system.components {
 			super.update(timeDelta);
 			
 			isDoingRight = _ce.input.isDoing("right");
-			isDoingRight = _ce.input.isDoing("left");
+			isDoingLeft = _ce.input.isDoing("left");
 			isDoingDuck = _ce.input.isDoing("duck");
 			isDoingJump = _ce.input.isDoing("jump");
 			justDidJump = _ce.input.justDid("jump");
