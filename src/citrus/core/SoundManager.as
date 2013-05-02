@@ -238,12 +238,30 @@ package citrus.core {
 				readySounds[id].volume = volume;
 			}
 		}
-				
-		public function stopAllPlayingSounds():void {
+		
+		/**
+		 * Stop playing all the current sound.
+		 * @param except an array of soundIDs you want to preserve.
+		 */		
+		public function stopAllPlayingSounds(...except):void {
 			
-			for (var soundID:String in sounds)
-				if (soundIsPlaying(soundID))
+			var killSound:Boolean;
+			
+			for (var soundID:String in sounds) {
+			
+				killSound = true;
+					
+				for each (var soundToPreserve:String in except) {
+					
+					if (soundToPreserve == soundID) {
+						killSound = false;
+						break;
+					}
+				}
+				
+				if (killSound && soundIsPlaying(soundID))
 					stopSound(soundID);
+			}
 		}
 
 		public function tweenVolume(id:String, volume:Number = 0, tweenDuration:Number = 2):void {
