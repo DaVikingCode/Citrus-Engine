@@ -48,6 +48,8 @@ package citrus.core {
 			
 			onAllLoaded.removeAll();
 			onSoundComplete.removeAll();
+			
+			_instance = null;
 		}
 
 		/*
