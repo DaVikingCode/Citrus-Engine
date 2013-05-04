@@ -1,5 +1,6 @@
 V 3.1.7, Work In Progress
 -------------------------
+- if StarlingArt updateArtEnabled is set to false, it will flatten the Sprite.
 - StarlingArt may handle an uint color, it will automatically create a quad.
 
 V 3.1.6, 04 18 2013

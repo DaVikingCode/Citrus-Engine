@@ -62,11 +62,6 @@ package citrus.view.starlingview {
 		 */
 		public var loader:Loader;
 
-		/**
-		 * Set it to false if you want to prevent the art to be updated. Be careful its properties (x, y, ...) won't be able to change!
-		 */
-		public var updateArtEnabled:Boolean = true;
-
 		// properties :
 
 		private static var _loopAnimation:Dictionary = new Dictionary();
@@ -82,6 +77,7 @@ package citrus.view.starlingview {
 		private var _textureAtlas:TextureAtlas;
 
 		private var _viewHasChanged:Boolean = false; // when the view changed, the animation wasn't updated if it was the same name. This var fix that.
+		private var _updateArtEnabled:Boolean = true;
 
 		public function StarlingArt(object:ISpriteView = null) {
 
@@ -424,6 +420,22 @@ package citrus.view.starlingview {
 
 		private function handleContentIOError(evt:IOErrorEvent):void {
 			throw new Error(evt.text);
+		}
+		
+		/**
+		 * Set it to false if you want to prevent the art to be updated. Be careful its properties (x, y, ...) won't be able to change!
+		 */
+		public function get updateArtEnabled():Boolean {
+			return _updateArtEnabled;
+		}
+		
+		/**
+		 * Set it to false also made the Sprite flattened!
+		 */
+		public function set updateArtEnabled(value:Boolean):void {
+			_updateArtEnabled = value;
+			
+			_updateArtEnabled ? unflatten() : flatten();
 		}
 
 	}
