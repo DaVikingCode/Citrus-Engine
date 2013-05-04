@@ -2,6 +2,11 @@ V 3.1.7, Work In Progress
 -------------------------
 - if StarlingArt updateArtEnabled is set to false, it will flatten the Sprite.
 - StarlingArt may handle an uint color, it will automatically create a quad.
+- added stopAllPlayingSounds(...except) method.
+- Emitters have their updateCallEnabled = true;
+- SoundManager fix: stream sound directly after load(); when sound was added as an url.
+- fixed: stopSound wasn't setting the playing var to false.
+- fixed: InputComponent wasn't setting isDoingLeft.
 
 V 3.1.6, 04 18 2013
 -------------------
