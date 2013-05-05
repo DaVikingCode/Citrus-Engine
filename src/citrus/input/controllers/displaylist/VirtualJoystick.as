@@ -24,6 +24,7 @@ package citrus.input.controllers.displaylist {
 		override protected function initGraphics():void
 		{
 			graphic = new Sprite();
+			graphic.visible = _visible;
 			
 			if (!back)
 			{

@@ -32,6 +32,7 @@ package citrus.input.controllers.starling {
 		override protected function initGraphics():void
 		{
 			graphic = new starling.display.Sprite();
+			graphic.visible = _visible;
 			
 			if (!back)
 			{

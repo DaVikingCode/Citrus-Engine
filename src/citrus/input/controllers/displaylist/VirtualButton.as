@@ -23,6 +23,7 @@ package citrus.input.controllers.displaylist {
 		{
 			button = new Sprite();
 			graphic = new Sprite();
+			graphic.visible = _visible;
 			
 			if (!buttonUpGraphic)
 			{
