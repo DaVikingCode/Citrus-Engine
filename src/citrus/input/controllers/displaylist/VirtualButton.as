@@ -16,14 +16,13 @@ package citrus.input.controllers.displaylist {
 		
 		public function VirtualButton(name:String, params:Object = null)
 		{
+			graphic = new Sprite();
 			super(name, params);
 		}
 		
 		override protected function initGraphics():void
 		{
 			button = new Sprite();
-			graphic = new Sprite();
-			graphic.visible = _visible;
 			
 			if (!buttonUpGraphic)
 			{
@@ -79,10 +78,14 @@ package citrus.input.controllers.displaylist {
 			}
 		}
 		
+		override public function get visible():Boolean
+		{
+			return _visible = graphic.visible;
+		}
+		
 		override public function set visible(value:Boolean):void
 		{
-			graphic.visible = value;
-			_visible = value;
+			_visible = graphic.visible = value;
 		}
 		
 		override public function destroy():void

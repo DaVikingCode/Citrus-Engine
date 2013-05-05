@@ -23,13 +23,11 @@ package citrus.input.controllers.starling {
 		public var buttonDownTexture:Texture;
 
 		public function VirtualButton(name:String, params:Object = null) {
+			graphic = new starling.display.Sprite();
 			super(name, params);
 		}
 
 		override protected function initGraphics():void {
-			
-			graphic = new starling.display.Sprite();
-			graphic.visible = _visible;
 
 			if (!buttonUpTexture) {
 				var tempSprite:Sprite = new Sprite();
@@ -96,10 +94,14 @@ package citrus.input.controllers.starling {
 			}
 		}
 
-		override public function set visible(value:Boolean):void {
-			
-			graphic.visible = value;
-			_visible = value;
+		override public function get visible():Boolean
+		{
+			return _visible = graphic.visible;
+		}
+		
+		override public function set visible(value:Boolean):void
+		{
+			_visible = graphic.visible = value;
 		}
 
 		override public function destroy():void {
