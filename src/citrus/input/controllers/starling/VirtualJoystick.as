@@ -32,7 +32,7 @@ package citrus.input.controllers.starling {
 		override protected function initGraphics():void
 		{
 			graphic = new starling.display.Sprite();
-			graphic.visible = _visible;
+			visible = _visible;
 			
 			if (!back)
 			{
@@ -191,7 +191,7 @@ package citrus.input.controllers.starling {
 		
 		public function set visible(value:Boolean):void
 		{
-			graphic.visible = value;
+			_visible = graphic.visible = value;
 		}
 		
 		override public function destroy():void

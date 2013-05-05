@@ -24,7 +24,7 @@ package citrus.input.controllers.displaylist {
 		override protected function initGraphics():void
 		{
 			graphic = new Sprite();
-			graphic.visible = _visible;
+			visible = _visible;
 			
 			if (!back)
 			{
@@ -152,7 +152,7 @@ package citrus.input.controllers.displaylist {
 		
 		public function set visible(value:Boolean):void
 		{
-			graphic.visible = value;
+			_visible = graphic.visible = value;
 		}
 		
 		override public function destroy():void
