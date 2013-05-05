@@ -166,7 +166,7 @@ package citrus.objects.complex.box2dstarling{
 			if(contact.GetFixtureA() == _fixture || contact.GetFixtureB() == _fixture)
 			{
 				if (Box2DUtils.CollisionGetOther(this, contact).body.GetControllerList() != null) {
-					buoyancyController.AddBody(Box2DUtils.CollisionGetOther(this, contact).body);
+					buoyancyController.RemoveBody(Box2DUtils.CollisionGetOther(this, contact).body);
 				}
 			}
 		}
