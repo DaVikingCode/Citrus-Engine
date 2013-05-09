@@ -58,7 +58,11 @@ package citrus.objects.platformer.nape {
 		override public function initialize(poolObjectParams:Object = null):void {
 			
 			super.initialize(poolObjectParams);
-			
+		}
+		
+		override public function addPhysics():void
+		{
+			super.addPhysics();
 			_prepareSlices();
 		}
 		

@@ -71,7 +71,11 @@ package citrus.objects.platformer.box2d {
 		override public function initialize(poolObjectParams:Object = null):void {
 			
 			super.initialize(poolObjectParams);
-			
+		}
+		
+		override public function addPhysics():void
+		{
+			super.addPhysics();
 			_prepareSlices();
 		}
 		
