@@ -1,5 +1,6 @@
 V 3.1.7, Work In Progress
 -------------------------
+- Starling.handleLostContext is defined to true if you use Android, made in setUpStarling function.
 - if StarlingArt updateArtEnabled is set to false, it will flatten the Sprite.
 - StarlingArt may handle an uint color, it will automatically create a quad.
 - AnimationSequence textureAtlas could be an AssetManager object.

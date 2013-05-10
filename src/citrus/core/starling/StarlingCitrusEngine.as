@@ -3,8 +3,10 @@ package citrus.core.starling {
 	import citrus.core.CitrusEngine;
 	import citrus.core.State;
 	import citrus.utils.Mobile;
+
 	import starling.core.Starling;
 	import starling.events.Event;
+
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
@@ -52,6 +54,9 @@ package citrus.core.starling {
 		 * @param profile The Context3DProfile that should be requested, default is baseline. <a href="http://wiki.starling-framework.org/manual/constrained_stage3d_profile">More informations</a>.
 		 */
 		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewPort:Rectangle = null, profile:String = "baseline"):void {
+			
+			if (Mobile.isAndroid())
+				Starling.handleLostContext = true;
 
 			if (!viewPort)
 				viewPort = Mobile.isIOS() || Mobile.isAndroid() ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
