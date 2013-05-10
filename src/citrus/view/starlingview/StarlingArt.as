@@ -10,6 +10,8 @@ package citrus.view.starlingview {
 	import dragonBones.Armature;
 	import dragonBones.animation.WorldClock;
 
+	import spine.starling.SkeletonAnimationSprite;
+
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -153,8 +155,13 @@ package citrus.view.starlingview {
 				(_view as Armature).dispose();
 				_content.dispose();
 
-			} else if (_content is DisplayObject)
+			} else if (_content is DisplayObject) {
+				
+				if (_view is SkeletonAnimationSprite)
+					Starling.juggler.remove(_view as SkeletonAnimationSprite);
+				
 				_content.dispose();
+			}
 
 		}
 
@@ -252,6 +259,8 @@ package citrus.view.starlingview {
 						Starling.juggler.add(_content as MovieClip);
 					else if (_view is PDParticleSystem)
 						Starling.juggler.add(_content as PDParticleSystem);
+					else if (_view is SkeletonAnimationSprite)
+						Starling.juggler.add(_view as SkeletonAnimationSprite);
 
 				} else if (_view is Texture) {
 
@@ -315,6 +324,8 @@ package citrus.view.starlingview {
 					(_content as AnimationSequence).changeAnimation(_animation, animLoop);
 				else if (_view is Armature)
 					(_view as Armature).animation.gotoAndPlay(value);
+				else if (_view is SkeletonAnimationSprite)
+					(_view as SkeletonAnimationSprite).setAnimation(_animation, animLoop);
 			}
 
 			_viewHasChanged = false;

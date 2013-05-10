@@ -190,6 +190,7 @@
 
 			<arg line="-include-sources ../srclib/starling" />
 			<arg line="-include-sources ../srclib/dragonBones" />
+			<arg line="-include-sources ../srclib/spine" />
 		</exec>
 
 	</target>
@@ -321,6 +322,7 @@
 			<!-- Include all of the AS3 files in LIBRARY -->
 			<arg line="-include-sources ../srclib/starling" />
 			<arg line="-include-sources ../srclib/dragonBones" />
+			<arg line="-include-sources ../srclib/spine" />
 			<arg line="-include-libraries ../lib/feathers.swc" />
 			<arg line="-include-libraries ../lib/starling.swc" />
 		</exec>
