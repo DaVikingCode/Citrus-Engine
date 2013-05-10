@@ -19,6 +19,10 @@ public class AtlasRegion {
 	public var rotate:Boolean;
 	public var splits:Vector.<int>;
 	public var pads:Vector.<int>;
+	
+	public function AtlasRegion() {
+		
+	}
 }
 
 }

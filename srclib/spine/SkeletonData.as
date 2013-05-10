@@ -8,6 +8,10 @@ public class SkeletonData {
 	public var skins:Vector.<Skin> = new Vector.<Skin>();
 	public var defaultSkin:Skin;
 	public var animations:Vector.<Animation> = new Vector.<Animation>();
+	
+	public function SkeletonData() {
+		
+	}
 
 	// --- Bones.
 

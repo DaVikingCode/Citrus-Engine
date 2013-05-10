@@ -152,4 +152,8 @@ class QueueEntry {
 	public var animation:Animation;
 	public var loop:Boolean;
 	public var delay:Number;
+	
+	public function QueueEntry() {
+		
+	}
 }
