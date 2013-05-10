@@ -2,6 +2,7 @@ V 3.1.7, Work In Progress
 -------------------------
 - if StarlingArt updateArtEnabled is set to false, it will flatten the Sprite.
 - StarlingArt may handle an uint color, it will automatically create a quad.
+- AnimationSequence textureAtlas could be an AssetManager object.
 - added stopAllPlayingSounds(...except) method.
 - Emitters have their updateCallEnabled = true;
 - SoundManager fix: stream sound directly after load(); when sound was added as an url.

@@ -21,7 +21,7 @@ package citrus.view.starlingview {
 		 */
 		public var onAnimationComplete:Signal;
 
-		private var _textureAtlas:TextureAtlas;
+		private var _textureAtlas:*;
 		private var _animations:Array;
 		private var _firstAnimation:String;
 		private var _animFps:Number;
@@ -32,14 +32,14 @@ package citrus.view.starlingview {
 		private var _previousAnimation:String;
 
 		/**
-		 * @param textureAtlas a TextureAtlas object with your object's animations you would lkie to use.
+		 * @param textureAtlas a TextureAtlas or an AssetManager object with your object's animations you would like to use.
 		 * @param animations an array with the object's animations as a String you would like to pick up.
 		 * @param firstAnimation a string of your default animation at its creation.
 		 * @param animFps a number which determines the animation MC's fps.
 		 * @param firstAnimLoop a boolean, set it to true if you want your first animation to loop.
 		 * @param smoothing a string indicating the smoothing algorithms used for the AnimationSequence, default is bilinear.
 		 */
-		public function AnimationSequence(textureAtlas:TextureAtlas, animations:Array, firstAnimation:String, animFps:Number = 30, firstAnimLoop:Boolean = false, smoothing:String = "bilinear") {
+		public function AnimationSequence(textureAtlas:*, animations:Array, firstAnimation:String, animFps:Number = 30, firstAnimLoop:Boolean = false, smoothing:String = "bilinear") {
 
 			super();
 
