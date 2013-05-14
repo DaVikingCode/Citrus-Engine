@@ -2,6 +2,7 @@ package citrus.input.controllers
 {
 
 	import citrus.input.InputController;
+	import flash.geom.Vector3D;
 	import flash.utils.Dictionary;
 
 	import flash.events.AccelerometerEvent;
@@ -308,6 +309,16 @@ package citrus.input.controllers
 			
 			
 		}
+		
+		/*
+		 * Acceleration Vector
+		 */
+		public function get acceleration():Vector3D { return new Vector3D(_a.x, _a.y, _a.z); }
+		
+		/*
+		 * Rotation Vector
+		 */
+		public function get rotation():Vector3D { return new Vector3D(_rot.x, _rot.y, _rot.z); }
 		
 	}
 
