@@ -9,20 +9,20 @@ package citrus.input.controllers
 	
 	public class Accelerometer extends InputController
 	{
-		private var _accel: flash.sensors.Accelerometer;
+		protected var _accel: flash.sensors.Accelerometer;
 		
 		//current accel
-		private var _a:Object = { x:0, y:0, z:0 };
+		protected var _a:Object = { x:0, y:0, z:0 };
 		//target accel
-		private var _t:Object = { x:0, y:0, z:0 };
+		protected var _t:Object = { x:0, y:0, z:0 };
 		
 		//rotation
-		private var _rot:Object = { x:0 , y:0 , z:0 };
+		protected var _rot:Object = { x:0 , y:0 , z:0 };
 		//previous rotation
-		private var _prevRot:Object = { x:0 , y:0 , z:0 };
+		protected var _prevRot:Object = { x:0 , y:0 , z:0 };
 		
 		//only start calculating when received first events from device.
-		private var receivedFirstAccelUpdate:Boolean = false;
+		protected var receivedFirstAccelUpdate:Boolean = false;
 		
 		/**
 		 * Angle inside which no action is triggered, representing the "center" or the "idle position".
