@@ -13,14 +13,14 @@ package citrus.input.controllers
 		protected var _accel: flash.sensors.Accelerometer;
 		
 		//current accel
-		protected var _a:Object = { x:0, y:0, z:0 };
+		protected var _a:Vector3D = new Vector3D();
 		//target accel
-		protected var _t:Object = { x:0, y:0, z:0 };
+		protected var _t:Vector3D = new Vector3D();
 		
 		//rotation
-		protected var _rot:Object = { x:0 , y:0 , z:0 };
+		protected var _rot:Vector3D = new Vector3D();
 		//previous rotation
-		protected var _prevRot:Object = { x:0 , y:0 , z:0 };
+		protected var _prevRot:Vector3D = new Vector3D();
 		
 		//only start calculating when received first events from device.
 		protected var receivedFirstAccelUpdate:Boolean = false;
@@ -313,12 +313,12 @@ package citrus.input.controllers
 		/*
 		 * Acceleration Vector
 		 */
-		public function get acceleration():Vector3D { return new Vector3D(_a.x, _a.y, _a.z); }
+		public function get acceleration():Vector3D { return _a; }
 		
 		/*
 		 * Rotation Vector
 		 */
-		public function get rotation():Vector3D { return new Vector3D(_rot.x, _rot.y, _rot.z); }
+		public function get rotation():Vector3D { return _rot; }
 		
 	}
 
