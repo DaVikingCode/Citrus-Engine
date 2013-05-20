@@ -130,9 +130,9 @@ package citrus.utils.objectmakers {
 		 * <p>For the objects, you can add their name and don't forget their types : package name + class name. 
 		 * It also supports properties.</p>
 		 * @param levelXML the TMX provided by the Tiled Map Editor software, convert it into an xml before.
-		 * @param atlas an atlas which represent the different tiles, you must name each tile with the corresponding texture name.
+		 * @param atlas an atlas or a reference to an AssetManager which represent the different tiles, you must name each tile with the corresponding texture name.
 		 */
-		public static function FromTiledMap(levelXML:XML, atlas:TextureAtlas, addToCurrentState:Boolean = true):Array {
+		public static function FromTiledMap(levelXML:XML, atlas:*, addToCurrentState:Boolean = true):Array {
 
 			var ce:CitrusEngine = CitrusEngine.getInstance();
 			var params:Object;
