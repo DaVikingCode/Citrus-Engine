@@ -431,12 +431,14 @@ package citrus.objects.platformer.box2d
 			if (_groundContacts.length == 0)
 				return;
 			
-			for each (var contact:b2Fixture in _groundContacts)
-				var angle:Number = contact.GetBody().GetAngle();
+			for each (var contact:b2Fixture in _groundContacts) {
 				
-			var turn:Number = 45 * Math.PI / 180;
-			angle = angle % turn;
-			_combinedGroundAngle += angle;
+				var angle:Number = contact.GetBody().GetAngle();
+				var turn:Number = 45 * Math.PI / 180;
+				angle = angle % turn;
+				_combinedGroundAngle += angle;
+			}
+				
 			_combinedGroundAngle /= _groundContacts.length;
 		}
 		

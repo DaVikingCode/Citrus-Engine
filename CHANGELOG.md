@@ -10,6 +10,7 @@ V 3.1.7, Work In Progress
 - SoundManager fix: stream sound directly after load(); when sound was added as an url.
 - fixed: stopSound wasn't setting the playing var to false.
 - fixed: InputComponent wasn't setting isDoingLeft.
+- fixed: updateCombinedGroundAngle() on box2d Hero
 
 V 3.1.6, 04 18 2013
 -------------------
