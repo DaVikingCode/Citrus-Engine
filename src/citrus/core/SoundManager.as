@@ -83,6 +83,30 @@ package citrus.core {
 		}
 		
 		/**
+		 * Remove all the current sounds.
+		 * @param except an array of soundIDs you want to preserve.
+		 */
+		public function removeAllSounds(...except):void {
+
+			var removeThisSound:Boolean;
+
+			for (var soundID:String in sounds) {
+
+				removeThisSound = true;
+
+				for each (var soundToPreserve:String in except) {
+					if (soundToPreserve == soundID) {
+						removeThisSound = false;
+						break;
+					}
+				}
+
+				if (removeThisSound)
+					removeSound(soundID);
+			}
+		}
+		
+		/**
 		 * pre load / instanciate all added sounds that are not yet sound objects.
 		 */
 		public function preLoadSounds():void {
@@ -242,7 +266,7 @@ package citrus.core {
 		}
 		
 		/**
-		 * Stop playing all the current sound.
+		 * Stop playing all the current sounds.
 		 * @param except an array of soundIDs you want to preserve.
 		 */		
 		public function stopAllPlayingSounds(...except):void {
