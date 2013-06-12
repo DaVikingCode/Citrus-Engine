@@ -70,13 +70,17 @@ package citrus.core {
 				throw new Error("Sound Manager doesn't know how to add the " + id + " sound: " + sound);
 		}
 
-		public function removeSound(id:String):void {
+		public function removeSound(id:String, stopSoundIfPlaying:Boolean = false):void {
 
 			if (soundIsAdded(id)) {
 				delete sounds[id];
 
 				if (soundIsReady(id))
 					delete readySounds[id];
+					
+				if (stopSoundIfPlaying && soundIsPlaying(id))
+					stopSound(id);
+				
 			} else {
 				throw Error("The sound: " + id +" you are trying to remove is not in the sound manager");
 			}
@@ -151,9 +155,10 @@ package citrus.core {
 		 * @return
 		 */
 		public function soundIsPlaying(id:String):Boolean {
+			
 			if (id in readySounds)
 				return readySounds[id].playing;
-			else
+			
 			return false;
 		}
 
