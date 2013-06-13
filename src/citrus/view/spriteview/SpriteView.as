@@ -3,6 +3,8 @@ package citrus.view.spriteview {
 	import citrus.view.ACitrusView;
 	import citrus.view.ISpriteView;
 
+	import dragonBones.animation.WorldClock;
+
 	import flash.display.Sprite;
 
 	/**
@@ -47,6 +49,8 @@ package citrus.view.spriteview {
 				if (sprite.updateArtEnabled)
 					sprite.update(this);
 			}
+			
+			WorldClock.clock.advanceTime(timeDelta);
 		}
 			
 		override protected function createArt(citrusObject:Object):Object

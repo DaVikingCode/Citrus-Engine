@@ -8,7 +8,9 @@ package citrus.view.spriteview
 	import citrus.physics.IDebugView;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ISpriteView;
-	import flash.geom.Point;
+
+	import dragonBones.Armature;
+	import dragonBones.animation.WorldClock;
 
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
@@ -18,6 +20,7 @@ package citrus.view.spriteview
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.utils.getDefinitionByName;
 
@@ -94,12 +97,19 @@ package citrus.view.spriteview
 				
 				if (_view is String)
 					removeChild(_content.loaderInfo.loader);
-				else if (_content && _content.parent)
+				 else if (_content && _content.parent)
 					removeChild(_content.parent);
-				
+					
 			} else {
 				
 				CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
+				
+				if (_view is Armature) {
+					
+					WorldClock.clock.remove(_view);
+					(_view as Armature).dispose();					
+				}
+				
 				_view = null;
 			}
 		}
@@ -184,7 +194,14 @@ package citrus.view.spriteview
 					_content = _view;
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(_content);
-				} 
+					
+				} else if (_view is Armature) {
+					
+					_content = (_view as Armature).display as Sprite;
+					moveRegistrationPoint(_citrusObject.registration);
+					addChild(_content);
+					WorldClock.clock.add(_view);
+				}
 				else
 					throw new Error("SpriteArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
 				
@@ -212,7 +229,9 @@ package citrus.view.spriteview
 				var mc:MovieClip = _content as MovieClip;
 				if (_animation != null && _animation != "" && hasAnimation(_animation))
 					mc.gotoAndStop(_animation);
-			}
+					
+			} else if (_view is Armature)
+					(_view as Armature).animation.gotoAndPlay(value);
 		}
 		
 		public function get citrusObject():ISpriteView

@@ -2,6 +2,7 @@ V 3.1.7, Work In Progress
 -------------------------
 - Updated on Nape 2.0.9.
 - Added Spine 2D skeleton library support.
+- Added DragonBones support for the display list.
 - Starling.handleLostContext is defined to true if you use Android, made in setUpStarling function.
 - if StarlingArt updateArtEnabled is set to false, it will flatten the Sprite.
 - StarlingArt may handle an uint color, it will automatically create a quad.
