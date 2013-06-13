@@ -12,3 +12,7 @@ Take a look on the screen shot to know how to configure it:
 ![ScreenShot](http://aymericlamboley.fr/blog/wp-content/uploads/2013/06/Capture1.PNG)
 ![ScreenShot](http://aymericlamboley.fr/blog/wp-content/uploads/2013/06/Capture2.PNG)
 ![ScreenShot](http://aymericlamboley.fr/blog/wp-content/uploads/2013/06/Capture3.PNG)
+
+Now you can run it! When it's done, you will be enable to run the ant script.
+
+If you want to generate the ASDoc in a html format, remove the additional params from the last screenshot picture.
