@@ -72,7 +72,25 @@ package citrus.view.starlingview {
 
 			_previousAnimation = _firstAnimation;
 		}
-		
+
+		/**
+		 * It may be useful to add directly a MovieClip instead of a Texture Atlas to enable its manipulation like an animation's reversion for example.
+		 * Be careful, if you <code>clone</code> the AnimationSequence it's not taken into consideration.
+		 * @param mc a MovieClip you would like to use.
+		 * @param animation the object's animation name as a String you would like to pick up.
+		 */
+		public function addMovieClip(mc:MovieClip, animation:String):void {
+
+			if ((_mcSequences[animation]))
+				throw new Error(this + " already have the " + animation + " animation set up in its animations' array");
+
+			_mcSequences[animation] = mc;
+			_mcSequences[animation].name = animation;
+			_mcSequences[animation].addEventListener(Event.COMPLETE, _animationComplete);
+			_mcSequences[animation].smoothing = _smoothing;
+			_mcSequences[animation].fps = _animFps;
+		}
+
 		/**
 		 * If you need more than one TextureAtlas for your character's animations, use this function. 
 		 * Be careful, if you <code>clone</code> the AnimationSequence it's not taken into consideration.
@@ -93,22 +111,22 @@ package citrus.view.starlingview {
 				_mcSequences[animation].smoothing = _smoothing;
 			}
 		}
-		
+
 		/**
 		 * You may want to remove animations from the AnimationSequence, use this function.
 		 * Be careful, if you <code>clone</code> the AnimationSequence it's not taken into consideration.
 		 * @param animations an array with the object's animations as a String you would like to remove.
 		 */
 		public function removeAnimations(animations:Array):void {
-			
+
 			for each (var animation:String in animations) {
-				
+
 				if (!(_mcSequences[animation]))
-				throw new Error(this.parent.name + " doesn't have the " + animation + " animation set up in its animations' array");
-				
+					throw new Error(this.parent.name + " doesn't have the " + animation + " animation set up in its animations' array");
+
 				_mcSequences[animation].removeEventListener(Event.COMPLETE, _animationComplete);
 				_mcSequences[animation].dispose();
-				
+
 				delete _mcSequences[animation];
 			}
 		}
@@ -165,7 +183,7 @@ package citrus.view.starlingview {
 		}
 
 		/**
-		 * Return a clone of the current AnimationSequence.
+		 * Return a clone of the current AnimationSequence. Animations added via <code>addMovieClip</code> or <code>addTextureAtlasWithAnimations</code> aren't included.
 		 */
 		public function clone():AnimationSequence {
 			return new AnimationSequence(_textureAtlas, _animations, _firstAnimation, _animFps, _firstAnimLoop, _smoothing);

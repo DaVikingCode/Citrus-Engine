@@ -7,6 +7,7 @@ V 3.1.7, Work In Progress
 - if StarlingArt updateArtEnabled is set to false, it will flatten the Sprite.
 - StarlingArt may handle an uint color, it will automatically create a quad.
 - AnimationSequence textureAtlas could be an AssetManager object.
+- You may add a MovieClip to an AnimationSequence.
 - added stopAllPlayingSounds(...except) method.
 - added removeAllSounds(...except) method.
 - removeSound has a new argument : stopSoundIfPlaying:Boolean = false.
