@@ -33,12 +33,12 @@ package citrus.core.starling {
 				if (_starling) {
 
 					_starling.stage.removeChild(_state as StarlingState);
-					
+
 					// Remove Box2D or Nape debug view
 					var debugView:DisplayObject = _starling.nativeStage.getChildByName("debug view");
 					if (debugView)
-						 _starling.nativeStage.removeChild(debugView);		
-					
+						_starling.nativeStage.removeChild(debugView);
+
 					_starling.root.dispose();
 					_starling.dispose();
 				}
@@ -54,7 +54,7 @@ package citrus.core.starling {
 		 * @param profile The Context3DProfile that should be requested, default is baseline. <a href="http://wiki.starling-framework.org/manual/constrained_stage3d_profile">More informations</a>.
 		 */
 		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewPort:Rectangle = null, profile:String = "baseline"):void {
-			
+
 			if (Mobile.isAndroid())
 				Starling.handleLostContext = true;
 
@@ -71,11 +71,11 @@ package citrus.core.starling {
 
 		/**
 		 * Be sure that starling is initialized (especially on mobile).
-		 */ 
+		 */
 		protected function _context3DCreated(evt:starling.events.Event):void {
 
 			_starling.removeEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
-			
+
 			if (!_starling.isStarted)
 				_starling.start();
 		}
@@ -86,58 +86,72 @@ package citrus.core.starling {
 
 		override protected function handleEnterFrame(e:flash.events.Event):void {
 
-			if (_newState) {
-				
-				if (_starling.isStarted && _starling.context) {
-					
+			if (_starling.isStarted && _starling.context) {
+
+				if (_newState) {
+
 					if (_state) {
-						
+
 						if (_state is StarlingState) {
-						
+
 							_state.destroy();
 							_starling.stage.removeChild(_state as StarlingState);
-							
+
 							// Remove Box2D or Nape debug view
 							var debugView:DisplayObject = _starling.nativeStage.getChildByName("debug view");
 							if (debugView)
-								 _starling.nativeStage.removeChild(debugView);
-								 
+								_starling.nativeStage.removeChild(debugView);
+
 						} else {
-							
+
 							_state.destroy();
 							removeChild(_state as State);
 						}
-						
+
 					}
-					
+
 					if (_newState is StarlingState) {
-						
+
 						_state = _newState;
 						_newState = null;
-			
-						_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);
-						_state.initialize();
+						
+						if (_futureState)
+							_futureState = null;
+						
+						else {
+							_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);
+							_state.initialize();
+						}
 					}
 				}
-			
+				
+				if (_stateTransitionning) {
+					
+					_futureState = _stateTransitionning;
+					_stateTransitionning = null;
+					
+					starling.stage.addChildAt(_futureState as StarlingState, _stateDisplayIndex);
+					_futureState.initialize();
+				}
+
 			}
-			
+
 			super.handleEnterFrame(e);
 		}
-		
+
 		override protected function handleStageDeactivated(e:flash.events.Event):void {
-			
+
 			if (_playing && _starling)
 				_starling.stop();
-				
+
 			super.handleStageDeactivated(e);
 		}
 
 		override protected function handleStageActivated(e:flash.events.Event):void {
-			
+
 			if (_starling && !_starling.isStarted)
 				_starling.start();
-			
+
 			super.handleStageActivated(e);
 		}
 
@@ -147,6 +161,7 @@ package citrus.core.starling {
 
 
 import starling.display.Sprite;
+
 /**
  * RootClass is the root of Starling, it is never destroyed and only accessed through <code>_starling.stage</code>.
  */

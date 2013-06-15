@@ -42,6 +42,8 @@ package citrus.core {
 		
 		protected var _state:IState;
 		protected var _newState:IState;
+		protected var _stateTransitionning:IState;
+		protected var _futureState:IState;
 		protected var _stateDisplayIndex:uint = 0;
 		protected var _playing:Boolean = true;
 		protected var _input:Input;
@@ -120,12 +122,15 @@ package citrus.core {
 		 * That way you don't end up changing states in the middle of a state's tick, effectively fucking stuff up. 
 		 */		
 		public function get state():IState
-		{			
-			if (_newState)
+		{
+			if (_futureState)
+				return _futureState;
+						
+			else if (_newState)
 				return _newState;
-			else {
+						
+			else 
 				return _state;
-			}
 		}
 		
 		/**
@@ -134,7 +139,15 @@ package citrus.core {
 		 */		
 		public function set state(value:IState):void
 		{
-			_newState = value;			
+			_newState = value;
+		}
+		
+		public function get futureState():IState {
+			return _futureState;
+		}
+
+		public function set futureState(value:IState):void {
+			_stateTransitionning = value;
 		}
 		
 		/**
@@ -236,6 +249,8 @@ package citrus.core {
 				_gameTime = nowTime;
 				
 				_state.update(timeDelta);
+				if (_futureState)
+					_futureState.update(timeDelta);
 			}
 			
 		}
