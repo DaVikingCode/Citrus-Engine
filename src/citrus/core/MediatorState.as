@@ -38,10 +38,8 @@ package citrus.core {
 			}
 			_objects.length = 0;
 
-			for each (var poolObject:PoolObject in _poolObjects) {
-				refreshPoolObjectArt(poolObject, poolObject.length);
+			for each (var poolObject:PoolObject in _poolObjects)
 				poolObject.clear();
-			}
 
 			_poolObjects.length = 0;
 
