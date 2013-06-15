@@ -143,7 +143,7 @@ package citrus.core {
 		}
 		
 		public function get futureState():IState {
-			return _futureState;
+			return _futureState ? _futureState : _stateTransitionning;
 		}
 
 		public function set futureState(value:IState):void {
