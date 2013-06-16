@@ -29,7 +29,7 @@ package citrus.sounds
 		{
 			var s:CitrusSound;
 			for each(s in _sounds)
-				s.resetSoundTransform();
+				s.refreshSoundTransform();
 		}
 		
 		cesound function addSound(s:CitrusSound):void
@@ -62,7 +62,7 @@ package citrus.sounds
 				if (_sounds[si] == s)
 				{
 					CitrusSound(_sounds[si]).setGroup(null);
-					CitrusSound(_sounds[si]).resetSoundTransform();
+					CitrusSound(_sounds[si]).refreshSoundTransform();
 					_sounds.splice(uint(si), 1);
 					break;
 				}

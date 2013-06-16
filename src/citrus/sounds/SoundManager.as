@@ -237,7 +237,7 @@ package citrus.sounds {
 			{
 				var s:String;
 				for (s in soundsDic)
-					soundsDic[s].resetSoundTransform();
+					soundsDic[s].refreshSoundTransform();
 			}
 		}
 		
@@ -252,7 +252,7 @@ package citrus.sounds {
 				_masterMute = val;
 				var s:String;
 				for (s in soundsDic)
-					soundsDic[s].resetSoundTransform();
+					soundsDic[s].refreshSoundTransform();
 			}
 		}
 

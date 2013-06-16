@@ -11,7 +11,6 @@ package citrus.sounds
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
-	
 
 	public class CitrusSound extends EventDispatcher
 	{
@@ -51,13 +50,6 @@ package citrus.sounds
 			setParams(params);
 		}
 		
-		public function reset():void
-		{
-			_complete = false;
-			_position = 0;
-			_repeatCount = 0;
-		}
-		
 		public function play(resetV:Boolean = true):void
 		{
 			if (_isPlaying)
@@ -80,23 +72,43 @@ package citrus.sounds
 			playAt(_position);
 		}
 		
-		protected function playAt(position:Number):void
-		{
-			if (_complete)
-				return;
-			_channel = _sound.play(position, 0, _soundTransform);
-			resetSoundTransform();
-			_channel.addEventListener(Event.SOUND_COMPLETE, onComplete);
-			_isPlaying = true;
-			_paused = false;
-		}
-		
 		public function pause():void
 		{
 			_position = _channel.position;
 			stop(false);
 			_isPlaying = false;
 			_paused = true;
+		}
+		
+		public function stop(full:Boolean = true):void
+		{
+			if (_channel)
+			{
+				_channel.removeEventListener(Event.SOUND_COMPLETE, onComplete);
+				_channel.stop();
+			}
+			_isPlaying = false;
+			_paused = false;
+			if (full)
+				reset();
+		}
+		
+		protected function playAt(position:Number):void
+		{
+			if (_complete)
+				return;
+			_channel = _sound.play(position, 0, _soundTransform);
+			refreshSoundTransform();
+			_channel.addEventListener(Event.SOUND_COMPLETE, onComplete);
+			_isPlaying = true;
+			_paused = false;
+		}
+		
+		protected function reset():void
+		{
+			_complete = false;
+			_position = 0;
+			_repeatCount = 0;
 		}
 		
 		protected function onComplete(e:Event):void
@@ -143,20 +155,7 @@ package citrus.sounds
 			}
 		}
 		
-		public function stop(full:Boolean = true):void
-		{
-			if (_channel)
-			{
-				_channel.removeEventListener(Event.SOUND_COMPLETE, onComplete);
-				_channel.stop();
-			}
-			_isPlaying = false;
-			_paused = false;
-			if (full)
-				reset();
-		}
-		
-		cesound function resetSoundTransform():SoundTransform
+		cesound function refreshSoundTransform():SoundTransform
 		{
 			if (_soundTransform == null)
 				_soundTransform = new SoundTransform();
@@ -213,54 +212,9 @@ package citrus.sounds
 			}
 		}
 		
-		public function get loadedRatio():Number
-		{
-			return _loadedRatio;
-		}
-		
-		public function get loaded():Boolean
-		{
-			return _loaded;
-		}
-		
-		public function get ioerror():Boolean
-		{
-			return _ioerror;
-		}
-		
-		public function get volume():Number
-		{
-			return _volume;
-		}
-		
-		public function get panning():Number
-		{
-			return _panning;
-		}
-		
-		public function get mute():Number
-		{
-			return cesound::mute;
-		}
-		
-		public function get position():Number
-		{
-			return _position;
-		}
-		
-		public function get repeatCount():int
-		{
-			return _repeatCount;
-		}
-		
 		cesound function get repeatCount():int
 		{
 			return _repeatCount;
-		}
-		
-		public function get timesToRepeat():int
-		{
-			return _timesToRepeat;
 		}
 		
 		cesound function set timesToRepeat(val:int):void
@@ -268,19 +222,9 @@ package citrus.sounds
 			_timesToRepeat = val;
 		}
 		
-		public function get name():String
-		{
-			return _name;
-		}
-		
 		cesound function get sound():Object
 		{
 			return _sound;
-		}
-		
-		public function get group():CitrusSoundGroup
-		{
-			return _group;
 		}
 		
 		cesound function get group():*
@@ -290,20 +234,29 @@ package citrus.sounds
 		
 		cesound function set volume(val:Number):void
 		{
-			_volume = val;
-			resetSoundTransform();
+			if (_volume != val)
+			{
+				_volume = val;
+				refreshSoundTransform();
+			}
 		}
 		
 		cesound function set panning(val:Number):void
 		{
-			_panning = val;
-			resetSoundTransform();
+			if (_panning != val)
+			{
+				_panning = val;
+				refreshSoundTransform();
+			}
 		}
 		
 		cesound function set mute(val:Boolean):void
 		{
-			_mute = val;
-			resetSoundTransform();
+			if (_mute != val)
+			{
+				_mute = val;
+				refreshSoundTransform();
+			}
 		}
 		
 		cesound function set group(val:*):void
@@ -353,6 +306,61 @@ package citrus.sounds
 			_channel = null;
 			_soundTransform = null;
 			_sound = null;
+		}
+		
+		public function get loadedRatio():Number
+		{
+			return _loadedRatio;
+		}
+		
+		public function get loaded():Boolean
+		{
+			return _loaded;
+		}
+		
+		public function get ioerror():Boolean
+		{
+			return _ioerror;
+		}
+		
+		public function get volume():Number
+		{
+			return _volume;
+		}
+		
+		public function get panning():Number
+		{
+			return _panning;
+		}
+		
+		public function get mute():Number
+		{
+			return cesound::mute;
+		}
+		
+		public function get position():Number
+		{
+			return _position;
+		}
+		
+		public function get repeatCount():int
+		{
+			return _repeatCount;
+		}
+		
+		public function get timesToRepeat():int
+		{
+			return _timesToRepeat;
+		}
+		
+		public function get name():String
+		{
+			return _name;
+		}
+		
+		public function get group():CitrusSoundGroup
+		{
+			return _group;
 		}
 		
 		protected function setParams(params:Object):void
