@@ -258,14 +258,14 @@ package citrus.view.spriteview
 				
 			} else if (_physicsComponent) {
 				
-				x = _physicsComponent.x + (stateView.camera.camProxy.x * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
-				y = _physicsComponent.y + (stateView.camera.camProxy.y * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
+				x = _physicsComponent.x + ( (stateView.camera.camProxy.x - _physicsComponent.x) * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
+				y = _physicsComponent.y + ( (stateView.camera.camProxy.y - _physicsComponent.y) * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
 				rotation = _physicsComponent.rotation;
 				
 			} else {
 				
-				x = _citrusObject.x + (stateView.camera.camProxy.x * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
-				y = _citrusObject.y + (stateView.camera.camProxy.y * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
+				x = _citrusObject.x + ( (stateView.camera.camProxy.x - _citrusObject.x) * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
+				y = _citrusObject.y + ( (stateView.camera.camProxy.y - _citrusObject.y) * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
 				rotation = _citrusObject.rotation;
 			}
 			
