@@ -1,6 +1,5 @@
 package citrus.sounds 
 {
-	import flash.media.SoundTransform;
 	import citrus.sounds.cesound;
 	
 	/**

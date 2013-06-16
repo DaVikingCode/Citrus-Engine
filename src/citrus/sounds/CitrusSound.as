@@ -1,6 +1,7 @@
 package citrus.sounds 
 {
 	import citrus.core.CitrusEngine;
+	import citrus.sounds.cesound;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -11,7 +12,6 @@ package citrus.sounds
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
 	
-	import citrus.sounds.cesound;
 
 	public class CitrusSound extends EventDispatcher
 	{
