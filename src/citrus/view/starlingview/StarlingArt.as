@@ -352,9 +352,6 @@ package citrus.view.starlingview {
 
 			var physicsDebugArt:flash.display.DisplayObject;
 
-			var cam:StarlingCamera = (stateView.camera as StarlingCamera);
-			var camPosition:Point = cam.camPos;
-
 			if (_content is StarlingPhysicsDebugView) {
 
 				(_content as StarlingPhysicsDebugView).update();
@@ -363,26 +360,19 @@ package citrus.view.starlingview {
 				// So we need to move their views here, not in the StarlingView.
 				physicsDebugArt = (Starling.current.nativeStage.getChildByName("debug view") as flash.display.DisplayObject);
 
-				if (stateView.camera.target || stateView.camera.manualPosition) {
-
-					physicsDebugArt.x = cam.camProxy.x;
-					physicsDebugArt.y = cam.camProxy.y;
-					physicsDebugArt.scaleX = physicsDebugArt.scaleY = cam.camProxy.scale;
-					physicsDebugArt.rotation = cam.camProxy.rotation * 180 / Math.PI;
-				}
-
+				physicsDebugArt.transform.matrix = stateView.camera.transformMatrix;
 				physicsDebugArt.visible = _citrusObject.visible;
 
 			} else if (_physicsComponent) {
 
-				x = _physicsComponent.x + (camPosition.x * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
-				y = _physicsComponent.y + (camPosition.y * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
+				x = _physicsComponent.x + (stateView.camera.camProxy.x * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
+				y = _physicsComponent.y + (stateView.camera.camProxy.y * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
 				rotation = deg2rad(_physicsComponent.rotation);
 
 			} else {
 
-				x = _citrusObject.x + (camPosition.x * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
-				y = _citrusObject.y + (camPosition.y * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
+				x = _citrusObject.x + (stateView.camera.camProxy.x * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
+				y = _citrusObject.y + (stateView.camera.camProxy.y * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
 				rotation = deg2rad(_citrusObject.rotation);
 			}
 

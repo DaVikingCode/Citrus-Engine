@@ -130,7 +130,7 @@ package citrus.view.spriteview {
 		}
 
 		override public function update():void {
-
+			
 			super.update();
 			
 			if (_allowRotation)
@@ -142,12 +142,25 @@ package citrus.view.spriteview {
 			
 			if (_allowZoom)
 			{
+
 				var diffZoom:Number = _zoom - _camProxy.scale;
 				var velocityZoom:Number = diffZoom * zoomEasing;
 				_camProxy.scale += velocityZoom;
+				
+				if (bounds && _restrictZoom)
+				{
+					var lwratio:Number = (_aabbData.rect.width*_camProxy.scale ) / bounds.width;
+					var lhratio:Number = (_aabbData.rect.height*_camProxy.scale ) / bounds.height;
+					
+					if (_aabbData.rect.width >= bounds.width)
+						_camProxy.scale = _zoom = lwratio;
+					else if (_aabbData.rect.height >= bounds.height)
+						_camProxy.scale = _zoom =  lhratio;
+				}
+				
 			}
 			
-			if (_target)
+			if (_target && followTarget)
 			{
 				_targetPos.x = _target.x;
 				_targetPos.y = _target.y;
@@ -167,89 +180,54 @@ package citrus.view.spriteview {
 				_ghostTarget.y = _manualPosition.y;
 			}
 			
-			var invRotTarget:Point = (_allowRotation) ? MathUtils.rotatePoint(_ghostTarget.x, _ghostTarget.y, -_camProxy.rotation) : _ghostTarget as Point;
-				
-			_camProxy.x = -invRotTarget.x * _camProxy.scale;
-			_camProxy.y = -invRotTarget.y * _camProxy.scale;
-			
-			_camProxy.offsetX = offset.x;
-			_camProxy.offsetY = offset.y;
-			
-			_camProxy.x += _camProxy.offsetX;
-			_camProxy.y += _camProxy.offsetY;
-			
 			resetAABBData();
 			
-			if (bounds && _restrictZoom)
+			_aabbData.rect.x = ghostTarget.x ;
+			_aabbData.rect.y = ghostTarget.y ;
+			
+			_camProxy.x = _aabbData.rect.x;
+			_camProxy.y = _aabbData.rect.y;
+			
+			if ( bounds )
 			{
-				var lwratio:Number = _aabbData.rect.width*_camProxy.scale / bounds.width;
-				var lhratio:Number = _aabbData.rect.height*_camProxy.scale / bounds.height;
-				
-				if (_aabbData.rect.width > bounds.width)
-					_camProxy.scale = _zoom = lwratio;
-				else if (_aabbData.rect.height > bounds.height)
-					_camProxy.scale = _zoom = lhratio;
-				
+				if (_camProxy.x - offset.x/_camProxy.scale < bounds.left)
+					_camProxy.x = bounds.left + offset.x/_camProxy.scale;
+					
+				if (_camProxy.x + offset.x/_camProxy.scale > bounds.right)
+					_camProxy.x = bounds.right - offset.x/_camProxy.scale;
+					
+				if (_camProxy.y - offset.y/_camProxy.scale < bounds.top)
+					_camProxy.y = bounds.top + offset.y/_camProxy.scale;
+					
+				if (_camProxy.y + offset.y/_camProxy.scale > bounds.bottom)
+					_camProxy.y = bounds.bottom - offset.y/_camProxy.scale;
 			}
 			
-			var rotScaledOffset:Point;
+			//reset matrix
+			_m.identity();
+			//fake pivot
+			_m.translate( -_camProxy.x, -_camProxy.y);
+			//rotation
+			_m.rotate(_camProxy.rotation);
+			//zoom
+			_m.scale(_camProxy.scale, _camProxy.scale);
+			//offset
+			_m.translate(offset.x, offset.y);
 			
-			rotScaledOffset = (_allowRotation) ?
-				MathUtils.rotatePoint( offset.x / _camProxy.scale, offset.y / _camProxy.scale, _camProxy.rotation) :
-				new Point(offset.x / _camProxy.scale, offset.y / _camProxy.scale);
+			_camPos = _m.transformPoint(_p);
 			
-			// move aabb
-			_aabbData.rect.x -= rotScaledOffset.x;
-			_aabbData.rect.y -= rotScaledOffset.y;
-			
-			if ( bounds && !bounds.containsRect(_aabbData.rect) )
-			{
-				
-				var newAABBPos:Point = new Point(_aabbData.rect.x,_aabbData.rect.y);
-				
-				//x
-				if (_aabbData.rect.left <= bounds.left || _aabbData.rect.width >= bounds.width)
-					newAABBPos.x = bounds.left;
-				else if (_aabbData.rect.right >= bounds.right)
-					newAABBPos.x = bounds.right - _aabbData.rect.width;
-				
-				//y
-				if (_aabbData.rect.top <= bounds.top || _aabbData.rect.height >= bounds.height)
-					newAABBPos.y = bounds.top;
-				else if (_aabbData.rect.bottom >= bounds.bottom)
-					newAABBPos.y = bounds.bottom - _aabbData.rect.height;
-				
-				var newGTPos:Point = new Point(newAABBPos.x, newAABBPos.y);
-				
-				newGTPos.x -= _aabbData.offsetX;
-				newGTPos.y -= _aabbData.offsetY;
-				
-				newGTPos.x += rotScaledOffset.x;
-				newGTPos.y += rotScaledOffset.y;
-				
-				var invGT:Point;
-				invGT = (_allowRotation) ? MathUtils.rotatePoint(newGTPos.x, newGTPos.y, -_camProxy.rotation) : new Point(newGTPos.x, newGTPos.y);
-				_camProxy.x = -invGT.x * _camProxy.scale + _camProxy.offsetX;
-				_camProxy.y = -invGT.y * _camProxy.scale + _camProxy.offsetY;
-				
-			}
-			
-			_viewRoot.scaleX = _viewRoot.scaleY = _camProxy.scale;
-			_viewRoot.rotation = _camProxy.rotation * 180/Math.PI;
-			
-			_viewRoot.x = _camProxy.x;
-			_viewRoot.y = _camProxy.y;
-			
-			pointFromLocal(0,0,_camPos);
+			(_viewRoot as Sprite).transform.matrix = _m;
 
 		}
 		
 		public function pointFromLocal(x:Number,y:Number,resultPoint:Point = null):Point
 		{
-			return MathUtils.rotatePoint(
-			(x - _camProxy.x) /_camProxy.scale, 
-			(y - _camProxy.y) /_camProxy.scale
-			, _camProxy.rotation,resultPoint);
+			_p.setTo(x, y);
+			if(resultPoint)
+				resultPoint.copyFrom((_viewRoot as Sprite).globalToLocal(_p));
+			else
+				return (_viewRoot as Sprite).globalToLocal(_p);
+			return null;
 		}
 		
 		/**

@@ -1,7 +1,7 @@
 package citrus.view {
 
 	import citrus.core.CitrusEngine;
-	import citrus.math.MathVector;
+	import flash.geom.Matrix;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -35,6 +35,11 @@ package citrus.view {
 		 * the targeted zoom value.
 		 */
 		protected var _zoom:Number = 1;
+		
+		/**
+		 * base zoom - this is the overall zoom factor of the camera
+		 */
+		public var baseZoom:Number = 1;
 		
 		/**
 		 * _aabb holds the axis aligned bounding box of the camera in rect
@@ -90,13 +95,13 @@ package citrus.view {
 		/**
 		 * The distance from the top-left corner of the screen that the camera should offset the target. 
 		 */
-		public var offset:MathVector = new MathVector();
+		public var offset:Point = new Point();
 
 		/**
 		 * A value between 0 and 1 that specifies the speed at which the camera catches up to the target.
 		 * 0 makes the camera not follow the target at all and 1 makes the camera follow the target exactly. 
 		 */
-		public var easing:MathVector = new MathVector(0.25, 0.05);
+		public var easing:Point = new Point(0.25, 0.05);
 
 		/**
 		 * A rectangle specifying the minimum and maximum area that the camera is allowed to follow the target in. 
@@ -107,11 +112,23 @@ package citrus.view {
 		 * The width of the visible game screen. This will usually be the same as your stage width unless your game has a border.
 		 */
 		public var cameraLensWidth:Number;
+		
+		public var followTarget:Boolean = true;
 
 		/**
 		 * The height of the visible game screen. This will usually be the same as your stage width unless your game has a border.
 		 */
 		public var cameraLensHeight:Number;
+		
+		/**
+		 * helper matrix for transformation
+		 */
+		protected var _m:Matrix = new Matrix();
+		
+		/**
+		 * helper point
+		 */
+		protected var _p:Point = new Point();
 		
 		protected var _ce:CitrusEngine;
 
@@ -141,7 +158,7 @@ package citrus.view {
 		 * @param cameraLens The width and height of the visible game screen. Default is the same as your stage width and height.
 		 * @return this The Instance of the ACitrusCamera.
 		 */		
-		public function setUp(target:Object = null, offset:MathVector = null, bounds:Rectangle = null, easing:MathVector = null, cameraLens:MathVector = null):ACitrusCamera
+		public function setUp(target:Object = null, offset:Point = null, bounds:Rectangle = null, easing:Point = null, cameraLens:Point = null):ACitrusCamera
 		{
 			if (target)
 			{
@@ -265,6 +282,15 @@ package citrus.view {
 		 */
 		public function get ghostTarget():Point {
 			return _ghostTarget;
+		}
+		
+		/**
+		 * This is the transform matrix the camera applies to the state viewroot.
+		 * it is also applied to the physics debug view.
+		 */
+		public function get transformMatrix():Matrix
+		{
+			return _m;
 		}
 		
 	}

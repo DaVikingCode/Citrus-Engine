@@ -2,22 +2,15 @@ package citrus.view.starlingview {
 
 	import citrus.math.MathUtils;
 	import citrus.view.ACitrusCamera;
-
-	import starling.display.Sprite;
-
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import starling.display.Sprite;
+
+
 	
 	/**
 	 * The Camera for the StarlingView.
-	 *
-	 * TODO LIST (to do after validation)
-	 * - more optimization needed.
-	 * - port directly to SpriteCamera (no difference)
-	 * - take care of Starling's content scale factor for different devices (should need to affect _camProxy.scale maybe)
-	 * - needs room for camera effects such as shaking. (which can currently be achieved by shaking the ghostTarget point
-	 * internally, or setting a manualPosition externally and shake it... both seem like dodgy approaches though.)
 	 */
 	public class StarlingCamera extends ACitrusCamera
 	{
@@ -29,14 +22,9 @@ package citrus.view.starlingview {
 		
 		override protected function initialize():void {
 			super.initialize();// setup camera lens normally
-			
-			/*fix for different starling content scale factors. but super has already calculated cameraLensWidth and Height
-			so might need to be applied in a different way.
-			var ce:CitrusEngine = CitrusEngine.getInstance();
-			cameraLensWidth = ce.stage.stageWidth / Starling.contentScaleFactor;
-			cameraLensHeight = ce.stage.stageHeight / Starling.contentScaleFactor;*/
-			
+
 			_aabbData = MathUtils.createAABBData(0, 0, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale, _camProxy.rotation);
+			_m = (_viewRoot as starling.display.Sprite).transformationMatrix;
 		}
 		
 		/**
@@ -144,10 +132,13 @@ package citrus.view.starlingview {
 				_aabbData = MathUtils.createAABBData(_ghostTarget.x , _ghostTarget.y, cameraLensWidth, cameraLensHeight, - _camProxy.rotation);
 				return;
 			}
+			 
 		}
 		
 		override public function update():void
 		{
+			super.update();
+			
 			if (_allowRotation)
 			{
 				var diffRot:Number = _rotation - _camProxy.rotation;
@@ -157,12 +148,25 @@ package citrus.view.starlingview {
 			
 			if (_allowZoom)
 			{
+
 				var diffZoom:Number = _zoom - _camProxy.scale;
 				var velocityZoom:Number = diffZoom * zoomEasing;
 				_camProxy.scale += velocityZoom;
+				
+				if (bounds && _restrictZoom)
+				{
+					var lwratio:Number = (_aabbData.rect.width*_camProxy.scale ) / bounds.width;
+					var lhratio:Number = (_aabbData.rect.height*_camProxy.scale ) / bounds.height;
+					
+					if (_aabbData.rect.width >= bounds.width)
+						_camProxy.scale = _zoom = lwratio;
+					else if (_aabbData.rect.height >= bounds.height)
+						_camProxy.scale = _zoom =  lhratio;
+				}
+				
 			}
 			
-			if (_target)
+			if (_target && followTarget)
 			{
 				_targetPos.x = _target.x;
 				_targetPos.y = _target.y;
@@ -182,89 +186,48 @@ package citrus.view.starlingview {
 				_ghostTarget.y = _manualPosition.y;
 			}
 			
-			var invRotTarget:Point = (_allowRotation) ? MathUtils.rotatePoint(_ghostTarget.x, _ghostTarget.y, -_camProxy.rotation) : _ghostTarget as Point;
-				
-			_camProxy.x = -invRotTarget.x * _camProxy.scale;
-			_camProxy.y = -invRotTarget.y * _camProxy.scale;
-			
-			_camProxy.offsetX = offset.x;
-			_camProxy.offsetY = offset.y;
-			
-			_camProxy.x += _camProxy.offsetX;
-			_camProxy.y += _camProxy.offsetY;
-			
 			resetAABBData();
 			
-			if (bounds && _restrictZoom)
+			_aabbData.rect.x = ghostTarget.x ;
+			_aabbData.rect.y = ghostTarget.y ;
+			
+			_camProxy.x = _aabbData.rect.x;
+			_camProxy.y = _aabbData.rect.y;
+			
+			if ( bounds )
 			{
-				var lwratio:Number = _aabbData.rect.width*_camProxy.scale / bounds.width;
-				var lhratio:Number = _aabbData.rect.height*_camProxy.scale / bounds.height;
-				
-				if (_aabbData.rect.width > bounds.width)
-					_camProxy.scale = _zoom = lwratio;
-				else if (_aabbData.rect.height > bounds.height)
-					_camProxy.scale = _zoom = lhratio;
-				
+				if (_camProxy.x - offset.x/_camProxy.scale < bounds.left)
+					_camProxy.x = bounds.left + offset.x/_camProxy.scale;
+					
+				if (_camProxy.x + offset.x/_camProxy.scale > bounds.right)
+					_camProxy.x = bounds.right - offset.x/_camProxy.scale;
+					
+				if (_camProxy.y - offset.y/_camProxy.scale < bounds.top)
+					_camProxy.y = bounds.top + offset.y/_camProxy.scale;
+					
+				if (_camProxy.y + offset.y/_camProxy.scale > bounds.bottom)
+					_camProxy.y = bounds.bottom - offset.y/_camProxy.scale;
 			}
 			
-			var rotScaledOffset:Point;
+			//reset matrix
+			_m.identity();
+			//fake pivot
+			_m.translate( -_camProxy.x, -_camProxy.y);
+			//rotation
+			_m.rotate(_camProxy.rotation);
+			//zoom
+			_m.scale(_camProxy.scale, _camProxy.scale);
+			//offset
+			_m.translate(offset.x, offset.y);
 			
-			rotScaledOffset = (_allowRotation) ?
-				MathUtils.rotatePoint(offset.x / _camProxy.scale, offset.y / _camProxy.scale, _camProxy.rotation) :
-				new Point(offset.x / _camProxy.scale, offset.y / _camProxy.scale);
+			_camPos = _m.transformPoint(_p);
 			
-			// move aabb
-			_aabbData.rect.x -= rotScaledOffset.x;
-			_aabbData.rect.y -= rotScaledOffset.y;
-			
-			if ( bounds && !bounds.containsRect(_aabbData.rect) )
-			{
-				
-				var newAABBPos:Point = new Point(_aabbData.rect.x,_aabbData.rect.y);
-				
-				//x
-				if (_aabbData.rect.left <= bounds.left || _aabbData.rect.width >= bounds.width)
-					newAABBPos.x = bounds.left;
-				else if (_aabbData.rect.right >= bounds.right)
-					newAABBPos.x = bounds.right - _aabbData.rect.width;
-				
-				//y
-				if (_aabbData.rect.top <= bounds.top || _aabbData.rect.height >= bounds.height)
-					newAABBPos.y = bounds.top;
-				else if (_aabbData.rect.bottom >= bounds.bottom)
-					newAABBPos.y = bounds.bottom - _aabbData.rect.height;
-				
-				var newGTPos:Point = new Point(newAABBPos.x, newAABBPos.y);
-				
-				newGTPos.x -= _aabbData.offsetX;
-				newGTPos.y -= _aabbData.offsetY;
-				
-				newGTPos.x += rotScaledOffset.x;
-				newGTPos.y += rotScaledOffset.y;
-				
-				var invGT:Point;
-				invGT = (_allowRotation) ? MathUtils.rotatePoint(newGTPos.x, newGTPos.y, -_camProxy.rotation) : new Point(newGTPos.x, newGTPos.y);
-				_camProxy.x = -invGT.x * _camProxy.scale + _camProxy.offsetX;
-				_camProxy.y = -invGT.y * _camProxy.scale + _camProxy.offsetY;
-				
-			}
-			
-			_viewRoot.scaleX = _viewRoot.scaleY = _camProxy.scale;
-			_viewRoot.rotation = _camProxy.rotation;
-			
-			_viewRoot.x = _camProxy.x;
-			_viewRoot.y = _camProxy.y;
-			
-			
-			pointFromLocal(0,0,_camPos);
-			
+			(_viewRoot as starling.display.Sprite).transformationMatrix = _m;
 		}
 		
 		/**
-		 * This function renders what's happening with the camera in screen space.
-		 * This is helpful for debugging and/or creating a minimap of your level
-		 * in that same Sprite. you have to position it and scale it yourself!
 		 * @param	sprite a flash display sprite to render to.
+		 * @deprecated this is now obsolete and doesn't reflect exactly how the camera works as the system changed.
 		 */
 		public function renderDebug(sprite:flash.display.Sprite):void
 		{
@@ -408,24 +371,12 @@ package citrus.view.starlingview {
 		}
 		
 		/**
-		 * The idea of pointFromLocal and pointToLocal is to manually do the calculations
-		 * for globalToLocal and localToGlobal and have understandable alternatives.
-		 * 
-		 * if using globalToLocal from _viewroot inside the update function and before setting viewroot's position
-		 * it will then do globalToLocal relative to the previous location and rotation of _viewroot (as
-		 * viewroot will not be already moved, scaled and rotated.) 
-		 * so it would be one frame behind...
-		 */
-		
-		/**
 		 *  equivalent of  globalToLocal.
 		 */
 		public function pointFromLocal(x:Number,y:Number,resultPoint:Point = null):Point
 		{
-			return MathUtils.rotatePoint(
-			(x - _camProxy.x) /_camProxy.scale, 
-			(y - _camProxy.y) /_camProxy.scale
-			, _camProxy.rotation,resultPoint);
+			_p.setTo(x, y);
+			return (_viewRoot as starling.display.Sprite).globalToLocal(_p,resultPoint);
 		}
 		
 		/**
