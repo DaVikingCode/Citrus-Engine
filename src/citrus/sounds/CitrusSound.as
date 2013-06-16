@@ -1,7 +1,11 @@
 package citrus.sounds 
 {
 	import citrus.core.CitrusEngine;
+	import flash.events.ErrorEvent;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.events.IOErrorEvent;
+	import flash.events.ProgressEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
@@ -9,7 +13,7 @@ package citrus.sounds
 	
 	import citrus.sounds.cesound;
 
-	public class CitrusSound
+	public class CitrusSound extends EventDispatcher
 	{
 		use namespace cesound;
 		
@@ -21,11 +25,14 @@ package citrus.sounds
 		protected var _soundTransform:SoundTransform;
 		
 		protected var _sound:Sound;
+		protected var _ioerror:Boolean = false;
+		protected var _loadedRatio:Number = 0;
+		protected var _loaded:Boolean = false;
 		protected var _group:CitrusSoundGroup;
 		protected var _isPlaying:Boolean = false;
 		protected var _position:Number = 0;
 		
-		protected var _s:Object;
+		protected var _urlReq:URLRequest;
 		protected var _channel:SoundChannel;
 		protected var _volume:Number = 1;
 		protected var _panning:Number = 0;
@@ -42,8 +49,6 @@ package citrus.sounds
 		{
 			_name = name;
 			setParams(params);
-			
-			resetSoundTransform();
 		}
 		
 		public function reset():void
@@ -57,8 +62,13 @@ package citrus.sounds
 		{
 			if (_isPlaying)
 				stop();
+			else
+				if (_urlReq && _loadedRatio == 0)
+						_sound.load(_urlReq);
+			
 			if(resetV)
-			reset();
+				reset();
+			
 			playAt(0);
 		}
 		
@@ -75,6 +85,7 @@ package citrus.sounds
 			if (_complete)
 				return;
 			_channel = _sound.play(position, 0, _soundTransform);
+			resetSoundTransform();
 			_channel.addEventListener(Event.SOUND_COMPLETE, onComplete);
 			_isPlaying = true;
 			_paused = false;
@@ -97,21 +108,38 @@ package citrus.sounds
 			if (timesToRepeat == 0)
 			{
 				if(_triggerSoundComplete)
-				_sm.onSoundComplete.dispatch(new CitrusSoundEvent(CitrusSoundEvent.SOUND_COMPLETE,this));
+				_sm.dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_COMPLETE,this));
 				playAt(0);
 			} else if (repeatCount < timesToRepeat)
 			{
 				if(_triggerSoundComplete)
-					_sm.onSoundComplete.dispatch(new CitrusSoundEvent(CitrusSoundEvent.SOUND_COMPLETE,this));
+					_sm.dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_COMPLETE,this));
 				playAt(0);
 			}else if (repeatCount == timesToRepeat)
 			{
 				_complete = true;
 				if(_triggerSoundComplete)
-					_sm.onSoundComplete.dispatch(new CitrusSoundEvent(CitrusSoundEvent.SOUND_COMPLETE,this));
+					_sm.dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_COMPLETE,this));
 				if(_triggerRepeatComplete)
-					_sm.onSoundComplete.dispatch(new CitrusSoundEvent(CitrusSoundEvent.REPEAT_COMPLETE,this));
+					_sm.dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.REPEAT_COMPLETE,this));
 				stop(false);
+			}
+		}
+		
+		protected function onIOError(event:ErrorEvent):void
+		{
+			trace("CitrusSound Error Loading: ", this.name);
+			_ioerror = true;
+			_sm.dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_ERROR, this));
+		}
+		
+		protected function onProgress(event:ProgressEvent):void
+		{
+			_loadedRatio = _sound.bytesLoaded / _sound.bytesTotal;
+			if (_loadedRatio == 1)
+			{
+				_loaded = true;
+				_sm.soundLoaded(this);
 			}
 		}
 		
@@ -140,13 +168,13 @@ package citrus.sounds
 			
 			}else
 			{
-				_soundTransform.volume = _mute || _sm.masterMute ? 0 : _volume * _sm.masterVolume;
+				_soundTransform.volume = (_mute || _sm.masterMute) ? 0 : _volume * _sm.masterVolume;
 				_soundTransform.pan =  _panning;
 			}
 			
 			if (_channel)
 				_channel.soundTransform = _soundTransform;
-				
+			
 			return _soundTransform;
 		}
 		
@@ -164,16 +192,40 @@ package citrus.sounds
 		{
 			if (val is String)
 			{
-				_sound = new Sound(new URLRequest(val as String));
+				_urlReq = new URLRequest(val as String);
+				_sound = new Sound();
+				_ioerror = false;
+				_sound.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+				_sound.addEventListener(ProgressEvent.PROGRESS, onProgress);
 			}
 			else if (val is Class)
 			{
 				_sound = new (val as Class)();
+				_ioerror = false;
+				_loadedRatio = 1;
+				_loaded = true;
 			}
 			else if (val is Sound)
 			{
 				_sound = val as Sound;
+				_loadedRatio = 1;
+				_loaded = true;
 			}
+		}
+		
+		public function get loadedRatio():Number
+		{
+			return _loadedRatio;
+		}
+		
+		public function get loaded():Boolean
+		{
+			return _loaded;
+		}
+		
+		public function get ioerror():Boolean
+		{
+			return _ioerror;
 		}
 		
 		public function get volume():Number
@@ -288,6 +340,9 @@ package citrus.sounds
 		
 		cesound function destroy():void
 		{
+			_sound.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			_sound.removeEventListener(ProgressEvent.PROGRESS, onProgress);
+			
 			stop(true);
 			_channel.removeEventListener(Event.SOUND_COMPLETE, onComplete);
 			reset();

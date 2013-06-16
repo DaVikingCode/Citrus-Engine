@@ -3,6 +3,7 @@ package citrus.sounds {
 	import aze.motion.eaze;
 	import citrus.sounds.groups.BGMGroup;
 	import citrus.sounds.groups.SFXGroup;
+	import flash.events.EventDispatcher;
 
 	import org.osflash.signals.Signal;
 
@@ -17,28 +18,21 @@ package citrus.sounds {
 	
 	import citrus.sounds.cesound;
 
-	public class SoundManager {
+	public class SoundManager extends EventDispatcher {
 		
 		use namespace cesound;
 		
 		private static var _instance:SoundManager;
 
 		protected var soundsDic:Dictionary;
-		
-		public var onAllLoaded:Signal;
-		public var onSoundComplete:Signal;
-		
-		public var soundGroups:Vector.<CitrusSoundGroup>;
+		protected var soundGroups:Vector.<CitrusSoundGroup>;
 		
 		protected var _masterVolume:Number = 1;
 		protected var _masterMute:Boolean = false;
 
 		public function SoundManager() {
+			
 			soundsDic = new Dictionary();
-			
-			onAllLoaded = new Signal();
-			onSoundComplete = new Signal(CitrusSoundEvent);
-			
 			soundGroups = new Vector.<CitrusSoundGroup>();
 			
 			//default groups
@@ -66,10 +60,6 @@ package citrus.sounds {
 				s.destroy();
 				
 			soundsDic = null;
-			
-			onAllLoaded.removeAll();
-			onSoundComplete.removeAll();
-			
 			_instance = null;
 		}
 		
@@ -251,9 +241,9 @@ package citrus.sounds {
 			
 			if (tm != _masterVolume)
 			{
-				var s:CitrusSound;
-				for each(s in soundsDic)
-					s.resetSoundTransform();
+				var s:String;
+				for (s in soundsDic)
+					soundsDic[s].resetSoundTransform();
 			}
 		}
 		
@@ -263,14 +253,12 @@ package citrus.sounds {
 		 */
 		public function set masterMute(val:Boolean):void
 		{
-			var tm:Boolean = _masterMute;
-			_masterMute = val;
-			
-			if (tm != _masterVolume)
+			if (val != _masterMute)
 			{
-				var s:CitrusSound;
-				for each(s in soundsDic)
-					s.resetSoundTransform();
+				_masterMute = val;
+				var s:String;
+				for (s in soundsDic)
+					soundsDic[s].resetSoundTransform();
 			}
 		}
 
@@ -370,6 +358,16 @@ package citrus.sounds {
 
 			tweenVolume(fadeOutId, 0, tweenDuration);
 			tweenVolume(fadeInId, 1, tweenDuration);
+		}
+		
+		cesound function soundLoaded(s:CitrusSound):void
+		{
+			dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_LOADED, s));
+			var cs:CitrusSound;
+			for each(cs in soundsDic)
+				if (!cs.loaded)
+					return;
+			dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.ALL_SOUNDS_LOADED, s));
 		}
 	}
 }
