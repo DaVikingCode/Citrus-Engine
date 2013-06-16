@@ -147,6 +147,7 @@ package citrus.view {
 			_ce = CitrusEngine.getInstance();
 			cameraLensWidth = _ce.stage.stageWidth;
 			cameraLensHeight = _ce.stage.stageHeight;	
+			
 		}
 		
 		/**
@@ -169,7 +170,7 @@ package citrus.view {
 			if (offset)
 				this.offset = offset;
 			if (bounds)
-				this.bounds = bounds;
+				this.bounds = bounds;	
 			if (easing)
 				this.easing = easing;
 			if (cameraLens) {
@@ -178,6 +179,28 @@ package citrus.view {
 			}
 				
 			return this;
+		}
+		
+		/**
+		 * sets camera transformation with no easing
+		 * by setting all easing values to 1 temporarily and updating camera once.
+		 * can be called at the beginning of a state to prevent camera effects then.
+		 */
+		public function reset():void
+		{
+			var tmp1:Point = easing.clone();
+			var tmp2:Number = rotationEasing;
+			var tmp3:Number = zoomEasing;
+			
+			rotationEasing = 1;
+			zoomEasing = 1;
+			easing.setTo(1, 1);
+			
+			update();
+			
+			easing.copyFrom(tmp1);
+			rotationEasing = tmp2;
+			zoomEasing = tmp3;
 		}
 		
 		public function zoom(factor:Number):void {
@@ -282,6 +305,17 @@ package citrus.view {
 		 */
 		public function get ghostTarget():Point {
 			return _ghostTarget;
+		}
+		
+		/**
+		 * zoom with base factor
+		 */
+		protected function get mzoom():Number {
+			return _zoom * baseZoom;
+		}
+		
+		protected function set mzoom(val:Number):void {
+			_zoom = val / baseZoom;
 		}
 		
 		/**

@@ -149,7 +149,7 @@ package citrus.view.starlingview {
 			if (_allowZoom)
 			{
 
-				var diffZoom:Number = _zoom - _camProxy.scale;
+				var diffZoom:Number = mzoom - _camProxy.scale;
 				var velocityZoom:Number = diffZoom * zoomEasing;
 				_camProxy.scale += velocityZoom;
 				
@@ -159,9 +159,9 @@ package citrus.view.starlingview {
 					var lhratio:Number = (_aabbData.rect.height*_camProxy.scale ) / bounds.height;
 					
 					if (_aabbData.rect.width >= bounds.width)
-						_camProxy.scale = _zoom = lwratio;
+						_camProxy.scale = mzoom = lwratio;
 					else if (_aabbData.rect.height >= bounds.height)
-						_camProxy.scale = _zoom =  lhratio;
+						_camProxy.scale = mzoom =  lhratio;
 				}
 				
 			}
