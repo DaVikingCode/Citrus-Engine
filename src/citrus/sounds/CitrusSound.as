@@ -19,8 +19,8 @@ package citrus.sounds
 		public var hideParamWarnings:Boolean = false;
 		
 		protected var _name:String;
-		protected var _timesToRepeat:int = 1;
-		protected var _repeatCount:int = 0;
+		protected var _timesToPlay:uint = 1;
+		protected var _repeatCount:uint = 0;
 		protected var _soundTransform:SoundTransform;
 		
 		protected var _sound:Sound;
@@ -119,17 +119,17 @@ package citrus.sounds
 			
 			_repeatCount++;
 			
-			if (timesToRepeat == 0)
+			if (timesToPlay <= 0)
 			{
 				if(_triggerSoundComplete)
 					_sm.dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_COMPLETE,this));
 				playAt(0);
-			} else if (repeatCount < timesToRepeat)
+			} else if (repeatCount < timesToPlay)
 			{
 				if(_triggerSoundComplete)
 					_sm.dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_COMPLETE,this));
 				playAt(0);
-			}else if (repeatCount == timesToRepeat)
+			}else if (repeatCount == timesToPlay)
 			{
 				_complete = true;
 				if(_triggerSoundComplete)
@@ -219,9 +219,9 @@ package citrus.sounds
 			return _repeatCount;
 		}
 		
-		citrus_internal function set timesToRepeat(val:int):void
+		citrus_internal function set timesToPlay(val:int):void
 		{
-			_timesToRepeat = val;
+			_timesToPlay = val;
 		}
 		
 		citrus_internal function get sound():Object
@@ -350,9 +350,9 @@ package citrus.sounds
 			return _repeatCount;
 		}
 		
-		public function get timesToRepeat():int
+		public function get timesToPlay():int
 		{
-			return _timesToRepeat;
+			return _timesToPlay;
 		}
 		
 		public function get name():String

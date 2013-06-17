@@ -11,7 +11,7 @@ package citrus.sounds
 		public static const ALL_SOUNDS_LOADED:String = "ALL_SOUNDS_LOADED";
 		
 		public var soundName:String;
-		public var timesToRepeat:uint;
+		public var timesToPlay:uint;
 		public var repeatCount:uint;
 		public var repeatLeft:uint;
 		public var loadedRatio:Number;
@@ -23,9 +23,9 @@ package citrus.sounds
 			super(type, bubbles, cancelable);
 			
 			soundName = sound.name;
-			timesToRepeat = sound.timesToRepeat;
+			timesToPlay = sound.timesToPlay;
 			repeatCount = sound.repeatCount;
-			repeatLeft = timesToRepeat - repeatCount;
+			repeatLeft = timesToPlay - repeatCount;
 			loadedRatio = sound.loadedRatio;
 			loaded = sound.loaded;
 			error = sound.ioerror;
