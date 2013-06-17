@@ -56,16 +56,15 @@ package citrus.sounds {
 		}
 		
 		/**
-		 * register a new sound an initialize its values with the params objects.
-		 * accepted parameters are :
-		 * - sound : a url, a class or a Sound object.
-		 * - volume : the initial volume. the real final volume is calculated like so : volume x group volume x master volume.
-		 * - panning : value between -1 and 1 - unaffected by group or master.
-		 * - mute : default false, whether to start of muted or not.
-		 * - timesToRepeat : default 0. 0 will make the sound loop infinitely.
-		 * - group : the groupID of a group, no groups are set by default. default groups ID's are CitrusSoundGroup.SFX (sound effects) and CitrusSoundGroup.BGM (background music)
-		 * - triggerSoundComplete : whether to dispatch SoundManager's onSoundComplete signal with a CitrusSoundEvent object on each loop.
-		 * - triggerRepeatComplete : whether to dispatch SoundManager's onSoundComplete signal with a CitrusSoundEvent object when all loop ends (when sound as looped as many times as timesToRepeat is set).
+		 * Register a new sound an initialize its values with the params objects. Accepted parameters are:
+		 * <ul><li>sound : a url, a class or a Sound object.</li>
+		 * <li>volume : the initial volume. the real final volume is calculated like so : volume x group volume x master volume.</li>
+		 * <li>panning : value between -1 and 1 - unaffected by group or master.</li>
+		 * <li>mute : default false, whether to start of muted or not.</li>
+		 * <li>timesToRepeat : default 0. 0 will make the sound loop infinitely.</li>
+		 * <li>group : the groupID of a group, no groups are set by default. default groups ID's are CitrusSoundGroup.SFX (sound effects) and CitrusSoundGroup.BGM (background music)</li>
+		 * <li>triggerSoundComplete : whether to dispatch SoundManager's onSoundComplete signal with a CitrusSoundEvent object on each loop.</li>
+		 * <li>triggerRepeatComplete : whether to dispatch SoundManager's onSoundComplete signal with a CitrusSoundEvent object when all loop ends (when sound as looped as many times as timesToRepeat is set).</li></ul>
 		 */
 		public function addSound(id:String, params:Object = null):void {
 			if (id in soundsDic)
