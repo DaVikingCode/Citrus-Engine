@@ -18,9 +18,10 @@ package citrus.sounds
 		public var loaded:Boolean;
 		public var error:Boolean;
 		
-		public function CitrusSoundEvent(type:String,sound:CitrusSound,bubble:Boolean = false, cancelable:Boolean = false) 
+		public function CitrusSoundEvent(type:String, sound:CitrusSound, bubbles:Boolean = false, cancelable:Boolean = false) 
 		{
 			super(type, bubbles, cancelable);
+			
 			soundName = sound.name;
 			timesToRepeat = sound.timesToRepeat;
 			repeatCount = sound.repeatCount;

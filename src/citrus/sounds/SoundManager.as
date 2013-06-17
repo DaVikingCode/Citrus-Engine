@@ -1,16 +1,14 @@
 package citrus.sounds {
 
 	import aze.motion.eaze;
-	import citrus.sounds.cesound;
+
 	import citrus.sounds.groups.BGMGroup;
 	import citrus.sounds.groups.SFXGroup;
+
 	import flash.events.EventDispatcher;
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
 	import flash.utils.Dictionary;
-
-
-	
 
 	public class SoundManager extends EventDispatcher {
 		

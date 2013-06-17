@@ -56,7 +56,7 @@ package citrus.sounds
 				stop();
 			else
 				if (_urlReq && _loadedRatio == 0)
-						_sound.load(_urlReq);
+					_sound.load(_urlReq);
 			
 			if(resetV)
 				reset();
@@ -68,8 +68,9 @@ package citrus.sounds
 		{
 			if (_isPlaying)
 				return;
+				
 			if (_paused && !_complete)	
-			playAt(_position);
+				playAt(_position);
 		}
 		
 		public function pause():void
@@ -97,6 +98,7 @@ package citrus.sounds
 		{
 			if (_complete)
 				return;
+				
 			_channel = _sound.play(position, 0, _soundTransform);
 			refreshSoundTransform();
 			_channel.addEventListener(Event.SOUND_COMPLETE, onComplete);
@@ -120,7 +122,7 @@ package citrus.sounds
 			if (timesToRepeat == 0)
 			{
 				if(_triggerSoundComplete)
-				_sm.dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_COMPLETE,this));
+					_sm.dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_COMPLETE,this));
 				playAt(0);
 			} else if (repeatCount < timesToRepeat)
 			{
