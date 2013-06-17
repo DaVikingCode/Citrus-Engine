@@ -1,7 +1,7 @@
 package citrus.sounds 
 {
 	import citrus.core.CitrusEngine;
-	import citrus.sounds.cesound;
+	import citrus.core.citrus_internal;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -14,7 +14,7 @@ package citrus.sounds
 
 	public class CitrusSound extends EventDispatcher
 	{
-		use namespace cesound;
+		use namespace citrus_internal;
 		
 		public var hideParamWarnings:Boolean = false;
 		
@@ -41,8 +41,8 @@ package citrus.sounds
 		protected var _triggerSoundComplete:Boolean = false;
 		protected var _triggerRepeatComplete:Boolean = false;
 		
-		cesound var kill:Boolean = false;
-		cesound static var _sm:SoundManager;
+		citrus_internal var kill:Boolean = false;
+		citrus_internal static var _sm:SoundManager;
 		
 		public function CitrusSound(name:String,params:Object = null) 
 		{
@@ -157,7 +157,7 @@ package citrus.sounds
 			}
 		}
 		
-		cesound function refreshSoundTransform():SoundTransform
+		citrus_internal function refreshSoundTransform():SoundTransform
 		{
 			if (_soundTransform == null)
 				_soundTransform = new SoundTransform();
@@ -179,17 +179,17 @@ package citrus.sounds
 			return _soundTransform;
 		}
 		
-		cesound function get isPlaying():Boolean
+		citrus_internal function get isPlaying():Boolean
 		{
 			return _isPlaying;
 		}
 		
-		cesound function get isPaused():Boolean
+		citrus_internal function get isPaused():Boolean
 		{
 			return _paused;
 		}
 		
-		cesound function set sound(val:Object):void
+		citrus_internal function set sound(val:Object):void
 		{
 			if (val is String)
 			{
@@ -214,27 +214,27 @@ package citrus.sounds
 			}
 		}
 		
-		cesound function get repeatCount():int
+		citrus_internal function get repeatCount():int
 		{
 			return _repeatCount;
 		}
 		
-		cesound function set timesToRepeat(val:int):void
+		citrus_internal function set timesToRepeat(val:int):void
 		{
 			_timesToRepeat = val;
 		}
 		
-		cesound function get sound():Object
+		citrus_internal function get sound():Object
 		{
 			return _sound;
 		}
 		
-		cesound function get group():*
+		citrus_internal function get group():*
 		{
 			return _group;
 		}
 		
-		cesound function set volume(val:Number):void
+		citrus_internal function set volume(val:Number):void
 		{
 			if (_volume != val)
 			{
@@ -243,7 +243,7 @@ package citrus.sounds
 			}
 		}
 		
-		cesound function set panning(val:Number):void
+		citrus_internal function set panning(val:Number):void
 		{
 			if (_panning != val)
 			{
@@ -252,7 +252,7 @@ package citrus.sounds
 			}
 		}
 		
-		cesound function set mute(val:Boolean):void
+		citrus_internal function set mute(val:Boolean):void
 		{
 			if (_mute != val)
 			{
@@ -261,39 +261,39 @@ package citrus.sounds
 			}
 		}
 		
-		cesound function set group(val:*):void
+		citrus_internal function set group(val:*):void
 		{
 			_group = CitrusEngine.getInstance().sound.getGroup(val);
 			if(_group)
 				_group.addSound(this);
 		}
 		
-		cesound function get triggerSoundComplete():Boolean
+		citrus_internal function get triggerSoundComplete():Boolean
 		{
 			return _triggerSoundComplete;
 		}
 		
-		cesound function set triggerSoundComplete(val:Boolean):void
+		citrus_internal function set triggerSoundComplete(val:Boolean):void
 		{
 			_triggerSoundComplete = val;
 		}
 		
-		cesound function get triggerRepeatComplete():Boolean
+		citrus_internal function get triggerRepeatComplete():Boolean
 		{
 			return _triggerRepeatComplete;
 		}
 		
-		cesound function set triggerRepeatComplete(val:Boolean):void
+		citrus_internal function set triggerRepeatComplete(val:Boolean):void
 		{
 			_triggerRepeatComplete = val;
 		}
 		
-		cesound function setGroup(val:CitrusSoundGroup):void
+		citrus_internal function setGroup(val:CitrusSoundGroup):void
 		{
 			_group = val;
 		}
 		
-		cesound function destroy():void
+		citrus_internal function destroy():void
 		{
 			_sound.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			_sound.removeEventListener(ProgressEvent.PROGRESS, onProgress);
@@ -337,7 +337,7 @@ package citrus.sounds
 		
 		public function get mute():Number
 		{
-			return cesound::mute;
+			return citrus_internal::mute;
 		}
 		
 		public function get position():Number
@@ -372,11 +372,11 @@ package citrus.sounds
 				try
 				{
 					if (params[param] == "true")
-						cesound::[param] = true;
+						citrus_internal::[param] = true;
 					else if (params[param] == "false")
-						cesound::[param] = false;
+						citrus_internal::[param] = false;
 					else
-						cesound::[param] = params[param];
+						citrus_internal::[param] = params[param];
 				}
 				catch (e:Error)
 				{

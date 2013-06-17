@@ -1,21 +1,21 @@
 package citrus.sounds 
 {
-	import citrus.sounds.cesound;
+	import citrus.core.citrus_internal;
 	
 	/**
 	 * CitrusSoundGroup represents a volume group with its groupID and has mute control as well.
 	 */
 	public class CitrusSoundGroup 
 	{
-		use namespace cesound;
+		use namespace citrus_internal;
 		
 		public static const BGM:String = "BGM";
 		public static const SFX:String = "SFX";
 		
 		protected var _groupID:String;
 		
-		cesound var _volume:Number = 1;
-		cesound var _mute:Boolean = false;
+		citrus_internal var _volume:Number = 1;
+		citrus_internal var _mute:Boolean = false;
 		
 		protected var _sounds:Vector.<CitrusSound>;
 		
@@ -31,15 +31,15 @@ package citrus.sounds
 				s.refreshSoundTransform();
 		}
 		
-		cesound function addSound(s:CitrusSound):void
+		citrus_internal function addSound(s:CitrusSound):void
 		{
-			if (s.cesound::group && s.cesound::group.isadded(s))
-				(s.cesound::group as CitrusSoundGroup).removeSound(s);
+			if (s.citrus_internal::group && s.citrus_internal::group.isadded(s))
+				(s.citrus_internal::group as CitrusSoundGroup).removeSound(s);
 			s.setGroup(this);
 			_sounds.push(s);
 		}
 		
-		cesound function isadded(sound:CitrusSound):Boolean
+		citrus_internal function isadded(sound:CitrusSound):Boolean
 		{
 			var s:CitrusSound;
 			for each(s in _sounds)
@@ -53,7 +53,7 @@ package citrus.sounds
 			return _sounds.slice();
 		}
 		
-		cesound function removeSound(s:CitrusSound):void
+		citrus_internal function removeSound(s:CitrusSound):void
 		{
 			var si:String;
 			for (si in _sounds)
@@ -72,7 +72,7 @@ package citrus.sounds
 		{
 			var s:CitrusSound;
 			for each(s in _sounds)
-				if (s.cesound::name == name)
+				if (s.citrus_internal::name == name)
 					return s;
 			return null;
 		}
@@ -104,7 +104,7 @@ package citrus.sounds
 			return _groupID;
 		}
 		
-		cesound function destroy():void
+		citrus_internal function destroy():void
 		{
 			var s:CitrusSound;
 			for each(s in _sounds)

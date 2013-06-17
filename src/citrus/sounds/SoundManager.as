@@ -1,7 +1,8 @@
 package citrus.sounds {
 
 	import aze.motion.eaze;
-
+	
+	import citrus.core.citrus_internal;
 	import citrus.sounds.groups.BGMGroup;
 	import citrus.sounds.groups.SFXGroup;
 
@@ -12,7 +13,7 @@ package citrus.sounds {
 
 	public class SoundManager extends EventDispatcher {
 		
-		use namespace cesound;
+		use namespace citrus_internal;
 		
 		private static var _instance:SoundManager;
 
@@ -107,8 +108,8 @@ package citrus.sounds {
 			if (soundName in soundsDic)
 			{
 				s = soundsDic[soundName];
-				if (s.cesound::group != null)
-					s.cesound::group.removeSound(s);
+				if (s.citrus_internal::group != null)
+					s.citrus_internal::group.removeSound(s);
 				if(groupID != null)
 				g = getGroup(groupID)
 				if (g)
@@ -206,7 +207,7 @@ package citrus.sounds {
 		public function removeAllSounds():void {
 			var cs:CitrusSound;
 			for each(cs in soundsDic)
-				removeSound(cs.cesound::name);
+				removeSound(cs.citrus_internal::name);
 		}
 		
 		public function get masterVolume():Number
@@ -291,7 +292,7 @@ package citrus.sounds {
 		 */
 		public function setVolume(id:String, volume:Number):void {
 			if (id in soundsDic)
-				soundsDic[id].cesound::volume = volume;
+				soundsDic[id].citrus_internal::volume = volume;
 		}
 		
 		/**
@@ -299,7 +300,7 @@ package citrus.sounds {
 		 */
 		public function setPanning(id:String, panning:Number):void {
 			if (id in soundsDic)
-				soundsDic[id].cesound::panning = panning;
+				soundsDic[id].citrus_internal::panning = panning;
 		}
 		
 		/**
@@ -307,7 +308,7 @@ package citrus.sounds {
 		 */
 		public function setMute(id:String, mute:Boolean):void {
 			if (id in soundsDic)
-				soundsDic[id].cesound::mute = mute;
+				soundsDic[id].citrus_internal::mute = mute;
 		}
 		
 		/**
@@ -335,7 +336,7 @@ package citrus.sounds {
 				
 				eaze(tweenvolObject).to(tweenDuration, {volume:volume})
 					.onUpdate(function():void {
-					CitrusSound(soundsDic[id]).cesound::volume = tweenvolObject.volume;
+					CitrusSound(soundsDic[id]).citrus_internal::volume = tweenvolObject.volume;
 				});
 			} else 
 				trace("the sound " + id + " is not playing");
@@ -351,7 +352,7 @@ package citrus.sounds {
 			tweenVolume(fadeInId, 1, tweenDuration);
 		}
 		
-		cesound function soundLoaded(s:CitrusSound):void
+		citrus_internal function soundLoaded(s:CitrusSound):void
 		{
 			dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_LOADED, s));
 			var cs:CitrusSound;
