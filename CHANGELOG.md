@@ -4,6 +4,7 @@ V 3.1.7, Work In Progress
 - Added Spine 2D skeleton library support.
 - Added DragonBones support for the display list.
 - Starling.handleLostContext is defined to true if you use Android, made in setUpStarling function.
+- added support for pure state transition (having two state at the same time) using futureState.
 - if StarlingArt updateArtEnabled is set to false, it will flatten the Sprite.
 - StarlingArt may handle an uint color, it will automatically create a quad.
 - AnimationSequence textureAtlas could be an AssetManager object.

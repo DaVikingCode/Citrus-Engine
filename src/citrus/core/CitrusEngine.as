@@ -120,7 +120,10 @@ package citrus.core {
 		/**
 		 * A reference to the active game state. Actually, that's not entirely true. If you've recently changed states and a tick
 		 * hasn't occurred yet, then this will reference your new state; this is because actual state-changes only happen pre-tick.
-		 * That way you don't end up changing states in the middle of a state's tick, effectively fucking stuff up. 
+		 * That way you don't end up changing states in the middle of a state's tick, effectively fucking stuff up.
+		 * 
+		 * If you had set up a futureState, accessing the state it wil return you the futureState to enable some objects instantiation 
+		 * (physics, views, etc).
 		 */		
 		public function get state():IState
 		{
@@ -143,10 +146,19 @@ package citrus.core {
 			_newState = value;
 		}
 		
+		/**
+		 * Get a direct access to the futureState. Note that the futureState is really set up after an update so it isn't 
+		 * available via state getter before a state update.
+		 */
 		public function get futureState():IState {
 			return _futureState ? _futureState : _stateTransitionning;
 		}
-
+		
+		/**
+		 * The futureState variable is useful if you want to have two states running at the same time for making a transition. 
+		 * Note that the futureState is added with the same index than the state, so it will be behind unless the state runs 
+		 * on Starling and the futureState on the display list (which is absolutely doable).
+		 */
 		public function set futureState(value:IState):void {
 			_stateTransitionning = value;
 		}
@@ -224,21 +236,34 @@ package citrus.core {
 		protected function handleEnterFrame(e:Event):void
 		{
 			//Change states if it has been requested
-			if (_newState)
-			{
-				if (_newState is State) {
+			if (_newState && _newState is State) {
 					
-					if (_state && _state is State) {
-						
-						_state.destroy();
-						removeChild(_state as State);
-					}
-					_state = _newState;
-					_newState = null;
+				if (_state && _state is State) {
 					
-					addChildAt(_state as State, _stateDisplayIndex);
-					_state.initialize();					
+					_state.destroy();
+					removeChild(_state as State);
 				}
+				
+				_state = _newState;
+				_newState = null;
+				
+				if (_futureState)
+					_futureState = null;
+						
+				else {
+					addChildAt(_state as State, _stateDisplayIndex);
+					_state.initialize();
+				}
+							
+			}
+			
+			if (_stateTransitionning && _stateTransitionning is State) {
+					
+				_futureState = _stateTransitionning;
+				_stateTransitionning = null;
+				
+				addChildAt(_futureState as State, _stateDisplayIndex);
+				_futureState.initialize();
 			}
 			
 			//Update the state

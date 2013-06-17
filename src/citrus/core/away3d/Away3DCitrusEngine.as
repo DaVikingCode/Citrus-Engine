@@ -74,9 +74,9 @@ package citrus.core.away3d {
 		
 		override protected function handleEnterFrame(e:Event):void {
 
-			if (_newState) {
+			if (_away3D.scene) {
 				
-				if (_away3D.scene) {
+				if (_newState) {
 					
 					if (_state) {
 						
@@ -102,14 +102,27 @@ package citrus.core.away3d {
 						_state = _newState;
 						_newState = null;
 						
-						_away3D.scene.addChild(_state as Away3DState);
-						_state.initialize();
+						if (_futureState)
+							_futureState = null;
+						
+						else {						
+							_away3D.scene.addChild(_state as Away3DState);
+							_state.initialize();
+						}
 					}
 				}
-
+				
+				if (_stateTransitionning && _stateTransitionning is Away3DState) {
+					
+					_futureState = _stateTransitionning;
+					_stateTransitionning = null;
+					
+					_away3D.scene.addChild(_futureState as Away3DState);
+					_futureState.initialize();
+				}
 			}
 			
-			if (_state && _playing && _state is Away3DState)
+			if (_playing && (_state && _state is Away3DState) || (_futureState && _futureState is Away3DState))
 				_away3D.render();
 				
 			super.handleEnterFrame(e);
