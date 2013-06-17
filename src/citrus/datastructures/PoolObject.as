@@ -192,7 +192,7 @@ package citrus.datastructures {
 		 * @param	params
 		 */
 		protected function _destroy(node:DoublyLinkedListNode):void {	
-			onDestroy.dispatch((node.data as _poolType))
+			onDestroy.dispatch((node.data as _poolType));
 		}
 		
 		/**

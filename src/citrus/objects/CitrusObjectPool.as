@@ -1,10 +1,9 @@
 package citrus.objects 
 {
-	import citrus.core.CitrusEngine;
+
 	import citrus.core.CitrusObject;
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
-	import citrus.view.ACitrusView;
 
 	/**
 	 * Base CitrusObject PoolObject (ex: CitrusSprites)

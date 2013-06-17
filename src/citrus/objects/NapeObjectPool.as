@@ -1,14 +1,12 @@
 package citrus.objects 
 {
+
 	import citrus.core.CitrusEngine;
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
 	import citrus.physics.nape.Nape;
 	import citrus.view.ACitrusView;
-	/**
-	 * ...
-	 * @author gsynuh
-	 */
+	
 	public class NapeObjectPool extends PoolObject
 	{
 		private static var stateView:ACitrusView;

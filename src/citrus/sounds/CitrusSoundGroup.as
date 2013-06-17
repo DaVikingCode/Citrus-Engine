@@ -3,8 +3,7 @@ package citrus.sounds
 	import citrus.sounds.cesound;
 	
 	/**
-	 * CitrusSoundGroup represents a volume group with its groupID
-	 * and has mute control as well.
+	 * CitrusSoundGroup represents a volume group with its groupID and has mute control as well.
 	 */
 	public class CitrusSoundGroup 
 	{

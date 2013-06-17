@@ -4,6 +4,7 @@ V 3.1.7, Work In Progress
 - Added Spine 2D skeleton library support.
 - Added DragonBones support for the display list.
 - SoundManager reworked with a CitrusSound class and CitrusSoundGroup.
+- PoolObject reworked.
 - Added support for pure state transition (having two state at the same time) using futureState.
 - Starling.handleLostContext is defined to true if you use Android, made in setUpStarling function.
 - if StarlingArt updateArtEnabled is set to false, it will flatten the Sprite.
