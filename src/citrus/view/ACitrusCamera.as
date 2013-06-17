@@ -210,8 +210,9 @@ package citrus.view {
 		/**
 		 * fit inside width and height by zooming in or out.
 		 * (centered on the target)
+		 * @return calculated zoom ratio
 		 */
-		public function zoomFit(width:Number, height:Number):void {
+		public function zoomFit(width:Number, height:Number):Number {
 			throw(new Error("Warning: " + this + " cannot zoomFit."));
 		}
 		

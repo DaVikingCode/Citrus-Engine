@@ -34,7 +34,7 @@ package citrus.view.spriteview {
 				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
 		}
 		
-		override public function zoomFit(width:Number,height:Number):void
+		override public function zoomFit(width:Number,height:Number):Number
 		{
 			if (_allowZoom)
 			{
@@ -43,7 +43,7 @@ package citrus.view.spriteview {
 					ratio = cameraLensWidth / width;
 				else
 					ratio = cameraLensHeight / height;
-				_zoom = ratio;
+				return _zoom = ratio;
 			}
 			else
 				throw(new Error(this+" is not allowed to zoom. please set allowZoom to true."));
