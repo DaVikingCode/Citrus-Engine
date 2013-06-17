@@ -65,7 +65,7 @@ package citrus.sounds {
 		 * <li>timesToPlay : default 1 (plays once) . 0 or a negative number will make the sound loop infinitely.</li>
 		 * <li>group : the groupID of a group, no groups are set by default. default groups ID's are CitrusSoundGroup.SFX (sound effects) and CitrusSoundGroup.BGM (background music)</li>
 		 * <li>triggerSoundComplete : whether to dispatch a CitrusSoundEvent on each loop of type CitrusSoundEvent.SOUND_COMPLETE .</li>
-		 * <li>triggerRepeatComplete : whether to dispatch a CitrusSoundEvent on each loop of type CitrusSoundEvent.REPEAT_COMPLETE when the sounds as played 'timesToPlay' times.</li></ul>
+		 * <li>triggerRepeatComplete : whether to dispatch a CitrusSoundEvent of type CitrusSoundEvent.REPEAT_COMPLETE when a sounds has played 'timesToPlay' times.</li></ul>
 		 */
 		public function addSound(id:String, params:Object = null):void {
 			if (id in soundsDic)
