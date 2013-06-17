@@ -19,7 +19,7 @@ package citrus.sounds
 		public var hideParamWarnings:Boolean = false;
 		
 		protected var _name:String;
-		protected var _timesToRepeat:int = 0;
+		protected var _timesToRepeat:int = 1;
 		protected var _repeatCount:int = 0;
 		protected var _soundTransform:SoundTransform;
 		
