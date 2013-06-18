@@ -47,6 +47,9 @@ package citrus.sounds
 		public function CitrusSound(name:String,params:Object = null) 
 		{
 			_name = name;
+			if (params["sound"] == null)
+				throw new Error(String(String(this) + " sound "+ name+ " has no sound param defined."));
+				
 			setParams(params);
 		}
 		
@@ -56,8 +59,7 @@ package citrus.sounds
 				stop();
 			else
 				if (_urlReq && _loadedRatio == 0)
-					_sound.load(_urlReq);
-			
+					 _sound.load(_urlReq);
 			if(resetV)
 				reset();
 			
@@ -75,6 +77,7 @@ package citrus.sounds
 		
 		public function pause():void
 		{
+			if (_channel)
 			_position = _channel.position;
 			stop(false);
 			_isPlaying = false;
@@ -98,9 +101,9 @@ package citrus.sounds
 		{
 			if (_complete)
 				return;
-				
 			_channel = _sound.play(position, 0, _soundTransform);
 			refreshSoundTransform();
+			if(_channel)
 			_channel.addEventListener(Event.SOUND_COMPLETE, onComplete);
 			_isPlaying = true;
 			_paused = false;
@@ -142,6 +145,7 @@ package citrus.sounds
 		
 		protected function onIOError(event:ErrorEvent):void
 		{
+			_sound.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			trace("CitrusSound Error Loading: ", this.name);
 			_ioerror = true;
 			_sm.dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_ERROR, this));
@@ -212,6 +216,8 @@ package citrus.sounds
 				_loadedRatio = 1;
 				_loaded = true;
 			}
+			else
+				throw new Error("CitrusSound, " + val + "is not a valid sound paramater");
 		}
 		
 		citrus_internal function get repeatCount():int
@@ -295,11 +301,15 @@ package citrus.sounds
 		
 		citrus_internal function destroy():void
 		{
-			_sound.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
-			_sound.removeEventListener(ProgressEvent.PROGRESS, onProgress);
+			if (_sound)
+			{
+				_sound.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
+				_sound.removeEventListener(ProgressEvent.PROGRESS, onProgress);
+			}
+			if(_channel)
+				_channel.removeEventListener(Event.SOUND_COMPLETE, onComplete);
 			
 			stop(true);
-			_channel.removeEventListener(Event.SOUND_COMPLETE, onComplete);
 			reset();
 			if (_group)
 				_group.removeSound(this);

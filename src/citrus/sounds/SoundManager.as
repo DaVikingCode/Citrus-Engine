@@ -68,6 +68,8 @@ package citrus.sounds {
 		 * <li>triggerRepeatComplete : whether to dispatch a CitrusSoundEvent of type CitrusSoundEvent.REPEAT_COMPLETE when a sounds has played 'timesToPlay' times.</li></ul>
 		 */
 		public function addSound(id:String, params:Object = null):void {
+			if (!params.hasOwnProperty("sound"))
+				throw new Error("SoundManager addSound() sound:"+id+"can't be added with no sound definition in the params.");
 			if (id in soundsDic)
 				trace(this, id, "already exists.");
 			else
@@ -204,11 +206,7 @@ package citrus.sounds {
 		
 		public function stopSound(id:String):void {
 			if (id in soundsDic)
-			{
-				CitrusSound(soundsDic[id]).destroy();
-				soundsDic[id] = null;
-				delete soundsDic[id];
-			}
+				CitrusSound(soundsDic[id]).stop();
 			else
 				trace(this,"stopSound() : sound",id,"doesn't exist.");
 		}
@@ -216,7 +214,11 @@ package citrus.sounds {
 		public function removeSound(id:String):void {
 			stopSound(id);
 			if (id in soundsDic)
+			{
+				CitrusSound(soundsDic[id]).destroy();
+				soundsDic[id] = null;
 				delete soundsDic[id];
+			}
 			else
 				trace(this,"removeSound() : sound",id,"doesn't exist.");
 		}
