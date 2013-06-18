@@ -284,14 +284,16 @@ package citrus.sounds {
 		 * tells you if a sound is playing or false if sound is not identified.
 		 */
 		public function soundIsPlaying(id:String):Boolean {
-			return (id in soundsDic) ? CitrusSound(soundsDic[id]).isPlaying : false;
+			return (id in soundsDic) ? CitrusSound(soundsDic[id]).isPlaying :
+				trace(this,"soundIsPlaying() : sound",id,"doesn't exist.");
 		}
 		
 		/**
 		 * tells you if a sound is paused or false if sound is not identified.
 		 */
 		public function soundIsPaused(id:String):* {
-			return (id in soundsDic) ? CitrusSound(soundsDic[id]).isPaused : false;
+			return (id in soundsDic) ? CitrusSound(soundsDic[id]).isPaused :
+				trace(this,"soundIsPaused() : sound",id,"doesn't exist.");
 		}
 		
 		/**
@@ -310,6 +312,8 @@ package citrus.sounds {
 		public function setVolume(id:String, volume:Number):void {
 			if (id in soundsDic)
 				soundsDic[id].citrus_internal::volume = volume;
+			else
+				trace(this, "setVolume() : sound", id, "doesn't exist.");
 		}
 		
 		/**
@@ -318,6 +322,8 @@ package citrus.sounds {
 		public function setPanning(id:String, panning:Number):void {
 			if (id in soundsDic)
 				soundsDic[id].citrus_internal::panning = panning;
+			else
+				trace(this, "setPanning() : sound", id, "doesn't exist.");
 		}
 		
 		/**
@@ -326,6 +332,8 @@ package citrus.sounds {
 		public function setMute(id:String, mute:Boolean):void {
 			if (id in soundsDic)
 				soundsDic[id].citrus_internal::mute = mute;
+			else
+				trace(this, "setMute() : sound", id, "doesn't exist.");
 		}
 		
 		/**
