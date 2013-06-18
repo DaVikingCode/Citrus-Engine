@@ -133,12 +133,34 @@ package citrus.view.spriteview {
 			
 			super.update();
 			
+			if (_target && followTarget)
+			{
+				_targetPos.x = _target.x;
+				_targetPos.y = _target.y;
+				
+				var diffX:Number = _targetPos.x - _ghostTarget.x;
+				var diffY:Number = _targetPos.y - _ghostTarget.y;
+				var velocityX:Number = diffX * easing.x;
+				var velocityY:Number = diffY * easing.y;
+				
+				_ghostTarget.x += velocityX;
+				_ghostTarget.y += velocityY;
+				
+			}
+			else if (_manualPosition)
+			{
+				_ghostTarget.x = _manualPosition.x;
+				_ghostTarget.y = _manualPosition.y;
+			}
+			
 			if (_allowRotation)
 			{
 				var diffRot:Number = _rotation - _camProxy.rotation;
 				var velocityRot:Number = diffRot * rotationEasing;
 				_camProxy.rotation += velocityRot;
 			}
+			
+			resetAABBData();
 			
 			if (_allowZoom)
 			{
@@ -160,47 +182,26 @@ package citrus.view.spriteview {
 				
 			}
 			
-			if (_target && followTarget)
-			{
-				_targetPos.x = _target.x;
-				_targetPos.y = _target.y;
-				
-				var diffX:Number = _targetPos.x - _ghostTarget.x;
-				var diffY:Number = _targetPos.y - _ghostTarget.y;
-				var velocityX:Number = diffX * easing.x;
-				var velocityY:Number = diffY * easing.y;
-				
-				_ghostTarget.x += velocityX;
-				_ghostTarget.y += velocityY;
-				
-			}
-			else if (_manualPosition)
-			{
-				_ghostTarget.x = _manualPosition.x;
-				_ghostTarget.y = _manualPosition.y;
-			}
-			
-			resetAABBData();
-			
-			_aabbData.rect.x = ghostTarget.x ;
-			_aabbData.rect.y = ghostTarget.y ;
-			
-			_camProxy.x = _aabbData.rect.x;
-			_camProxy.y = _aabbData.rect.y;
+			_camProxy.x = ghostTarget.x;
+			_camProxy.y = ghostTarget.y;
 			
 			if ( bounds )
 			{
-				if (_camProxy.x - offset.x/_camProxy.scale < bounds.left)
-					_camProxy.x = bounds.left + offset.x/_camProxy.scale;
-					
-				if (_camProxy.x + offset.x/_camProxy.scale > bounds.right)
-					_camProxy.x = bounds.right - offset.x/_camProxy.scale;
-					
-				if (_camProxy.y - offset.y/_camProxy.scale < bounds.top)
-					_camProxy.y = bounds.top + offset.y/_camProxy.scale;
-					
-				if (_camProxy.y + offset.y/_camProxy.scale > bounds.bottom)
-					_camProxy.y = bounds.bottom - offset.y/_camProxy.scale;
+				_b.w2 = _aabbData.rect.width * 0.5;
+				_b.h2 = _aabbData.rect.height * 0.5;
+				_b.bl = bounds.left + _b.w2;
+				_b.bt = bounds.top + _b.h2;
+				_b.br = bounds.right - _b.w2;
+				_b.bb = bounds.bottom - _b.h2;
+				
+				if (_camProxy.x < _b.bl)
+					_camProxy.x = _b.bl;
+				if (_camProxy.x > _b.br)
+					_camProxy.x = _b.br;
+				if (_camProxy.y < _b.bt)
+					_camProxy.y = _b.bt;
+				if (_camProxy.y > _b.bb)
+					_camProxy.y = _b.bb;
 			}
 			
 			//reset matrix

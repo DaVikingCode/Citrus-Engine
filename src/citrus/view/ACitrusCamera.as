@@ -130,6 +130,11 @@ package citrus.view {
 		 */
 		protected var _p:Point = new Point();
 		
+		/**
+		 * helper object for bounds checking
+		 */
+		protected var _b:Object = {w2:0,h2:0,br:0,bl:0,bt:0,bb:0};
+		
 		protected var _ce:CitrusEngine;
 
 		public function ACitrusCamera(viewRoot:*) {
