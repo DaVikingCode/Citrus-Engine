@@ -94,6 +94,8 @@ package citrus.sounds {
 				soundGroups.splice(i, 1);
 				g.destroy();
 			}
+			else
+				trace("Sound Manager : group", groupID, "not found for removal.");
 		}
 		
 		/**
@@ -115,6 +117,8 @@ package citrus.sounds {
 				if (g)
 					g.addSound(s);
 			}
+			else
+				trace(this,"moveSoundToGroup() : sound",soundName,"doesn't exist.");
 		}
 		
 		/**
@@ -130,6 +134,7 @@ package citrus.sounds {
 				if (sg.groupID == name)
 					return sg;
 			}
+			trace(this,"getGroup() : group",name,"doesn't exist.");
 			return null;
 		}
 		
@@ -140,6 +145,8 @@ package citrus.sounds {
 		{
 			if (name in soundsDic)
 				return soundsDic[name];
+			else
+				trace(this,"getSound() : sound",name,"doesn't exist.");
 			return null;
 		}
 		
@@ -149,6 +156,8 @@ package citrus.sounds {
 		public function playSound(id:String):void {
 			if (id in soundsDic)
 				CitrusSound(soundsDic[id]).play();
+			else
+				trace(this,"playSound() : sound",id,"doesn't exist.");
 		}
 		
 		/**
@@ -157,6 +166,8 @@ package citrus.sounds {
 		public function pauseSound(id:String):void {
 			if (id in soundsDic)
 				CitrusSound(soundsDic[id]).pause();
+			else
+				trace(this,"pauseSound() : sound",id,"doesn't exist.");
 		}
 		
 		/**
@@ -165,6 +176,8 @@ package citrus.sounds {
 		public function resumeSound(id:String):void {
 			if (id in soundsDic)
 				CitrusSound(soundsDic[id]).pause();
+			else
+				trace(this,"resumeSound() : sound",id,"doesn't exist.");
 		}
 		
 		/**
@@ -196,12 +209,16 @@ package citrus.sounds {
 				soundsDic[id] = null;
 				delete soundsDic[id];
 			}
+			else
+				trace(this,"stopSound() : sound",id,"doesn't exist.");
 		}
 		
 		public function removeSound(id:String):void {
 			stopSound(id);
 			if (id in soundsDic)
 				delete soundsDic[id];
+			else
+				trace(this,"removeSound() : sound",id,"doesn't exist.");
 		}
 		
 		public function removeAllSounds():void {
