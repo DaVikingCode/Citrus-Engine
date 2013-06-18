@@ -72,7 +72,7 @@ package citrus.sounds
 		{
 			var s:CitrusSound;
 			for each(s in _sounds)
-				if (s.citrus_internal::name == name)
+				if (s.name == name)
 					return s;
 			return null;
 		}

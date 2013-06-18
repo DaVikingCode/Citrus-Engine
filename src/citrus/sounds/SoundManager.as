@@ -226,7 +226,7 @@ package citrus.sounds {
 		public function removeAllSounds():void {
 			var cs:CitrusSound;
 			for each(cs in soundsDic)
-				removeSound(cs.citrus_internal::name);
+				removeSound(cs.name);
 		}
 		
 		public function get masterVolume():Number

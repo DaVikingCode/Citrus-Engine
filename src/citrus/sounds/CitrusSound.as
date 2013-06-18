@@ -347,7 +347,7 @@ package citrus.sounds
 		
 		public function get mute():Boolean
 		{
-			return citrus_internal::mute;
+			return _mute;
 		}
 		
 		public function get position():Number
