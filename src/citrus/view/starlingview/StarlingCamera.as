@@ -175,7 +175,7 @@ package citrus.view.starlingview {
 				var velocityZoom:Number = diffZoom * zoomEasing;
 				_camProxy.scale += velocityZoom;
 				
-				if (bounds && _restrictZoom)
+				if (bounds && (boundsMode == BOUNDS_MODE_AABB) )
 				{
 					var lwratio:Number = (_aabbData.rect.width*_camProxy.scale ) / bounds.width;
 					var lhratio:Number = (_aabbData.rect.height*_camProxy.scale ) / bounds.height;
@@ -193,21 +193,35 @@ package citrus.view.starlingview {
 			
 			if ( bounds )
 			{
-				_b.w2 = _aabbData.rect.width * 0.5;
-				_b.h2 = _aabbData.rect.height * 0.5;
-				_b.bl = bounds.left + _b.w2;
-				_b.bt = bounds.top + _b.h2;
-				_b.br = bounds.right - _b.w2;
-				_b.bb = bounds.bottom - _b.h2;
-				
-				if (_camProxy.x < _b.bl)
-					_camProxy.x = _b.bl;
-				if (_camProxy.x > _b.br)
-					_camProxy.x = _b.br;
-				if (_camProxy.y < _b.bt)
-					_camProxy.y = _b.bt;
-				if (_camProxy.y > _b.bb)
-					_camProxy.y = _b.bb;
+				if (boundsMode == BOUNDS_MODE_AABB)
+				{
+					_b.w2 = _aabbData.rect.width * 0.5;
+					_b.h2 = _aabbData.rect.height * 0.5;
+					_b.bl = bounds.left + _b.w2;
+					_b.bt = bounds.top + _b.h2;
+					_b.br = bounds.right - _b.w2;
+					_b.bb = bounds.bottom - _b.h2;
+					
+					if (_camProxy.x < _b.bl)
+						_camProxy.x = _b.bl;
+					if (_camProxy.x > _b.br)
+						_camProxy.x = _b.br;
+					if (_camProxy.y < _b.bt)
+						_camProxy.y = _b.bt;
+					if (_camProxy.y > _b.bb)
+						_camProxy.y = _b.bb;
+						
+				}else if (boundsMode == BOUNDS_MODE_OFFSET)
+				{	
+					if (_camProxy.x < bounds.left)
+						_camProxy.x = bounds.left;
+					if (_camProxy.x > bounds.right)
+						_camProxy.x = bounds.right;
+					if (_camProxy.y < bounds.top)
+						_camProxy.y = bounds.top;
+					if (_camProxy.y > bounds.bottom)
+						_camProxy.y = bounds.bottom;
+				}
 			}
 			
 			//reset matrix
@@ -418,15 +432,5 @@ package citrus.view.starlingview {
 			_allowRotation = value;
 		}
 		
-		override public function set restrictZoom(value:Boolean):void
-		{
-			_restrictZoom = value;
-		}
-		
-		override public function get restrictZoom():Boolean
-		{
-			return _restrictZoom;
-		}
-	
 	}
 }

@@ -12,11 +12,6 @@ package citrus.view {
 	public class ACitrusCamera {
 		
 		/**
-		 * should we restrict zoom to bounds?
-		 */
-		protected var _restrictZoom:Boolean = false;
-		
-		/**
 		 * Is the camera allowed to Zoom?
 		 */
 		protected var _allowZoom:Boolean = false;
@@ -133,7 +128,28 @@ package citrus.view {
 		/**
 		 * helper object for bounds checking
 		 */
-		protected var _b:Object = {w2:0,h2:0,br:0,bl:0,bt:0,bb:0};
+		protected var _b:Object = { w2:0, h2:0, br:0, bl:0, bt:0, bb:0 };
+		
+		/**
+		 * this mode will force the camera (and its 'content') to be contained within the bounds.
+		 * zoom will be restricted - and recalculated if required.
+		 * this restriction is based on the camera's AABB rectangle,you will never see anything out of the bounds.
+		 * actually makes the camera 'hit' the bounds, the camera will be displaced to prevent it.
+		 */
+		public static const BOUNDS_MODE_AABB:String = "BOUNDS_MODE_AABB"; 
+		
+		/**
+		 * this mode will force the offset point of the camera to stay within the bounds (whatever the zoom and rotation are)
+		 * things can be seen outside of the bounds, but there's no zoom recalculation or camera displacement when rotating and colliding with the bounds 
+		 * unlike the other mode.
+		 */
+		public static const BOUNDS_MODE_OFFSET:String = "BOUNDS_MODE_OFFSET"; 
+		
+		/**
+		 * how camera movement should be allowed within the defined bounds.
+		 * defaults to ACitrusCamera.BOUNDS_MODE_AABB
+		 */
+		public var boundsMode:String = BOUNDS_MODE_AABB;
 		
 		protected var _ce:CitrusEngine;
 
@@ -271,14 +287,6 @@ package citrus.view {
 		
 		public function get manualPosition():Point {	
 			return _manualPosition;
-		}
-		
-		public function set restrictZoom(value:Boolean):void {
-			throw(new Error("Warning: " + this + " cannot zoom."));
-		}
-		
-		public function get restrictZoom():Boolean {
-			throw(new Error("Warning: " + this + " cannot zoom."));
 		}
 		
 		public function set allowRotation(value:Boolean):void {
