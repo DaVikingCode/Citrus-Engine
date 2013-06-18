@@ -122,17 +122,17 @@ package citrus.sounds
 			
 			_repeatCount++;
 			
-			if (timesToPlay <= 0)
+			if (_timesToPlay <= 0)
 			{
 				if(_triggerSoundComplete)
 					_sm.dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_COMPLETE,this));
 				playAt(0);
-			} else if (repeatCount < timesToPlay)
+			} else if (_repeatCount < _timesToPlay)
 			{
 				if(_triggerSoundComplete)
 					_sm.dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_COMPLETE,this));
 				playAt(0);
-			}else if (repeatCount == timesToPlay)
+			}else if (_repeatCount == _timesToPlay)
 			{
 				_complete = true;
 				if(_triggerSoundComplete)
@@ -345,7 +345,7 @@ package citrus.sounds
 			return _panning;
 		}
 		
-		public function get mute():Number
+		public function get mute():Boolean
 		{
 			return citrus_internal::mute;
 		}
