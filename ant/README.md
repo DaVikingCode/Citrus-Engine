@@ -1,7 +1,7 @@
 Build instructions
 ------------------
 
-The ant is configured to be built on a PC.
+The ant is configured to be built on a PC or a Mac.
 
 Before running the script, you must generate the comments for the ASDoc using [ASDocr](http://gskinner.com/blog/archives/2010/05/asdocr_update_f_1.html).
 
