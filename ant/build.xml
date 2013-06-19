@@ -52,13 +52,13 @@
 			<arg line="-output ../bin/CE${VERSION}-Core.swc" />
 
 			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../src/citrus/core/citrus_internal.as" />
 			<arg line="-include-sources ../src/citrus/core/MediatorState.as" />
 			<arg line="-include-sources ../src/citrus/core/CitrusEngine.as" />
 			<arg line="-include-sources ../src/citrus/core/CitrusGroup.as" />
 			<arg line="-include-sources ../src/citrus/core/CitrusObject.as" />
 			<arg line="-include-sources ../src/citrus/core/Console.as" />
 			<arg line="-include-sources ../src/citrus/core/IState.as" />
-			<arg line="-include-sources ../src/citrus/core/SoundManager.as" />
 			<arg line="-include-sources ../src/citrus/core/State.as" />
 
 			<arg line="-include-sources ../src/citrus/datastructures" />
@@ -84,13 +84,15 @@
 			<arg line="-include-sources ../src/citrus/physics/IDebugView.as" />
 			<arg line="-include-sources ../src/citrus/physics/PhysicsCollisionCategories.as" />
 			<arg line="-include-sources ../src/citrus/physics/simple" />
-
-			<arg line="-include-sources ../src/citrus/ui/inventory" />
+			
+			<arg line="-include-sources ../src/citrus/sounds" />
 
 			<arg line="-include-sources ../src/citrus/system/Component.as" />
 			<arg line="-include-sources ../src/citrus/system/Entity.as" />
 			<arg line="-include-sources ../src/citrus/system/components/InputComponent.as" />
 			<arg line="-include-sources ../src/citrus/system/components/ViewComponent.as" />
+			
+			<arg line="-include-sources ../src/citrus/ui/inventory" />
 
 			<arg line="-include-sources ../src/citrus/utils/AGameData.as" />
 			<arg line="-include-sources ../src/citrus/utils/LevelManager.as" />
@@ -326,12 +328,12 @@
 		</exec>
 	</target>
 
-	<target name="Starling + Feathers + DragonBones SWC" description="Generates Starling + Feathers + DragonBones SWC">
+	<target name="Starling + Feathers + DragonBones + Spine SWC" description="Generates Starling + Feathers + DragonBones SWC">
 
 		<echo>Generating Starling + DragonBones SWC</echo>
 		<exec executable="${compc.exe}">
 			<!-- Set the output path -->
-			<arg line="-output ../bin/libraries/Starling-Feathers-DragonBones.swc" />
+			<arg line="-output ../bin/libraries/Starling-Feathers-DragonBones-Spine.swc" />
 
 			<!-- Include all of the AS3 files in LIBRARY -->
 			<arg line="-include-sources ../srclib/starling" />
