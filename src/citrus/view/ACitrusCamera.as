@@ -57,7 +57,7 @@ package citrus.view {
 		 * the _camProxy object is used as a container to hold the data to be applied to the _viewroot.
 		 * it can be accessible publicly so that debugView can be correctly displaced, rotated and scaled as _viewroot will be.
 		 */
-		protected var _camProxy:Object = { x: 0, y: 0, offsetX: 0, offsetY: 0, scale: 1, rotation: 0 };
+		protected var _camProxy:Object = { x: 0, y: 0, offset:new Point(), scale: 1, rotation: 0 };
 		
 		/**
 		 * projected camera position + offset. (used internally)
@@ -150,6 +150,24 @@ package citrus.view {
 		 * defaults to ACitrusCamera.BOUNDS_MODE_AABB
 		 */
 		public var boundsMode:String = BOUNDS_MODE_AABB;
+		
+		/**
+		 * the parallaxed objects are based on (0,0) of the level.
+		 * this is how parallax has been applied since the beginning of CE.
+		 */
+		public static const PARALLAX_MODE_TOPLEFT:String = "PARALLAX_MODE_TOPLEFT";
+		
+		/**
+		 * parallaxed objects are 'displaced' according to their parallax value from the center of the camera,
+		 * giving a perspective/fake depth effect where the vanishing point is the center of the camera.
+		 */
+		public static const PARALLAX_MODE_DEPTH:String = "PARALLAX_MODE_DEPTH";
+		
+		/**
+		 * defines the way parallax is applied to objects position.
+		 * the default is PARALLAX_MODE_TOPLEFT.
+		 */
+		public var parallaxMode:String = PARALLAX_MODE_TOPLEFT;
 		
 		protected var _ce:CitrusEngine;
 

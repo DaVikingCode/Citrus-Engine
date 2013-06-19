@@ -7,6 +7,7 @@ package citrus.view.spriteview
 	import citrus.physics.APhysicsEngine;
 	import citrus.physics.IDebugView;
 	import citrus.system.components.ViewComponent;
+	import citrus.view.ACitrusCamera;
 	import citrus.view.ISpriteView;
 
 	import dragonBones.Armature;
@@ -263,9 +264,16 @@ package citrus.view.spriteview
 				rotation = _physicsComponent.rotation;
 				
 			} else {
-				
-				x = _citrusObject.x + ( (stateView.camera.camProxy.x - _citrusObject.x) * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
-				y = _citrusObject.y + ( (stateView.camera.camProxy.y - _citrusObject.y) * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
+				if (stateView.camera.parallaxMode == ACitrusCamera.PARALLAX_MODE_DEPTH)
+				{
+					x = _citrusObject.x + ( (stateView.camera.camProxy.x - _citrusObject.x) * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
+					y = _citrusObject.y + ( (stateView.camera.camProxy.y - _citrusObject.y) * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
+				}
+				else
+				{
+					x = _citrusObject.x + ( (stateView.camera.camProxy.x + stateView.camera.camProxy.offset.x) * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
+					y = _citrusObject.y + ( (stateView.camera.camProxy.y + stateView.camera.camProxy.offset.y) * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
+				}
 				rotation = _citrusObject.rotation;
 			}
 			

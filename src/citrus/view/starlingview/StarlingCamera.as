@@ -224,6 +224,16 @@ package citrus.view.starlingview {
 				}
 			}
 			
+			if (parallaxMode == PARALLAX_MODE_TOPLEFT)
+			{
+				_m.identity();
+				_m.rotate(_camProxy.rotation);
+				_m.scale(_camProxy.scale, _camProxy.scale);
+				_camProxy.offset = _m.transformPoint(offset);
+				_camProxy.offset.x *= -1;
+				_camProxy.offset.y *= -1;
+			}
+			
 			//reset matrix
 			_m.identity();
 			//fake pivot
