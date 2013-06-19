@@ -228,7 +228,7 @@ package citrus.view.starlingview {
 			{
 				_m.identity();
 				_m.rotate(_camProxy.rotation);
-				_m.scale(_camProxy.scale, _camProxy.scale);
+				_m.scale(1/_camProxy.scale, 1/_camProxy.scale);
 				_camProxy.offset = _m.transformPoint(offset);
 				_camProxy.offset.x *= -1;
 				_camProxy.offset.y *= -1;
