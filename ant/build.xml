@@ -3,10 +3,22 @@
 
 	<!-- load user configuration properties -->
 	<property file="build.properties" />
+	
+	<condition property="FLEX_HOME" value="${FLEX_HOME_WINDOWS}">
+		   <os family="windows"/>
+		</condition>
+		<condition property="FLEX_HOME" value="${FLEX_HOME_UNIX}">
+		   <os family="unix"/>
+		</condition>
 
 	<!-- Don't change this (it's the path to the compiler to use) -->
-	<property name="compc.exe" value="${FLEX_HOME}/bin/compc.exe" />
-
+	<condition property="compc" value="${FLEX_HOME}/bin/compc.exe">
+	   <os family="windows"/>
+	</condition>
+	<condition property="compc" value="${FLEX_HOME}/bin/compc">
+	   <os family="unix"/>
+	</condition>
+	
 	<!-- Point Ant to the Flex installation -->
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
@@ -15,7 +27,7 @@
 		description="Generates a single SWC library with everything included in.">
 
 		<echo>Generating Citrus Engine Global</echo>
-		<exec executable="${compc.exe}">
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-ALL.swc" />
 			<!-- Include all of the AS3 files in LIBRARY -->
@@ -47,7 +59,7 @@
 	<target name="CE-swc-core" description="Generates the CE core's SWC">
 
 		<echo>Generating Citrus Engine Core</echo>
-		<exec executable="${compc.exe}">
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-Core.swc" />
 
@@ -141,7 +153,7 @@
 	<target name="CE-swc-box2d" description="Generates the CE's SWC with Box2D">
 
 		<echo>Generating Citrus Engine Box2D</echo>
-		<exec executable="${compc.exe}">
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-Box2D.swc" />
 
@@ -165,7 +177,7 @@
 	<target name="CE-swc-nape" description="Generates the CE's SWC with Nape">
 
 		<echo>Generating Citrus Engine Nape</echo>
-		<exec executable="${compc.exe}">
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-Nape.swc" />
 
@@ -185,7 +197,7 @@
 	<target name="CE-swc-starling-feathers" description="Generates the CE's SWC with Starling and Feathers included">
 
 		<echo>Generating Citrus Engine Starling</echo>
-		<exec executable="${compc.exe}">
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-Starling-Feathers.swc" />
 
@@ -214,7 +226,7 @@
 	<target name="CE-swc-starling-feathers-box2d" description="Generates the CE's SWC with Starling and Box2D">
 
 		<echo>Generating Citrus Engine Starling - Box2D</echo>
-		<exec executable="${compc.exe}">
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-Starling-Feathers-Box2D.swc" />
 
@@ -230,7 +242,7 @@
 	<target name="CE-swc-starling-feathers-nape" description="Generates the CE's SWC with Starling and Nape">
 
 		<echo>Generating Citrus Engine Starling - Nape</echo>
-		<exec executable="${compc.exe}">
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-Starling-Feathers-Nape.swc" />
 
@@ -244,7 +256,7 @@
 	<target name="CE-swc-away3d" description="Generates the CE's SWC with Away3D">
 
 		<echo>Generating Citrus Engine Away3D</echo>
-		<exec executable="${compc.exe}">
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-Away3D.swc" />
 
@@ -265,7 +277,7 @@
 	<target name="CE-swc-away3d-box2d" description="Generates the CE's SWC with Away3D and Box2D">
 
 		<echo>Generating Citrus Engine Away3D - Box2D</echo>
-		<exec executable="${compc.exe}">
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-Away3D-Box2D.swc" />
 
@@ -279,7 +291,7 @@
 	<target name="CE-swc-away3d-nape" description="Generates the CE's SWC with Away3D and Nape">
 
 		<echo>Generating Citrus Engine Away3D - Nape</echo>
-		<exec executable="${compc.exe}">
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-Away3D-Nape.swc" />
 
@@ -293,7 +305,7 @@
 	<target name="CE-swc-away3d-awayphysics" description="Generates the CE's SWC with Away3D and AwayPhysics">
 
 		<echo>Generating Citrus Engine Away3D - AwayPhysics</echo>
-		<exec executable="${compc.exe}">
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/CE${VERSION}-Away3D-AwayPhysics.swc" />
 
@@ -319,7 +331,7 @@
 	<target name="Box2D SWC" description="Generates Box2D SWC">
 
 		<echo>Generating Box2D SWC</echo>
-		<exec executable="${compc.exe}">
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/libraries/Box2D.swc" />
 
@@ -330,8 +342,8 @@
 
 	<target name="Starling + Feathers + DragonBones + Spine SWC" description="Generates Starling + Feathers + DragonBones SWC">
 
-		<echo>Generating Starling + DragonBones SWC</echo>
-		<exec executable="${compc.exe}">
+		<echo>Generating Starling + Feathers + DragonBones + Spine SWC</echo>
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/libraries/Starling-Feathers-DragonBones-Spine.swc" />
 
@@ -347,7 +359,7 @@
 	<target name="Away3D + AwayPhysics SWC" description="Generates Away3D + AwayPhysics SWC">
 
 		<echo>Generating Away3D + AwayPhysics SWC</echo>
-		<exec executable="${compc.exe}">
+		<exec executable="${compc}">
 			<!-- Set the output path -->
 			<arg line="-output ../bin/libraries/Away3D-AwayPhysics.swc" />
 
