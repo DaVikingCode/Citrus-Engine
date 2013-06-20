@@ -271,6 +271,8 @@ package citrus.view.starlingview {
 			
 			sprite.graphics.clear();
 			
+			if (bounds)
+			{
 			//draw bounds
 			sprite.graphics.lineStyle(1, 0xFF0000);
 			sprite.graphics.drawRect(
@@ -278,6 +280,7 @@ package citrus.view.starlingview {
 			bounds.top,
 			bounds.width,
 			bounds.height);
+			}
 			
 			//draw targets
 			sprite.graphics.lineStyle(20, 0xFF0000);
