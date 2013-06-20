@@ -169,7 +169,7 @@ package citrus.view.spriteview {
 				var velocityZoom:Number = diffZoom * zoomEasing;
 				_camProxy.scale += velocityZoom;
 				
-				if (bounds && (boundsMode == BOUNDS_MODE_AABB) )
+				if (bounds && (boundsMode == BOUNDS_MODE_AABB || boundsMode == BOUNDS_MODE_ADVANCED) )
 				{
 					var lwratio:Number = (_aabbData.rect.width*_camProxy.scale ) / bounds.width;
 					var lhratio:Number = (_aabbData.rect.height*_camProxy.scale ) / bounds.height;
@@ -215,6 +215,25 @@ package citrus.view.spriteview {
 						_camProxy.y = bounds.top;
 					if (_camProxy.y > bounds.bottom)
 						_camProxy.y = bounds.bottom;
+						
+				}else if (boundsMode == BOUNDS_MODE_ADVANCED)
+				{
+					_b.w2 = cameraLensWidth * 0.5 / _camProxy.scale;
+					_b.h2 = cameraLensHeight * 0.5 / _camProxy.scale;
+					_b.diag2 = Math.sqrt(_b.w2 * _b.w2 + _b.h2 * _b.h2);
+					_b.bl = bounds.left + _b.w2;
+					_b.bt = bounds.top + _b.h2;
+					_b.br = bounds.right - _b.w2;
+					_b.bb = bounds.bottom - _b.h2;
+					
+					if (_camProxy.x < bounds.left + _b.diag2)
+						_camProxy.x = bounds.left + _b.diag2;
+					if (_camProxy.x > bounds.right - _b.diag2)
+						_camProxy.x = bounds.right - _b.diag2;
+					if (_camProxy.y < bounds.top + _b.diag2)
+						_camProxy.y = bounds.top + _b.diag2;
+					if (_camProxy.y > bounds.bottom - _b.diag2)
+						_camProxy.y = bounds.bottom - _b.diag2;
 				}
 			}
 			

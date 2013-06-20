@@ -128,7 +128,7 @@ package citrus.view {
 		/**
 		 * helper object for bounds checking
 		 */
-		protected var _b:Object = { w2:0, h2:0, br:0, bl:0, bt:0, bb:0 };
+		protected var _b:Object = { w2:0, h2:0, diag2:0, br:0, bl:0, bt:0, bb:0 };
 		
 		/**
 		 * this mode will force the camera (and its 'content') to be contained within the bounds.
@@ -144,6 +144,16 @@ package citrus.view {
 		 * unlike the other mode.
 		 */
 		public static const BOUNDS_MODE_OFFSET:String = "BOUNDS_MODE_OFFSET"; 
+		
+		/**
+		 * This mode is a mix of the two other modes :
+		 * The camera offset point is now contained inside inner bounds  which allows to never see anything outside of the level
+		 * like the AABB mode, but unlike the AABB mode, when rotating, the camera doesn't collide with borders as the inner bounds
+		 * sides are distant from their correspoding bounds sides from the camera's half diagonal length :
+		 * this means the camera can freely rotate in a circle, and that circle cannot go out of the defined bounds.
+		 * this also means the corners of the bounded area will never be seen.
+		 */
+		public static const BOUNDS_MODE_ADVANCED:String = "BOUNDS_MODE_ADVANCED"; 
 		
 		/**
 		 * how camera movement should be allowed within the defined bounds.
