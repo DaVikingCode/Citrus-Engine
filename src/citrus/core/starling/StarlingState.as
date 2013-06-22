@@ -30,6 +30,9 @@ package citrus.core.starling {
 		public function StarlingState() {
 			
 			_ce = CitrusEngine.getInstance();
+			
+			if (!(_ce as StarlingCitrusEngine) || !(_ce as StarlingCitrusEngine).starling)
+				throw new Error("Your Main " + _ce + " class doesn't extend StarlingCitrusEngine, or you didn't call its setUpStarling function");
 
 			_realState = new MediatorState();
 		}
