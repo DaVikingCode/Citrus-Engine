@@ -21,6 +21,7 @@ V 3.1.7, Work In Progress
 - fixed: stopSound wasn't setting the playing var to false.
 - fixed: InputComponent wasn't setting isDoingLeft.
 - fixed: updateCombinedGroundAngle() on box2d Hero
+- throwing an error if the Main class doesn't extends StarlingCitrusEngine or didn't call setUpStarling
 
 V 3.1.6, 04 18 2013
 -------------------
