@@ -128,7 +128,7 @@ package citrus.view {
 		/**
 		 * helper object for bounds checking
 		 */
-		protected var _b:Object = { w2:0, h2:0, diag2:0, br:0, bl:0, bt:0, bb:0 };
+		protected var _b:Object = { w2:0, h2:0, diag2:0, rotoffset:new Point(), br:0, bl:0, bt:0, bb:0 };
 		
 		/**
 		 * this mode will force the camera (and its 'content') to be contained within the bounds.

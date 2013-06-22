@@ -189,12 +189,16 @@ package citrus.view.spriteview {
 			{
 				if (boundsMode == BOUNDS_MODE_AABB)
 				{
-					_b.w2 = _aabbData.rect.width * 0.5;
-					_b.h2 = _aabbData.rect.height * 0.5;
-					_b.bl = bounds.left + _b.w2;
-					_b.bt = bounds.top + _b.h2;
-					_b.br = bounds.right - _b.w2;
-					_b.bb = bounds.bottom - _b.h2;
+
+					MathUtils.rotatePoint(offset.x/_camProxy.scale, offset.y/_camProxy.scale, _camProxy.rotation, _b.rotoffset);
+					
+					_b.w2 = (_aabbData.rect.width - _b.rotoffset.x) + _aabbData.offsetX;
+					_b.h2 = (_aabbData.rect.height - _b.rotoffset.y) + _aabbData.offsetY;
+					
+					_b.bl = bounds.left + ( MathUtils.abs(_aabbData.offsetX) + _b.rotoffset.x );
+					_b.bt = bounds.top + ( MathUtils.abs(_aabbData.offsetY) + _b.rotoffset.y );
+					_b.br = bounds.right - ( (_aabbData.offsetX+_aabbData.rect.width) - _b.rotoffset.x );
+					_b.bb = bounds.bottom - ( (_aabbData.offsetY+_aabbData.rect.height) - _b.rotoffset.y);
 					
 					if (_camProxy.x < _b.bl)
 						_camProxy.x = _b.bl;
@@ -218,13 +222,22 @@ package citrus.view.spriteview {
 						
 				}else if (boundsMode == BOUNDS_MODE_ADVANCED)
 				{
-					_b.w2 = cameraLensWidth * 0.5 / _camProxy.scale;
-					_b.h2 = cameraLensHeight * 0.5 / _camProxy.scale;
-					_b.diag2 = Math.sqrt(_b.w2 * _b.w2 + _b.h2 * _b.h2);
-					_b.bl = bounds.left + _b.w2;
-					_b.bt = bounds.top + _b.h2;
-					_b.br = bounds.right - _b.w2;
-					_b.bb = bounds.bottom - _b.h2;
+					
+					if (offset.x <= cameraLensWidth * 0.5) //left
+					{
+						if (offset.y <= cameraLensHeight * 0.5) //top
+							_b.diag2 = MathUtils.DistanceBetweenTwoPoints(offset.x, cameraLensWidth, offset.y, cameraLensHeight);
+						else
+							_b.diag2 = MathUtils.DistanceBetweenTwoPoints(offset.x, cameraLensWidth, offset.y, 0);
+					}else
+					{
+						if (offset.y <= cameraLensHeight * 0.5) //top
+							_b.diag2 = MathUtils.DistanceBetweenTwoPoints(offset.x, 0, offset.y, cameraLensHeight);
+						else
+							_b.diag2 = offset.length;
+					}
+					
+					_b.diag2 /= _camProxy.scale;
 					
 					if (_camProxy.x < bounds.left + _b.diag2)
 						_camProxy.x = bounds.left + _b.diag2;
