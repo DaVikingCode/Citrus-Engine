@@ -1,5 +1,5 @@
-V 3.1.7, Work In Progress
--------------------------
+V 3.1.7, 06 23 2013
+-------------------
 - Updated on Feathers 1.1.0.
 - Updated on Nape 2.0.9.
 - Added Spine 2D skeleton library support.

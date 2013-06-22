@@ -88,6 +88,7 @@
 			<arg line="-include-sources ../src/citrus/math" />
 
 			<arg line="-include-sources ../src/citrus/objects/APhysicsObject.as" />
+			<arg line="-include-sources ../src/citrus/objects/CitrusObjectPool.as" />
 			<arg line="-include-sources ../src/citrus/objects/CitrusSprite.as" />
 			<arg line="-include-sources ../src/citrus/objects/common" />
 			<arg line="-include-sources ../src/citrus/objects/platformer/simple" />
@@ -158,6 +159,7 @@
 			<arg line="-output ../bin/CE${VERSION}-Box2D.swc" />
 
 			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../src/citrus/objects/Box2DObjectPool.as" />
 			<arg line="-include-sources ../src/citrus/objects/Box2DPhysicsObject.as" />
 			<arg line="-include-sources ../src/citrus/objects/platformer/box2d" />
 
@@ -182,6 +184,7 @@
 			<arg line="-output ../bin/CE${VERSION}-Nape.swc" />
 
 			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../src/citrus/objects/NapeObjectPool.as" />
 			<arg line="-include-sources ../src/citrus/objects/NapePhysicsObject.as" />
 			<arg line="-include-sources ../src/citrus/objects/platformer/nape" />
 
