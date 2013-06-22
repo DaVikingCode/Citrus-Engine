@@ -176,5 +176,10 @@ package citrus.math {
 			
 			return { offsetX:offX, offsetY:offY, rect:aabb };
 		}
+		
+		public static function abs(num:Number):Number
+		{
+			return num < 0 ? -num : num;
+		}
 	}
 }
