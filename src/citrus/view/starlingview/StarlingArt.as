@@ -6,6 +6,8 @@ package citrus.view.starlingview {
 	import citrus.physics.APhysicsEngine;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ACitrusCamera;
+	import citrus.view.ACitrusView;
+	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
 
 	import dragonBones.Armature;
@@ -54,7 +56,7 @@ package citrus.view.starlingview {
 	 * (for adding click events, for instance), you will get an instance of this object. It extends Sprite, so you can do all the expected stuff with it, 
 	 * such as add click listeners, change the alpha, etc.</p>
 	 **/
-	public class StarlingArt extends Sprite {
+	public class StarlingArt extends Sprite implements ICitrusArt {
 
 		// The reference to your art via the view.
 		private var _content:DisplayObject;
@@ -336,7 +338,7 @@ package citrus.view.starlingview {
 			return _citrusObject;
 		}
 
-		public function update(stateView:StarlingView):void {
+		public function update(stateView:ACitrusView):void {
 
 			if (_citrusObject.inverted) {
 
@@ -443,7 +445,6 @@ package citrus.view.starlingview {
 		 */
 		public function set updateArtEnabled(value:Boolean):void {
 			_updateArtEnabled = value;
-			
 			_updateArtEnabled ? unflatten() : flatten();
 		}
 

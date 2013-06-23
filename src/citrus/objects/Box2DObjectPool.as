@@ -5,6 +5,8 @@ package citrus.objects
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
 	import citrus.view.ACitrusView;
+	import citrus.view.ICitrusArt;
+	import citrus.core.citrus_internal;
 	
 	public class Box2DObjectPool extends PoolObject
 	{		
@@ -53,29 +55,35 @@ package citrus.objects
 			onCreate.dispatch(bp, params);
 			bp.addPhysics();
 			stateView.addArt(bp);
+			
+			bp.citrus_internal::data["updateCall"] = bp.updateCallEnabled;
+			bp.citrus_internal::data["updateArt"] = (stateView.getArt(bp) as ICitrusArt).updateArtEnabled;
 		}
 		
 		override protected function _recycle(node:DoublyLinkedListNode, params:Object = null):void
 		{
 			var bp:Box2DPhysicsObject = node.data as Box2DPhysicsObject;
-			bp.updateCallEnabled = true;
 			bp.initialize(params);
 			activationQueue.unshift( { object:bp, activate:true } );
 			if ("pauseAnimation" in bp.view)
 				bp.view.pauseAnimation(true);
-			super._recycle(node, params);
 			bp.visible = true;
+			bp.updateCallEnabled = bp.citrus_internal::data["updateCall"] as Boolean;
+			(stateView.getArt(bp) as ICitrusArt).updateArtEnabled = bp.citrus_internal::data["updateArt"] as Boolean;
+			super._recycle(node, params);
 		}
 		
 		override protected function _dispose(node:DoublyLinkedListNode):void
 		{
 			var bp:Box2DPhysicsObject = node.data as Box2DPhysicsObject;
-			bp.updateCallEnabled = false;
 			activationQueue.unshift( { object:bp, activate:false } );
 			if ("pauseAnimation" in bp.view)
 				bp.view.pauseAnimation(false);
 			bp.visible = false;
+			bp.updateCallEnabled = false;
+			(stateView.getArt(bp) as ICitrusArt).updateArtEnabled = false;
 			super._dispose(node);
+			(stateView.getArt(bp) as ICitrusArt).update(stateView);
 		}
 		
 		override public function updatePhysics(timeDelta:Number):void
@@ -89,10 +97,7 @@ package citrus.objects
 			var entry:Object;
 			
 			while(entry = activationQueue.pop())
-			{
 				entry.object.body.SetActive(entry.activate);
-				entry.object.body.SetAwake(entry.activate);
-			}
 			
 		}
 		

@@ -9,6 +9,12 @@ package citrus.core
 	 */	
 	public class CitrusObject
 	{
+		/**
+		 * data used internally
+		 */
+		citrus_internal var data:Object = {ID:0};
+		citrus_internal static var last_id:uint = 0;
+		
 		public static var hideParamWarnings:Boolean = false;
 		
 		/**
@@ -63,6 +69,8 @@ package citrus.core
 					initialize();
 			} else
 				initialize();
+				
+			citrus_internal::data.ID = citrus_internal::last_id += 1;
 		}
 		
 		/**
@@ -78,7 +86,8 @@ package citrus.core
 			if (_params)
 				setParams(this, _params);
 			else
-				_initialized = true;					
+				_initialized = true;	
+				
 		}
 		
 		/**
@@ -87,6 +96,7 @@ package citrus.core
 		 */		
 		public function destroy():void
 		{
+			citrus_internal::data = null;
 			_initialized = false;			
 		}
 		
@@ -124,6 +134,16 @@ package citrus.core
 				}
 			}
 			_initialized = true;
+		}
+		
+		public function get ID():uint
+		{
+			return citrus_internal::id;
+		}
+		
+		public function toString():String
+		{
+			return String(Object(this).constructor) + " ID:" + citrus_internal::data.ID + " name:" + String(name) + " type:" + String(type);
 		}
 	}
 }

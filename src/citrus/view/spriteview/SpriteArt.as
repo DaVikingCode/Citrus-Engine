@@ -8,6 +8,8 @@ package citrus.view.spriteview
 	import citrus.physics.IDebugView;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ACitrusCamera;
+	import citrus.view.ACitrusView;
+	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
 
 	import dragonBones.Armature;
@@ -40,7 +42,7 @@ package citrus.view.spriteview
 	 * such as add click listeners, change the alpha, etc.</p>
 	 * 
 	 **/
-	public class SpriteArt extends Sprite
+	public class SpriteArt extends Sprite implements ICitrusArt
 	{
 		// The reference to your art via the view.
 		private var _content:DisplayObject;
@@ -51,11 +53,8 @@ package citrus.view.spriteview
 		 */
 		public var loader:Loader;
 		
-		/**
-		 * Set it to false if you want to prevent the art to be updated. Be careful its properties (x, y, ...) won't be able to change!
-		 */
-		public var updateArtEnabled:Boolean = true;
 		
+		private var _updateArtEnabled:Boolean = true;
 		private var _citrusObject:ISpriteView;
 		private var _physicsComponent:*;
 		private var _registration:String;
@@ -213,6 +212,19 @@ package citrus.view.spriteview
 			}
 		}
 		
+		/**
+		 * Set it to false if you want to prevent the art to be updated. Be careful its properties (x, y, ...) won't be able to change!
+		 */
+		public function set updateArtEnabled(value:Boolean):void
+		{
+			_updateArtEnabled = value;
+		}
+		
+		public function get updateArtEnabled():Boolean
+		{
+			return _updateArtEnabled;
+		}
+		
 		public function get animation():String
 		{
 			return _animation;
@@ -240,7 +252,7 @@ package citrus.view.spriteview
 			return _citrusObject;
 		}
 		
-		public function update(stateView:SpriteView):void
+		public function update(stateView:ACitrusView):void
 		{
 			if (_citrusObject.inverted) {
 
