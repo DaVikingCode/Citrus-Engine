@@ -1,8 +1,8 @@
 package citrus.view {
 
 	import citrus.core.CitrusEngine;
-	import flash.geom.Matrix;
 
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 

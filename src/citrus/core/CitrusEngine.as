@@ -1,9 +1,9 @@
 package citrus.core {
 
 	import citrus.input.Input;
+	import citrus.sounds.SoundManager;
 	import citrus.utils.AGameData;
 	import citrus.utils.LevelManager;
-	import citrus.sounds.SoundManager;
 
 	import org.osflash.signals.Signal;
 

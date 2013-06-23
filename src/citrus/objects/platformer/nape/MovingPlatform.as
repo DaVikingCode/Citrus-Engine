@@ -1,14 +1,14 @@
-package citrus.objects.platformer.nape
-{
-    import citrus.math.MathVector;
-    import citrus.objects.NapePhysicsObject;
-    import citrus.objects.common.Path;
-    import citrus.physics.nape.NapeUtils;
+package citrus.objects.platformer.nape {
 
-    import nape.callbacks.InteractionCallback;
-    import nape.geom.Vec2;
-    import nape.phys.Body;
-    import nape.phys.BodyType;
+	import citrus.math.MathVector;
+	import citrus.objects.NapePhysicsObject;
+	import citrus.objects.common.Path;
+	import citrus.physics.nape.NapeUtils;
+
+	import nape.callbacks.InteractionCallback;
+	import nape.geom.Vec2;
+	import nape.phys.Body;
+	import nape.phys.BodyType;
 
     /**
      * A platform that moves between two points. The MovingPlatform has several properties that can customize it.

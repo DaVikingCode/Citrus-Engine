@@ -2,12 +2,11 @@ package citrus.objects
 {
 
 	import citrus.core.CitrusEngine;
+	import citrus.core.citrus_internal;
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
-	import citrus.physics.nape.Nape;
 	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
-	import citrus.core.citrus_internal;
 	
 	public class CitrusSpritePool extends PoolObject
 	{

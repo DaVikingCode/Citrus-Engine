@@ -1,7 +1,7 @@
 package citrus.sounds {
 
 	import aze.motion.eaze;
-	
+
 	import citrus.core.citrus_internal;
 	import citrus.sounds.groups.BGMGroup;
 	import citrus.sounds.groups.SFXGroup;

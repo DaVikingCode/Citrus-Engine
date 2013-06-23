@@ -15,7 +15,6 @@ package citrus.objects.platformer.box2d
 
 	import org.osflash.signals.Signal;
 
-	import flash.geom.Point;
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;

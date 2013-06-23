@@ -1,5 +1,6 @@
 package citrus.sounds.groups 
 {
+
 	import citrus.sounds.CitrusSoundGroup;
 
 	public class SFXGroup extends CitrusSoundGroup
