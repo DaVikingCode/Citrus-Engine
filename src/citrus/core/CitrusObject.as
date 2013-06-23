@@ -138,7 +138,7 @@ package citrus.core
 		
 		public function get ID():uint
 		{
-			return citrus_internal::id;
+			return citrus_internal::data.ID;
 		}
 		
 		public function toString():String

@@ -7,6 +7,7 @@ V 3.1.7, 06 23 2013
 - SoundManager reworked with a CitrusSound class and CitrusSoundGroup.
 - PoolObject reworked.
 - Camera reworked.
+- Added a vehicle package running with Nape composed with a chassis, a driver, two wheels and some nuggets!
 - Added support for pure state transition (having two state at the same time) using futureState.
 - Starling.handleLostContext is defined to true if you use Android, made in setUpStarling function.
 - if StarlingArt updateArtEnabled is set to false, it will flatten the Sprite.
