@@ -57,7 +57,7 @@
 	 *			
 	 *			private function updateAnimation(e:Event):void 
 	 *			{
-	 *				armature.advanceTime(stage.frameRate / 1000);
+	 *				armature.advanceTime(1 / stage.frameRate);
 	 *			}		
 	 *		}
 	 *	}
@@ -375,6 +375,12 @@
 			}
 		}
 		
+		/** @private */
+		dragonBones_internal function clearMovement():void
+		{
+			_movementID = null;
+		}
+		
 		/**
 		 * Stop the playhead.
 		 */
@@ -462,9 +468,10 @@
 					}
 				}
 				
-				for each (var bone:Bone in _armature._boneDepthList)
+				var i:int = _armature._boneDepthList.length;
+				while(i --)
 				{
-					bone._tween.advanceTime(progress, _playType);
+					_armature._boneDepthList[i]._tween.advanceTime(progress, _playType);
 				}
 				
 				if ((_playType == LIST || _playType == LOOP) && _movementData._movementFrameList.length > 0)

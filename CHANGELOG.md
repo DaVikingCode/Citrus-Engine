@@ -1,3 +1,7 @@
+V 3.1.8, Work in Progress
+-------------------------
+- Updated on DragonBones 2.2.
+
 V 3.1.7, 06 24 2013
 -------------------
 - Updated on Feathers 1.1.0.

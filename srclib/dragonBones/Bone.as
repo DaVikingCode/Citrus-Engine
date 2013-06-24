@@ -15,7 +15,6 @@
 	import flash.events.EventDispatcher;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
-	import flash.geom.Point;
 	
 	use namespace dragonBones_internal;
 
@@ -59,7 +58,7 @@
 	 *			
 	 *			private function updateAnimation(e:Event):void 
 	 *			{
-	 *				armature.advanceTime(stage.frameRate / 1000);
+	 *				armature.advanceTime(1 / stage.frameRate);
 	 *			}		
 	 *		}
 	 *	}
@@ -69,7 +68,6 @@
 	 */
 	public class Bone extends EventDispatcher
 	{
-		private static var _helpPoint:Point = new Point();
 		/**
 		 * The name of this Bone instance's Armature instance.
 		 */
@@ -192,9 +190,6 @@
 		{
 			return _displayBridge.display;
 		}
-		/**
-		 * @private
-		 */
 		public function set display(value:Object):void
 		{
 			if(_displayBridge.display == value)
@@ -209,9 +204,19 @@
 			_displayBridge.display = value;
 		}
 		
+		
+		/**
+		 * The DisplayObject list belonging to this Bone instance.
+		 */
+		public function get displayList():Array
+		{
+			return _displayList;
+		}
+		
 		/** @private */
 		dragonBones_internal function changeDisplay(displayIndex:int):void
 		{
+			var childArmature:Armature = this.childArmature;
 			if(displayIndex < 0)
 			{
 				if(_isOnStage)
@@ -219,6 +224,12 @@
 					_isOnStage = false;
 					//removeFromStage
 					_displayBridge.removeDisplay();
+					
+					if(childArmature)
+					{
+						childArmature.animation.stop();
+						childArmature.animation.clearMovement();
+					}
 				}
 			}
 			else
@@ -244,6 +255,11 @@
 					
 					//change
 					display = _displayList[_displayIndex];
+				}
+				
+				if(childArmature)
+				{
+					childArmature.animation.play();
 				}
 			}
 		}
@@ -368,42 +384,45 @@
 		/** @private */
 		dragonBones_internal function update():void
 		{
+			//transform
+			if(_parent)
+			{
+				var x:Number = origin.x + node.x + _tweenNode.x;
+				var y:Number = origin.y + node.y + _tweenNode.y;
+				var parentMatrix:Matrix = _parent._globalTransformMatrix;
+				_globalTransformMatrix.tx = global.x = parentMatrix.a * x + parentMatrix.c * y + parentMatrix.tx;
+				_globalTransformMatrix.ty = global.y = parentMatrix.d * y + parentMatrix.b * x + parentMatrix.ty;
+				global.skewX = _parent.global.skewX + origin.skewX + node.skewX + _tweenNode.skewX;
+				global.skewY = _parent.global.skewY + origin.skewY + node.skewY + _tweenNode.skewY;
+			}
+			else
+			{
+				_globalTransformMatrix.tx = global.x = origin.x + node.x + _tweenNode.x;
+				_globalTransformMatrix.ty = global.y = origin.y + node.y + _tweenNode.y;
+				global.skewX = origin.skewX + node.skewX + _tweenNode.skewX;
+				global.skewY = origin.skewY + node.skewY + _tweenNode.skewY;
+			}
+			
 			//update global
-			global.x = origin.x + node.x + _tweenNode.x;
-			global.y = origin.y + node.y + _tweenNode.y;
-			global.skewX = origin.skewX + node.skewX + _tweenNode.skewX;
-			global.skewY = origin.skewY + node.skewY + _tweenNode.skewY;
 			global.scaleX = origin.scaleX + node.scaleX + _tweenNode.scaleX;
 			global.scaleY = origin.scaleY + node.scaleY + _tweenNode.scaleY;
 			global.pivotX = origin.pivotX + node.pivotX + _tweenNode.pivotX;
 			global.pivotY = origin.pivotY + node.pivotY + _tweenNode.pivotY;
 			global.z = origin.z + node.z + _tweenNode.z;
-			//transform
-			if(_parent)
-			{
-				_helpPoint.x = global.x;
-				_helpPoint.y = global.y;
-				_helpPoint = _parent._globalTransformMatrix.transformPoint(_helpPoint);
-				global.x = _helpPoint.x
-				global.y = _helpPoint.y;
-				global.skewX += _parent.global.skewX;
-				global.skewY += _parent.global.skewY;
-			}
 			
 			//Note: this formula of transform is defined by Flash pro
 			_globalTransformMatrix.a = global.scaleX * Math.cos(global.skewY);
 			_globalTransformMatrix.b = global.scaleX * Math.sin(global.skewY);
 			_globalTransformMatrix.c = -global.scaleY * Math.sin(global.skewX);
 			_globalTransformMatrix.d = global.scaleY * Math.cos(global.skewX);
-			_globalTransformMatrix.tx = global.x;
-			_globalTransformMatrix.ty = global.y;
 			
 			//update children
 			if (_children.length > 0)
 			{
-				for each(var child:Bone in _children)
+				var i:int = _children.length;
+				while(i --)
 				{
-					child.update();
+					_children[i].update();
 				}
 			}
 			

@@ -4,9 +4,7 @@
 	/** @private */
 	final public class ConstValues
 	{
-		public static const VERSION_14:String = "1.4";
-		public static const VERSION_20:String = "2.0";
-		public static const VERSION:String = "2.1";
+		public static const VERSION:String = "2.2";
 		public static const SKELETON:String = "skeleton";
 		public static const ARMATURES:String = "armatures";
 		public static const ARMATURE:String = "armature";

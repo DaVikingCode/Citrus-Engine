@@ -108,8 +108,8 @@
 				return;
 			}
 			
-			_node.skewX %= 360;
-			_node.skewY %= 360;
+			_node.skewX %= Math.PI * 2;
+			_node.skewY %= Math.PI * 2;
 			_isPause = false;
 			_currentFrameData = null;
 			_loop = loop?0:-1;
@@ -131,6 +131,7 @@
 			{
 				getLoopListNode();
 				setOffset(_bone._isOnStage?_node:_offSetNode, _colorTransform, _offSetNode, _offSetColorTransform);
+				//nextFrameData = _movementBoneData._frameList[0];
 			}
 			else
 			{
@@ -203,7 +204,7 @@
 		/** @private */
 		internal function advanceTime(progress:Number, playType:int):void
 		{
-			if(_isPause)
+			if(_isPause || !_movementBoneData)
 			{
 				return;
 			}
