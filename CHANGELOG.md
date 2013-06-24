@@ -1,6 +1,7 @@
 V 3.1.8, Work in Progress
 -------------------------
 - Updated on DragonBones 2.2.
+- Changed the way the viewport is setup by default (based on Capabilities.playerType now).
 
 V 3.1.7, 06 24 2013
 -------------------
