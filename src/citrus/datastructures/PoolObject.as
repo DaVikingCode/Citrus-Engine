@@ -230,7 +230,6 @@ package citrus.datastructures {
 			
 			if (gc && gc.length > 0)
 			{
-				trace(gc);
 				for each(tmpHead in gc)
 					disposeFromData(tmpHead.data);
 				gc.length = 0;
