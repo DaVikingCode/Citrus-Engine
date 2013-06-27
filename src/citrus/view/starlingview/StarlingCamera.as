@@ -283,7 +283,7 @@ package citrus.view.starlingview {
 			//offset
 			_m.translate(offset.x, offset.y);
 			
-			_camPos = _m.transformPoint(_p);
+			pointFromLocal(offset.x, offset.y, _camPos);
 			
 			(_viewRoot as starling.display.Sprite).transformationMatrix = _m;
 		}
