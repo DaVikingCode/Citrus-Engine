@@ -1,13 +1,8 @@
-V 3.1.8, Work in Progress
--------------------------
-- Updated on DragonBones 2.2.
-- Changed the way the viewport is setup by default (based on Capabilities.playerType now).
-- Fixed count in DoublyLinkedList if removeNode is called.
-
-V 3.1.7, 06 24 2013
+V 3.1.7, 06 27 2013
 -------------------
 - Updated on Feathers 1.1.0.
 - Updated on Nape 2.0.9.
+- Updated on DragonBones 2.2.
 - Added Spine 2D skeleton library support.
 - Added DragonBones support for the display list.
 - SoundManager reworked with a CitrusSound class and CitrusSoundGroup.
@@ -15,6 +10,7 @@ V 3.1.7, 06 24 2013
 - Camera reworked.
 - Added a vehicle package running with Nape composed with a chassis, a driver, two wheels and some nuggets!
 - Added support for pure state transition (having two state at the same time) using futureState.
+- Changed the way the viewport is setup by default (based on Capabilities.playerType now).
 - Starling.handleLostContext is defined to true if you use Android, made in setUpStarling function.
 - if StarlingArt updateArtEnabled is set to false, it will flatten the Sprite.
 - StarlingArt may handle an uint color, it will automatically create a quad.
@@ -28,6 +24,7 @@ V 3.1.7, 06 24 2013
 - fixed: stopSound wasn't setting the playing var to false.
 - fixed: InputComponent wasn't setting isDoingLeft.
 - fixed: updateCombinedGroundAngle() on box2d Hero
+- fixed count in DoublyLinkedList if removeNode is called.
 - throwing an error if the Main class doesn't extends StarlingCitrusEngine or didn't call setUpStarling
 
 V 3.1.6, 04 18 2013
