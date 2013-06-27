@@ -31,7 +31,6 @@ package citrus.view.starlingview {
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;

@@ -48,7 +48,7 @@ package dragonBones.objects
 	 *			
 	 *			private function updateAnimation(e:Event):void 
 	 *			{
-	 *				armature.advanceTime(stage.frameRate / 1000);
+	 *				armature.advanceTime(1 / stage.frameRate);
 	 *			}		
 	 *		}
 	 *	}

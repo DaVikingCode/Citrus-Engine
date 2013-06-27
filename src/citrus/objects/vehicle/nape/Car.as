@@ -18,6 +18,8 @@ package citrus.objects.vehicle.nape {
 	 * We advice to make it running with the Hills class to create an endless driver game.
 	 * It has a chassis (this class) which will create two weels, add a driver, some nuggets (objects to save) and you can even add some particles to make an exhaust pipe! 
 	 * Everything is overrideable to make it fully customizable. Note it may run on Starling or the display list.
+	 * 
+	 * Thanks <a href="http://studio3wg.com/">studio3wg/</a> to let us share this package with the world :)
 	 */
 	public class Car extends NapePhysicsObject {
 		

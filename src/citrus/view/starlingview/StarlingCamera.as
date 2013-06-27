@@ -2,10 +2,12 @@ package citrus.view.starlingview {
 
 	import citrus.math.MathUtils;
 	import citrus.view.ACitrusCamera;
+
+	import starling.display.Sprite;
+
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import starling.display.Sprite;
 
 
 	

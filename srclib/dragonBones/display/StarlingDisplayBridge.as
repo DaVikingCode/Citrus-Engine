@@ -15,6 +15,7 @@
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Quad;
+	import starling.display.Image;
 	
 	/**
 	 * The StarlingDisplayBridge class is an implementation of the IDisplayBridge interface for starling.display.DisplayObject.
@@ -42,6 +43,26 @@
 			{
 				return;
 			}
+			
+			//Thanks Jian
+			//bug replace image.texture will lost displayList[0].texture
+			/*if (_display is Image && value is Image)
+			{
+				var from:Image = _display as Image;
+				var to:Image = value as Image;
+				if (from.texture == to.texture)
+				{
+					return;
+				}
+				
+				from.texture = to.texture;
+				//update pivot
+				from.pivotX = to.pivotX;
+				from.pivotY = to.pivotY;
+				from.readjustSize();
+				return;
+			}*/
+			
 			if (_display)
 			{
 				var parent:* = _display.parent;

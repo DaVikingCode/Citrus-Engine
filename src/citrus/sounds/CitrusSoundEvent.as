@@ -1,5 +1,6 @@
 package citrus.sounds 
 {
+
 	import flash.events.Event;
 
 	public class CitrusSoundEvent extends Event

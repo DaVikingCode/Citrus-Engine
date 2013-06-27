@@ -48,7 +48,7 @@
 	 *			
 	 *			private function updateAnimation(e:Event):void 
 	 *			{
-	 *				WorldClock.clock.advanceTime(stage.frameRate / 1000);
+	 *				WorldClock.clock.advanceTime(1 / stage.frameRate);
 	 *			}		
 	 *		}
 	 *	}

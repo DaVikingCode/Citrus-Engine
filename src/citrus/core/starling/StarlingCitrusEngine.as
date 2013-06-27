@@ -10,6 +10,7 @@ package citrus.core.starling {
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
+	import flash.system.Capabilities;
 
 	/**
 	 * Extends this class if you create a Starling based game. Don't forget to call <code>setUpStarling</code> function.
@@ -59,7 +60,7 @@ package citrus.core.starling {
 				Starling.handleLostContext = true;
 
 			if (!viewPort)
-				viewPort = Mobile.isIOS() || Mobile.isAndroid() ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+				viewPort = Capabilities.playerType == "Desktop" ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 
 			_starling = new Starling(RootClass, stage, viewPort, null, "auto", profile);
 
@@ -114,22 +115,21 @@ package citrus.core.starling {
 
 						_state = _newState;
 						_newState = null;
-						
+
 						if (_futureState)
 							_futureState = null;
-						
 						else {
 							_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);
 							_state.initialize();
 						}
 					}
 				}
-				
+
 				if (_stateTransitionning && _stateTransitionning is StarlingState) {
-					
+
 					_futureState = _stateTransitionning;
 					_stateTransitionning = null;
-					
+
 					starling.stage.addChildAt(_futureState as StarlingState, _stateDisplayIndex);
 					_futureState.initialize();
 				}
@@ -161,6 +161,7 @@ package citrus.core.starling {
 
 
 import starling.display.Sprite;
+
 
 /**
  * RootClass is the root of Starling, it is never destroyed and only accessed through <code>_starling.stage</code>.

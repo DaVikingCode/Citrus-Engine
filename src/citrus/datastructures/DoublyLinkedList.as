@@ -115,14 +115,16 @@ package citrus.datastructures {
 		 * @param node the node to remove from the list.
 		 * @return returns the removed node data.
 		 */
-
 		public function removeNode(node:DoublyLinkedListNode):* {
 
 			var data:* = node.data;
+			
+			var countChanged:Boolean = false;
 
 			if (node == head) {
 
 				removeHead();
+				countChanged= true;
 
 			} else {
 				node.prev.next = node.next;
@@ -131,12 +133,14 @@ package citrus.datastructures {
 			if (node == tail) {
 
 				removeTail();
+				countChanged = true;
 
 			} else {
 				node.next.prev = node.prev;
 			}
-
-			--_count;
+			
+			if (!countChanged)
+				--_count;
 
 			return data;
 

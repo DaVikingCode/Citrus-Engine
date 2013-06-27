@@ -1,9 +1,10 @@
 package citrus.math {
-	
+
 	import flash.display.DisplayObject;
-	import flash.geom.Rectangle;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	
 	
 	public class MathUtils {
 		

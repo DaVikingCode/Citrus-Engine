@@ -1,16 +1,17 @@
-package citrus.objects.complex.box2dstarling{
-	
+package citrus.objects.complex.box2dstarling {
+
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.Controllers.b2BuoyancyController;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
-	import Box2D.Dynamics.Contacts.b2Contact;
-	import Box2D.Dynamics.Controllers.b2BuoyancyController;
-	
+
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.physics.box2d.Box2DUtils;
+	
 	
 	/**
 	 * Pool uses the BuoyancyController to simulate liquid physics. It's a rectangular region in which the controller influences the bodies inside of it

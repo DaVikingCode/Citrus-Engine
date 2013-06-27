@@ -1,6 +1,5 @@
 package citrus.objects {
 
-	import citrus.core.CitrusEngine;
 	import Box2D.Collision.Shapes.b2CircleShape;
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Collision.Shapes.b2Shape;
@@ -15,6 +14,7 @@ package citrus.objects {
 	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
 
+	import citrus.core.CitrusEngine;
 	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.box2d.Box2D;
 	import citrus.physics.box2d.IBox2DPhysicsObject;

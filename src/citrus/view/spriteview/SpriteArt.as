@@ -23,7 +23,6 @@ package citrus.view.spriteview
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	import flash.geom.Point;
 	import flash.net.URLRequest;
 	import flash.utils.getDefinitionByName;
 

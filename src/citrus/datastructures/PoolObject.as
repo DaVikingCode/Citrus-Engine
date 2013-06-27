@@ -2,6 +2,7 @@ package citrus.datastructures {
 
 	import citrus.core.CitrusObject;
 	import citrus.view.ACitrusView;
+
 	import org.osflash.signals.Signal;
 
 	/**

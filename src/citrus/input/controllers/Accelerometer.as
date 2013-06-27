@@ -2,11 +2,11 @@ package citrus.input.controllers
 {
 
 	import citrus.input.InputController;
-	import flash.geom.Vector3D;
-	import flash.utils.Dictionary;
 
 	import flash.events.AccelerometerEvent;
+	import flash.geom.Vector3D;
 	import flash.sensors.Accelerometer;
+	import flash.utils.Dictionary;
 	
 	public class Accelerometer extends InputController
 	{

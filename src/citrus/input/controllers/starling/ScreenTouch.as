@@ -1,10 +1,12 @@
 package citrus.input.controllers.starling 
 {
+
 	import citrus.input.InputController;
 	import citrus.view.starlingview.StarlingView;
+
 	import starling.display.Sprite;
-	import starling.events.TouchEvent;
 	import starling.events.Touch;
+	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	
 	/**

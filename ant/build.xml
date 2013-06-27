@@ -90,6 +90,7 @@
 			<arg line="-include-sources ../src/citrus/objects/APhysicsObject.as" />
 			<arg line="-include-sources ../src/citrus/objects/CitrusObjectPool.as" />
 			<arg line="-include-sources ../src/citrus/objects/CitrusSprite.as" />
+			<arg line="-include-sources ../src/citrus/objects/CitrusSpritePool.as" />
 			<arg line="-include-sources ../src/citrus/objects/common" />
 			<arg line="-include-sources ../src/citrus/objects/platformer/simple" />
 
@@ -116,6 +117,7 @@
 
 			<arg line="-include-sources ../src/citrus/view/ACitrusCamera.as" />
 			<arg line="-include-sources ../src/citrus/view/ACitrusView.as" />
+			<arg line="-include-sources ../src/citrus/view/ICitrusArt.as" />
 			<arg line="-include-sources ../src/citrus/view/ISpriteView.as" />
 			<arg line="-include-sources ../src/citrus/view/blittingview" />
 			<arg line="-include-sources ../src/citrus/view/spriteview" />
@@ -187,6 +189,7 @@
 			<arg line="-include-sources ../src/citrus/objects/NapeObjectPool.as" />
 			<arg line="-include-sources ../src/citrus/objects/NapePhysicsObject.as" />
 			<arg line="-include-sources ../src/citrus/objects/platformer/nape" />
+			<arg line="-include-sources ../src/citrus/objects/vehicle/nape" />
 
 			<arg line="-include-sources ../src/citrus/physics/nape" />
 

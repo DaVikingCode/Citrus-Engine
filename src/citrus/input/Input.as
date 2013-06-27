@@ -2,9 +2,10 @@ package citrus.input {
 
 	import citrus.core.CitrusEngine;
 	import citrus.input.controllers.Keyboard;
-	import flash.events.Event;
 
 	import org.osflash.signals.Signal;
+
+	import flash.events.Event;
 	
 	/**
 	 * A class managing input of any controllers that is an InputController.

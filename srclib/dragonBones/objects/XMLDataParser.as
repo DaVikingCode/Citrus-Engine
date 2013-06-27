@@ -31,8 +31,12 @@
 			var version:String = skeletonXML.attribute(ConstValues.A_VERSION);
 			switch (version)
 			{
-				case ConstValues.VERSION_14:
-				case ConstValues.VERSION_20:
+				case "1.4":
+				case "1.5":
+				case "2.0":
+				case "2.1":
+				case "2.1.1":
+				case "2.1.2":
 				case ConstValues.VERSION:
 					break;
 				default: 
@@ -140,7 +144,7 @@
 			for each (var armatureXML:XML in skeletonXML.elements(ConstValues.ARMATURES).elements(ConstValues.ARMATURE))
 			{
 				var armatureName:String = armatureXML.attribute(ConstValues.A_NAME);
-				var armatureData:ArmatureData = skeletonData.getArmatureData(animationName);
+				var armatureData:ArmatureData = skeletonData.getArmatureData(armatureName);
 				if (armatureData)
 				{
 					parseArmatureData(armatureXML, armatureData);
@@ -426,12 +430,15 @@
 		
 		private static function parseMovementFrameData(movementFrameXML:XML, movementFrameData:MovementFrameData):void
 		{
-			movementFrameData.setValues(
-				Number(movementFrameXML.attribute(ConstValues.A_DURATION)) / _currentSkeletonData._frameRate,
-				movementFrameXML.attribute(ConstValues.A_MOVEMENT),
-				movementFrameXML.attribute(ConstValues.A_EVENT),
-				movementFrameXML.attribute(ConstValues.A_SOUND)
-			);
+			if(_currentSkeletonData)
+			{
+				movementFrameData.setValues(
+					Number(movementFrameXML.attribute(ConstValues.A_DURATION)) / _currentSkeletonData._frameRate,
+					movementFrameXML.attribute(ConstValues.A_MOVEMENT),
+					movementFrameXML.attribute(ConstValues.A_EVENT),
+					movementFrameXML.attribute(ConstValues.A_SOUND)
+				);
+			}
 		}
 		
 		/** @private */
