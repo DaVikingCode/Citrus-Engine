@@ -156,32 +156,6 @@ package citrus.core {
 		}
 
 		/**
-		 * Call this function each time you make an operation (add or delete) on the PoolObject to refresh its graphics.
-		 * @param poolObject the PoolObject which need to refresh its graphics.
-		 * @param nmbrToDelete a number of graphics to delete.
-		 * @param startIndex PoolObject's index position to start the deletion.
-		 */
-		public function refreshPoolObjectArt(poolObject:PoolObject, nmbrToDelete:uint = 0, startIndex:uint = 0):void {
-
-			var tmpHead:DoublyLinkedListNode = poolObject.head;
-			var i:uint, j:uint = 0;
-
-			while (tmpHead != null) {
-
-				if (nmbrToDelete > 0 && i >= startIndex && j < nmbrToDelete) {
-
-					_view.removeArt(tmpHead.data);
-					++j;
-
-				} else if (!_view.getArt(tmpHead.data))
-					_view.addArt(tmpHead.data);
-
-				tmpHead = tmpHead.next;
-				++i;
-			}
-		}
-
-		/**
 		 * When you are ready to remove an object from getting updated, viewed, and generally being existent, call this method.
 		 * Alternatively, you can just set the object's kill property to true. That's all this method does at the moment. 
 		 */
