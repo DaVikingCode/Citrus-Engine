@@ -38,7 +38,6 @@ package citrus.input.controllers.starling
 		
 		private function _handleTouch(e:TouchEvent):void
 		{
-			trace("SCREEN TOUCH",e);
 			var t:Touch = e.getTouch(_touchTarget);
 			if (t)
 			{
