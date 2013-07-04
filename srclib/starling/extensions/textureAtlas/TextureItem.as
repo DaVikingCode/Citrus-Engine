@@ -1,9 +1,8 @@
 package starling.extensions.textureAtlas {
-	
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.Sprite;
-	import flash.geom.Rectangle;
+	import flash.display.Sprite;	
 	
 	public class TextureItem extends Sprite{
 		

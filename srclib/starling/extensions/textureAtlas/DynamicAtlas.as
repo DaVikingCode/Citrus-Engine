@@ -1,5 +1,9 @@
-package starling.extensions.textureAtlas
-{
+package starling.extensions.textureAtlas {
+
+	import starling.text.BitmapFont;
+	import starling.text.TextField;
+	import starling.textures.Texture;
+	import starling.textures.TextureAtlas;
 
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -12,12 +16,7 @@ package starling.extensions.textureAtlas
 	import flash.text.Font;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
-    import flash.utils.getQualifiedClassName;
-
-    import starling.text.BitmapFont;
-	import starling.textures.Texture;
-	import starling.textures.TextureAtlas;
-	import starling.text.TextField;
+	import flash.utils.getQualifiedClassName;
 	
 	/**
 	 * DynamicAtlas.as
@@ -197,6 +196,7 @@ package starling.extensions.textureAtlas
 				
 				tmpBData = new BitmapData(realBounds.width, realBounds.height, false);
 				filterRect = tmpBData.generateFilterRect(tmpBData.rect, clipFilters[j]);
+				realBounds = realBounds.union(filterRect);
 				tmpBData.dispose();
 				
 				while (++j < clipFiltersLength)
@@ -265,9 +265,9 @@ package starling.extensions.textureAtlas
 		// Public methods
 
         /**
-         * This method takes a vector of MovieClip class and converts it into a Texture Atlas.
+         * This method takes a vector of DisplayObject class and converts it into a Texture Atlas.
 		 *
-         * @param	assets:Vector.<Class> - The MovieClip classes you wish to convert into a TextureAtlas. Must contain classes whose instances are of type MovieClip that will be rasterized and become the subtextures of your Atlas.
+         * @param	assets:Vector.<Class> - The DisplayObject classes you wish to convert into a TextureAtlas. Must contain classes whose instances are of type DisplayObject that will be rasterized and become the subtextures of your Atlas.
          * @param	scaleFactor:Number - The scaling factor to apply to every object. Default value is 1 (no scaling).
          * @param	margin:uint - The amount of pixels that should be used as the resulting image margin (for each side of the image). Default value is 0 (no margin).
          * @param	preserveColor:Boolean - A Flag which indicates if the color transforms should be captured or not. Default value is true (capture color transform).
@@ -278,7 +278,7 @@ package starling.extensions.textureAtlas
         {
             var container:MovieClip = new MovieClip();
             for each (var assetClass:Class in assets) {
-                var assetInstance:MovieClip = new assetClass();
+                var assetInstance:DisplayObject = new assetClass();
                 assetInstance.name = getQualifiedClassName(assetClass);
                 container.addChild(assetInstance);
             }
@@ -302,10 +302,10 @@ package starling.extensions.textureAtlas
 		 * @param 	checkBounds:Boolean - A Flag used to scan the clip prior the rasterization in order to get the bounds of the entire MovieClip. By default is false because it adds overhead to the process.
 		 * @return  TextureAtlas - The dynamically generated Texture Atlas.
 		 */
-		static public function fromMovieClipContainer(swf:MovieClip, scaleFactor:Number = 1, margin:uint=0, preserveColor:Boolean = true, checkBounds:Boolean=false):TextureAtlas
+		static public function fromMovieClipContainer(swf:Sprite, scaleFactor:Number = 1, margin:uint=0, preserveColor:Boolean = true, checkBounds:Boolean=false):TextureAtlas
 		{
 			var parseFrame:Boolean = false;
-			var selected:MovieClip;
+			var selected:DisplayObject;
 			var selectedTotalFrames:int;
 			var selectedColorTransform:ColorTransform;
 			var frameBounds:Rectangle = new Rectangle(0, 0, 0, 0);
@@ -331,13 +331,13 @@ package starling.extensions.textureAtlas
 			
 			if (!_canvas)
 				_canvas = new Sprite();
-			
-			swf.gotoAndStop(1);
-			
+
+            if(swf is MovieClip)
+                MovieClip(swf).gotoAndStop(1);
+
 			for (var i:uint = 0; i < children; i++)
 			{
-				selected = MovieClip(swf.getChildAt(i));
-				selectedTotalFrames = selected.totalFrames;
+				selected = swf.getChildAt(i);
 				selectedColorTransform = selected.transform.colorTransform;
 				_x = selected.x;
 				_y = selected.y;
@@ -372,25 +372,29 @@ package starling.extensions.textureAtlas
 					}
 				}
 				
-				
-				
-				// Gets the frame bounds by performing a frame-by-frame check
-				if (selectedTotalFrames > 1 && checkBounds) {
-					selected.gotoAndStop(0);
-					frameBounds = getRealBounds(selected);
-					m = 1;
-					while (++m <= selectedTotalFrames)
-					{
-						selected.gotoAndStop(m);
-						frameBounds = frameBounds.union(getRealBounds(selected));
+				// Not all children will be MCs. Some could be sprites
+				if (selected is MovieClip)
+				{
+					selectedTotalFrames = MovieClip(selected).totalFrames;
+					// Gets the frame bounds by performing a frame-by-frame check
+					if (checkBounds) {
+						MovieClip(selected).gotoAndStop(0);
+						frameBounds = getRealBounds(selected);
+						m = 1;
+						while (++m <= selectedTotalFrames)
+						{
+							MovieClip(selected).gotoAndStop(m);
+							frameBounds = frameBounds.union(getRealBounds(selected));
+						}
 					}
 				}
+				else selectedTotalFrames = 1;
 				m = 0;
-				// Draw every frame
-				
+				// Draw every frame (if MC - else will just be one)
 				while (++m <= selectedTotalFrames)
 				{
-					selected.gotoAndStop(m);
+					if (selected is MovieClip)
+						MovieClip(selected).gotoAndStop(m);
 					drawItem(selected, selected.name + "_" + appendIntToString(m - 1, 5), selected.name, selectedColorTransform, frameBounds);
 				}
 			}
@@ -429,6 +433,7 @@ package starling.extensions.textureAtlas
 					subText.@frameLabel = itm.frameName;
 				xml.appendChild(subText);
 			}
+			
 			texture = Texture.fromBitmapData(canvasData);
 			atlas = new TextureAtlas(texture, xml);
 			
