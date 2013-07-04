@@ -32,6 +32,8 @@ package citrus.view.starlingview {
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
 
@@ -235,7 +237,7 @@ package citrus.view.starlingview {
 						loader = new Loader();
 						loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleContentLoaded);
 						loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, handleContentIOError);
-						loader.load(new URLRequest(classString));
+						loader.load(new URLRequest(classString), new LoaderContext(false, ApplicationDomain.currentDomain, null));
 					}
 					// view property is a fully qualified class name in string form. 
 					else {
