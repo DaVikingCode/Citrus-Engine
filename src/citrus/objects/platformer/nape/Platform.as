@@ -54,7 +54,7 @@ package citrus.objects.platformer.nape {
 			
 			if (_oneWay && !_preListener)
 			{
-				_preListener = new PreListener(InteractionType.ANY, Platform.ONEWAY_PLATFORM, CbType.ANY_BODY, handlePreContact);
+				_preListener = new PreListener(InteractionType.COLLISION, Platform.ONEWAY_PLATFORM, CbType.ANY_BODY, handlePreContact,0,true);
 				_body.space.listeners.add(_preListener);
 				_body.cbTypes.add(ONEWAY_PLATFORM);
 			}
@@ -90,7 +90,7 @@ package citrus.objects.platformer.nape {
 			super.createConstraint();
 			
 			if (_oneWay) {
-				_preListener = new PreListener(InteractionType.COLLISION, ONEWAY_PLATFORM, CbType.ANY_BODY, this.handlePreContact);
+				_preListener = new PreListener(InteractionType.COLLISION, ONEWAY_PLATFORM, CbType.ANY_BODY, handlePreContact,0,true);
 				_body.cbTypes.add(ONEWAY_PLATFORM);
 				_body.space.listeners.add(_preListener);
 			}
