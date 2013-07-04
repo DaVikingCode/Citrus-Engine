@@ -1,14 +1,13 @@
 package citrus.objects.platformer.nape {
 
 	import citrus.objects.NapePhysicsObject;
-
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionType;
 	import nape.callbacks.PreCallback;
 	import nape.callbacks.PreFlag;
 	import nape.callbacks.PreListener;
-	import nape.geom.Vec2;
 	import nape.phys.BodyType;
+
 
 	/**
 	 * A Platform is a rectangular object that is meant to be stood on. It can be given any position, width, height, or rotation to suit your level's needs.
@@ -53,7 +52,7 @@ package citrus.objects.platformer.nape {
 			
 			_oneWay = value;
 			
-			if (_oneWay)
+			if (_oneWay && !_preListener)
 			{
 				_preListener = new PreListener(InteractionType.ANY, Platform.ONEWAY_PLATFORM, CbType.ANY_BODY, handlePreContact);
 				_body.space.listeners.add(_preListener);
@@ -65,7 +64,7 @@ package citrus.objects.platformer.nape {
 					_preListener.space = null;
 					_preListener = null;
 				}
-				_body.cbTypes.clear();
+				_body.cbTypes.remove(ONEWAY_PLATFORM);
 			}
 		}
 		
@@ -99,9 +98,10 @@ package citrus.objects.platformer.nape {
 		
 		override public function handlePreContact(callback:PreCallback):PreFlag
 		{
-			var dir:Vec2 = new Vec2(0, callback.swapped ? 1 : -1);
-			
-			return dir.dot(callback.arbiter.collisionArbiter.normal) <= 0 ? PreFlag.IGNORE : null;
+			if ((callback.arbiter.collisionArbiter.normal.y > 0) != callback.swapped)
+				return PreFlag.IGNORE;
+			else
+				return PreFlag.ACCEPT;
 		}
 	}
 }
