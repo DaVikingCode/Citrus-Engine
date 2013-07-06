@@ -63,10 +63,11 @@ package citrus.utils {
 		public var applicationDomain:ApplicationDomain = null;
 		public var securityDomain:SecurityDomain = null;
 		
+		public var levels:Array;
+		public var currentLevel:Object;
+		
 		private var _ALevel:Class;
-		private var _levels:Array;
-		private var _currentIndex:uint;
-		private var _currentLevel:Object;
+		private var _currentIndex:uint;		
 
 		public function LevelManager(ALevel:Class) {
 
@@ -87,12 +88,12 @@ package citrus.utils {
 			
 			onLevelChanged.removeAll();
 			
-			_currentLevel = null;
+			currentLevel = null;
 		}
 
 		public function nextLevel():void {
 
-			if (_currentIndex < _levels.length - 1) {
+			if (_currentIndex < levels.length - 1) {
 				++_currentIndex;
 			}
 
@@ -114,43 +115,43 @@ package citrus.utils {
 		 */
 		public function gotoLevel(index:uint = 0):void {
 
-			if (_currentLevel != null)
-				_currentLevel.lvlEnded.remove(_onLevelEnded);
+			if (currentLevel != null)
+				currentLevel.lvlEnded.remove(_onLevelEnded);
 
 			if (index != 0)
 				_currentIndex = index - 1;
 
 			// Level SWF and SWC are undefined
-			if (_levels[_currentIndex][0] == undefined) {
+			if (levels[_currentIndex][0] == undefined) {
 
-				_currentLevel = _ALevel(new _levels[_currentIndex]);
-				_currentLevel.lvlEnded.add(_onLevelEnded);
+				currentLevel = _ALevel(new levels[_currentIndex]);
+				currentLevel.lvlEnded.add(_onLevelEnded);
 
-				onLevelChanged.dispatch(_currentLevel);
+				onLevelChanged.dispatch(currentLevel);
 				
 			// It's a SWC or a XML ?
-			} else if (_levels[_currentIndex][1] is Class || _levels[_currentIndex][1] is XML) {
+			} else if (levels[_currentIndex][1] is Class || levels[_currentIndex][1] is XML) {
 				
-				_currentLevel = (_levels[_currentIndex][1] is Class) ? _ALevel(new _levels[_currentIndex][0](new _levels[_currentIndex][1]())) : _ALevel(new _levels[_currentIndex][0](_levels[_currentIndex][1]));
-				_currentLevel.lvlEnded.add(_onLevelEnded);
+				currentLevel = (levels[_currentIndex][1] is Class) ? _ALevel(new levels[_currentIndex][0](new levels[_currentIndex][1]())) : _ALevel(new levels[_currentIndex][0](levels[_currentIndex][1]));
+				currentLevel.lvlEnded.add(_onLevelEnded);
 				
-				onLevelChanged.dispatch(_currentLevel);				
+				onLevelChanged.dispatch(currentLevel);				
 				
 			// So it's an external SWF or XML, we load it 
 			} else {
 				
-				var isXml:String = _levels[_currentIndex][1].substring(_levels[_currentIndex][1].length - 4).toLowerCase();
+				var isXml:String = levels[_currentIndex][1].substring(levels[_currentIndex][1].length - 4).toLowerCase();
 				if (isXml == ".xml" || isXml == ".lev" || isXml == ".tmx") {
 					
 					var urlLoader:URLLoader = new URLLoader();
-					urlLoader.load(new URLRequest(_levels[_currentIndex][1]));
+					urlLoader.load(new URLRequest(levels[_currentIndex][1]));
 					urlLoader.addEventListener(Event.COMPLETE, _levelLoaded);
 					
 				} else {
 					
 					var loader:Loader = new Loader();
 					var loaderContext:LoaderContext = new LoaderContext(checkPolicyFile, applicationDomain, securityDomain);
-					loader.load(new URLRequest(_levels[_currentIndex][1]), loaderContext);
+					loader.load(new URLRequest(levels[_currentIndex][1]), loaderContext);
 					loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _levelLoaded);
 					loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _handleLoaderError);
 				}
@@ -159,15 +160,15 @@ package citrus.utils {
 
 		private function _levelLoaded(evt:Event):void {
 			
-			_currentLevel = (evt.target is URLLoader) ? _ALevel(new _levels[_currentIndex][0](XML(evt.target.data))) : _currentLevel = _ALevel(new _levels[_currentIndex][0](evt.target.loader.content));
+			currentLevel = (evt.target is URLLoader) ? _ALevel(new levels[_currentIndex][0](XML(evt.target.data))) : currentLevel = _ALevel(new levels[_currentIndex][0](evt.target.loader.content));
 			
-			_currentLevel.lvlEnded.add(_onLevelEnded);
-			onLevelChanged.dispatch(_currentLevel);
+			currentLevel.lvlEnded.add(_onLevelEnded);
+			onLevelChanged.dispatch(currentLevel);
 			
 			if (evt.target is Loader) {
 				
-				evt.target.contentLoaderInfo.addEventListener(Event.COMPLETE, _levelLoaded);
-				evt.target.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _handleLoaderError);
+				evt.target.contentLoaderInfo.removeEventListener(Event.COMPLETE, _levelLoaded);
+				evt.target.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, _handleLoaderError);
 				evt.target.loader.unloadAndStop();		
 					
 			} else if (evt.target is URLLoader)
@@ -181,25 +182,9 @@ package citrus.utils {
 		private function _handleLoaderError(evt:IOErrorEvent):void {
 			trace(evt.type + " - " + evt.text);
 		}
-		
-		public function get levels():Array {
-			return _levels;
-		}
-		
-		public function set levels(levels:Array):void {
-			_levels = levels;
-		}
-
-		public function get currentLevel():Object {
-			return _currentLevel;
-		}
-
-		public function set currentLevel(currentLevel:Object):void {
-			_currentLevel = currentLevel;
-		}
 
 		public function get nameCurrentLevel():String {
-			return _currentLevel.nameLevel;
+			return currentLevel.nameLevel;
 		}
 	}
 }
