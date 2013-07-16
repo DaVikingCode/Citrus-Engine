@@ -87,7 +87,7 @@ package citrus.core.starling {
 
 		override protected function handleEnterFrame(e:flash.events.Event):void {
 
-			if (_starling.isStarted && _starling.context) {
+			if (_starling && _starling.isStarted && _starling.context) {
 
 				if (_newState) {
 

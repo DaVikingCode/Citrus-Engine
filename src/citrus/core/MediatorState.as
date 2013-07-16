@@ -1,6 +1,5 @@
 package citrus.core {
 
-	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
 	import citrus.objects.APhysicsObject;
 	import citrus.system.Entity;
