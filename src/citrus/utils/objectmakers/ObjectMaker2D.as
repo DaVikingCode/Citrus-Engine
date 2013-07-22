@@ -154,7 +154,7 @@ package citrus.utils.objectmakers {
 						if (tileSet.imageSource == image.name) {
 							bmp = image;
 							break;
-						} else throw new Error("ObjectMaker didn't find an image name corresponding to the tileset imagesource name, add its name to your bitmap.");
+						} else throw new Error("ObjectMaker didn't find an image name corresponding to the tileset imagesource name: " + tileSet.imageSource + ", add its name to your bitmap.");
 					}
 
 					tileSet.image = bmp.bitmapData;
