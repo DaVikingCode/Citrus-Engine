@@ -151,12 +151,19 @@ package citrus.utils.objectmakers {
 				for each (var tileSet:TmxTileSet in tmx.tileSets) {
 
 					for each (var image:Bitmap in images) {
+						
+						var flag:Boolean = false;
+						
 						if (tileSet.imageSource == image.name) {
+							flag = true;
 							bmp = image;
 							break;
-						} else throw new Error("ObjectMaker didn't find an image name corresponding to the tileset imagesource name: " + tileSet.imageSource + ", add its name to your bitmap.");
+						} 
 					}
-
+					
+					if (!flag || bmp == null)
+						throw new Error("ObjectMaker didn't find an image name corresponding to the tileset imagesource name: " + tileSet.imageSource + ", add its name to your bitmap.");
+					
 					tileSet.image = bmp.bitmapData;
 
 					for (var i:uint = 0; i < mapTilesX; ++i) {
