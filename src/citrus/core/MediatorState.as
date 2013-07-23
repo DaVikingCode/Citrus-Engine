@@ -107,6 +107,9 @@ package citrus.core {
 		 */
 		public function add(object:CitrusObject):CitrusObject {
 			
+			if (object is Entity)
+				throw new Error("Object named: " + object.name + " is an entity and should be added to the state via addEntity method.");
+			
 			for each (var objectAdded:CitrusObject in objects) 
 				if (object == objectAdded)
 					throw new Error(object.name + " is already added to the state.");
