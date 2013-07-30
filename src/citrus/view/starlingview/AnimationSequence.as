@@ -120,6 +120,11 @@ package citrus.view.starlingview {
 				delete _mcSequences[animation];
 			}
 		}
+		
+		public function removeAllAnimations():void
+		{
+			removeAnimations(_animations);
+		}
 
 		/**
 		 * Called by StarlingArt, managed the MC's animations.
