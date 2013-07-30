@@ -53,18 +53,8 @@ package citrus.view.starlingview {
 			_smoothing = smoothing;
 
 			_mcSequences = new Dictionary();
-
-			for each (var animation:String in _animations) {
-
-				if (_textureAtlas.getTextures(animation).length == 0)
-					throw new Error(_textureAtlas + " doesn't have the " + animation + " animation in its TextureAtlas");
-
-				_mcSequences[animation] = new MovieClip(_textureAtlas.getTextures(animation), _animFps);
-
-				_mcSequences[animation].name = animation;
-				_mcSequences[animation].addEventListener(Event.COMPLETE, _animationComplete);
-				_mcSequences[animation].smoothing = _smoothing;
-			}
+			
+			addTextureAtlasWithAnimations(_textureAtlas, _animations);
 
 			addChild(_mcSequences[_firstAnimation]);
 			Starling.juggler.add(_mcSequences[_firstAnimation]);
