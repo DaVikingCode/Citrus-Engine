@@ -87,7 +87,7 @@ package citrus.view.starlingview {
 		 * @param textureAtlas a TextureAtlas object with your object's animations you would like to use.
 		 * @param animations an array with the object's animations as a String you would like to pick up.
 		 */
-		public function addTextureAtlasWithAnimations(textureAtlas:TextureAtlas, animations:Array):void {
+		public function addTextureAtlasWithAnimations(textureAtlas:*, animations:Array):void {
 
 			for each (var animation:String in animations) {
 
