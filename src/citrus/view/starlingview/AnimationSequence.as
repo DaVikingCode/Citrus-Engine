@@ -4,7 +4,6 @@ package citrus.view.starlingview {
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.textures.TextureAtlas;
 
 	import org.osflash.signals.Signal;
 
@@ -162,10 +161,7 @@ package citrus.view.starlingview {
 			removeChild(_mcSequences[_previousAnimation]);
 			Starling.juggler.remove(_mcSequences[_previousAnimation]);
 
-			for each (var animation:MovieClip in _mcSequences) {
-				animation.removeEventListener(Event.COMPLETE, _animationComplete);
-				animation.dispose();
-			}
+			removeAllAnimations();
 
 			_mcSequences = null;
 		}
