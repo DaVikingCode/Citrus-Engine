@@ -14,6 +14,7 @@ package citrus.utils.objectmakers.tmx {
 		public var y:int;
 		public var width:int;
 		public var height:int;
+		public var rotation:int;
 		public var gid:int;
 		public var custom:TmxPropertySet;
 		public var shared:TmxPropertySet;
@@ -30,6 +31,7 @@ package citrus.utils.objectmakers.tmx {
 			y = source.@y;
 			width = source.@width;
 			height = source.@height;
+			rotation = source.@rotation;
 			// resolve inheritence
 			shared = null;
 			gid = -1;

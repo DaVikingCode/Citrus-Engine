@@ -210,6 +210,7 @@ package citrus.utils.objectmakers {
 					params.y = objectTmx.y + objectTmx.height * 0.5;
 					params.width = objectTmx.width;
 					params.height = objectTmx.height;
+					params.rotation = objectTmx.rotation;
 					
 					// Polygon/Polyline support
 					if (objectTmx.shapeType != null) {
