@@ -223,10 +223,24 @@ package citrus.sounds {
 				trace(this,"removeSound() : sound",id,"doesn't exist.");
 		}
 		
-		public function removeAllSounds():void {
-			var cs:CitrusSound;
-			for each(cs in soundsDic)
-				removeSound(cs.name);
+		public function removeAllSounds(...except):void {
+			
+			var killSound:Boolean;
+			
+			for each(var cs:CitrusSound in soundsDic) {
+				
+				killSound = true;
+				
+				for each (var soundToPreserve:String in except) {
+
+					if (soundToPreserve == cs.name) {
+						killSound = false;
+						break;
+					}
+				}
+				if (killSound)
+					removeSound(cs.name);
+			}
 		}
 		
 		public function get masterVolume():Number
