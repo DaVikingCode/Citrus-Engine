@@ -185,13 +185,13 @@ package citrus.view.spriteview {
 			_camProxy.x = ghostTarget.x;
 			_camProxy.y = ghostTarget.y;
 			
+			MathUtils.rotatePoint(offset.x/_camProxy.scale, offset.y/_camProxy.scale, _camProxy.rotation, _b.rotoffset);
+			
 			if ( bounds )
 			{
 				if (boundsMode == BOUNDS_MODE_AABB)
 				{
 
-					MathUtils.rotatePoint(offset.x/_camProxy.scale, offset.y/_camProxy.scale, _camProxy.rotation, _b.rotoffset);
-					
 					_b.w2 = (_aabbData.rect.width - _b.rotoffset.x) + _aabbData.offsetX;
 					_b.h2 = (_aabbData.rect.height - _b.rotoffset.y) + _aabbData.offsetY;
 					

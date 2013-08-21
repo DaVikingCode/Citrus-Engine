@@ -42,6 +42,8 @@ package citrus.view {
 		 */
 		protected var _aabbData:Object = { };
 		
+		protected var _aabbRect:Rectangle = new Rectangle();
+		
 		/**
 		 * ghostTarget is the eased position of target.
 		 */
@@ -367,6 +369,23 @@ package citrus.view {
 		public function get transformMatrix():Matrix
 		{
 			return _m;
+		}
+		
+		/**
+		 * returns the camera's axis aligned bounding rectangle in State space.
+		 */
+		public function get aabbRect():Rectangle
+		{
+			if (_aabbData.rect == undefined || _aabbData.rect == null)
+				return null;
+			
+			//set _aabbRect to new dimensions and position
+			_aabbRect.x = _camProxy.x - _b.rotoffset.x;
+			_aabbRect.y = _camProxy.y - _b.rotoffset.y;
+			_aabbRect.width = _aabbData.rect.width / _camProxy.scale;
+			_aabbRect.height = _aabbData.rect.height / _camProxy.scale;
+			
+			return _aabbRect;
 		}
 		
 	}
