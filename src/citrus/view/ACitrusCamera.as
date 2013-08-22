@@ -1,10 +1,10 @@
 package citrus.view {
 
 	import citrus.core.CitrusEngine;
-
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+
 
 	/**
 	 * Citrus's camera.
@@ -41,8 +41,6 @@ package citrus.view {
 		 * and its relative position to it (with offsetX and offsetY)
 		 */
 		protected var _aabbData:Object = { };
-		
-		protected var _aabbRect:Rectangle = new Rectangle();
 		
 		/**
 		 * ghostTarget is the eased position of target.
@@ -382,18 +380,17 @@ package citrus.view {
 		/**
 		 * returns the camera's axis aligned bounding rectangle in State space.
 		 */
-		public function get aabbRect():Rectangle
+		public function getRect():Rectangle
 		{
 			if (_aabbData.rect == undefined || _aabbData.rect == null)
+			{
+				throw new Error("ACitrusCamera getRect(), the camera has no calculated aabb rectangle yet.\n try calling camera.reset() or camera.update() at least once.");
 				return null;
-			
-			//set _aabbRect to new dimensions and position
-			_aabbRect.x = _camProxy.x - _b.rotoffset.x;
-			_aabbRect.y = _camProxy.y - _b.rotoffset.y;
-			_aabbRect.width = _aabbData.rect.width / _camProxy.scale;
-			_aabbRect.height = _aabbData.rect.height / _camProxy.scale;
-			
-			return _aabbRect;
+			}
+				
+			_aabbData.rect.x -= _b.rotoffset.x;
+			_aabbData.rect.y -= _b.rotoffset.y;
+			return _aabbData.rect;
 		}
 		
 	}
