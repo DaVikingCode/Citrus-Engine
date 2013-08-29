@@ -300,16 +300,20 @@ package citrus.sounds {
 		 * tells you if a sound is playing or false if sound is not identified.
 		 */
 		public function soundIsPlaying(id:String):Boolean {
-			return (id in soundsDic) ? CitrusSound(soundsDic[id]).isPlaying :
-				trace(this,"soundIsPlaying() : sound",id,"doesn't exist.");
+			if (id in soundsDic) {
+				return CitrusSound(soundsDic[id]).isPlaying
+			}else { trace(this, "soundIsPlaying() : sound", id, "doesn't exist."); }
+			return false;
 		}
 		
 		/**
 		 * tells you if a sound is paused or false if sound is not identified.
 		 */
 		public function soundIsPaused(id:String):* {
-			return (id in soundsDic) ? CitrusSound(soundsDic[id]).isPaused :
-				trace(this,"soundIsPaused() : sound",id,"doesn't exist.");
+			if (id in soundsDic) {
+				return CitrusSound(soundsDic[id]).isPaused
+			}else { trace(this, "soundIsPaused() : sound", id, "doesn't exist."); }
+			return false;
 		}
 		
 		/**
