@@ -10,6 +10,7 @@ package citrus.input
 		private var _name:String;
 		private var _controller:InputController;
 		private var _channel:uint;
+		private var _time:uint = 0;
 		
 		//variable properties
 		public var value:Number;
@@ -82,12 +83,15 @@ package citrus.input
 		
 		public function toString():String
 		{
-			return "[ Action # name: " + _name + " channel: " + _channel + " value: " + value + " phase: " + phase + " controller: " + _controller + " ]";
+			return "[ Action # name: " + _name + " channel: " + _channel + " value: " + value + " phase: " + phase + " controller: " + _controller + " time: " + _time + " ]";
 		}
 		
 		public function get name():String { return _name; }
 		public function get controller():InputController { return _controller; }
 		public function get channel():uint { return _channel; }
+		public function get time():uint { return _time; }
+		internal function get itime():uint { return _time; }
+		internal function set itime(val:uint):void { _time = val; }
 	
 	}
 
