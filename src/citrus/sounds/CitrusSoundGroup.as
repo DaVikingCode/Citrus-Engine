@@ -12,6 +12,7 @@ package citrus.sounds
 		
 		public static const BGM:String = "BGM";
 		public static const SFX:String = "SFX";
+		public static const UI:String = "UI";
 		
 		protected var _groupID:String;
 		
