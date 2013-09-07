@@ -71,7 +71,8 @@ package citrus.view.blittingview
 		{
 			super.update(timeDelta);
 			
-			camera.update();			
+			if(camera.enabled)
+				camera.update();			
 			
 			if (_debuggerPhysicsObject) {
 				_debugView.visible = _debuggerPhysicsObject.visible;

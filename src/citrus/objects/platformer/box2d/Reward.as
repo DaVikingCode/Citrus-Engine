@@ -76,6 +76,7 @@ package citrus.objects.platformer.box2d
 		
 		public function Reward(name:String, params:Object = null) 
 		{
+			updateCallEnabled = true;
 			_beginContactCallEnabled = true;
 			
 			super(name, params);

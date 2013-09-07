@@ -108,5 +108,10 @@ package citrus.math
 		{
 			return "[" + x + ", " + y + "]";
 		}
+		
+		public function dot(vector:MathVector):Number
+		{
+			return (x * vector.x) + (y * vector.y);
+		}
 	}
 }

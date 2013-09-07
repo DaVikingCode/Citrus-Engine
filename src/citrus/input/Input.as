@@ -126,7 +126,7 @@ package citrus.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase == InputAction.BEGAN)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.itime == 1)
 					return true;
 			return false;
 		}
@@ -151,6 +151,7 @@ package citrus.input {
 			if (!triggersEnabled)
 				return;
 			var a:InputAction;
+			
 			for each (a in _actions)
 				if (a.eq(action))
 					return;
@@ -166,7 +167,6 @@ package citrus.input {
 		{
 			if (!triggersEnabled)
 				return;
-				
 			var a:InputAction;
 			for each (a in _actions)
 				if (a.eq(action))
@@ -223,6 +223,7 @@ package citrus.input {
 			var i:String;
 			for (i in _actions)
 			{
+				InputAction(_actions[i]).itime++;
 				if (_actions[i].phase > InputAction.END)
 					_actions.splice(uint(i), 1);
 				else if (_actions[i].phase !== InputAction.ON)
@@ -345,62 +346,6 @@ package citrus.input {
 			actionTriggeredVALUECHANGE.removeAll();
 			
 			_ce.stage.removeEventListener(Event.FRAME_CONSTRUCTED,update);
-		}
-		
-		/**
-		 * Limited backwards compatibilty for the deprecated justPressed method.
-		 * /!\ only works with default key actions defined in the default keyboard instance
-		 * (up, down, right, left, up, spacebar)
-		 * ultimately, you'll have to convert to the new system :)
-		 */
-		public function justPressed(keyCode:uint):Boolean
-		{
-			var keyboard:Keyboard = getControllerByName("keyboard") as Keyboard;
-			var actions:Vector.<Object> = keyboard.getActionsByKey(keyCode);
-			var a:Object;
-			var ia:InputAction;
-			if (actions)
-			{
-				for each (a in actions)
-					for each (ia in _actions)
-						if (ia.name == a.name && (_routeActions ? (_routeChannel == ((a.channel<0)?keyboard.defaultChannel:a.channel)) : ia.channel == ((a.channel<0)?keyboard.defaultChannel:a.channel)) && ia.phase == InputAction.BEGIN)
-							return true;
-				return false;
-			}
-			else
-			{
-				trace("Warning: you are still using justPressed(keyCode:int) for keyboard input and might get unexpected results...");
-				trace("Please use the new justDid(actionName:String, channel:uint) method and convert your code to the Input/InputController Action system !");
-				return false;
-			}
-		}
-		
-		/**
-		 * Limited backwards compatibilty for the deprecated isDown method.
-		 * /!\ only works with default key actions defined in the default keyboard instance
-		 * (up, down, right, left, up, spacebar)
-		 * ultimately, you'll have to convert to the new system :)
-		 */
-		public function isDown(keyCode:uint):Boolean
-		{
-			var keyboard:Keyboard = getControllerByName("keyboard") as Keyboard;
-			var actions:Vector.<Object> = keyboard.getActionsByKey(keyCode);
-			var a:Object;
-			var ia:InputAction;
-			if (actions)
-			{
-				for each (a in actions)
-					for each (ia in _actions)
-						if (ia.name == a.name && (_routeActions ? (_routeChannel == ((a.channel<0)?keyboard.defaultChannel:a.channel)) : ia.channel == ((a.channel<0)?keyboard.defaultChannel:a.channel)) && ia.phase < InputAction.ON)
-							return true;
-				return false;
-			}
-			else
-			{
-				trace("Warning: you are still using isDown(keyCode:int) for keyboard input and might get unexpected results...");
-				trace("Please use the new isDoing(actionName:String, channel:uint) method and convert your code to the Input/InputController Action system !");
-				return false;
-			}
 		}
 	
 	}
