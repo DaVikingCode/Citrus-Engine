@@ -62,7 +62,7 @@ package citrus.math
 		
 		public function normalize():void 
 		{			
-			var l:Number = Math.abs(length);	
+			var l:Number = length;
 			x /= l;
 			y /= l;
 		}
