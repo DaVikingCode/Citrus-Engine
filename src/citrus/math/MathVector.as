@@ -60,6 +60,13 @@ package citrus.math
 			return new MathVector(-y, x);
 		}
 		
+		public function normalize():void 
+		{			
+			var l:Number = Math.abs(length);	
+			x /= l;
+			y /= l;
+		}
+				
 		public function set length(value:Number):void
 		{
 			this.scaleEquals(value / length);
