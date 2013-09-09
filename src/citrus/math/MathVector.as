@@ -67,7 +67,6 @@ package citrus.math
 			y /= l;
 		}
 				
-		
 		public function set length(value:Number):void
 		{
 			this.scaleEquals(value / length);
