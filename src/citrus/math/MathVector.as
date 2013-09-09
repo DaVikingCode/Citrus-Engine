@@ -31,9 +31,11 @@ package citrus.math
 		{
 			var ca:Number = Math.cos(angle);
 			var sa:Number = Math.sin(angle);
+			var tx:Number = x;
+			var ty:Number = y;
 			
-			x = x * ca - y * sa;
-			y = x * sa + y * ca;
+			x = tx * ca - ty * sa;
+			y = tx * sa + ty * ca;
 		}
 		
 		public function scaleEquals(value:Number):void
