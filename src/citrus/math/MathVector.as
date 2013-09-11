@@ -16,18 +16,16 @@ package citrus.math
 			return new MathVector(x, y);
 		}
 		
-		public function get angle():Number
+		public function copyFrom(vector:MathVector):void
 		{
-			return Math.atan2(y, x);
+			this.x = vector.x;
+			this.y = vector.y;
 		}
 		
-		public function set angle(value:Number):void
+		public function setTo(x:Number = 0, y:Number = 0):void
 		{
-			var l:Number = length;
-			var tx:Number = l * Math.cos(value);
-			var ty:Number = l * Math.sin(value);
-			x = tx;
-			y = ty;
+			this.x = x;
+			this.y = y;
 		}
 		
 		public function rotate(angle:Number):void
@@ -59,21 +57,11 @@ package citrus.math
 			return new MathVector(x * value, y * value);
 		}
 		
-		public function get normal():MathVector
-		{
-			return new MathVector(-y, x);
-		}
-		
 		public function normalize():void 
 		{			
 			var l:Number = length;
 			x /= l;
 			y /= l;
-		}
-				
-		public function set length(value:Number):void
-		{
-			this.scaleEquals(value / length);
 		}
 		
 		public function plusEquals(vector:MathVector):void
@@ -112,19 +100,43 @@ package citrus.math
 			return new MathVector(x - vector.x, y - vector.y);
 		}
 		
+		public function dot(vector:MathVector):Number
+		{
+			return (x * vector.x) + (y * vector.y);
+		}
+		
+		public function get angle():Number
+		{
+			return Math.atan2(y, x);
+		}
+		
+		public function set angle(value:Number):void
+		{
+			var l:Number = length;
+			var tx:Number = l * Math.cos(value);
+			var ty:Number = l * Math.sin(value);
+			x = tx;
+			y = ty;
+		}
+		
 		public function get length():Number
 		{
 			return Math.sqrt((x*x) + (y*y));
 		}
 		
+		public function set length(value:Number):void
+		{
+			this.scaleEquals(value / length);
+		}
+		
+		public function get normal():MathVector
+		{
+			return new MathVector(-y, x);
+		}
+		
 		public function toString():String
 		{
 			return "[" + x + ", " + y + "]";
-		}
-		
-		public function dot(vector:MathVector):Number
-		{
-			return (x * vector.x) + (y * vector.y);
 		}
 	}
 }
