@@ -23,14 +23,18 @@ package citrus.math
 		
 		public function set angle(value:Number):void
 		{
-			x = length * Math.cos(value);
-			y = length * Math.sin(value);
+			var l:Number = length;
+			var tx:Number = l * Math.cos(value);
+			var ty:Number = l * Math.sin(value);
+			x = tx;
+			y = ty;
 		}
 		
 		public function rotate(angle:Number):void
 		{
-			var ca:Number = Math.cos(angle);
-			var sa:Number = Math.sin(angle);
+			var a:Number = angle;
+			var ca:Number = Math.cos(a);
+			var sa:Number = Math.sin(a);
 			var tx:Number = x;
 			var ty:Number = y;
 			
