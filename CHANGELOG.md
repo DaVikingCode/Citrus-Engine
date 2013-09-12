@@ -1,5 +1,16 @@
 V3.1.8, Work In Progress
 ------------------------
+- Input : removed backwards compatibility, InputActions store the time (in frames) they spent in the Input system
+- MathVector : critical bug fixes (rotate, angle) and new methods (dot product, normalize, copyFrom, setTo)
+- Camera : AABB rectangle is accessible using camera.getRect()
+- Camera : update call can be disabled (permanently or temporarily) using camera.enabled = false - for better peformance
+- SoundManager : removeAllSounds accepts exceptions, fixed stack underflow error
+- SoundManager : UI sound group added by default.
+- AnimationSequence : removeAllAnimations method
+- AnimationSequence : addTextureAtlasWithAnimations to support AssetManager objects
+- use addEntity instead of add to add entity to state.
+- nape Platform oneWay fixed.
+- box2D Reward fixed (updates by default).
 - Updated to latest DynamicTextureAtlas extension.
 - Added a LoaderContext for SpriteArt and StarlingArt, we are able to load swf on iOS.
 - Added rotation parameter in TmxObject coming from latest Tiled Map Editor builds.
