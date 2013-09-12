@@ -310,7 +310,7 @@ package citrus.sounds {
 		/**
 		 * tells you if a sound is paused or false if sound is not identified.
 		 */
-		public function soundIsPaused(id:String):* {
+		public function soundIsPaused(id:String):Boolean {
 			if (id in soundsDic)
 				return CitrusSound(soundsDic[id]).isPaused
 			else
