@@ -129,21 +129,32 @@ package citrus.math {
 		
 		/**
 		 * Creates the axis aligned bounding box for a rotated rectangle
-		 * and returns offsetX , offsetY which is simply the x and y position of 
-		 * the aabb relative to the rotated rectangle.
+		 * and offsetX , offsetY which is simply the x and y position of 
+		 * the aabb relative to the rotated rectangle. the rectangle and the offset values are returned through an object.
+		 * such object can be re-used by passing it through the last argument.
 		 * @param w width of the rotated rectangle
 		 * @param h height of the rotated rectangle
 		 * @param a angle of rotation around the topLeft point in radian
+		 * @param aabbdata the object to store the results in.
 		 * @return {rect:flash.geom.Rectangle,offsetX:Number,offsetY:Number}
 		 */
-		public static function createAABBData(x:Number, y:Number, w:Number, h:Number, a:Number = 0):Object {
+		public static function createAABBData(x:Number, y:Number, w:Number, h:Number, a:Number = 0, aabbdata:Object = null):Object {
 			
-			var aabb:Rectangle = new Rectangle(x, y, w, h);
+			if (aabbdata == null)
+			{
+				aabbdata = {offsetX:0,offsetY:0,rect:new Rectangle() };
+			}
+			
+			aabbdata.rect.setTo(x, y, w, h);
 			var offX:Number = 0;
 			var offY:Number = 0;
 			
 			if (a == 0)
-				return { offsetX:0, offsetY:0, rect:aabb };
+			{
+				aabbdata.offsetX = 0;
+				aabbdata.offsetY = 0;
+				return aabbdata;
+			}
 				
 			var c:Number = Math.cos(a);
 			var s:Number = Math.sin(a);
@@ -153,8 +164,8 @@ package citrus.math {
 			if (s < 0) { s = -s; spos = false; } else { spos = true; }
 			if (c < 0) { c = -c; cpos = false; } else { cpos = true; }
 			
-			aabb.width = h * s + w * c;
-			aabb.height = h * c + w * s;
+			aabbdata.rect.width = h * s + w * c;
+			aabbdata.rect.height = h * c + w * s;
 			
 			if (cpos)
 				if (spos)
@@ -172,10 +183,10 @@ package citrus.math {
 				offY -= w * s + h * c;
 			}
 			
-			aabb.x += offX;
-			aabb.y += offY;
+			aabbdata.rect.x += offX;
+			aabbdata.rect.y += offY;
 			
-			return { offsetX:offX, offsetY:offY, rect:aabb };
+			return aabbdata;
 		}
 		
 		public static function abs(num:Number):Number

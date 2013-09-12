@@ -40,7 +40,7 @@ package citrus.view {
 		 * _aabb holds the axis aligned bounding box of the camera in rect
 		 * and its relative position to it (with offsetX and offsetY)
 		 */
-		protected var _aabbData:Object = { };
+		protected var _aabbData:Object = {offsetX:0, offsetY:0, rect:new Rectangle() };
 		
 		/**
 		 * ghostTarget is the eased position of target.

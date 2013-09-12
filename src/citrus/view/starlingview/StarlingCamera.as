@@ -25,7 +25,7 @@ package citrus.view.starlingview {
 		override protected function initialize():void {
 			super.initialize();// setup camera lens normally
 
-			_aabbData = MathUtils.createAABBData(0, 0, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale, _camProxy.rotation);
+			_aabbData = MathUtils.createAABBData(0, 0, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale, _camProxy.rotation, _aabbData);
 			_m = (_viewRoot as starling.display.Sprite).transformationMatrix;
 		}
 		
@@ -112,26 +112,26 @@ package citrus.view.starlingview {
 			if (!_allowZoom && !_allowRotation)
 			{
 				_aabbData.offsetX = _aabbData.offsetY = 0;
-				_aabbData.rect = new Rectangle(_ghostTarget.x, _ghostTarget.y, cameraLensWidth, cameraLensHeight);
+				_aabbData.rect.setTo(_ghostTarget.x, _ghostTarget.y, cameraLensWidth, cameraLensHeight);
 				return;
 			}
 			
 			if (_allowZoom && !_allowRotation)
 			{
 				_aabbData.offsetX = _aabbData.offsetY = 0;
-				_aabbData.rect = new Rectangle(_ghostTarget.x, _ghostTarget.y, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale);
+				_aabbData.rect.setTo(_ghostTarget.x, _ghostTarget.y, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale);
 				return;
 			}
 			
 			if (_allowRotation && _allowZoom)
 			{
-				_aabbData = MathUtils.createAABBData(_ghostTarget.x , _ghostTarget.y, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale, - _camProxy.rotation);
+				_aabbData = MathUtils.createAABBData(_ghostTarget.x , _ghostTarget.y, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale, - _camProxy.rotation, _aabbData);
 				return;
 			}
 		
 			if (!_allowZoom && _allowRotation)
 			{
-				_aabbData = MathUtils.createAABBData(_ghostTarget.x , _ghostTarget.y, cameraLensWidth, cameraLensHeight, - _camProxy.rotation);
+				_aabbData = MathUtils.createAABBData(_ghostTarget.x , _ghostTarget.y, cameraLensWidth, cameraLensHeight, - _camProxy.rotation, _aabbData);
 				return;
 			}
 			 
