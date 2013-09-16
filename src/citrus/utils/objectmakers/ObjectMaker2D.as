@@ -114,6 +114,9 @@ package citrus.utils.objectmakers {
 		 * It also supports properties.</p>
 		 * @param levelXML the TMX provided by the Tiled Map Editor software, convert it into an xml before.
 		 * @param images an array of bitmap used by tileSets. The name of the bitmap must correspond to the tileSet image source name.
+		 * @param addToCurrentState Automatically adds all CitrusObjects that get created to the current state.
+		 * @return An array of <code>CitrusObject</code> with all objects created.
+		 * @see CitrusObject
 		 */
 		public static function FromTiledMap(levelXML:XML, images:Array, addToCurrentState:Boolean = true):Array {
 
