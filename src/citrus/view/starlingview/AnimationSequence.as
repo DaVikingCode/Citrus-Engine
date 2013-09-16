@@ -12,6 +12,8 @@ package citrus.view.starlingview {
 	/**
 	 * The Animation Sequence class represents all object animations in one sprite sheet. You have to create your texture atlas in your state class.
 	 * Example : <code>var hero:Hero = new Hero("Hero", {x:400, width:60, height:130, view:new AnimationSequence(textureAtlas, ["walk", "duck", "idle", "jump"], "idle")});</code>
+	 * <b>Important:</b> for managing if an animation should loop, you've to set it up at <code>StarlingArt.setLoopAnimations(["fly", "fallen"])</code>. By default, the walk's 
+	 * animation is the only one looping.
 	 */
 	public class AnimationSequence extends Sprite {
 
