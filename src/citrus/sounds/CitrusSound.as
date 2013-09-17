@@ -55,13 +55,32 @@ package citrus.sounds
 			setParams(params);
 		}
 		
+		public function load():void
+		{
+			if (_urlReq && _loadedRatio == 0 && !_sound.isBuffering)
+			{
+					_ioerror = false;
+					_loaded = false;
+					_sound.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+					_sound.addEventListener(ProgressEvent.PROGRESS, onProgress);
+					_sound.load(_urlReq);
+			}
+		}
+		
+		public function unload():void
+		{
+			_sound.close();
+			_sound.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			_sound.removeEventListener(ProgressEvent.PROGRESS, onProgress);
+			sound = _urlReq;
+		}
+		
 		public function play(resetV:Boolean = true):void
 		{
 			if (_isPlaying)
 				stop();
 			else
-				if (_urlReq && _loadedRatio == 0)
-					 _sound.load(_urlReq);
+				load();
 			if(resetV)
 				reset();
 			
@@ -122,6 +141,7 @@ package citrus.sounds
 		{
 			(e.target as SoundChannel).removeEventListener(Event.SOUND_COMPLETE, onComplete);
 			
+			_isPlaying = false;
 			_repeatCount++;
 			
 			if (_timesToPlay <= 0)
@@ -147,7 +167,7 @@ package citrus.sounds
 		
 		protected function onIOError(event:ErrorEvent):void
 		{
-			_sound.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			unload();
 			trace("CitrusSound Error Loading: ", this.name);
 			_ioerror = true;
 			_sm.dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_ERROR, this));
@@ -197,13 +217,16 @@ package citrus.sounds
 		
 		citrus_internal function set sound(val:Object):void
 		{
+			if (_sound)
+			{
+				_sound.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
+				_sound.removeEventListener(ProgressEvent.PROGRESS, onProgress);
+			}
+			
 			if (val is String)
 			{
 				_urlReq = new URLRequest(val as String);
 				_sound = new Sound();
-				_ioerror = false;
-				_sound.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
-				_sound.addEventListener(ProgressEvent.PROGRESS, onProgress);
 			}
 			else if (val is Class)
 			{

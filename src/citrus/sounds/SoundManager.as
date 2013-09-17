@@ -1,6 +1,7 @@
 package citrus.sounds {
 
 	import aze.motion.eaze;
+	import citrus.sounds.groups.UIGroup;
 
 	import citrus.core.citrus_internal;
 	import citrus.sounds.groups.BGMGroup;
@@ -31,6 +32,7 @@ package citrus.sounds {
 			//default groups
 			soundGroups.push(new BGMGroup());
 			soundGroups.push(new SFXGroup());
+			soundGroups.push(new UIGroup());
 			
 			CitrusSound._sm = this;
 		}
@@ -150,6 +152,13 @@ package citrus.sounds {
 			else
 				trace(this,"getSound() : sound",name,"doesn't exist.");
 			return null;
+		}
+		
+		public function preloadAllSounds():void
+		{
+			var cs:CitrusSound;
+			for each (cs in soundsDic)
+				cs.load();
 		}
 		
 		/**
