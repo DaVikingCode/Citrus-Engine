@@ -129,6 +129,7 @@ package citrus.utils.objectmakers {
 
 			var bmp:Bitmap;
 			var bmpData:BitmapData;
+			var useBmpSmoothing:Boolean;
 			var citrusSprite:CitrusSprite;
 
 			var mapTiles:Array;
@@ -167,6 +168,8 @@ package citrus.utils.objectmakers {
 					if (!flag || bmp == null)
 						throw new Error("ObjectMaker didn't find an image name corresponding to the tileset imagesource name: " + tileSet.imageSource + ", add its name to your bitmap.");
 					
+					useBmpSmoothing ||= bmp.smoothing;
+					
 					tileSet.image = bmp.bitmapData;
 
 					for (var i:uint = 0; i < mapTilesX; ++i) {
@@ -202,9 +205,11 @@ package citrus.utils.objectmakers {
 					}
 				}
 
+				var bmpFinal:Bitmap = new Bitmap(bmpData);
+				bmpFinal.smoothing = useBmpSmoothing;
+				
 				params = {};
-
-				params.view = new Bitmap(bmpData);
+				params.view = bmpFinal;
 
 				for (var param:String in tmx.getLayer(layer).properties)
 					params[param] = tmx.getLayer(layer).properties[param];
