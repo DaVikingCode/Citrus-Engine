@@ -183,8 +183,8 @@ package citrus.math {
 				offY -= w * s + h * c;
 			}
 			
-			aabbdata.rect.x += offX;
-			aabbdata.rect.y += offY;
+			aabbdata.rect.x += aabbdata.offsetX = offX;
+			aabbdata.rect.y += aabbdata.offsetY = offY;
 			
 			return aabbdata;
 		}

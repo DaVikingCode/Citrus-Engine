@@ -197,6 +197,7 @@ package citrus.view.starlingview {
 					
 			if ( bounds )
 			{
+				
 				if (boundsMode == BOUNDS_MODE_AABB)
 				{
 					
@@ -271,6 +272,9 @@ package citrus.view.starlingview {
 				_camProxy.offset.x *= -1;
 				_camProxy.offset.y *= -1;
 			}
+			
+			_aabbData.rect.x = _camProxy.x + _aabbData.offsetX - _b.rotoffset.x;
+			_aabbData.rect.y = _camProxy.y + _aabbData.offsetY - _b.rotoffset.y;
 			
 			//reset matrix
 			_m.identity();

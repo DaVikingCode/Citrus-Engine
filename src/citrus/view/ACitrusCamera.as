@@ -387,9 +387,6 @@ package citrus.view {
 				throw new Error("ACitrusCamera getRect(), the camera has no calculated aabb rectangle yet.\n try calling camera.reset() or camera.update() at least once.");
 				return null;
 			}
-				
-			_aabbData.rect.x -= _b.rotoffset.x;
-			_aabbData.rect.y -= _b.rotoffset.y;
 			return _aabbData.rect;
 		}
 		

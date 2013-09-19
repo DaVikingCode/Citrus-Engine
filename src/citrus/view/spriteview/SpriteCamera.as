@@ -260,6 +260,9 @@ package citrus.view.spriteview {
 				_camProxy.offset.y *= -1;
 			}
 			
+			_aabbData.rect.x = _camProxy.x + _aabbData.offsetX - _b.rotoffset.x;
+			_aabbData.rect.y = _camProxy.y + _aabbData.offsetY - _b.rotoffset.y;
+			
 			//reset matrix
 			_m.identity();
 			//fake pivot
