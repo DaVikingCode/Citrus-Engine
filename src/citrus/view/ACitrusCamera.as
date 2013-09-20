@@ -382,11 +382,6 @@ package citrus.view {
 		 */
 		public function getRect():Rectangle
 		{
-			if (_aabbData.rect == undefined || _aabbData.rect == null)
-			{
-				throw new Error("ACitrusCamera getRect(), the camera has no calculated aabb rectangle yet.\n try calling camera.reset() or camera.update() at least once.");
-				return null;
-			}
 			return _aabbData.rect;
 		}
 		
