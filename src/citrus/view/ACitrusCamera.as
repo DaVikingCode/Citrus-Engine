@@ -1,9 +1,11 @@
 package citrus.view {
 
 	import citrus.core.CitrusEngine;
+
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.system.Capabilities;
 
 
 	/**
@@ -202,9 +204,8 @@ package citrus.view {
 		protected function initialize():void {
 			
 			_ce = CitrusEngine.getInstance();
-			cameraLensWidth = _ce.stage.stageWidth;
-			cameraLensHeight = _ce.stage.stageHeight;	
-			
+			cameraLensWidth = Capabilities.playerType == "Desktop" ? _ce.stage.fullScreenWidth : _ce.stage.stageWidth;
+			cameraLensHeight = Capabilities.playerType == "Desktop" ? _ce.stage.fullScreenHeight : _ce.stage.stageHeight;	
 		}
 		
 		/**
