@@ -4,6 +4,8 @@ package citrus.core {
 	import citrus.sounds.SoundManager;
 	import citrus.utils.AGameData;
 	import citrus.utils.LevelManager;
+	import flash.display.StageDisplayState;
+	import flash.events.FullScreenEvent;
 
 	import org.osflash.signals.Signal;
 
@@ -48,6 +50,10 @@ package citrus.core {
 		protected var _stateDisplayIndex:uint = 0;
 		protected var _playing:Boolean = true;
 		protected var _input:Input;
+		
+		protected var _fullScreen:Boolean = false;
+		protected var _screenWidth:int = 0;
+		protected var _screenHeight:int = 0;
 		
 		private var _startTime:Number;
 		private var _gameTime:Number;
@@ -99,6 +105,8 @@ package citrus.core {
 			
 			stage.removeEventListener(Event.ACTIVATE, handleStageActivated);
 			stage.removeEventListener(Event.DEACTIVATE, handleStageDeactivated);
+			stage.removeEventListener(FullScreenEvent.FULL_SCREEN, handleStageFullscreen);
+			stage.removeEventListener(Event.RESIZE, handleStageResize);
 			
 			removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
 			
@@ -226,7 +234,32 @@ package citrus.core {
 			stage.addEventListener(Event.DEACTIVATE, handleStageDeactivated);
 			stage.addEventListener(Event.ACTIVATE, handleStageActivated);
 			
+			stage.addEventListener(FullScreenEvent.FULL_SCREEN, handleStageFullscreen);
+			stage.addEventListener(Event.RESIZE, handleStageResize);
+			
+			_fullScreen = (stage.displayState == StageDisplayState.FULL_SCREEN || stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE);
+			handleStageResize(null);
+			
 			_input.initialize();
+		}
+		
+		protected function handleStageFullscreen(e:FullScreenEvent):void
+		{
+			_fullScreen = e.fullScreen;
+		}
+		
+		protected function handleStageResize(e:Event):void
+		{
+			if (_fullScreen)
+			{
+				_screenWidth = stage.fullScreenWidth;
+				_screenHeight = stage.fullScreenHeight;
+			}
+			else
+			{
+				_screenWidth = stage.stageWidth;
+				_screenHeight = stage.stageHeight;
+			}
 		}
 		
 		/**
@@ -348,6 +381,29 @@ package citrus.core {
 				trace(objectName + " property:" + paramName + "=" + object[paramName]);	
 			else
 				trace("Warning: " + objectName + " has no parameter named " + paramName + ".");
+		}
+		
+		public function get fullScreen():Boolean
+		{
+			return _fullScreen;
+		}
+		
+		public function set fullScreen(value:Boolean):void
+		{
+			if(value)
+				stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+			else
+				stage.displayState = StageDisplayState.NORMAL;
+		}
+		
+		public function get screenWidth():int
+		{
+			return _screenWidth;
+		}
+		
+		public function get screenHeight():int
+		{
+			return _screenHeight;
 		}
 	}
 }

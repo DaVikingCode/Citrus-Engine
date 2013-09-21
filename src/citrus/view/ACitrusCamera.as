@@ -204,8 +204,8 @@ package citrus.view {
 		protected function initialize():void {
 			
 			_ce = CitrusEngine.getInstance();
-			cameraLensWidth = Capabilities.playerType == "Desktop" ? _ce.stage.fullScreenWidth : _ce.stage.stageWidth;
-			cameraLensHeight = Capabilities.playerType == "Desktop" ? _ce.stage.fullScreenHeight : _ce.stage.stageHeight;	
+			cameraLensWidth = _ce.screenWidth;
+			cameraLensHeight = _ce.screenHeight;	
 		}
 		
 		/**

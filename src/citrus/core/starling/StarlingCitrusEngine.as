@@ -60,7 +60,7 @@ package citrus.core.starling {
 				Starling.handleLostContext = true;
 
 			if (!viewPort)
-				viewPort = Capabilities.playerType == "Desktop" ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+				viewPort = new Rectangle(0, 0, _screenWidth, _screenHeight);
 
 			_starling = new Starling(RootClass, stage, viewPort, null, "auto", profile);
 
@@ -68,6 +68,17 @@ package citrus.core.starling {
 			_starling.showStats = debugMode;
 
 			_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
+		}
+		
+		override protected function handleStageResize(e:flash.events.Event):void
+		{
+			super.handleStageResize(e);
+			if (!_starling)
+				return;
+			
+			_starling.viewPort.setTo(0, 0, _screenWidth, _screenHeight);
+			_starling.stage.stageWidth = _screenWidth;
+			_starling.stage.stageHeight = _screenHeight;
 		}
 
 		/**
