@@ -58,6 +58,9 @@ package citrus.core.starling {
 
 			if (Mobile.isAndroid())
 				Starling.handleLostContext = true;
+				
+			if (_screenWidth == 0)
+				handleStageResize();
 
 			if (!viewPort)
 				viewPort = new Rectangle(0, 0, _screenWidth, _screenHeight);
@@ -70,7 +73,7 @@ package citrus.core.starling {
 			_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
 		}
 		
-		override protected function handleStageResize(e:flash.events.Event):void
+		override protected function handleStageResize(e:flash.events.Event = null):void
 		{
 			super.handleStageResize(e);
 			if (!_starling)

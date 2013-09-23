@@ -247,7 +247,7 @@ package citrus.core {
 			_fullScreen = e.fullScreen;
 		}
 		
-		protected function handleStageResize(e:Event):void
+		protected function handleStageResize(e:Event = null):void
 		{
 			if (_fullScreen)
 			{
