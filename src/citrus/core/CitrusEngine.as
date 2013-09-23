@@ -238,7 +238,6 @@ package citrus.core {
 			stage.addEventListener(Event.RESIZE, handleStageResize);
 			
 			_fullScreen = (stage.displayState == StageDisplayState.FULL_SCREEN || stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE);
-			handleStageResize(null);
 			
 			_input.initialize();
 		}
