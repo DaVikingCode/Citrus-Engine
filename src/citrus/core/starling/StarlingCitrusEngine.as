@@ -58,9 +58,6 @@ package citrus.core.starling {
 
 			if (Mobile.isAndroid())
 				Starling.handleLostContext = true;
-				
-			if (_screenWidth == 0)
-				handleStageResize();
 
 			if (!viewPort)
 				viewPort = new Rectangle(0, 0, _screenWidth, _screenHeight);
