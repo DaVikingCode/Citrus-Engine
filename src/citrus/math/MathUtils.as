@@ -189,6 +189,11 @@ package citrus.math {
 			return aabbdata;
 		}
 		
+		public static function randomInt(min:int,max:int):int
+		{
+			return Math.floor(Math.random() * (1 + max - min)) + min;
+		}
+		
 		public static function abs(num:Number):Number
 		{
 			return num < 0 ? -num : num;
