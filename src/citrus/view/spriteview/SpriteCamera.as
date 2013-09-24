@@ -34,22 +34,7 @@ package citrus.view.spriteview {
 				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
 		}
 		
-		/**
-		 * fits a defined area within the camera lens dimensions.
-		 * Similar to fitting a rectangle inside another rectangle by multiplying its size,
-		 * therefore keeping its aspect ratio. the factor used to fit is returned 
-		 * and set as the current target zoom factor.
-		 * 
-		 * if storeInBaseZoom is set to true, then the calculated ratio is stored in the camera's baseZoom
-		 * and from now, all zoom will be relative to that ratio (baseZoom is 1 by default and multiplied
-		 * to every zoom operations you do using the camera methods) - this helps create relative zoom effects
-		 * while keeping a base zoom when zooming at 1 where the camera would still fit the area you decided :
-		 * specially usefull for multi resolution handling.
-		 * @param width width of the area to fit inside the camera lens dimensions.
-		 * @param height height of the area to fit inside the camera lens dimensions.
-		 * @param storeInBaseZoom , whether to store the ratio into baseZoom or not.
-		 * @return calculated zoom ratio
-		 */
+		
 		override public function zoomFit(width:Number,height:Number,storeInBaseZoom:Boolean = false):Number
 		{
 			if (_allowZoom)
