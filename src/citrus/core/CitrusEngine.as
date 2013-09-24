@@ -33,6 +33,12 @@ package citrus.core {
 		public var onPlayingChange:Signal;
 		
 		/**
+		 * called after a stage resize event
+		 * signal passes the new screenWidth and screenHeight as arguments.
+		 */
+		public var onStageResize:Signal;
+		
+		/**
 		 * You may use a class to store your game's data, this is already an abstract class made for that. 
 		 * It's also a dynamic class, so you won't have problem to access information in its extended class.
 		 */
@@ -74,6 +80,7 @@ package citrus.core {
 			_instance = this;
 			
 			onPlayingChange = new Signal(Boolean);
+			onStageResize = new Signal(int,int);
 			
 			//Set up console
 			_console = new Console(9); //Opens with tab key by default
@@ -260,6 +267,8 @@ package citrus.core {
 				_screenWidth = stage.stageWidth;
 				_screenHeight = stage.stageHeight;
 			}
+			
+			onStageResize.dispatch(_screenWidth, _screenHeight);
 		}
 		
 		/**
