@@ -189,6 +189,23 @@ package citrus.math {
 			return aabbdata;
 		}
 		
+		/**
+		 * check if angle is between angle a and b
+		 * thanks to http://www.xarg.org/2010/06/is-an-angle-between-two-other-angles/
+		 */
+		public static function  angleBetween(angle:Number, a:Number, b:Number):Boolean {
+			var mod:Number = Math.PI * 2;
+			angle = (mod + (angle % mod)) % mod;
+			a = (mod * 100 + a) % mod;
+			b = (mod * 100 + b) % mod;
+			if (a < b)
+				return a <= angle && angle <= b;
+			return a <= angle || angle <= b;
+		}
+		
+		/**
+		 * return random int between min and max
+		 */
 		public static function randomInt(min:int,max:int):int
 		{
 			return Math.floor(Math.random() * (1 + max - min)) + min;
