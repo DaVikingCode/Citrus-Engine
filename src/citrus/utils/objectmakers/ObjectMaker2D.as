@@ -145,7 +145,6 @@ package citrus.utils.objectmakers {
 			rectSelection.width = tmx.tileWidth;
 			rectSelection.height = tmx.tileHeight;
 
-			var eachTile:BitmapData = new BitmapData(tmx.tileWidth, tmx.tileHeight, true, 0);
 			var eachTileRect:Rectangle = new Rectangle(0, 0, tmx.tileWidth, tmx.tileHeight);
 			var flipMatrix:Matrix = new Matrix;
 			
@@ -215,6 +214,7 @@ package citrus.utils.objectmakers {
 								
 								if (flipped_diagonally || flipped_horizontally || flipped_vertically)
 								{
+									var eachTile:BitmapData = new BitmapData(tmx.tileWidth, tmx.tileHeight, true, 0);
 									var eachTileFlipped:BitmapData = eachTile.clone();
 									eachTile.copyPixels(bmp.bitmapData, rectSelection, zeroPt);
 									
@@ -247,6 +247,7 @@ package citrus.utils.objectmakers {
 									
 									bmpData.copyPixels(eachTileFlipped, eachTileRect, pt);
 									
+									eachTile.dispose();
 									eachTileFlipped.dispose();
 								}
 								else
@@ -260,7 +261,6 @@ package citrus.utils.objectmakers {
 					bmp.bitmapData.dispose();
 				}
 				
-				eachTile.dispose();
 				bmpData.unlock();
 
 				bmpData.unlock();
