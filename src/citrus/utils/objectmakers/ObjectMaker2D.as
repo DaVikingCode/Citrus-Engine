@@ -8,13 +8,14 @@ package citrus.utils.objectmakers {
 	import citrus.utils.objectmakers.tmx.TmxObject;
 	import citrus.utils.objectmakers.tmx.TmxObjectGroup;
 	import citrus.utils.objectmakers.tmx.TmxTileSet;
-
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
+
 
 	/**
 	 * The ObjectMaker is a factory utility class for quickly and easily batch-creating a bunch of CitrusObjects.
@@ -120,6 +121,12 @@ package citrus.utils.objectmakers {
 		 */
 		public static function FromTiledMap(levelXML:XML, images:Array, addToCurrentState:Boolean = true):Array {
 
+			// Bits on the far end of the 32-bit global tile ID are used for tile flags
+			const FLIPPED_DIAGONALLY_FLAG:uint   = 0x20000000;
+			const FLIPPED_VERTICALLY_FLAG:uint   = 0x40000000;
+			const FLIPPED_HORIZONTALLY_FLAG:uint = 0x80000000;
+			const FLIPPED_MASK:uint = ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG);
+		
 			var ce:CitrusEngine = CitrusEngine.getInstance();
 			var params:Object;
 
@@ -134,14 +141,19 @@ package citrus.utils.objectmakers {
 
 			var mapTiles:Array;
 
-			var rectangleSelection:Rectangle = new Rectangle();
-			rectangleSelection.width = tmx.tileWidth;
-			rectangleSelection.height = tmx.tileHeight;
+			var rectSelection:Rectangle = new Rectangle;
+			rectSelection.width = tmx.tileWidth;
+			rectSelection.height = tmx.tileHeight;
 
-			var pt:Point = new Point();
-
+			var eachTile:BitmapData = new BitmapData(tmx.tileWidth, tmx.tileHeight, true, 0);
+			var eachTileRect:Rectangle = new Rectangle(0, 0, tmx.tileWidth, tmx.tileHeight);
+			var flipMatrix:Matrix = new Matrix;
+			
+			var pt:Point = new Point;
+			var zeroPt:Point = new Point;
+			
 			var mapTilesX:uint, mapTilesY:uint;
-
+			
 			for (var layer_num:uint = 0; layer_num < tmx.layers_ordered.length; ++layer_num) {
 				
 				var layer:String = tmx.layers_ordered[layer_num];
@@ -178,30 +190,78 @@ package citrus.utils.objectmakers {
 
 						for (var j:uint = 0; j < mapTilesY; ++j) {
 
-							if (mapTiles[i][j] != 0) {
+							var tileGID:uint = mapTiles[i][j];
+						
+							// Read out the flags
+							var flipped_horizontally:Boolean = (tileGID & FLIPPED_HORIZONTALLY_FLAG) != 0;
+							var flipped_vertically:Boolean   = (tileGID & FLIPPED_VERTICALLY_FLAG)   != 0;
+							var flipped_diagonally:Boolean   = (tileGID & FLIPPED_DIAGONALLY_FLAG)   != 0;
+							
+							// Clear the flags
+							tileGID &= FLIPPED_MASK;
+							
+							if (tileGID != 0) {
 
-								if (mapTiles[i][j] <= tileSet.numCols) {
-
-									rectangleSelection.x = mapTiles[i][j] * tmx.tileWidth - tmx.tileWidth;
-									rectangleSelection.y = 0;
-
-								} else {
-
-									var modulo:uint = mapTiles[i][j] % tileSet.numCols;
-
-									rectangleSelection.x = modulo * tmx.tileWidth - tmx.tileWidth;
-
-									rectangleSelection.y = Math.floor(mapTiles[i][j] / tileSet.numCols) * tmx.tileHeight;
-								}
-
+								var row:int = (tileGID - 1) / tileSet.numCols;
+								var col:int = (tileGID - 1) % tileSet.numCols;
+								
+								rectSelection.x = col * tmx.tileWidth;
+								rectSelection.y = row * tmx.tileHeight;
+								
 								pt.x = j * tmx.tileWidth;
 								pt.y = i * tmx.tileHeight;
-
-								bmpData.copyPixels(bmp.bitmapData, rectangleSelection, new Point(pt.x, pt.y));
+								
+								// Handle flipped tiles
+								
+								if (flipped_diagonally || flipped_horizontally || flipped_vertically)
+								{
+									var eachTileFlipped:BitmapData = eachTile.clone();
+									eachTile.copyPixels(bmp.bitmapData, rectSelection, zeroPt);
+									
+									flipMatrix.identity();
+									
+									if (flipped_diagonally)
+									{
+										if (flipped_vertically) {
+											flipMatrix.rotate( -Math.PI / 2);
+											flipMatrix.ty = eachTile.height;
+										} else {
+											flipMatrix.rotate(Math.PI / 2);
+											flipMatrix.tx = eachTile.width;
+										}
+									}
+									else
+									{
+										if (flipped_horizontally) {
+											flipMatrix.tx = eachTile.width;
+											flipMatrix.a = -1;
+										}
+										
+										if (flipped_vertically) {
+											flipMatrix.ty = eachTile.height;
+											flipMatrix.d = -1;
+										}
+									}
+									
+									eachTileFlipped.draw(eachTile, flipMatrix);
+									
+									bmpData.copyPixels(eachTileFlipped, eachTileRect, pt);
+									
+									eachTileFlipped.dispose();
+								}
+								else
+								{
+									bmpData.copyPixels(bmp.bitmapData, rectSelection, pt);
+								}
 							}
 						}
 					}
+					
+					bmp.bitmapData.dispose();
 				}
+				
+				eachTile.dispose();
+				bmpData.unlock();
 
 				bmpData.unlock();
 
