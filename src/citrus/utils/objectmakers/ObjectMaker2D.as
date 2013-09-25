@@ -263,8 +263,6 @@ package citrus.utils.objectmakers {
 				
 				bmpData.unlock();
 
-				bmpData.unlock();
-
 				var bmpFinal:Bitmap = new Bitmap(bmpData);
 				bmpFinal.smoothing = useBmpSmoothing;
 				
