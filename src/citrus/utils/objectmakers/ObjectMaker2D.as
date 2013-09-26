@@ -149,7 +149,6 @@ package citrus.utils.objectmakers {
 			var flipMatrix:Matrix = new Matrix;
 			
 			var pt:Point = new Point;
-			var zeroPt:Point = new Point;
 			
 			var mapTilesX:uint, mapTilesY:uint;
 			
