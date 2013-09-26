@@ -215,15 +215,13 @@ package citrus.utils.objectmakers {
 								if (flipped_diagonally || flipped_horizontally || flipped_vertically)
 								{
 									var eachTile:BitmapData = new BitmapData(tmx.tileWidth, tmx.tileHeight, true, 0);
-									var eachTileFlipped:BitmapData = eachTile.clone();
-									eachTile.copyPixels(bmp.bitmapData, tileSelection, zeroPt);
 									
-									var halfTileW:Number = eachTile.width  * 0.5;
-									var halfTileH:Number = eachTile.height * 0.5;
+									var tileCenterX:Number = tileSelection.x + tileSelection.width  * 0.5;
+									var tileCenterY:Number = tileSelection.y + tileSelection.height * 0.5;
 									var _90degInRad:Number = Math.PI * 0.5;
 									
 									flipMatrix.identity();
-									flipMatrix.translate( -halfTileW, -halfTileH);
+									flipMatrix.translate(-tileCenterX, -tileCenterY);
 									
 									if (flipped_diagonally)
 									{
@@ -249,14 +247,14 @@ package citrus.utils.objectmakers {
 											flipMatrix.scale(1, -1);
 									}
 									
-									flipMatrix.translate(halfTileW, halfTileH);
+									flipMatrix.translate(tileCenterX, tileCenterY);
+									flipMatrix.translate(-tileSelection.x, -tileSelection.y);
 									
-									eachTileFlipped.draw(eachTile, flipMatrix);
+									eachTile.draw(bmp.bitmapData, flipMatrix, null, null, eachTileRect);
 									
-									bmpData.copyPixels(eachTileFlipped, eachTileRect, pt);
+									bmpData.copyPixels(eachTile, eachTileRect, pt);
 									
 									eachTile.dispose();
-									eachTileFlipped.dispose();
 								}
 								else
 								{
@@ -265,8 +263,6 @@ package citrus.utils.objectmakers {
 							}
 						}
 					}
-					
-					bmp.bitmapData.dispose();
 				}
 				
 				bmpData.unlock();
