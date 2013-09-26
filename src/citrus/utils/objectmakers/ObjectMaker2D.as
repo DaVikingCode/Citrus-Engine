@@ -200,7 +200,7 @@ package citrus.utils.objectmakers {
 							tileGID &= FLIPPED_MASK;
 							
 							if (tileGID != 0) {
-trace(flipped_horizontally, flipped_vertically, flipped_diagonally);
+								
 								var row:int = (tileGID - 1) / tileSet.numCols;
 								var col:int = (tileGID - 1) % tileSet.numCols;
 								
