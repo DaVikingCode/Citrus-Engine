@@ -141,9 +141,9 @@ package citrus.utils.objectmakers {
 
 			var mapTiles:Array;
 
-			var rectSelection:Rectangle = new Rectangle;
-			rectSelection.width = tmx.tileWidth;
-			rectSelection.height = tmx.tileHeight;
+			var tileSelection:Rectangle = new Rectangle;
+			tileSelection.width = tmx.tileWidth;
+			tileSelection.height = tmx.tileHeight;
 
 			var eachTileRect:Rectangle = new Rectangle(0, 0, tmx.tileWidth, tmx.tileHeight);
 			var flipMatrix:Matrix = new Matrix;
@@ -200,12 +200,12 @@ package citrus.utils.objectmakers {
 							tileGID &= FLIPPED_MASK;
 							
 							if (tileGID != 0) {
-
+trace(flipped_horizontally, flipped_vertically, flipped_diagonally);
 								var row:int = (tileGID - 1) / tileSet.numCols;
 								var col:int = (tileGID - 1) % tileSet.numCols;
 								
-								rectSelection.x = col * tmx.tileWidth;
-								rectSelection.y = row * tmx.tileHeight;
+								tileSelection.x = col * tmx.tileWidth;
+								tileSelection.y = row * tmx.tileHeight;
 								
 								pt.x = j * tmx.tileWidth;
 								pt.y = i * tmx.tileHeight;
@@ -216,32 +216,40 @@ package citrus.utils.objectmakers {
 								{
 									var eachTile:BitmapData = new BitmapData(tmx.tileWidth, tmx.tileHeight, true, 0);
 									var eachTileFlipped:BitmapData = eachTile.clone();
-									eachTile.copyPixels(bmp.bitmapData, rectSelection, zeroPt);
+									eachTile.copyPixels(bmp.bitmapData, tileSelection, zeroPt);
+									
+									var halfTileW:Number = eachTile.width  * 0.5;
+									var halfTileH:Number = eachTile.height * 0.5;
+									var _90degInRad:Number = Math.PI * 0.5;
 									
 									flipMatrix.identity();
+									flipMatrix.translate( -halfTileW, -halfTileH);
 									
 									if (flipped_diagonally)
 									{
-										if (flipped_vertically) {
-											flipMatrix.rotate( -Math.PI / 2);
-											flipMatrix.ty = eachTile.height;
-										} else {
-											flipMatrix.rotate(Math.PI / 2);
-											flipMatrix.tx = eachTile.width;
+										if (flipped_horizontally)
+										{
+											flipMatrix.rotate(_90degInRad);
+											if (flipped_vertically)
+												flipMatrix.scale(1, -1);
+										}
+										else
+										{
+											flipMatrix.rotate(-_90degInRad);
+											if (!flipped_vertically)
+												flipMatrix.scale(1, -1);
 										}
 									}
 									else
 									{
-										if (flipped_horizontally) {
-											flipMatrix.tx = eachTile.width;
-											flipMatrix.a = -1;
-										}
-										
-										if (flipped_vertically) {
-											flipMatrix.ty = eachTile.height;
-											flipMatrix.d = -1;
-										}
+										if (flipped_horizontally)
+											flipMatrix.scale(-1, 1);
+											
+										if (flipped_vertically)
+											flipMatrix.scale(1, -1);
 									}
+									
+									flipMatrix.translate(halfTileW, halfTileH);
 									
 									eachTileFlipped.draw(eachTile, flipMatrix);
 									
@@ -252,7 +260,7 @@ package citrus.utils.objectmakers {
 								}
 								else
 								{
-									bmpData.copyPixels(bmp.bitmapData, rectSelection, pt);
+									bmpData.copyPixels(bmp.bitmapData, tileSelection, pt);
 								}
 							}
 						}
