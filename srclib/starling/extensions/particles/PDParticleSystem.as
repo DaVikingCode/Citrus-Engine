@@ -86,11 +86,12 @@ package starling.extensions.particles
             // for performance reasons, the random variances are calculated inline instead
             // of calling a function
             
-            var lifespan:Number = mLifespan + mLifespanVariance * (Math.random() * 2.0 - 1.0); 
-            if (lifespan <= 0.0) return;
+            var lifespan:Number = mLifespan + mLifespanVariance * (Math.random() * 2.0 - 1.0);
             
             particle.currentTime = 0.0;
-            particle.totalTime = lifespan;
+            particle.totalTime = lifespan > 0.0 ? lifespan : 0.0;
+            
+            if (lifespan <= 0.0) return;
             
             particle.x = mEmitterX + mEmitterXVariance * (Math.random() * 2.0 - 1.0);
             particle.y = mEmitterY + mEmitterYVariance * (Math.random() * 2.0 - 1.0);
@@ -253,6 +254,16 @@ package starling.extensions.particles
             mBlendFactorSource = getBlendFunc(config.blendFuncSource);
             mBlendFactorDestination = getBlendFunc(config.blendFuncDestination);
             
+            // compatibility with future Particle Designer versions
+            // (might fix some of the uppercase/lowercase typos)
+            
+            if (isNaN(mEndSizeVariance))
+                mEndSizeVariance = getFloatValue(config.finishParticleSizeVariance);
+            if (isNaN(mLifespan))
+                mLifespan = Math.max(0.01, getFloatValue(config.particleLifespan));
+            if (isNaN(mLifespanVariance))
+                mLifespanVariance = getFloatValue(config.particleLifeSpanVariance);
+            
             function getIntValue(element:XMLList):int
             {
                 return parseInt(element.attribute("value"));
@@ -402,4 +413,3 @@ package starling.extensions.particles
         public function set endColorVariance(value:ColorArgb):void { mEndColorVariance = value; }
     }
 }
-

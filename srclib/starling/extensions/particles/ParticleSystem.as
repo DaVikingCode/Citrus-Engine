@@ -100,7 +100,6 @@ package starling.extensions.particles
             
             if (mVertexBuffer) mVertexBuffer.dispose();
             if (mIndexBuffer)  mIndexBuffer.dispose();
-            if (mProgram)      mProgram.dispose();
             
             super.dispose();
         }
@@ -182,24 +181,25 @@ package starling.extensions.particles
             mIndexBuffer.uploadFromVector(mIndices, 0, newCapacity * 6);
         }
         
-        /** Starts the sysytem for a certain time. @default infinite time */
+        /** Starts the emitter for a certain time. @default infinite time */
         public function start(duration:Number=Number.MAX_VALUE):void
         {
             if (mEmissionRate != 0)                
                 mEmissionTime = duration;
         }
         
-        /** Stops the system and removes all existing particles. */
-        public function stop():void
+        /** Stops emitting new particles. Depending on 'clearParticles', the existing particles
+         *  will either keep animating until they die or will be removed right away. */
+        public function stop(clearParticles:Boolean=false):void
         {
             mEmissionTime = 0.0;
-            mNumParticles = 0;
+            if (clearParticles) clear();
         }
         
-        /** Pauses the system; when you 'start' again, it will continue from the old state. */
-        public function pause():void
+        /** Removes all currently active particles. */
+        public function clear():void
         {
-            mEmissionTime = 0.0;
+            mNumParticles = 0;
         }
         
         /** Returns an empty rectangle at the particle system's position. Calculating the
@@ -246,7 +246,7 @@ package starling.extensions.particles
                     
                     --mNumParticles;
                     
-                    if (mNumParticles == 0)
+                    if (mNumParticles == 0 && mEmissionTime == 0)
                         dispatchEvent(new Event(Event.COMPLETE));
                 }
             }
@@ -265,9 +265,15 @@ package starling.extensions.particles
                         if (mNumParticles == capacity)
                             raiseCapacity(capacity);
                     
-                        particle = mParticles[int(mNumParticles++)] as Particle;
+                        particle = mParticles[mNumParticles] as Particle;
                         initParticle(particle);
-                        advanceParticle(particle, mFrameTime);
+                        
+                        // particle might be dead at birth
+                        if (particle.totalTime > 0.0)
+                        {
+                            advanceParticle(particle, mFrameTime);
+                            ++mNumParticles
+                        }
                     }
                     
                     mFrameTime -= timeBetweenParticles;
@@ -301,10 +307,7 @@ package starling.extensions.particles
                 yOffset = textureHeight * particle.scale >> 1;
                 
                 for (var j:int=0; j<4; ++j)
-                {
-                    mVertexData.setColor(vertexID+j, color);
-                    mVertexData.setAlpha(vertexID+j, alpha);
-                }
+                    mVertexData.setColorAndAlpha(vertexID+j, color, alpha);
                 
                 if (rotation)
                 {
@@ -375,45 +378,68 @@ package starling.extensions.particles
             context.setVertexBufferAt(2, null);
         }
         
+        /** Initialize the <tt>ParticleSystem</tt> with particles distributed randomly throughout
+         *  their lifespans. */
+        public function populate(count:int):void
+        {
+            count = Math.min(count, mMaxCapacity - mNumParticles);
+            
+            if (mNumParticles + count > capacity)
+                raiseCapacity(mNumParticles + count - capacity);
+            
+            var p:Particle;
+            for (var i:int=0; i<count; i++)
+            {
+                p = mParticles[mNumParticles+i];
+                initParticle(p);
+                advanceParticle(p, Math.random() * p.totalTime);
+            }
+            
+            mNumParticles += count;
+        }
+        
         // program management
         
         private function createProgram():void
         {
             var mipmap:Boolean = mTexture.mipMapping;
             var textureFormat:String = mTexture.format;
-            var context:Context3D = Starling.context;
+            var programName:String = "ext.ParticleSystem." + textureFormat + (mipmap ? "+mm" : "");
             
-            if (context == null) throw new MissingContextError();
-            if (mProgram) mProgram.dispose();
+            mProgram = Starling.current.getProgram(programName);
             
-            // create vertex and fragment programs from assembly.
-            
-            var textureOptions:String = "2d, clamp, linear, " + (mipmap ? "mipnearest" : "mipnone");
-            
-            if (textureFormat == Context3DTextureFormat.COMPRESSED)
-                textureOptions += ", dxt1";
-            else if (textureFormat == "compressedAlpha")
-                textureOptions += ", dxt5";
-            
-            var vertexProgramCode:String =
-                "m44 op, va0, vc0 \n" + // 4x4 matrix transform to output clipspace
-                "mul v0, va1, vc4 \n" + // multiply color with alpha and pass to fragment program
-                "mov v1, va2      \n";  // pass texture coordinates to fragment program
-            
-            var fragmentProgramCode:String =
-                "tex ft1, v1, fs0 <" + textureOptions + "> \n" + // sample texture 0
-                "mul oc, ft1, v0";                               // multiply color with texel color
-            
-            var vertexProgramAssembler:AGALMiniAssembler = new AGALMiniAssembler();
-            vertexProgramAssembler.assemble(Context3DProgramType.VERTEX, vertexProgramCode);
-            
-            var fragmentProgramAssembler:AGALMiniAssembler = new AGALMiniAssembler();
-            fragmentProgramAssembler.assemble(Context3DProgramType.FRAGMENT, fragmentProgramCode);
+            if (mProgram == null)
+            {
+                var textureOptions:String = "2d, clamp, linear, " + (mipmap ? "mipnearest" : "mipnone");
                 
-            mProgram = context.createProgram();
-            mProgram.upload(vertexProgramAssembler.agalcode, fragmentProgramAssembler.agalcode);
+                if (textureFormat == Context3DTextureFormat.COMPRESSED)
+                    textureOptions += ", dxt1";
+                else if (textureFormat == "compressedAlpha")
+                    textureOptions += ", dxt5";
+                
+                var vertexProgramCode:String =
+                    "m44 op, va0, vc0 \n" + // 4x4 matrix transform to output clipspace
+                    "mul v0, va1, vc4 \n" + // multiply color with alpha and pass to fragment program
+                    "mov v1, va2      \n";  // pass texture coordinates to fragment program
+                
+                var fragmentProgramCode:String =
+                    "tex ft1, v1, fs0 <" + textureOptions + "> \n" + // sample texture 0
+                    "mul oc, ft1, v0";                               // multiply color with texel color
+                
+                var vertexProgramAssembler:AGALMiniAssembler = new AGALMiniAssembler();
+                vertexProgramAssembler.assemble(Context3DProgramType.VERTEX, vertexProgramCode);
+                
+                var fragmentProgramAssembler:AGALMiniAssembler = new AGALMiniAssembler();
+                fragmentProgramAssembler.assemble(Context3DProgramType.FRAGMENT, fragmentProgramCode);
+                
+                Starling.current.registerProgram(programName, 
+                    vertexProgramAssembler.agalcode, fragmentProgramAssembler.agalcode);
+                
+                mProgram = Starling.current.getProgram(programName);
+            }
         }
         
+        public function get isEmitting():Boolean { return mEmissionTime > 0 && mEmissionRate > 0; }
         public function get capacity():int { return mVertexData.numVertices / 4; }
         public function get numParticles():int { return mNumParticles; }
         

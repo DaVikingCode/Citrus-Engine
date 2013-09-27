@@ -1,6 +1,8 @@
 V3.1.8, Work In Progress
 ------------------------
-- Nape updated on 2.0.12.
+- Starling updated on 1.4
+- Feathers updated on 1.1.1
+- Nape updated on 2.0.12
 - Input : removed backwards compatibility, InputActions store the time (in frames) they spent in the Input system
 - MathVector : critical bug fixes (rotate, angle) and new methods (dot product, normalize, copyFrom, setTo)
 - Camera : AABB rectangle is accessible using camera.getRect()
