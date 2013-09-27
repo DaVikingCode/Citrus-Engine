@@ -2,11 +2,9 @@ package citrus.physics.nape {
 
 	import citrus.core.CitrusEngine;
 	import citrus.physics.IDebugView;
-
-	import nape.util.ShapeDebug;
-
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import nape.util.ShapeDebug;
 
 	/**
 	 * This displays Nape's debug graphics. It does so properly through Citrus Engine's view manager. Nape by default

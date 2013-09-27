@@ -9,12 +9,18 @@ package citrus.view.starlingview {
 	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
-
-	import dragonBones.Armature;
 	import dragonBones.animation.WorldClock;
-
+	import dragonBones.Armature;
+	import flash.display.Bitmap;
+	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.events.IOErrorEvent;
+	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
+	import flash.utils.Dictionary;
+	import flash.utils.getDefinitionByName;
 	import spine.starling.SkeletonAnimationSprite;
-
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -27,15 +33,9 @@ package citrus.view.starlingview {
 	import starling.textures.TextureAtlas;
 	import starling.utils.deg2rad;
 
-	import flash.display.Bitmap;
-	import flash.display.Loader;
-	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	import flash.net.URLRequest;
-	import flash.system.ApplicationDomain;
-	import flash.system.LoaderContext;
-	import flash.utils.Dictionary;
-	import flash.utils.getDefinitionByName;
+
+
+
 
 	/**
 	 * This is the class that all art objects use for the StarlingView state view. If you are using the StarlingView (as opposed to the blitting view, for instance),
@@ -352,18 +352,10 @@ package citrus.view.starlingview {
 					scaleX = -scaleX;
 			}
 
-			// The position = object position + (camera position * inverse parallax)
-
-			var physicsDebugArt:flash.display.DisplayObject;
-
 			if (_content is StarlingPhysicsDebugView) {
 
+				var physicsDebugArt:flash.display.Sprite = (_content as StarlingPhysicsDebugView).debugView as flash.display.Sprite;
 				(_content as StarlingPhysicsDebugView).update();
-
-				// Box2D & Nape debug views are not on the Starling display list, but on the classical flash display list.
-				// So we need to move their views here, not in the StarlingView.
-				physicsDebugArt = (Starling.current.nativeStage.getChildByName("debug view") as flash.display.DisplayObject);
-
 				physicsDebugArt.transform.matrix = stateView.camera.transformMatrix;
 				physicsDebugArt.visible = _citrusObject.visible;
 

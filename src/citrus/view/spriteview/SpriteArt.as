@@ -11,10 +11,8 @@ package citrus.view.spriteview
 	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
-
-	import dragonBones.Armature;
 	import dragonBones.animation.WorldClock;
-
+	import dragonBones.Armature;
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.FrameLabel;
@@ -27,6 +25,8 @@ package citrus.view.spriteview
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.utils.getDefinitionByName;
+
+
 
 	/**
 	 * This is the class that all art objects use for the SpriteView state view. If you are using the SpriteView (as opposed to the blitting view, for instance),
@@ -268,7 +268,10 @@ package citrus.view.spriteview
 			
 			if (_content is IDebugView) {
 				
+				var physicsDebugArt:flash.display.Sprite = (_content as IDebugView) as flash.display.Sprite;
 				(_content as IDebugView).update();
+				physicsDebugArt.transform.matrix = stateView.camera.transformMatrix;
+				physicsDebugArt.visible = _citrusObject.visible;
 				
 			} else if (_physicsComponent) {
 				

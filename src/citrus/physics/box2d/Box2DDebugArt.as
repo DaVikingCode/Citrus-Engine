@@ -1,12 +1,10 @@
 package citrus.physics.box2d {
 
 	import Box2D.Dynamics.b2DebugDraw;
-
 	import citrus.core.CitrusEngine;
 	import citrus.physics.IDebugView;
-
 	import flash.display.Sprite;
-	
+
 	/**
 	 * This displays Box2D's debug graphics. It does so properly through Citrus Engine's view manager. Box2D by default
 	 * sets visible to false with an alpha of 0.5, so you'll need to set the Box2D object's visible property to true in order to see the debug graphics. 

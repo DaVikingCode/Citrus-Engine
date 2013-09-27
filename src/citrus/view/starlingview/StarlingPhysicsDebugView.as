@@ -34,8 +34,8 @@ package citrus.view.starlingview {
 			_debugView.debugMode(flags);
 		}
 
-		public function get debugView():flash.display.Sprite {
-			return _debugView as flash.display.Sprite;
+		public function get debugView():IDebugView {
+			return _debugView;
 		}
 	}
 }
