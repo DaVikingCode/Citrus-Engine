@@ -2,6 +2,7 @@ package citrus.view.starlingview {
 
 	import citrus.core.CitrusEngine;
 	import citrus.math.MathUtils;
+	import citrus.utils.Mobile;
 	import citrus.view.ISpriteView;
 
 	import starling.display.Image;
@@ -12,6 +13,7 @@ package citrus.view.starlingview {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
+	import flash.display3D.Context3DTextureFormat;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -280,7 +282,7 @@ package citrus.view.starlingview {
 				if (atf) {
 					tile.myTexture = Texture.fromAtfData(tile.myATF);
 				} else {
-					tile.myTexture = Texture.fromBitmap(tile.myBitmap, false);
+					tile.myTexture = Texture.fromBitmap(tile.myBitmap, false, false, 1, Mobile.isIOS() ? Context3DTextureFormat.BGRA_PACKED : Context3DTextureFormat.COMPRESSED_ALPHA);
 				}
 				
 				var img:Image = new Image(tile.myTexture);
