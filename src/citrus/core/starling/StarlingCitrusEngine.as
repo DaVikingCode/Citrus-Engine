@@ -34,12 +34,6 @@ package citrus.core.starling {
 				if (_starling) {
 
 					_starling.stage.removeChild(_state as StarlingState);
-
-					// Remove Box2D or Nape debug view
-					var debugView:DisplayObject = _starling.nativeStage.getChildByName("debug view");
-					if (debugView)
-						_starling.nativeStage.removeChild(debugView);
-
 					_starling.root.dispose();
 					_starling.dispose();
 				}
@@ -108,11 +102,6 @@ package citrus.core.starling {
 
 							_state.destroy();
 							_starling.stage.removeChild(_state as StarlingState, true);
-
-							// Remove Box2D or Nape debug view
-							var debugView:DisplayObject = _starling.nativeStage.getChildByName("debug view");
-							if (debugView)
-								_starling.nativeStage.removeChild(debugView);
 
 						} else {
 

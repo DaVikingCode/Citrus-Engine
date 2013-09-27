@@ -4,6 +4,7 @@ package citrus.view.starlingview {
 	import citrus.core.CitrusObject;
 	import citrus.core.IState;
 	import citrus.physics.APhysicsEngine;
+	import citrus.physics.IDebugView;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ACitrusCamera;
 	import citrus.view.ACitrusView;
@@ -163,10 +164,9 @@ package citrus.view.starlingview {
 				
 				if (_view is SkeletonAnimationSprite)
 					Starling.juggler.remove(_view as SkeletonAnimationSprite);
-				
+					
 				_content.dispose();
 			}
-
 		}
 
 		/**

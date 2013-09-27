@@ -100,7 +100,6 @@ package citrus.view.spriteview
 					removeChild(_content.loaderInfo.loader);
 				 else if (_content && _content.parent)
 					removeChild(_content.parent);
-					
 			} else {
 				
 				CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
