@@ -237,11 +237,6 @@ package citrus.utils.objectmakers {
 											if (!flipped_vertically)
 												flipMatrix.scale(1, -1);
 										}
-										
-										// TODO: need to handle when tiles are irregular (say, 32x64).
-										// There is a bug in Tiled where you cant rotate irregular tiles properly.
-										// Lets wait for a fix, better to test. :)
-										// https://github.com/bjorn/tiled/issues/526
 									}
 									else
 									{
