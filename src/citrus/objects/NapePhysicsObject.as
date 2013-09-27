@@ -85,6 +85,8 @@ package citrus.objects {
 			_nape.space.bodies.remove(_body);
 			_nape = null;
 			
+			_body.userData.myData = null;
+			
 			super.destroy();
 		}
 		
