@@ -1,8 +1,10 @@
 package citrus.view.starlingview {
 
+	import citrus.utils.Mobile;
+	import flash.display3D.Context3DTextureFormat;
+	import citrus.utils.AssetCache;
 	import citrus.core.CitrusEngine;
 	import citrus.math.MathUtils;
-	import citrus.utils.Mobile;
 	import citrus.view.ISpriteView;
 
 	import starling.display.Image;
@@ -13,7 +15,6 @@ package citrus.view.starlingview {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
-	import flash.display3D.Context3DTextureFormat;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -55,6 +56,8 @@ package citrus.view.starlingview {
 		// test for maximum memory use
 		private var maxInRam:Number = 0;
 		
+		private var assetCache:AssetCache;
+		
 		
 		public function StarlingTileSystem(images:*, bodyToFollow:ISpriteView = null) {
 			
@@ -69,6 +72,8 @@ package citrus.view.starlingview {
 			} else {
 				trace("StarlingTileSystem images source error!");
 			}
+			
+			assetCache = new AssetCache();
 		}
 		
 		public function init():void {
@@ -102,7 +107,7 @@ package citrus.view.starlingview {
 		* 
 		*/
 		private function tilesFromMovieclip(mc:MovieClip):void {
-			
+						
 			//trace("getting from movieclip");
 			var mcBitmapData:BitmapData = new BitmapData(mc.width, mc.height, true, 0x000000);
 			mcBitmapData.draw(mc);
@@ -136,7 +141,7 @@ package citrus.view.starlingview {
 			}
 			
 			_imagesArray = array;
-			
+
 			tilesFromArray(_imagesArray);
 		}
 		
@@ -198,13 +203,12 @@ package citrus.view.starlingview {
 							}
 						}
 						
-						_liveTiles.push(tile);
-						
-						
+						_liveTiles.push(tile);						
 						
 					}
 				}
 			}
+
 		}
 		
 		private function onTimer(e:TimerEvent = null):void {
@@ -215,7 +219,6 @@ package citrus.view.starlingview {
 			var numInRam:uint = 0;
 			var viewRootX:Number = StarlingView(_ce.state.view).viewRoot.x;
 			var viewRootY:Number = StarlingView(_ce.state.view).viewRoot.y;
-			
 			var ll:uint = _liveTiles.length;
 			for (var t:uint = 0; t < ll; t ++) {
 				// get a tile
@@ -276,13 +279,29 @@ package citrus.view.starlingview {
 		
 		// loops through all tiles and loads into memory
 		public function loadAll():void {
-			
 			for each (var tile:StarlingTile in _liveTiles) {
 				tile.isInRAM = true;
 				if (atf) {
 					tile.myTexture = Texture.fromAtfData(tile.myATF);
 				} else {
-					tile.myTexture = Texture.fromBitmap(tile.myBitmap, false, false, 1, Mobile.isIOS() ? Context3DTextureFormat.BGRA_PACKED : Context3DTextureFormat.COMPRESSED_ALPHA);
+					// if we have used this botmap before, then just reuse the texture we already created, otherwise, create a new texture from thie bitmap
+					if (assetCache.itemExists(tile.myBitmap)) {
+						tile.myTexture = assetCache.getItem(tile.myBitmap);
+					} else {
+						
+						var compression:String = Context3DTextureFormat.COMPRESSED_ALPHA;
+						
+						if (Mobile.isAndroid() || Mobile.isIOS()) {
+							if (Context3DTextureFormat["BGRA_PACKED"] != null) {
+								compression = Context3DTextureFormat.BGRA_PACKED;
+							} else {
+								compression = Context3DTextureFormat.BGRA;
+							}
+						}
+						
+						tile.myTexture = Texture.fromBitmap(tile.myBitmap, false, false, 1, compression);
+						assetCache.add(tile.myBitmap, tile.myTexture);
+					}
 				}
 				
 				var img:Image = new Image(tile.myTexture);
@@ -329,6 +348,8 @@ package citrus.view.starlingview {
 			_imagesMC = null;
 			_liveTiles.length = 0;
 			_liveTiles = null;
+			
+			assetCache.reset();
 		}
 		
 	}
