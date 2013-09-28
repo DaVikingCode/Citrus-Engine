@@ -10,18 +10,12 @@ package citrus.view.starlingview {
 	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
-	import dragonBones.animation.WorldClock;
+
 	import dragonBones.Armature;
-	import flash.display.Bitmap;
-	import flash.display.Loader;
-	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	import flash.net.URLRequest;
-	import flash.system.ApplicationDomain;
-	import flash.system.LoaderContext;
-	import flash.utils.Dictionary;
-	import flash.utils.getDefinitionByName;
+	import dragonBones.animation.WorldClock;
+
 	import spine.starling.SkeletonAnimationSprite;
+
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -34,9 +28,15 @@ package citrus.view.starlingview {
 	import starling.textures.TextureAtlas;
 	import starling.utils.deg2rad;
 
-
-
-
+	import flash.display.Bitmap;
+	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.events.IOErrorEvent;
+	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
+	import flash.utils.Dictionary;
+	import flash.utils.getDefinitionByName;
 
 	/**
 	 * This is the class that all art objects use for the StarlingView state view. If you are using the StarlingView (as opposed to the blitting view, for instance),
@@ -61,7 +61,7 @@ package citrus.view.starlingview {
 	public class StarlingArt extends Sprite implements ICitrusArt {
 
 		// The reference to your art via the view.
-		private var _content:DisplayObject;
+		private var _content:starling.display.DisplayObject;
 
 		/**
 		 * For objects that are loaded at runtime, this is the object that load them. Then, once they are loaded, the content
@@ -115,7 +115,7 @@ package citrus.view.starlingview {
 		 * (not embedded), the content property will not be available immediately. You can listen to the COMPLETE event on the loader
 		 * (or rather, the loader's contentLoaderInfo) if you need to know exactly when the graphic will be loaded.
 		 */
-		public function get content():DisplayObject {
+		public function get content():starling.display.DisplayObject {
 			return _content;
 		}
 
@@ -126,9 +126,9 @@ package citrus.view.starlingview {
 			else
 				CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
 
-			if (_content is MovieClip) {
+			if (_content is starling.display.MovieClip) {
 
-				Starling.juggler.remove(_content as MovieClip);
+				Starling.juggler.remove(_content as starling.display.MovieClip);
 				if (_textureAtlas)
 					_textureAtlas.dispose();
 				_content.dispose();
@@ -160,7 +160,7 @@ package citrus.view.starlingview {
 				(_view as Armature).dispose();
 				_content.dispose();
 
-			} else if (_content is DisplayObject) {
+			} else if (_content is starling.display.DisplayObject) {
 				
 				if (_view is SkeletonAnimationSprite)
 					Starling.juggler.remove(_view as SkeletonAnimationSprite);
@@ -225,9 +225,8 @@ package citrus.view.starlingview {
 				_viewHasChanged = true;
 				destroy();
 			}
-
-			_view = value;
-			
+			_view = value;			
+			var tmpObj:*;
 			if (_view) {
 				if (_view is String) {
 					// view property is a path to an image?
@@ -242,25 +241,52 @@ package citrus.view.starlingview {
 					// view property is a fully qualified class name in string form. 
 					else {
 						var artClass:Class = getDefinitionByName(classString) as Class;
-						_content = new artClass();
+						tmpObj = new artClass();
+						if (tmpObj is flash.display.DisplayObject) {
+							_animation = "";
+							_textureAtlas = DynamicAtlas.fromMovieClipContainer(tmpObj, 1, 0, true, true);
+							_content = new starling.display.MovieClip(_textureAtlas.getTextures(animation), 30);
+							Starling.juggler.add(_content as starling.display.MovieClip);
+						} else {
+							_content = new artClass();
+						}
 						moveRegistrationPoint(_citrusObject.registration);
 						addChild(_content);
 					}
 
 				} else if (_view is Class) {
-					// view property is a class reference
-					_content = new citrusObject.view();
+					
+					tmpObj = new citrusObject.view();
+					if (tmpObj is flash.display.DisplayObject) {
+						_animation = "";
+						_textureAtlas = DynamicAtlas.fromMovieClipContainer(tmpObj, 1, 0, true, true);
+						_content = new starling.display.MovieClip(_textureAtlas.getTextures(animation), 30);
+						Starling.juggler.add(_content as starling.display.MovieClip);
+						
+					} else {
+						// view property is a class reference
+						_content = new citrusObject.view();						
+					}
+					moveRegistrationPoint(_citrusObject.registration);
+					addChild(_content);
+				
+
+				} else if (_view is flash.display.MovieClip) {
+					_animation = "";
+					_textureAtlas = DynamicAtlas.fromMovieClipContainer(_view, 1, 0, true, true);
+					_content = new starling.display.MovieClip(_textureAtlas.getTextures(animation), 30);
+					Starling.juggler.add(_content as starling.display.MovieClip);
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(_content);
 
-				} else if (_view is DisplayObject) {
+				} else if (_view is starling.display.DisplayObject) {
 					// view property is a Display Object reference
 					_content = _view;
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(_content);
 
-					if (_view is MovieClip)
-						Starling.juggler.add(_content as MovieClip);
+					if (_view is starling.display.MovieClip)
+						Starling.juggler.add(_content as starling.display.MovieClip);
 					else if (_view is PDParticleSystem)
 						Starling.juggler.add(_content as PDParticleSystem);
 					else if (_view is SkeletonAnimationSprite)
@@ -290,7 +316,7 @@ package citrus.view.starlingview {
 					_content = new Quad(_citrusObject.width, _citrusObject.height, _view);
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(_content);
-
+					
 				} else
 					throw new Error("StarlingArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
 
@@ -315,14 +341,14 @@ package citrus.view.starlingview {
 
 				var animLoop:Boolean = _loopAnimation[_animation];
 
-				if (_content is MovieClip && _textureAtlas) {
-					Starling.juggler.remove(_content as MovieClip);
+				if (_content is starling.display.MovieClip && _textureAtlas) {
+					Starling.juggler.remove(_content as starling.display.MovieClip);
 					removeChild(_content);
-					_content = new MovieClip(_textureAtlas.getTextures(_animation), 30);
+					_content = new starling.display.MovieClip(_textureAtlas.getTextures(_animation), 30);
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(_content);
-					Starling.juggler.add(_content as MovieClip);
-					(_content as MovieClip).loop = animLoop;
+					Starling.juggler.add(_content as starling.display.MovieClip);
+					(_content as starling.display.MovieClip).loop = animLoop;
 
 				} else if (_content is AnimationSequence)
 					(_content as AnimationSequence).changeAnimation(_animation, animLoop);
@@ -340,7 +366,6 @@ package citrus.view.starlingview {
 		}
 
 		public function update(stateView:ACitrusView):void {
-
 			if (_citrusObject.inverted) {
 
 				if (scaleX > 0)
@@ -352,10 +377,18 @@ package citrus.view.starlingview {
 					scaleX = -scaleX;
 			}
 
+			// The position = object position + (camera position * inverse parallax)
+
+			var physicsDebugArt:flash.display.DisplayObject;
+
 			if (_content is StarlingPhysicsDebugView) {
 
-				var physicsDebugArt:flash.display.Sprite = (_content as StarlingPhysicsDebugView).debugView as flash.display.Sprite;
 				(_content as StarlingPhysicsDebugView).update();
+
+				// Box2D & Nape debug views are not on the Starling display list, but on the classical flash display list.
+				// So we need to move their views here, not in the StarlingView.
+				physicsDebugArt = (Starling.current.nativeStage.getChildByName("debug view") as flash.display.DisplayObject);
+
 				physicsDebugArt.transform.matrix = stateView.camera.transformMatrix;
 				physicsDebugArt.visible = _citrusObject.visible;
 
@@ -392,8 +425,8 @@ package citrus.view.starlingview {
 		 */
 		private function _pauseAnimation(value:Boolean):void {
 
-			if (_content is MovieClip)
-				value ? Starling.juggler.add(_content as MovieClip) : Starling.juggler.remove(_content as MovieClip);
+			if (_content is starling.display.MovieClip)
+				value ? Starling.juggler.add(_content as starling.display.MovieClip) : Starling.juggler.remove(_content as starling.display.MovieClip);
 			else if (_content is AnimationSequence)
 				(_content as AnimationSequence).pauseAnimation(value);
 			else if (_content is PDParticleSystem)
@@ -405,10 +438,11 @@ package citrus.view.starlingview {
 		private function handleContentLoaded(evt:Event):void {
 
 			if (evt.target.loader.content is flash.display.MovieClip) {
-
+				
 				_textureAtlas = DynamicAtlas.fromMovieClipContainer(evt.target.loader.content, 1, 0, true, true);
-				_content = new MovieClip(_textureAtlas.getTextures(animation), 30);
-				Starling.juggler.add(_content as MovieClip);
+				_content = new starling.display.MovieClip(_textureAtlas.getTextures(animation), 30);
+				Starling.juggler.add(_content as starling.display.MovieClip);	
+							
 			}
 
 			if (evt.target.loader.content is Bitmap) {
