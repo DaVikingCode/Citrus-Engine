@@ -15,6 +15,8 @@ It offers many options, you may use :
 
 Games References
 ----------------
+[![Snailboy](http://aymericlamboley.fr/blog/wp-content/uploads/2013/09/snailboy.png)](http://www.thoopid.com/snailboy-presskit)
+[![Monsieur Bear's ABC](http://aymericlamboley.fr/blog/wp-content/uploads/2013/09/abc.png)](http://rdrct.it/monsieurbearsabc)
 [![Underwater Adventures](http://aymericlamboley.fr/blog/wp-content/uploads/2013/08/underwaterAdventures.png)](http://underwateradventuresgame.com/)
 [![Roundhouse](http://aymericlamboley.fr/blog/wp-content/uploads/2013/06/roundhouse.png)](http://roundhousegame.com/)
 [![Red n Green 2](http://aymericlamboley.fr/blog/wp-content/uploads/2013/05/red-green-2.png)](http://meowbeast.com/game/red-n-green-2/)
