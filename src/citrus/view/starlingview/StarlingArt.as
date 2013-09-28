@@ -377,18 +377,11 @@ package citrus.view.starlingview {
 					scaleX = -scaleX;
 			}
 
-			// The position = object position + (camera position * inverse parallax)
-
-			var physicsDebugArt:flash.display.DisplayObject;
-
 			if (_content is StarlingPhysicsDebugView) {
 
 				(_content as StarlingPhysicsDebugView).update();
-
-				// Box2D & Nape debug views are not on the Starling display list, but on the classical flash display list.
-				// So we need to move their views here, not in the StarlingView.
-				physicsDebugArt = (Starling.current.nativeStage.getChildByName("debug view") as flash.display.DisplayObject);
-
+				
+				var physicsDebugArt:flash.display.Sprite = (_content as StarlingPhysicsDebugView).debugView as flash.display.Sprite; 
 				physicsDebugArt.transform.matrix = stateView.camera.transformMatrix;
 				physicsDebugArt.visible = _citrusObject.visible;
 

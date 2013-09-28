@@ -267,8 +267,9 @@ package citrus.view.spriteview
 			
 			if (_content is IDebugView) {
 				
-				var physicsDebugArt:flash.display.Sprite = (_content as IDebugView) as flash.display.Sprite;
 				(_content as IDebugView).update();
+				
+				var physicsDebugArt:flash.display.Sprite = (_content as IDebugView) as flash.display.Sprite;
 				physicsDebugArt.transform.matrix = stateView.camera.transformMatrix;
 				physicsDebugArt.visible = _citrusObject.visible;
 				
