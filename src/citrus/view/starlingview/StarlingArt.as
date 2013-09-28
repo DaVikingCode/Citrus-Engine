@@ -248,7 +248,7 @@ package citrus.view.starlingview {
 							_content = new starling.display.MovieClip(_textureAtlas.getTextures(animation), 30);
 							Starling.juggler.add(_content as starling.display.MovieClip);
 						} else {
-							_content = new artClass();
+							_content = tmpObj;
 						}
 						moveRegistrationPoint(_citrusObject.registration);
 						addChild(_content);
@@ -265,7 +265,7 @@ package citrus.view.starlingview {
 						
 					} else {
 						// view property is a class reference
-						_content = new citrusObject.view();						
+						_content = tmpObj;						
 					}
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(_content);
