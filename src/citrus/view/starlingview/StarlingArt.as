@@ -81,7 +81,6 @@ package citrus.view.starlingview {
 		public var group:uint;
 
 		private var _texture:Texture;
-		private var _textureAtlas:TextureAtlas;
 
 		private var _viewHasChanged:Boolean = false; // when the view changed, the animation wasn't updated if it was the same name. This var fix that.
 		private var _updateArtEnabled:Boolean = true;
@@ -129,8 +128,6 @@ package citrus.view.starlingview {
 			if (_content is starling.display.MovieClip) {
 
 				Starling.juggler.remove(_content as starling.display.MovieClip);
-				if (_textureAtlas)
-					_textureAtlas.dispose();
 				_content.dispose();
 
 			} else if (_content is AnimationSequence) {
@@ -257,7 +254,6 @@ package citrus.view.starlingview {
 					tmpObj = new citrusObject.view();
 					if (tmpObj is flash.display.DisplayObject) {
 						_content = AnimationSequence.fromMovieClip(tmpObj, _animation, 30);
-						
 					} else {
 						// view property is a class reference
 						_content = tmpObj;						
@@ -267,10 +263,7 @@ package citrus.view.starlingview {
 				
 
 				} else if (_view is flash.display.MovieClip) {
-					_animation = "";
-					_textureAtlas = DynamicAtlas.fromMovieClipContainer(_view, 1, 0, true, true);
-					_content = new starling.display.MovieClip(_textureAtlas.getTextures(animation), 30);
-					Starling.juggler.add(_content as starling.display.MovieClip);
+					_content = AnimationSequence.fromMovieClip(_view, _animation, 30);
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(_content);
 
@@ -336,16 +329,7 @@ package citrus.view.starlingview {
 
 				var animLoop:Boolean = _loopAnimation[_animation];
 
-				if (_content is starling.display.MovieClip && _textureAtlas) {
-					Starling.juggler.remove(_content as starling.display.MovieClip);
-					removeChild(_content);
-					_content = new starling.display.MovieClip(_textureAtlas.getTextures(_animation), 30);
-					moveRegistrationPoint(_citrusObject.registration);
-					addChild(_content);
-					Starling.juggler.add(_content as starling.display.MovieClip);
-					(_content as starling.display.MovieClip).loop = animLoop;
-
-				} else if (_content is AnimationSequence)
+				if (_content is AnimationSequence)
 					(_content as AnimationSequence).changeAnimation(_animation, animLoop);
 				else if (_view is Armature)
 					(_view as Armature).animation.gotoAndPlay(value);
