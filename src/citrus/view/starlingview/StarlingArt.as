@@ -4,31 +4,15 @@ package citrus.view.starlingview {
 	import citrus.core.CitrusObject;
 	import citrus.core.IState;
 	import citrus.physics.APhysicsEngine;
-	import citrus.physics.IDebugView;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ACitrusCamera;
 	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
-
-	import dragonBones.Armature;
 	import dragonBones.animation.WorldClock;
-
-	import spine.starling.SkeletonAnimationSprite;
-
-	import starling.core.Starling;
-	import starling.display.DisplayObject;
-	import starling.display.Image;
-	import starling.display.MovieClip;
-	import starling.display.Quad;
-	import starling.display.Sprite;
-	import starling.extensions.particles.PDParticleSystem;
-	import starling.extensions.textureAtlas.DynamicAtlas;
-	import starling.textures.Texture;
-	import starling.textures.TextureAtlas;
-	import starling.utils.deg2rad;
-
+	import dragonBones.Armature;
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -37,6 +21,20 @@ package citrus.view.starlingview {
 	import flash.system.LoaderContext;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
+	import spine.starling.SkeletonAnimationSprite;
+	import starling.core.Starling;
+	import starling.display.DisplayObject;
+	import starling.display.Image;
+	import starling.display.MovieClip;
+	import starling.display.Quad;
+	import starling.display.Sprite;
+	import starling.extensions.particles.PDParticleSystem;
+	import starling.textures.Texture;
+	import starling.utils.deg2rad;
+
+
+
+
 
 	/**
 	 * This is the class that all art objects use for the StarlingView state view. If you are using the StarlingView (as opposed to the blitting view, for instance),
@@ -164,6 +162,8 @@ package citrus.view.starlingview {
 					
 				_content.dispose();
 			}
+			
+			_viewHasChanged = false;
 		}
 
 		/**
@@ -222,57 +222,78 @@ package citrus.view.starlingview {
 				_viewHasChanged = true;
 				destroy();
 			}
+			
 			_view = value;			
 			
 			if (_view) {
+				
 				var tmpObj:*;
+				var contentChanged:Boolean = true;
+				
 				if (_view is String) {
 					// view property is a path to an image?
 					var classString:String = _view;
 					var suffix:String = classString.substring(classString.length - 4).toLowerCase();
+					
 					if (suffix == ".swf" || suffix == ".png" || suffix == ".gif" || suffix == ".jpg") {
+						
 						loader = new Loader();
 						loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleContentLoaded);
 						loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, handleContentIOError);
 						loader.load(new URLRequest(classString), new LoaderContext(false, ApplicationDomain.currentDomain, null));
+						return;
 					}
 					// view property is a fully qualified class name in string form. 
 					else {
-						var artClass:Class = getDefinitionByName(classString) as Class;
-						tmpObj = new artClass();
-						if (tmpObj is flash.display.DisplayObject) {
-							_content = AnimationSequence.fromMovieClip(tmpObj, _animation, 30);
-						} else {
-							_content = tmpObj;
+						
+						try
+						{
+							var artClass:Class = getDefinitionByName(classString) as Class;
+						}catch (e:Error)
+						{
+							throw new Error("StarlingArt could not find class definition for \"" + String(classString) + "\". \n Make sure that you compile it with the project or that its the right classpath.");
 						}
-						moveRegistrationPoint(_citrusObject.registration);
-						addChild(_content);
+							
+						tmpObj = new artClass();
+						
+						if (tmpObj is flash.display.MovieClip) {
+							_content = AnimationSequence.fromMovieClip(tmpObj, _animation, 30);
+						} 
+						else if (tmpObj is flash.display.Bitmap) {
+							_content = new Image(_texture = Texture.fromBitmap(tmpObj,false));
+						}
+						else if (tmpObj is BitmapData) {
+							_content = new Image(_texture = Texture.fromBitmapData(tmpObj,false));
+						}
+						else if(tmpObj is starling.display.DisplayObject) {
+							_content = tmpObj;						
+						}
+
 					}
 
 				} else if (_view is Class) {
 					
-					tmpObj = new citrusObject.view();
-					if (tmpObj is flash.display.DisplayObject) {
+					tmpObj = new _view();
+					if (tmpObj is flash.display.MovieClip) {
 						_content = AnimationSequence.fromMovieClip(tmpObj, _animation, 30);
-					} else {
-						// view property is a class reference
+					} 
+					else if (tmpObj is flash.display.Bitmap) {
+						_content = new Image(_texture = Texture.fromBitmap(tmpObj,false));
+					}
+					else if (tmpObj is BitmapData) {
+						_content = new Image(_texture = Texture.fromBitmapData(tmpObj,false));
+					}
+					else if(tmpObj is starling.display.DisplayObject) {
 						_content = tmpObj;						
 					}
-					moveRegistrationPoint(_citrusObject.registration);
-					addChild(_content);
-				
 
 				} else if (_view is flash.display.MovieClip) {
 					_content = AnimationSequence.fromMovieClip(_view, _animation, 30);
-					moveRegistrationPoint(_citrusObject.registration);
-					addChild(_content);
-
+					
 				} else if (_view is starling.display.DisplayObject) {
-					// view property is a Display Object reference
+					
 					_content = _view;
-					moveRegistrationPoint(_citrusObject.registration);
-					addChild(_content);
-
+					
 					if (_view is starling.display.MovieClip)
 						Starling.juggler.add(_content as starling.display.MovieClip);
 					else if (_view is PDParticleSystem)
@@ -281,36 +302,35 @@ package citrus.view.starlingview {
 						Starling.juggler.add(_view as SkeletonAnimationSprite);
 
 				} else if (_view is Texture) {
-
-					_content = new Image(_view);
-					moveRegistrationPoint(_citrusObject.registration);
-					addChild(_content);
-
+					_content = new Image(_texture = _view);
+					
 				} else if (_view is Bitmap) {
 					// TODO : cut bitmap if size > 2048 * 2048, use StarlingTileSystem?
-					_content = Image.fromBitmap(_view, false);
-					moveRegistrationPoint(_citrusObject.registration);
-					addChild(_content);
-
+					_content = new Image(_texture = Texture.fromBitmap(_view, false));
+					
 				} else if (_view is Armature) {
 					_content = (_view as Armature).display as Sprite;
-					moveRegistrationPoint(_citrusObject.registration);
-					addChild(_content);
 					WorldClock.clock.add(_view);
 					
 				} else if (_view is uint) {
 					
 					// TODO : manage radius -> circle
 					_content = new Quad(_citrusObject.width, _citrusObject.height, _view);
-					moveRegistrationPoint(_citrusObject.registration);
-					addChild(_content);
-					
 				} else
+					contentChanged = false;
+				
+				if(_content == null || contentChanged == false)
 					throw new Error("StarlingArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
-
-				// Call the initialize function if it exists on the custom art class.
-				if (_content && _content.hasOwnProperty("initialize"))
+				else
+				{
+					moveRegistrationPoint(_citrusObject.registration);
+					
+					if (_content.hasOwnProperty("initialize"))
 					_content["initialize"](_citrusObject);
+					
+					addChild(_content);
+				}
+					
 			}
 		}
 
@@ -409,18 +429,21 @@ package citrus.view.starlingview {
 
 		private function handleContentLoaded(evt:Event):void {
 
-			if (evt.target.loader.content is flash.display.MovieClip) {
+			(evt.target.loader as Loader).removeEventListener(Event.COMPLETE, handleContentLoaded);
+			(evt.target.loader as Loader).removeEventListener(IOErrorEvent.IO_ERROR, handleContentIOError);
+			
+			if (evt.target.loader.content is flash.display.MovieClip)
 				_content = AnimationSequence.fromMovieClip(evt.target.loader.content, _animation, 30);
-			}
 
-			if (evt.target.loader.content is Bitmap) {
-
-				_texture = Texture.fromBitmap(evt.target.loader.content);
-				_content = new Image(_texture);
-			}
+			if (evt.target.loader.content is Bitmap)
+				_content = new Image(_texture = Texture.fromBitmap(evt.target.loader.content,false));
+			else
+				return;
+				
+			_viewHasChanged = true;
+			destroy();
 
 			moveRegistrationPoint(_citrusObject.registration);
-
 			addChild(_content);
 		}
 
