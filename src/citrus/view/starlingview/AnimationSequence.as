@@ -174,6 +174,58 @@ package citrus.view.starlingview {
 		public function get mcSequences():Dictionary {
 			return _mcSequences;
 		}
+		
+		/**
+		 * creates an AnimationSequence from a flash movie clip
+		 * different animations should be in separate flash movie clips,
+		 * each should have their name set to whatever animation they represent.
+		 * all of those moviesclips should be added as children,in the first frame,
+		 * to the movie clip provided as an argument to this function so that
+		 * DynamicAtlas will run through each children, create animations for each
+		 * with their name as animation names to be used in the AnimationSequence that gets returned.
+		 * For more info, check out the Dynamic Texture Atlas Extension and how it renders texture atlases.
+		 * @param	mc flash movie clip instance containing instances of movie clip animations
+		 * @param	firstAnim the name of the first animation to be played
+		 * @param	animFps fps of the AnimationSequence
+		 * @param	firstAnimLoop should the first animation loop?
+		 * @param	smoothing
+		 * @return
+		 */
+		public static function fromMovieClip(mc:flash.display.MovieClip,firstAnim:String = null,animFps:int = 30, firstAnimLoop:Boolean = true,smoothing:String = "bilinear"):AnimationSequence
+		{
+			var textureAtlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(mc, 1, 0, true, true);
+			var textureAtlasNames:Vector.<String> = textureAtlas.getNames();
+			
+			var sorter:Object = { };
+			
+			for each (anim in textureAtlasNames)
+			{
+				anim = anim.split("_")[0];
+				if (!(anim in sorter))
+					sorter[anim+"_"] = true;
+			}
+			
+			var anims:Array = [];
+			var anim:String;
+			
+			for (anim in sorter)
+				anims.push(anim);
+				
+			sorter = null;
+				
+			return new AnimationSequence(textureAtlas, anims,firstAnim == null ? anims[0] : firstAnim, fps, firstAnimLoop,smoothing);
+		}
+		
+		/**
+		 * returns a vector of all animation names in this AnimationSequence.
+		 */
+		public function getAnimationNames():Vector.<String>{
+			var names:Vector.<String> = new Vector.<String>();
+			var name:String;
+			for (name in _mcSequences)
+				names.push(name);
+			return names;
+		}
 
 		/**
 		 * Return a clone of the current AnimationSequence. Animations added via <code>addMovieClip</code> or <code>addTextureAtlasWithAnimations</code> aren't included.
