@@ -226,8 +226,9 @@ package citrus.view.starlingview {
 				destroy();
 			}
 			_view = value;			
-			var tmpObj:*;
+			
 			if (_view) {
+				var tmpObj:*;
 				if (_view is String) {
 					// view property is a path to an image?
 					var classString:String = _view;
@@ -243,10 +244,7 @@ package citrus.view.starlingview {
 						var artClass:Class = getDefinitionByName(classString) as Class;
 						tmpObj = new artClass();
 						if (tmpObj is flash.display.DisplayObject) {
-							_animation = "";
-							_textureAtlas = DynamicAtlas.fromMovieClipContainer(tmpObj, 1, 0, true, true);
-							_content = new starling.display.MovieClip(_textureAtlas.getTextures(animation), 30);
-							Starling.juggler.add(_content as starling.display.MovieClip);
+							_content = AnimationSequence.fromMovieClip(tmpObj, _animation, 30);
 						} else {
 							_content = tmpObj;
 						}
@@ -258,10 +256,7 @@ package citrus.view.starlingview {
 					
 					tmpObj = new citrusObject.view();
 					if (tmpObj is flash.display.DisplayObject) {
-						_animation = "";
-						_textureAtlas = DynamicAtlas.fromMovieClipContainer(tmpObj, 1, 0, true, true);
-						_content = new starling.display.MovieClip(_textureAtlas.getTextures(animation), 30);
-						Starling.juggler.add(_content as starling.display.MovieClip);
+						_content = AnimationSequence.fromMovieClip(tmpObj, _animation, 30);
 						
 					} else {
 						// view property is a class reference
@@ -431,11 +426,7 @@ package citrus.view.starlingview {
 		private function handleContentLoaded(evt:Event):void {
 
 			if (evt.target.loader.content is flash.display.MovieClip) {
-				
-				_textureAtlas = DynamicAtlas.fromMovieClipContainer(evt.target.loader.content, 1, 0, true, true);
-				_content = new starling.display.MovieClip(_textureAtlas.getTextures(animation), 30);
-				Starling.juggler.add(_content as starling.display.MovieClip);	
-							
+				_content = AnimationSequence.fromMovieClip(evt.target.loader.content, _animation, 30);
 			}
 
 			if (evt.target.loader.content is Bitmap) {

@@ -4,6 +4,10 @@ package citrus.view.starlingview {
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.extensions.textureAtlas.DynamicAtlas;
+	import starling.textures.TextureAtlas;
+	
+	import flash.display.MovieClip;
 
 	import org.osflash.signals.Signal;
 
@@ -70,7 +74,7 @@ package citrus.view.starlingview {
 		 * @param mc a MovieClip you would like to use.
 		 * @param animation the object's animation name as a String you would like to pick up.
 		 */
-		public function addMovieClip(mc:MovieClip, animation:String):void {
+		public function addMovieClip(mc:starling.display.MovieClip, animation:String):void {
 
 			if ((_mcSequences[animation]))
 				throw new Error(this + " already have the " + animation + " animation set up in its animations' array");
@@ -95,7 +99,7 @@ package citrus.view.starlingview {
 				if (textureAtlas.getTextures(animation).length == 0)
 					throw new Error(textureAtlas + " doesn't have the " + animation + " animation in its TextureAtlas");
 
-				_mcSequences[animation] = new MovieClip(textureAtlas.getTextures(animation), _animFps);
+				_mcSequences[animation] = new starling.display.MovieClip(textureAtlas.getTextures(animation), _animFps);
 
 				_mcSequences[animation].name = animation;
 				_mcSequences[animation].addEventListener(Event.COMPLETE, _animationComplete);
@@ -191,7 +195,7 @@ package citrus.view.starlingview {
 		 * @param	smoothing
 		 * @return
 		 */
-		public static function fromMovieClip(mc:flash.display.MovieClip,firstAnim:String = null,animFps:int = 30, firstAnimLoop:Boolean = true,smoothing:String = "bilinear"):AnimationSequence
+		public static function fromMovieClip(mc:flash.display.Sprite,firstAnim:String = null,animFps:int = 30, firstAnimLoop:Boolean = true,smoothing:String = "bilinear"):AnimationSequence
 		{
 			var textureAtlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(mc, 1, 0, true, true);
 			var textureAtlasNames:Vector.<String> = textureAtlas.getNames();
@@ -211,9 +215,7 @@ package citrus.view.starlingview {
 			for (anim in sorter)
 				anims.push(anim);
 				
-			sorter = null;
-				
-			return new AnimationSequence(textureAtlas, anims,firstAnim == null ? anims[0] : firstAnim, fps, firstAnimLoop,smoothing);
+			return new AnimationSequence(textureAtlas, anims,(firstAnim in sorter)? firstAnim : anims[0], animFps, firstAnimLoop,smoothing);
 		}
 		
 		/**
@@ -235,7 +237,7 @@ package citrus.view.starlingview {
 		}
 
 		private function _animationComplete(evt:Event):void {
-			onAnimationComplete.dispatch((evt.target as MovieClip).name);
+			onAnimationComplete.dispatch((evt.target as starling.display.MovieClip).name);
 		}
 	}
 }
