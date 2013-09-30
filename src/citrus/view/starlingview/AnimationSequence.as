@@ -213,7 +213,7 @@ package citrus.view.starlingview {
 			var anim:String;
 			
 			for (anim in sorter)
-				anims.push(anim);
+				anims.push(anim.substring(0, anim.length - 1));
 				
 			return new AnimationSequence(textureAtlas, anims,(firstAnim in sorter)? firstAnim : anims[0], animFps, firstAnimLoop,smoothing);
 		}
