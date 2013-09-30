@@ -186,5 +186,10 @@ package citrus.utils {
 		public function get nameCurrentLevel():String {
 			return currentLevel.nameLevel;
 		}
+
+		public function get currentIndex():uint
+		{
+			return _currentIndex;
+		}
 	}
 }
