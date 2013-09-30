@@ -432,16 +432,13 @@ package citrus.view.starlingview {
 			(evt.target.loader as Loader).removeEventListener(Event.COMPLETE, handleContentLoaded);
 			(evt.target.loader as Loader).removeEventListener(IOErrorEvent.IO_ERROR, handleContentIOError);
 			
-			if (evt.target.loader.content is flash.display.MovieClip)
-				_content = AnimationSequence.fromMovieClip(evt.target.loader.content, _animation, 30);
-
-			if (evt.target.loader.content is Bitmap)
-				_content = new Image(_texture = Texture.fromBitmap(evt.target.loader.content,false));
-			else
-				return;
-				
 			_viewHasChanged = true;
 			destroy();
+			
+			if (evt.target.loader.content is flash.display.MovieClip)
+				_content = AnimationSequence.fromMovieClip(evt.target.loader.content, _animation, 30);
+			else if (evt.target.loader.content is Bitmap)
+				_content = new Image(_texture = Texture.fromBitmap(evt.target.loader.content,false));
 
 			moveRegistrationPoint(_citrusObject.registration);
 			addChild(_content);
