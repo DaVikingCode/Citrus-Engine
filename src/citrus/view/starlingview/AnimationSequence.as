@@ -206,7 +206,7 @@ package citrus.view.starlingview {
 			{
 				anim = anim.split("_")[0];
 				if (!(anim in sorter))
-					sorter[anim+"_"] = true;
+					sorter[anim] = true;
 			}
 			
 			var anims:Array = [];
