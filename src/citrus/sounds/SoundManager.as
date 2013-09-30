@@ -386,14 +386,14 @@ package citrus.sounds {
 			}
 		}
 
-		public function tweenVolume(id:String, volume:Number = 0, tweenDuration:Number = 2):void {
+		public function tweenVolume(id:String, volume:Number = 0, tweenDuration:Number = 2, callback:Function = null):void {
 			if (soundIsPlaying(id)) {
 				var tweenvolObject:Object = {volume:CitrusSound(soundsDic[id]).public::volume};
 				
 				eaze(tweenvolObject).to(tweenDuration, {volume:volume})
 					.onUpdate(function():void {
 					CitrusSound(soundsDic[id]).citrus_internal::volume = tweenvolObject.volume;
-				});
+				}).onComplete(callback);
 			} else 
 				trace("the sound " + id + " is not playing");
 		}
