@@ -126,7 +126,7 @@ package citrus.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.itime == 1)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.time == 1)
 					return true;
 			return false;
 		}
@@ -274,12 +274,12 @@ package citrus.input {
 		/**
 		 *  getActionsSnapshot returns a Vector of all actions in current frame.
 		 */
-		public function getActionsSnapshot():Vector.<Object>
+		public function getActionsSnapshot():Vector.<InputAction>
 		{
-			var snapshot:Vector.<Object> = new Vector.<Object>;
+			var snapshot:Vector.<InputAction> = new Vector.<InputAction>;
 			for each (var a:InputAction in _actions)
 			{
-				snapshot.push(new InputAction(a.name, a.controller, a.channel, a.value, a.phase));
+				snapshot.push(new InputAction(a.name, a.controller, a.channel, a.value, a.phase, a.time));
 			}
 			return snapshot;
 		}

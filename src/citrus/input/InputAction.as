@@ -45,7 +45,7 @@ package citrus.input
 		 */
 		public static const ENDED:uint = 4;
 		
-		public function InputAction(name:String, controller:InputController, channel:uint = 0, value:Number = 0, phase:uint = 0)
+		public function InputAction(name:String, controller:InputController, channel:uint = 0, value:Number = 0, phase:uint = 0, time:uint = 0)
 		{
 			_name = name;
 			_controller = controller;
@@ -53,6 +53,7 @@ package citrus.input
 			
 			this.value = value;
 			this.phase = phase;
+			this._time = time;
 		}
 		
 		/**
@@ -87,9 +88,22 @@ package citrus.input
 		}
 		
 		public function get name():String { return _name; }
+		/**
+		 * InputController that triggered this action
+		 */
 		public function get controller():InputController { return _controller; }
+		/**
+		 * action channel id.
+		 */
 		public function get channel():uint { return _channel; }
+		/**
+		 * time (in frames) the action has been 'running' in the Input system.
+		 */
 		public function get time():uint { return _time; }
+		
+		/**
+		 * internal utiliy to keep public time read only 
+		 */
 		internal function get itime():uint { return _time; }
 		internal function set itime(val:uint):void { _time = val; }
 	
