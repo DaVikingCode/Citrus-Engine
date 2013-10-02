@@ -56,7 +56,7 @@ package citrus.input {
 			if (_initialized)
 				return;
 				
-			_ce.stage.addEventListener(Event.FRAME_CONSTRUCTED, update);
+			_ce.stage.addEventListener(Event.ENTER_FRAME, update);
 			
 			//default keyboard
 			keyboard = new Keyboard("keyboard");
@@ -345,7 +345,7 @@ package citrus.input {
 			actionTriggeredOFF.removeAll();
 			actionTriggeredVALUECHANGE.removeAll();
 			
-			_ce.stage.removeEventListener(Event.FRAME_CONSTRUCTED,update);
+			_ce.stage.removeEventListener(Event.ENTER_FRAME,update);
 		}
 	
 	}
