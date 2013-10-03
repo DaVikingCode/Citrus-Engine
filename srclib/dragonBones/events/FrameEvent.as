@@ -8,6 +8,8 @@ package dragonBones.events
 	*/
 	import dragonBones.Armature;
 	import dragonBones.Bone;
+	import dragonBones.animation.AnimationState;
+	import dragonBones.core.DBObject;
 	
 	import flash.events.Event;
 	
@@ -19,22 +21,27 @@ package dragonBones.events
 	 */
 	public class FrameEvent extends Event
 	{
+		public static function get MOVEMENT_FRAME_EVENT():String
+		{
+			return  ANIMATION_FRAME_EVENT;
+		}
+		
 		/**
 		 * Dispatched when the animation of the armatrue enter a frame.
 		 */
-		public static const MOVEMENT_FRAME_EVENT:String = "movementFrameEvent";
+		public static const ANIMATION_FRAME_EVENT:String = "animationFrameEvent";
+		
 		/**
-		 * Dispatched when a bone of the armature enter a frame.
+		 * 
 		 */
-		public static const BONE_FRAME_EVENT:String = "boneFrameEvent";
-		/**
-		 * The id of the MovementData instance.
-		 */
-		public var movementID:String;
+		public static const BONE_FRAME_EVENT:String ="boneFrameEvent";
+		
 		/**
 		 * The entered frame label.
 		 */
 		public var frameLabel:String;
+		
+		public var bone:Bone;
 		
 		/**
 		 * The armature that is the target of this event.
@@ -44,26 +51,19 @@ package dragonBones.events
 			return target as Armature;
 		}
 		
-		/** @private */
-		private var _bone:Bone;
-		
 		/**
-		 * The bone that is the target of this event.
+		 * The animationState instance.
 		 */
-		public function get bone():Bone
-		{
-			return _bone;
-		}
+		public var animationState:AnimationState;
 		
 		/**
 		 * Creates a new FrameEvent instance.
 		 * @param	type
 		 * @param	cancelable
 		 */
-		public function FrameEvent(type:String, cancelable:Boolean = false, bone:Bone = null)
+		public function FrameEvent(type:String, cancelable:Boolean = false)
 		{
 			super(type, false, cancelable);
-			_bone = bone;
 		}
 		
 		/**
@@ -74,9 +74,9 @@ package dragonBones.events
 		override public function clone():Event
 		{
 			var event:FrameEvent = new FrameEvent(type, cancelable);
-			event.movementID = movementID;
+			event.animationState = animationState;
+			event.bone = bone;
 			event.frameLabel = frameLabel;
-			event._bone = _bone;
 			return event;
 		}
 	}

@@ -1,26 +1,27 @@
 ﻿package dragonBones.objects
 {
-	import dragonBones.utils.dragonBones_internal;
-	
-	use namespace dragonBones_internal;
+	import flash.geom.Point;
 	
 	/** @private */
-	public class DisplayData
+	final public class DisplayData
 	{
-		public var pivotX:Number;
-		public var pivotY:Number;
+		public static const ARMATURE:String = "armature";
+		public static const IMAGE:String = "image";
 		
-		dragonBones_internal var _isArmature:Boolean;
-		
-		public function get isArmature():Boolean
-		{
-			return _isArmature;
-		}
+		public var name:String;
+		public var type:String;
+		public var transform:DBTransform;
+		public var pivot:Point;
 		
 		public function DisplayData()
 		{
-			pivotX = 0;
-			pivotY = 0;
+			transform = new DBTransform();
+		}
+		
+		public function dispose():void
+		{
+			transform = null;
+			pivot = null;
 		}
 	}
 }

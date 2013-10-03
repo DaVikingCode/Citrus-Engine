@@ -1,39 +1,67 @@
 package dragonBones.objects
 {
-	import dragonBones.utils.dragonBones_internal;
-	
-	use namespace dragonBones_internal;
-	
-	/** @private */
-	public class AnimationData
+	final public class AnimationData extends Timeline
 	{
-		dragonBones_internal var _movementDataList:DataList;
+		public var frameRate:uint;
+		public var name:String;
+		public var loop:int;
+		public var tweenEasing:Number;
 		
-		public function get movementList():Vector.<String>
+		private var _timelines:Object;
+		public function get timelines():Object
 		{
-			return _movementDataList.dataNames.concat();
+			return _timelines;
+		}
+		
+		private var _fadeTime:Number;
+		public function get fadeInTime():Number
+		{
+			return _fadeTime;
+		}
+		public function set fadeInTime(value:Number):void
+		{
+			if(isNaN(value))
+			{
+				value = 0;
+			}
+			_fadeTime = value;
 		}
 		
 		public function AnimationData()
 		{
-			_movementDataList = new DataList();
+			super();
+			loop = 0;
+			tweenEasing = NaN;
+			
+			_timelines = {};
+			
+			_fadeTime = 0;
 		}
 		
-		public function dispose():void
+		override public function dispose():void
 		{
-			for each(var movementName:String in _movementDataList.dataNames)
+			super.dispose();
+			
+			for(var timelineName:String in _timelines)
 			{
-				var movementData:MovementData = _movementDataList.getData(movementName) as MovementData;
-				movementData.dispose();
+				(_timelines[timelineName] as TransformTimeline).dispose();
+			}
+			_timelines = null;
+		}
+		
+		public function getTimeline(timelineName:String):TransformTimeline
+		{
+			return _timelines[timelineName] as TransformTimeline;
+		}
+		
+		public function addTimeline(timeline:TransformTimeline, timelineName:String):void
+		{
+			if(!timeline)
+			{
+				throw new ArgumentError();
 			}
 			
-			_movementDataList.dispose();
-		}
-		
-		public function getMovementData(name:String):MovementData
-		{
-			return _movementDataList.getData(name) as MovementData;
+			_timelines[timelineName] = timeline;
 		}
 	}
-	
 }

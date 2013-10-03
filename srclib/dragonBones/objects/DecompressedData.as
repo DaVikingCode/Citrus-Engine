@@ -8,20 +8,21 @@ package dragonBones.objects
 	*/
 	import flash.utils.ByteArray;
 	/**
-	 * The DecompressedData is a convenient class for storing animation related data (skeleton, atlas, object).
+	 * The DecompressedData is a convenient class for storing animation related data (data, atlas, object).
 	 *
 	 * @see dragonBones.Armature
 	 */
 	public final class DecompressedData
 	{
+		public var textureBytesDataType:String;
 		/**
-		 * A xml for Skeleton data.
+		 * A xml for DragonBones data.
 		 */
-		public var skeletonXML:XML;
+		public var dragonBonesData:Object;
 		/**
 		 * A xml for atlas data.
 		 */
-		public var textureAtlasXML:XML;
+		public var textureAtlasData:Object;
 		/**
 		 * The non parsed data map.
 		 */
@@ -29,21 +30,21 @@ package dragonBones.objects
 		
 		/**
 		 * Creates a new DecompressedData instance.
-		 * @param	skeletonXML A xml for Skeleton data.
+		 * @param	xml A xml for DragonBones data.
 		 * @param	textureAtlasXML A xml for atlas data.
 		 * @param	textureBytes The non parsed data map.
 		 */
-		public function DecompressedData(skeletonXML:XML, textureAtlasXML:XML, textureBytes:ByteArray)
+		public function DecompressedData(dragonBonesData:Object, textureAtlasData:Object, textureBytes:ByteArray)
 		{
-			this.skeletonXML = skeletonXML;
-			this.textureAtlasXML = textureAtlasXML;
+			this.dragonBonesData = dragonBonesData;
+			this.textureAtlasData = textureAtlasData;
 			this.textureBytes = textureBytes;
 		}
 		
 		public function dispose():void
 		{
-			skeletonXML = null;
-			textureAtlasXML = null;
+			dragonBonesData = null;
+			textureAtlasData = null;
 			textureBytes = null;
 		}
 	}

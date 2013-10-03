@@ -1,4 +1,4 @@
-package dragonBones.utils
+package dragonBones.core
 {
 	
 	/** @private */

@@ -6,7 +6,8 @@
 	* @langversion 3.0
 	* @version 2.0
 	*/
-	import dragonBones.Armature;	
+	import dragonBones.Armature;
+	
 	import flash.utils.getTimer;
 	/**
 	 * A WorldClock instance lets you conveniently update many number of Armature instances at once. You can add/remove Armature instance and set a global timescale that will apply to all registered Armature instance animations.
@@ -48,7 +49,7 @@
 	 *			
 	 *			private function updateAnimation(e:Event):void 
 	 *			{
-	 *				WorldClock.clock.advanceTime(1 / stage.frameRate);
+	 *				WorldClock.clock.advanceTime(stage.frameRate / 1000);
 	 *			}		
 	 *		}
 	 *	}
@@ -150,7 +151,7 @@
 		 */
 		public function advanceTime(passedTime:Number):void
 		{
-			if (passedTime < 0)
+			if(passedTime < 0)
 			{
 				var currentTime:Number = getTimer() * 0.001;
 				passedTime = currentTime - _time;
@@ -160,33 +161,33 @@
 			passedTime *= _timeScale;
 			
 			var length:int = animatableList.length;
-			if (length == 0)
+			if(length == 0)
 			{
 				return;
 			}
 			var currentIndex:int = 0;
 			
-			for (var i:int = 0; i < length; i++)
+			for(var i:int = 0;i < length;i ++)
 			{
 				var animatable:IAnimatable = animatableList[i];
-				if (animatable)
+				if(animatable)
 				{
-					if (currentIndex != i)
+					if(currentIndex != i)
 					{
 						animatableList[currentIndex] = animatable;
 						animatableList[i] = null;
 					}
 					animatable.advanceTime(passedTime);
-					currentIndex++;
+					currentIndex ++;
 				}
 			}
 			
 			if (currentIndex != i)
 			{
 				length = animatableList.length;
-				while (i < length)
+				while(i < length)
 				{
-					animatableList[currentIndex++] = animatableList[i++];
+					animatableList[currentIndex ++] = animatableList[i ++];
 				}
 				animatableList.length = currentIndex;
 			}

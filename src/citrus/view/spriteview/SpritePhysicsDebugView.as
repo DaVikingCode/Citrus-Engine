@@ -3,8 +3,9 @@ package citrus.view.spriteview {
 	import citrus.core.CitrusEngine;
 	import citrus.physics.APhysicsEngine;
 	import citrus.physics.IDebugView;
-	import flash.events.Event;
+
 	import flash.display.Sprite;
+	import flash.events.Event;
 	
 	public class SpritePhysicsDebugView extends Sprite {
 		
@@ -16,6 +17,14 @@ package citrus.view.spriteview {
 			_physicsEngine = CitrusEngine.getInstance().state.getFirstObjectByType(APhysicsEngine) as APhysicsEngine;
 			_debugView = new _physicsEngine.realDebugView();
 			(_debugView as Sprite).name = "debug view";
+			
+			addEventListener(Event.ADDED_TO_STAGE, _addedToStage);
+		}
+
+		private function _addedToStage(event:Event):void {
+			
+			removeEventListener(Event.ADDED_TO_STAGE, _addedToStage);
+			
 			stage.addChild(_debugView as Sprite);
 			addEventListener(Event.REMOVED, destroy);
 		}
