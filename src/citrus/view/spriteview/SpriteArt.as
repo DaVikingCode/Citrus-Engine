@@ -265,11 +265,11 @@ package citrus.view.spriteview
 					scaleX = -scaleX;
 			}
 			
-			if (_content is IDebugView) {
+			if (_content is SpritePhysicsDebugView) {
 				
-				(_content as IDebugView).update();
+				(_content as SpritePhysicsDebugView).update();
 				
-				var physicsDebugArt:flash.display.Sprite = (_content as IDebugView) as flash.display.Sprite;
+				var physicsDebugArt:flash.display.Sprite = (_content as SpritePhysicsDebugView).debugView as flash.display.Sprite;
 				physicsDebugArt.transform.matrix = stateView.camera.transformMatrix;
 				physicsDebugArt.visible = _citrusObject.visible;
 				
