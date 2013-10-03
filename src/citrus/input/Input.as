@@ -1,11 +1,10 @@
 package citrus.input {
 
+	import citrus.core.citrus_internal;
 	import citrus.core.CitrusEngine;
 	import citrus.input.controllers.Keyboard;
 
 	import org.osflash.signals.Signal;
-
-	import flash.events.Event;
 	
 	/**
 	 * A class managing input of any controllers that is an InputController.
@@ -55,8 +54,6 @@ package citrus.input {
 		{
 			if (_initialized)
 				return;
-				
-			_ce.stage.addEventListener(Event.ENTER_FRAME, update);
 			
 			//default keyboard
 			keyboard = new Keyboard("keyboard");
@@ -208,7 +205,7 @@ package citrus.input {
 		 * advances actions phases by one if not phase 2 (phase two can only be voluntarily advanced by
 		 * doActionOFF.) and removes actions of phase 4 (this happens one frame after doActionOFF was called.)
 		 */
-		protected function update(e:Event):void
+		citrus_internal function update():void
 		{
 			if (!_enabled)
 				return;
@@ -344,8 +341,6 @@ package citrus.input {
 			actionTriggeredON.removeAll();
 			actionTriggeredOFF.removeAll();
 			actionTriggeredVALUECHANGE.removeAll();
-			
-			_ce.stage.removeEventListener(Event.ENTER_FRAME,update);
 		}
 	
 	}
