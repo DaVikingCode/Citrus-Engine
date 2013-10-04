@@ -154,6 +154,22 @@ package citrus.input {
 		}
 		
 		/**
+		 * returns a list of all currently active actions (optionally filter by channel number)
+		 * @return
+		 */
+		public function getActions(channel:int = -1):Vector.<InputAction>
+		{
+			var actions:Vector.<InputAction> = new Vector.<InputAction>;
+			var a:InputAction;
+			for each (a in _actions)
+				if (channel < 0)
+					actions.push(a)
+				else if ((_routeActions ? (_routeChannel == channel) : a.channel == channel))
+					actions.push(a);
+			return actions;
+		}
+		
+		/**
 		 * Call this right after justDid, isDoing or hasDone to get the action's value in the current frame...
 		 * or use getAction() directly !
 		 */
@@ -178,7 +194,7 @@ package citrus.input {
 			for each (a in _actions)
 				if (a.eq(action))
 					return;
-			action.phase = InputActionPhase.BEGIN;
+			action._phase = InputActionPhase.BEGIN;
 			_actions[_actions.length] = action;
 		}
 		
@@ -194,7 +210,7 @@ package citrus.input {
 			for each (a in _actions)
 				if (a.eq(action))
 				{
-					a.phase = InputActionPhase.END;
+					a._phase = InputActionPhase.END;
 					return;
 				}
 		}
@@ -215,12 +231,12 @@ package citrus.input {
 			{
 				if (a.eq(action))
 				{
-					a.phase = InputActionPhase.ON;
-					a.value = action.value;
+					a._phase = InputActionPhase.ON;
+					a._value = action.value;
 					return;
 				}
 			}
-			action.phase = InputActionPhase.BEGIN;
+			action._phase = InputActionPhase.BEGIN;
 			_actions[_actions.length] = action;
 		}
 		
@@ -250,7 +266,7 @@ package citrus.input {
 				if (_actions[i].phase > InputActionPhase.END)
 					_actions.splice(uint(i), 1);
 				else if (_actions[i].phase !== InputActionPhase.ON)
-					_actions[i].phase++;
+					_actions[i]._phase++;
 			}
 		
 		}
@@ -286,8 +302,8 @@ package citrus.input {
 			{
 				if (a.eq(action))
 				{
-					a.phase = action.phase;
-					a.value = action.value;
+					a._phase = action.phase;
+					a._value = action.value;
 					return;
 				}
 			}
@@ -295,15 +311,16 @@ package citrus.input {
 		}
 		
 		/**
-		 *  getActionsSnapshot returns a Vector of all actions in current frame.
+		 * returns a Vector of all actions in current frame.
+		 * actions are cloned (no longer active inside the input system) 
+		 * as opposed to using getActions().
 		 */
 		public function getActionsSnapshot():Vector.<InputAction>
 		{
 			var snapshot:Vector.<InputAction> = new Vector.<InputAction>;
-			for each (var a:InputAction in _actions)
-			{
-				snapshot.push(new InputAction(a.name, a.controller, a.channel, a.value, a.phase, a.time));
-			}
+			var a:InputAction;
+			for each (a in _actions)
+				snapshot.push(a.clone());
 			return snapshot;
 		}
 		

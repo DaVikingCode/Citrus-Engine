@@ -12,9 +12,8 @@ package citrus.input
 		private var _channel:uint;
 		private var _time:uint = 0;
 		
-		//variable properties
-		public var value:Number;
-		public var phase:uint;
+		internal var _value:Number;
+		internal var _phase:uint;
 		
 		public function InputAction(name:String, controller:InputController, channel:uint = 0, value:Number = 0, phase:uint = 0, time:uint = 0)
 		{
@@ -22,9 +21,9 @@ package citrus.input
 			_controller = controller;
 			_channel = channel;
 			
-			this.value = value;
-			this.phase = phase;
-			this._time = time;
+			_value = value;
+			_phase = phase;
+			_time = time;
 		}
 		
 		/**
@@ -32,7 +31,7 @@ package citrus.input
 		 */
 		public function clone():InputAction
 		{
-			return new InputAction(_name, _controller,_channel, value, phase);
+			return new InputAction(_name, _controller,_channel , value, _phase, _time);
 		}
 		
 		/**
@@ -71,6 +70,16 @@ package citrus.input
 		 * time (in frames) the action has been 'running' in the Input system.
 		 */
 		public function get time():uint { return _time; }
+		
+		/**
+		 * value the action carries
+		 */
+		public function get value():Number { return _value; }
+		
+		/**
+		 * action phase
+		 */
+		public function get phase():Number { return _phase; }
 		
 		/**
 		 * internal utiliy to keep public time read only 
