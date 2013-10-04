@@ -99,7 +99,7 @@ package citrus.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase > InputAction.END)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase > InputActionPhase.END)
 					return true;
 			return false;
 		}
@@ -111,7 +111,7 @@ package citrus.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase < InputAction.END)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase < InputActionPhase.END)
 					return true;
 			return false;
 		}
@@ -129,7 +129,33 @@ package citrus.input {
 		}
 		
 		/**
-		 * Call this right after justDid, isDoing or hasDone to get the action's value in the current frame.
+		 * get an action from the current 'active' actions to check out their phase,value or time.
+		 * returns null if no actions are available (if so, the action ended 2 frames previous to the call.)
+		 * 
+		 * example :
+		 * <code>
+		 * var action:InputAction = _ce.input.getAction("jump");
+		 * if(action && action.phase >= InputActionPhase.ON && action.time > 120)
+		 *    trace("the jump action lasted 120 frames. its value is",action.value);
+		 * </code>
+		 * 
+		 * keep doing the jump action for about 2 seconds (if running at 60 fps) and you'll see the trace.
+		 * @param	name
+		 * @param	channel
+		 * @return	InputAction
+		 */
+		public function getAction(name:String, channel:uint = 0):InputAction
+		{
+			var a:InputAction;
+			for each (a in _actions)
+				if (name == a.name && (_routeActions ? (_routeChannel == channel) : a.channel == channel))
+					return a;
+			return null;	
+		}
+		
+		/**
+		 * Call this right after justDid, isDoing or hasDone to get the action's value in the current frame...
+		 * or use getAction() directly !
 		 */
 		public function getActionValue(actionName:String, channel:uint = 0):Number
 		{
@@ -152,7 +178,7 @@ package citrus.input {
 			for each (a in _actions)
 				if (a.eq(action))
 					return;
-			action.phase = InputAction.BEGIN;
+			action.phase = InputActionPhase.BEGIN;
 			_actions[_actions.length] = action;
 		}
 		
@@ -168,7 +194,7 @@ package citrus.input {
 			for each (a in _actions)
 				if (a.eq(action))
 				{
-					a.phase = InputAction.END;
+					a.phase = InputActionPhase.END;
 					return;
 				}
 		}
@@ -189,12 +215,12 @@ package citrus.input {
 			{
 				if (a.eq(action))
 				{
-					a.phase = InputAction.ON;
+					a.phase = InputActionPhase.ON;
 					a.value = action.value;
 					return;
 				}
 			}
-			action.phase = InputAction.BEGIN;
+			action.phase = InputActionPhase.BEGIN;
 			_actions[_actions.length] = action;
 		}
 		
@@ -221,9 +247,9 @@ package citrus.input {
 			for (i in _actions)
 			{
 				InputAction(_actions[i]).itime++;
-				if (_actions[i].phase > InputAction.END)
+				if (_actions[i].phase > InputActionPhase.END)
 					_actions.splice(uint(i), 1);
-				else if (_actions[i].phase !== InputAction.ON)
+				else if (_actions[i].phase !== InputActionPhase.ON)
 					_actions[i].phase++;
 			}
 		
