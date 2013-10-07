@@ -1,11 +1,10 @@
 package citrus.input {
 
+	import citrus.core.citrus_internal;
 	import citrus.core.CitrusEngine;
 	import citrus.input.controllers.Keyboard;
 
 	import org.osflash.signals.Signal;
-
-	import flash.events.Event;
 	
 	/**
 	 * A class managing input of any controllers that is an InputController.
@@ -55,8 +54,6 @@ package citrus.input {
 		{
 			if (_initialized)
 				return;
-				
-			_ce.stage.addEventListener(Event.FRAME_CONSTRUCTED, update);
 			
 			//default keyboard
 			keyboard = new Keyboard("keyboard");
@@ -102,7 +99,7 @@ package citrus.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase > InputAction.END)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase > InputActionPhase.END)
 					return true;
 			return false;
 		}
@@ -114,7 +111,7 @@ package citrus.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase < InputAction.END)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase < InputActionPhase.END)
 					return true;
 			return false;
 		}
@@ -126,13 +123,55 @@ package citrus.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.itime == 1)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.time == 1)
 					return true;
 			return false;
 		}
 		
 		/**
-		 * Call this right after justDid, isDoing or hasDone to get the action's value in the current frame.
+		 * get an action from the current 'active' actions to check out their phase,value or time.
+		 * returns null if no actions are available (if so, the action ended 2 frames previous to the call.)
+		 * 
+		 * example :
+		 * <code>
+		 * var action:InputAction = _ce.input.getAction("jump");
+		 * if(action && action.phase >= InputActionPhase.ON && action.time > 120)
+		 *    trace("the jump action lasted 120 frames. its value is",action.value);
+		 * </code>
+		 * 
+		 * keep doing the jump action for about 2 seconds (if running at 60 fps) and you'll see the trace.
+		 * @param	name
+		 * @param	channel
+		 * @return	InputAction
+		 */
+		public function getAction(name:String, channel:uint = 0):InputAction
+		{
+			var a:InputAction;
+			for each (a in _actions)
+				if (name == a.name && (_routeActions ? (_routeChannel == channel) : a.channel == channel))
+					return a;
+			return null;	
+		}
+		
+		/**
+		 * returns a list of all currently active actions (optionally filter by channel number)
+		 * @return
+		 */
+		public function getActions(channel:int = -1):Vector.<InputAction>
+		{
+			var actions:Vector.<InputAction> = new Vector.<InputAction>;
+			var a:InputAction;
+			for each (a in _actions)
+				if (channel < 0)
+					actions.push(a)
+				else if ((_routeActions ? (_routeChannel == channel) : a.channel == channel))
+					actions.push(a);
+			return actions;
+		}
+		
+		/**
+		 * Call this right after justDid, isDoing or hasDone to get the action's value in the current frame...
+		 * or use getAction() directly !
 		 */
 		public function getActionValue(actionName:String, channel:uint = 0):Number
 		{
@@ -155,7 +194,7 @@ package citrus.input {
 			for each (a in _actions)
 				if (a.eq(action))
 					return;
-			action.phase = InputAction.BEGIN;
+			action._phase = InputActionPhase.BEGIN;
 			_actions[_actions.length] = action;
 		}
 		
@@ -171,7 +210,7 @@ package citrus.input {
 			for each (a in _actions)
 				if (a.eq(action))
 				{
-					a.phase = InputAction.END;
+					a._phase = InputActionPhase.END;
 					return;
 				}
 		}
@@ -192,12 +231,12 @@ package citrus.input {
 			{
 				if (a.eq(action))
 				{
-					a.phase = InputAction.ON;
-					a.value = action.value;
+					a._phase = InputActionPhase.ON;
+					a._value = action.value;
 					return;
 				}
 			}
-			action.phase = InputAction.BEGIN;
+			action._phase = InputActionPhase.BEGIN;
 			_actions[_actions.length] = action;
 		}
 		
@@ -208,7 +247,7 @@ package citrus.input {
 		 * advances actions phases by one if not phase 2 (phase two can only be voluntarily advanced by
 		 * doActionOFF.) and removes actions of phase 4 (this happens one frame after doActionOFF was called.)
 		 */
-		protected function update(e:Event):void
+		citrus_internal function update():void
 		{
 			if (!_enabled)
 				return;
@@ -224,10 +263,10 @@ package citrus.input {
 			for (i in _actions)
 			{
 				InputAction(_actions[i]).itime++;
-				if (_actions[i].phase > InputAction.END)
+				if (_actions[i].phase > InputActionPhase.END)
 					_actions.splice(uint(i), 1);
-				else if (_actions[i].phase !== InputAction.ON)
-					_actions[i].phase++;
+				else if (_actions[i].phase !== InputActionPhase.ON)
+					_actions[i]._phase++;
 			}
 		
 		}
@@ -263,8 +302,8 @@ package citrus.input {
 			{
 				if (a.eq(action))
 				{
-					a.phase = action.phase;
-					a.value = action.value;
+					a._phase = action.phase;
+					a._value = action.value;
 					return;
 				}
 			}
@@ -272,15 +311,16 @@ package citrus.input {
 		}
 		
 		/**
-		 *  getActionsSnapshot returns a Vector of all actions in current frame.
+		 * returns a Vector of all actions in current frame.
+		 * actions are cloned (no longer active inside the input system) 
+		 * as opposed to using getActions().
 		 */
-		public function getActionsSnapshot():Vector.<Object>
+		public function getActionsSnapshot():Vector.<InputAction>
 		{
-			var snapshot:Vector.<Object> = new Vector.<Object>;
-			for each (var a:InputAction in _actions)
-			{
-				snapshot.push(new InputAction(a.name, a.controller, a.channel, a.value, a.phase));
-			}
+			var snapshot:Vector.<InputAction> = new Vector.<InputAction>;
+			var a:InputAction;
+			for each (a in _actions)
+				snapshot.push(a.clone());
 			return snapshot;
 		}
 		
@@ -344,8 +384,6 @@ package citrus.input {
 			actionTriggeredON.removeAll();
 			actionTriggeredOFF.removeAll();
 			actionTriggeredVALUECHANGE.removeAll();
-			
-			_ce.stage.removeEventListener(Event.FRAME_CONSTRUCTED,update);
 		}
 	
 	}

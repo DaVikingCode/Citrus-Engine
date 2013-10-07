@@ -7,6 +7,7 @@
 	* @version 2.0
 	*/
 	import dragonBones.Armature;
+	import dragonBones.animation.AnimationState;
 	
 	import flash.events.Event;
 	
@@ -19,9 +20,22 @@
 	public class AnimationEvent extends Event
 	{
 		/**
-		 * Dispatched when the movement of animation is changed.
+		 * Dispatched when the playback of an animation fade in.
 		 */
-		public static const MOVEMENT_CHANGE:String = "movementChange";
+		public static function get MOVEMENT_CHANGE():String
+		{
+			return FADE_IN;
+		}
+		
+		/**
+		 * Dispatched when the playback of an animation fade in.
+		 */
+		public static const FADE_IN:String = "fadeIn";
+		
+		/**
+		 * Dispatched when the playback of an animation fade out.
+		 */
+		public static const FADE_OUT:String = "fadeOut";
 		
 		/**
 		 * Dispatched when the playback of an animation starts.
@@ -29,22 +43,29 @@
 		public static const START:String = "start";
 		
 		/**
-		 * Dispatched when the playback of a movement stops.
+		 * Dispatched when the playback of a animation stops.
 		 */
 		public static const COMPLETE:String = "complete";
 		
 		/**
-		 * Dispatched when the playback of a movement completes a loop.
+		 * Dispatched when the playback of a animation completes a loop.
 		 */
 		public static const LOOP_COMPLETE:String = "loopComplete";
+		
 		/**
-		 * The preceding MovementData id.
+		 * Dispatched when the playback of an animation fade in complete.
 		 */
-		public var exMovementID:String;
+		public static const FADE_IN_COMPLETE:String = "fadeInComplete";
+		
 		/**
-		 * The current MovementData id.
+		 * Dispatched when the playback of an animation fade out complete.
 		 */
-		public var movementID:String;
+		public static const FADE_OUT_COMPLETE:String = "fadeOutComplete";
+		
+		/**
+		 * The animationState instance.
+		 */
+		public var animationState:AnimationState;
 		
 		/**
 		 * The armature that is the taget of this event.
@@ -52,6 +73,11 @@
 		public function get armature():Armature
 		{
 			return target as Armature;
+		}
+		
+		public function get movementID():String
+		{
+			return animationState.name;
 		}
 		
 		/**
@@ -71,8 +97,7 @@
 		override public function clone():Event
 		{
 			var event:AnimationEvent = new AnimationEvent(type, cancelable);
-			event.exMovementID = exMovementID;
-			event.movementID = movementID;
+			event.animationState = animationState;
 			return event;
 		}
 	}

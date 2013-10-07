@@ -8,14 +8,16 @@
 	*/
 
 	
-	import dragonBones.objects.BoneTransform;
+	import dragonBones.objects.DBTransform;
+	
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
-	import starling.display.Quad;
 	import starling.display.Image;
+	import starling.display.Quad;
+	import starling.textures.Texture;
 	
 	/**
 	 * The StarlingDisplayBridge class is an implementation of the IDisplayBridge interface for starling.display.DisplayObject.
@@ -23,10 +25,12 @@
 	 */
 	public class StarlingDisplayBridge implements IDisplayBridge
 	{
-		/**
-		 * @private
-		 */
-		protected var _display:Object;
+		private var _imageBackup:Image;
+		private var _textureBackup:Texture;
+		private var _pivotXBackup:Number;
+		private var _pivotYBackup:Number;
+		
+		private var _display:Object;
 		/**
 		 * @inheritDoc
 		 */
@@ -34,34 +38,36 @@
 		{
 			return _display;
 		}
-		/**
-		 * @private
-		 */
 		public function set display(value:Object):void
 		{
-			if (_display == value)
-			{
-				return;
-			}
-			
-			//Thanks Jian
-			//bug replace image.texture will lost displayList[0].texture
-			/*if (_display is Image && value is Image)
+			if (_display is Image && value is Image)
 			{
 				var from:Image = _display as Image;
 				var to:Image = value as Image;
 				if (from.texture == to.texture)
 				{
+					if(from == _imageBackup)
+					{
+						from.texture = _textureBackup;
+						from.pivotX = _pivotXBackup;
+						from.pivotY = _pivotYBackup;
+						from.readjustSize();
+					}
 					return;
 				}
-				
+			
 				from.texture = to.texture;
 				//update pivot
 				from.pivotX = to.pivotX;
 				from.pivotY = to.pivotY;
 				from.readjustSize();
 				return;
-			}*/
+			}
+			
+			if (_display == value)
+			{
+				return;
+			}
 			
 			if (_display)
 			{
@@ -72,8 +78,27 @@
 				}
 				removeDisplay();
 			}
+			else if(value is Image && !_imageBackup)
+			{
+				_imageBackup = value as Image;
+				_textureBackup = _imageBackup.texture;
+				_pivotXBackup = _imageBackup.pivotX;
+				_pivotYBackup = _imageBackup.pivotY;
+			}
 			_display = value;
 			addDisplay(parent, index);
+		}
+		
+		public function get visible():Boolean
+		{
+			return _display?_display.visible:false;
+		}
+		public function set visible(value:Boolean):void
+		{
+			if(_display)
+			{
+				_display.visible = value;
+			}
 		}
 		
 		/**
@@ -86,29 +111,51 @@
 		/**
 		 * @inheritDoc
 		 */
-		public function update(matrix:Matrix, node:BoneTransform, colorTransform:ColorTransform, visible:Boolean):void
+		public function dispose():void
 		{
-			var pivotX:Number = node.pivotX + _display.pivotX;
-			var pivotY:Number = node.pivotY + _display.pivotY;
+			_display = null;
+			_imageBackup = null;
+			_textureBackup = null;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function updateTransform(matrix:Matrix, transform:DBTransform):void
+		{
+			var pivotX:Number = _display.pivotX;
+			var pivotY:Number = _display.pivotY;
 			matrix.tx -= matrix.a * pivotX + matrix.c * pivotY;
 			matrix.ty -= matrix.b * pivotX + matrix.d * pivotY;
-			
 			//if(updateStarlingDisplay)
 			//{
-			//_display.transformationMatrix = matrix;
+			//	_display.transformationMatrix = matrix;
 			//}
 			//else
 			//{
-			_display.transformationMatrix.copyFrom(matrix);
+				_display.transformationMatrix.copyFrom(matrix);
 			//}
-			
-			if (colorTransform && _display is Quad)
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function updateColor(
+			aOffset:Number, 
+			rOffset:Number, 
+			gOffset:Number, 
+			bOffset:Number, 
+			aMultiplier:Number, 
+			rMultiplier:Number, 
+			gMultiplier:Number, 
+			bMultiplier:Number
+		):void
+		{
+			_display.alpha = aMultiplier;
+			if (_display is Quad)
 			{
-				(_display as Quad).alpha = colorTransform.alphaMultiplier;
-				(_display as Quad).color = (uint(colorTransform.redMultiplier * 0xff) << 16) + (uint(colorTransform.greenMultiplier * 0xff) << 8) + uint(colorTransform.blueMultiplier * 0xff);
+				(_display as Quad).color = (uint(rMultiplier * 0xff) << 16) + (uint(gMultiplier * 0xff) << 8) + uint(bMultiplier * 0xff);
 			}
-			//
-			_display.visible = visible;
 		}
 		
 		/**

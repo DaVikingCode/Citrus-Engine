@@ -10,7 +10,6 @@ package dragonBones.textures
 	/**
 	 * The ITextureAtlas interface defines the methods used by all ITextureAtlas within the dragonBones system (flash or starling DisplayObject based).
 	 * @see dragonBones.Armature
-	 * @see dragonBones.animation.WorldClock
 	 */
 	public interface ITextureAtlas
 	{

@@ -7,12 +7,10 @@ package dragonBones.events
 	* @version 2.0
 	*/
 	import dragonBones.Armature;
-	import dragonBones.Bone;
-	import dragonBones.utils.dragonBones_internal;
+	import dragonBones.animation.AnimationState;
 	
 	import flash.events.Event;
-	
-	use namespace dragonBones_internal;
+
 	/**
 	 * The SoundEvent provides and defines all sound related events dispatched during an animation.
 	 *
@@ -26,32 +24,14 @@ package dragonBones.events
 		 */
 		public static const SOUND:String = "sound";
 		
-		public var movementID:String;
-		
-		public var sound:String;
-		public var soundEffect:String;
-		
-		/** @private */
-		dragonBones_internal var _armature:Armature;
-		
 		/**
 		 * The armature that is the target of this event.
 		 */
-		public function get armature():Armature
-		{
-			return _armature;
-		}
+		public var armature:Armature;
 		
-		/** @private */
-		dragonBones_internal var _bone:Bone;
+		public var animationState:AnimationState;
 		
-		/**
-		 * The bone that is the target of this event.
-		 */
-		public function get bone():Bone
-		{
-			return _bone;
-		}
+		public var sound:String;
 		
 		/**
 		 * Creates a new SoundEvent instance.
@@ -69,11 +49,9 @@ package dragonBones.events
 		override public function clone():Event
 		{
 			var event:SoundEvent = new SoundEvent(type, cancelable);
-			event.movementID = movementID;
+			event.armature = armature;
+			event.animationState = animationState;
 			event.sound = sound;
-			event.soundEffect = soundEffect;
-			event._armature = _armature;
-			event._bone = _bone;
 			return event;
 		}
 	}

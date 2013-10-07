@@ -9,19 +9,12 @@ package citrus.view.starlingview {
 	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
-	import dragonBones.animation.WorldClock;
+
 	import dragonBones.Armature;
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.Loader;
-	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	import flash.net.URLRequest;
-	import flash.system.ApplicationDomain;
-	import flash.system.LoaderContext;
-	import flash.utils.Dictionary;
-	import flash.utils.getDefinitionByName;
+	import dragonBones.animation.WorldClock;
+
 	import spine.starling.SkeletonAnimationSprite;
+
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -32,9 +25,16 @@ package citrus.view.starlingview {
 	import starling.textures.Texture;
 	import starling.utils.deg2rad;
 
-
-
-
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.events.IOErrorEvent;
+	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
+	import flash.utils.Dictionary;
+	import flash.utils.getDefinitionByName;
 
 	/**
 	 * This is the class that all art objects use for the StarlingView state view. If you are using the StarlingView (as opposed to the blitting view, for instance),
@@ -352,7 +352,7 @@ package citrus.view.starlingview {
 				if (_content is AnimationSequence)
 					(_content as AnimationSequence).changeAnimation(_animation, animLoop);
 				else if (_view is Armature)
-					(_view as Armature).animation.gotoAndPlay(value);
+					(_view as Armature).animation.gotoAndPlay(value, -1, -1, animLoop ? 0 : 1);
 				else if (_view is SkeletonAnimationSprite)
 					(_view as SkeletonAnimationSprite).setAnimation(_animation, animLoop);
 			}
@@ -432,17 +432,24 @@ package citrus.view.starlingview {
 			(evt.target.loader as Loader).removeEventListener(Event.COMPLETE, handleContentLoaded);
 			(evt.target.loader as Loader).removeEventListener(IOErrorEvent.IO_ERROR, handleContentIOError);
 			
+			if (!(evt.target.loader.content is flash.display.MovieClip ||
+				evt.target.loader.content is Bitmap))
+			{
+				throw new Error("StarlingArt: Loaded content for "+(_citrusObject as CitrusObject).name+" can only be a MovieClip or a Bitmap");
+				return;
+			}
+			
+			if (_content && _content.parent)
+			{
+				_viewHasChanged = true;
+				destroy();
+			}
+			
 			if (evt.target.loader.content is flash.display.MovieClip)
 				_content = AnimationSequence.fromMovieClip(evt.target.loader.content, _animation, 30);
-
-			if (evt.target.loader.content is Bitmap)
-				_content = new Image(_texture = Texture.fromBitmap(evt.target.loader.content,false));
-			else
-				return;
-				
-			_viewHasChanged = true;
-			destroy();
-
+			else if (evt.target.loader.content is Bitmap)
+				_content = new Image(_texture = Texture.fromBitmap(evt.target.loader.content, false));
+			
 			moveRegistrationPoint(_citrusObject.registration);
 			addChild(_content);
 		}

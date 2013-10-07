@@ -321,6 +321,8 @@ package citrus.core {
 					_futureState.update(timeDelta);
 			}
 			
+			_input.citrus_internal::update();
+			
 		}
 		
 		protected function handleStageDeactivated(e:Event):void

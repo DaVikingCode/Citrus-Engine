@@ -7,7 +7,7 @@ package dragonBones.events
 	* @version 2.0
 	*/
 	import flash.events.Event;
-/**
+	/**
 	 * The ArmatureEvent provides and defines all events dispatched directly by an Armature instance.
 	 *
 	 * 
@@ -16,15 +16,16 @@ package dragonBones.events
 	public class ArmatureEvent extends Event
 	{
 	
-	/**
-	 * Dispatched after a successful z order update.
-	 */
+		/**
+		 * Dispatched after a successful z order update.
+		 */
 		public static const Z_ORDER_UPDATED:String = "zOrderUpdated";
 		
 		public function ArmatureEvent(type:String)
 		{
 			super(type, false, false);
 		}
+		
 		/**
 		 * @private
 		 * @return

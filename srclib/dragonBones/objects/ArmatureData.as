@@ -1,70 +1,187 @@
 package dragonBones.objects
 {
-	import dragonBones.utils.dragonBones_internal;
-	
-	use namespace dragonBones_internal;
-	
-	/** @private */
-	public class ArmatureData
+	final public class ArmatureData
 	{
-		dragonBones_internal var _boneDataList:DataList;
+		public var name:String;
 		
-		public function get boneNames():Vector.<String>
+		private var _boneDataList:Vector.<BoneData>;
+		public function get boneDataList():Vector.<BoneData>
 		{
-			return _boneDataList.dataNames.concat();
+			return _boneDataList;
+		}
+		
+		private var _skinDataList:Vector.<SkinData>;
+		public function get skinDataList():Vector.<SkinData>
+		{
+			return _skinDataList;
+		}
+		
+		private var _animationDataList:Vector.<AnimationData>;
+		public function get animationDataList():Vector.<AnimationData>
+		{
+			return _animationDataList;
 		}
 		
 		public function ArmatureData()
 		{
-			_boneDataList = new DataList();
+			_boneDataList = new Vector.<BoneData>(0, true);
+			_skinDataList = new Vector.<SkinData>(0, true);
+			_animationDataList = new Vector.<AnimationData>(0, true);
 		}
 		
 		public function dispose():void
 		{
-			for each(var boneName:String in _boneDataList.dataNames)
+			var i:int = _boneDataList.length;
+			while(i --)
 			{
-				var boneData:BoneData = _boneDataList.getData(boneName) as BoneData;
-				boneData.dispose();
+				_boneDataList[i].dispose();
+			}
+			i = _skinDataList.length;
+			while(i --)
+			{
+				_skinDataList[i].dispose();
+			}
+			i = _animationDataList.length;
+			while(i --)
+			{
+				_animationDataList[i].dispose();
+			}
+			_boneDataList.fixed = false;
+			_boneDataList.length = 0;
+			_skinDataList.fixed = false;
+			_skinDataList.length = 0;
+			_animationDataList.fixed = false;
+			_animationDataList.length = 0;
+			_boneDataList = null;
+			_skinDataList = null;
+			_animationDataList = null;
+		}
+		
+		public function getBoneData(boneName:String):BoneData
+		{
+			var i:int = _boneDataList.length;
+			while(i --)
+			{
+				if(_boneDataList[i].name == boneName)
+				{
+					return _boneDataList[i];
+				}
+			}
+			return null;
+		}
+		
+		public function getSkinData(skinName:String):SkinData
+		{
+			if(!skinName)
+			{
+				return _skinDataList[0];
+			}
+			var i:int = _skinDataList.length;
+			while(i --)
+			{
+				if(_skinDataList[i].name == skinName)
+				{
+					return _skinDataList[i];
+				}
 			}
 			
-			_boneDataList.dispose();
+			return null;
 		}
 		
-		public function getBoneData(name:String):BoneData
+		public function getAnimationData(animationName:String):AnimationData
 		{
-			return _boneDataList.getData(name) as BoneData;
-		}
-		
-		public function updateBoneList():void
-		{
-			var boneNames:Vector.<String> = _boneDataList.dataNames;
-			
-			var sortList:Array = [];
-			for each(var boneName:String in boneNames)
+			var i:int = _animationDataList.length;
+			while(i --)
 			{
-				var boneData:BoneData = _boneDataList.getData(boneName) as BoneData;
-				var levelValue:int = boneData.node.z;
+				if(_animationDataList[i].name == animationName)
+				{
+					return _animationDataList[i];
+				}
+			}
+			return null;
+		}
+		
+		public function addBoneData(boneData:BoneData):void
+		{
+			if(!boneData)
+			{
+				throw new ArgumentError();
+			}
+			
+			if (_boneDataList.indexOf(boneData) < 0)
+			{
+				_boneDataList.fixed = false;
+				_boneDataList[_boneDataList.length] = boneData;
+				_boneDataList.fixed = true;
+			}
+			else
+			{
+				throw new ArgumentError();
+			}
+		}
+		
+		public function addSkinData(skinData:SkinData):void
+		{
+			if(!skinData)
+			{
+				throw new ArgumentError();
+			}
+			
+			if(_skinDataList.indexOf(skinData) < 0)
+			{
+				_skinDataList.fixed = false;
+				_skinDataList[_skinDataList.length] = skinData;
+				_skinDataList.fixed = true;
+			}
+			else
+			{
+				throw new ArgumentError();
+			}
+		}
+		
+		public function addAnimationData(animationData:AnimationData):void
+		{
+			if(!animationData)
+			{
+				throw new ArgumentError();
+			}
+			
+			if(_animationDataList.indexOf(animationData) < 0)
+			{
+				_animationDataList.fixed = false;
+				_animationDataList[_animationDataList.length] = animationData;
+				_animationDataList.fixed = true;
+			}
+		}
+		
+		public function sortBoneDataList():void
+		{
+			var i:int = _boneDataList.length;
+			if(i == 0)
+			{
+				return;
+			}
+			
+			var helpArray:Array = [];
+			while(i --)
+			{
+				var boneData:BoneData = _boneDataList[i];
 				var level:int = 0;
-				while(boneData)
+				var parentData:BoneData = boneData;
+				while(parentData && parentData.parent)
 				{
 					level ++;
-					levelValue += 1000 * level;
-					boneData = getBoneData(boneData.parent);
+					parentData = getBoneData(parentData.parent);
 				}
-				sortList.push({level:levelValue, boneName:boneName});
+				helpArray[i] = {level:level, boneData:boneData};
 			}
 			
-			var length:int = sortList.length;
-			if(length > 0)
+			helpArray.sortOn("level", Array.NUMERIC);
+			
+			i = helpArray.length;
+			while(i --)
 			{
-				sortList.sortOn("level", Array.NUMERIC);
-				boneNames.length = 0;
-				var i:int = 0;
-				while(i < length)
-				{
-					boneNames[i] = sortList[i].boneName;
-					i ++;
-				}
+				_boneDataList[i] = helpArray[i].boneData;
 			}
 		}
 	}

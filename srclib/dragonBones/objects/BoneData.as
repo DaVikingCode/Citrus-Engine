@@ -1,32 +1,27 @@
 package dragonBones.objects
 {
-	import dragonBones.utils.dragonBones_internal;
-	
-	use namespace dragonBones_internal;
-	
-	/** @private */
+	import flash.geom.Point;
+
 	final public class BoneData
 	{
-		dragonBones_internal var _displayNames:Vector.<String>;
+		public var name:String;
+		public var parent:String;
+		public var length:Number;
 		
-		dragonBones_internal var _parent:String;
-		
-		public function get parent():String
-		{
-			return _parent;
-		}
-		
-		public var node:BoneTransform;
+		public var global:DBTransform;
+		public var transform:DBTransform;
 		
 		public function BoneData()
 		{
-			_displayNames = new Vector.<String>;
-			node = new BoneTransform();
+			length = 0;
+			global = new DBTransform();
+			transform = new DBTransform();
 		}
 		
 		public function dispose():void
 		{
-			_displayNames.length = 0;
+			global = null;
+			transform = null;
 		}
 	}
 }
