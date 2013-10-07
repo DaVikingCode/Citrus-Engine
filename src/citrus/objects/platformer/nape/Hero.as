@@ -399,7 +399,6 @@ package citrus.objects.platformer.nape {
 			var collider:NapePhysicsObject = NapeUtils.CollisionGetOther(this, callback);
 			
 			//Remove from ground contacts, if it is one.
-			if (collider == null) return;
 			var index:int = _groundContacts.indexOf(collider.body);
 			if (index != -1)
 			{
