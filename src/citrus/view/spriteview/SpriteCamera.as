@@ -147,13 +147,8 @@ package citrus.view.spriteview {
 				_targetPos.x = _target.x;
 				_targetPos.y = _target.y;
 				
-				var diffX:Number = _targetPos.x - _ghostTarget.x;
-				var diffY:Number = _targetPos.y - _ghostTarget.y;
-				var velocityX:Number = diffX * easing.x;
-				var velocityY:Number = diffY * easing.y;
-				
-				_ghostTarget.x += velocityX;
-				_ghostTarget.y += velocityY;
+				_ghostTarget.x += (_targetPos.x - _ghostTarget.x) * easing.x;
+				_ghostTarget.y += (_targetPos.y - _ghostTarget.y) * easing.y;
 				
 			}
 			else if (_manualPosition)
@@ -163,20 +158,14 @@ package citrus.view.spriteview {
 			}
 			
 			if (_allowRotation)
-			{
-				var diffRot:Number = _rotation - _camProxy.rotation;
-				var velocityRot:Number = diffRot * rotationEasing;
-				_camProxy.rotation += velocityRot;
-			}
+				_camProxy.rotation += (_rotation - _camProxy.rotation) * rotationEasing;
 			
 			resetAABBData();
 			
 			if (_allowZoom)
 			{
 
-				var diffZoom:Number = mzoom - _camProxy.scale;
-				var velocityZoom:Number = diffZoom * zoomEasing;
-				_camProxy.scale += velocityZoom;
+				_camProxy.scale += (mzoom - _camProxy.scale) * zoomEasing;
 				
 				if (bounds && (boundsMode == BOUNDS_MODE_AABB || boundsMode == BOUNDS_MODE_ADVANCED) )
 				{
