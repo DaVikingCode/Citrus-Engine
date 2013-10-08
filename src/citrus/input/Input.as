@@ -26,7 +26,7 @@ package citrus.input {
 		/**
 		 * time interval to clear the InputAction's disposed list automatically.
 		 */
-		public var clearDisposedActionsTimeOut:int = 480;
+		public var clearDisposedActionsInterval:uint = 480;
 		
 		/**
 		 * Lets InputControllers trigger actions.
@@ -272,7 +272,7 @@ package citrus.input {
 		 */
 		citrus_internal function update():void
 		{
-			if (_timeActive % clearDisposedActionsTimeOut == 0)
+			if (_timeActive % clearDisposedActionsInterval == 0)
 				InputAction.clearDisposed();
 			_timeActive++;
 			
