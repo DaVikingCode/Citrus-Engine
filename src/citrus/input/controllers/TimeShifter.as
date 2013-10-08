@@ -214,7 +214,7 @@ package citrus.input.controllers {
 			var obj:Object;
 			var continuous:Object;
 			var discrete:Object;
-			var abuff:Vector.<Object> = _input.getActionsSnapshot();
+			var abuff:Vector.<InputAction> = _input.getActionsSnapshot();
 			var wbuff:Vector.<Object> = new Vector.<Object>();
 			var ic:Object;
 			var id:Object;
