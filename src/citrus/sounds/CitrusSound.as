@@ -225,8 +225,8 @@ package citrus.sounds
 			
 			if (val is String)
 			{
-				_urlReq = new URLRequest(val as String);
 				_sound = new Sound();
+				_urlReq = new URLRequest(val as String);
 			}
 			else if (val is Class)
 			{
@@ -240,6 +240,11 @@ package citrus.sounds
 				_sound = val as Sound;
 				_loadedRatio = 1;
 				_loaded = true;
+			}
+			else if (val is URLRequest)
+			{
+				_sound = new Sound();
+				_urlReq = val as URLRequest;
 			}
 			else
 				throw new Error("CitrusSound, " + val + "is not a valid sound paramater");
