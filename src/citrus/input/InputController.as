@@ -39,7 +39,7 @@ package citrus.input {
 		}
 		
 		/**
-		 * Will register the action to Input as an action with an InputAction.BEGIN phase.
+		 * Will register the action to the Input system as an action with an InputPhase.BEGIN phase.
 		 * @param	name string that defines the action such as "jump" or "fly"
 		 * @param	value optional value for your action.
 		 * @param	channel optional channel for your action. (will be set to the defaultChannel if not set.
@@ -51,7 +51,7 @@ package citrus.input {
 		}
 		
 		/**
-		 * Will register the action to Input as an action with an InputAction.END phase.
+		 * Will register the action to the Input system as an action with an InputPhase.END phase.
 		 * @param	name string that defines the action such as "jump" or "fly"
 		 * @param	value optional value for your action.
 		 * @param	channel optional channel for your action. (will be set to the defaultChannel if not set.
@@ -63,7 +63,8 @@ package citrus.input {
 		}
 		
 		/**
-		 * Will register the action to Input as an action with an InputAction.ON phase.
+		 * Will register the action to the Input system as an action with an InputPhase.BEGIN phase if its not yet in the 
+		 * actions list, otherwise it will update the existing action's value and set its phase back to InputPhase.ON.
 		 * @param	name string that defines the action such as "jump" or "fly"
 		 * @param	value optional value for your action.
 		 * @param	channel optional channel for your action. (will be set to the defaultChannel if not set.
@@ -75,7 +76,7 @@ package citrus.input {
 		}
 		
 		/**
-		 * Removes the controller from Input.
+		 * Removes this controller from Input.
 		 */
 		public function destroy():void
 		{
