@@ -44,10 +44,10 @@ package citrus.physics.nape {
 			var a:INapePhysicsObject = interactionCallback.int1.userData.myData;
 			var b:INapePhysicsObject = interactionCallback.int2.userData.myData;
 			
-			if (a && a.endContactCallEnabled)
+			if (a.endContactCallEnabled)
 				a.handleEndContact(interactionCallback);
 				
-			if (b && b.endContactCallEnabled)
+			if (b.endContactCallEnabled)
 				b.handleEndContact(interactionCallback);
 		}
 	}
