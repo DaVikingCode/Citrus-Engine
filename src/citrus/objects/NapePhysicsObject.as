@@ -83,7 +83,7 @@ package citrus.objects {
 		override public function destroy():void {
 			
 			_nape.space.bodies.remove(_body);
-			_nape = null;
+			//_nape = null;
 			
 			//_body.userData.myData = null;
 			
