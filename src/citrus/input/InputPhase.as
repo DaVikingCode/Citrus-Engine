@@ -1,6 +1,6 @@
 package citrus.input 
 {
-	public class InputActionPhase 
+	public class InputPhase 
 	{
 		
 		/**

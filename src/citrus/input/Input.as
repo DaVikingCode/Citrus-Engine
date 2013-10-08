@@ -99,7 +99,7 @@ package citrus.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase > InputActionPhase.END)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase > InputPhase.END)
 					return true;
 			return false;
 		}
@@ -111,7 +111,7 @@ package citrus.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase < InputActionPhase.END)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase < InputPhase.END)
 					return true;
 			return false;
 		}
@@ -135,7 +135,7 @@ package citrus.input {
 		 * example :
 		 * <code>
 		 * var action:InputAction = _ce.input.getAction("jump");
-		 * if(action && action.phase >= InputActionPhase.ON && action.time > 120)
+		 * if(action && action.phase >= InputPhase.ON && action.time > 120)
 		 *    trace("the jump action lasted 120 frames. its value is",action.value);
 		 * </code>
 		 * 
@@ -194,7 +194,7 @@ package citrus.input {
 			for each (a in _actions)
 				if (a.eq(action))
 					return;
-			action._phase = InputActionPhase.BEGIN;
+			action._phase = InputPhase.BEGIN;
 			_actions[_actions.length] = action;
 		}
 		
@@ -210,7 +210,7 @@ package citrus.input {
 			for each (a in _actions)
 				if (a.eq(action))
 				{
-					a._phase = InputActionPhase.END;
+					a._phase = InputPhase.END;
 					return;
 				}
 		}
@@ -231,12 +231,12 @@ package citrus.input {
 			{
 				if (a.eq(action))
 				{
-					a._phase = InputActionPhase.ON;
+					a._phase = InputPhase.ON;
 					a._value = action.value;
 					return;
 				}
 			}
-			action._phase = InputActionPhase.BEGIN;
+			action._phase = InputPhase.BEGIN;
 			_actions[_actions.length] = action;
 		}
 		
@@ -263,9 +263,9 @@ package citrus.input {
 			for (i in _actions)
 			{
 				InputAction(_actions[i]).itime++;
-				if (_actions[i].phase > InputActionPhase.END)
+				if (_actions[i].phase > InputPhase.END)
 					_actions.splice(uint(i), 1);
-				else if (_actions[i].phase !== InputActionPhase.ON)
+				else if (_actions[i].phase !== InputPhase.ON)
 					_actions[i]._phase++;
 			}
 		
