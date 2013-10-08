@@ -47,7 +47,7 @@ package citrus.input {
 		protected function triggerON(name:String, value:Number = 0, channel:int = -1):void
 		{
 			if (enabled)
-				_input.actionTriggeredON.dispatch(new InputAction(name, this, (channel < 0)? defaultChannel : channel , value));
+				_input.actionTriggeredON.dispatch(InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value));
 		}
 		
 		/**
@@ -59,7 +59,7 @@ package citrus.input {
 		protected function triggerOFF(name:String, value:Number = 0, channel:int = -1):void
 		{
 			if (enabled)
-				_input.actionTriggeredOFF.dispatch(new InputAction(name, this, (channel < 0)? defaultChannel : channel , value));
+				_input.actionTriggeredOFF.dispatch(InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value));
 		}
 		
 		/**
@@ -72,7 +72,7 @@ package citrus.input {
 		protected function triggerVALUECHANGE(name:String, value:Number = 0, channel:int = -1):void
 		{
 			if (enabled)
-				_input.actionTriggeredVALUECHANGE.dispatch(new InputAction(name, this, (channel < 0)? defaultChannel : channel , value));
+				_input.actionTriggeredVALUECHANGE.dispatch(InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value));
 		}
 		
 		/**

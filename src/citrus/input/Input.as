@@ -16,20 +16,29 @@ package citrus.input {
 	public class Input
 	{
 		protected var _ce:CitrusEngine;
+		protected var _timeActive:int = 0;
 		protected var _enabled:Boolean = true;
 		protected var _initialized:Boolean;
 		
 		protected var _controllers:Vector.<InputController>;
 		protected var _actions:Vector.<InputAction>;
 		
+		/**
+		 * time interval to clear the InputAction's disposed list automatically.
+		 */
+		public var clearDisposedActionsTimeOut:int = 480;
+		
+		/**
+		 * Lets InputControllers trigger actions.
+		 */
 		public var triggersEnabled:Boolean = true;
 		
 		protected var _routeActions:Boolean = false;
 		protected var _routeChannel:uint;
 		
-		public var actionTriggeredON:Signal;
-		public var actionTriggeredOFF:Signal;
-		public var actionTriggeredVALUECHANGE:Signal;
+		internal var actionTriggeredON:Signal;
+		internal var actionTriggeredOFF:Signal;
+		internal var actionTriggeredVALUECHANGE:Signal;
 		
 		//easy access to the default keyboard
 		public var keyboard:Keyboard;
@@ -188,12 +197,18 @@ package citrus.input {
 		private function doActionON(action:InputAction):void
 		{
 			if (!triggersEnabled)
+			{
+				action.dispose();
 				return;
+			}
 			var a:InputAction;
 			
 			for each (a in _actions)
 				if (a.eq(action))
+				{
+					action.dispose();
 					return;
+				}
 			action._phase = InputPhase.BEGIN;
 			_actions[_actions.length] = action;
 		}
@@ -205,12 +220,16 @@ package citrus.input {
 		private function doActionOFF(action:InputAction):void
 		{
 			if (!triggersEnabled)
+			{
+				action.dispose();
 				return;
+			}
 			var a:InputAction;
 			for each (a in _actions)
 				if (a.eq(action))
 				{
 					a._phase = InputPhase.END;
+					action.dispose();
 					return;
 				}
 		}
@@ -225,7 +244,10 @@ package citrus.input {
 		private function doActionVALUECHANGE(action:InputAction):void
 		{
 			if (!triggersEnabled)
+			{
+				action.dispose();
 				return;
+			}
 			var a:InputAction;
 			for each (a in _actions)
 			{
@@ -233,6 +255,7 @@ package citrus.input {
 				{
 					a._phase = InputPhase.ON;
 					a._value = action.value;
+					action.dispose();
 					return;
 				}
 			}
@@ -249,6 +272,10 @@ package citrus.input {
 		 */
 		citrus_internal function update():void
 		{
+			if (_timeActive % clearDisposedActionsTimeOut == 0)
+				InputAction.clearDisposed();
+			_timeActive++;
+			
 			if (!_enabled)
 				return;
 			
@@ -264,11 +291,15 @@ package citrus.input {
 			{
 				InputAction(_actions[i]).itime++;
 				if (_actions[i].phase > InputPhase.END)
+				{
+					_actions[i].dispose();
 					_actions.splice(uint(i), 1);
+				}
 				else if (_actions[i].phase !== InputPhase.ON)
 					_actions[i]._phase++;
 			}
 		
+			
 		}
 		
 		public function removeController(controller:InputController):void
@@ -384,6 +415,9 @@ package citrus.input {
 			actionTriggeredON.removeAll();
 			actionTriggeredOFF.removeAll();
 			actionTriggeredVALUECHANGE.removeAll();
+			
+			resetActions();
+			InputAction.clearDisposed();
 		}
 	
 	}

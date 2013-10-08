@@ -86,6 +86,54 @@ package citrus.input
 		 */
 		internal function get itime():uint { return _time; }
 		internal function set itime(val:uint):void { _time = val; }
+		
+		
+		
+		 // ------------ InputAction Pooling
+		
+		 /**
+		  * list of disposed InputActions. automatically disposed when they end in Input.as
+		  */
+		internal static var disposed:Vector.<InputAction> = new Vector.<InputAction>();
+		
+		/**
+		 * creates an InputAction either from a disposed InputAction object or a new one.
+		 */
+		public static function create(name:String, controller:InputController, channel:uint = 0, value:Number = 0, phase:uint = 0, time:uint = 0):InputAction
+		{
+			if (disposed.length > 0)
+				return disposed.pop().setTo(name, controller, channel, value, phase, time);
+			else
+				return new InputAction(name,controller,channel,value,phase,time);
+		}
+		
+		/**
+		 * clear the list of disposed InputActions.
+		 */
+		public static function clearDisposed():void
+		{
+			disposed.length = 0;
+		}
+		
+		/**
+		 * set all InputActions's properties (internal for recycling)
+		 */
+		internal function setTo(name:String, controller:InputController, channel:uint = 0, value:Number = 0, phase:uint = 0, time:uint = 0):InputAction
+		{
+			_name = name;
+			_controller = controller;
+			_channel = channel;
+			_value = value;
+			_phase = phase;
+			_time = time;
+			return this;
+		}
+		
+		public function dispose():void
+		{
+			_controller = null;
+			disposed.push(this);
+		}
 	
 	}
 
