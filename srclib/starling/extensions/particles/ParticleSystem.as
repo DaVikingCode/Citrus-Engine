@@ -15,7 +15,6 @@ package starling.extensions.particles
     import flash.display3D.Context3D;
     import flash.display3D.Context3DBlendFactor;
     import flash.display3D.Context3DProgramType;
-    import flash.display3D.Context3DTextureFormat;
     import flash.display3D.Context3DVertexBufferFormat;
     import flash.display3D.IndexBuffer3D;
     import flash.display3D.Program3D;
@@ -31,6 +30,7 @@ package starling.extensions.particles
     import starling.errors.MissingContextError;
     import starling.events.Event;
     import starling.textures.Texture;
+    import starling.textures.TextureSmoothing;
     import starling.utils.MatrixUtil;
     import starling.utils.VertexData;
     
@@ -64,6 +64,7 @@ package starling.extensions.particles
         protected var mPremultipliedAlpha:Boolean;
         protected var mBlendFactorSource:String;     
         protected var mBlendFactorDestination:String;
+        protected var mSmoothing:String;
         
         public function ParticleSystem(texture:Texture, emissionRate:Number, 
                                        initialCapacity:int=128, maxCapacity:int=8192,
@@ -81,6 +82,7 @@ package starling.extensions.particles
             mFrameTime = 0.0;
             mEmitterX = mEmitterY = 0;
             mMaxCapacity = Math.min(8192, maxCapacity);
+            mSmoothing = TextureSmoothing.BILINEAR;
             
             mBlendFactorDestination = blendFactorDest || Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA;
             mBlendFactorSource = blendFactorSource ||
@@ -404,18 +406,15 @@ package starling.extensions.particles
         {
             var mipmap:Boolean = mTexture.mipMapping;
             var textureFormat:String = mTexture.format;
-            var programName:String = "ext.ParticleSystem." + textureFormat + (mipmap ? "+mm" : "");
+            var programName:String = "ext.ParticleSystem." + textureFormat + "/" +
+                                     mSmoothing.charAt(0) + (mipmap ? "+mm" : "");
             
             mProgram = Starling.current.getProgram(programName);
             
             if (mProgram == null)
             {
-                var textureOptions:String = "2d, clamp, linear, " + (mipmap ? "mipnearest" : "mipnone");
-                
-                if (textureFormat == Context3DTextureFormat.COMPRESSED)
-                    textureOptions += ", dxt1";
-                else if (textureFormat == "compressedAlpha")
-                    textureOptions += ", dxt5";
+                var textureOptions:String =
+                    RenderSupport.getTextureLookupFlags(textureFormat, mipmap, false, mSmoothing);
                 
                 var vertexProgramCode:String =
                     "m44 op, va0, vc0 \n" + // 4x4 matrix transform to output clipspace
@@ -423,17 +422,14 @@ package starling.extensions.particles
                     "mov v1, va2      \n";  // pass texture coordinates to fragment program
                 
                 var fragmentProgramCode:String =
-                    "tex ft1, v1, fs0 <" + textureOptions + "> \n" + // sample texture 0
-                    "mul oc, ft1, v0";                               // multiply color with texel color
+                    "tex ft1, v1, fs0 " + textureOptions + "\n" + // sample texture 0
+                    "mul oc, ft1, v0";                            // multiply color with texel color
                 
-                var vertexProgramAssembler:AGALMiniAssembler = new AGALMiniAssembler();
-                vertexProgramAssembler.assemble(Context3DProgramType.VERTEX, vertexProgramCode);
+                var assembler:AGALMiniAssembler = new AGALMiniAssembler();
                 
-                var fragmentProgramAssembler:AGALMiniAssembler = new AGALMiniAssembler();
-                fragmentProgramAssembler.assemble(Context3DProgramType.FRAGMENT, fragmentProgramCode);
-                
-                Starling.current.registerProgram(programName, 
-                    vertexProgramAssembler.agalcode, fragmentProgramAssembler.agalcode);
+                Starling.current.registerProgram(programName,
+                    assembler.assemble(Context3DProgramType.VERTEX, vertexProgramCode),
+                    assembler.assemble(Context3DProgramType.FRAGMENT, fragmentProgramCode));
                 
                 mProgram = Starling.current.getProgram(programName);
             }
@@ -463,5 +459,8 @@ package starling.extensions.particles
         
         public function get texture():Texture { return mTexture; }
         public function set texture(value:Texture):void { mTexture = value; createProgram(); }
+        
+        public function get smoothing():String { return mSmoothing; }
+        public function set smoothing(value:String):void { mSmoothing = value; }
     }
 }

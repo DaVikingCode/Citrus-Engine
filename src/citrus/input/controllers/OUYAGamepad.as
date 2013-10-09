@@ -1,5 +1,7 @@
-package citrus.input.controllers
-{
+package citrus.input.controllers {
+
+	import citrus.input.InputController;
+
 	import flash.events.Event;
 	import flash.events.GameInputEvent;
 	import flash.ui.GameInput;
@@ -7,9 +9,6 @@ package citrus.input.controllers
 	import flash.ui.GameInputDevice;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
-	
-	import citrus.input.InputController;
-	
 	
 	/**
 	 * Controller class for OUYA android game console. Based on Keyboard class for CE support and supports multiple controllers...sort of :)
