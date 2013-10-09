@@ -272,7 +272,7 @@ package citrus.input {
 		 */
 		citrus_internal function update():void
 		{
-			if (_timeActive % clearDisposedActionsInterval == 0)
+			if (InputAction.disposed.length > 0 && _timeActive % clearDisposedActionsInterval == 0)
 				InputAction.clearDisposed();
 			_timeActive++;
 			
