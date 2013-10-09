@@ -4,6 +4,7 @@ package citrus.objects
 	import citrus.core.CitrusObject;
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
+	import flash.utils.describeType;
 
 	/**
 	 * Base CitrusObject PoolObject (ex: CitrusSprites)
@@ -13,14 +14,10 @@ package citrus.objects
 		
 		public function CitrusObjectPool(pooledType:Class,defaultParams:Object, poolGrowthRate:uint = 1)
 		{
-			super(pooledType, defaultParams, poolGrowthRate, true);
-			
-			//test if defined pooledType class inherits from CitrusObject
-			var test:Object;
-			if ((test = new pooledType("test")) is CitrusObject)
-			{ test.kill = true; test = null; }
-			else
+			if (!(describeType(pooledType).factory.extendsClass.(@type == "citrus.core::CitrusObject").length() > 0))
 				throw new Error("CitrusObjectPool: " + String(pooledType) + " is not a CitrusObject");
+				
+			super(pooledType, defaultParams, poolGrowthRate, true);
 		}
 		
 		override protected function _create(node:DoublyLinkedListNode, params:Object = null):void

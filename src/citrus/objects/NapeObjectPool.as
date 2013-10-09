@@ -8,6 +8,7 @@ package citrus.objects
 	import citrus.physics.nape.Nape;
 	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
+	import flash.utils.describeType;
 	
 	public class NapeObjectPool extends PoolObject
 	{
@@ -15,14 +16,10 @@ package citrus.objects
 		
 		public function NapeObjectPool(pooledType:Class,defaultParams:Object, poolGrowthRate:uint = 1) 
 		{
-			super(pooledType, defaultParams, poolGrowthRate, true);
-			
-			//test if defined pooledType class inherits from NapePhysicsObject
-			var test:Object;
-			if ((test = new pooledType("test")) is NapePhysicsObject)
-			{ test.kill = true; test = null; }
-			else
+			if (!(describeType(pooledType).factory.extendsClass.(@type == "citrus.objects::NapePhysicsObject").length() > 0))
 				throw new Error("NapePoolObject: " + String(pooledType) + " is not a NapePhysicsObject");
+				
+			super(pooledType, defaultParams, poolGrowthRate, true);
 				
 			stateView = CitrusEngine.getInstance().state.view;
 		}
