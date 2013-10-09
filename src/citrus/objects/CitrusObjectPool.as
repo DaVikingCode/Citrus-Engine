@@ -14,10 +14,10 @@ package citrus.objects
 		
 		public function CitrusObjectPool(pooledType:Class,defaultParams:Object, poolGrowthRate:uint = 1)
 		{
+			super(pooledType, defaultParams, poolGrowthRate, true);
+			
 			if (!(describeType(pooledType).factory.extendsClass.(@type == "citrus.core::CitrusObject").length() > 0))
 				throw new Error("CitrusObjectPool: " + String(pooledType) + " is not a CitrusObject");
-				
-			super(pooledType, defaultParams, poolGrowthRate, true);
 		}
 		
 		override protected function _create(node:DoublyLinkedListNode, params:Object = null):void

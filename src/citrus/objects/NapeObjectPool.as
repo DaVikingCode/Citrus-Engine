@@ -15,11 +15,11 @@ package citrus.objects
 		private static var stateView:ACitrusView;
 		
 		public function NapeObjectPool(pooledType:Class,defaultParams:Object, poolGrowthRate:uint = 1) 
-		{
+		{	
+			super(pooledType, defaultParams, poolGrowthRate, true);
+			
 			if (!(describeType(pooledType).factory.extendsClass.(@type == "citrus.objects::NapePhysicsObject").length() > 0))
 				throw new Error("NapePoolObject: " + String(pooledType) + " is not a NapePhysicsObject");
-				
-			super(pooledType, defaultParams, poolGrowthRate, true);
 				
 			stateView = CitrusEngine.getInstance().state.view;
 		}

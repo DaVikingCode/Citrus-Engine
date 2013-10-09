@@ -17,10 +17,10 @@ package citrus.objects
 		
 		public function Box2DObjectPool(pooledType:Class,defaultParams:Object, poolGrowthRate:uint = 1) 
 		{
+			super(pooledType, defaultParams, poolGrowthRate, true);
+			
 			if (!(describeType(pooledType).factory.extendsClass.(@type == "citrus.objects::Box2DPhysicsObject").length() > 0))
 				throw new Error("Box2DPoolObject: " + String(pooledType) + " is not a Box2DPhysicsObject");
-			
-			super(pooledType, defaultParams, poolGrowthRate, true);
 			
 			if(!activationQueue)
 			activationQueue = new Vector.<Object>();
