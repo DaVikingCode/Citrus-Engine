@@ -82,6 +82,7 @@
 			<arg line="-include-sources ../src/citrus/input/controllers/AVirtualButton.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/AVirtualJoystick.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/Keyboard.as" />
+			<arg line="-include-sources ../src/citrus/input/controllers/OUYAGamepad.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/TimeShifter.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/displaylist" />
 
@@ -137,6 +138,7 @@
 			<arg line="-include-sources ../srclib/dragonBones/Bone.as" />
 			
 			<arg line="-include-libraries ../lib/EazeTween.swc" />
+			<arg line="-include-libraries ../lib/gameinputcontrolname.swc" />
 			<arg line="-include-libraries ../lib/signals.swc" />
 			<!--<arg line="-external-library-path+=../lib/signals.swc"/>-->
 			<!--<arg line="-runtime-shared-library-path="/> don't know if needed-->
