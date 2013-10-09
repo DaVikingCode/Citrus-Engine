@@ -132,6 +132,12 @@ package citrus.input
 		public function dispose():void
 		{
 			_controller = null;
+			
+			var a:InputAction;
+			for each(a in disposed)
+				if (this == a)
+					return;
+					
 			disposed.push(this);
 		}
 	
