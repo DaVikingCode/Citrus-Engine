@@ -81,11 +81,11 @@ package citrus.input.controllers
 				for each (a in _keyActions[control.name]) {
 					
 					if (control.value == 0) {
-						triggerOFF(a.name, 0, (a.channel < 0 ) ? defaultChannel : a.channel);
+						triggerOFF(a.name, 0, null, (a.channel < 0 ) ? defaultChannel : a.channel);
 					} else if (control.value == 1) {
-						triggerON(a.name, 1, (a.channel < 0) ? defaultChannel : a.channel);
+						triggerON(a.name, 1, null, (a.channel < 0) ? defaultChannel : a.channel);
 					} else {
-						triggerVALUECHANGE(a.name, v, (a.channel < 0) ? defaultChannel : a.channel);
+						triggerVALUECHANGE(a.name, v, null, (a.channel < 0) ? defaultChannel : a.channel);
 					}
 				}
 			}

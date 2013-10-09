@@ -61,7 +61,7 @@ package citrus.input.controllers.displaylist {
 			
 			if (e.type == MouseEvent.MOUSE_DOWN && button == e.target.parent)
 			{
-				triggerON(buttonAction, 1, buttonChannel);
+				triggerON(buttonAction, 1, null, buttonChannel);
 				button.removeChildAt(0);
 				button.addChild(buttonDownGraphic);					
 				
@@ -70,7 +70,7 @@ package citrus.input.controllers.displaylist {
 			
 			if (e.type == MouseEvent.MOUSE_UP && button == e.target.parent)
 			{
-				triggerOFF(buttonAction, 0, buttonChannel);
+				triggerOFF(buttonAction, 0, null, buttonChannel);
 				button.removeChildAt(0);
 				button.addChild(buttonUpGraphic);
 				

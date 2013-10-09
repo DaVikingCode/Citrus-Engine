@@ -41,7 +41,7 @@ package citrus.input.controllers {
 				var a:Object;
 				for each (a in _keyActions[e.keyCode])
 				{
-					triggerON(a.name, 1, (a.channel < 0 ) ? defaultChannel : a.channel);
+					triggerON(a.name, 1, null, (a.channel < 0 ) ? defaultChannel : a.channel);
 				}
 			}
 		}
@@ -53,7 +53,7 @@ package citrus.input.controllers {
 				var a:Object;
 				for each (a in _keyActions[e.keyCode])
 				{
-					triggerOFF(a.name, 0, (a.channel < 0 ) ? defaultChannel : a.channel);
+					triggerOFF(a.name, 0, null, (a.channel < 0 ) ? defaultChannel : a.channel);
 				}
 			}
 		}

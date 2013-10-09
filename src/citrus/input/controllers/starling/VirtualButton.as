@@ -83,12 +83,12 @@ package citrus.input.controllers.starling {
 					
 					case TouchPhase.BEGAN:
 						(buttonTouch.target as Image).texture = buttonDownTexture;
-						triggerON(buttonAction, 1, buttonChannel);
+						triggerON(buttonAction, 1, null, buttonChannel);
 						break;
 						
 					case TouchPhase.ENDED:
 						(buttonTouch.target as Image).texture = buttonUpTexture;
-						triggerOFF(buttonAction, 0, buttonChannel);
+						triggerOFF(buttonAction, 0, null, buttonChannel);
 						break;
 				}
 			}

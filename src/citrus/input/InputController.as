@@ -44,10 +44,10 @@ package citrus.input {
 		 * @param	value optional value for your action.
 		 * @param	channel optional channel for your action. (will be set to the defaultChannel if not set.
 		 */
-		protected function triggerON(name:String, value:Number = 0, channel:int = -1):void
+		protected function triggerON(name:String, value:Number = 0,message:String = null, channel:int = -1):void
 		{
 			if (enabled)
-				_input.actionTriggeredON.dispatch(InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value));
+				_input.actionTriggeredON.dispatch(InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message));
 		}
 		
 		/**
@@ -56,10 +56,10 @@ package citrus.input {
 		 * @param	value optional value for your action.
 		 * @param	channel optional channel for your action. (will be set to the defaultChannel if not set.
 		 */
-		protected function triggerOFF(name:String, value:Number = 0, channel:int = -1):void
+		protected function triggerOFF(name:String, value:Number = 0,message:String = null, channel:int = -1):void
 		{
 			if (enabled)
-				_input.actionTriggeredOFF.dispatch(InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value));
+				_input.actionTriggeredOFF.dispatch(InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message));
 		}
 		
 		/**
@@ -69,10 +69,10 @@ package citrus.input {
 		 * @param	value optional value for your action.
 		 * @param	channel optional channel for your action. (will be set to the defaultChannel if not set.
 		 */
-		protected function triggerVALUECHANGE(name:String, value:Number = 0, channel:int = -1):void
+		protected function triggerVALUECHANGE(name:String, value:Number = 0,message:String = null, channel:int = -1):void
 		{
 			if (enabled)
-				_input.actionTriggeredVALUECHANGE.dispatch(InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value));
+				_input.actionTriggeredVALUECHANGE.dispatch(InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message));
 		}
 		
 		/**

@@ -13,15 +13,17 @@ package citrus.input
 		private var _time:uint = 0;
 		
 		internal var _value:Number;
+		internal var _message:String;
 		internal var _phase:uint;
 		
-		public function InputAction(name:String, controller:InputController, channel:uint = 0, value:Number = 0, phase:uint = 0, time:uint = 0)
+		public function InputAction(name:String, controller:InputController, channel:uint = 0, value:Number = 0, message:String = null, phase:uint = 0, time:uint = 0)
 		{
 			_name = name;
 			_controller = controller;
 			_channel = channel;
 			
 			_value = value;
+			_message = message;
 			_phase = phase;
 			_time = time;
 		}
@@ -31,7 +33,7 @@ package citrus.input
 		 */
 		public function clone():InputAction
 		{
-			return new InputAction(_name, _controller,_channel , value, _phase, _time);
+			return InputAction.create(_name, _controller,_channel , _value, _message, _phase, _time);
 		}
 		
 		/**
@@ -54,7 +56,7 @@ package citrus.input
 		
 		public function toString():String
 		{
-			return "[ Action # name: " + _name + " channel: " + _channel + " value: " + value + " phase: " + phase + " controller: " + _controller + " time: " + _time + " ]";
+			return "[ Action # name: " + _name + " channel: " + _channel + " value: " + _value + " phase: " + _phase + " controller: " + _controller + " time: " + _time + " ]";
 		}
 		
 		public function get name():String { return _name; }
@@ -75,6 +77,11 @@ package citrus.input
 		 * value the action carries
 		 */
 		public function get value():Number { return _value; }
+		
+		/**
+		 * message the action carries
+		 */
+		public function get message():String { return _message;  }
 		
 		/**
 		 * action phase
@@ -99,12 +106,12 @@ package citrus.input
 		/**
 		 * creates an InputAction either from a disposed InputAction object or a new one.
 		 */
-		public static function create(name:String, controller:InputController, channel:uint = 0, value:Number = 0, phase:uint = 0, time:uint = 0):InputAction
+		public static function create(name:String, controller:InputController, channel:uint = 0, value:Number = 0, message:String = null, phase:uint = 0, time:uint = 0):InputAction
 		{
 			if (disposed.length > 0)
-				return disposed.pop().setTo(name, controller, channel, value, phase, time);
+				return disposed.pop().setTo(name, controller, channel, value, message, phase, time);
 			else
-				return new InputAction(name,controller,channel,value,phase,time);
+				return new InputAction(name,controller,channel,value,message,phase,time);
 		}
 		
 		/**
@@ -118,12 +125,13 @@ package citrus.input
 		/**
 		 * set all InputActions's properties (internal for recycling)
 		 */
-		internal function setTo(name:String, controller:InputController, channel:uint = 0, value:Number = 0, phase:uint = 0, time:uint = 0):InputAction
+		internal function setTo(name:String, controller:InputController, channel:uint = 0, value:Number = 0, message:String = null, phase:uint = 0, time:uint = 0):InputAction
 		{
 			_name = name;
 			_controller = controller;
 			_channel = channel;
 			_value = value;
+			_message = message;
 			_phase = phase;
 			_time = time;
 			return this;

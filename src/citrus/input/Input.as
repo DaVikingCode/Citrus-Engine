@@ -180,7 +180,7 @@ package citrus.input {
 		
 		/**
 		 * Call this right after justDid, isDoing or hasDone to get the action's value in the current frame...
-		 * or use getAction() directly !
+		 * or use getAction() directly to access all action properties!
 		 */
 		public function getActionValue(actionName:String, channel:uint = 0):Number
 		{
@@ -188,7 +188,20 @@ package citrus.input {
 			for each (a in _actions)
 				if (actionName == a.name && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.value)
 					return a.value;
-			return 0;
+			return null;
+		}
+		
+		/**
+		 * Call this right after justDid, isDoing or hasDone to get the action's message in the current frame...
+		 * or use getAction() directly to access all action properties!
+		 */
+		public function getActionMessage(actionName:String, channel:uint = 0):String
+		{
+			var a:InputAction;
+			for each (a in _actions)
+				if (actionName == a.name && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.value)
+					return a.message;
+			return null;
 		}
 		
 		/**
@@ -229,6 +242,8 @@ package citrus.input {
 				if (a.eq(action))
 				{
 					a._phase = InputPhase.END;
+					a._value = action._value;
+					a._message = action._message;
 					action.dispose();
 					return;
 				}
