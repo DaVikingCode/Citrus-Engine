@@ -269,7 +269,8 @@ package citrus.input {
 				if (a.eq(action))
 				{
 					a._phase = InputPhase.ON;
-					a._value = action.value;
+					a._value = action._value;
+					a._message = action._message;
 					action.dispose();
 					return;
 				}

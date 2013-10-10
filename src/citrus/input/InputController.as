@@ -42,6 +42,7 @@ package citrus.input {
 		 * Will register the action to the Input system as an action with an InputPhase.BEGIN phase.
 		 * @param	name string that defines the action such as "jump" or "fly"
 		 * @param	value optional value for your action.
+		 * @param	message optional message for your action.
 		 * @param	channel optional channel for your action. (will be set to the defaultChannel if not set.
 		 */
 		protected function triggerON(name:String, value:Number = 0,message:String = null, channel:int = -1):void
@@ -54,6 +55,7 @@ package citrus.input {
 		 * Will register the action to the Input system as an action with an InputPhase.END phase.
 		 * @param	name string that defines the action such as "jump" or "fly"
 		 * @param	value optional value for your action.
+		 * @param	message optional message for your action.
 		 * @param	channel optional channel for your action. (will be set to the defaultChannel if not set.
 		 */
 		protected function triggerOFF(name:String, value:Number = 0,message:String = null, channel:int = -1):void
@@ -67,6 +69,7 @@ package citrus.input {
 		 * actions list, otherwise it will update the existing action's value and set its phase back to InputPhase.ON.
 		 * @param	name string that defines the action such as "jump" or "fly"
 		 * @param	value optional value for your action.
+		 * @param	message optional message for your action.
 		 * @param	channel optional channel for your action. (will be set to the defaultChannel if not set.
 		 */
 		protected function triggerVALUECHANGE(name:String, value:Number = 0,message:String = null, channel:int = -1):void
