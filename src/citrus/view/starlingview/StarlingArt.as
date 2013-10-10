@@ -4,6 +4,7 @@ package citrus.view.starlingview {
 	import citrus.core.CitrusObject;
 	import citrus.core.IState;
 	import citrus.physics.APhysicsEngine;
+	import citrus.physics.IDebugView;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ACitrusCamera;
 	import citrus.view.ACitrusView;
@@ -378,11 +379,11 @@ package citrus.view.starlingview {
 
 			if (_content is StarlingPhysicsDebugView) {
 
-				(_content as StarlingPhysicsDebugView).update();
+				var physicsDebugArt:IDebugView = (_content as StarlingPhysicsDebugView).debugView as IDebugView; 
+				physicsDebugArt.transformMatrix = stateView.camera.transformMatrix;
+				physicsDebugArt.visibility = _citrusObject.visible;
 				
-				var physicsDebugArt:flash.display.Sprite = (_content as StarlingPhysicsDebugView).debugView as flash.display.Sprite; 
-				physicsDebugArt.transform.matrix = stateView.camera.transformMatrix;
-				physicsDebugArt.visible = _citrusObject.visible;
+				(_content as StarlingPhysicsDebugView).update();
 
 			} else if (_physicsComponent) {
 

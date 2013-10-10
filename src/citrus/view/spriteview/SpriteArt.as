@@ -266,12 +266,12 @@ package citrus.view.spriteview
 			}
 			
 			if (_content is SpritePhysicsDebugView) {
+					
+				var physicsDebugArt:IDebugView = (_content as SpritePhysicsDebugView).debugView as IDebugView;
+				physicsDebugArt.transformMatrix = stateView.camera.transformMatrix;
+				physicsDebugArt.visibility = _citrusObject.visible;
 				
 				(_content as SpritePhysicsDebugView).update();
-				
-				var physicsDebugArt:flash.display.Sprite = (_content as SpritePhysicsDebugView).debugView as flash.display.Sprite;
-				physicsDebugArt.transform.matrix = stateView.camera.transformMatrix;
-				physicsDebugArt.visible = _citrusObject.visible;
 				
 			} else if (_physicsComponent) {
 				

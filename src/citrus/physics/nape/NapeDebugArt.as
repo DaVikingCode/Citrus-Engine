@@ -4,6 +4,8 @@ package citrus.physics.nape {
 	import citrus.physics.IDebugView;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.geom.Matrix;
+	import nape.geom.Mat23;
 	import nape.util.ShapeDebug;
 
 	/**
@@ -14,22 +16,19 @@ package citrus.physics.nape {
 		
 		private var _nape:Nape;
 		private var _debugDrawer:ShapeDebug;
+		private var _ce:CitrusEngine;
 
 		public function NapeDebugArt() {
 			
-			addEventListener(Event.ADDED_TO_STAGE, _addedToStage);
-		}
-		
-		private function _addedToStage(evt:Event):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, _addedToStage);
+			_ce = CitrusEngine.getInstance();
 			
-			_nape = CitrusEngine.getInstance().state.getFirstObjectByType(Nape) as Nape;
+			_nape = _ce.state.getFirstObjectByType(Nape) as Nape;
+			_debugDrawer = new ShapeDebug(_ce.screenWidth, _ce.screenHeight);
 			
-			_debugDrawer = new ShapeDebug(stage.stageWidth, stage.stageHeight);
-			addChild(_debugDrawer.display);
-			
+			_ce.stage.addChild(_debugDrawer.display);
 			_debugDrawer.display.alpha = 0.8;
+			
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 		}
 		
 		public function update():void
@@ -42,6 +41,12 @@ package citrus.physics.nape {
 			}
 		}
 		
+		public function destroy(e:Event):void
+		{
+			removeEventListener(Event.REMOVED_FROM_STAGE, destroy);
+			_ce.stage.removeChild(_debugDrawer.display);
+		}
+		
 		public function debugMode(flags:uint):void {
 		}
 		
@@ -52,6 +57,26 @@ package citrus.physics.nape {
 		 */
 		public function get debugDrawer():ShapeDebug {
 			return _debugDrawer;
+		}
+		
+		public function get transformMatrix():Matrix
+		{
+			return _debugDrawer.transform.toMatrix();
+		}
+		
+		public function set transformMatrix(m:Matrix):void
+		{
+			_debugDrawer.transform = Mat23.fromMatrix(m);;
+		}
+		
+		public function get visibility():Boolean
+		{
+			return this.visible;
+		}
+		
+		public function set visibility(val:Boolean):void
+		{
+			this.visible = val;
 		}
 	}
 }
