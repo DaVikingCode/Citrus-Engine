@@ -71,12 +71,12 @@ package citrus.physics.nape {
 		
 		public function get visibility():Boolean
 		{
-			return this.visible;
+			return _debugDrawer.display.visible;
 		}
 		
 		public function set visibility(val:Boolean):void
 		{
-			this.visible = val;
+			_debugDrawer.display.visible = val;
 		}
 	}
 }

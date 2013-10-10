@@ -67,12 +67,12 @@ package citrus.physics.box2d {
 		
 		public function get visibility():Boolean
 		{
-			return this.visible;
+			return _sprite.visible;
 		}
 		
 		public function set visibility(val:Boolean):void
 		{
-			this.visible = val;
+			_sprite.visible = val;
 		}
 		
 	}
