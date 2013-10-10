@@ -84,7 +84,7 @@ package citrus.input.controllers {
 					} else if (control.value == 1) {
 						triggerON(a.name, 1, null, (a.channel < 0) ? defaultChannel : a.channel);
 					} else {
-						triggerVALUECHANGE(a.name, v, null, (a.channel < 0) ? defaultChannel : a.channel);
+						triggerCHANGE(a.name, v, null, (a.channel < 0) ? defaultChannel : a.channel);
 					}
 				}
 			}

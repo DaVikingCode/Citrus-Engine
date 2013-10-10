@@ -168,7 +168,7 @@ package citrus.input.controllers {
 						ratio = 1 / (a.end - a.start);
 						val = _xAxis <0 ? 1 - Math.abs((_xAxis - a.start)*ratio) : Math.abs((_xAxis - a.start) * ratio);
 						if ((_xAxis >= a.start) && (_xAxis <= a.end))
-							triggerVALUECHANGE(a.name, val);
+							triggerCHANGE(a.name, val);
 						else
 							triggerOFF(a.name, 0);
 					}
@@ -179,7 +179,7 @@ package citrus.input.controllers {
 						ratio = 1 / (a.start - a.end);
 						val = _yAxis <0 ? Math.abs((_yAxis - a.end)*ratio) : 1 - Math.abs((_yAxis - a.end) * ratio);
 						if ((_yAxis >= a.start) && (_yAxis <= a.end))
-							triggerVALUECHANGE(a.name, val);
+							triggerCHANGE(a.name, val);
 						else
 							triggerOFF(a.name, 0);
 					}

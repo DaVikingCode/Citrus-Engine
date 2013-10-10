@@ -9,7 +9,7 @@ package citrus.input {
 	/**
 	 * A class managing input of any controllers that is an InputController.
 	 * Actions are inspired by Midi signals, but they carry an InputAction object.
-	 * "action signals" are either ON, OFF, or VALUECHANGE.
+	 * "action signals" are either ON, OFF, or CHANGE.
 	 * to track action status, and check whether action was just triggered or is still on,
 	 * actions have phases (see InputAction).
 	 **/	
@@ -36,9 +36,9 @@ package citrus.input {
 		protected var _routeActions:Boolean = false;
 		protected var _routeChannel:uint;
 		
-		internal var actionTriggeredON:Signal;
-		internal var actionTriggeredOFF:Signal;
-		internal var actionTriggeredVALUECHANGE:Signal;
+		internal var actionON:Signal;
+		internal var actionOFF:Signal;
+		internal var actionCHANGE:Signal;
 		
 		//easy access to the default keyboard
 		public var keyboard:Keyboard;
@@ -48,13 +48,13 @@ package citrus.input {
 			_controllers = new Vector.<InputController>();
 			_actions = new Vector.<InputAction>();
 			
-			actionTriggeredON = new Signal();
-			actionTriggeredOFF = new Signal();
-			actionTriggeredVALUECHANGE = new Signal();
+			actionON = new Signal();
+			actionOFF = new Signal();
+			actionCHANGE = new Signal();
 			
-			actionTriggeredON.add(doActionON);
-			actionTriggeredOFF.add(doActionOFF);
-			actionTriggeredVALUECHANGE.add(doActionVALUECHANGE);
+			actionON.add(doActionON);
+			actionOFF.add(doActionOFF);
+			actionCHANGE.add(doActionCHANGE);
 			
 			_ce = CitrusEngine.getInstance();
 		}
@@ -251,12 +251,12 @@ package citrus.input {
 		
 		/**
 		 * Changes the value property of an action, or adds action to list if it doesn't exist.
-		 * a continuous controller, can simply trigger ActionVALUECHANGE and never have to trigger ActionON.
+		 * a continuous controller, can simply trigger ActionCHANGE and never have to trigger ActionON.
 		 * this will take care adding the new action to the list, setting its phase to 0 so it will respond
 		 * to justDid, and then only the value will be changed. - however your continous controller DOES have
 		 * to end the action by triggering ActionOFF.
 		 */
-		private function doActionVALUECHANGE(action:InputAction):void
+		private function doActionCHANGE(action:InputAction):void
 		{
 			if (!triggersEnabled)
 			{
@@ -428,9 +428,9 @@ package citrus.input {
 		{
 			destroyControllers();
 			
-			actionTriggeredON.removeAll();
-			actionTriggeredOFF.removeAll();
-			actionTriggeredVALUECHANGE.removeAll();
+			actionON.removeAll();
+			actionOFF.removeAll();
+			actionCHANGE.removeAll();
 			
 			resetActions();
 			InputAction.clearDisposed();

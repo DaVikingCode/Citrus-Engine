@@ -16,7 +16,7 @@ package citrus.input
 		public static const BEGAN:uint = 1;
 		
 		/**
-		 * The "stable" phase, action began, its value may have been changed by the VALUECHANGE signal.
+		 * The "stable" phase, action began, its value may have been changed by the CHANGE signal.
 		 * an action with this phase can only be advanced by an OFF signal, to phase END ; otherwise it stays in the system.
 		 */
 		public static const ON:uint = 2;

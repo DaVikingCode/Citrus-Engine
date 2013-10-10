@@ -44,7 +44,7 @@ package citrus.input.controllers.starling
 				switch (t.phase) {
 					
 					case TouchPhase.BEGAN:
-						triggerVALUECHANGE(touchAction, 1, null, defaultChannel);
+						triggerCHANGE(touchAction, 1, null, defaultChannel);
 						e.stopImmediatePropagation();
 						break;
 					case TouchPhase.ENDED:
