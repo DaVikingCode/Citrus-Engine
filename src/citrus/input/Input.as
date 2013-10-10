@@ -188,7 +188,7 @@ package citrus.input {
 			for each (a in _actions)
 				if (actionName == a.name && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.value)
 					return a.value;
-			return null;
+			return 0;
 		}
 		
 		/**
