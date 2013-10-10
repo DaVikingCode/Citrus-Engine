@@ -1,5 +1,7 @@
 package dragonBones.utils
 {
+	import flash.geom.Point;
+	
 	import dragonBones.animation.TimelineState;
 	import dragonBones.objects.AnimationData;
 	import dragonBones.objects.ArmatureData;
@@ -12,8 +14,6 @@ package dragonBones.utils
 	import dragonBones.objects.TransformFrame;
 	import dragonBones.objects.TransformTimeline;
 	
-	import flash.geom.Point;
-	
 	/** @private */
 	public final class DBDataUtil
 	{
@@ -22,12 +22,13 @@ package dragonBones.utils
 		
 		public static function transformArmatureData(armatureData:ArmatureData):void
 		{
-			var i:int = armatureData.boneDataList.length;
+			var boneDataList:Vector.<BoneData> = armatureData.boneDataList;
+			var i:int = boneDataList.length;
 			var boneData:BoneData;
 			var parentBoneData:BoneData;
 			while(i --)
 			{
-				boneData = armatureData.boneDataList[i];
+				boneData = boneDataList[i];
 				if(boneData.parent)
 				{
 					parentBoneData = armatureData.getBoneData(boneData.parent);
@@ -53,7 +54,9 @@ package dragonBones.utils
 		public static function transformAnimationData(animationData:AnimationData, armatureData:ArmatureData):void
 		{
 			var skinData:SkinData = armatureData.getSkinData(null);
-			var i:int = armatureData.boneDataList.length;
+			var boneDataList:Vector.<BoneData> = armatureData.boneDataList;
+			var slotDataList:Vector.<SlotData> = skinData.slotDataList;
+			var i:int = boneDataList.length;
 			
 			var boneData:BoneData;
 			var timeline:TransformTimeline;
@@ -69,7 +72,7 @@ package dragonBones.utils
 			
 			while(i --)
 			{
-				boneData = armatureData.boneDataList[i];
+				boneData = boneDataList[i];
 				timeline = animationData.getTimeline(boneData.name);
 				if(!timeline)
 				{
@@ -77,7 +80,7 @@ package dragonBones.utils
 				}
 				
 				slotData = null;
-				for each(slotData in skinData.slotDataList)
+				for each(slotData in slotDataList)
 				{
 					if(slotData.parent == boneData.name)
 					{
@@ -228,7 +231,7 @@ package dragonBones.utils
 							progress = TimelineState.getEaseValue(progress, tweenEasing);
 						}
 						
-						nextFrame = timeline.frameList[i + 1] as TransformFrame;
+						nextFrame = frameList[i + 1] as TransformFrame;
 						
 						retult.x = currentFrame.global.x +  (nextFrame.global.x - currentFrame.global.x) * progress;
 						retult.y = currentFrame.global.y +  (nextFrame.global.y - currentFrame.global.y) * progress;

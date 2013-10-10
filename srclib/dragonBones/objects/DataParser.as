@@ -1,12 +1,12 @@
 ﻿package dragonBones.objects
 {
+	import flash.utils.ByteArray;
+	
 	import dragonBones.objects.ObjectDataParser;
 	import dragonBones.objects.SkeletonData;
 	import dragonBones.objects.XMLDataParser;
 	import dragonBones.utils.BytesType;
 	import dragonBones.utils.checkBytesTailisXML;
-	
-	import flash.utils.ByteArray;
 	
 	public final class DataParser
 	{
@@ -57,6 +57,10 @@
 				case BytesType.ATF: 
 					try
 					{
+						var bytesCopy:ByteArray = new ByteArray();
+						bytesCopy.writeBytes(bytes);
+						bytes = bytesCopy;
+						
 						bytes.position = bytes.length - 4;
 						var strSize:int = bytes.readInt();
 						var position:uint = bytes.length - 4 - strSize;

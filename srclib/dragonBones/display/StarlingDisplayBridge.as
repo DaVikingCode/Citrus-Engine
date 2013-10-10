@@ -157,6 +157,17 @@
 				(_display as Quad).color = (uint(rMultiplier * 0xff) << 16) + (uint(gMultiplier * 0xff) << 8) + uint(bMultiplier * 0xff);
 			}
 		}
+        
+        /**
+         * @inheritDoc
+         */
+        public function updateBlendMode(blendMode:String):void
+        {
+            if (_display is DisplayObject)
+            {
+                _display.blendMode = blendMode;
+            }
+        }
 		
 		/**
 		 * @inheritDoc

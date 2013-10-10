@@ -6,13 +6,14 @@
 	 * @langversion 3.0
 	 * @version 2.0
 	 */
+	import flash.geom.Point;
+	
 	import dragonBones.Armature;
 	import dragonBones.Bone;
+	import dragonBones.Slot;
 	import dragonBones.core.dragonBones_internal;
 	import dragonBones.objects.AnimationData;
 	import dragonBones.objects.DBTransform;
-	
-	import flash.geom.Point;
 	
 	use namespace dragonBones_internal;
 	
@@ -79,7 +80,7 @@
 		dragonBones_internal var _animationLayer:Vector.<Vector.<AnimationState>>;
 		
 		private var _armature:Armature;
-		private var _isPlaying:Boolean;
+		private var _isActive:Boolean;
 		
 		/**
 		 * An vector containing all AnimationData names the Animation can play.
@@ -119,9 +120,10 @@
 			return _animationList;
 		}
 		
+		private var _isPlaying:Boolean;
 		public function get isPlaying():Boolean
 		{
-			return _isPlaying && !isComplete;
+			return _isPlaying && _isActive;
 		}
 		
 		public function get isComplete():Boolean
@@ -196,6 +198,8 @@
 			_animationLayer = new Vector.<Vector.<AnimationState>>;
 			_animationList = new Vector.<String>;
 			
+			_isPlaying = false;
+			_isActive = false;
 			tweenEnabled = true;
 		}
 		
@@ -361,15 +365,15 @@
 			
 			addState(_lastAnimationState);
 			
-			var boneList:Vector.<Bone> = _armature._boneList;
-			var bone:Bone;
-			i = boneList.length;
+			var slotList:Vector.<Slot> = _armature._slotList;
+			var slot:Slot;
+			i = slotList.length;
 			while(i --)
 			{
-				bone = boneList[i];
-				if(bone.childArmature)
+				slot = slotList[i];
+				if(slot.childArmature)
 				{
-					bone.childArmature.animation.gotoAndPlay(animationName, fadeInTime);
+					slot.childArmature.animation.gotoAndPlay(animationName, fadeInTime);
 				}
 			}
 			
@@ -456,10 +460,12 @@
 		
 		public function advanceTime(passedTime:Number):void
 		{
-			if(!_isPlaying)
+			/*
+			if(!_isPlaying || !_isActive)
 			{
 				return;
 			}
+			*/
 			passedTime *= _timeScale;
 			
 			var l:int = _armature._boneList.length;
@@ -568,21 +574,32 @@
 		}
 		
 		/** @private */
-		/*dragonBones_internal function setStatesDisplayControl(animationState:AnimationState):void
+		dragonBones_internal function setActive(animationState:AnimationState, active:Boolean):void
 		{
-			var i:int = _animationLayer.length;
-			var animationStateList:Vector.<AnimationState> = _animationLayer[i];
-			var j:int;
-			while(i --)
+			if(active)
 			{
-				animationStateList = _animationLayer[i];
-				j = animationStateList.length;
-				while(j --)
-				{
-					animationStateList[j].displayControl = animationStateList[j] == animationState;
-				}
+				_isActive = true;
 			}
-		}*/
+			else
+			{
+				var i:int = _animationLayer.length;
+				var j:int;
+				var animationStateList:Vector.<AnimationState>;
+				while(i --)
+				{
+					animationStateList = _animationLayer[i];
+					j = animationStateList.length;
+					while(j --)
+					{
+						if(animationStateList[j].isPlaying)
+						{
+							return;
+						}
+					}
+				}
+				_isActive = false;
+			}
+		}
 		
 		private function addLayer(layer:uint):uint
 		{

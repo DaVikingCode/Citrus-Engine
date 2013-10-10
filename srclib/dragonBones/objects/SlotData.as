@@ -6,6 +6,7 @@ package dragonBones.objects
 		public var name:String;
 		public var parent:String;
 		public var zOrder:Number;
+        public var blendMode:String;
 		
 		private var _displayDataList:Vector.<DisplayData>;
 		public function get displayDataList():Vector.<DisplayData>
@@ -17,6 +18,7 @@ package dragonBones.objects
 		{
 			_displayDataList = new Vector.<DisplayData>(0, true);
 			zOrder = 0;
+            blendMode = "normal";
 		}
 		
 		public function dispose():void

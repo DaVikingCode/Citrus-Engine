@@ -1,5 +1,9 @@
 ﻿package dragonBones
 {
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.geom.ColorTransform;
+	
 	import dragonBones.animation.Animation;
 	import dragonBones.animation.AnimationState;
 	import dragonBones.animation.IAnimatable;
@@ -12,10 +16,6 @@
 	import dragonBones.events.SoundEventManager;
 	import dragonBones.objects.DBTransform;
 	import dragonBones.objects.Frame;
-	
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.geom.ColorTransform;
 	
 	use namespace dragonBones_internal;
 	
@@ -94,6 +94,9 @@
 		dragonBones_internal var _eventList:Vector.<Event>;
 		
 		/** @private */
+		protected var _needUpdate:Boolean;
+		
+		/** @private */
 		protected var _display:Object;
 		/**
 		 * Instance type of this object varies from flash.display.DisplayObject to startling.display.DisplayObject and subclasses.
@@ -131,6 +134,8 @@
 			_boneList = new Vector.<Bone>;
 			_boneList.fixed = true;
 			_eventList = new Vector.<Event>;
+			
+			_needUpdate = false;
 		}
 		
 		/**
@@ -171,53 +176,82 @@
 			//_display = null;
 		}
 		
+		public function invalidUpdate():void
+		{
+			_needUpdate = true;
+		}
+		
 		/**
 		 * Update the animation using this method typically in an ENTERFRAME Event or with a Timer.
 		 * @param	The amount of second to move the playhead ahead.
 		 */
 		public function advanceTime(passedTime:Number):void
 		{
-			_animation.advanceTime(passedTime);
-			
-			var i:int = _boneList.length;
-			while(i --)
-			{
-				_boneList[i].update();
-			}
-			
-			i = _slotList.length;
+			var i:int;
 			var slot:Slot;
-			while(i --)
-			{
-				slot = _slotList[i];
-				slot.update();
-				if(slot._isDisplayOnStage)
+			var childArmature:Armature;
+			if(_animation.isPlaying || _needUpdate)
+			{	
+				_needUpdate = false;
+				_animation.advanceTime(passedTime)
+				passedTime *= _animation.timeScale;
+				
+				i = _boneList.length;
+				while(i --)
 				{
-					var childArmature:Armature = slot.childArmature;
-					if(childArmature)
+					_boneList[i].update();
+				}
+				
+				i = _slotList.length;
+				while(i --)
+				{
+					slot = _slotList[i];
+					slot.update();
+					if(slot._isDisplayOnStage)
 					{
-						childArmature.advanceTime(passedTime);
+						childArmature = slot.childArmature;
+						if(childArmature)
+						{
+							childArmature.advanceTime(passedTime);
+						}
 					}
 				}
-			}
-			
-			if(_slotsZOrderChanged)
-			{
-				updateSlotsZOrder();
 				
-				if(this.hasEventListener(ArmatureEvent.Z_ORDER_UPDATED))
+				if(_slotsZOrderChanged)
 				{
-					this.dispatchEvent(new ArmatureEvent(ArmatureEvent.Z_ORDER_UPDATED));
+					updateSlotsZOrder();
+					
+					if(this.hasEventListener(ArmatureEvent.Z_ORDER_UPDATED))
+					{
+						this.dispatchEvent(new ArmatureEvent(ArmatureEvent.Z_ORDER_UPDATED));
+					}
+				}
+				
+				if(_eventList.length)
+				{
+					for each(var event:Event in _eventList)
+					{
+						this.dispatchEvent(event);
+					}
+					_eventList.length = 0;
 				}
 			}
-			
-			if(_eventList.length)
+			else
 			{
-				for each(var event:Event in _eventList)
+				passedTime *= _animation.timeScale;
+				i = _slotList.length;
+				while(i --)
 				{
-					this.dispatchEvent(event);
+					slot = _slotList[i];
+					if(slot._isDisplayOnStage)
+					{
+						childArmature = slot.childArmature;
+						if(childArmature)
+						{
+							childArmature.advanceTime(passedTime);
+						}
+					}
 				}
-				_eventList.length = 0;
 			}
 		}
 		

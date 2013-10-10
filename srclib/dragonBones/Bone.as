@@ -1,5 +1,7 @@
 ﻿package dragonBones
 {
+	import flash.geom.Point;
+	
 	import dragonBones.animation.AnimationState;
 	import dragonBones.animation.TimelineState;
 	import dragonBones.core.DBObject;
@@ -9,8 +11,6 @@
 	import dragonBones.events.SoundEventManager;
 	import dragonBones.objects.Frame;
 	import dragonBones.objects.TransformFrame;
-	
-	import flash.geom.Point;
 	
 	use namespace dragonBones_internal;
 	
@@ -57,15 +57,7 @@
 			}
 		}
 		
-		private var _displayController:String;
-		public function get displayController():String
-		{
-			return _displayController;
-		}
-		public function set displayController(value:String):void
-		{
-			_displayController = value;
-		}
+		public var displayController:String;
 		
 		/**
 		 * @inheritDoc
@@ -78,10 +70,10 @@
 				var i:int = _children.length;
 				while(i --)
 				{
-					var slot:Slot = _children[i] as Slot;
-					if(slot)
+					var child:DBObject = _children[i];
+					if(child is Slot)
 					{
-						slot.updateVisible(this._visible);
+						(child as Slot).updateVisible(this._visible);
 					}
 				}
 			}
@@ -158,8 +150,7 @@
 				throw new ArgumentError();
 			}
 			
-			var bone:Bone = child as Bone;
-			if(child == this || (bone && bone.contains(this)))
+			if(child == this || (child is Bone && (child as Bone).contains(this)))
 			{
 				throw new ArgumentError("An Bone cannot be added as a child to itself or one of its children (or children's children, etc.)");
 			}
@@ -196,7 +187,7 @@
 				child.setParent(null);
 				child.setArmature(null);
 				
-				if(_slot && child == _slot)
+				if(child == _slot)
 				{
 					_slot = null;
 				}
@@ -235,7 +226,7 @@
 				if(animationState.displayControl && (mixingType == 2 || mixingType == -1))
 				{
 					if(
-						!_displayController || _displayController == animationState.name
+						!displayController || displayController == animationState.name
 					)
 					{
 						var tansformFrame:TransformFrame = frame as TransformFrame;
@@ -276,10 +267,16 @@
 				
 				if(frame.action)
 				{
-					var childArmature:Armature = this.childArmature;
-					if(childArmature)
+					for each(var child:DBObject in _children)
 					{
-						childArmature.animation.gotoAndPlay(frame.action);
+						if(child is Slot)
+						{
+							var childArmature:Armature = (child as Slot).childArmature;
+							if(childArmature)
+							{
+								childArmature.animation.gotoAndPlay(frame.action);
+							}
+						}
 					}
 				}
 			}

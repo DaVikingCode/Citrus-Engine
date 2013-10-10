@@ -2,7 +2,7 @@ V3.1.8, Work In Progress
 ------------------------
 - Starling updated on 1.4
 - Feathers updated on 1.1.1
-- DragonBones updated to 2.3.1
+- DragonBones updated to 2.4
 - Nape updated on 2.0.12
 - Input : removed backwards compatibility, InputActions store the time (in frames) they spent in the Input system
 - MathVector : critical bug fixes (rotate, angle) and new methods (dot product, normalize, copyFrom, setTo)

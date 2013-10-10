@@ -60,6 +60,12 @@ package dragonBones.display
 			gMultiplier:Number, 
 			bMultiplier:Number
 		):void;
+        
+        /**
+         * Update the blend mode of the display object
+         * @param blendMode The blend mode to use. 
+         */
+        function updateBlendMode(blendMode:String):void;
 		
 		/**
 		 * Adds the original display object to another display object.

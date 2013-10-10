@@ -1,11 +1,11 @@
 package dragonBones
 {
+	import flash.geom.Matrix;
+	
 	import dragonBones.core.DBObject;
 	import dragonBones.core.dragonBones_internal;
 	import dragonBones.display.IDisplayBridge;
 	import dragonBones.objects.DisplayData;
-	
-	import flash.geom.Matrix;
 	
 	use namespace dragonBones_internal;
 	
@@ -25,6 +25,7 @@ package dragonBones
 		private var _isHideDisplay:Boolean;
 		private var _offsetZOrder:Number;
 		private var _displayIndex:int;
+        private var _blendMode:String;
 		
 		public function get zOrder():Number
 		{
@@ -42,6 +43,23 @@ package dragonBones
 				}
 			}
 		}
+        
+        public function get blendMode():String
+        {
+            return _blendMode;
+        }
+        
+        public function set blendMode(value:String):void
+        {
+            if(_blendMode != value)
+            {
+                _blendMode = value;
+				if (_displayBridge.display)
+				{
+					_displayBridge.updateBlendMode(_blendMode);
+				}
+            }
+        }
 		
 		/**
 		 * The DisplayObject belonging to this Bone instance. Instance type of this object varies from flash.display.DisplayObject to startling.display.DisplayObject and subclasses.
@@ -66,7 +84,11 @@ package dragonBones
 		 */
 		public function get childArmature():Armature
 		{
-			return _displayList[_displayIndex] as Armature;
+			if(_displayList[_displayIndex] is Armature)
+			{
+				return _displayList[_displayIndex] as Armature;
+			}
+			return null;
 		}
 		public function set childArmature(value:Armature):void
 		{
@@ -99,8 +121,9 @@ package dragonBones
 			
 			if(_displayIndex >= 0)
 			{
+				var displayIndexBackup:int = _displayIndex;
 				_displayIndex = -1;
-				changeDisplay(_displayIndex);
+				changeDisplay(displayIndexBackup);
 			}
 		}
 		
@@ -125,6 +148,7 @@ package dragonBones
 			if(!_isHideDisplay && _displayBridge.display)
 			{
 				_isDisplayOnStage = true;
+				_displayBridge.updateBlendMode(_blendMode);
 			}
 			else
 			{
@@ -238,6 +262,12 @@ package dragonBones
 			
 			_isDisplayOnStage = false;
 			_isHideDisplay = false;
+            
+            _blendMode = "normal";
+			if(_displayBridge.display)
+			{
+				_displayBridge.updateBlendMode(_blendMode);
+			}
 		}
 		
 		/**

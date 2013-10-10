@@ -148,6 +148,8 @@ package dragonBones.animation
 			_durationPivot.x = 0;
 			_durationPivot.y = 0;
 			
+			_currentFrame = null;
+			
 			switch(_timeline.frameList.length)
 			{
 				case 0:

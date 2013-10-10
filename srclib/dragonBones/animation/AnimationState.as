@@ -1,4 +1,4 @@
-package dragonBones.animation
+﻿package dragonBones.animation
 {
 	import dragonBones.Armature;
 	import dragonBones.Bone;
@@ -50,7 +50,6 @@ package dragonBones.animation
 			TimelineState.clear();
 		}
 		
-		public var enabled:Boolean;
 		public var tweenEnabled:Boolean;
 		public var blend:Boolean;
 		public var group:String;
@@ -71,7 +70,7 @@ package dragonBones.animation
 		private var _fadeOutWeight:Number;
 		private var _fadeIn:Boolean;
 		private var _fadeOut:Boolean;
-		private var _pauseBeforeFadeInComplete:Boolean;
+		private var _pauseBeforeFadeInCompleteState:int;
 		
 		private var _name:String;
 		public function get name():String
@@ -106,7 +105,7 @@ package dragonBones.animation
 		private var _isPlaying:Boolean;
 		public function get isPlaying():Boolean
 		{
-			return _isPlaying && !_isComplete; 
+			return _isPlaying && !_isComplete;
 		}
 		
 		private var _isComplete:Boolean;
@@ -164,22 +163,7 @@ package dragonBones.animation
 			_timeScale = value;
 		}
 		
-		private var _displayControl:Boolean;
-		public function get displayControl():Boolean
-		{
-			return _displayControl;
-		}
-		public function set displayControl(value:Boolean):void
-		{
-			if(_displayControl != value)
-			{
-				_displayControl = value;
-				/*if(_displayControl)
-				{
-					_armature.animation.setStatesDisplayControl(this);
-				}*/
-			}
-		}
+		public var displayControl:Boolean;
 		
 		public function AnimationState()
 		{ 
@@ -214,7 +198,15 @@ package dragonBones.animation
 				_currentTime = 0;
 				_loop = loop;
 			}
-			_pauseBeforeFadeInComplete = pauseBeforeFadeInComplete;
+			
+			if(pauseBeforeFadeInComplete)
+			{
+				_pauseBeforeFadeInCompleteState = -1;
+			}
+			else
+			{
+				_pauseBeforeFadeInCompleteState = 1;
+			}
 			
 			_fadeInTime = fadeInTime * _timeScale;
 			
@@ -222,17 +214,17 @@ package dragonBones.animation
 			_loopCount = -1;
 			_fadeState = 1;
 			_fadeOutBeginTime = 0;
-			_fadeOutWeight = NaN;
+			_fadeOutWeight = -1;
 			_fadeWeight = 0;
-			_displayControl = displayControl;
 			_isPlaying = true;
 			_isComplete = false;
 			_fadeIn = true;
 			_fadeOut = false;
 			
+			this.displayControl = displayControl;
+			
 			weight = 1;
 			blend = true;
-			enabled = true;
 			tweenEnabled = true;
 			
 			updateTimelineStates();
@@ -240,7 +232,7 @@ package dragonBones.animation
 		
 		public function fadeOut(fadeOutTime:Number, pause:Boolean = false):void
 		{
-			if(!isNaN(_fadeOutWeight))
+			if(!_armature || _fadeOutWeight >= 0)
 			{
 				return;
 			}
@@ -248,16 +240,15 @@ package dragonBones.animation
 			_fadeOutWeight = _fadeWeight;
 			_fadeOutTime = fadeOutTime * _timeScale;
 			_fadeOutBeginTime = _currentTime;
+			
 			_isPlaying = !pause;
 			_fadeOut = true;
-			_displayControl = false;
+			displayControl = false;
 			
 			for each(var timelineState:TimelineState in _timelineStates)
 			{
 				timelineState.fadeOut();
 			}
-			
-			enabled = true;
 		}
 		
 		public function play():void
@@ -365,28 +356,25 @@ package dragonBones.animation
 		
 		public function advanceTime(passedTime:Number):Boolean
 		{
-			if(!enabled)
-			{
-				return false;
-			}
-			
 			var event:AnimationEvent;
 			var isComplete:Boolean;
 			
 			if(_fadeIn)
 			{	
 				_fadeIn = false;
+				_armature.animation.setActive(this, true);
 				if(_armature.hasEventListener(AnimationEvent.FADE_IN))
 				{
 					event = new AnimationEvent(AnimationEvent.FADE_IN);
 					event.animationState = this;
 					_armature._eventList.push(event);
-				};
+				}
 			}
 			
 			if(_fadeOut)
 			{	
 				_fadeOut = false;
+				_armature.animation.setActive(this, true);
 				if(_armature.hasEventListener(AnimationEvent.FADE_OUT))
 				{
 					event = new AnimationEvent(AnimationEvent.FADE_OUT);
@@ -397,25 +385,26 @@ package dragonBones.animation
 			
 			_currentTime += passedTime * _timeScale;
 			
-			if(_isPlaying && !_isComplete)
+			if(_isPlaying && !_isComplete && _pauseBeforeFadeInCompleteState)
 			{
-				if(_pauseBeforeFadeInComplete)
+				var progress:Number;
+				var currentLoopCount:int;
+				if(_pauseBeforeFadeInCompleteState == -1)
 				{
-					_pauseBeforeFadeInComplete = false;
-					_isPlaying = false;
-					var progress:Number = 0;
-					var currentLoopCount:int = progress;
+					_pauseBeforeFadeInCompleteState = 0;
+					progress = 0;
+					currentLoopCount = progress;
 				}
 				else
 				{
 					progress = _currentTime / _totalTime;
-					
 					//update loopCount
 					currentLoopCount = progress;
 					if(currentLoopCount != _loopCount)
 					{
 						if(_loopCount == -1)
 						{
+							_armature.animation.setActive(this, true);
 							if(_armature.hasEventListener(AnimationEvent.START))
 							{
 								event = new AnimationEvent(AnimationEvent.START);
@@ -500,7 +489,8 @@ package dragonBones.animation
 				{
 					_fadeWeight = 1;
 					_fadeState = 0;
-					_isPlaying = true;
+					_pauseBeforeFadeInCompleteState = 1;
+					_armature.animation.setActive(this, false);
 					if(_armature.hasEventListener(AnimationEvent.FADE_IN_COMPLETE))
 					{
 						event = new AnimationEvent(AnimationEvent.FADE_IN_COMPLETE);
@@ -515,11 +505,12 @@ package dragonBones.animation
 					{
 						_fadeWeight = 1;
 						_fadeState = 0;
-						if(!_isPlaying)
+						if(_pauseBeforeFadeInCompleteState == 0)
 						{
 							_currentTime -= _fadeInTime;
 						}
-						_isPlaying = true;
+						_pauseBeforeFadeInCompleteState = 1;
+						_armature.animation.setActive(this, false);
 						if(_armature.hasEventListener(AnimationEvent.FADE_IN_COMPLETE))
 						{
 							event = new AnimationEvent(AnimationEvent.FADE_IN_COMPLETE);
@@ -535,6 +526,7 @@ package dragonBones.animation
 				{
 					_fadeWeight = 0;
 					_fadeState = 0;
+					_armature.animation.setActive(this, false);
 					if(_armature.hasEventListener(AnimationEvent.FADE_OUT_COMPLETE))
 					{
 						event = new AnimationEvent(AnimationEvent.FADE_OUT_COMPLETE);
@@ -550,6 +542,7 @@ package dragonBones.animation
 					{
 						_fadeWeight = 0;
 						_fadeState = 0;
+						_armature.animation.setActive(this, false);
 						if(_armature.hasEventListener(AnimationEvent.FADE_OUT_COMPLETE))
 						{
 							event = new AnimationEvent(AnimationEvent.FADE_OUT_COMPLETE);
@@ -567,6 +560,10 @@ package dragonBones.animation
 				if(_loop < 0)
 				{
 					fadeOut((_fadeOutWeight || _fadeInTime) / _timeScale, true);
+				}
+				else
+				{
+					_armature.animation.setActive(this, false);
 				}
 			}
 			
@@ -629,7 +626,6 @@ package dragonBones.animation
 			_currentFrame = null;
 			_clip = null;
 			_mixingTransforms = null;
-			enabled = false;
 			
 			for(var timelineName:String in _timelineStates)
 			{

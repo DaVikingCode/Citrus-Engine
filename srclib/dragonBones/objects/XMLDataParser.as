@@ -126,6 +126,26 @@
 			boneData.name = boneXML.@[ConstValues.A_NAME];
 			boneData.parent = boneXML.@[ConstValues.A_PARENT];
 			boneData.length = Number(boneXML.@[ConstValues.A_LENGTH]);
+			var inheritScale:String = boneXML.@[ConstValues.A_SCALE_MODE];
+			if (inheritScale)
+			{
+				boneData.scaleMode = parseInt(inheritScale);
+			}
+			
+			var fixedRotation:String = boneXML.@[ConstValues.A_FIXED_ROTATION][0];
+			switch (fixedRotation)
+			{
+				case "0":
+				case "false":
+				case "no":
+				case "":
+				case null:
+					boneData.fixedRotation = false;
+					break;
+				default:
+					boneData.fixedRotation = true;
+					break;
+			}
 			
 			parseTransform(boneXML[ConstValues.TRANSFORM][0], boneData.global);
 			boneData.transform.copy(boneData.global);
@@ -152,6 +172,11 @@
 			slotData.name = slotXML.@[ConstValues.A_NAME];
 			slotData.parent = slotXML.@[ConstValues.A_PARENT];
 			slotData.zOrder = Number(slotXML.@[ConstValues.A_Z_ORDER]);
+            slotData.blendMode = slotXML.@[ConstValues.A_BLENDMODE];
+            if(!slotData.blendMode)
+            {
+                slotData.blendMode = "normal";
+            }
 			for each(var displayXML:XML in slotXML[ConstValues.DISPLAY])
 			{
 				slotData.addDisplayData(parseDisplayData(displayXML, data));

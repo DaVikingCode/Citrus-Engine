@@ -1,9 +1,5 @@
 ﻿package dragonBones.objects
 {
-	import flash.geom.ColorTransform;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	
 	import dragonBones.core.DragonBones;
 	import dragonBones.core.dragonBones_internal;
 	import dragonBones.objects.AnimationData;
@@ -20,6 +16,10 @@
 	import dragonBones.objects.TransformTimeline;
 	import dragonBones.utils.ConstValues;
 	import dragonBones.utils.DBDataUtil;
+	
+	import flash.geom.ColorTransform;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	use namespace dragonBones_internal;
 	
@@ -104,6 +104,17 @@
 			boneData.name = boneObject[ConstValues.A_NAME];
 			boneData.parent = boneObject[ConstValues.A_PARENT];
 			boneData.length = Number(boneObject[ConstValues.A_LENGTH]) || 0;
+            var scaleModeObj:Object = boneObject[ConstValues.A_SCALE_MODE];
+			if (scaleModeObj)
+			{
+                var scaleMode:int = scaleModeObj as int;
+				boneData.scaleMode = scaleMode;
+			}
+			var inheritRotation:Boolean = boneObject[ConstValues.A_FIXED_ROTATION] as Boolean;
+			if (inheritRotation)
+			{
+				boneData.fixedRotation = inheritRotation;
+			}
 			
 			parseTransform(boneObject[ConstValues.TRANSFORM], boneData.global);
 			boneData.transform.copy(boneData.global);
@@ -130,6 +141,11 @@
 			slotData.name = slotObject[ConstValues.A_NAME];
 			slotData.parent = slotObject[ConstValues.A_PARENT];
 			slotData.zOrder = Number(slotObject[ConstValues.A_Z_ORDER]);
+            slotData.blendMode = slotObject[ConstValues.A_BLENDMODE];
+            if(!slotData.blendMode)
+            {
+                slotData.blendMode = "normal";
+            }
 			for each(var displayObject:Object in slotObject[ConstValues.DISPLAY])
 			{
 				slotData.addDisplayData(parseDisplayData(displayObject, data));

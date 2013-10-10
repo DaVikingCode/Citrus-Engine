@@ -41,8 +41,11 @@
 		public static const A_TWEEN_ROTATE:String = "tweenRotate";
 		public static const A_DISPLAY_INDEX:String = "displayIndex";
 		public static const A_Z_ORDER:String = "z";
+        public static const A_BLENDMODE:String = "blendMode";
 		public static const A_WIDTH:String = "width";
 		public static const A_HEIGHT:String = "height";
+		public static const A_SCALE_MODE:String = "scaleMode";
+		public static const A_FIXED_ROTATION:String = "fixedRotation";
 		public static const A_X:String = "x";
 		public static const A_Y:String = "y";
 		public static const A_SKEW_X:String = "skX";

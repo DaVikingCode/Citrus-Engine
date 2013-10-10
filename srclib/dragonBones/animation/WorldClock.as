@@ -65,7 +65,7 @@
 		 */
 		public static var clock:WorldClock = new WorldClock();
 		
-		private var animatableList:Vector.<IAnimatable>;		
+		private var _animatableList:Vector.<IAnimatable>;		
 		private var _time:Number;
 		
 		/**
@@ -102,7 +102,7 @@
 		public function WorldClock()
 		{
 			_time = getTimer() * 0.001;
-			animatableList = new Vector.<IAnimatable>;
+			_animatableList = new Vector.<IAnimatable>;
 		}
 		
 		/** 
@@ -112,7 +112,7 @@
 		 */
 		public function contains(animatable:IAnimatable):Boolean
 		{
-			return animatableList.indexOf(animatable) >= 0;
+			return _animatableList.indexOf(animatable) >= 0;
 		}
 		/**
 		 * Add a IAnimatable instance (Armature or custom) to this WorldClock instance.
@@ -120,9 +120,9 @@
 		 */
 		public function add(animatable:IAnimatable):void
 		{
-			if (animatable && animatableList.indexOf(animatable) == -1)
+			if (animatable && _animatableList.indexOf(animatable) == -1)
 			{
-				animatableList.push(animatable);
+				_animatableList.push(animatable);
 			}
 		}
 		/**
@@ -131,10 +131,10 @@
 		 */
 		public function remove(animatable:IAnimatable):void
 		{
-			var index:int = animatableList.indexOf(animatable);
+			var index:int = _animatableList.indexOf(animatable);
 			if (index >= 0)
 			{
-				animatableList[index] = null;
+				_animatableList[index] = null;
 			}
 		}
 		/**
@@ -143,7 +143,7 @@
 		 */
 		public function clear():void
 		{
-			animatableList.length = 0;
+			_animatableList.length = 0;
 		}
 		/**
 		 * Update all registered IAnimatable instance animations using this method typically in an ENTERFRAME Event or with a Timer.
@@ -160,7 +160,7 @@
 			
 			passedTime *= _timeScale;
 			
-			var length:int = animatableList.length;
+			var length:int = _animatableList.length;
 			if(length == 0)
 			{
 				return;
@@ -169,13 +169,13 @@
 			
 			for(var i:int = 0;i < length;i ++)
 			{
-				var animatable:IAnimatable = animatableList[i];
+				var animatable:IAnimatable = _animatableList[i];
 				if(animatable)
 				{
 					if(currentIndex != i)
 					{
-						animatableList[currentIndex] = animatable;
-						animatableList[i] = null;
+						_animatableList[currentIndex] = animatable;
+						_animatableList[i] = null;
 					}
 					animatable.advanceTime(passedTime);
 					currentIndex ++;
@@ -184,12 +184,12 @@
 			
 			if (currentIndex != i)
 			{
-				length = animatableList.length;
+				length = _animatableList.length;
 				while(i < length)
 				{
-					animatableList[currentIndex ++] = animatableList[i ++];
+					_animatableList[currentIndex ++] = _animatableList[i ++];
 				}
-				animatableList.length = currentIndex;
+				_animatableList.length = currentIndex;
 			}
 		}
 	}

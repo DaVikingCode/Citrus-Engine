@@ -85,17 +85,17 @@
 				var width:int = getNearest2N(content.width) * scaleForTexture;
 				var height:int = getNearest2N(content.height) * scaleForTexture;
 				
-				_helpMatirx.a = 1;
-				_helpMatirx.b = 0;
-				_helpMatirx.c = 0;
-				_helpMatirx.d = 1;
-				_helpMatirx.scale(scaleForTexture, scaleForTexture);
-				_helpMatirx.tx = 0;
-				_helpMatirx.ty = 0;				
+				_helpMatrix.a = 1;
+				_helpMatrix.b = 0;
+				_helpMatrix.c = 0;
+				_helpMatrix.d = 1;
+				_helpMatrix.scale(scaleForTexture, scaleForTexture);
+				_helpMatrix.tx = 0;
+				_helpMatrix.ty = 0;				
 				var movieClip:MovieClip = content as MovieClip;
 				movieClip.gotoAndStop(1);
 				bitmapData = new BitmapData(width, height, true, 0xFF00FF);
-				bitmapData.draw(movieClip, _helpMatirx);
+				bitmapData.draw(movieClip, _helpMatrix);
 				movieClip.gotoAndStop(movieClip.totalFrames);
 				texture = Texture.fromBitmapData(bitmapData, generateMipMaps, optimizeForRenderToTexture, scaleForTexture);
 			}

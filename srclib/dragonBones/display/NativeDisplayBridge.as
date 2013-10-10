@@ -120,6 +120,14 @@ package dragonBones.display
 			
 			_display.transform.colorTransform = _colorTransform;
 		}
+        
+        /**
+         * @inheritDoc
+         */
+        public function updateBlendMode(blendMode:String):void
+        {
+            _display.blendMode = blendMode;
+        }
 		
 		/**
 		 * @inheritDoc
