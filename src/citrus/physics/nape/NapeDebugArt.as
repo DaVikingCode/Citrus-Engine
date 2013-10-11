@@ -5,7 +5,6 @@ package citrus.physics.nape {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Matrix;
-	import nape.geom.Mat23;
 	import nape.util.ShapeDebug;
 
 	/**
@@ -66,7 +65,8 @@ package citrus.physics.nape {
 		
 		public function set transformMatrix(m:Matrix):void
 		{
-			_debugDrawer.transform = Mat23.fromMatrix(m);;
+			//flash Matrix is Mat23 with b and c swapped
+			_debugDrawer.transform.setAs(m.a, m.c, m.b, m.d, m.tx, m.ty);
 		}
 		
 		public function get visibility():Boolean
