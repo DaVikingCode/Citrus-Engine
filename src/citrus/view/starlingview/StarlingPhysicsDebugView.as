@@ -24,18 +24,11 @@ package citrus.view.starlingview {
 			_debugView = new _physicsEngine.realDebugView();
 			(_debugView as flash.display.Sprite).name = "debug view";
 			addEventListener(Event.ADDED_TO_STAGE, _addedToStage);
-			addEventListener(Event.REMOVED, _removedFromStage);
 		}
 		
 		private function _addedToStage(event:Event):void {
 			removeEventListener(Event.ADDED_TO_STAGE, _addedToStage);
 			_debugView.initialize();
-		}
-		
-		private function _removedFromStage(e:Event):void
-		{
-			removeEventListener(Event.REMOVED, _removedFromStage);
-			_debugView.destroy();
 		}
 		
 		public function update():void {
@@ -52,6 +45,7 @@ package citrus.view.starlingview {
 		
 		override public function dispose():void
 		{
+			_debugView.destroy();
 			_physicsEngine = null;
 			_debugView = null;
 			super.dispose();
