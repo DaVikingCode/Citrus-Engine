@@ -58,6 +58,10 @@ package citrus.physics.box2d {
 			_debugDrawer.SetFlags(flags);
 		}
 		
+		public function get debugDrawer():* {
+			return _debugDrawer;
+		}
+		
 		public function set transformMatrix(m:Matrix):void
 		{
 			_sprite.transform.matrix = m;

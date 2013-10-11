@@ -1,5 +1,7 @@
 V3.1.8, Work In Progress
 ------------------------
+- Changed the way we handle the physics engine's debug drawers (due to state transition bugs, and the new nape ShapeDebug)
+  see APhysicsEngine.debugView
 - Starling updated on 1.4
 - Feathers updated on 1.1.1
 - DragonBones updated to 2.4

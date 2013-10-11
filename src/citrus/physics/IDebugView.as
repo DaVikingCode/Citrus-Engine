@@ -26,5 +26,10 @@ package citrus.physics {
 		
 		function set visibility(val:Boolean):void
 		function get visibility():Boolean
+		
+		/**
+		 * returns the b2DebugDraw for Box2D, ShapeDebug for Nape...
+		 */
+		function get debugDrawer():*
 	}
 }

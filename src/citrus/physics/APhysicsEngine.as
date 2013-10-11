@@ -39,6 +39,8 @@ package citrus.physics {
 		 * add(b2d);
 		 * 
 		 * b2d.debugView.debugMode(b2DebugDraw.e_shapeBit|b2DebugDraw.e_jointBit);
+		 * //or
+		 * (b2d.debugView.debugDrawer as b2DebugDraw).SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
 		 * </code>
 		 */
 		public function get debugView():IDebugView {
