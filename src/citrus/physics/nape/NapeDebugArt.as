@@ -1,6 +1,7 @@
 package citrus.physics.nape {
 
 	import citrus.core.CitrusEngine;
+	import citrus.datastructures.BitFlag;
 	import citrus.physics.IDebugView;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -16,10 +17,27 @@ package citrus.physics.nape {
 		private var _nape:Nape;
 		private var _debugDrawer:ShapeDebug;
 		private var _ce:CitrusEngine;
+		
+		/**
+		 * NapDebugArt flags.
+		 * after modifying them, call applyFlags() to set the ShapeDebug's boolean values.
+		 */
+		public var flags:BitFlag;
+		
+		public static const draw_Bodies:uint = 1 << 0;
+		public static const draw_BodyDetail:uint = 1 << 1;
+		public static const draw_CollisionArbiters:uint = 1 << 2;
+		public static const draw_Constraints:uint = 1 << 3;
+		public static const draw_FluidArbiters:uint = 1 << 4;
+		public static const draw_SensorArbiters:uint = 1 << 5;
+		public static const draw_ShapeAngleIndicators:uint = 1 << 6;
+		public static const draw_ShapeDetail:uint = 1 << 7;
 
 		public function NapeDebugArt() {
 			
 			_ce = CitrusEngine.getInstance();
+			
+			flags = new BitFlag(NapeDebugArt);
 			
 			_nape = _ce.state.getFirstObjectByType(Nape) as Nape;
 			
@@ -27,6 +45,18 @@ package citrus.physics.nape {
 			
 			_debugDrawer.display.name = "debug view";
 			_debugDrawer.display.alpha = 0.8;
+		}
+		
+		protected function applyFlags():void
+		{
+			_debugDrawer.drawBodies = flags.hasFlag(draw_Bodies);
+			_debugDrawer.drawBodyDetail = flags.hasFlag(draw_BodyDetail);
+			_debugDrawer.drawCollisionArbiters = flags.hasFlag(draw_BodyDetail);
+			_debugDrawer.drawConstraints = flags.hasFlag(draw_Constraints);
+			_debugDrawer.drawFluidArbiters = flags.hasFlag(draw_FluidArbiters);
+			_debugDrawer.drawSensorArbiters = flags.hasFlag(draw_SensorArbiters);
+			_debugDrawer.drawShapeAngleIndicators = flags.hasFlag(draw_ShapeAngleIndicators);
+			_debugDrawer.drawShapeDetail = flags.hasFlag(draw_ShapeDetail);
 		}
 		
 		public function initialize():void
@@ -46,10 +76,13 @@ package citrus.physics.nape {
 		
 		public function destroy():void
 		{
+			flags.destroy();
 			_ce.stage.removeChild(_debugDrawer.display);
 		}
 		
 		public function debugMode(flags:uint):void {
+			this.flags.setFlags(flags);
+			applyFlags();
 		}
 		
 		public function get debugDrawer():* {

@@ -32,6 +32,8 @@ package citrus.physics {
 		 * exists only after the physics engine has been added to the state.
 		 * 
 		 * Example : changing the debug views flags:
+		 *
+		 * Box2D :
 		 * <code>
 		 * var b2d:Box2D = new Box2D("b2d");
 		 * b2d.gravity = b2Vec2.Make(0,0);
@@ -41,6 +43,20 @@ package citrus.physics {
 		 * b2d.debugView.debugMode(b2DebugDraw.e_shapeBit|b2DebugDraw.e_jointBit);
 		 * //or
 		 * (b2d.debugView.debugDrawer as b2DebugDraw).SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+		 * </code>
+		 * 
+		 * Nape:
+		 * <code>
+		 * nape = new Nape("nape");
+		 * nape.visible = true;
+		 * add(nape);
+		 * 
+		 * nape.debugView.debugMode(NapeDebugArt.draw_Bodies | NapeDebugArt.draw_BodyDetail | NapeDebugArt.draw_CollisionArbiters);
+		 * //or
+		 * var shapedebug:ShapeDebug = nape.debugView.debugDrawer as ShapeDebug;
+		 * shapedebug.drawBodies = true;
+		 * shapedebug.drawBodyDetail = true;
+		 * shapedebug.drawCollisionArbiters = true;
 		 * </code>
 		 */
 		public function get debugView():IDebugView {
