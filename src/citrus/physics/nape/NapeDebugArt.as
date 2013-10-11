@@ -11,7 +11,7 @@ package citrus.physics.nape {
 	 * This displays Nape's debug graphics. It does so properly through Citrus Engine's view manager. Nape by default
 	 * sets visible to false with an alpha of 0.8, so you'll need to set the Nape object's visible property to true in order to see the debug graphics. 
 	 */
-	public class NapeDebugArt extends Sprite implements IDebugView {
+	public class NapeDebugArt implements IDebugView {
 		
 		private var _nape:Nape;
 		private var _debugDrawer:ShapeDebug;
@@ -22,9 +22,11 @@ package citrus.physics.nape {
 			_ce = CitrusEngine.getInstance();
 			
 			_nape = _ce.state.getFirstObjectByType(Nape) as Nape;
-			_debugDrawer = new ShapeDebug(_ce.screenWidth, _ce.screenHeight);
-			_debugDrawer.display.alpha = 0.8;
 			
+			_debugDrawer = new ShapeDebug(_ce.screenWidth, _ce.screenHeight);
+			
+			_debugDrawer.display.name = "debug view";
+			_debugDrawer.display.alpha = 0.8;
 		}
 		
 		public function initialize():void

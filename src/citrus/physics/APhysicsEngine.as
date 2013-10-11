@@ -24,6 +24,31 @@ package citrus.physics {
 			return null;
 		}
 		
+		/**
+		 * Shortcut to the debugView
+		 * use to change the debug drawer's flags with debugView.debugMode()
+		 * or access it directly through debugView.debugDrawer.
+		 * 
+		 * exists only after the physics engine has been added to the state.
+		 * 
+		 * Example : changing the debug views flags:
+		 * <code>
+		 * var b2d:Box2D = new Box2D("b2d");
+		 * b2d.gravity = b2Vec2.Make(0,0);
+		 * b2d.visible = true;
+		 * add(b2d);
+		 * 
+		 * b2d.debugView.debugMode(b2DebugDraw.e_shapeBit|b2DebugDraw.e_jointBit);
+		 * </code>
+		 */
+		public function get debugView():IDebugView {
+			var debugArt:* = _ce.state.view.getArt(this);
+			if(debugArt && debugArt.content)
+				return debugArt.content.debugView as IDebugView;
+			else
+				return null;
+		}
+		
 		public function get realDebugView():* {
 			return _realDebugView;
 		}

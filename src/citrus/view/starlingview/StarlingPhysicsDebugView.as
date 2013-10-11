@@ -22,7 +22,6 @@ package citrus.view.starlingview {
 			
 			_physicsEngine = CitrusEngine.getInstance().state.getFirstObjectByType(APhysicsEngine) as APhysicsEngine;
 			_debugView = new _physicsEngine.realDebugView();
-			(_debugView as flash.display.Sprite).name = "debug view";
 			addEventListener(Event.ADDED_TO_STAGE, _addedToStage);
 		}
 		

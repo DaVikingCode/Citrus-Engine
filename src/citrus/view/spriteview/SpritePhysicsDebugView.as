@@ -16,7 +16,6 @@ package citrus.view.spriteview {
 			
 			_physicsEngine = CitrusEngine.getInstance().state.getFirstObjectByType(APhysicsEngine) as APhysicsEngine;
 			_debugView = new _physicsEngine.realDebugView();
-			(_debugView as Sprite).name = "debug view";
 			addEventListener(Event.ADDED_TO_STAGE, _addedToStage);
 		}
 
