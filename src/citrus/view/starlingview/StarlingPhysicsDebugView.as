@@ -6,6 +6,7 @@ package citrus.view.starlingview {
 	import flash.display.Sprite;
 	import starling.core.Starling;
 	import starling.display.Sprite;
+	import starling.events.Event;
 
 
 	
@@ -22,7 +23,19 @@ package citrus.view.starlingview {
 			_physicsEngine = CitrusEngine.getInstance().state.getFirstObjectByType(APhysicsEngine) as APhysicsEngine;
 			_debugView = new _physicsEngine.realDebugView();
 			(_debugView as flash.display.Sprite).name = "debug view";
-			Starling.current.nativeStage.addChild(_debugView as flash.display.Sprite);
+			addEventListener(Event.ADDED_TO_STAGE, _addedToStage);
+			addEventListener(Event.REMOVED, _removedFromStage);
+		}
+		
+		private function _addedToStage(event:Event):void {
+			removeEventListener(Event.ADDED_TO_STAGE, _addedToStage);
+			_debugView.initialize();
+		}
+		
+		private function _removedFromStage(e:Event):void
+		{
+			removeEventListener(Event.REMOVED, _removedFromStage);
+			_debugView.destroy();
 		}
 		
 		public function update():void {
@@ -39,7 +52,6 @@ package citrus.view.starlingview {
 		
 		override public function dispose():void
 		{
-			Starling.current.nativeStage.removeChild(_debugView as flash.display.Sprite);
 			_physicsEngine = null;
 			_debugView = null;
 			super.dispose();

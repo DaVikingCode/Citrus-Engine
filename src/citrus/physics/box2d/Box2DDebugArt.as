@@ -34,9 +34,11 @@ package citrus.physics.box2d {
 			_box2D.world.SetDebugDraw(_debugDrawer);
 			
 			_sprite.alpha = 0.5;
+		}
+		
+		public function initialize():void
+		{
 			_ce.stage.addChild(_sprite);
-			
-			addEventListener(Event.REMOVED, destroy);
 		}
 		
 		public function update():void
@@ -45,9 +47,8 @@ package citrus.physics.box2d {
 				_box2D.world.DrawDebugData();
 		}
 		
-		public function destroy(e:Event):void
+		public function destroy():void
 		{
-			removeEventListener(Event.REMOVED, destroy);
 			_ce.stage.removeChild(_sprite);
 		}
 		

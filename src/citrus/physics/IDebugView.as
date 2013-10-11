@@ -16,6 +16,9 @@ package citrus.physics {
 		 */
 		function debugMode(flags:uint):void
 		
+		function initialize():void
+		function destroy():void
+		
 		function set transformMatrix(m:Matrix):void
 		function get transformMatrix():Matrix
 		

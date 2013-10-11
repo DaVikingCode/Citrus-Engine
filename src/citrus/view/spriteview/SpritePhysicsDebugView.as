@@ -18,12 +18,21 @@ package citrus.view.spriteview {
 			_debugView = new _physicsEngine.realDebugView();
 			(_debugView as Sprite).name = "debug view";
 			addEventListener(Event.ADDED_TO_STAGE, _addedToStage);
+			addEventListener(Event.REMOVED, _removedFromStage);
 		}
 
 		private function _addedToStage(event:Event):void {
 			
 			removeEventListener(Event.ADDED_TO_STAGE, _addedToStage);
-			//addChild(_debugView as Sprite);
+			_debugView.initialize();
+		}
+		
+		private function _removedFromStage(e:Event):void
+		{
+			removeEventListener(Event.REMOVED, _removedFromStage);
+			_debugView.destroy();
+			_physicsEngine = null;
+			_debugView = null;
 		}
 		
 		public function update():void {
@@ -36,14 +45,6 @@ package citrus.view.spriteview {
 
 		public function get debugView():IDebugView {
 			return _debugView;
-		}
-		
-		public function destroy(e:Event):void
-		{
-			removeEventListener(Event.REMOVED, destroy);
-			//removeChild(_debugView as Sprite);
-			_physicsEngine = null;
-			_debugView = null;
 		}
 		
 	}

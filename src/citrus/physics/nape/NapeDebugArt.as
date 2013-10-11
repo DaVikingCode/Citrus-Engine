@@ -23,11 +23,13 @@ package citrus.physics.nape {
 			
 			_nape = _ce.state.getFirstObjectByType(Nape) as Nape;
 			_debugDrawer = new ShapeDebug(_ce.screenWidth, _ce.screenHeight);
-			
-			_ce.stage.addChild(_debugDrawer.display);
 			_debugDrawer.display.alpha = 0.8;
 			
-			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
+		}
+		
+		public function initialize():void
+		{
+			_ce.stage.addChild(_debugDrawer.display);
 		}
 		
 		public function update():void
@@ -40,9 +42,8 @@ package citrus.physics.nape {
 			}
 		}
 		
-		public function destroy(e:Event):void
+		public function destroy():void
 		{
-			removeEventListener(Event.REMOVED_FROM_STAGE, destroy);
 			_ce.stage.removeChild(_debugDrawer.display);
 		}
 		
