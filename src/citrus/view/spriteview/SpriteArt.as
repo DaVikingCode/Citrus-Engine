@@ -328,6 +328,12 @@ package citrus.view.spriteview
 			
 			if (_content is Bitmap)
 				(_content as Bitmap).smoothing = true;
+			if (_content is MovieClip)
+			{
+				//make the animation setter think _animation changed even if it didn't.
+				var anim:String = _animation; _animation = null; animation = anim;
+			}
+				
 				
 			moveRegistrationPoint(_citrusObject.registration);
 		}
