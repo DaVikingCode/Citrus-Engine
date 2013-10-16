@@ -108,7 +108,7 @@ package citrus.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase > InputPhase.END)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase == InputPhase.END)
 					return true;
 			return false;
 		}
@@ -120,7 +120,7 @@ package citrus.input {
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase < InputPhase.END)
+				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.time > 1 && a.phase < InputPhase.END)
 					return true;
 			return false;
 		}
