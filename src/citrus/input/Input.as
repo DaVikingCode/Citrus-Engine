@@ -321,16 +321,15 @@ package citrus.input {
 		public function removeController(controller:InputController):void
 		{
 			var i:int = _controllers.lastIndexOf(controller);
-			removeActionsOf(controller);
+			stopActionsOf(controller);
 			_controllers.splice(i, 1);
 		}
 		
-		public function removeActionsOf(controller:InputController):void
+		public function stopActionsOf(controller:InputController):void
 		{
-			var i:String;
-			for (i in _actions)
-				if (_actions[i].controller == controller)
-					_actions.splice(uint(i), 1);
+			var action:InputAction;
+			for each(action in _actions)
+				action._phase = InputPhase.ENDED;
 		}
 		
 		public function resetActions():void
