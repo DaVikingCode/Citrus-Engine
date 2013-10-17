@@ -121,8 +121,6 @@ package citrus.input.controllers.gamepad
 		{
 			_device = e.device;
 			
-			GameInputControlName.initialize(_device);
-			
 			if (_devices.length < _lastChannelTaken)
 				_devices.push({device: _device, channel: _lastChannelTaken - _devices.length});
 			else
