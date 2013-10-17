@@ -1,5 +1,6 @@
 package citrus.input.controllers 
 {
+	import citrus.input.controllers.gamepad.GenericGamepad;
 	/**
 	 * This is the Freebox gamepad controller.
 	 * It will work only in analog mode though (axes are weird when its not)

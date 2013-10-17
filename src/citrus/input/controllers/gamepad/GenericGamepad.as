@@ -1,8 +1,6 @@
-package citrus.input.controllers
+package citrus.input.controllers.gamepad
 {
 	
-	import citrus.input.controllers.gamepad.AxisControl2;
-	import citrus.input.controllers.gamepad.ButtonControl;
 	import citrus.input.InputController;
 	import flash.events.Event;
 	import flash.events.GameInputEvent;
@@ -202,6 +200,13 @@ package citrus.input.controllers
 					break;
 				}
 			}
+		}
+		
+		public function getMultiAxis(name:String):AxisControl2
+		{
+			if (name in _multiaxis)
+				return _multiaxis[name] as AxisControl2;
+			return null;
 		}
 		
 		/**
