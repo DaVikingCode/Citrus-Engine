@@ -325,11 +325,16 @@ package citrus.input {
 			_controllers.splice(i, 1);
 		}
 		
-		public function stopActionsOf(controller:InputController):void
+		public function stopActionsOf(controller:InputController,channel:int = -1):void
 		{
 			var action:InputAction;
 			for each(action in _actions)
-				action._phase = InputPhase.ENDED;
+			{
+				if (channel > -1)
+					if (action.channel == channel) action._phase = InputPhase.ENDED;
+				else
+					action._phase = InputPhase.ENDED;
+			}
 		}
 		
 		public function resetActions():void
