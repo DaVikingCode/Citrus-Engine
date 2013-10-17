@@ -268,6 +268,7 @@ package citrus.objects.platformer.box2d
 				{
 					velocity.y = -jumpHeight;
 					onJump.dispatch();
+					_onGround = false; // also removed in the handleEndContact. Useful here if permanent contact e.g. box on hero.
 				}
 				
 				if (_ce.input.isDoing("jump", inputChannel) && !_onGround && velocity.y < 0)

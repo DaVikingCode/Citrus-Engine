@@ -281,6 +281,7 @@ package citrus.objects.platformer.nape {
 				{
 					velocity.y = -jumpHeight;
 					onJump.dispatch();
+					_onGround = false; // also removed in the handleEndContact. Useful here if permanent contact e.g. box on hero.
 				}
 				
 				if (_ce.input.isDoing("jump", inputChannel) && !_onGround && velocity.y < 0)
@@ -303,7 +304,7 @@ package citrus.objects.platformer.nape {
 				else if (velocity.x < (-maxVelocity))
 					velocity.x = -maxVelocity;
 			}
-			
+						
 			updateAnimation();
 		}
 		
