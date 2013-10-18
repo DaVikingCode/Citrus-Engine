@@ -291,13 +291,8 @@ package citrus.view.starlingview {
 						
 						var compression:String = Context3DTextureFormat.COMPRESSED_ALPHA;
 						
-						if (Mobile.isAndroid() || Mobile.isIOS()) {
-							if (Context3DTextureFormat["BGRA_PACKED"] != null) {
-								compression = Context3DTextureFormat.BGRA_PACKED;
-							} else {
-								compression = Context3DTextureFormat.BGRA;
-							}
-						}
+						if (Mobile.isAndroid() || Mobile.isIOS())
+							compression = Context3DTextureFormat["BGRA_PACKED"] ? Context3DTextureFormat["BGRA_PACKED"] : Context3DTextureFormat.BGRA;
 						
 						tile.myTexture = Texture.fromBitmap(tile.myBitmap, false, false, 1, compression);
 						assetCache.add(tile.myBitmap, tile.myTexture);
