@@ -11,8 +11,8 @@ package citrus.datastructures {
 	public class BitFlag {
 		/*************************************************************************************************************/
 
-		private static const MAX_INT:int    = 1 << 30; // the max value we can have if using ints
-		private static const MAX_UINT:uint  = 1 << 31; // the max value we can have if using uints
+		private static const MAX_INT:int    = int.MAX_VALUE; // the max value we can have if using ints
+		private static const MAX_UINT:uint  = uint.MAX_VALUE; // the max value we can have if using uints
 
 		/*************************************************************************************************************/
 
