@@ -20,6 +20,7 @@ package citrus.input.controllers.displaylist {
 		{
 			graphic = new Sprite();
 			super(name, params);
+			_updateEnabled = true;
 		}
 		
 		override protected function initGraphics():void

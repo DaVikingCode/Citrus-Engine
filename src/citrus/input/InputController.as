@@ -10,13 +10,14 @@ package citrus.input {
 	{
 		public static var hideParamWarnings:Boolean = false;
 		
-		public var enabled:Boolean = true;
 		public var name:String;
 		public var defaultChannel:uint = 0;
 		
 		protected var _ce:CitrusEngine;
 		protected var _input:Input;
 		protected var _initialized:Boolean;
+		protected var _enabled:Boolean = true;
+		protected var _updateEnabled:Boolean = false;
 		
 		public function InputController(name:String, params:Object = null)
 		{
@@ -78,12 +79,42 @@ package citrus.input {
 				_input.actionCHANGE.dispatch(InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message));
 		}
 		
+		protected function triggerONCE(name:String, value:Number = 0, message:String = null, channel:int = -1):void
+		{
+			if (enabled)
+			{
+				var a:InputAction = InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message, InputPhase.END);
+				_input.actionCHANGE.dispatch(a);
+				_input.actionOFF.dispatch(a);
+			}
+		}
+		
+		public function get enabled():Boolean
+		{
+			return _enabled;
+		}
+		
+		public function set enabled(val:Boolean):void
+		{
+			_enabled = val;
+		}
+		
+		public function get updateEnabled():Boolean
+		{
+			return _updateEnabled;
+		}
+		
 		/**
 		 * Removes this controller from Input.
 		 */
 		public function destroy():void
 		{
 			_input.removeController(this);
+		}
+		
+		public function toString():String
+		{
+			return name;
 		}
 		
 		protected function setParams(object:Object):void

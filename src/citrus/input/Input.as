@@ -48,9 +48,9 @@ package citrus.input {
 			_controllers = new Vector.<InputController>();
 			_actions = new Vector.<InputAction>();
 			
-			actionON = new Signal();
-			actionOFF = new Signal();
-			actionCHANGE = new Signal();
+			actionON = new Signal(InputAction);
+			actionOFF = new Signal(InputAction);
+			actionCHANGE = new Signal(InputAction);
 			
 			actionON.add(doActionON);
 			actionOFF.add(doActionOFF);
@@ -104,37 +104,37 @@ package citrus.input {
 		/**
 		 * Returns true if the action has been triggered OFF in this frame or in the previous frame.
 		 */
-		public function hasDone(actionName:String, channel:uint = 0):Boolean
+		public function hasDone(actionName:String, channel:int = -1):InputAction
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.phase == InputPhase.END)
-					return true;
-			return false;
+				if (a.name == actionName && (channel > -1 ? (_routeActions ? (_routeChannel == channel) : a.channel == channel) : true ) && a.phase == InputPhase.END)
+					return a;
+			return null;
 		}
 		
 		/**
 		 * Returns true if action has just been triggered, or is still on.
 		 */
-		public function isDoing(actionName:String, channel:uint = 0):Boolean
+		public function isDoing(actionName:String, channel:int = -1):InputAction
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.time > 1 && a.phase < InputPhase.END)
-					return true;
-			return false;
+				if (a.name == actionName && (channel > -1 ? (_routeActions ? (_routeChannel == channel) : a.channel == channel) : true ) && a.time > 1 && a.phase < InputPhase.END)
+					return a;
+			return null;
 		}
 		
 		/**
 		 * Returns true if action has been triggered in this frame.
 		 */
-		public function justDid(actionName:String, channel:uint = 0):Boolean
+		public function justDid(actionName:String, channel:int = -1):InputAction
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (a.name == actionName && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.time == 1)
-					return true;
-			return false;
+				if (a.name == actionName && (channel > -1 ? (_routeActions ? (_routeChannel == channel) : a.channel == channel) : true ) && a.time == 1)
+					return a;
+			return null;
 		}
 		
 		/**
@@ -298,7 +298,7 @@ package citrus.input {
 			var c:InputController;
 			for each (c in _controllers)
 			{
-				if (c.enabled)
+				if (c.enabled && c.updateEnabled)
 					c.update();
 			}
 			

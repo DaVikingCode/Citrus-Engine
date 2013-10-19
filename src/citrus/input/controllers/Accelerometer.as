@@ -131,6 +131,9 @@ package citrus.input.controllers
 		public function Accelerometer(name:String,params:Object = null) 
 		{
 			super(name, params);
+			
+			_updateEnabled = true;
+			
 			if (! flash.sensors.Accelerometer.isSupported)
 			{
 				trace(this, "Accelerometer is not supported");
