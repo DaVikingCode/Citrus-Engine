@@ -1,15 +1,8 @@
 package citrus.input.controllers.gamepad.controls
 {
-	import citrus.core.CitrusEngine;
 	import citrus.input.controllers.gamepad.Gamepad;
-	import citrus.input.Input;
 	import citrus.input.InputController;
 	import citrus.math.MathVector;
-	import flash.events.Event;
-	import flash.events.GameInputEvent;
-	import flash.ui.GameInputControl;
-	import flash.utils.Dictionary;
-	import org.osflash.signals.Signal;
 	
 	public class StickController extends InputController implements Icontrol
 	{

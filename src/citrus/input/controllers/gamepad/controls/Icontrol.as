@@ -1,7 +1,6 @@
 package citrus.input.controllers.gamepad.controls 
 {
 	import citrus.input.controllers.gamepad.Gamepad;
-	import flash.events.GameInputEvent;
 	
 	/**
 	 * defines control wrappers we use in Gamepad.

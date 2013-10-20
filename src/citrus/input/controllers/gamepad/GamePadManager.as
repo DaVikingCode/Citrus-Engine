@@ -1,12 +1,10 @@
 package citrus.input.controllers.gamepad 
 {
-	import aze.motion.EazeTween;
 	import citrus.input.controllers.gamepad.maps.FreeboxGamepadMap;
 	import citrus.input.controllers.gamepad.maps.OUYAGamepadMap;
 	import citrus.input.controllers.gamepad.maps.PS3GamepadMap;
 	import citrus.input.controllers.gamepad.maps.Xbox360GamepadMap;
 	import citrus.input.InputController;
-	import flash.events.Event;
 	import flash.events.GameInputEvent;
 	import flash.ui.GameInput;
 	import flash.ui.GameInputDevice;

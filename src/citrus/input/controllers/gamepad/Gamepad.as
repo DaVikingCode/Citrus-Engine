@@ -1,13 +1,11 @@
 package citrus.input.controllers.gamepad
 {
-	import away3d.controllers.ControllerBase;
 	import citrus.input.controllers.gamepad.controls.ButtonController;
 	import citrus.input.controllers.gamepad.controls.Icontrol;
 	import citrus.input.controllers.gamepad.controls.StickController;
 	import citrus.input.controllers.gamepad.maps.GamePadMap;
 	import citrus.input.InputController;
 	import flash.events.Event;
-	import flash.events.GameInputEvent;
 	import flash.ui.GameInputControl;
 	import flash.ui.GameInputDevice;
 	import flash.utils.describeType;

@@ -1,11 +1,7 @@
 package citrus.input.controllers.gamepad.controls 
 {
-	import citrus.core.CitrusEngine;
 	import citrus.input.controllers.gamepad.Gamepad;
-	import citrus.input.Input;
 	import citrus.input.InputController;
-	import flash.events.GameInputEvent;
-	import flash.ui.GameInputControl;
 	
 	
 	public class ButtonController extends InputController implements Icontrol
