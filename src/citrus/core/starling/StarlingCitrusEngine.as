@@ -71,8 +71,6 @@ package citrus.core.starling {
 				return;
 			
 			_starling.viewPort.setTo(0, 0, _screenWidth, _screenHeight);
-			_starling.stage.stageWidth = _screenWidth;
-			_starling.stage.stageHeight = _screenHeight;
 		}
 
 		/**
