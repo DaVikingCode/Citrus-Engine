@@ -102,7 +102,8 @@ package citrus.input {
 		}
 		
 		/**
-		 * Returns true if the action has been triggered OFF in this frame or in the previous frame.
+		 * Returns the corresponding InputAction object if it has been triggered OFF in this frame or in the previous frame,
+		 * or null.
 		 */
 		public function hasDone(actionName:String, channel:int = -1):InputAction
 		{
@@ -114,7 +115,8 @@ package citrus.input {
 		}
 		
 		/**
-		 * Returns true if action has just been triggered, or is still on.
+		 * Returns the corresponding InputAction object if it has been triggered on the previous frame or is still going,
+		 * or null.
 		 */
 		public function isDoing(actionName:String, channel:int = -1):InputAction
 		{
@@ -126,7 +128,7 @@ package citrus.input {
 		}
 		
 		/**
-		 * Returns true if action has been triggered in this frame.
+		 * Returns the corresponding InputAction object if it has been triggered on the previous frame.
 		 */
 		public function justDid(actionName:String, channel:int = -1):InputAction
 		{
@@ -138,76 +140,55 @@ package citrus.input {
 		}
 		
 		/**
-		 * get an action from the current 'active' actions to check out their phase,value or time.
-		 * returns null if no actions are available (if so, the action ended 2 frames previous to the call.)
+		 * get an action by name from the current 'active' actions , optionnally filtered by channel, controller or phase.
+		 * returns null if no actions are found.
 		 * 
 		 * example :
 		 * <code>
-		 * var action:InputAction = _ce.input.getAction("jump");
-		 * if(action && action.phase >= InputPhase.ON && action.time > 120)
-		 *    trace("the jump action lasted 120 frames. its value is",action.value);
+		 * var action:InputAction = _ce.input.getAction("jump",-1,null,InputPhase.ON);
+		 * if(action && action.time > 120)
+		 *    trace("the jump action lasted for more than 120 frames. its value is",action.value);
 		 * </code>
 		 * 
 		 * keep doing the jump action for about 2 seconds (if running at 60 fps) and you'll see the trace.
 		 * @param	name
-		 * @param	channel
+		 * @param	channel -1 to include all channels.
+		 * @param	controller null to include all controllers.
+		 * @param	phase -1 to include all phases.
 		 * @return	InputAction
 		 */
-		public function getAction(name:String, channel:uint = 0):InputAction
+		public function getAction(name:String, channel:int = -1, controller:InputController = null, phase:int = - 1):InputAction
 		{
 			var a:InputAction;
 			for each (a in _actions)
-				if (name == a.name && (_routeActions ? (_routeChannel == channel) : a.channel == channel))
+				if (name == a.name && (channel == -1 ? true : (_routeActions ? (_routeChannel == channel) : a.channel == channel) ) && (controller != null ? a.controller == controller : true ) && (phase == -1 ? true : a.phase == phase ) )
 					return a;
 			return null;	
 		}
 		
 		/**
-		 * returns a list of all currently active actions (optionally filter by channel number)
+		 * Returns a list of active actions, optionnally filtered by channel, controller or phase.
+		 * return an empty Vector.<InputAction> if no actions are found.
+		 * 
+		 * @param	channel -1 to include all channels.
+		 * @param	controller null to include all controllers.
+		 * @param	phase -1 to include all phases.
 		 * @return
 		 */
-		public function getActions(channel:int = -1):Vector.<InputAction>
+		public function getActions(channel:int = -1, controller:InputController = null, phase:int = - 1):Vector.<InputAction>
 		{
 			var actions:Vector.<InputAction> = new Vector.<InputAction>;
 			var a:InputAction;
 			for each (a in _actions)
-				if (channel < 0)
+				if ( (channel == -1 ? true : (_routeActions ? (_routeChannel == channel) : a.channel == channel)) && (controller != null ? a.controller == controller : true ) && (phase == -1 ? true : a.phase == phase ) )
 					actions.push(a)
-				else if ((_routeActions ? (_routeChannel == channel) : a.channel == channel))
-					actions.push(a);
 			return actions;
-		}
-		
-		/**
-		 * Call this right after justDid, isDoing or hasDone to get the action's value in the current frame...
-		 * or use getAction() directly to access all action properties!
-		 */
-		public function getActionValue(actionName:String, channel:uint = 0):Number
-		{
-			var a:InputAction;
-			for each (a in _actions)
-				if (actionName == a.name && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.value)
-					return a.value;
-			return 0;
-		}
-		
-		/**
-		 * Call this right after justDid, isDoing or hasDone to get the action's message in the current frame...
-		 * or use getAction() directly to access all action properties!
-		 */
-		public function getActionMessage(actionName:String, channel:uint = 0):String
-		{
-			var a:InputAction;
-			for each (a in _actions)
-				if (actionName == a.name && (_routeActions ? (_routeChannel == channel) : a.channel == channel) && a.value)
-					return a.message;
-			return null;
 		}
 		
 		/**
 		 * Adds a new action of phase 0 if it does not exist.
 		 */
-		private function doActionON(action:InputAction):void
+		internal function doActionON(action:InputAction):void
 		{
 			if (!triggersEnabled)
 			{
@@ -217,11 +198,12 @@ package citrus.input {
 			var a:InputAction;
 			
 			for each (a in _actions)
-				if (a.eq(action))
-				{
-					action.dispose();
-					return;
-				}
+			if (a.eq(action))
+			{
+				a._phase = InputPhase.BEGIN;
+				action.dispose();
+				return;
+			}
 			action._phase = InputPhase.BEGIN;
 			_actions[_actions.length] = action;
 		}
@@ -230,7 +212,7 @@ package citrus.input {
 		 * Sets action to phase 3. will be advanced to phase 4 in next update, and finally will be removed
 		 * on the update after that.
 		 */
-		private function doActionOFF(action:InputAction):void
+		internal function doActionOFF(action:InputAction):void
 		{
 			if (!triggersEnabled)
 			{
@@ -256,7 +238,7 @@ package citrus.input {
 		 * to justDid, and then only the value will be changed. - however your continous controller DOES have
 		 * to end the action by triggering ActionOFF.
 		 */
-		private function doActionCHANGE(action:InputAction):void
+		internal function doActionCHANGE(action:InputAction):void
 		{
 			if (!triggersEnabled)
 			{
@@ -298,7 +280,7 @@ package citrus.input {
 			var c:InputController;
 			for each (c in _controllers)
 			{
-				if (c.enabled && c.updateEnabled)
+				if (c.updateEnabled && c.enabled)
 					c.update();
 			}
 			

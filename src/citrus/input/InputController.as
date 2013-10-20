@@ -19,6 +19,8 @@ package citrus.input {
 		protected var _enabled:Boolean = true;
 		protected var _updateEnabled:Boolean = false;
 		
+		private var action:InputAction;
+		
 		public function InputController(name:String, params:Object = null)
 		{
 			this.name = name;
@@ -46,10 +48,15 @@ package citrus.input {
 		 * @param	message optional message for your action.
 		 * @param	channel optional channel for your action. (will be set to the defaultChannel if not set.
 		 */
-		protected function triggerON(name:String, value:Number = 0,message:String = null, channel:int = -1):void
+		protected function triggerON(name:String, value:Number = 0,message:String = null, channel:int = -1):InputAction
 		{
-			if (enabled)
-				_input.actionON.dispatch(InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message));
+			if (_enabled)
+			{
+				action = InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message);
+				_input.actionON.dispatch(action);
+				return action;
+			}
+			return null;
 		}
 		
 		/**
@@ -59,10 +66,15 @@ package citrus.input {
 		 * @param	message optional message for your action.
 		 * @param	channel optional channel for your action. (will be set to the defaultChannel if not set.
 		 */
-		protected function triggerOFF(name:String, value:Number = 0,message:String = null, channel:int = -1):void
+		protected function triggerOFF(name:String, value:Number = 0,message:String = null, channel:int = -1):InputAction
 		{
-			if (enabled)
-				_input.actionOFF.dispatch(InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message));
+			if (_enabled)
+			{
+				action = InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message);
+				_input.actionOFF.dispatch(action);
+				return action;
+			}
+			return null;
 		}
 		
 		/**
@@ -73,20 +85,36 @@ package citrus.input {
 		 * @param	message optional message for your action.
 		 * @param	channel optional channel for your action. (will be set to the defaultChannel if not set.
 		 */
-		protected function triggerCHANGE(name:String, value:Number = 0,message:String = null, channel:int = -1):void
+		protected function triggerCHANGE(name:String, value:Number = 0,message:String = null, channel:int = -1):InputAction
 		{
-			if (enabled)
-				_input.actionCHANGE.dispatch(InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message));
+			if (_enabled)
+			{
+				action = InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message);
+				_input.actionCHANGE.dispatch(action);
+				return action;
+			}
+			return null;
 		}
 		
-		protected function triggerONCE(name:String, value:Number = 0, message:String = null, channel:int = -1):void
+		/**
+		 * Will register the action to the Input system as an action with an InputPhase.END phase if its not yet in the 
+		 * actions list as well as a time to 1 (so that it will be considered as already triggered.
+		 * @param	name string that defines the action such as "jump" or "fly"
+		 * @param	value optional value for your action.
+		 * @param	message optional message for your action.
+		 * @param	channel optional channel for your action. (will be set to the defaultChannel if not set.
+		 */
+		protected function triggerONCE(name:String, value:Number = 0, message:String = null, channel:int = -1):InputAction
 		{
-			if (enabled)
+			if (_enabled)
 			{
-				var a:InputAction = InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message, InputPhase.END);
-				_input.actionCHANGE.dispatch(a);
-				_input.actionOFF.dispatch(a);
+				action = InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message, InputPhase.END);
+				_input.actionON.dispatch(action);
+				action = InputAction.create(name, this, (channel < 0)? defaultChannel : channel , value, message, InputPhase.END);
+				_input.actionOFF.dispatch(action);
+				return action;
 			}
+			return null;
 		}
 		
 		public function get enabled():Boolean

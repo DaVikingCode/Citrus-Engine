@@ -56,7 +56,7 @@ package citrus.input
 		
 		public function toString():String
 		{
-			return "[ Action # name: " + _name + " channel: " + _channel + " value: " + _value + " phase: " + _phase + " controller: " + _controller + " time: " + _time + " ]";
+			return "\n[ Action # name: " + _name + " channel: " + _channel + " value: " + _value + " phase: " + _phase + " controller: " + _controller + " time: " + _time + " ]";
 		}
 		
 		public function get name():String { return _name; }
