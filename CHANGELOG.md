@@ -12,6 +12,7 @@ V3.1.8, Work In Progress
 - Camera : update call can be disabled (permanently or temporarily) using camera.enabled = false - for better peformance
 - SoundManager : removeAllSounds accepts exceptions, fixed stack underflow error
 - SoundManager : UI sound group added by default.
+- pause/resume sounds depending Event.ACTIVATE & Event.DEACTIVATE
 - AnimationSequence : removeAllAnimations method
 - AnimationSequence : addTextureAtlasWithAnimations to support AssetManager objects
 - use addEntity instead of add to add entity to state.

@@ -4,7 +4,6 @@ package citrus.core {
 	import citrus.sounds.SoundManager;
 	import citrus.utils.AGameData;
 	import citrus.utils.LevelManager;
-	import citrus.utils.Mobile;
 
 	import org.osflash.signals.Signal;
 
@@ -334,8 +333,7 @@ package citrus.core {
 				stage.addEventListener(Event.ACTIVATE, handleStageActivated);
 			}
 			
-			if (Mobile.isAndroid())
-				sound.pauseAll();
+			sound.pauseAll();
 		}
 		
 		protected function handleStageActivated(e:Event):void
@@ -343,8 +341,7 @@ package citrus.core {
 			playing = true;
 			stage.removeEventListener(Event.ACTIVATE, handleStageActivated);
 			
-			if (Mobile.isAndroid())
-				sound.resumeAll();
+			sound.resumeAll();
 		}
 		
 		private function handleShowConsole():void
