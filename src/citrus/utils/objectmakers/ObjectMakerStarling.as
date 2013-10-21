@@ -212,6 +212,9 @@ package citrus.utils.objectmakers {
 					params.height = objectTmx.height;
 					params.rotation = objectTmx.rotation;
 					
+					if (objectTmx.custom && objectTmx.custom["view"])
+						params.view = atlas.getTexture(objectTmx.custom["view"]);
+					
 					// Polygon/Polyline support
 					if (objectTmx.shapeType != null) {
 						//params.shapeType = objectTmx.shapeType;
