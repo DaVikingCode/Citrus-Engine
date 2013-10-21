@@ -4,15 +4,16 @@ package citrus.core {
 	import citrus.sounds.SoundManager;
 	import citrus.utils.AGameData;
 	import citrus.utils.LevelManager;
-	import flash.display.StageDisplayState;
-	import flash.events.FullScreenEvent;
+	import citrus.utils.Mobile;
 
 	import org.osflash.signals.Signal;
 
 	import flash.display.MovieClip;
 	import flash.display.StageAlign;
+	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.FullScreenEvent;
 	
 	/**
 	 * CitrusEngine is the top-most class in the library. When you start your project, you should make your
@@ -332,12 +333,18 @@ package citrus.core {
 				playing = false;
 				stage.addEventListener(Event.ACTIVATE, handleStageActivated);
 			}
+			
+			if (Mobile.isAndroid())
+				sound.pauseAll();
 		}
 		
 		protected function handleStageActivated(e:Event):void
 		{
 			playing = true;
 			stage.removeEventListener(Event.ACTIVATE, handleStageActivated);
+			
+			if (Mobile.isAndroid())
+				sound.resumeAll();
 		}
 		
 		private function handleShowConsole():void
