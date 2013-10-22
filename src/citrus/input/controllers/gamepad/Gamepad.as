@@ -42,6 +42,12 @@ package citrus.input.controllers.gamepad
 		 */
 		public var debug:Boolean = false;
 		
+		/**
+		 * if set to true, all 'children controllers' will send an action with their controller name when active (value != 0) 
+		 * helps figuring out which button someone touches for remapping in game for example.
+		 */
+		public var triggerActivity:Boolean = true;
+		
 		public function Gamepad(name:String, device:GameInputDevice, map:Class = null, params:Object = null)
 		{
 			super(name, params);

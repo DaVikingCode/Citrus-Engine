@@ -12,6 +12,8 @@ package citrus.input.controllers.gamepad.controls
 		protected var _value:Number = 0;
 		protected var _action:String;
 		
+		protected var _active:Boolean = false;
+		
 		public var threshold:Number = 0.1;
 		public var inverted:Boolean = false;
 		public var precision:Number = 100;
@@ -48,6 +50,24 @@ package citrus.input.controllers.gamepad.controls
 					else
 						triggerOFF(_action, 0, null, _gamePad.defaultChannel);
 				}
+			}
+			
+			if(_gamePad.triggerActivity)
+				active = _value > 0;
+		}
+		
+		protected function set active(val:Boolean):void
+		{
+			if (val == _active)
+				return;
+			else
+			{
+				if (val)
+					triggerCHANGE(name, 1, null, defaultChannel);
+				else
+					triggerOFF(name, 1, null, defaultChannel);
+				
+				_active = val;
 			}
 		}
 		

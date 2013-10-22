@@ -27,6 +27,7 @@ package citrus.input.controllers.gamepad.controls
 		protected var _upActive:Boolean = false;
 		protected var _leftActive:Boolean = false;
 		protected var _rightActive:Boolean = false;
+		protected var _stickActive:Boolean = false;
 		
 		public var invertX:Boolean;
 		public var invertY:Boolean;
@@ -146,7 +147,25 @@ package citrus.input.controllers.gamepad.controls
 						}
 				}
 			}
+			
+			if(_gamePad.triggerActivity)
+				stickActive = _vec.length == 0 ? false : true;
 		
+		}
+		
+		protected function set stickActive(val:Boolean):void
+		{
+			if (val == _stickActive)
+				return;
+			else
+			{
+				if (val)
+					triggerCHANGE(name, 1, null, defaultChannel);
+				else
+					triggerOFF(name, 1, null, defaultChannel);
+				
+				_stickActive = val;
+			}
 		}
 		
 		public function get y():Number
