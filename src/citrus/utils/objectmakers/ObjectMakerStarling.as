@@ -173,7 +173,7 @@ package citrus.utils.objectmakers {
 
 								var image:Image = new Image(texture);
 								image.x = j * tmx.tileWidth;
-								image.y = i * tmx.tileWidth;
+								image.y = i * tmx.tileHeight;
 
 								qb.addImage(image);
 							}
