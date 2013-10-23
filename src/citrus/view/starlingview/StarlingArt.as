@@ -1,5 +1,31 @@
 package citrus.view.starlingview {
 
+	import citrus.core.CitrusEngine;
+	import citrus.core.CitrusObject;
+	import citrus.core.IState;
+	import citrus.physics.APhysicsEngine;
+	import citrus.physics.IDebugView;
+	import citrus.system.components.ViewComponent;
+	import citrus.view.ACitrusCamera;
+	import citrus.view.ACitrusView;
+	import citrus.view.ICitrusArt;
+	import citrus.view.ISpriteView;
+
+	import dragonBones.Armature;
+	import dragonBones.animation.WorldClock;
+
+	import spine.starling.SkeletonAnimationSprite;
+
+	import starling.core.Starling;
+	import starling.display.DisplayObject;
+	import starling.display.Image;
+	import starling.display.MovieClip;
+	import starling.display.Quad;
+	import starling.display.Sprite;
+	import starling.extensions.particles.PDParticleSystem;
+	import starling.textures.Texture;
+	import starling.utils.deg2rad;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
@@ -13,32 +39,6 @@ package citrus.view.starlingview {
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
-	
-	import citrus.core.CitrusEngine;
-	import citrus.core.CitrusObject;
-	import citrus.core.IState;
-	import citrus.physics.APhysicsEngine;
-	import citrus.physics.IDebugView;
-	import citrus.system.components.ViewComponent;
-	import citrus.view.ACitrusCamera;
-	import citrus.view.ACitrusView;
-	import citrus.view.ICitrusArt;
-	import citrus.view.ISpriteView;
-	
-	import dragonBones.Armature;
-	import dragonBones.animation.WorldClock;
-	
-	import spine.starling.SkeletonAnimationSprite;
-	
-	import starling.core.Starling;
-	import starling.display.DisplayObject;
-	import starling.display.Image;
-	import starling.display.MovieClip;
-	import starling.display.Quad;
-	import starling.display.Sprite;
-	import starling.extensions.particles.PDParticleSystem;
-	import starling.textures.Texture;
-	import starling.utils.deg2rad;
 
 	/**
 	 * This is the class that all art objects use for the StarlingView state view. If you are using the StarlingView (as opposed to the blitting view, for instance),
@@ -70,11 +70,6 @@ package citrus.view.starlingview {
 		 * property is assigned to loader.content.
 		 */
 		public var loader:Loader;
-		
-		/**
-		 * Used for loading atf files at runtime
-		 */
-		public var urlLoader:URLLoader;
 
 		// properties :
 
@@ -243,18 +238,19 @@ package citrus.view.starlingview {
 					// view property is a path to an image?
 					var classString:String = _view;
 					var suffix:String = classString.substring(classString.length - 4).toLowerCase();
+					var url:URLRequest = new URLRequest(classString);
 					
 					if (suffix == ".swf" || suffix == ".png" || suffix == ".gif" || suffix == ".jpg") {
 						
 						loader = new Loader();
 						loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleContentLoaded);
 						loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, handleContentIOError);
-						loader.load(new URLRequest(classString), new LoaderContext(false, ApplicationDomain.currentDomain, null));
+						loader.load(url, new LoaderContext(false, ApplicationDomain.currentDomain, null));
 						return;
 					}
 					else if (suffix == ".atf") {
-						var url : URLRequest = new URLRequest(classString);
-						urlLoader = new URLLoader();
+						
+						var urlLoader:URLLoader = new URLLoader();
 						urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
 						urlLoader.addEventListener(Event.COMPLETE, handleBinaryContentLoaded);
 						urlLoader.load(url);
@@ -472,13 +468,13 @@ package citrus.view.starlingview {
 		}
 		
 		/**
-		 * Handles loading of the atf assets 
-		 * @param e
-		 * 
+		 * Handles loading of the atf assets.
 		 */
-		private function handleBinaryContentLoaded(e:Event) : void {
+		private function handleBinaryContentLoaded(evt:Event):void {
 			
-			_texture = Texture.fromAtfData(e.target.data as ByteArray);
+			evt.target.removeEventListener(Event.COMPLETE, handleBinaryContentLoaded);
+			
+			_texture = Texture.fromAtfData(evt.target.data as ByteArray);
 			_content = new Image(_texture);
 			
 			moveRegistrationPoint(_citrusObject.registration);
