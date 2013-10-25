@@ -70,9 +70,9 @@ package citrus.objects.platformer.box2d
 		protected var _collectFixtureDef:b2FixtureDef;
 		protected var _collectFixture:b2Fixture;
 		
-		private var _movingLeft:Boolean = false;
-		private var _collectorClass:Class = Hero;
-		private var _isNew:Boolean = true;
+		protected var _movingLeft:Boolean = false;
+		protected var _collectorClass:Class = Hero;
+		protected var _isNew:Boolean = true;
 		
 		public function Reward(name:String, params:Object = null) 
 		{

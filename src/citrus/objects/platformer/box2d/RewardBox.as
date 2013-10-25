@@ -57,9 +57,9 @@ package citrus.objects.platformer.box2d
 		 */
 		public var onRewardCollect:Signal;
 		
-		private var _rewardClass:Class = Reward;
-		private var _isUsed:Boolean = false;
-		private var _createReward:Boolean = false;
+		protected var _rewardClass:Class = Reward;
+		protected var _isUsed:Boolean = false;
+		protected var _createReward:Boolean = false;
 		
 		public function RewardBox(name:String, params:Object = null) 
 		{
@@ -165,7 +165,7 @@ package citrus.objects.platformer.box2d
 			}
 		}
 		
-		private function handleRewardCollected(reward:Reward):void 
+		protected function handleRewardCollected(reward:Reward):void 
 		{
 			onRewardCollect.dispatch(this, reward);
 		}
