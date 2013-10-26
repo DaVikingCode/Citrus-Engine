@@ -3,6 +3,8 @@ package citrus.core.starling {
 	import citrus.core.CitrusEngine;
 	import citrus.core.State;
 	import citrus.utils.Mobile;
+	import starling.utils.RectangleUtil;
+	import starling.utils.ScaleMode;
 
 	import starling.core.Starling;
 	import starling.events.Event;
@@ -20,6 +22,14 @@ package citrus.core.starling {
 	public class StarlingCitrusEngine extends CitrusEngine {
 
 		protected var _starling:Starling;
+		
+		protected var _baseWidth:int = -1;
+		protected var _baseHeigth:int = -1;
+		protected var _viewportBaseRatioWidth:Number = 1;
+		protected var _viewportBaseRatioHeight:Number = 1;
+		protected var _viewportMode:String = ViewportMode.MANUAL;
+		protected var _viewport:Rectangle;
+		protected var _scaleFactor:Number = 1;
 
 		public function StarlingCitrusEngine() {
 			super();
@@ -52,11 +62,11 @@ package citrus.core.starling {
 
 			if (Mobile.isAndroid())
 				Starling.handleLostContext = true;
+				
+			if (viewPort)
+				_viewport = viewPort;
 
-			if (!viewPort)
-				viewPort = new Rectangle(0, 0, _screenWidth, _screenHeight);
-
-			_starling = new Starling(RootClass, stage, viewPort, null, "auto", profile);
+			_starling = new Starling(RootClass, stage, null, null, "auto", profile);
 
 			_starling.antiAliasing = antiAliasing;
 			_starling.showStats = debugMode;
@@ -64,15 +74,75 @@ package citrus.core.starling {
 			_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
 		}
 		
+		protected function resetViewport():Rectangle
+		{
+			if (_baseHeigth < 0)
+				_baseHeigth = _screenHeight;
+			if (_baseWidth < 0)
+				_baseWidth = _screenWidth;	
+				
+			var baseRect:Rectangle = new Rectangle(0, 0, _baseWidth, _baseHeigth);
+			var screenRect:Rectangle = new Rectangle(0, 0, _screenWidth, _screenHeight);
+			
+			switch(_viewportMode)
+			{
+				case ViewportMode.LETTERBOX:
+					_viewport = RectangleUtil.fit(baseRect, screenRect, ScaleMode.SHOW_ALL);
+					_viewport.x = screenWidth * .5 - _viewport.width * .5;
+					_viewport.y = screenHeight * .5 - _viewport.height * .5;
+					
+					if (_starling)
+					{
+						_starling.stage.stageWidth = _baseWidth;
+						_starling.stage.stageHeight = _baseHeigth;
+					}
+					
+					break;
+				case ViewportMode.FULLSCREEN:
+					_viewport = RectangleUtil.fit(baseRect, screenRect, ScaleMode.SHOW_ALL);
+					_viewportBaseRatioWidth = _viewport.width / baseRect.width;
+					_viewportBaseRatioHeight = _viewport.height / baseRect.height;
+					_viewport.copyFrom(screenRect);
+					
+					_viewport.x = 0;
+					_viewport.y = 0;
+					
+					if (_starling)
+					{
+						_starling.stage.stageWidth = screenRect.width / _viewportBaseRatioWidth;
+						_starling.stage.stageHeight = screenRect.height / _viewportBaseRatioHeight;
+					}
+					
+					break;
+				case ViewportMode.NO_SCALE:
+					_viewport = baseRect;
+					_viewport.x = screenWidth * .5 - _viewport.width * .5;
+					_viewport.y = screenHeight * .5 - _viewport.height * .5;
+					
+					if (_starling)
+					{
+						_starling.stage.stageWidth = _baseWidth;
+						_starling.stage.stageHeight = _baseHeigth;
+					}
+					
+					break;
+				case ViewportMode.MANUAL:
+						_viewport = _starling.viewPort.clone();
+					break;
+			}
+				
+			return _viewport;
+		}
+		
 		override protected function handleStageResize(e:flash.events.Event = null):void
 		{
 			super.handleStageResize(e);
+			
 			if (!_starling)
 				return;
 			
-			_starling.viewPort.setTo(0, 0, _screenWidth, _screenHeight);
-			_starling.stage.stageWidth = _screenWidth;
-			_starling.stage.stageHeight = _screenHeight;
+			resetViewport();
+			_starling.viewPort.copyFrom(_viewport);
 		}
 
 		/**
@@ -81,7 +151,10 @@ package citrus.core.starling {
 		protected function _context3DCreated(evt:starling.events.Event):void {
 
 			_starling.removeEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
-
+			
+			resetViewport();
+			_starling.viewPort.copyFrom(_viewport);
+			
 			if (!_starling.isStarted)
 				_starling.start();
 		}
@@ -153,6 +226,16 @@ package citrus.core.starling {
 				_starling.start();
 
 			super.handleStageActivated(e);
+		}
+		
+		public function set scaleFactor(value:Number):void
+		{
+			_scaleFactor = value;
+		}
+		
+		public function get scaleFactor():Number
+		{
+			return _scaleFactor;
 		}
 
 	}
