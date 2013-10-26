@@ -1,5 +1,6 @@
 package citrus.view.starlingview {
 
+	import citrus.core.starling.StarlingCitrusEngine;
 	import citrus.math.MathUtils;
 	import citrus.view.ACitrusCamera;
 
@@ -24,6 +25,9 @@ package citrus.view.starlingview {
 		
 		override protected function initialize():void {
 			super.initialize();// setup camera lens normally
+			
+			cameraLensWidth = (_ce as StarlingCitrusEngine).starling.viewPort.width;
+			cameraLensHeight = (_ce as StarlingCitrusEngine).starling.viewPort.height;
 
 			_aabbData = MathUtils.createAABBData(0, 0, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale, _camProxy.rotation, _aabbData);
 			_m = (_viewRoot as starling.display.Sprite).transformationMatrix;

@@ -10,6 +10,7 @@ package citrus.view.starlingview {
 	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
+	import flash.geom.Matrix;
 
 	import dragonBones.Armature;
 	import dragonBones.animation.WorldClock;
@@ -392,7 +393,11 @@ package citrus.view.starlingview {
 			if (_content is StarlingPhysicsDebugView) {
 
 				var physicsDebugArt:IDebugView = (_content as StarlingPhysicsDebugView).debugView as IDebugView; 
-				physicsDebugArt.transformMatrix = stateView.camera.transformMatrix;
+				
+				var m:Matrix = stateView.camera.transformMatrix.clone();
+				m.translate(Starling.current.viewPort.x/Starling.current.contentScaleFactor, Starling.current.viewPort.y/Starling.current.contentScaleFactor);
+				m.scale(Starling.current.contentScaleFactor, Starling.current.contentScaleFactor);
+				physicsDebugArt.transformMatrix = m;
 				physicsDebugArt.visibility = _citrusObject.visible;
 				
 				(_content as StarlingPhysicsDebugView).update();
