@@ -75,6 +75,8 @@ package citrus.view.starlingview {
 		// properties :
 
 		private static var _loopAnimation:Dictionary = new Dictionary();
+		
+		private static var _m:Matrix;
 
 		private var _citrusObject:ISpriteView;
 		private var _physicsComponent:*;
@@ -394,10 +396,10 @@ package citrus.view.starlingview {
 
 				var physicsDebugArt:IDebugView = (_content as StarlingPhysicsDebugView).debugView as IDebugView; 
 				
-				var m:Matrix = stateView.camera.transformMatrix.clone();
-				m.translate(Starling.current.viewPort.x/Starling.current.contentScaleFactor, Starling.current.viewPort.y/Starling.current.contentScaleFactor);
-				m.scale(Starling.current.contentScaleFactor, Starling.current.contentScaleFactor);
-				physicsDebugArt.transformMatrix = m;
+				_m.copyFrom(stateView.camera.transformMatrix);
+				_m.translate(Starling.current.viewPort.x/Starling.current.contentScaleFactor, Starling.current.viewPort.y/Starling.current.contentScaleFactor);
+				_m.scale(Starling.current.contentScaleFactor, Starling.current.contentScaleFactor);
+				physicsDebugArt.transformMatrix = _m;
 				physicsDebugArt.visibility = _citrusObject.visible;
 				
 				(_content as StarlingPhysicsDebugView).update();
