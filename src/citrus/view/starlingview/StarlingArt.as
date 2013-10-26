@@ -76,7 +76,7 @@ package citrus.view.starlingview {
 
 		private static var _loopAnimation:Dictionary = new Dictionary();
 		
-		private static var _m:Matrix;
+		private static var _m:Matrix = new Matrix();
 
 		private var _citrusObject:ISpriteView;
 		private var _physicsComponent:*;
