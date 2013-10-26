@@ -127,6 +127,7 @@ package citrus.core.starling {
 					
 					break;
 				case ViewportMode.MANUAL:
+					if(!_viewport)
 						_viewport = _starling.viewPort.clone();
 					break;
 			}
