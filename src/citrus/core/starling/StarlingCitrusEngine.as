@@ -29,7 +29,7 @@ package citrus.core.starling {
 		protected var _viewportBaseRatioHeight:Number = 1;
 		protected var _viewportMode:String = ViewportMode.MANUAL;
 		protected var _viewport:Rectangle;
-		protected var _scaleFactor:Number = 1;
+		protected var _scaleFactor:Number = 0;
 
 		public function StarlingCitrusEngine() {
 			super();
