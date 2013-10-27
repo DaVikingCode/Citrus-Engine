@@ -25,7 +25,7 @@ package citrus.core.starling {
 		protected var _starling:Starling;
 		
 		protected var _baseWidth:int = -1;
-		protected var _baseHeigth:int = -1;
+		protected var _baseHeight:int = -1;
 		protected var _viewportBaseRatioWidth:Number = 1;
 		protected var _viewportBaseRatioHeight:Number = 1;
 		protected var _viewportMode:String = ViewportMode.MANUAL;
@@ -77,12 +77,12 @@ package citrus.core.starling {
 		
 		protected function resetViewport():Rectangle
 		{
-			if (_baseHeigth < 0)
-				_baseHeigth = _screenHeight;
+			if (_baseHeight < 0)
+				_baseHeight = _screenHeight;
 			if (_baseWidth < 0)
 				_baseWidth = _screenWidth;	
 				
-			var baseRect:Rectangle = new Rectangle(0, 0, _baseWidth, _baseHeigth);
+			var baseRect:Rectangle = new Rectangle(0, 0, _baseWidth, _baseHeight);
 			var screenRect:Rectangle = new Rectangle(0, 0, _screenWidth, _screenHeight);
 			
 			switch(_viewportMode)
@@ -95,7 +95,7 @@ package citrus.core.starling {
 					if (_starling)
 					{
 						_starling.stage.stageWidth = _baseWidth;
-						_starling.stage.stageHeight = _baseHeigth;
+						_starling.stage.stageHeight = _baseHeight;
 					}
 					
 					break;
@@ -123,7 +123,7 @@ package citrus.core.starling {
 					if (_starling)
 					{
 						_starling.stage.stageWidth = _baseWidth;
-						_starling.stage.stageHeight = _baseHeigth;
+						_starling.stage.stageHeight = _baseHeight;
 					}
 					
 					break;
@@ -238,6 +238,16 @@ package citrus.core.starling {
 		public function get scaleFactor():Number
 		{
 			return _scaleFactor;
+		}
+		
+		public function get baseWidth():int
+		{
+			return _baseWidth;
+		}
+		
+		public function get baseHeight():int
+		{
+			return _baseHeight;
 		}
 
 	}
