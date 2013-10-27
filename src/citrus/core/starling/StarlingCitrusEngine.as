@@ -3,17 +3,15 @@ package citrus.core.starling {
 	import citrus.core.CitrusEngine;
 	import citrus.core.State;
 	import citrus.utils.Mobile;
-	import flash.display3D.Context3DProfile;
-	import starling.utils.RectangleUtil;
-	import starling.utils.ScaleMode;
 
 	import starling.core.Starling;
 	import starling.events.Event;
+	import starling.utils.RectangleUtil;
+	import starling.utils.ScaleMode;
 
-	import flash.display.DisplayObject;
+	import flash.display3D.Context3DProfile;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
-	import flash.system.Capabilities;
 
 	/**
 	 * Extends this class if you create a Starling based game. Don't forget to call <code>setUpStarling</code> function.
@@ -21,6 +19,8 @@ package citrus.core.starling {
 	 * <p>CitrusEngine can access to the Stage3D power thanks to the <a href="http://starling-framework.org/">Starling Framework</a>.</p>
 	 */
 	public class StarlingCitrusEngine extends CitrusEngine {
+		
+		public var scaleFactor:Number = 0;
 
 		protected var _starling:Starling;
 		
@@ -30,7 +30,6 @@ package citrus.core.starling {
 		protected var _viewportBaseRatioHeight:Number = 1;
 		protected var _viewportMode:String = ViewportMode.MANUAL;
 		protected var _viewport:Rectangle;
-		protected var _scaleFactor:Number = 0;
 
 		public function StarlingCitrusEngine() {
 			super();
@@ -57,7 +56,7 @@ package citrus.core.starling {
 		 * @param debugMode If true, display a Stats class instance.
 		 * @param antiAliasing The antialiasing value allows you to set the anti-aliasing (0 - 16), generally a value of 1 is totally acceptable.
 		 * @param viewPort Starling's viewport, default is (0, 0, stage.stageWidth, stage.stageHeight, change to (0, 0, stage.fullScreenWidth, stage.fullScreenHeight) for mobile.
-		 * @param profile The Context3DProfile that should be requested <a href="http://wiki.starling-framework.org/manual/constrained_stage3d_profile">More informations</a>. if set to "auto", then CitrusEngine will figure out the right one according to the _scaleFactor value.
+		 * @param profile The Context3DProfile that should be requested <a href="http://wiki.starling-framework.org/manual/constrained_stage3d_profile">More informations</a>. if set to "auto", then CitrusEngine will figure out the right one according to the scaleFactor value.
 		 */
 		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewPort:Rectangle = null, profile:String = "auto"):void {
 
@@ -228,16 +227,6 @@ package citrus.core.starling {
 				_starling.start();
 
 			super.handleStageActivated(e);
-		}
-		
-		public function set scaleFactor(value:Number):void
-		{
-			_scaleFactor = value;
-		}
-		
-		public function get scaleFactor():Number
-		{
-			return _scaleFactor;
 		}
 		
 		public function get baseWidth():int
