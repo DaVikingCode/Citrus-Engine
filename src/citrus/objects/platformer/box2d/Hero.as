@@ -3,21 +3,20 @@ package citrus.objects.platformer.box2d
 
 	import Box2D.Collision.b2Manifold;
 	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.Contacts.b2Contact;
 	import Box2D.Dynamics.b2Fixture;
-
-	import citrus.math.MathVector;
+	import Box2D.Dynamics.Contacts.b2Contact;
 	import citrus.objects.Box2DPhysicsObject;
-	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.box2d.Box2DShapeMaker;
 	import citrus.physics.box2d.Box2DUtils;
 	import citrus.physics.box2d.IBox2DPhysicsObject;
-
-	import org.osflash.signals.Signal;
-
+	import citrus.physics.PhysicsCollisionCategories;
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;
+	import org.osflash.signals.Signal;
+
+
+
 	
 	/**
 	 * This is a common, simple, yet solid implementation of a side-scrolling Hero. 
@@ -391,10 +390,10 @@ package citrus.objects.platformer.box2d
 			
 			//Collision angle if we don't touch a Sensor.
 			if (contact.GetManifold().m_localPoint && !(collider is Sensor)) //The normal property doesn't come through all the time. I think doesn't come through against sensors.
-			{				
-				var collisionAngle:Number = (((new MathVector(contact.normal.x, contact.normal.y).angle) * 180 / Math.PI) + 360) % 360;// 0º <-> 360º
+			{	
+				var collisionAngle:Number = Math.atan2(contact.normal.y, contact.normal.x);
 				
-				if ((collisionAngle > 45 && collisionAngle < 135))
+				if (collisionAngle >= Math.PI*.25 && collisionAngle <= 3*Math.PI*.25 ) // normal angle between pi/4 and 3pi/4
 				{
 					_groundContacts.push(collider.body.GetFixtureList());
 					_onGround = true;
