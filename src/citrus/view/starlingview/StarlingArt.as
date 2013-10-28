@@ -397,8 +397,8 @@ package citrus.view.starlingview {
 				var physicsDebugArt:IDebugView = (_content as StarlingPhysicsDebugView).debugView as IDebugView; 
 				
 				_m.copyFrom(stateView.camera.transformMatrix);
-				_m.translate(Starling.current.viewPort.x, Starling.current.viewPort.y);
 				_m.scale(Starling.current.viewPort.width / Starling.current.stage.stageWidth, Starling.current.viewPort.height / Starling.current.stage.stageHeight);
+				_m.translate(Starling.current.viewPort.x, Starling.current.viewPort.y);
 				physicsDebugArt.transformMatrix = _m;
 				physicsDebugArt.visibility = _citrusObject.visible;
 				
