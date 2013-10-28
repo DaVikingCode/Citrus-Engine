@@ -23,7 +23,7 @@ package citrus.core.starling {
 		/**
 		 * Get a direct references to the Citrus Engine in your State.
 		 */
-		protected var _ce:CitrusEngine;
+		protected var _ce:StarlingCitrusEngine;
 		
 		protected var _realState:MediatorState;
 
@@ -36,7 +36,7 @@ package citrus.core.starling {
 
 		public function StarlingState() {
 			
-			_ce = CitrusEngine.getInstance();
+			_ce = CitrusEngine.getInstance() as StarlingCitrusEngine;
 			
 			_stage = Starling.current.stage;
 			
