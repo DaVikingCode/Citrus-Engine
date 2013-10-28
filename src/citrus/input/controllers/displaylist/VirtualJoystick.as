@@ -20,6 +20,15 @@ package citrus.input.controllers.displaylist {
 		{
 			graphic = new Sprite();
 			super(name, params);
+			
+			_innerradius = _radius - _knobradius;
+			
+			_x = _x ? _x : 2*_innerradius;
+			_y = _y ? _y : _ce.stage.stageHeight - 2*_innerradius;
+			
+			initActionRanges();
+			initGraphics();
+			
 			_updateEnabled = true;
 		}
 		

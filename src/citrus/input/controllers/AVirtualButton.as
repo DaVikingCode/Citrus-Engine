@@ -20,11 +20,6 @@ package citrus.input.controllers {
 		public function AVirtualButton(name:String, params:Object = null)
 		{
 			super(name, params);
-			
-			_x = _x ? _x : _ce.stage.stageWidth - (_margin + 3*_buttonradius) ;
-			_y = _y ? _y : _ce.stage.stageHeight - 3*_buttonradius;
-			
-			initGraphics();
 		}
 		
 		/**

@@ -27,7 +27,17 @@ package citrus.input.controllers.starling {
 		public function VirtualJoystick(name:String, params:Object = null)
 		{
 			graphic = new starling.display.Sprite();
+			
 			super(name, params);
+			
+			_innerradius = _radius - _knobradius;
+			
+			_x = _x ? _x : 2*_innerradius;
+			_y = _y ? _y : Starling.current.stage.stageHeight - 2*_innerradius;
+			
+			initActionRanges();
+			initGraphics();
+			
 			_updateEnabled = true;
 		}
 		
@@ -114,6 +124,7 @@ package citrus.input.controllers.starling {
 			graphic.addChild(knob);
 			
 			//move joystick
+			graphic.alignPivot();
 			graphic.x = _x;
 			graphic.y = _y;
 			
