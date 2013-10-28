@@ -10,8 +10,6 @@ package citrus.core.starling {
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ACitrusView;
 	import citrus.view.starlingview.StarlingView;
-	import starling.core.Starling;
-	import starling.display.Stage;
 
 	import starling.display.Sprite;
 
@@ -27,19 +25,12 @@ package citrus.core.starling {
 		
 		protected var _realState:MediatorState;
 
-		protected var _input:Input;	
-		
-		/**
-		 * reference to the starling stage
-		 */
-		protected var _stage:Stage;
+		protected var _input:Input;
 
 		public function StarlingState() {
 			
 			_ce = CitrusEngine.getInstance() as StarlingCitrusEngine;
-			
-			_stage = Starling.current.stage;
-			
+						
 			if (!(_ce as StarlingCitrusEngine) || !(_ce as StarlingCitrusEngine).starling)
 				throw new Error("Your Main " + _ce + " class doesn't extend StarlingCitrusEngine, or you didn't call its setUpStarling function");
 
