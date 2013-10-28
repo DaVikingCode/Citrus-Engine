@@ -25,8 +25,8 @@ package citrus.input.controllers.starling {
 		public function VirtualButton(name:String, params:Object = null) {
 			graphic = new starling.display.Sprite();
 			super(name, params);
-			_x = _x ? _x : Starling.current.stage.stageWidth - (_margin + 2*_buttonradius) ;
-			_y = _y ? _y : Starling.current.stage.stageHeight - 2*_buttonradius;
+			_x = _x ? _x : Starling.current.stage.stageWidth - (_margin + 2*_buttonradius)/ Starling.current.contentScaleFactor ;
+			_y = _y ? _y : Starling.current.stage.stageHeight - 2*_buttonradius/ Starling.current.contentScaleFactor;
 			
 			initGraphics();
 		}
@@ -42,7 +42,7 @@ package citrus.input.controllers.starling {
 				tempSprite.graphics.drawCircle(_buttonradius, _buttonradius, _buttonradius);
 				tempSprite.graphics.endFill();
 				tempBitmapData.draw(tempSprite);
-				buttonUpTexture = Texture.fromBitmapData(tempBitmapData);
+				buttonUpTexture = Texture.fromBitmapData(tempBitmapData,true,false,Starling.current.contentScaleFactor);
 				tempSprite = null;
 				tempBitmapData = null;
 			}
@@ -56,7 +56,7 @@ package citrus.input.controllers.starling {
 				tempSprite2.graphics.drawCircle(_buttonradius, _buttonradius, _buttonradius);
 				tempSprite2.graphics.endFill();
 				tempBitmapData2.draw(tempSprite2);
-				buttonDownTexture = Texture.fromBitmapData(tempBitmapData2);
+				buttonDownTexture = Texture.fromBitmapData(tempBitmapData2,true,false,Starling.current.contentScaleFactor);
 				tempSprite2 = null;
 				tempBitmapData2 = null;
 			}

@@ -32,8 +32,8 @@ package citrus.input.controllers.starling {
 			
 			_innerradius = _radius - _knobradius;
 			
-			_x = _x ? _x : 2*_innerradius;
-			_y = _y ? _y : Starling.current.stage.stageHeight - 2*_innerradius;
+			_x = _x ? _x : 2*_innerradius / Starling.current.contentScaleFactor;
+			_y = _y ? _y : Starling.current.stage.stageHeight - 2*_innerradius/ Starling.current.contentScaleFactor ;
 			
 			initActionRanges();
 			initGraphics();
@@ -93,7 +93,7 @@ package citrus.input.controllers.starling {
 				tempSprite.graphics.endFill();
 				tempBitmapData.draw(tempSprite);
 				
-				back = new Image(Texture.fromBitmapData(tempBitmapData));
+				back = new Image(Texture.fromBitmapData(tempBitmapData,true,false,Starling.current.contentScaleFactor));
 				
 				tempSprite = null;
 				tempBitmapData = null;
@@ -111,7 +111,7 @@ package citrus.input.controllers.starling {
 				tempBitmapData2 = new BitmapData(_knobradius * 2, _knobradius * 2, true, 0x00FFFFFF);
 				tempBitmapData2.draw(tempSprite2);
 				
-				knob = new Image(Texture.fromBitmapData(tempBitmapData2));
+				knob = new Image(Texture.fromBitmapData(tempBitmapData2,true,false,Starling.current.contentScaleFactor));
 				
 				tempSprite2 = null;
 				tempBitmapData2 = null;
