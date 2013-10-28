@@ -13,6 +13,7 @@ package citrus.core {
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.FullScreenEvent;
+	import flash.system.Capabilities;
 	
 	/**
 	 * CitrusEngine is the top-most class in the library. When you start your project, you should make your
@@ -257,7 +258,7 @@ package citrus.core {
 		
 		protected function handleStageResize(e:Event = null):void
 		{
-			if (_fullScreen)
+			if (Capabilities.playerType == "Desktop")
 			{
 				_screenWidth = stage.fullScreenWidth;
 				_screenHeight = stage.fullScreenHeight;
