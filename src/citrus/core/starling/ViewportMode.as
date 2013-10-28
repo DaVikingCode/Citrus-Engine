@@ -20,8 +20,14 @@ package citrus.core.starling
 		public static const FULLSCREEN:String = "FULLSCREEN";
 		
 		/**
+		 * Legacy mode will make the viewport fill the screen as well as set the starling stage dimensions to the flash stage dimensions
+		 * as what used to happen by default in CE prior to 3.1.8.
+		 */
+		public static const LEGACY:String = "LEGACY";
+		
+		/**
 		 * Manual mode :
-		 * if the StarlingCitrusEngine.viewport rectangle is not defined, it will be set to the screen dimensions. this is the default behavior of CE up to version 3.1.7
+		 * if the StarlingCitrusEngine.viewport rectangle is not defined, it will be defined as the flash stageWidth/stageHeight.
 		 * if you have defined it in your StarlingCitrusEngine, it will be used as the starling viewport and you are in charge of defining its position or the starling stage dimensions.
 		 */
 		public static const MANUAL:String = "MANUAL";

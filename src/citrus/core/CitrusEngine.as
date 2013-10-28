@@ -4,16 +4,15 @@ package citrus.core {
 	import citrus.sounds.SoundManager;
 	import citrus.utils.AGameData;
 	import citrus.utils.LevelManager;
-
-	import org.osflash.signals.Signal;
-
 	import flash.display.MovieClip;
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.FullScreenEvent;
-	import flash.system.Capabilities;
+	import org.osflash.signals.Signal;
+
+
 	
 	/**
 	 * CitrusEngine is the top-most class in the library. When you start your project, you should make your
@@ -258,7 +257,7 @@ package citrus.core {
 		
 		protected function handleStageResize(e:Event = null):void
 		{
-			if (Capabilities.playerType == "Desktop")
+			if (_fullScreen)
 			{
 				_screenWidth = stage.fullScreenWidth;
 				_screenHeight = stage.fullScreenHeight;

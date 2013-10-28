@@ -28,7 +28,7 @@ package citrus.core.starling {
 		protected var _baseHeight:int = -1;
 		protected var _viewportBaseRatioWidth:Number = 1;
 		protected var _viewportBaseRatioHeight:Number = 1;
-		protected var _viewportMode:String = ViewportMode.MANUAL;
+		protected var _viewportMode:String = ViewportMode.LEGACY;
 		protected var _viewport:Rectangle;
 
 		public function StarlingCitrusEngine() {
@@ -126,6 +126,13 @@ package citrus.core.starling {
 					}
 					
 					break;
+				case ViewportMode.LEGACY:
+						_viewport = screenRect;
+						if (_starling)
+						{
+							_starling.stage.stageWidth = screenRect.width;
+							_starling.stage.stageHeight = screenRect.height;
+						}
 				case ViewportMode.MANUAL:
 					if(!_viewport)
 						_viewport = _starling.viewPort.clone();
