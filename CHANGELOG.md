@@ -19,6 +19,7 @@ V3.1.8, Work In Progress
 - pause/resume sounds depending Event.ACTIVATE & Event.DEACTIVATE
 - AnimationSequence : removeAllAnimations method
 - AnimationSequence : addTextureAtlasWithAnimations to support AssetManager objects
+- using starling, an animation loaded from a .swf will be transformed into an AnimationSequence using AnimationSequence.fromMovieClip
 - use addEntity instead of add to add entity to state.
 - nape Platform oneWay fixed.
 - box2D Reward fixed (updates by default).
