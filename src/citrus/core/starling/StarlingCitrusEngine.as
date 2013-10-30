@@ -2,6 +2,7 @@ package citrus.core.starling {
 
 	import citrus.core.CitrusEngine;
 	import citrus.core.State;
+	import citrus.utils.Context3DUtil;
 	import citrus.utils.Mobile;
 
 	import starling.core.Starling;
@@ -12,6 +13,8 @@ package citrus.core.starling {
 	import flash.display3D.Context3DProfile;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
+	
+	import flash.utils.setTimeout;
 
 	/**
 	 * Extends this class if you create a Starling based game. Don't forget to call <code>setUpStarling</code> function.
@@ -31,7 +34,14 @@ package citrus.core.starling {
 		protected var _viewportBaseRatioHeight:Number = 1;
 		protected var _viewportMode:String = ViewportMode.LEGACY;
 		protected var _viewport:Rectangle;
-
+		
+		/**
+		 * context3D profiles to test for in Ascending order (the more important first).
+		 * reset this array to a single entry to force one specific profile.
+		 */
+		protected var _context3DProfiles:Array = [Context3DProfile.BASELINE_EXTENDED,Context3DProfile.BASELINE,Context3DProfile.BASELINE_CONSTRAINED];
+		protected var _context3DProfileTestDelay:int = 100;
+		
 		public function StarlingCitrusEngine() {
 			super();
 		}
@@ -66,13 +76,43 @@ package citrus.core.starling {
 				
 			if (viewPort)
 				_viewport = viewPort;
-
-			_starling = new Starling(RootClass, stage, null, null, "auto", profile == "auto" ? (scaleFactor >= 4 ? Context3DProfile.BASELINE_EXTENDED : Context3DProfile.BASELINE) :  profile);
+				
+				
+			var starlingInit:Function = function(profile:String):void
+			{
+				_starling = new Starling(RootClass, stage, null, null, "auto", profile);
+				_starling.antiAliasing = antiAliasing;
+				_starling.showStats = debugMode;
+				_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
+			}
+				
+			if (profile == "auto")
+			{
+					
+				var profiletests:Array = _context3DProfiles.slice();
+				
+				var testProfiles:Function = function(profile:String, success:Boolean):void
+				{
+					if (success)
+					{
+						starlingInit(profile);
+						return;
+					}
+					
+					if (profiletests.length > 0)
+						setTimeout(Context3DUtil.supportsProfile,_context3DProfileTestDelay,stage, profiletests.shift(), testProfiles);
+					else if (profiletests.length == 0)
+						throw new ArgumentError("Failed to create a Context3D profile: " + profile);
+				}
+				
+				Context3DUtil.supportsProfile(stage, profiletests.shift(), testProfiles);
 			
-			_starling.antiAliasing = antiAliasing;
-			_starling.showStats = debugMode;
-
-			_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
+			}
+			else
+			{
+				starlingInit(profile);
+			}
+			
 		}
 		
 		/**
