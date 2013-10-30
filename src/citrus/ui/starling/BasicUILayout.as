@@ -47,6 +47,26 @@ package citrus.ui.starling
 			return content;
 		}
 		
+		public function getElementByContent(content:DisplayObject):BasicUIElement
+		{
+			var element:BasicUIElement;
+			for each (element in _elements)
+				if (element.content == content)
+					return element;
+			return null;
+		}
+		
+		public function getElementsByPosition(position:String):Vector.<BasicUIElement>
+		{
+			var elements:Vector.<BasicUIElement> = new Vector.<BasicUIElement>();
+			
+			var element:BasicUIElement;
+			for each (element in _elements)
+				if (element.position == position)
+					elements.push(element);
+			return elements;
+		}
+		
 		public function removeElementsByPosition(position:String):void
 		{
 			var i:String;
