@@ -21,13 +21,25 @@ package citrus.ui.starling
 			_elements = new Vector.<BasicUIElement>();
 		}
 		
-		public function addElement(content:DisplayObject,position:String):void
+		public function addElement(content:DisplayObject,position:String):BasicUIElement
 		{
 			var element:BasicUIElement = new BasicUIElement(this, content);
 			addChild(element);
 			element.x = element.y = 0;
 			element.position = position;
 			_elements.push(element);
+			return element;
+		}
+		
+		public function removeElement(element:BasicUIElement):BasicUIElement
+		{
+			var index:int = _elements.indexOf(element);
+			if (index > -1)
+			{
+				removeChild(_elements[index], true);
+				_elements.splice(index, 1);
+			}
+			return element;
 		}
 		
 		public function removeElementByContent(content:DisplayObject):DisplayObject
