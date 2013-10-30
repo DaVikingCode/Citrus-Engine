@@ -1,12 +1,14 @@
 V3.1.8, Work In Progress
 ------------------------
-- ISpriteView handleArtReady/handleArtChanged - custom citrus sprite or physics objects can now react when 'the view is set (or loaded if the view was a url) or changes' to add/remove event listeners, transform the art or manipulate its content...
-- Input system : justDid,isDoing,hasDone return the corresponding InputAction object or null (instead of just true or false) // actions carry messages // introduced new utility functions such as getAction() with phase/controller/channel filtering.
-- Changed the way we handle the physics engine's debug drawers (due to state transition bugs, and the new nape ShapeDebug) see APhysicsEngine.debugView
 - Starling updated on 1.4.1
 - Feathers updated on 1.1.1
 - DragonBones updated to 2.4
 - Nape updated on 2.0.12
+- Updated to latest DynamicTextureAtlas extension.
+- StarlingCitrusEngine offers to manage multi-resolutions. Set up _baseWidth, _baseHeight and _viewportMode.
+- ISpriteView handleArtReady/handleArtChanged - custom citrus sprite or physics objects can now react when 'the view is set (or loaded if the view was a url) or changes' to add/remove event listeners, transform the art or manipulate its content...
+- Input system : justDid,isDoing,hasDone return the corresponding InputAction object or null (instead of just true or false) // actions carry messages // introduced new utility functions such as getAction() with phase/controller/channel filtering.
+- Changed the way we handle the physics engine's debug drawers (due to state transition bugs, and the new nape ShapeDebug) see APhysicsEngine.debugView
 - Input : removed backwards compatibility, InputActions store the time (in frames) they spent in the Input system
 - MathVector : critical bug fixes (rotate, angle) and new methods (dot product, normalize, copyFrom, setTo)
 - Camera : AABB rectangle is accessible using camera.getRect()
@@ -19,7 +21,6 @@ V3.1.8, Work In Progress
 - use addEntity instead of add to add entity to state.
 - nape Platform oneWay fixed.
 - box2D Reward fixed (updates by default).
-- Updated to latest DynamicTextureAtlas extension.
 - Added a LoaderContext for SpriteArt and StarlingArt, we are able to load swf on iOS.
 - Added rotation parameter in TmxObject coming from latest Tiled Map Editor builds.
 - Fixed a bug where using StarlingCitrusEngine we had to set it up directly.
