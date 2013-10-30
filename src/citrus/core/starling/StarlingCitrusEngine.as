@@ -24,6 +24,7 @@ package citrus.core.starling {
 
 		protected var _starling:Starling;
 		
+		protected var _assetSizes:Array = [1];
 		protected var _baseWidth:int = -1;
 		protected var _baseHeight:int = -1;
 		protected var _viewportBaseRatioWidth:Number = 1;
@@ -72,6 +73,24 @@ package citrus.core.starling {
 			_starling.showStats = debugMode;
 
 			_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
+		}
+		
+		/**
+		 * returns the asset size closest to one of the available asset sizes you have.
+		 * @param	assetSizes Array of numbers listing all asset sizes you use
+		 * @return
+		 */
+		protected function findScaleFactor(assetSizes:Array):Number
+		{
+			var arr:Array = assetSizes;
+			arr.sort(Array.NUMERIC);
+			var scaleF:Number = starling.contentScaleFactor;
+			var closest:Number;
+			var f:Number;
+			for each (f in arr)
+				if (!closest || Math.abs(f - scaleF) < Math.abs(closest - scaleF))
+					closest = f;
+			return closest;
 		}
 		
 		protected function resetViewport():Rectangle
@@ -138,6 +157,8 @@ package citrus.core.starling {
 						_viewport = _starling.viewPort.clone();
 					break;
 			}
+			
+			scaleFactor = findScaleFactor(_assetSizes);
 				
 			return _viewport;
 		}
