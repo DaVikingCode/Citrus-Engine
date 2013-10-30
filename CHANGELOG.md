@@ -4,6 +4,7 @@ V3.1.8, Work In Progress
 - Feathers updated on 1.1.1
 - DragonBones updated to 2.4
 - Nape updated on 2.0.12
+- Removed Spine runtime support. Use it via DragonBones library (easier to maintain only one skeleton lib).
 - Updated to latest DynamicTextureAtlas extension.
 - StarlingCitrusEngine offers to manage multi-resolutions. Set up _baseWidth, _baseHeight and _viewportMode.
 - ISpriteView handleArtReady/handleArtChanged - custom citrus sprite or physics objects can now react when 'the view is set (or loaded if the view was a url) or changes' to add/remove event listeners, transform the art or manipulate its content...

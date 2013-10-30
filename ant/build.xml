@@ -226,7 +226,6 @@
 
 			<arg line="-include-sources ../srclib/starling" />
 			<arg line="-include-sources ../srclib/dragonBones" />
-			<arg line="-include-sources ../srclib/spine" />
 		</exec>
 
 	</target>
@@ -348,17 +347,16 @@
 		</exec>
 	</target>
 
-	<target name="Starling + Feathers + DragonBones + Spine SWC" description="Generates Starling + Feathers + DragonBones SWC">
+	<target name="Starling + Feathers + DragonBones SWC" description="Generates Starling + Feathers + DragonBones SWC">
 
-		<echo>Generating Starling + Feathers + DragonBones + Spine SWC</echo>
+		<echo>Generating Starling + Feathers + DragonBones SWC</echo>
 		<exec executable="${compc}">
 			<!-- Set the output path -->
-			<arg line="-output ../bin/libraries/Starling-Feathers-DragonBones-Spine.swc" />
+			<arg line="-output ../bin/libraries/Starling-Feathers-DragonBones.swc" />
 
 			<!-- Include all of the AS3 files in LIBRARY -->
 			<arg line="-include-sources ../srclib/starling" />
 			<arg line="-include-sources ../srclib/dragonBones" />
-			<arg line="-include-sources ../srclib/spine" />
 			<arg line="-include-libraries ../lib/feathers.swc" />
 			<arg line="-include-libraries ../lib/starling.swc" />
 		</exec>
