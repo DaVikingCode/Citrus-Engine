@@ -215,5 +215,20 @@ package citrus.math {
 		{
 			return num < 0 ? -num : num;
 		}
+		
+		/**
+		 * http://www.robertpenner.com/easing/
+		 * t current time
+		 * b start value
+		 * c change in value
+		 * d duration
+		 */
+		
+		public static function easeInQuad(t:Number, b:Number, c:Number, d:Number):Number {return c*(t/=d)*t + b;}
+		public static function easeOutQuad(t:Number, b:Number, c:Number, d:Number):Number {return -c *(t/=d)*(t-2) + b;}
+		public static function easeInCubic(t:Number, b:Number, c:Number, d:Number):Number {return c*(t/=d)*t*t + b;}
+		public static function easeOutCubic(t:Number, b:Number, c:Number, d:Number):Number {return c*((t=t/d-1)*t*t + 1) + b;}
+		public static function easeInQuart(t:Number, b:Number, c:Number, d:Number):Number {return c*(t/=d)*t*t*t + b;}
+		public static function easeOutQuart(t:Number, b:Number, c:Number, d:Number):Number {return -c * ((t=t/d-1)*t*t*t - 1) + b;}
 	}
 }
