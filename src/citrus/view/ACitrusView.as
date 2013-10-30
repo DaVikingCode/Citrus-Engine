@@ -77,10 +77,6 @@ package citrus.view {
 			if (art)
 				_viewObjects[citrusObject] = art;
 			
-			//Recurses through the art to see if it can find a loader to monitor
-			if (loadManager.onLoadComplete.numListeners > 0 || loadManager.onLoaded.numListeners > 0) //only do this if someone is listening
-				loadManager.add(art, citrusObject as CitrusObject);
-			
 			if (art.content != null) //art.content exists, so view doesn't need to be loaded, so see if we can call handleArtLoaded
 			{
 				if (Object(citrusObject).hasOwnProperty("handleArtLoaded") && citrusObject["handleArtLoaded"] is Function)
@@ -89,6 +85,9 @@ package citrus.view {
 					else
 						citrusObject.handleArtLoaded();
 			}
+			else //no art content (so send it to loadManager for investigation on whether there is a loader or not - monitor it if its the case)
+				loadManager.add(art, citrusObject as CitrusObject);
+			
 		}
 		
 		/**
