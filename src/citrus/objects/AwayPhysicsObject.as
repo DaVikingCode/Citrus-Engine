@@ -59,7 +59,22 @@ package citrus.objects {
 			createBody();
 			createConstraint();
 		}
-
+		
+		/**
+		 * called when the art is created (and loaded if loading is required)
+		 * @param	citrusArt the art
+		 */
+		public function handleArtReady(citrusArt:ICitrusArt):void {	
+		}
+		
+		/**
+		 * called when the art changes. the argument is the art with its previous content
+		 * so that you can remove event listeners from it for example.
+		 * @param	citrusArt the art
+		 */
+		public function handleArtChanged(oldArt:ICitrusArt):void {	
+		}
+		
 		override public function destroy():void {
 
 			_body.dispose();

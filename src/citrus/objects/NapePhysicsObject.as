@@ -3,6 +3,7 @@ package citrus.objects {
 	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.nape.INapePhysicsObject;
 	import citrus.physics.nape.Nape;
+	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
 
 	import nape.callbacks.CbType;
@@ -78,6 +79,21 @@ package citrus.objects {
 			createShape();
 			createFilter();
 			createConstraint();
+		}
+		
+		/**
+		 * called when the art is created (and loaded if loading is required)
+		 * @param	citrusArt the art
+		 */
+		public function handleArtReady(citrusArt:ICitrusArt):void {	
+		}
+		
+		/**
+		 * called when the art changes. the argument is the art with its previous content
+		 * so that you can remove event listeners from it for example.
+		 * @param	citrusArt the art
+		 */
+		public function handleArtChanged(oldArt:ICitrusArt):void {	
 		}
 		
 		override public function destroy():void {

@@ -132,12 +132,6 @@ package citrus.utils {
 			
 			onLoaded.dispatch(citrusObject,_objects[e.target.loader].art as ICitrusArt);
 			
-			if (Object(citrusObject).hasOwnProperty("handleArtLoaded") && citrusObject["handleArtLoaded"] is Function)
-					if(citrusObject["handleArtLoaded"].length == 1)
-						citrusObject["handleArtLoaded"](art);
-					else
-						citrusObject["handleArtLoaded"]();
-			
 			clearLoader(e.target.loader);
 			
 			if (_numLoadersLoading == 0)

@@ -14,6 +14,19 @@ package citrus.view
 	public interface ISpriteView
 	{	
 		/**
+		 * called when the art is created (and loaded if loading is required)
+		 * @param	citrusArt the art
+		 */
+		function handleArtReady(citrusArt:ICitrusArt):void;
+		
+		/**
+		 * called when the art changes. the argument is the art with its previous content
+		 * so that you can remove event listeners from it for example.
+		 * @param	citrusArt the art
+		 */
+		function handleArtChanged(oldArt:ICitrusArt):void;
+		
+		/**
 		 * the body used by a physics engine
 		 */
 		function getBody():*;

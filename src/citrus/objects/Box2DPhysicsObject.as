@@ -13,6 +13,7 @@ package citrus.objects {
 	import Box2D.Dynamics.b2ContactImpulse;
 	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
+	import citrus.view.ICitrusArt;
 
 	import citrus.core.CitrusEngine;
 	import citrus.physics.PhysicsCollisionCategories;
@@ -80,6 +81,21 @@ package citrus.objects {
 			createFixture();
 			defineJoint();
 			createJoint();
+		}
+		
+		/**
+		 * called when the art is created (and loaded if loading is required)
+		 * @param	citrusArt the art
+		 */
+		public function handleArtReady(citrusArt:ICitrusArt):void {	
+		}
+		
+		/**
+		 * called when the art changes. the argument is the art with its previous content
+		 * so that you can remove event listeners from it for example.
+		 * @param	citrusArt the art
+		 */
+		public function handleArtChanged(oldArt:ICitrusArt):void {	
 		}
 		
 		override public function destroy():void

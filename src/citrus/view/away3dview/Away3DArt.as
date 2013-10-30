@@ -129,7 +129,10 @@ package citrus.view.away3dview {
 				return;
 
 			if (_content && _content.parent)
+			{
+				_citrusObject.handleArtChanged(this);
 				destroy(true);
+			}
 
 			_view = value;
 
@@ -142,7 +145,6 @@ package citrus.view.away3dview {
 
 					if (suffix == ".obj") {
 						loader3D = new Loader3D();
-						addChild(loader3D);
 						loader.addEventListener(LoaderEvent.RESOURCE_COMPLETE, handle3DContentLoaded);
 						loader.addEventListener(LoaderEvent.LOAD_ERROR, handle3DContentIOError);
 						loader.load(new URLRequest(classString));
@@ -165,20 +167,22 @@ package citrus.view.away3dview {
 				} else if (_view is Class) {
 					// view property is a class reference
 					_content = new citrusObject.view();
-					moveRegistrationPoint(_citrusObject.registration);
-					addChild(_content);
-
 				} else if (_view is ObjectContainer3D) {
 					// view property is a Display Object reference
 					_content = _view;
-					moveRegistrationPoint(_citrusObject.registration);
-					addChild(_content);
 				} else
 					throw new Error("Away3DArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
 
 				// Call the initialize function if it exists on the custom art class.
 				if (_content && _content.hasOwnProperty("initialize"))
 					_content["initialize"](_citrusObject);
+					
+				if (_content)
+				{
+					_citrusObject.handleArtReady(this);
+					moveRegistrationPoint(_citrusObject.registration);
+					addChild(_content);
+				}
 			}
 		}
 
@@ -301,7 +305,8 @@ package citrus.view.away3dview {
 		private function handle3DContentLoaded(e:LoaderEvent):void {
 
 			_content = e.target.loader.content;
-
+			_citrusObject.handleArtReady(this);
+			addChild(_content);
 			// moveRegistrationPoint(_citrusObject.registration);
 		}
 

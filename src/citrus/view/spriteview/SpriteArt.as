@@ -153,6 +153,7 @@ package citrus.view.spriteview
 				
 			if (_content && _content.parent)
 			{
+				_citrusObject.handleArtChanged(this as ICitrusArt);
 				destroy(true);
 				_content = null;
 			}
@@ -170,7 +171,6 @@ package citrus.view.spriteview
 					if (suffix == ".swf" || suffix == ".png" || suffix == ".gif" || suffix == ".jpg")
 					{
 						loader = new Loader();
-						addChild(loader);
 						loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handleContentLoaded);
 						loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, handleContentIOError);
 						loader.load(new URLRequest(classString), new LoaderContext(false, ApplicationDomain.currentDomain, null));
@@ -180,37 +180,37 @@ package citrus.view.spriteview
 					{
 						var artClass:Class = getDefinitionByName(classString) as Class;
 						_content = new artClass();
-						moveRegistrationPoint(_citrusObject.registration);
-						addChild(_content);
 					}
 				}
 				else if (_view is Class)
 				{
 					//view property is a class reference
 					_content = new citrusObject.view();
-					moveRegistrationPoint(_citrusObject.registration);
-					addChild(_content);
 				}
 				else if (_view is DisplayObject)
 				{
 					// view property is a Display Object reference
 					_content = _view;
-					moveRegistrationPoint(_citrusObject.registration);
-					addChild(_content);
 					
 				} else if (_view is Armature) {
 					
 					_content = (_view as Armature).display as Sprite;
-					moveRegistrationPoint(_citrusObject.registration);
-					addChild(_content);
 					WorldClock.clock.add(_view);
 				}
 				else
 					throw new Error("SpriteArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
 				
+				
 				// Call the initialize function if it exists on the custom art class.
 				if (_content && _content.hasOwnProperty("initialize"))
 					_content["initialize"](_citrusObject);
+					
+				if (_content)
+				{
+					_citrusObject.handleArtReady(this as ICitrusArt);
+					moveRegistrationPoint(_citrusObject.registration);
+					addChild(_content);
+				}
 					
 			}
 		}
@@ -337,8 +337,10 @@ package citrus.view.spriteview
 				var anim:String = _animation; _animation = null; animation = anim;
 			}
 				
-				
+			_citrusObject.handleArtReady(this as ICitrusArt);
+			
 			moveRegistrationPoint(_citrusObject.registration);
+			addChild(_content);
 		}
 		
 		private function handleContentIOError(e:IOErrorEvent):void 
