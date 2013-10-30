@@ -1,16 +1,18 @@
 package citrus.view.starlingview {
 
+	import citrus.core.CitrusEngine;
+	import citrus.core.starling.StarlingCitrusEngine;
+
 	import starling.core.Starling;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.extensions.textureAtlas.DynamicAtlas;
 	import starling.textures.TextureAtlas;
-	
-	import flash.display.MovieClip;
 
 	import org.osflash.signals.Signal;
 
+	import flash.display.Sprite;
 	import flash.utils.Dictionary;
 
 	/**
@@ -19,7 +21,7 @@ package citrus.view.starlingview {
 	 * <b>Important:</b> for managing if an animation should loop, you've to set it up at <code>StarlingArt.setLoopAnimations(["fly", "fallen"])</code>. By default, the walk's 
 	 * animation is the only one looping.
 	 */
-	public class AnimationSequence extends Sprite {
+	public class AnimationSequence extends starling.display.Sprite {
 
 		/**
 		 * The signal is dispatched each time an animation is completed, giving the animation name as argument.
@@ -195,9 +197,9 @@ package citrus.view.starlingview {
 		 * @param	smoothing
 		 * @return
 		 */
-		public static function fromMovieClip(mc:flash.display.Sprite,firstAnim:String = null,animFps:int = 30, firstAnimLoop:Boolean = true,smoothing:String = "bilinear"):AnimationSequence
+		public static function fromMovieClip(mc:flash.display.Sprite,firstAnim:String = null, animFps:int = 30, firstAnimLoop:Boolean = true, smoothing:String = "bilinear"):AnimationSequence
 		{
-			var textureAtlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(mc, 1, 0, true, true);
+			var textureAtlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(mc, (CitrusEngine.getInstance() as StarlingCitrusEngine).scaleFactor, 0, true, true);
 			var textureAtlasNames:Vector.<String> = textureAtlas.getNames();
 			
 			var sorter:Object = { };

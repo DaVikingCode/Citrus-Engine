@@ -20,7 +20,7 @@ package citrus.core.starling {
 	 */
 	public class StarlingCitrusEngine extends CitrusEngine {
 		
-		public var scaleFactor:Number = 0;
+		public var scaleFactor:Number = 1;
 
 		protected var _starling:Starling;
 		
