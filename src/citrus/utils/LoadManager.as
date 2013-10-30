@@ -1,5 +1,7 @@
 package citrus.utils {
 
+	import citrus.core.CitrusObject;
+	import citrus.view.ICitrusArt;
 	import org.osflash.signals.Signal;
 
 	import flash.display.Loader;
@@ -17,10 +19,12 @@ package citrus.utils {
 	 */
 	public class LoadManager {
 
+		public var onLoaded:Signal;
 		public var onLoadComplete:Signal;
 
-		private var _bytesLoaded:Dictionary = new Dictionary();
-		private var _bytesTotal:Dictionary = new Dictionary();
+		private var _bytesLoaded:Dictionary;
+		private var _bytesTotal:Dictionary;
+		private var _objects:Dictionary;
 		private var _numLoadersLoading:Number = 0;
 
 		/**
@@ -29,11 +33,13 @@ package citrus.utils {
 		 */
 		public function LoadManager() {
 			
+			onLoaded = new Signal(CitrusObject,ICitrusArt);
 			onLoadComplete = new Signal();
 		}
 
 		public function destroy():void {
 			
+			onLoaded.removeAll();
 			onLoadComplete.removeAll();
 		}
 
@@ -43,9 +49,9 @@ package citrus.utils {
 		public function get bytesLoaded():Number {
 			
 			var bytesLoaded:Number = 0;
-			for each (var bytes:Number in _bytesLoaded) {
+			var bytes:Number;
+			for each (bytes in _bytesLoaded)
 				bytesLoaded += bytes;
-			}
 			
 			return bytesLoaded;
 		}
@@ -55,10 +61,10 @@ package citrus.utils {
 		 */
 		public function get bytesTotal():Number {
 			
-			var bytesTotal:Number = 1;
-			for each (var bytes:Number in _bytesTotal) {
+			var bytesTotal:Number = 0;
+			var bytes:Number;
+			for each (bytes in _bytesTotal)
 				bytesTotal += bytes;
-			}
 			
 			return bytesTotal;
 		}
@@ -72,7 +78,7 @@ package citrus.utils {
 		 * @param recursionDepth How many child objects the add() method should recurse through before giving up searching for a Loader object.
 		 * @return Whether or not it found a loader object.
 		 */
-		public function add(potentialLoader:*, recursionDepth:Number = 1):Boolean {
+		public function add(potentialLoader:*,object:CitrusObject, recursionDepth:Number = 1):Boolean {
 			
 			var loader:Loader;
 
@@ -82,6 +88,7 @@ package citrus.utils {
 				if (_numLoadersLoading == 0) {
 					_bytesLoaded = new Dictionary();
 					_bytesTotal = new Dictionary();
+					_objects = new Dictionary();
 				}
 
 				_numLoadersLoading++;
@@ -91,6 +98,7 @@ package citrus.utils {
 				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, handleLoaderError);
 				_bytesLoaded[loader] = 0;
 				_bytesTotal[loader] = 0;
+				_objects[loader] = {co:object,art:potentialLoader};
 				
 				return true;
 				
@@ -100,7 +108,7 @@ package citrus.utils {
 				var n:Number = flash.display.Sprite(potentialLoader).numChildren;
 				
 				for (var i:int = 0; i < n; i++) {
-					var found:Boolean = add(flash.display.Sprite(potentialLoader).getChildAt(i), searchDepth);
+					var found:Boolean = add(flash.display.Sprite(potentialLoader).getChildAt(i),object, searchDepth);
 					if (found)
 						return true;
 				}
@@ -118,24 +126,39 @@ package citrus.utils {
 		}
 
 		private function handleLoaderComplete(e:Event):void {
-			e.target.loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, handleLoaderProgress);
-			e.target.loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, handleLoaderComplete);
-			e.target.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, handleLoaderError);
-			_bytesLoaded[e.target.loader] = _bytesTotal[e.target.loader];
-			_numLoadersLoading--;
+			
+			onLoaded.dispatch(_objects[e.target.loader].co,_objects[e.target.loader].art as ICitrusArt);
+			
+			if (_objects[e.target.loader].co["handleArtLoaded"])
+				_objects[e.target.loader].co.handleArtLoaded(_objects[e.target.loader].co as ICitrusArt);
+			
+			clearLoader(e.target.loader);
+			
 			if (_numLoadersLoading == 0)
 				onLoadComplete.dispatch();
 		}
 
 		private function handleLoaderError(e:IOErrorEvent):void {
-			e.target.loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, handleLoaderProgress);
-			e.target.loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, handleLoaderComplete);
-			e.target.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, handleLoaderError);
-			_numLoadersLoading--;
+			
+			clearLoader(e.target.loader);
+			
 			if (_numLoadersLoading == 0)
 				onLoadComplete.dispatch();
 			// TODO Make this error more robust.
 			trace("Warning: Art loading error in current state: " + e.text);
+		}
+		
+		private function clearLoader(loader:Loader):void
+		{
+			loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, handleLoaderProgress);
+			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, handleLoaderComplete);
+			loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, handleLoaderError);
+			
+			_numLoadersLoading--;
+			
+			delete _bytesTotal[loader];
+			delete _bytesTotal[loader];
+			delete _objects[loader];
 		}
 	}
 }
