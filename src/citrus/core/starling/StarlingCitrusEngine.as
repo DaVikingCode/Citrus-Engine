@@ -95,16 +95,23 @@ package citrus.core.starling {
 				{
 					if (success)
 					{
+						if(debugMode)
+							trace("[StarlingCitrusEngine] Context3DProfile -", profile, "is supported! setting up starling...");
 						starlingInit(profile);
 						return;
 					}
 					
 					if (profiletests.length > 0)
+					{
+						if(debugMode)
+							trace("[StarlingCitrusEngine] Context3DProfile -", profile, "is not supported...");
 						setTimeout(Context3DUtil.supportsProfile,_context3DProfileTestDelay,stage, profiletests.shift(), testProfiles);
-					else if (profiletests.length == 0)
-						throw new ArgumentError("Failed to create a Context3D profile: " + profile);
+					}else if (profiletests.length == 0)
+						throw new ArgumentError("[StarlingCitrusEngine] Failed to create a Context3D with a profile from this list : \n" + String(profiletests));
 				}
 				
+				if(debugMode)
+						trace("[StarlingCitrusEngine] Context3DProfile - testing :", profiletests, "with delay:"+_context3DProfileTestDelay+"ms ...");
 				Context3DUtil.supportsProfile(stage, profiletests.shift(), testProfiles);
 			
 			}
