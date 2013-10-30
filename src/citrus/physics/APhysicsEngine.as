@@ -1,6 +1,7 @@
 package citrus.physics {
 
 	import citrus.core.CitrusObject;
+	import citrus.view.ICitrusArt;
 
 	/**
 	 * An abstract template used by every physics engine.
@@ -161,6 +162,12 @@ package citrus.physics {
 
 		public function get registration():String {
 			return "topLeft";
+		}
+		
+		public function handleArtReady(citrusArt:ICitrusArt):void {
+		}
+		
+		public function handleArtChanged(citrusArt:ICitrusArt):void {
 		}
 	}
 }
