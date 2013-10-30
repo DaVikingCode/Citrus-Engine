@@ -7,13 +7,10 @@ package citrus.input.controllers.gamepad.controls
 	 */
 	public interface Icontrol 
 	{
-		
-		function Icontrol():void
 		function updateControl(control:String,value:Number):void
 		function hasControl(id:String):Boolean
 		function get gamePad():Gamepad
-		function destroy():void
-		
+		function destroy():void	
 	}
 
 }
