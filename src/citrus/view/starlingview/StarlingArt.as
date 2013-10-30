@@ -3,6 +3,7 @@ package citrus.view.starlingview {
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
 	import citrus.core.IState;
+	import citrus.core.starling.StarlingCitrusEngine;
 	import citrus.physics.APhysicsEngine;
 	import citrus.physics.IDebugView;
 	import citrus.system.components.ViewComponent;
@@ -273,10 +274,10 @@ package citrus.view.starlingview {
 							_content = AnimationSequence.fromMovieClip(tmpObj, _animation, 30);
 						} 
 						else if (tmpObj is flash.display.Bitmap) {
-							_content = new Image(_texture = Texture.fromBitmap(tmpObj,false));
+							_content = new Image(_texture = Texture.fromBitmap(tmpObj,false,false,(CitrusEngine.getInstance() as StarlingCitrusEngine).scaleFactor));
 						}
 						else if (tmpObj is BitmapData) {
-							_content = new Image(_texture = Texture.fromBitmapData(tmpObj,false));
+							_content = new Image(_texture = Texture.fromBitmapData(tmpObj,false,false,(CitrusEngine.getInstance() as StarlingCitrusEngine).scaleFactor));
 						}
 						else if(tmpObj is starling.display.DisplayObject) {
 							_content = tmpObj;						
@@ -291,10 +292,10 @@ package citrus.view.starlingview {
 						_content = AnimationSequence.fromMovieClip(tmpObj, _animation, 30);
 					} 
 					else if (tmpObj is flash.display.Bitmap) {
-						_content = new Image(_texture = Texture.fromBitmap(tmpObj,false));
+						_content = new Image(_texture = Texture.fromBitmap(tmpObj,false,false,(CitrusEngine.getInstance() as StarlingCitrusEngine).scaleFactor));
 					}
 					else if (tmpObj is BitmapData) {
-						_content = new Image(_texture = Texture.fromBitmapData(tmpObj,false));
+						_content = new Image(_texture = Texture.fromBitmapData(tmpObj,false,false,(CitrusEngine.getInstance() as StarlingCitrusEngine).scaleFactor));
 					}
 					else if(tmpObj is starling.display.DisplayObject) {
 						_content = tmpObj;						
@@ -317,7 +318,7 @@ package citrus.view.starlingview {
 					
 				} else if (_view is Bitmap) {
 					// TODO : cut bitmap if size > 2048 * 2048, use StarlingTileSystem?
-					_content = new Image(_texture = Texture.fromBitmap(_view, false));
+					_content = new Image(_texture = Texture.fromBitmap(_view, false,false,(CitrusEngine.getInstance() as StarlingCitrusEngine).scaleFactor));
 					
 				} else if (_view is Armature) {
 					_content = (_view as Armature).display as Sprite;
@@ -463,7 +464,7 @@ package citrus.view.starlingview {
 			if (evt.target.loader.content is flash.display.MovieClip)
 				_content = AnimationSequence.fromMovieClip(evt.target.loader.content, _animation, 30);
 			else if (evt.target.loader.content is Bitmap)
-				_content = new Image(_texture = Texture.fromBitmap(evt.target.loader.content, false));
+				_content = new Image(_texture = Texture.fromBitmap(evt.target.loader.content, false,false, (CitrusEngine.getInstance() as StarlingCitrusEngine).scaleFactor ));
 			
 			moveRegistrationPoint(_citrusObject.registration);
 			_citrusObject.handleArtReady(this as ICitrusArt);
@@ -477,7 +478,7 @@ package citrus.view.starlingview {
 			
 			evt.target.removeEventListener(Event.COMPLETE, handleBinaryContentLoaded);
 			
-			_texture = Texture.fromAtfData(evt.target.data as ByteArray);
+			_texture = Texture.fromAtfData(evt.target.data as ByteArray,(CitrusEngine.getInstance() as StarlingCitrusEngine).scaleFactor);
 			_content = new Image(_texture);
 			
 			moveRegistrationPoint(_citrusObject.registration);
