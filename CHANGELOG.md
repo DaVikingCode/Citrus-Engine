@@ -1,5 +1,6 @@
 V3.1.8, Work In Progress
 ------------------------
+- ISpriteView handleArtReady/handleArtChanged - custom citrus sprite or physics objects can now react when 'the view is set (or loaded if the view was a url) or changes' to add/remove event listeners, transform the art or manipulate its content...
 - Input system : justDid,isDoing,hasDone return the corresponding InputAction object or null (instead of just true or false) // actions carry messages // introduced new utility functions such as getAction() with phase/controller/channel filtering.
 - Changed the way we handle the physics engine's debug drawers (due to state transition bugs, and the new nape ShapeDebug) see APhysicsEngine.debugView
 - Starling updated on 1.4.1
