@@ -83,8 +83,8 @@ package citrus.view {
 			
 			if (art.content != null) //art.content exists, so view doesn't need to be loaded, so see if we can call handleArtLoaded
 			{
-				if (citrusObject["handleArtLoaded"] && citrusObject["handleArtLoaded"] is Function)
-					if(citrusObject["handleArtLoaded"].length == 1)
+				if (Object(citrusObject).hasOwnProperty("handleArtLoaded") && citrusObject["handleArtLoaded"] is Function)
+					if(citrusObject.handleArtLoaded.length == 1)
 						citrusObject.handleArtLoaded(art as ICitrusArt);
 					else
 						citrusObject.handleArtLoaded();

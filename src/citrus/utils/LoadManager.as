@@ -127,13 +127,16 @@ package citrus.utils {
 
 		private function handleLoaderComplete(e:Event):void {
 			
-			onLoaded.dispatch(_objects[e.target.loader].co,_objects[e.target.loader].art as ICitrusArt);
+			var citrusObject:CitrusObject = _objects[e.target.loader].co;
+			var art:ICitrusArt = _objects[e.target.loader].art;
 			
-			if (_objects[e.target.loader].co["handleArtLoaded"] && _objects[e.target.loader].co["handleArtLoaded"] is Function)
-				if(_objects[e.target.loader].co["handleArtLoaded"].length == 1)
-					_objects[e.target.loader].co.handleArtLoaded(_objects[e.target.loader].art as ICitrusArt);
-				else
-					_objects[e.target.loader].co.handleArtLoaded();
+			onLoaded.dispatch(citrusObject,_objects[e.target.loader].art as ICitrusArt);
+			
+			if (Object(citrusObject).hasOwnProperty("handleArtLoaded") && citrusObject["handleArtLoaded"] is Function)
+					if(citrusObject["handleArtLoaded"].length == 1)
+						citrusObject["handleArtLoaded"](art);
+					else
+						citrusObject["handleArtLoaded"]();
 			
 			clearLoader(e.target.loader);
 			
