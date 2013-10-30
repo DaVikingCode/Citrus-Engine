@@ -228,6 +228,7 @@ package citrus.view.starlingview {
 			if (_content && _content.parent) {
 				_viewHasChanged = true;
 				destroy();
+				_content = null;
 			}
 			
 			_view = value;			

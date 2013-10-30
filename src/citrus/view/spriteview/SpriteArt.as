@@ -152,7 +152,10 @@ package citrus.view.spriteview
 				return;
 				
 			if (_content && _content.parent)
+			{
 				destroy(true);
+				_content = null;
+			}
 			
 			_view = value;
 			
