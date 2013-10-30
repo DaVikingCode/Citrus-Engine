@@ -1,25 +1,24 @@
 package citrus.objects {
 
+	import Box2D.Collision.b2Manifold;
 	import Box2D.Collision.Shapes.b2CircleShape;
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Collision.Shapes.b2Shape;
-	import Box2D.Collision.b2Manifold;
 	import Box2D.Common.Math.b2Mat22;
 	import Box2D.Common.Math.b2Transform;
 	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.Contacts.b2Contact;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2ContactImpulse;
 	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
-	import citrus.view.ICitrusArt;
-
+	import Box2D.Dynamics.Contacts.b2Contact;
 	import citrus.core.CitrusEngine;
-	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.box2d.Box2D;
 	import citrus.physics.box2d.IBox2DPhysicsObject;
+	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.view.ISpriteView;
+
 	
 	/**
 	 * You should extend this class to take advantage of Box2D. This class provides template methods for defining
@@ -81,21 +80,6 @@ package citrus.objects {
 			createFixture();
 			defineJoint();
 			createJoint();
-		}
-		
-		/**
-		 * called when the art is created (and loaded if loading is required)
-		 * @param	citrusArt the art
-		 */
-		public function handleArtReady(citrusArt:ICitrusArt):void {	
-		}
-		
-		/**
-		 * called when the art changes. the argument is the art with its previous content
-		 * so that you can remove event listeners from it for example.
-		 * @param	citrusArt the art
-		 */
-		public function handleArtChanged(oldArt:ICitrusArt):void {	
 		}
 		
 		override public function destroy():void

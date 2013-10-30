@@ -4,12 +4,12 @@ package citrus.objects {
 	import awayphysics.collision.shapes.AWPCollisionShape;
 	import awayphysics.collision.shapes.AWPSphereShape;
 	import awayphysics.dynamics.AWPRigidBody;
-
-	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.awayphysics.AwayPhysics;
+	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.view.ISpriteView;
-
 	import flash.geom.Vector3D;
+
+
 
 	/**
 	 * You should extend this class to take advantage of AwayPhysics. This class provides template methods for defining
@@ -58,21 +58,6 @@ package citrus.objects {
 			defineBody();
 			createBody();
 			createConstraint();
-		}
-		
-		/**
-		 * called when the art is created (and loaded if loading is required)
-		 * @param	citrusArt the art
-		 */
-		public function handleArtReady(citrusArt:ICitrusArt):void {	
-		}
-		
-		/**
-		 * called when the art changes. the argument is the art with its previous content
-		 * so that you can remove event listeners from it for example.
-		 * @param	citrusArt the art
-		 */
-		public function handleArtChanged(oldArt:ICitrusArt):void {	
 		}
 		
 		override public function destroy():void {
