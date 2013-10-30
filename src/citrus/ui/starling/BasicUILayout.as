@@ -11,6 +11,7 @@ package citrus.ui.starling
 	public class BasicUILayout extends DisplayObjectContainer
 	{
 		protected var _rect:Rectangle;
+		protected var _margin:Number = 0;
 		protected var _elements:Vector.<BasicUIElement>;
 		
 		public function BasicUILayout(parentContainer:DisplayObjectContainer,rect:Rectangle) 
@@ -106,13 +107,24 @@ package citrus.ui.starling
 		
 		public function set rect(value:Rectangle):void
 		{
-			_rect = value;
+			_rect.setTo(value.x + _margin,value.y + _margin, value.width - 2*_margin, value.height - 2*_margin);
 			refreshPositions();
 		}
 		
 		public function get rect():Rectangle
 		{
 			return _rect;
+		}
+		
+		public function set margin(val:Number):void
+		{
+			_margin = val;
+			rect = _rect;
+		}
+		
+		public function get margin():Number
+		{
+			return _margin;
 		}
 		
 		override public function dispose():void
