@@ -13,7 +13,6 @@ package citrus.core.starling {
 	import flash.display3D.Context3DProfile;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
-	
 	import flash.utils.setTimeout;
 
 	/**
@@ -123,7 +122,9 @@ package citrus.core.starling {
 		}
 		
 		/**
-		 * returns the asset size closest to one of the available asset sizes you have.
+		 * returns the asset size closest to one of the available asset sizes you have (based on <code>Starling.contentScaleFactor</code>).
+		 * If you design your app with a Starling's stage dimension equals to the Flash's stage dimension, you will have to overwrite 
+		 * this function since the <code>Starling.contentScaleFactor</code> will be always equal to 1.
 		 * @param	assetSizes Array of numbers listing all asset sizes you use
 		 * @return
 		 */
