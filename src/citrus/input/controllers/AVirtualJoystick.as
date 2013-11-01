@@ -145,9 +145,9 @@ package citrus.input.controllers {
 			
 			// Check registered actions on both axes
 			
-			if ((_xAxis >= -0.01 && _xAxis <= 0.01) || (_yAxis >= -0.01 && _yAxis <= 0.01))
+			if ((_xAxis >= -0.1 && _xAxis <= 0.1) || (_yAxis >= -0.1 && _yAxis <= 0.1))
 				//threshold of Axis values where no actions will be fired // actions will turned off.
-				triggerAllOFF();
+				_input.stopActionsOf(this);
 			else
 			{
 				var a:Object; //action 
@@ -179,24 +179,13 @@ package citrus.input.controllers {
 			}
 		}
 		
-		protected function triggerAllOFF():void
-		{
-			var a:Object;
-			if (_xAxisActions.length > 0)
-				for each (a in _xAxisActions)
-					triggerOFF(a.name);
-			if (_yAxisActions.length > 0)
-				for each (a in _yAxisActions)
-					triggerOFF(a.name);
-		}
-		
 		protected function reset():void
 		{
 			_knobX = 0;
 			_knobY = 0;
 			_xAxis = 0;
 			_yAxis = 0;
-			triggerAllOFF();
+			_input.stopActionsOf(this);
 		}
 		
 		public function set radius(value:int):void
