@@ -225,8 +225,8 @@ package citrus.input.controllers.gamepad.controls
 		
 		override public function destroy():void
 		{
-			super.destroy();
 			_vec = null;
+			super.destroy();
 		}
 	
 	}

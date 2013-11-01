@@ -110,7 +110,6 @@ package citrus.input.controllers.gamepad
 		
 		protected function onChange(e:Event):void
 		{
-			
 			if (!(e.currentTarget.id in _usedControls))
 			{
 				if(debug)
@@ -191,7 +190,7 @@ package citrus.input.controllers.gamepad
 				unbindControl(stick.hAxis, stick);
 				unbindControl(stick.vAxis, stick);
 				delete _sticks[name];
-				_input.removeController(stick);
+				stick.destroy();
 			}
 		}
 		
@@ -203,7 +202,7 @@ package citrus.input.controllers.gamepad
 			{
 				unbindControl(button.controlID, button);
 				delete _buttons[name];
-				_input.removeController(button);
+				button.destroy();
 			}
 		}
 		
@@ -362,7 +361,7 @@ package citrus.input.controllers.gamepad
 			
 			_usedControls = null;
 			_controls = null;
-			_device.stopCachingSamples();
+			
 			enabled = false;
 			
 			_input.stopActionsOf(this);

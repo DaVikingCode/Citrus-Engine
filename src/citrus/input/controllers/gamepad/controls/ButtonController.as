@@ -78,8 +78,8 @@ package citrus.input.controllers.gamepad.controls
 		
 		override public function destroy():void
 		{
-			super.destroy();
 			_gamePad = null;
+			super.destroy();
 		}
 		
 		public function get value():Number

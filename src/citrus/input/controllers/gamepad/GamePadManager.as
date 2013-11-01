@@ -186,7 +186,7 @@ package citrus.input.controllers.gamepad
 				return;
 			
 			delete _gamePads[id];
-			_input.removeController(pad);
+			pad.destroy();
 			onControllerRemoved.dispatch(pad);
 		}
 		
