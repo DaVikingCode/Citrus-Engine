@@ -302,7 +302,7 @@ package starling.extensions.textureAtlas {
 		 * @param 	checkBounds:Boolean - A Flag used to scan the clip prior the rasterization in order to get the bounds of the entire MovieClip. By default is false because it adds overhead to the process.
 		 * @return  TextureAtlas - The dynamically generated Texture Atlas.
 		 */
-		static public function fromMovieClipContainer(swf:Sprite, scaleFactor:Number = 1, margin:uint=0, preserveColor:Boolean = true, checkBounds:Boolean=false):TextureAtlas
+		static public function fromMovieClipContainer(swf:MovieClip, scaleFactor:Number = 1, margin:uint=0, preserveColor:Boolean = true, checkBounds:Boolean=false):TextureAtlas
 		{
 			var parseFrame:Boolean = false;
 			var selected:DisplayObject;
