@@ -312,8 +312,14 @@ package citrus.input {
 			var action:InputAction;
 			for each(action in _actions)
 			{
+				if (action.controller != controller)
+					continue;
+					
 				if (channel > -1)
-					if (action.channel == channel) action._phase = InputPhase.ENDED;
+				{
+					if (action.channel == channel) 
+						action._phase = InputPhase.ENDED;
+				}
 				else
 					action._phase = InputPhase.ENDED;
 			}
