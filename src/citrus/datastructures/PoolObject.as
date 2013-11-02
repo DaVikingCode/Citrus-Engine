@@ -224,7 +224,7 @@ package citrus.datastructures {
 					(tmpHead.data as _poolType).update(timeDelta);
 				
 				//since updatePhysics is always called, we can dispose objects set to kill here.
-				if ("kill" in (tmpHead.data as _poolType) && (tmpHead.data as _poolType).kill)
+				if (!isDataDisposed(tmpHead.data)  && "kill" in (tmpHead.data as _poolType) && (tmpHead.data as _poolType).kill)
 					gc.push(tmpHead);
 				tmpHead = tmpHead.next;
 			}
@@ -236,6 +236,22 @@ package citrus.datastructures {
 				gc.length = 0;
 			}
 
+		}
+		
+		/**
+		 * check if object is free
+		 * @param	data
+		 * @return
+		 */
+		public function isDataDisposed(data:*):Boolean
+		{
+			var tmpHead:DoublyLinkedListNode = _freeListHead;
+			while (tmpHead != null) {	
+				if (tmpHead.data == data)	
+					return true;
+				tmpHead = tmpHead.next;
+			}
+			return false;
 		}
 		
 		public function updateArt(stateView:ACitrusView):void {
