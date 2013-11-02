@@ -425,6 +425,8 @@ package citrus.datastructures {
 				_freeListHead = node.next;
 				if (_freeListHead) _freeListHead.prev = null;
 				node.next = null;
+				
+				_freeCount--;
 			}
 			
 			destroy();
