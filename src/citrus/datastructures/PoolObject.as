@@ -429,15 +429,17 @@ package citrus.datastructures {
 				_freeCount--;
 			}
 			
-			destroy();
+			_freeListHead = null;
+			head = null;
 
 		}
 		
 		/**
 		 * after clearing, just get rid of signals etc...
 		 */
-		protected function destroy():void
+		public function destroy():void
 		{
+			clear();
 			
 			onCreate.removeAll();
 			onDestroy.removeAll();
@@ -445,9 +447,6 @@ package citrus.datastructures {
 			onRecycle.removeAll();
 			
 			_defaultParams = null;
-			
-			_freeListHead = null;
-			head = null;
 			
 			gc.length = 0;
 			gc = null;

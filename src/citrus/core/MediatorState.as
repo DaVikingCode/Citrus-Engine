@@ -38,7 +38,7 @@ package citrus.core {
 			_objects.length = 0;
 
 			for each (var poolObject:PoolObject in _poolObjects)
-				poolObject.clear();
+				poolObject.destroy();
 
 			_poolObjects.length = 0;
 
