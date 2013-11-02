@@ -224,7 +224,7 @@ package citrus.datastructures {
 					(tmpHead.data as _poolType).update(timeDelta);
 				
 				//since updatePhysics is always called, we can dispose objects set to kill here.
-				if (!isDataDisposed(tmpHead.data)  && "kill" in (tmpHead.data as _poolType) && (tmpHead.data as _poolType).kill)
+				if ("kill" in (tmpHead.data as _poolType) && (tmpHead.data as _poolType).kill)
 					gc.push(tmpHead);
 				tmpHead = tmpHead.next;
 			}
@@ -333,8 +333,7 @@ package citrus.datastructures {
 			if(n)
 				return disposeNode(n);
 			else
-				return null;
-				//throw new Error("This data is already disposed");
+				throw new Error("This data is already disposed :",data);
 		}
 
 		/**
