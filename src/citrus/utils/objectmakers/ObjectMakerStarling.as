@@ -2,7 +2,6 @@ package citrus.utils.objectmakers {
 
 	import flash.geom.Point;
 	import flash.geom.Matrix;
-	import flash.geom.Rectangle;
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
 	import citrus.objects.CitrusSprite;
