@@ -1,22 +1,21 @@
 package citrus.sounds {
 
 	import aze.motion.eaze;
-	import citrus.sounds.groups.UIGroup;
+	import citrus.events.CitrusEvent;
+	import citrus.events.CitrusEventDispatcher;
 
-	import citrus.core.citrus_internal;
 	import citrus.sounds.groups.BGMGroup;
 	import citrus.sounds.groups.SFXGroup;
+	import citrus.sounds.groups.UIGroup;
 
 	import flash.events.EventDispatcher;
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
 	import flash.utils.Dictionary;
 
-	public class SoundManager extends EventDispatcher {
+	public class SoundManager extends CitrusEventDispatcher {
 		
-		use namespace citrus_internal;
-		
-		private static var _instance:SoundManager;
+		internal static var _instance:SoundManager;
 
 		protected var soundsDic:Dictionary;
 		protected var soundGroups:Vector.<CitrusSoundGroup>;
@@ -34,7 +33,6 @@ package citrus.sounds {
 			soundGroups.push(new SFXGroup());
 			soundGroups.push(new UIGroup());
 			
-			CitrusSound._sm = this;
 		}
 
 		public static function getInstance():SoundManager {
@@ -45,7 +43,6 @@ package citrus.sounds {
 		}
 
 		public function destroy():void {
-
 			var csg:CitrusSoundGroup;
 			for each(csg in soundGroups)
 				csg.destroy();
@@ -53,9 +50,11 @@ package citrus.sounds {
 			var s:CitrusSound;
 			for each(s in soundsDic)
 				s.destroy();
-				
+			
 			soundsDic = null;
 			_instance = null;
+			
+			removeAllEventListeners();
 		}
 		
 		/**
@@ -114,8 +113,8 @@ package citrus.sounds {
 			if (soundName in soundsDic)
 			{
 				s = soundsDic[soundName];
-				if (s.citrus_internal::group != null)
-					s.citrus_internal::group.removeSound(s);
+				if (s.group != null)
+					s.group.removeSound(s);
 				if(groupID != null)
 				g = getGroup(groupID)
 				if (g)
@@ -162,43 +161,12 @@ package citrus.sounds {
 		}
 		
 		/**
-		 * helper method to play a sound by its id
-		 */
-		public function playSound(id:String):void {
-			if (id in soundsDic)
-				CitrusSound(soundsDic[id]).play();
-			else
-				trace(this,"playSound() : sound",id,"doesn't exist.");
-		}
-		
-		/**
-		 * helper method to pause a sound by its id
-		 */
-		public function pauseSound(id:String):void {
-			if (id in soundsDic)
-				CitrusSound(soundsDic[id]).pause();
-			else
-				trace(this,"pauseSound() : sound",id,"doesn't exist.");
-		}
-		
-		/**
-		 * helper method to resume a sound by its id
-		 */
-		public function resumeSound(id:String):void {
-			if (id in soundsDic)
-				CitrusSound(soundsDic[id]).pause();
-			else
-				trace(this,"resumeSound() : sound",id,"doesn't exist.");
-		}
-		
-		/**
 		 * pauses all playing sounds
 		 */
 		public function pauseAll():void
 		{
 			var s:CitrusSound;
 			for each(s in soundsDic)
-				if (s.isPlaying)
 					s.pause();
 		}
 		
@@ -209,8 +177,15 @@ package citrus.sounds {
 		{
 			var s:CitrusSound;
 			for each(s in soundsDic)
-				if (s.isPaused)
 					s.resume();
+		}
+		
+		public function playSound(id:String):CitrusSoundInstance {
+			if (id in soundsDic)
+				return CitrusSound(soundsDic[id]).play();
+			else
+				trace(this, "playSound() : sound", id, "doesn't exist.");
+			return null;
 		}
 		
 		public function stopSound(id:String):void {
@@ -230,6 +205,18 @@ package citrus.sounds {
 			}
 			else
 				trace(this,"removeSound() : sound",id,"doesn't exist.");
+		}
+		
+		public function soundIsPlaying(sound:String):Boolean
+		{
+			if (sound in soundsDic)
+			{
+				var s:CitrusSound;
+					for each(s in soundsDic)
+						if (s.isPlaying)
+							return true;
+			}
+			return false;
 		}
 		
 		public function removeAllSounds(...except):void {
@@ -306,28 +293,6 @@ package citrus.sounds {
 		}
 		
 		/**
-		 * tells you if a sound is playing or false if sound is not identified.
-		 */
-		public function soundIsPlaying(id:String):Boolean {
-			if (id in soundsDic)
-				return CitrusSound(soundsDic[id]).isPlaying
-			else
-				trace(this, "soundIsPlaying() : sound", id, "doesn't exist.");
-			return false;
-		}
-		
-		/**
-		 * tells you if a sound is paused or false if sound is not identified.
-		 */
-		public function soundIsPaused(id:String):Boolean {
-			if (id in soundsDic)
-				return CitrusSound(soundsDic[id]).isPaused
-			else
-				trace(this, "soundIsPaused() : sound", id, "doesn't exist.");
-			return false;
-		}
-		
-		/**
 		 * Cut the SoundMixer. No sound will be heard.
 		 */
 		public function muteFlashSound(mute:Boolean = true):void {
@@ -342,7 +307,7 @@ package citrus.sounds {
 		 */
 		public function setVolume(id:String, volume:Number):void {
 			if (id in soundsDic)
-				soundsDic[id].citrus_internal::volume = volume;
+				soundsDic[id].volume = volume;
 			else
 				trace(this, "setVolume() : sound", id, "doesn't exist.");
 		}
@@ -352,7 +317,7 @@ package citrus.sounds {
 		 */
 		public function setPanning(id:String, panning:Number):void {
 			if (id in soundsDic)
-				soundsDic[id].citrus_internal::panning = panning;
+				soundsDic[id].panning = panning;
 			else
 				trace(this, "setPanning() : sound", id, "doesn't exist.");
 		}
@@ -362,7 +327,7 @@ package citrus.sounds {
 		 */
 		public function setMute(id:String, mute:Boolean):void {
 			if (id in soundsDic)
-				soundsDic[id].citrus_internal::mute = mute;
+				soundsDic[id].mute = mute;
 			else
 				trace(this, "setMute() : sound", id, "doesn't exist.");
 		}
@@ -381,18 +346,17 @@ package citrus.sounds {
 					if (soundToPreserve == cs.name)
 						break loop1;
 				
-				if (soundIsPlaying(cs.name))
 					stopSound(cs.name);
 			}
 		}
 
 		public function tweenVolume(id:String, volume:Number = 0, tweenDuration:Number = 2, callback:Function = null):void {
 			if (soundIsPlaying(id)) {
-				var tweenvolObject:Object = {volume:CitrusSound(soundsDic[id]).public::volume};
+				var tweenvolObject:Object = {volume:CitrusSound(soundsDic[id]).volume};
 				
 				eaze(tweenvolObject).to(tweenDuration, {volume:volume})
 					.onUpdate(function():void {
-					CitrusSound(soundsDic[id]).citrus_internal::volume = tweenvolObject.volume;
+					CitrusSound(soundsDic[id]).volume = tweenvolObject.volume;
 				}).onComplete(callback);
 			} else 
 				trace("the sound " + id + " is not playing");
@@ -400,22 +364,18 @@ package citrus.sounds {
 
 		public function crossFade(fadeOutId:String, fadeInId:String, tweenDuration:Number = 2):void {
 
-			// if the fade-in sound is not already playing, start playing it
-			if (!soundIsPlaying(fadeInId))
-				playSound(fadeInId);
-
 			tweenVolume(fadeOutId, 0, tweenDuration);
 			tweenVolume(fadeInId, 1, tweenDuration);
 		}
 		
-		citrus_internal function soundLoaded(s:CitrusSound):void
+		internal function soundLoaded(s:CitrusSound):void
 		{
-			dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_LOADED, s));
+			dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_LOADED,s,null));
 			var cs:CitrusSound;
 			for each(cs in soundsDic)
 				if (!cs.loaded)
 					return;
-			dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.ALL_SOUNDS_LOADED, s));
+			dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.ALL_SOUNDS_LOADED, s,null));
 		}
 	}
 }
