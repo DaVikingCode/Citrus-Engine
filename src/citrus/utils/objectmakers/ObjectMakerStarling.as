@@ -1,5 +1,8 @@
 package citrus.utils.objectmakers {
 
+	import flash.geom.Point;
+	import flash.geom.Matrix;
+	import flash.geom.Rectangle;
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
 	import citrus.objects.CitrusSprite;
@@ -211,6 +214,14 @@ package citrus.utils.objectmakers {
 					params.width = objectTmx.width;
 					params.height = objectTmx.height;
 					params.rotation = objectTmx.rotation;
+					
+					if (params.rotation != 0) {
+						var mtx:Matrix = new Matrix();
+						mtx.rotate(objectTmx.rotation * Math.PI / 180); 
+						var newLoc:Point = mtx.transformPoint(new Point(objectTmx.width/2, objectTmx.height/2));
+						params.x = objectTmx.x + newLoc.x;
+						params.y = objectTmx.y + newLoc.y;
+					}
 					
 					if (objectTmx.custom && objectTmx.custom["view"])
 						params.view = atlas.getTexture(objectTmx.custom["view"]);
