@@ -196,6 +196,8 @@ package citrus.utils.objectmakers {
 
 			var objectClass:Class;
 			var object:CitrusObject;
+			var mtx:Matrix = new Matrix();
+			var pt:Point = new Point();
 
 			for each (var group:TmxObjectGroup in tmx.objectGroups) {
 
@@ -215,9 +217,10 @@ package citrus.utils.objectmakers {
 					params.rotation = objectTmx.rotation;
 					
 					if (params.rotation != 0) {
-						var mtx:Matrix = new Matrix();
+						mtx.identity();
 						mtx.rotate(objectTmx.rotation * Math.PI / 180); 
-						var newLoc:Point = mtx.transformPoint(new Point(objectTmx.width/2, objectTmx.height/2));
+						pt.setTo(objectTmx.width / 2, objectTmx.height / 2);
+						var newLoc:Point = mtx.transformPoint(pt);
 						params.x = objectTmx.x + newLoc.x;
 						params.y = objectTmx.y + newLoc.y;
 					}
