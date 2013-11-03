@@ -143,7 +143,8 @@ package citrus.core
 		
 		public function toString():String
 		{
-			return String(Object(this).constructor) + " ID:" + citrus_internal::data.ID + " name:" + String(name) + " type:" + String(type);
+			use namespace citrus_internal;
+			return String(Object(this).constructor) + " ID:" + (data && data["ID"]  ? data.ID : "null") + " name:" + String(name) + " type:" + String(type);
 		}
 	}
 }
