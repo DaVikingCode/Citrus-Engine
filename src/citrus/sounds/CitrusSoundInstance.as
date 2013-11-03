@@ -212,7 +212,6 @@ package citrus.sounds
 			
 			_soundChannel.stop();
 			soundChannel = (_parentsound.sound as Sound).play(_last_position, 0, _soundTransform = resetSoundTransform());
-			trace("RESUME",ID, _last_position);
 			dispatcher(CitrusSoundEvent.SOUND_RESUME);
 		}
 		
@@ -261,7 +260,6 @@ package citrus.sounds
 		
 		protected function onComplete(e:Event):void
 		{
-			trace("COMPLETE",ID,_parentsound.name);
 			
 			if (_isPaused)
 			{
