@@ -449,6 +449,8 @@ package citrus.view.starlingview {
 
 		private function handleContentLoaded(evt:Event):void {
 
+			loader = null;
+			
 			(evt.target.loader as Loader).removeEventListener(Event.COMPLETE, handleContentLoaded);
 			(evt.target.loader as Loader).removeEventListener(IOErrorEvent.IO_ERROR, handleContentIOError);
 			
@@ -480,6 +482,8 @@ package citrus.view.starlingview {
 		 */
 		private function handleBinaryContentLoaded(evt:Event):void {
 			
+			loader = null;
+			
 			evt.target.removeEventListener(Event.COMPLETE, handleBinaryContentLoaded);
 			
 			_texture = Texture.fromAtfData(evt.target.data as ByteArray, _ce.scaleFactor, false);
@@ -491,6 +495,7 @@ package citrus.view.starlingview {
 		}
 
 		private function handleContentIOError(evt:IOErrorEvent):void {
+			loader = null;
 			throw new Error(evt.text);
 		}
 		
