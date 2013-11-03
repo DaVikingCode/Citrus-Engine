@@ -43,14 +43,21 @@ package citrus.events
 				dispatchChildren = null;
 		}
 		
-		public function addEventListener(type:String, listener:Function):void
+		public function removeDispatchChildren():void
+		{
+			var child:CitrusEventDispatcher;
+			for each(child in dispatchChildren)
+				removeDispatchChild(child);
+		}
+		
+		public function addEventListener(type:String, listener:Function, useCapture:Boolean = false):void
 		{
 			if (type in listeners)
-				listeners[type].push(listener);
+				listeners[type].push({func:listener,useCapture:useCapture});
 			else
 			{
-				listeners[type] = new Vector.<Function>();
-				listeners[type].push(listener);
+				listeners[type] = new Vector.<Object>();
+				listeners[type].push({func:listener,useCapture:useCapture});
 			}
 				
 		}
@@ -60,9 +67,9 @@ package citrus.events
 			if (type in listeners)
 			{
 				var index:String;
-				var list:Vector.<Function> = listeners[type];
+				var list:Vector.<Object> = listeners[type];
 				for (index in list)
-					if (list[index] == listener)
+					if (list[index].func == listener)
 						list.splice(int(index), 1)
 			}
 		}
@@ -71,12 +78,12 @@ package citrus.events
 		{
 			var i:String;
 			var list:Vector.<Function>;
-			var f:Function;
+			var o:Object;
 			for (i in listeners)
 			{
 				list = listeners[i];
-				for each(f in list)
-					if (func == f)
+				for each(o in list)
+					if (o.func == func)
 						return true;
 			}
 			return false;
@@ -85,42 +92,37 @@ package citrus.events
 		public function dispatchEvent(event:CitrusEvent):void
 		{
 			if (!event._target)
-			event._target = this;
-			
+				event._target = this;
+				
 			event._currentTarget = this;
 			
 			var phase:int = event._phase;
 			var foundTarget:Boolean = false;
 			
-			var f:Function;
+			if (this == event._target)
+				event._phase = CitrusEvent.AT_TARGET;
+			
+			var o:Object;
 			if (event._type in listeners)
 			{
-				var list:Vector.<Function> = listeners[event.type];
-				for each(f in list)
+				var list:Vector.<Object> = listeners[event.type];
+				for each(o in list)
 				{
-						event._currentListener = f;
+						event._currentListener = o.func;
 						
-						event._phase = CitrusEvent.AT_TARGET;
-						
-						if (phase != CitrusEvent.CAPTURE_PHASE && event._useCapture)
-							continue;
-						
-						if (f.length == 0)
-							f.apply();
-						else
-							f.apply(null, [event]);
-							
-						foundTarget = true;
-						event._phase = phase;
+							if (o.func.length == 0)
+								o.func.apply();
+							else
+								o.func.apply(null, [event]);
+								
+							foundTarget = true;
 				}
 			}
+			
+			if (event._phase == CitrusEvent.AT_TARGET && event._bubbles)
+				phase = event._phase = CitrusEvent.BUBBLE_PHASE;
 				
-			if (foundTarget && event._bubbles)
-			{
-				event._phase = CitrusEvent.BUBBLE_PHASE;
-			}
-				
-			if (dispatchChildren && event._phase == CitrusEvent.CAPTURE_PHASE)
+			if (dispatchChildren && phase == CitrusEvent.CAPTURE_PHASE)
 			{
 				var child:CitrusEventDispatcher;
 				for each(child in dispatchChildren)
@@ -129,7 +131,7 @@ package citrus.events
 				}
 			}
 			
-			if (dispatchParent && event._phase == CitrusEvent.BUBBLE_PHASE)
+			if (dispatchParent && phase == CitrusEvent.BUBBLE_PHASE)
 			{
 				dispatchParent.dispatchEvent(event);
 			}
@@ -156,12 +158,12 @@ package citrus.events
 		{
 			var i:String;
 			var j:String;
-			var list:Vector.<Function>;
+			var list:Vector.<Object>;
 			for (i in listeners)
 			{
 				list = listeners[i];
 				for (j in list)
-					if (listener == list[j])
+					if (listener == list[j].func)
 						list.splice(int(j), 1);
 			}
 		}
