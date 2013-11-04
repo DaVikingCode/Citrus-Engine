@@ -10,6 +10,7 @@ package citrus.view.away3dview {
 	import citrus.core.away3d.Away3DCitrusEngine;
 	import citrus.physics.APhysicsEngine;
 	import citrus.system.components.ViewComponent;
+	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
 
 	import flash.display.Bitmap;
@@ -130,7 +131,7 @@ package citrus.view.away3dview {
 
 			if (_content && _content.parent)
 			{
-				_citrusObject.handleArtChanged(this);
+				_citrusObject.handleArtChanged(this as ICitrusArt);
 				destroy(true);
 			}
 
@@ -179,7 +180,7 @@ package citrus.view.away3dview {
 					
 				if (_content)
 				{
-					_citrusObject.handleArtReady(this);
+					_citrusObject.handleArtReady(this as ICitrusArt);
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(_content);
 				}
@@ -305,7 +306,7 @@ package citrus.view.away3dview {
 		private function handle3DContentLoaded(e:LoaderEvent):void {
 
 			_content = e.target.loader.content;
-			_citrusObject.handleArtReady(this);
+			_citrusObject.handleArtReady(this as ICitrusArt);
 			addChild(_content);
 			// moveRegistrationPoint(_citrusObject.registration);
 		}
