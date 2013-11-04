@@ -11,13 +11,13 @@ package citrus.input {
 		public static var hideParamWarnings:Boolean = false;
 		
 		public var name:String;
-		public var defaultChannel:uint = 0;
 		
 		protected var _ce:CitrusEngine;
 		protected var _input:Input;
 		protected var _initialized:Boolean;
 		protected var _enabled:Boolean = true;
 		protected var _updateEnabled:Boolean = false;
+		protected var _defaultChannel:uint = 0;
 		
 		private var action:InputAction;
 		
@@ -115,6 +115,20 @@ package citrus.input {
 				return action;
 			}
 			return null;
+		}
+		
+		public function get defaultChannel():uint
+		{
+			return _defaultChannel;
+		}
+		
+		public function set defaultChannel(value:uint):void
+		{
+			if (value == _defaultChannel)
+				return;
+				
+			_input.stopActionsOf(this);
+			_defaultChannel = value;
 		}
 		
 		public function get enabled():Boolean
