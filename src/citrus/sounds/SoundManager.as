@@ -66,8 +66,7 @@ package citrus.sounds {
 		 * <li>loops : default 0 (plays once) . -1 will loop infinitely using Sound.play(0,int.MAX_VALUE) and a positive value will use an event based looping system and events will be triggered from CitrusSoundInstance when sound complete and loops back</li>
 		 * <li>permanent : by default set to false. if set to true, this sound cannot be forced to be stopped to leave room for other sounds (if for example flash soundChannels are not available) and cannot be played more than once . By default sounds can be forced to stop, that's good for sound effects. You would want your background music to be set as permanent.</li>
 		 * <li>group : the groupID of a group, no groups are set by default. default groups ID's are CitrusSoundGroup.SFX (sound effects) and CitrusSoundGroup.BGM (background music)</li>
-		 * <li>triggerSoundComplete : whether to dispatch a CitrusSoundEvent on each loop of type CitrusSoundEvent.SOUND_COMPLETE .</li>
-		 * <li>triggerRepeatComplete : whether to dispatch a CitrusSoundEvent of type CitrusSoundEvent.REPEAT_COMPLETE when a sounds has played 'timesToPlay' times.</li></ul>
+		 * </ul>
 		 */
 		public function addSound(id:String, params:Object = null):void {
 			if (!params.hasOwnProperty("sound"))
