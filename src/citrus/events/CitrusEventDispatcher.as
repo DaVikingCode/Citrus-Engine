@@ -50,6 +50,9 @@ package citrus.events
 				removeDispatchChild(child);
 		}
 		
+		/**
+		 * Warning: all references to the listener will be strong and you need to remove them explicitly.
+		 */
 		public function addEventListener(type:String, listener:Function, useCapture:Boolean = false):void
 		{
 			if (type in listeners)
