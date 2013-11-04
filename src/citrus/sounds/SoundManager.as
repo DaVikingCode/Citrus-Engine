@@ -210,7 +210,9 @@ package citrus.sounds {
 		public function soundIsPlaying(sound:String):Boolean
 		{
 			if (sound in soundsDic)
-					return CitrusSound(soundsDic[sound]).isPlaying;
+				return CitrusSound(soundsDic[sound]).isPlaying;
+					
+			return false;
 		}
 		
 		public function removeAllSounds(...except):void {
