@@ -91,6 +91,7 @@ package citrus.input.controllers {
 				for (i in actions)
 					if (actions[i].name == actionName)
 					{
+						triggerOFF(actionName);
 						actions.splice(uint(i), 1);
 						return;
 					}
@@ -107,7 +108,10 @@ package citrus.input.controllers {
 			for each (actions in _keyActions)
 				for (i in actions)
 					if (actions[uint(i)].name == actionName)
+					{
+						triggerOFF(actionName);
 						actions.splice(uint(i), 1);
+					}
 		}
 		
 		/**
@@ -116,6 +120,7 @@ package citrus.input.controllers {
 		public function resetAllKeyActions():void
 		{
 			_keyActions = new Dictionary();
+			_ce.input.stopActionsOf(this);
 		}
 		
 		/**
@@ -137,6 +142,7 @@ package citrus.input.controllers {
 			
 			if (!_keyActions[keyCode])
 				_keyActions[keyCode] = actions;
+			_ce.input.stopActionsOf(this);
 		}
 		
 		/**
@@ -145,6 +151,7 @@ package citrus.input.controllers {
 		public function removeKeyActions(keyCode:uint):void
 		{
 			delete _keyActions[keyCode];
+			_ce.input.stopActionsOf(this);
 		}
 		
 		/**
