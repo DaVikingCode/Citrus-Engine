@@ -211,6 +211,18 @@ package citrus.sounds {
 		{
 			if (sound in soundsDic)
 					return CitrusSound(soundsDic[sound]).isPlaying;
+			else
+				trace(this, "soundIsPlaying() : sound", id, "doesn't exist.");
+			return false;
+		}
+		
+		public function soundIsPaused(sound:String):Boolean
+		{
+			if (sound in soundsDic)
+					return CitrusSound(soundsDic[sound]).isPaused;
+			else
+				trace(this, "soundIsPaused() : sound", id, "doesn't exist.");
+			return false;
 		}
 		
 		public function removeAllSounds(...except):void {
