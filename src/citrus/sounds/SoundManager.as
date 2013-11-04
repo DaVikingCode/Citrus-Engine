@@ -210,13 +210,7 @@ package citrus.sounds {
 		public function soundIsPlaying(sound:String):Boolean
 		{
 			if (sound in soundsDic)
-			{
-				var s:CitrusSound;
-					for each(s in soundsDic)
-						if (s.isPlaying)
-							return true;
-			}
-			return false;
+					return CitrusSound(soundsDic[sound]).isPlaying;
 		}
 		
 		public function removeAllSounds(...except):void {
@@ -350,14 +344,31 @@ package citrus.sounds {
 			}
 		}
 
+		/**
+		 * tween the volume of a CitrusSound. If callback is defined, its optional argument will be the CitrusSound.
+		 * @param	id
+		 * @param	volume
+		 * @param	tweenDuration
+		 * @param	callback
+		 */
 		public function tweenVolume(id:String, volume:Number = 0, tweenDuration:Number = 2, callback:Function = null):void {
 			if (soundIsPlaying(id)) {
-				var tweenvolObject:Object = {volume:CitrusSound(soundsDic[id]).volume};
+				
+				var citrusSound:CitrusSound = CitrusSound(soundsDic[id]);
+				var tweenvolObject:Object = {volume:citrusSound.volume};
 				
 				eaze(tweenvolObject).to(tweenDuration, {volume:volume})
 					.onUpdate(function():void {
-					CitrusSound(soundsDic[id]).volume = tweenvolObject.volume;
-				}).onComplete(callback);
+					citrusSound.volume = tweenvolObject.volume;
+				}).onComplete(function():void
+				{
+					
+					if (callback != null)
+						if (callback.length == 0)
+							callback();
+						else
+							callback(citrusSound);
+				});
 			} else 
 				trace("the sound " + id + " is not playing");
 		}
