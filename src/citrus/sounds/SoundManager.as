@@ -212,7 +212,7 @@ package citrus.sounds {
 			if (sound in soundsDic)
 					return CitrusSound(soundsDic[sound]).isPlaying;
 			else
-				trace(this, "soundIsPlaying() : sound", id, "doesn't exist.");
+				trace(this, "soundIsPlaying() : sound", sound, "doesn't exist.");
 			return false;
 		}
 		
@@ -221,7 +221,7 @@ package citrus.sounds {
 			if (sound in soundsDic)
 					return CitrusSound(soundsDic[sound]).isPaused;
 			else
-				trace(this, "soundIsPaused() : sound", id, "doesn't exist.");
+				trace(this, "soundIsPaused() : sound", sound, "doesn't exist.");
 			return false;
 		}
 		
