@@ -61,7 +61,11 @@ package citrus.sounds
 		protected static var _nonPermanent:Vector.<CitrusSoundInstance> = new Vector.<CitrusSoundInstance>();
 		
 		/**
-		 * Defines what needs to be done when a channel is unavailable
+		 * What to do when no new sound channel is available?
+		 * remove the first played instance, the last, or simply don't play the sound.
+		 * @see REMOVE_FIRST_PLAYED
+		 * @see REMOVE_LAST_PLAYED
+		 * @see DONT_PLAY
 		 */
 		public static var onNewChannelsUnavailable:String = REMOVE_FIRST_PLAYED;
 		
@@ -431,10 +435,6 @@ package citrus.sounds
 			return "CitrusSoundInstance name:" + _name + " id:" + _ID + " playing:" + _isPlaying + " paused:" + _isPaused + "\n";
 		}
 		
-		/**
-		 * What to do when no new sound channel is available?
-		 * @see onNewChannelsUnavailable
-		 */
 		public static const REMOVE_LAST_PLAYED:String = "REMOVE_LAST_PLAYED";
 		public static const REMOVE_FIRST_PLAYED:String = "REMOVE_FIRST_PLAYED";
 		public static const DONT_PLAY:String = "DONT_PLAY";
