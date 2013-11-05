@@ -159,6 +159,17 @@ package citrus.ui.starling.basic
 			setFrame(_frame.x, _frame.y, _frame.width, _frame.height);
 		}
 		
+		public function destroy():void
+		{
+			var element:BasicUIElement;
+			for each(element in _elements)
+			{
+				element.destroy();
+				parentDisplay.removeChild(element,true);
+			}
+			_elements.length = 0;
+		}
+		
 		public static const TOP_LEFT:String = "TOP_LEFT";
 		public static const TOP_CENTER:String = "TOP_CENTER";
 		public static const TOP_RIGHT:String = "TOP_RIGHT";

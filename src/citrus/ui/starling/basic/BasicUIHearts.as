@@ -91,6 +91,13 @@ package citrus.ui.starling.basic
 			}
 		}
 		
+		override public function destroy():void
+		{
+			_hearts.length = 0;
+			_textures.length = 0;
+			super.destroy();
+		}
+		
 		public function set life(value:Number):void
 		{
 			if (value == _life)

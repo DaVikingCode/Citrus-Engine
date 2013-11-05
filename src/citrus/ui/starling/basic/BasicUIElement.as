@@ -118,6 +118,17 @@ package citrus.ui.starling.basic
 			resetContentPosition();
 		}
 		
+		public function destroy():void
+		{
+			parentLayout = null;
+			_rect = null;
+			if (_content)
+			{
+				removeChild(_content, true);
+				_content = null;
+			}
+		}
+		
 	}
 
 }

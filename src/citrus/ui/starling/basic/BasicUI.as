@@ -17,6 +17,13 @@ package citrus.ui.starling.basic
 			super(this, frame);
 		}
 		
+		override public function destroy():void
+		{
+			super.destroy();
+			container.removeFromParent();
+			container = null;
+		}
+		
 	}
 
 }
