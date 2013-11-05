@@ -226,8 +226,21 @@ package citrus.utils.objectmakers {
 						params.y = objectTmx.y + newLoc.y;
 					}
 					
-					if (objectTmx.custom && objectTmx.custom["view"])
+					if (objectTmx.custom && objectTmx.custom["view"]) {
 						params.view = atlas.getTexture(objectTmx.custom["view"]);
+						
+					} else if (objectTmx.gid != 0) { // for handling image objects in Tiled
+						for each (var tileSet:TmxTileSet in tmx.tileSets) {
+							var tileProps:TmxPropertySet = tileSet.getProperties(objectTmx.gid - tileSet.firstGID);
+							if (tileProps != null) break;
+						}
+						var name:String = tileProps["name"];
+						params.view = atlas.getTexture(name);
+						params.width = Texture(params.view).frame.width;
+						params.height = Texture(params.view).frame.height;
+						params.x += params.width / 2;
+						params.y -= params.height / 2;
+					}
 					
 					// Polygon/Polyline support
 					if (objectTmx.shapeType != null) {
