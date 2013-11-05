@@ -15,6 +15,7 @@ It offers many options, you may use :
 
 Games References
 ----------------
+[![Battlewars](http://aymericlamboley.fr/blog/wp-content/uploads/2013/11/Battlewars.png)](http://www.newgrounds.com/portal/view/627927)
 [![Snailboy](http://aymericlamboley.fr/blog/wp-content/uploads/2013/09/snailboy.png)](http://www.thoopid.com/snailboy-presskit)
 [![Monsieur Bear's ABC](http://aymericlamboley.fr/blog/wp-content/uploads/2013/09/abc.png)](http://rdrct.it/monsieurbearsabc)
 [![Underwater Adventures](http://aymericlamboley.fr/blog/wp-content/uploads/2013/08/underwaterAdventures.png)](http://underwateradventuresgame.com/)
