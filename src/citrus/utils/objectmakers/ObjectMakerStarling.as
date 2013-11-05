@@ -157,8 +157,6 @@ package citrus.utils.objectmakers {
 
 				var qb:QuadBatch = new QuadBatch();
 
-				for each (var tileSet:TmxTileSet in tmx.tileSets) {
-
 					for (var i:uint = 0; i < mapTilesX; ++i) {
 
 						mapTilesY = mapTiles[i].length;
@@ -166,9 +164,13 @@ package citrus.utils.objectmakers {
 						for (var j:uint = 0; j < mapTilesY; ++j) {
 
 							if (mapTiles[i][j] != 0) {
-
+								
 								var tileID:uint = mapTiles[i][j];
-								var tileProps:TmxPropertySet = tileSet.getProperties(tileID - 1);
+								
+								for each (var tileSet:TmxTileSet in tmx.tileSets) {
+									var tileProps:TmxPropertySet = tileSet.getProperties(tileID - tileSet.firstGID);
+									if (tileProps != null) break;
+								}
 								var name:String = tileProps["name"];
 								// TODO : look into an other atlas if the texture isn't found.
 								var texture:Texture = atlas.getTexture(name);
@@ -180,7 +182,6 @@ package citrus.utils.objectmakers {
 								qb.addImage(image);
 							}
 						}
-					}
 				}
 
 				params = {};
