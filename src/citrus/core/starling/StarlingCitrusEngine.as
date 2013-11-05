@@ -39,7 +39,7 @@ package citrus.core.starling {
 		 * reset this array to a single entry to force one specific profile.
 		 */
 		protected var _context3DProfiles:Array = [Context3DProfile.BASELINE_EXTENDED,Context3DProfile.BASELINE,Context3DProfile.BASELINE_CONSTRAINED];
-		protected var _context3DProfileTestDelay:int = 100;
+		protected var _context3DProfileTestDelay:int = 0;
 		
 		public function StarlingCitrusEngine() {
 			super();
@@ -104,7 +104,10 @@ package citrus.core.starling {
 					{
 						if(debugMode)
 							trace("[StarlingCitrusEngine] Context3DProfile -", profile, "is not supported...");
-						setTimeout(Context3DUtil.supportsProfile,_context3DProfileTestDelay,stage, profiletests.shift(), testProfiles);
+						if (_context3DProfileTestDelay == 0)
+							Context3DUtil.supportsProfile(stage, profiletests.shift(), testProfiles);
+						else
+							setTimeout(Context3DUtil.supportsProfile,_context3DProfileTestDelay,stage, profiletests.shift(), testProfiles);
 					}else if (profiletests.length == 0)
 						throw new ArgumentError("[StarlingCitrusEngine] Failed to create a Context3D with a profile from this list : \n" + String(profiletests));
 				}
