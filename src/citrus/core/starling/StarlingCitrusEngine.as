@@ -39,7 +39,7 @@ package citrus.core.starling {
 		 * reset this array to a single entry to force one specific profile.
 		 */
 		protected var _context3DProfiles:Array = [Context3DProfile.BASELINE_EXTENDED,Context3DProfile.BASELINE,Context3DProfile.BASELINE_CONSTRAINED];
-		protected var _context3DProfileTestDelay:int = 0;
+		protected var _context3DProfileTestDelay:int = 100;
 		
 		public function StarlingCitrusEngine() {
 			super();
@@ -237,6 +237,19 @@ package citrus.core.starling {
 			
 			if (!_starling.isStarted)
 				_starling.start();
+				
+			_starling.addEventListener(starling.events.Event.ROOT_CREATED, function():void
+			{
+				_starling.removeEventListener(starling.events.Event.ROOT_CREATED, arguments.callee);
+				handleStarlingReady();
+			});
+		}
+		
+		/**
+		 * This function is called when context3D is ready and the starling root is created.
+		 * the idea is to use this function for asset loading through the starling AssetManager and create the first state.
+		 */
+		public function handleStarlingReady():void {	
 		}
 
 		public function get starling():Starling {
