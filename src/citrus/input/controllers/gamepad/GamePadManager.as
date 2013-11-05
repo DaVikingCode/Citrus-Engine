@@ -21,6 +21,8 @@ package citrus.input.controllers.gamepad
 		 */
 		public var devicesMapDictionary:Dictionary;
 		
+		protected var _maxDevices:uint;
+		
 		protected var _gamePads:Dictionary;
 		//default map should extend GamePadMap, will be applied to each new device plugged in.
 		protected var _defaultMap:Class;
@@ -44,6 +46,8 @@ package citrus.input.controllers.gamepad
 		{
 			super("GamePadManager", null);
 			
+			_maxDevices = maxPlayers;
+			
 			_instance = this;
 			
 			if (!GameInput.isSupported)
@@ -64,6 +68,19 @@ package citrus.input.controllers.gamepad
 			_gameInput = new GameInput();
 			_gameInput.addEventListener(GameInputEvent.DEVICE_ADDED, handleDeviceAdded);
 			_gameInput.addEventListener(GameInputEvent.DEVICE_REMOVED, handleDeviceRemoved);
+			
+			
+			var numDevices:uint;
+			if ((numDevices = GameInput.numDevices) > 0)
+			{
+				var i:uint = 0;
+				var device:GameInputDevice;
+				for (; i < numDevices; i++)
+				{
+					device = GameInput.getDeviceAt(i);
+					handleDeviceAdded(new GameInputEvent(GameInputEvent.DEVICE_ADDED,false,false,device));
+				}
+			}
 		}
 		
 		public static function getInstance():GamePadManager
@@ -140,6 +157,10 @@ package citrus.input.controllers.gamepad
 		
 		protected function handleDeviceAdded(e:GameInputEvent):void
 		{
+			
+			if (_gamePads.length >= _maxDevices)
+				return;
+				
 			var device:GameInputDevice = e.device;
 			var deviceID:String = device.id;
 			var pad:Gamepad;
