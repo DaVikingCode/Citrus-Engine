@@ -83,7 +83,7 @@ package citrus.ui.starling.basic
 				else if (_life >= currentLife && _life <= nextLife)
 				{
 					currentHeartLife = _life - currentLife;
-					state = Math.round((currentHeartLife / lifePerHeart)*(texturesPerHeart- 1));
+					state = Math.round((currentHeartLife / lifePerHeart)*(totalstates));
 				}
 				
 				texture = _textures[state];
