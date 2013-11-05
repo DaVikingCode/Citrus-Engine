@@ -147,7 +147,12 @@ package citrus.utils.objectmakers {
 
 			var mapTiles:Array;
 			var mapTilesX:uint, mapTilesY:uint;
-
+			
+			var tileSet:TmxTileSet;
+			var tileProps:TmxPropertySet;
+			var name:String;
+			var texture:Texture;
+			
 			for (var layer_num:uint = 0; layer_num < tmx.layers_ordered.length; ++layer_num) {
 				
 				var layer:String = tmx.layers_ordered[layer_num];
@@ -167,13 +172,13 @@ package citrus.utils.objectmakers {
 								
 								var tileID:uint = mapTiles[i][j];
 								
-								for each (var tileSet:TmxTileSet in tmx.tileSets) {
-									var tileProps:TmxPropertySet = tileSet.getProperties(tileID - tileSet.firstGID);
+								for each (tileSet in tmx.tileSets) {
+									tileProps = tileSet.getProperties(tileID - tileSet.firstGID);
 									if (tileProps != null) break;
 								}
-								var name:String = tileProps["name"];
+								name = tileProps["name"];
 								// TODO : look into an other atlas if the texture isn't found.
-								var texture:Texture = atlas.getTexture(name);
+								texture = atlas.getTexture(name);
 
 								var image:Image = new Image(texture);
 								image.x = j * tmx.tileWidth;
@@ -199,10 +204,13 @@ package citrus.utils.objectmakers {
 			var object:CitrusObject;
 			var mtx:Matrix = new Matrix();
 			var pt:Point = new Point();
+			var newLoc:Point;
+			var group:TmxObjectGroup;
+			var objectTmx:TmxObject;
+			
+			for each (group in tmx.objectGroups) {
 
-			for each (var group:TmxObjectGroup in tmx.objectGroups) {
-
-				for each (var objectTmx:TmxObject in group.objects) {
+				for each (objectTmx in group.objects) {
 
 					objectClass = getDefinitionByName(objectTmx.type) as Class;
 
@@ -221,7 +229,7 @@ package citrus.utils.objectmakers {
 						mtx.identity();
 						mtx.rotate(objectTmx.rotation * Math.PI / 180); 
 						pt.setTo(objectTmx.width / 2, objectTmx.height / 2);
-						var newLoc:Point = mtx.transformPoint(pt);
+						newLoc = mtx.transformPoint(pt);
 						params.x = objectTmx.x + newLoc.x;
 						params.y = objectTmx.y + newLoc.y;
 					}
@@ -230,11 +238,11 @@ package citrus.utils.objectmakers {
 						params.view = atlas.getTexture(objectTmx.custom["view"]);
 						
 					} else if (objectTmx.gid != 0) { // for handling image objects in Tiled
-						for each (var tileSet:TmxTileSet in tmx.tileSets) {
-							var tileProps:TmxPropertySet = tileSet.getProperties(objectTmx.gid - tileSet.firstGID);
+						for each (tileSet in tmx.tileSets) {
+							tileProps = tileSet.getProperties(objectTmx.gid - tileSet.firstGID);
 							if (tileProps != null) break;
 						}
-						var name:String = tileProps["name"];
+						name = tileProps["name"];
 						params.view = atlas.getTexture(name);
 						params.width = Texture(params.view).frame.width;
 						params.height = Texture(params.view).frame.height;
