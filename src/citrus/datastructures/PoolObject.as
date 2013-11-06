@@ -102,7 +102,7 @@ package citrus.datastructures {
 			for (var i:int = 0; i < sizeIncrease; ++i) {
 				var node:DoublyLinkedListNode = new DoublyLinkedListNode();
 					
-				_create(node, params);
+				_create(node, params,true);
 				_dispose(node);
 
 				if (_freeListHead) {
@@ -164,7 +164,7 @@ package citrus.datastructures {
 		 * @param	node
 		 * @param	params
 		 */
-		protected function _create(node:DoublyLinkedListNode, params:Object = null):void {
+		protected function _create(node:DoublyLinkedListNode, params:Object = null, poolIncrease:Boolean = false):void {
 			onCreate.dispatch((node.data as _poolType),params);
 		}
 		

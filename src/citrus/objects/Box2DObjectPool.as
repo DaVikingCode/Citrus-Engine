@@ -28,7 +28,7 @@ package citrus.objects
 			stateView = CitrusEngine.getInstance().state.view;
 		}
 		
-		override protected function _create(node:DoublyLinkedListNode, params:Object = null):void
+		override protected function _create(node:DoublyLinkedListNode, params:Object = null, poolIncrease:Boolean = false):void
 		{
 			if (!params)
 				params = { };
@@ -51,8 +51,9 @@ package citrus.objects
 			bp.initialize(params);
 			onCreate.dispatch(bp, params);
 			bp.addPhysics();
+			if (poolIncrease)
+				bp.body.SetActive(false);
 			stateView.addArt(bp);
-			
 			bp.citrus_internal::data["updateCall"] = bp.updateCallEnabled;
 			bp.citrus_internal::data["updateArt"] = (stateView.getArt(bp) as ICitrusArt).updateArtEnabled;
 		}
@@ -72,6 +73,7 @@ package citrus.objects
 		
 		override protected function _dispose(node:DoublyLinkedListNode):void
 		{
+			trace("DISPOSED");
 			var bp:Box2DPhysicsObject = node.data as Box2DPhysicsObject;
 			activationQueue.unshift( { object:bp, activate:false } );
 			if ("pauseAnimation" in bp.view)
