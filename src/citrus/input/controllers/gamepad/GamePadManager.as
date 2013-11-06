@@ -78,7 +78,9 @@ package citrus.input.controllers.gamepad
 				{
 					device = GameInput.getDeviceAt(i);
 					if(device)
-						_gameInput.dispatchEvent(new GameInputEvent(GameInputEvent.DEVICE_ADDED,false,false,device));
+						_gameInput.dispatchEvent(new GameInputEvent(GameInputEvent.DEVICE_ADDED, false, false, device));
+					else
+						trace(this, "tried to get a device at", i, "and it returned null. please reference or initialize the GamePadManager sooner in your app!");
 				}
 			}
 		}
