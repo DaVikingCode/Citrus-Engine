@@ -159,9 +159,8 @@ package citrus.core.starling {
 			{
 				case ViewportMode.LETTERBOX:
 					_viewport = RectangleUtil.fit(baseRect, screenRect, ScaleMode.SHOW_ALL);
-					_viewport.x = screenWidth * .5 - _viewport.width * .5;
-					_viewport.y = screenHeight * .5 - _viewport.height * .5;
-					
+					_viewport.x = _screenWidth * .5 - _viewport.width * .5;
+					_viewport.y = _screenHeight * .5 - _viewport.height * .5;
 					if (_starling)
 					{
 						_starling.stage.stageWidth = _baseWidth;
@@ -187,8 +186,8 @@ package citrus.core.starling {
 					break;
 				case ViewportMode.NO_SCALE:
 					_viewport = baseRect;
-					_viewport.x = screenWidth * .5 - _viewport.width * .5;
-					_viewport.y = screenHeight * .5 - _viewport.height * .5;
+					_viewport.x = _screenWidth * .5 - _viewport.width * .5;
+					_viewport.y = _screenHeight * .5 - _viewport.height * .5;
 					
 					if (_starling)
 					{
@@ -211,13 +210,13 @@ package citrus.core.starling {
 			}
 			
 			scaleFactor = findScaleFactor(_assetSizes);
-				
+			
 			return _viewport;
 		}
 		
-		override protected function handleStageResize(e:flash.events.Event = null):void
+		override protected function resetScreenSize():void
 		{
-			super.handleStageResize(e);
+			super.resetScreenSize();
 			
 			if (!_starling)
 				return;
@@ -233,8 +232,7 @@ package citrus.core.starling {
 
 			_starling.removeEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
 			
-			resetViewport();
-			_starling.viewPort.copyFrom(_viewport);
+			resetScreenSize();
 			
 			if (!_starling.isStarted)
 				_starling.start();

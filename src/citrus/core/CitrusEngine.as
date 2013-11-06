@@ -244,8 +244,8 @@ package citrus.core {
 			stage.addEventListener(FullScreenEvent.FULL_SCREEN, handleStageFullscreen);
 			stage.addEventListener(Event.RESIZE, handleStageResize);
 			
-			_fullScreen = (stage.displayState == StageDisplayState.FULL_SCREEN || stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE);
-			handleStageResize();
+			_fullScreen = (stage.displayState == StageDisplayState.FULL_SCREEN || stage.displayState  == StageDisplayState.FULL_SCREEN_INTERACTIVE);
+			resetScreenSize();
 			
 			_input.initialize();
 		}
@@ -253,10 +253,21 @@ package citrus.core {
 		protected function handleStageFullscreen(e:FullScreenEvent):void
 		{
 			_fullScreen = e.fullScreen;
+			resetScreenSize();
 		}
 		
-		protected function handleStageResize(e:Event = null):void
+		protected function handleStageResize(e:Event):void
 		{
+			resetScreenSize();
+			onStageResize.dispatch(_screenWidth, _screenHeight);
+		}
+		
+		/**
+		 * on resize or fullscreen this is called and makes sure _screenWidth/_screenHeight is correct,
+		 * it can be overriden to update other values that depend on the values of _screenWidth/_screenHeight.
+		 */
+		protected function resetScreenSize():void
+		{	
 			if (_fullScreen)
 			{
 				_screenWidth = stage.fullScreenWidth;
@@ -267,8 +278,6 @@ package citrus.core {
 				_screenWidth = stage.stageWidth;
 				_screenHeight = stage.stageHeight;
 			}
-			
-			onStageResize.dispatch(_screenWidth, _screenHeight);
 		}
 		
 		/**
@@ -405,6 +414,9 @@ package citrus.core {
 		
 		public function set fullScreen(value:Boolean):void
 		{
+			if (value == _fullScreen)
+				return;
+				
 			if(value)
 				stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 			else
