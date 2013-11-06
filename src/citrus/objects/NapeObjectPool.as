@@ -24,7 +24,7 @@ package citrus.objects
 			stateView = CitrusEngine.getInstance().state.view;
 		}
 		
-		override protected function _create(node:DoublyLinkedListNode, params:Object = null, poolIncrease:Boolean = false):void
+		override protected function _create(node:DoublyLinkedListNode, params:Object = null):void
 		{
 			if (!params)
 				params = { };
@@ -47,8 +47,7 @@ package citrus.objects
 			np.initialize(params);
 			onCreate.dispatch((node.data as _poolType), params);
 			np.addPhysics();
-			if (poolIncrease)
-				np.body.space = null;
+			np.body.space = null;
  			stateView.addArt(np);
 			
 			np.citrus_internal::data["updateCall"] = np.updateCallEnabled;
