@@ -13,7 +13,7 @@ package citrus.input.controllers.gamepad
 	
 	public class GamePadManager extends InputController
 	{
-		protected static var _gameInput:GameInput;
+		protected static var _gameInput:GameInput = new GameInput();
 		
 		/**
 		 * key = substring in devices id/name to recognize
@@ -65,8 +65,6 @@ package citrus.input.controllers.gamepad
 			onControllerAdded = new Signal(Gamepad);
 			onControllerRemoved = new Signal(Gamepad);
 			
-			if(!_gameInput)
-				_gameInput = new GameInput();
 			_gameInput.addEventListener(GameInputEvent.DEVICE_ADDED, handleDeviceAdded);
 			_gameInput.addEventListener(GameInputEvent.DEVICE_REMOVED, handleDeviceRemoved);
 			
