@@ -73,12 +73,14 @@ package citrus.input.controllers.gamepad
 			var numDevices:uint;
 			if ((numDevices = GameInput.numDevices) > 0)
 			{
+				trace(GameInput.numDevices);
 				var i:uint = 0;
 				var device:GameInputDevice;
 				for (; i < numDevices; i++)
 				{
 					device = GameInput.getDeviceAt(i);
-					handleDeviceAdded(new GameInputEvent(GameInputEvent.DEVICE_ADDED,false,false,device));
+					if(device)
+						_gameInput.dispatchEvent(new GameInputEvent(GameInputEvent.DEVICE_ADDED,false,false,device));
 				}
 			}
 		}
@@ -157,7 +159,6 @@ package citrus.input.controllers.gamepad
 		
 		protected function handleDeviceAdded(e:GameInputEvent):void
 		{
-			
 			if (_gamePads.length >= _maxDevices)
 				return;
 				
