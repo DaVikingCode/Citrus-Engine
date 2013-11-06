@@ -73,7 +73,6 @@ package citrus.input.controllers.gamepad
 			var numDevices:uint;
 			if ((numDevices = GameInput.numDevices) > 0)
 			{
-				trace(GameInput.numDevices);
 				var i:uint = 0;
 				var device:GameInputDevice;
 				for (; i < numDevices; i++)
