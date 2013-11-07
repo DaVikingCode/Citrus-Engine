@@ -21,11 +21,11 @@ package citrus.system.components {
 			
 			super.update(timeDelta);
 			
-			isDoingRight = _ce.input.isDoing("right");
-			isDoingLeft = _ce.input.isDoing("left");
-			isDoingDuck = _ce.input.isDoing("duck");
-			isDoingJump = _ce.input.isDoing("jump");
-			justDidJump = _ce.input.justDid("jump");
+			isDoingRight = Boolean(_ce.input.isDoing("right"));
+			isDoingLeft = Boolean(_ce.input.isDoing("left"));
+			isDoingDuck = Boolean(_ce.input.isDoing("duck"));
+			isDoingJump = Boolean(_ce.input.isDoing("jump"));
+			justDidJump = Boolean(_ce.input.justDid("jump"));
 		}
 	}
 }
