@@ -94,7 +94,7 @@ package citrus.objects
 		{
 			var entry:Object;
 			
-			while(entry = activationQueue.pop())
+			while((entry = activationQueue.pop()))
 				entry.object.body.SetActive(entry.activate);
 			
 		}
