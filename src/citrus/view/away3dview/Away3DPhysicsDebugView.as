@@ -6,8 +6,6 @@ package citrus.view.away3dview {
 	import citrus.physics.APhysicsEngine;
 	import citrus.physics.IDebugView;
 
-	import flash.display.Sprite;
-
 	/**
 	 * A wrapper for Away3D to display the debug view of the different physics engine.
 	 */
@@ -24,10 +22,10 @@ package citrus.view.away3dview {
 			
 			_physicsEngine = _ce.state.getFirstObjectByType(APhysicsEngine) as APhysicsEngine;
 			_debugView = new _physicsEngine.realDebugView();
-			
+						
 			if ((_ce.state.view as Away3DView).mode != "3D") {
-				_ce.stage.addChild(_debugView as Sprite);
-				(_debugView as Sprite).name = "debug view";
+				
+				_debugView.initialize();
 			}
 		}
 		
