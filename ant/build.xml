@@ -74,10 +74,13 @@
 			<arg line="-include-sources ../src/citrus/core/State.as" />
 
 			<arg line="-include-sources ../src/citrus/datastructures" />
+			
+			<arg line="-include-sources ../src/citrus/events" />
 
 			<arg line="-include-sources ../src/citrus/input/Input.as" />
 			<arg line="-include-sources ../src/citrus/input/InputAction.as" />
 			<arg line="-include-sources ../src/citrus/input/InputController.as" />
+			<arg line="-include-sources ../src/citrus/input/InputPhase.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/Accelerometer.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/AVirtualButton.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/AVirtualJoystick.as" />
@@ -85,6 +88,7 @@
 			<arg line="-include-sources ../src/citrus/input/controllers/OUYAGamepad.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/TimeShifter.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/displaylist" />
+			<arg line="-include-sources ../src/citrus/input/controllers/gamepad" />
 
 			<arg line="-include-sources ../src/citrus/math" />
 
@@ -110,9 +114,12 @@
 			<arg line="-include-sources ../src/citrus/ui/inventory" />
 
 			<arg line="-include-sources ../src/citrus/utils/AGameData.as" />
+			<arg line="-include-sources ../src/citrus/utils/AssetCache.as" />
+			<arg line="-include-sources ../src/citrus/utils/Context3DUtil.as" />
 			<arg line="-include-sources ../src/citrus/utils/LevelManager.as" />
 			<arg line="-include-sources ../src/citrus/utils/LoadManager.as" />
 			<arg line="-include-sources ../src/citrus/utils/Mobile.as" />
+			<arg line="-include-sources ../src/citrus/utils/SoundChannelUtil.as" />
 			<arg line="-include-sources ../src/citrus/utils/objectmakers/ObjectMaker2D.as" />
 			<arg line="-include-sources ../src/citrus/utils/objectmakers/tmx" />
 
@@ -124,20 +131,23 @@
 			<arg line="-include-sources ../src/citrus/view/spriteview" />
 			
 			<arg line="-include-sources ../srclib/dragonBones/animation" />
+			<arg line="-include-sources ../srclib/dragonBones/core" />
 			<arg line="-include-sources ../srclib/dragonBones/display/IDisplayBridge.as" />
 			<arg line="-include-sources ../srclib/dragonBones/display/NativeDisplayBridge.as" />
 			<arg line="-include-sources ../srclib/dragonBones/events" />
 			<arg line="-include-sources ../srclib/dragonBones/factorys/BaseFactory.as" />
+			<arg line="-include-sources ../srclib/dragonBones/factorys/NativeFactory.as" />
 			<arg line="-include-sources ../srclib/dragonBones/objects" />
 			<arg line="-include-sources ../srclib/dragonBones/textures/ITextureAtlas.as" />
 			<arg line="-include-sources ../srclib/dragonBones/textures/NativeTextureAtlas.as" />
-			<arg line="-include-sources ../srclib/dragonBones/textures/SubTextureData.as" />
 			<arg line="-include-sources ../srclib/dragonBones/utils" />
 			<arg line="-include-sources ../srclib/dragonBones/Armature.as" />
 			<arg line="-include-sources ../srclib/dragonBones/Bone.as" />
+			<arg line="-include-sources ../srclib/dragonBones/Slot.as" />
 			
 			<arg line="-include-libraries ../lib/EazeTween.swc" />
 			<arg line="-include-libraries ../lib/gameinputcontrolname.swc" />
+			<arg line="-include-libraries ../lib/gamepadLayout.swc" />
 			<arg line="-include-libraries ../lib/signals.swc" />
 			<!--<arg line="-external-library-path+=../lib/signals.swc"/>-->
 			<!--<arg line="-runtime-shared-library-path="/> don't know if needed-->

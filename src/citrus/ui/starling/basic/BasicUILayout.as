@@ -50,7 +50,6 @@ package citrus.ui.starling.basic
 			}
 			else
 			{
-				var element:BasicUIElement;
 				for each(element in _elements)
 					refreshElement(element);
 			}
