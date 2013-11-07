@@ -146,7 +146,7 @@ package citrus.input {
 		 * example :
 		 * <code>
 		 * var action:InputAction = _ce.input.getAction("jump",-1,null,InputPhase.ON);
-		 * if(action && action.time > 120)
+		 * if(action &amp;&amp; action.time > 120)
 		 *    trace("the jump action lasted for more than 120 frames. its value is",action.value);
 		 * </code>
 		 * 
@@ -168,7 +168,7 @@ package citrus.input {
 		
 		/**
 		 * Returns a list of active actions, optionnally filtered by channel, controller or phase.
-		 * return an empty Vector.<InputAction> if no actions are found.
+		 * return an empty Vector.&lt;InputAction&gt; if no actions are found.
 		 * 
 		 * @param	channel -1 to include all channels.
 		 * @param	controller null to include all controllers.

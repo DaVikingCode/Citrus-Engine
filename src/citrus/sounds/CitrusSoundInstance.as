@@ -323,7 +323,7 @@ package citrus.sounds
 		
 		/**
 		 * removes self from given vector.
-		 * @param	list Vector.<CitrusSoundInstance>
+		 * @param	list Vector.&lt;CitrusSoundInstance&gt;
 		 */
 		public function removeSelfFromVector(list:Vector.<CitrusSoundInstance>):void
 		{
