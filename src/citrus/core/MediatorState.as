@@ -176,6 +176,27 @@ package citrus.core {
 				if (object.name == name)
 					return object;
 			}
+			
+			if (_poolObjects.length > 0)
+			{
+				var poolObject:PoolObject;
+				var found:Boolean = false;
+				for each(poolObject in _poolObjects)
+				{
+					poolObject.foreachRecycled(function(pobject:*):Boolean
+					{
+						if (pobject is CitrusObject && pobject["name"] == name)
+						{
+							object = pobject;
+							return found = true;
+						}
+						return false;
+					});
+					
+					if (found)
+						return object;
+				}
+			}
 
 			return null;
 		}
@@ -189,10 +210,25 @@ package citrus.core {
 		public function getObjectsByName(name:String):Vector.<CitrusObject> {
 
 			var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
-
-			for each (var object:CitrusObject in _objects) {
+			var object:CitrusObject;
+			
+			for each (object in _objects) {
 				if (object.name == name)
 					objects.push(object);
+			}
+			
+			if (_poolObjects.length > 0)
+			{
+				var poolObject:PoolObject;
+				for each(poolObject in _poolObjects)
+				{
+					poolObject.foreachRecycled(function(pobject:*):Boolean
+					{
+						if (pobject is CitrusObject && pobject["name"] == name)
+							objects.push(pobject as CitrusObject);
+						return false;
+					});
+				}
 			}
 
 			return objects;
@@ -204,10 +240,32 @@ package citrus.core {
 		 * @param type The class of the object you want to get a reference to.
 		 */
 		public function getFirstObjectByType(type:Class):CitrusObject {
-
-			for each (var object:CitrusObject in _objects) {
+			var object:CitrusObject;
+			
+			for each (object in _objects) {
 				if (object is type)
 					return object;
+			}
+			
+			if (_poolObjects.length > 0)
+			{
+				var poolObject:PoolObject;
+				var found:Boolean = false;
+				for each(poolObject in _poolObjects)
+				{
+					poolObject.foreachRecycled(function(pobject:*):Boolean
+					{
+						if (pobject is type)
+						{
+							object = pobject;
+							return found = true;
+						}
+						return false;
+					});
+					
+					if (found)
+						return object;
+				}
 			}
 
 			return null;
@@ -222,10 +280,25 @@ package citrus.core {
 		public function getObjectsByType(type:Class):Vector.<CitrusObject> {
 
 			var objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
-
-			for each (var object:CitrusObject in _objects) {
+			var object:CitrusObject;
+			
+			for each (object in _objects) {
 				if (object is type) {
 					objects.push(object);
+				}
+			}
+			
+			if (_poolObjects.length > 0)
+			{
+				var poolObject:PoolObject;
+				for each(poolObject in _poolObjects)
+				{
+					poolObject.foreachRecycled(function(pobject:*):Boolean
+					{
+						if (pobject is type)
+							objects.push(pobject as CitrusObject);
+						return false;
+					});
 				}
 			}
 
