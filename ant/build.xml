@@ -126,7 +126,6 @@
 			<arg line="-include-sources ../srclib/dragonBones/animation" />
 			<arg line="-include-sources ../srclib/dragonBones/display/IDisplayBridge.as" />
 			<arg line="-include-sources ../srclib/dragonBones/display/NativeDisplayBridge.as" />
-			<arg line="-include-sources ../srclib/dragonBones/errors" />
 			<arg line="-include-sources ../srclib/dragonBones/events" />
 			<arg line="-include-sources ../srclib/dragonBones/factorys/BaseFactory.as" />
 			<arg line="-include-sources ../srclib/dragonBones/objects" />
