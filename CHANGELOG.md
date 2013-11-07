@@ -26,6 +26,7 @@ V3.1.8, Work In Progress
 - Added a LoaderContext for SpriteArt and StarlingArt, we are able to load swf on iOS.
 - Added rotation parameter in TmxObject coming from latest Tiled Map Editor builds.
 - Fixed a bug where using StarlingCitrusEngine we had to set it up directly.
+- state.getObject* functions include results from searches in the pool objects.
 
 V 3.1.7, 06 27 2013
 -------------------
