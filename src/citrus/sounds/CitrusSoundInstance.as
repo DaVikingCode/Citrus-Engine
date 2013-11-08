@@ -70,6 +70,11 @@ package citrus.sounds
 		public static var onNewChannelsUnavailable:String = REMOVE_FIRST_PLAYED;
 		
 		/**
+		 * offset to use on all sounds in Sound.play().
+		 */
+		public static var startPositionOffset:Number = 0;
+		
+		/**
 		 * trace all events dispatched from CitrusSoundInstances
 		 */
 		public static var eventVerbose:Boolean = false;
@@ -201,7 +206,7 @@ package citrus.sounds
 			_isPaused = true;
 			
 			_soundChannel.stop();
-			soundChannel = SoundChannelUtil.silentSound.play(0, int.MAX_VALUE, SoundChannelUtil.silentST);
+			soundChannel = SoundChannelUtil.silentSound.play(startPositionOffset, int.MAX_VALUE, SoundChannelUtil.silentST);
 			
 			dispatcher(CitrusSoundEvent.SOUND_PAUSE);
 		}
@@ -267,7 +272,7 @@ package citrus.sounds
 			
 			if (_isPaused)
 			{
-				soundChannel = SoundChannelUtil.silentSound.play(0, int.MAX_VALUE, SoundChannelUtil.silentST);
+				soundChannel = SoundChannelUtil.silentSound.play(startPositionOffset, int.MAX_VALUE, SoundChannelUtil.silentST);
 				return;
 			}
 			
@@ -277,14 +282,14 @@ package citrus.sounds
 			if (_loops < 0)
 			{
 				_soundChannel.stop();
-				soundChannel = (_parentsound.sound as Sound).play(0, int.MAX_VALUE, _soundTransform);
+				soundChannel = (_parentsound.sound as Sound).play(startPositionOffset, int.MAX_VALUE, _soundTransform);
 			}
 			else if (_loopCount > _loops)
 				stop();
 			else
 			{
 				_soundChannel.stop();
-				soundChannel = (_parentsound.sound as Sound).play(0, 0, _soundTransform);
+				soundChannel = (_parentsound.sound as Sound).play(startPositionOffset, 0, _soundTransform);
 				dispatcher(CitrusSoundEvent.SOUND_LOOP);
 			}
 		}
