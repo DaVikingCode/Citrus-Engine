@@ -95,11 +95,8 @@ package citrus.view.spriteview
 		public function destroy(viewChanged:Boolean = false):void {
 			
 			if (viewChanged) {
-				
-				if (_view is String)
-					removeChild(_content.loaderInfo.loader);
-				 else if (_content && _content.parent)
-					removeChild(_content.parent);
+				if (_content && _content.parent)
+					removeChild(_content);
 			} else {
 				
 				CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
