@@ -23,6 +23,8 @@ package citrus.sounds
 		protected var _camVec:MathVector = new MathVector();
 		protected var _rect:Rectangle = new Rectangle();
 		
+		protected var _volume:Number = 1;
+		
 		/**
 		 * radius or this sound object. this determines at what distance will the sound start to get heard.
 		 */
@@ -182,7 +184,7 @@ package citrus.sounds
 					return;
 					
 				var volume:Number = distance > radius ? 0 : 1 - distance / radius;
-				soundInstance.volume = adjustVolume(volume);
+				soundInstance.volume = adjustVolume(volume) * _volume;
 				
 				var panning:Number = (Math.cos(_camVec.angle) * distance) / 
 				( (_rect.width /_rect.height) * 0.5 );
@@ -248,6 +250,19 @@ package citrus.sounds
 		public function get camVec():MathVector
 		{
 			return _camVec;
+		}
+		
+		/**
+		 * volume multiplier for this CitrusSoundObject
+		 */
+		public function get volume():Number
+		{
+			return _volume;
+		}
+		
+		public function set volume(value:Number):void
+		{
+			_volume = value;
 		}
 		
 		public function get activeSoundInstances():Vector.<CitrusSoundInstance>
