@@ -188,6 +188,20 @@ package citrus.sounds {
 			return null;
 		}
 		
+		public function pauseSound(id:String):void {
+			if (id in soundsDic)
+				CitrusSound(soundsDic[id]).pause();
+			else
+				trace(this,"pauseSound() : sound",id,"doesn't exist.");
+		}
+		
+		public function resumeSound(id:String):void {
+			if (id in soundsDic)
+				CitrusSound(soundsDic[id]).resume();
+			else
+				trace(this,"resumeSound() : sound",id,"doesn't exist.");
+		}
+		
 		public function stopSound(id:String):void {
 			if (id in soundsDic)
 				CitrusSound(soundsDic[id]).stop();
