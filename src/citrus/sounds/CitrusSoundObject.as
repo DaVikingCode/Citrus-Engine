@@ -1,0 +1,189 @@
+package citrus.sounds 
+{
+	import citrus.core.CitrusEngine;
+	import citrus.core.CitrusObject;
+	import citrus.math.MathUtils;
+	import citrus.math.MathVector;
+	import citrus.view.ISpriteView;
+	import flash.geom.Rectangle;
+	
+	/**
+	 * 
+	 */
+	public class CitrusSoundObject 
+	{
+		protected var _ce:CitrusEngine;
+		protected var _space:CitrusSoundSpace;
+		protected var _citrusObject:ISpriteView;
+		protected var _sounds:Vector.<CitrusSoundInstance> = new Vector.<CitrusSoundInstance>();
+		protected var _enabled:Boolean = true;
+		
+		public static var panAdjust:Function = MathUtils.easeInCubic;
+		public static var volAdjust:Function = MathUtils.easeOutQuad;
+		
+		protected var _camVec:MathVector = new MathVector();
+		protected var _rect:Rectangle = new Rectangle();
+		public var radius:Number = 600;
+		
+		public function CitrusSoundObject(citrusObject:ISpriteView) 
+		{
+			_ce = CitrusEngine.getInstance();
+			_space = _ce.state.getFirstObjectByType(CitrusSoundSpace) as CitrusSoundSpace;
+			if (!_space)
+				throw new Error("[CitrusSoundObject] for " + citrusObject["name"] + " couldn't find a CitrusSoundSpace.");
+				
+			_citrusObject = citrusObject;
+			
+			_space.add(this);
+		}
+		
+		public function initialize():void
+		{
+			
+		}
+		
+		public function play(sound:*):CitrusSoundInstance
+		{
+			var citrusSound:CitrusSound;
+			var soundInstance:CitrusSoundInstance;
+			
+			if (sound is String)
+				citrusSound = _space.soundManager.getSound(sound);
+			else if (sound is CitrusSound)
+				citrusSound = sound;
+				
+			if (citrusSound != null)
+			{
+				soundInstance = citrusSound.createInstance(false, true);
+				if (soundInstance)
+					{
+						soundInstance.addEventListener(CitrusSoundEvent.SOUND_START, onSoundStart);
+						soundInstance.addEventListener(CitrusSoundEvent.SOUND_END, onSoundEnd);
+						soundInstance.play();
+					}
+			}
+			
+			return soundInstance;
+		}
+		
+		public function pause():void
+		{
+			var s:CitrusSoundInstance;
+			for each (s in _sounds)
+				s.pause();
+		}
+		
+		public function resume():void
+		{
+			var s:CitrusSoundInstance;
+			for each (s in _sounds)
+				s.resume();
+		}
+		
+		public function stop():void
+		{
+			var s:CitrusSoundInstance;
+			for each (s in _sounds)
+				s.stop();
+		}
+		
+		protected function onSoundStart(e:CitrusSoundEvent):void
+		{
+			_sounds.push(e.soundInstance);
+		}
+		
+		protected function onSoundEnd(e:CitrusSoundEvent):void
+		{
+			e.soundInstance.removeEventListener(CitrusSoundEvent.SOUND_START, onSoundStart);
+			e.soundInstance.removeEventListener(CitrusSoundEvent.SOUND_END, onSoundEnd);
+			e.soundInstance.removeSelfFromVector(_sounds);
+		}
+		
+		public function update():void
+		{
+			if (_enabled)
+				updateSounds();
+		}
+		
+		protected function updateSounds():void
+		{
+			var distance:Number = _camVec.length;
+			var soundInstance:CitrusSoundInstance;
+			
+			for each (soundInstance in _sounds)
+			{
+				if (!soundInstance.isPlaying)
+					return;
+					
+				var volume:Number = distance > radius ? 0 : 1 - distance / radius;
+				soundInstance.volume = adjustVolume(volume);
+				
+				var panning:Number = (Math.cos(_camVec.angle) * distance) / 
+				( (_rect.width /_rect.height) * 0.5 );
+				soundInstance.panning = adjustPanning(panning);
+			}
+		}
+		
+		public function adjustPanning(value:Number):Number
+		{
+			if (value <= -1)
+				return -1;
+			else if (value >= 1)
+				return 1;
+			
+			if (value < 0)
+				return -panAdjust(-value, 0, 1, 1);
+			else if (value > 0)
+				return panAdjust(value, 0, 1, 1);
+			return value;
+		}
+		
+		public function adjustVolume(value:Number):Number
+		{
+			if (value <= 0)
+				return 0;
+			else if (value >= 1)
+				return 1;
+				
+			return volAdjust(value, 0, 1, 1);
+		}
+		
+		public function destroy():void
+		{
+			_space.remove(this);
+			_sounds.length = 0;
+			_ce = null;
+			_camVec = null;
+			_citrusObject = null;
+			_space = null;
+		}
+		
+		public function get citrusObject():ISpriteView
+		{
+			return _citrusObject;
+		}
+		
+		public function get totalVolume():Number
+		{
+			var soundInstance:CitrusSoundInstance;
+			var total:Number = 0;
+			for each(soundInstance in _sounds)
+				total += soundInstance.leftPeak + soundInstance.rightPeak;
+			if(_sounds.length>0)
+				total /= _sounds.length * 2;
+			return total;
+		}
+		
+		public function get rect():Rectangle
+		{
+			return _rect;
+		}
+		
+		public function get camVec():MathVector
+		{
+			return _camVec;
+		}
+		
+	}
+
+}
