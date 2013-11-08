@@ -22,6 +22,10 @@ package citrus.sounds
 		
 		protected var _camVec:MathVector = new MathVector();
 		protected var _rect:Rectangle = new Rectangle();
+		
+		/**
+		 * radius or this sound object. this determines at what distance will the sound start to get heard.
+		 */
 		public var radius:Number = 600;
 		
 		public function CitrusSoundObject(citrusObject:ISpriteView) 
@@ -41,6 +45,11 @@ package citrus.sounds
 			
 		}
 		
+		/**
+		 * play a sound through this sound object
+		 * @param	sound sound id (String) or CitrusSound
+		 * @return
+		 */
 		public function play(sound:*):CitrusSoundInstance
 		{
 			var citrusSound:CitrusSound;
@@ -65,21 +74,79 @@ package citrus.sounds
 			return soundInstance;
 		}
 		
-		public function pause():void
+		/**
+		 * pause a sound through this sound object
+		 * @param	sound sound id (String) or CitrusSound
+		 * @return
+		 */
+		public function pause(sound:*):void
 		{
-			var s:CitrusSoundInstance;
-			for each (s in _sounds)
-				s.pause();
+			var citrusSound:CitrusSound;
+			var soundInstance:CitrusSoundInstance;
+			
+			if (sound is String)
+				citrusSound = _space.soundManager.getSound(sound);
+			else if (sound is CitrusSound)
+				citrusSound = sound;
+				
+			if(citrusSound)
+				citrusSound.pause();
 		}
 		
-		public function resume():void
+		/**
+		 * resume a sound through this sound object
+		 * @param	sound sound id (String) or CitrusSound
+		 * @return
+		 */
+		public function resume(sound:*):void
 		{
-			var s:CitrusSoundInstance;
-			for each (s in _sounds)
-				s.resume();
+			var citrusSound:CitrusSound;
+			var soundInstance:CitrusSoundInstance;
+			
+			if (sound is String)
+				citrusSound = _space.soundManager.getSound(sound);
+			else if (sound is CitrusSound)
+				citrusSound = sound;
+				
+			if(citrusSound)
+				citrusSound.resume();
 		}
 		
-		public function stop():void
+		
+		/**
+		 * stop a sound through this sound object
+		 * @param	sound sound id (String) or CitrusSound
+		 * @return
+		 */
+		public function stop(sound:*):void
+		{
+			var citrusSound:CitrusSound;
+			var soundInstance:CitrusSoundInstance;
+			
+			if (sound is String)
+				citrusSound = _space.soundManager.getSound(sound);
+			else if (sound is CitrusSound)
+				citrusSound = sound;
+				
+			if(citrusSound)
+				citrusSound.stop();
+		}
+		
+		public function pauseAll():void
+		{
+			var soundInstance:CitrusSoundInstance;
+			for each(soundInstance in _sounds)
+				soundInstance.pause();
+		}
+		
+		public function resumeAll():void
+		{
+			var soundInstance:CitrusSoundInstance;
+			for each(soundInstance in _sounds)
+				soundInstance.resume();
+		}
+		
+		public function stopAll():void
 		{
 			var s:CitrusSoundInstance;
 			for each (s in _sounds)
@@ -181,6 +248,11 @@ package citrus.sounds
 		public function get camVec():MathVector
 		{
 			return _camVec;
+		}
+		
+		public function get activeSoundInstances():Vector.<CitrusSoundInstance>
+		{
+			return _sounds.slice();
 		}
 		
 	}
