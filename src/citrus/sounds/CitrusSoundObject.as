@@ -1,14 +1,13 @@
 package citrus.sounds 
 {
 	import citrus.core.CitrusEngine;
-	import citrus.core.CitrusObject;
 	import citrus.math.MathUtils;
 	import citrus.math.MathVector;
 	import citrus.view.ISpriteView;
 	import flash.geom.Rectangle;
 	
 	/**
-	 * 
+	 * sound object in a CitrusSoundSpace
 	 */
 	public class CitrusSoundObject 
 	{
