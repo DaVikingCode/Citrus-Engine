@@ -70,12 +70,15 @@ package citrus.sounds
 		public static var onNewChannelsUnavailable:String = REMOVE_FIRST_PLAYED;
 		
 		/**
-		 * offset to use on all sounds in Sound.play().
-		 * If all of your sounds are encoded using the same encoder, and you are able to identify the amount of silence in ms that there is 
-		 * at the beginning of the sound, set that value to the amount you found.
-		 * This will get rid of most if not all the gaps in looping and non looping sounds (not talking about the gaps caused by loading/streaming or event processing however).
+		 * offset to use on all sounds when playing them via Sound.play(startPosition...).
 		 * 
-		 * This of course works really if all sounds were encoded the same way to ensure said gap is the same in milliseconds.
+		 * If all of your sounds are encoded using the same encoder (that's important otherwise the silence could be variable),
+		 * and you are able to identify the amount of silence in ms that there is at the beginning of them,
+		 * set startPositionOffset to that value you found.
+		 * 
+		 * This will get rid of most if not all the gaps in looping and non looping sounds.
+		 * 
+		 * Warning: it won't get rid of the gaps caused by loading/streaming or event processing.
 		 */
 		public static var startPositionOffset:Number = 0;
 		
