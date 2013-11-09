@@ -291,20 +291,19 @@ package citrus.sounds
 				return;
 			}
 			
-			_soundTransform = resetSoundTransform();
 			_loopCount++;
 			
 			if (_loops < 0)
 			{
 				_soundChannel.stop();
-				soundChannel = (_parentsound.sound as Sound).play(startPositionOffset, int.MAX_VALUE, _soundTransform);
+				soundChannel = (_parentsound.sound as Sound).play(startPositionOffset, int.MAX_VALUE, resetSoundTransform());
 			}
 			else if (_loopCount > _loops)
 				stop();
 			else
 			{
 				_soundChannel.stop();
-				soundChannel = (_parentsound.sound as Sound).play(startPositionOffset, 0, _soundTransform);
+				soundChannel = (_parentsound.sound as Sound).play(startPositionOffset, 0, resetSoundTransform());
 				dispatcher(CitrusSoundEvent.SOUND_LOOP);
 			}
 		}
