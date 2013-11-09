@@ -401,11 +401,18 @@ package citrus.view {
 		
 		/**
 		 * Check is the given coordinates in State space are contained within the camera.
+		 * 
+		 * set the area argument to define a different area of the screen, for example if you want to check
+		 * further left/right/up/down than the camera's default rectangle which is : (0,0,cameraLensWidth,cameraLensHeight)
 		 */
-		public function contains(xa:Number,ya:Number):Boolean
+		public function contains(xa:Number,ya:Number,area:Rectangle = null):Boolean
 		{
 			_p.setTo(xa, ya);
-			_rect.setTo(0, 0, cameraLensWidth, cameraLensHeight);
+			
+			if(!area)
+				_rect.setTo(0, 0, cameraLensWidth, cameraLensHeight);
+			else
+				_rect.copyFrom(area);
 			
 			_p.copyFrom(_m.transformPoint(_p));
 			
@@ -414,11 +421,19 @@ package citrus.view {
 		
 		/**
 		 * Check is the given rectangle in state space is fully contained within the camera.
+		 * 
+		 * set the area argument to define a different area of the screen, for example if you want to check
+		 * further left/right/up/down than the camera's default rectangle which is : (0,0,cameraLensWidth,cameraLensHeight)
 		 */
-		public function containsRect(rectangle:Rectangle):Boolean
+		public function containsRect(rectangle:Rectangle, area:Rectangle = null):Boolean
 		{
-			_p.setTo(rectangle.x + rectangle.width*.5, rectangle.y + rectangle.height*.5);
-			_rect.setTo(0, 0, cameraLensWidth, cameraLensHeight);
+			_p.setTo(rectangle.x + rectangle.width * .5, rectangle.y + rectangle.height * .5);
+			
+			if(!area)
+				_rect.setTo(0, 0, cameraLensWidth, cameraLensHeight);
+			else
+				_rect.copyFrom(area);
+			
 			_p.copyFrom(_m.transformPoint(_p));
 			_r.setTo(_p.x - rectangle.width * .5, _p.y - rectangle.height * .5, rectangle.width, rectangle.height);
 			return _rect.intersects(_r);
