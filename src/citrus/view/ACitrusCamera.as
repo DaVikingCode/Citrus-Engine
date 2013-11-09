@@ -421,11 +421,33 @@ package citrus.view {
 		
 		/**
 		 * Check is the given rectangle in state space is fully contained within the camera.
+		 * will return false even if partially visible, collision with borders included.
 		 * 
 		 * set the area argument to define a different area of the screen, for example if you want to check
 		 * further left/right/up/down than the camera's default rectangle which is : (0,0,cameraLensWidth,cameraLensHeight)
 		 */
 		public function containsRect(rectangle:Rectangle, area:Rectangle = null):Boolean
+		{
+			_p.setTo(rectangle.x + rectangle.width * .5, rectangle.y + rectangle.height * .5);
+			
+			if(!area)
+				_rect.setTo(0, 0, cameraLensWidth, cameraLensHeight);
+			else
+				_rect.copyFrom(area);
+			
+			_p.copyFrom(_m.transformPoint(_p));
+			_r.setTo(_p.x - rectangle.width * .5, _p.y - rectangle.height * .5, rectangle.width, rectangle.height);
+			return _rect.containsRect(_r);
+		}
+		
+		/**
+		 * Check is the given rectangle in state space intersects with the camera rectangle.
+		 * (if its partially visible, true will be returned.
+		 * 
+		 * set the area argument to define a different area of the screen, for example if you want to check
+		 * further left/right/up/down than the camera's default rectangle which is : (0,0,cameraLensWidth,cameraLensHeight)
+		 */
+		public function intersectsRect(rectangle:Rectangle, area:Rectangle = null):Boolean
 		{
 			_p.setTo(rectangle.x + rectangle.width * .5, rectangle.y + rectangle.height * .5);
 			
