@@ -136,6 +136,11 @@ package citrus.view {
 		protected var _p:Point = new Point();
 		
 		/**
+		 * camera rectangle
+		 */
+		protected var _rect:Rectangle = new Rectangle();
+		
+		/**
 		 * helper object for bounds checking
 		 */
 		protected var _b:Object = { w2:0, h2:0, diag2:0, rotoffset:new Point(), br:0, bl:0, bt:0, bb:0 };
@@ -387,6 +392,20 @@ package citrus.view {
 		public function get transformMatrix():Matrix
 		{
 			return _m;
+		}
+		
+		/**
+		 * Check is the given coordinates are contained within the camera using
+		 * its transformMatrix.
+		 */
+		public function contains(xa:Number,ya:Number):Boolean
+		{
+			_p.setTo(xa, ya);
+			_rect.setTo(0, 0, cameraLensWidth, cameraLensHeight);
+			
+			_p.copyFrom(_m.transformPoint(_p));
+			
+			return _rect.contains(_p.x, _p.y);
 		}
 		
 		/**
