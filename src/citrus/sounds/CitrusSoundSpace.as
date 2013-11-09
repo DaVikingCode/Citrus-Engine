@@ -33,11 +33,14 @@ package citrus.sounds
 			touchable = false;
 			_soundManager = _ce.sound;
 			_objects = new Vector.<CitrusSoundObject>();
+			
+			updateCameraProperties();
 		}
 		
 		public function add(citrusSoundObject:CitrusSoundObject):void
 		{
 			_objects.push(citrusSoundObject);
+			updateObject(citrusSoundObject);
 			citrusSoundObject.initialize();
 		}
 		
@@ -45,23 +48,26 @@ package citrus.sounds
 		{
 			var i:int = _objects.indexOf(citrusSoundObject);
 			if (i > -1)
-			{
 				_objects.splice(i, 1);
-				citrusSoundObject.destroy();
-			}
 		}
 		
 		protected var camCenter:Point = new Point();
 		protected var camRect:Rectangle = new Rectangle();
+		protected var camRotation:Number = 0;
 		
-		override public function update(timeDelta:Number):void
+		protected function updateCameraProperties():void
 		{
 			_camera = _ce.state.view.camera;
 			camRect.copyFrom(_camera.getRect());
 			camCenter.setTo(camRect.x + camRect.width * 0.5, camRect.y + camRect.height * 0.5);
-			var rot:Number = _camera.getRotation();
-			
+			camRotation = _camera.getRotation();
+		}
+		
+		override public function update(timeDelta:Number):void
+		{
 			super.update(timeDelta);
+			
+			updateCameraProperties();
 			
 			if (_visible)
 				_debugArt.graphics.clear();
@@ -69,15 +75,7 @@ package citrus.sounds
 			var object:CitrusSoundObject;
 			for each(object in _objects)
 			{	
-				if (_camera)
-				{
-					object.camVec.setTo(object.citrusObject.x - camCenter.x, object.citrusObject.y - camCenter.y);
-					object.camVec.angle += rot;
-					object.rect.width = _camera.cameraLensWidth;
-					object.rect.height = _camera.camProxy.scale;
-				}
-				
-				object.update();
+				updateObject(object);				
 				
 				if (_visible)
 				{
@@ -96,6 +94,18 @@ package citrus.sounds
 			
 			if (_visible)
 				_debugArt.transform.matrix = _camera.transformMatrix.clone();
+		}
+		
+		protected function updateObject(object:CitrusSoundObject):void
+		{
+			if (_camera)
+			{
+				object.camVec.setTo(object.citrusObject.x - camCenter.x, object.citrusObject.y - camCenter.y);
+				object.camVec.angle += camRotation;
+				object.rect.width = _camera.cameraLensWidth;
+				object.rect.height = _camera.camProxy.scale;
+			}
+			object.update();
 		}
 		
 		override public function destroy():void

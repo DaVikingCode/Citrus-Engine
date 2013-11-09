@@ -38,7 +38,6 @@ package citrus.sounds
 				throw new Error("[CitrusSoundObject] for " + citrusObject["name"] + " couldn't find a CitrusSoundSpace.");
 				
 			_citrusObject = citrusObject;
-			
 			_space.add(this);
 		}
 		
@@ -70,6 +69,7 @@ package citrus.sounds
 						soundInstance.addEventListener(CitrusSoundEvent.SOUND_START, onSoundStart);
 						soundInstance.addEventListener(CitrusSoundEvent.SOUND_END, onSoundEnd);
 						soundInstance.play();
+						updateSoundInstance(soundInstance, _camVec.length);
 					}
 			}
 			
@@ -110,8 +110,11 @@ package citrus.sounds
 			else if (sound is CitrusSound)
 				citrusSound = sound;
 				
-			if(citrusSound)
+			if (citrusSound)
+			{
 				citrusSound.resume();
+				updateSoundInstance(soundInstance, _camVec.length);
+			}
 		}
 		
 		
@@ -182,14 +185,18 @@ package citrus.sounds
 			{
 				if (!soundInstance.isPlaying)
 					return;
-					
-				var volume:Number = distance > radius ? 0 : 1 - distance / radius;
+				updateSoundInstance(soundInstance, distance);
+			}
+		}
+		
+		protected function updateSoundInstance(soundInstance:CitrusSoundInstance,distance:Number = 0):void
+		{
+			var volume:Number = distance > radius ? 0 : 1 - distance / radius;
 				soundInstance.volume = adjustVolume(volume) * _volume;
 				
-				var panning:Number = (Math.cos(_camVec.angle) * distance) / 
-				( (_rect.width /_rect.height) * 0.5 );
-				soundInstance.panning = adjustPanning(panning);
-			}
+			var panning:Number = (Math.cos(_camVec.angle) * distance) / 
+			( (_rect.width /_rect.height) * 0.5 );
+			soundInstance.panning = adjustPanning(panning);
 		}
 		
 		public function adjustPanning(value:Number):Number
