@@ -136,6 +136,11 @@ package citrus.view {
 		protected var _p:Point = new Point();
 		
 		/**
+		 * helper rectangle
+		 */
+		protected var _r:Rectangle = new Rectangle();
+		
+		/**
 		 * camera rectangle
 		 */
 		protected var _rect:Rectangle = new Rectangle();
@@ -406,6 +411,19 @@ package citrus.view {
 			_p.copyFrom(_m.transformPoint(_p));
 			
 			return _rect.contains(_p.x, _p.y);
+		}
+		
+		/**
+		 * Check is the given rectangle is fully contained within the camera using
+		 * its transformMatrix.
+		 */
+		public function containsRect(rectangle:Rectangle):Boolean
+		{
+			_p.setTo(rectangle.x + rectangle.width*.5, rectangle.y + rectangle.height*.5);
+			_rect.setTo(0, 0, cameraLensWidth, cameraLensHeight);
+			_p.copyFrom(_m.transformPoint(_p));
+			_r.setTo(_p.x - rectangle.width * .5, _p.y - rectangle.height * .5, rectangle.width, rectangle.height);
+			return _rect.intersects(_r);
 		}
 		
 		/**
