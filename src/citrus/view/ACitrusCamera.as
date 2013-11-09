@@ -400,8 +400,7 @@ package citrus.view {
 		}
 		
 		/**
-		 * Check is the given coordinates are contained within the camera using
-		 * its transformMatrix.
+		 * Check is the given coordinates in State space are contained within the camera.
 		 */
 		public function contains(xa:Number,ya:Number):Boolean
 		{
@@ -414,8 +413,7 @@ package citrus.view {
 		}
 		
 		/**
-		 * Check is the given rectangle is fully contained within the camera using
-		 * its transformMatrix.
+		 * Check is the given rectangle in state space is fully contained within the camera.
 		 */
 		public function containsRect(rectangle:Rectangle):Boolean
 		{
