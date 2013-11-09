@@ -6,7 +6,7 @@ V3.1.8, Work In Progress
 - Nape updated on 2.0.12
 - Removed Spine runtime support. Use it via DragonBones library (easier to maintain only one skeleton lib).
 - Updated to latest DynamicTextureAtlas extension.
-- StarlingCitrusEngine offers to manage multi-resolutions. Set up _baseWidth, _baseHeight and _viewportMode.
+- StarlingCitrusEngine offers to manage multi-resolutions (http://wiki.starling-framework.org/citrus/multi_resolution)
 - ISpriteView handleArtReady/handleArtChanged - custom citrus sprite or physics objects can now react when 'the view is set (or loaded if the view was a url) or changes' to add/remove event listeners, transform the art or manipulate its content...
 - Input system : justDid,isDoing,hasDone return the corresponding InputAction object or null (instead of just true or false) // actions carry messages // introduced new utility functions such as getAction() with phase/controller/channel filtering.
 - Changed the way we handle the physics engine's debug drawers (due to state transition bugs, and the new nape ShapeDebug) see APhysicsEngine.debugView
@@ -14,6 +14,7 @@ V3.1.8, Work In Progress
 - MathVector : critical bug fixes (rotate, angle) and new methods (dot product, normalize, copyFrom, setTo)
 - Camera : AABB rectangle is accessible using camera.getRect()
 - Camera : update call can be disabled (permanently or temporarily) using camera.enabled = false - for better peformance
+- Camera : added contains(x,y) , containsRect and intersectsRect as a way to know if points/objects are on or off screen and how - for objects, use their visual bounds in state space.
 - SoundManager : removeAllSounds accepts exceptions, fixed stack underflow error
 - SoundManager : UI sound group added by default.
 - pause/resume sounds depending Event.ACTIVATE & Event.DEACTIVATE
