@@ -226,6 +226,11 @@ package citrus.sounds
 		public function destroy():void
 		{
 			_space.remove(this);
+			
+			var soundInstance:CitrusSoundInstance;
+			for each(soundInstance in _sounds)
+				soundInstance.stop(true);
+			
 			_sounds.length = 0;
 			_ce = null;
 			_camVec = null;
