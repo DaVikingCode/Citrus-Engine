@@ -30,6 +30,25 @@ package citrus.utils
 				return false;
 		}
 		
+		public static function maxAvailableChannels():uint
+		{
+			var channels:Vector.<SoundChannel> = new Vector.<SoundChannel>();
+			var len:uint = 0;
+			
+			while ((soundChannel = soundCheck.play(0, 0, silentST)) != null)
+				channels.push(soundChannel);
+				
+			len = channels.length;
+			
+			while ((soundChannel = channels.pop()) != null)
+				soundChannel.stop();
+				
+			channels.length = 0;
+			
+			return len;
+			
+		}
+		
 		public static function get silentST():SoundTransform
 		{
 			return _silentSoundTransform;
