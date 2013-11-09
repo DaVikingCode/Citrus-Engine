@@ -110,7 +110,7 @@ package citrus.sounds
 				return;
 			
 			if (!_isPaused || !_isPlaying)
-				playAt(0);
+				playAt(startPositionOffset);
 		}
 		
 		public function playAt(position:Number):void
@@ -196,7 +196,7 @@ package citrus.sounds
 			
 			_parentsound.soundInstances.unshift(this);
 			
-			if (position == 0 && _loopCount == 0)
+			if ((position == 0 || position == startPositionOffset) && _loopCount == 0)
 				dispatcher(CitrusSoundEvent.SOUND_START);
 		}
 		
@@ -211,7 +211,7 @@ package citrus.sounds
 			_isPaused = true;
 			
 			_soundChannel.stop();
-			soundChannel = SoundChannelUtil.silentSound.play(startPositionOffset, int.MAX_VALUE, SoundChannelUtil.silentST);
+			soundChannel = SoundChannelUtil.silentSound.play(0, int.MAX_VALUE, SoundChannelUtil.silentST);
 			
 			dispatcher(CitrusSoundEvent.SOUND_PAUSE);
 		}
