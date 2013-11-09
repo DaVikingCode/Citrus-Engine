@@ -172,6 +172,8 @@ package citrus.sounds
 							}
 						break;
 					case DONT_PLAY: 
+							dispatcher(CitrusSoundEvent.NO_CHANNEL_AVAILABLE);
+							stop(true);
 						return;
 				}
 			}
