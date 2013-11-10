@@ -142,6 +142,8 @@ package citrus.view.spriteview {
 			
 			super.update();
 			
+			offset.setTo(cameraLensWidth * center.x, cameraLensHeight * center.y);
+			
 			if (_target && followTarget)
 			{
 				_targetPos.x = _target.x;

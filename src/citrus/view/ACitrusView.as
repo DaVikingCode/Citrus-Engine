@@ -50,6 +50,7 @@ package citrus.view {
 		
 		public function destroy():void
 		{
+			camera.destroy();
 			loadManager.destroy();
 		}
 		
@@ -77,7 +78,7 @@ package citrus.view {
 			if (art)
 				_viewObjects[citrusObject] = art;
 			
-			if (art.content == null)
+			if (art["content"] == null)
 				loadManager.add(art, citrusObject as CitrusObject);
 			
 		}

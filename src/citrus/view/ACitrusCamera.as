@@ -95,12 +95,20 @@ package citrus.view {
 		 * you may disable the camera to save some performances. In such cases, you may still call
 		 * reset() in the state's initialize() so that the camera will set itself up at the right position/zoom/rotation.
 		 */
-		public var enabled:Boolean = true;
-
+		public var enabled:Boolean = false;
+		
 		/**
-		 * The distance from the top-left corner of the screen that the camera should offset the target. 
+		 * This defines the camera "center" position as a factor of the camera lens dimensions.
+		 * if center is (0.5,0.5) then the target will appear at the center of the screen.
+		 * 
+		 * x and y value of the center point must be between 0 and 1.
 		 */
-		public var offset:Point = new Point();
+		public var center:Point = new Point(0.5, 0.5);
+		
+		/**
+		 * real camera center position
+		 */
+		protected var offset:Point = new Point();
 
 		/**
 		 * A value between 0 and 1 that specifies the speed at which the camera catches up to the target.
@@ -215,6 +223,14 @@ package citrus.view {
 			
 			_ce = CitrusEngine.getInstance();
 			cameraLensWidth = _ce.screenWidth;
+			cameraLensHeight = _ce.screenHeight;
+			
+			_ce.onStageResize.add(onResize);
+		}
+		
+		protected function onResize(w:Number, h:Number):void
+		{
+			cameraLensWidth = _ce.screenWidth;
 			cameraLensHeight = _ce.screenHeight;	
 		}
 		
@@ -227,7 +243,7 @@ package citrus.view {
 		 * @param cameraLens The width and height of the visible game screen. Default is the same as your stage width and height.
 		 * @return this The Instance of the ACitrusCamera.
 		 */		
-		public function setUp(target:Object = null, offset:Point = null, bounds:Rectangle = null, easing:Point = null, cameraLens:Point = null):ACitrusCamera
+		public function setUp(target:Object = null,bounds:Rectangle = null, center:Point = null , easing:Point = null):ACitrusCamera
 		{
 			if (target)
 			{
@@ -235,17 +251,14 @@ package citrus.view {
 				_ghostTarget.x = target.x;
 				_ghostTarget.y = target.y;
 			}
-			if (offset)
-				this.offset = offset;
+			if (center)
+				this.center = center;
 			if (bounds)
-				this.bounds = bounds;	
+				this.bounds = bounds;
 			if (easing)
 				this.easing = easing;
-			if (cameraLens) {
-				cameraLensWidth = cameraLens.x;
-				cameraLensHeight = cameraLens.y;
-			}
 				
+			enabled = true;
 			return this;
 		}
 		
@@ -319,6 +332,10 @@ package citrus.view {
 		 * Update the camera.
 		 */
 		public function update():void {
+		}
+		
+		public function destroy():void {
+			_ce.onStageResize.remove(onResize);
 		}
 		
 		/*

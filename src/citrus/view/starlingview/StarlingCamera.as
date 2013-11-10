@@ -26,11 +26,17 @@ package citrus.view.starlingview {
 		override protected function initialize():void {
 			super.initialize();// setup camera lens normally
 			
-			cameraLensWidth = (_ce as StarlingCitrusEngine).starling.viewPort.width;
-			cameraLensHeight = (_ce as StarlingCitrusEngine).starling.viewPort.height;
+			cameraLensWidth = (_ce as StarlingCitrusEngine).starling.stage.stageWidth;
+			cameraLensHeight = (_ce as StarlingCitrusEngine).starling.stage.stageHeight;
 
 			_aabbData = MathUtils.createAABBData(0, 0, cameraLensWidth / _camProxy.scale, cameraLensHeight / _camProxy.scale, _camProxy.rotation, _aabbData);
 			_m = (_viewRoot as starling.display.Sprite).transformationMatrix;
+		}
+		
+		override protected function onResize(w:Number, h:Number):void
+		{
+			cameraLensWidth = (_ce as StarlingCitrusEngine).starling.stage.stageWidth;
+			cameraLensHeight = (_ce as StarlingCitrusEngine).starling.stage.stageHeight;
 		}
 		
 		/**
@@ -152,6 +158,8 @@ package citrus.view.starlingview {
 		override public function update():void
 		{
 			super.update();
+			
+			offset.setTo(cameraLensWidth * center.x, cameraLensHeight * center.y);
 			
 			if (_target && followTarget)
 			{

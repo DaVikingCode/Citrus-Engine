@@ -16,6 +16,8 @@ package citrus.view.away3dview {
 		override public function update():void {
 
 			super.update();
+			
+			offset.setTo(cameraLensWidth * center.x, cameraLensHeight * center.y);
 
 			if (target) {
 

@@ -15,6 +15,8 @@ package citrus.view.blittingview {
 		override public function update():void {
 
 			super.update();
+			
+			offset.setTo(cameraLensWidth * center.x, cameraLensHeight * center.y);
 
 			if (target) {
 

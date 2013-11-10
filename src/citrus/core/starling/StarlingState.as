@@ -9,6 +9,7 @@ package citrus.core.starling {
 	import citrus.system.Entity;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ACitrusView;
+	import citrus.view.starlingview.StarlingCamera;
 	import citrus.view.starlingview.StarlingView;
 
 	import starling.display.Sprite;
@@ -173,6 +174,11 @@ package citrus.core.starling {
 		 */
 		protected function createView():ACitrusView {
 			return new StarlingView(this);
+		}
+		
+		public function get camera():StarlingCamera
+		{
+			return view.camera as StarlingCamera;
 		}
 	}
 }

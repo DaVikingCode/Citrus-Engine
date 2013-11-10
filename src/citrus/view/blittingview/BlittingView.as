@@ -34,7 +34,7 @@ package citrus.view.blittingview
 	{
 		public var backgroundColor:Number = 0xffffffff;
 		
-		private var _debugView:Sprite;
+		private var _debugView:IDebugView;
 		private var _canvasBitmap:Bitmap;
 		private var _canvas:BitmapData;
 		private var _spriteOrder:Array = [];
@@ -56,9 +56,6 @@ package citrus.view.blittingview
 			_canvasBitmap = new Bitmap(_canvas);
 			root.addChild(_canvasBitmap);
 			
-			_debugView = new Sprite();
-			root.addChild(_debugView);
-			
 			camera = new BlittingCamera(_cameraPosition);
 		}
 		
@@ -73,13 +70,9 @@ package citrus.view.blittingview
 			
 			if(camera.enabled)
 				camera.update();			
-			
-			if (_debuggerPhysicsObject) {
-				_debugView.visible = _debuggerPhysicsObject.visible;
-				(_debugView.getChildAt(0) as IDebugView).update();
-			}
-			_debugView.x = -_cameraPosition.x;
-			_debugView.y = -_cameraPosition.y;
+				
+			(_debugView as IDebugView).update();
+			(_debugView as IDebugView).transformMatrix.translate(-_cameraPosition.x, -_cameraPosition.y);
 			
 			if (_useSimpleCitrusSolver) {
 				var tabLength:uint = _tabSpriteDebugArt[0].length;
@@ -122,7 +115,7 @@ package citrus.view.blittingview
 			}
 			else if (citrusObject is APhysicsEngine && !_usePhysicsEngine && !_useSimpleCitrusSolver)
 			{
-				_debugView.addChild(new citrusObject.view());
+				new (citrusObject as APhysicsEngine).view();
 				_usePhysicsEngine = true;
 				_debuggerPhysicsObject = citrusObject;	
 			}
@@ -139,7 +132,7 @@ package citrus.view.blittingview
 					var spriteDebugArt:SpriteDebugArt = new citrusObject.view();
 					if (spriteDebugArt.hasOwnProperty("initialize")) {
 						spriteDebugArt["initialize"](citrusObject);
-						_debugView.addChild(spriteDebugArt);
+						_debugView.debugDrawer.addChild(spriteDebugArt);
 						_tabSpriteDebugArt[0].push(spriteDebugArt);
 						_tabSpriteDebugArt[1].push(citrusObject);
 					}
@@ -171,7 +164,7 @@ package citrus.view.blittingview
 						break;
 				}
 				
-				_debugView.removeChild(_tabSpriteDebugArt[0][i]);
+				_debugView.debugDrawer.removeChild(_tabSpriteDebugArt[0][i]);
 				_tabSpriteDebugArt[0].splice(i, 1);
 				_tabSpriteDebugArt[1].splice(i, 1);
 			}
