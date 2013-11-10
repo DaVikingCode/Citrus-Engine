@@ -311,17 +311,13 @@ package citrus.view {
 					return;
 					
 				vec.setTo(newTarget.x - moveTarget.x, newTarget.y - moveTarget.y);
-				vec.length = speed;
+				if(vec.length > speed)
+					vec.length = speed;
 				moveTarget.x += vec.x;
 				moveTarget.y += vec.y;
 				
-				if (MathUtils.DistanceBetweenTwoPoints(newTarget.x,moveTarget.x,newTarget.y,moveTarget.y) <= speed)
+				if (MathUtils.DistanceBetweenTwoPoints(newTarget.x,moveTarget.x,newTarget.y,moveTarget.y) <= 0.1)
 				{
-					vec.setTo(newTarget.x - moveTarget.x, newTarget.y - moveTarget.y);
-					vec.length = speed;
-					moveTarget.x += vec.x;
-					moveTarget.y += vec.y;
-				
 					_ce.removeEventListener(Event.ENTER_FRAME, arguments.callee);
 					target = newTarget;
 					easing = oldEasing;
