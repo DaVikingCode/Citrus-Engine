@@ -7,6 +7,25 @@ package citrus.view.spriteview
 	import flash.utils.Dictionary;
 	import org.osflash.signals.Signal;
 	
+	/**
+	 * AnimationSequence.as wraps a flash MovieClip to manage different animations.
+	 * The .fla used should have a specific format following the format of the "patch demo"
+	 * https://github.com/alamboley/Citrus-Engine-Examples/blob/master/fla/patch_character-SpriteArt.fla
+	 * 
+	 * For each animation, have as many frames on the main timeline as needed for each.
+	 * animations should be put in sequence on the same main timeline.
+	 * to defin where each animation start and ends, spread a keyframe over each animation with a frame label.
+	 * this label will be the animation name.
+	 * 
+	 * The MC already starts stopped (so you don't need to call stop() ).
+	 * In fact you should not control the timeline yourself through actionscript in the fla, AnimationSequence will
+	 * take care of looping animations that need looping, going back and force or stopping.
+	 * 
+	 * AnimationSequence adds scripts on frames.
+	 * if all animations are correctly in sequence and all labeled keeframes are "connected" without gaps,
+	 * AnimationSequence will make the MC dispatch a signal the frame before the main timeline should go to a different label
+	 * so it automatically loops back or stops.
+	 */
 	public class AnimationSequence extends Sprite
 	{
 		protected var _mc:MovieClip;
