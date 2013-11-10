@@ -2,6 +2,9 @@ package citrus.view {
 
 	import aze.motion.EazeTween;
 	import citrus.core.CitrusEngine;
+	import citrus.math.MathUtils;
+	import citrus.math.MathVector;
+	import flash.events.Event;
 
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -286,6 +289,51 @@ package citrus.view {
 		}
 		
 		/**
+		 * Moves from the current target to the newTarget at a linear speed, sets the camera's target to be the newTarget
+		 * then calls onComplete.
+		 * @param	newTarget any object with x/y properties
+		 * @param	speed by how much should the camera move towards the new target on each frame?
+		 * @param	onComplete
+		 */
+		public function switchToTarget(newTarget:Object, speed:Number = 10, onComplete:Function = null):void
+		{
+			var moveTarget:Point = new Point(camPos.x,camPos.y);
+			var vec:MathVector = new MathVector(0, 0);
+			
+			var oldEasing:Point = easing.clone();
+			easing.setTo(1, 1);
+			
+			target = moveTarget;
+				
+			var switchTo:Function = function(e:Event):void
+			{
+				if (!_ce.playing)
+					return;
+					
+				vec.setTo(newTarget.x - moveTarget.x, newTarget.y - moveTarget.y);
+				vec.length = speed;
+				moveTarget.x += vec.x;
+				moveTarget.y += vec.y;
+				
+				if (MathUtils.DistanceBetweenTwoPoints(newTarget.x,moveTarget.x,newTarget.y,moveTarget.y) <= speed)
+				{
+					vec.setTo(newTarget.x - moveTarget.x, newTarget.y - moveTarget.y);
+					vec.length = speed;
+					moveTarget.x += vec.x;
+					moveTarget.y += vec.y;
+				
+					_ce.removeEventListener(Event.ENTER_FRAME, arguments.callee);
+					target = newTarget;
+					easing = oldEasing;
+					if (onComplete != null)
+						onComplete();
+				}
+			}
+			
+			_ce.addEventListener(Event.ENTER_FRAME, switchTo);
+		}
+		
+		/**
 		 * Moves from current target to newTarget using EazeTween.
 		 * function returns the EazeTween instance created.
 		 * @param	newTarget any object with x/y properties
@@ -294,7 +342,7 @@ package citrus.view {
 		 * @param	onComplete callback when the tween ends
 		 * @return  EazeTween
 		 */
-		public function switchToTarget(newTarget:Object, duration:Number = 2, easingFunction:Function = null, onComplete:Function = null):EazeTween
+		public function tweenSwitchToTarget(newTarget:Object, duration:Number = 2, easingFunction:Function = null, onComplete:Function = null):EazeTween
 		{
 			var moveTarget:Point = new Point(camPos.x,camPos.y);
 			

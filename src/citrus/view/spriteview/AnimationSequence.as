@@ -71,8 +71,9 @@ package citrus.view.spriteview
 		{
 			var name:String;
 			var frame:int;
+			var anim:FrameLabel;
 			
-			for each (var anim:FrameLabel in _mc.currentLabels)
+			for each (anim in _mc.currentLabels)
 			{
 				name = anim.name;
 				frame = anim.frame;
@@ -93,7 +94,7 @@ package citrus.view.spriteview
 				_mc.onAnimationComplete.dispatch();
 			};
 			
-			for each (var anim:FrameLabel in _mc.currentLabels)
+			for each (anim in _mc.currentLabels)
 			{
 				if (anim.frame != 1 && (anim.name != previousAnimation))
 				{
