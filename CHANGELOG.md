@@ -15,6 +15,8 @@ V3.1.8, Work In Progress
 - Camera : AABB rectangle is accessible using camera.getRect()
 - Camera : update call can be disabled (permanently or temporarily) using camera.enabled = false - for better peformance
 - Camera : added contains(x,y) , containsRect and intersectsRect as a way to know if points/objects are on or off screen and how - for objects, use their visual bounds in state space.
+- Camera : added switchToTarget() to tween camera movement and switch the camera's target value
+- Camera : use center instead of offset. center defines a multiple of the screen position (1,1) meaning bottom right, to decide on the camera's center position (or formerly named offset) 0.5,0.5 being the center
 - SoundManager : removeAllSounds accepts exceptions, fixed stack underflow error
 - SoundManager : UI sound group added by default.
 - pause/resume sounds depending Event.ACTIVATE & Event.DEACTIVATE
