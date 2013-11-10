@@ -45,6 +45,10 @@ package citrus.physics.nape {
 			
 			_debugDrawer.display.name = "debug view";
 			_debugDrawer.display.alpha = 0.8;
+			
+			readFlags();
+			
+			_ce.onStageResize.add(resize);
 		}
 		
 		protected function applyFlags():void
@@ -59,8 +63,36 @@ package citrus.physics.nape {
 			_debugDrawer.drawShapeDetail = flags.hasFlag(draw_ShapeDetail);
 		}
 		
+		protected function readFlags():void
+		{
+			flags.removeAllFlags();
+			if(_debugDrawer.drawBodies) flags.addFlag(draw_Bodies);
+			if(_debugDrawer.drawBodyDetail) flags.addFlag(draw_BodyDetail);
+			if(_debugDrawer.drawCollisionArbiters) flags.addFlag(draw_BodyDetail);
+			if(_debugDrawer.drawConstraints) flags.addFlag(draw_Constraints);
+			if(_debugDrawer.drawFluidArbiters) flags.addFlag(draw_FluidArbiters);
+			if(_debugDrawer.drawSensorArbiters) flags.addFlag(draw_SensorArbiters);
+			if(_debugDrawer.drawShapeAngleIndicators) flags.addFlag(draw_ShapeAngleIndicators);
+			if(_debugDrawer.drawShapeDetail) flags.addFlag(draw_ShapeDetail);
+		}
+		
 		public function initialize():void
 		{
+			_ce.stage.addChild(_debugDrawer.display);
+		}
+		
+		public function resize(w:Number, h:Number):void
+		{
+			if (!_nape.visible)
+				return;
+				
+			readFlags();
+			_ce.stage.removeChild(_debugDrawer.display);
+			_debugDrawer.flush();
+			_debugDrawer = new ShapeDebug(_ce.screenWidth, _ce.screenHeight);
+			_debugDrawer.display.name = "debug view";
+			_debugDrawer.display.alpha = 0.8;
+			applyFlags();
 			_ce.stage.addChild(_debugDrawer.display);
 		}
 		
@@ -77,6 +109,7 @@ package citrus.physics.nape {
 		public function destroy():void
 		{
 			flags.destroy();
+			_ce.onStageResize.remove(resize);
 			_ce.stage.removeChild(_debugDrawer.display);
 		}
 		
