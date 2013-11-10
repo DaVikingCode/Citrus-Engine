@@ -1,5 +1,6 @@
 package citrus.view {
 
+	import aze.motion.EazeTween;
 	import citrus.core.CitrusEngine;
 
 	import flash.geom.Matrix;
@@ -282,6 +283,39 @@ package citrus.view {
 			easing.copyFrom(tmp1);
 			rotationEasing = tmp2;
 			zoomEasing = tmp3;
+		}
+		
+		/**
+		 * Moves from current target to newTarget using EazeTween.
+		 * function returns the EazeTween instance created.
+		 * @param	newTarget any object with x/y properties
+		 * @param	duration in seconds
+		 * @param	easingFunction with the f(x) = y format
+		 * @param	onComplete callback when the tween ends
+		 * @return  EazeTween
+		 */
+		public function switchToTarget(newTarget:Object, duration:Number = 2, easingFunction:Function = null, onComplete:Function = null):EazeTween
+		{
+			var moveTarget:Point = new Point(camPos.x,camPos.y);
+			
+			var oldEasing:Point = easing;
+			easing.setTo(1, 1);
+			
+			target = moveTarget;
+			
+			var eaze:EazeTween = new EazeTween(moveTarget, false).to(duration, { x:newTarget.x, y:newTarget.y } ).onComplete(function():void
+			{
+				target = newTarget;
+				easing = oldEasing;
+				if (onComplete != null)
+					onComplete();
+			});
+			
+			if (easingFunction != null)
+				eaze.easing(easingFunction);
+				
+			eaze.start();
+			return eaze;
 		}
 		
 		public function zoom(factor:Number):void {
