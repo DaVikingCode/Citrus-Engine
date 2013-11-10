@@ -348,8 +348,6 @@ package citrus.view.spriteview
 			addChild(_content);
 		}
 		
-		public static const ANIMATION_COMPLETE:String = "ANIMATION_COMPLETE";
-		
 		private function handleContentIOError(e:IOErrorEvent):void 
 		{
 			throw new Error(e.text);
