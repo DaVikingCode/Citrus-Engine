@@ -298,7 +298,7 @@ package citrus.view {
 		{
 			var moveTarget:Point = new Point(camPos.x,camPos.y);
 			
-			var oldEasing:Point = easing;
+			var oldEasing:Point = easing.clone();
 			easing.setTo(1, 1);
 			
 			target = moveTarget;
