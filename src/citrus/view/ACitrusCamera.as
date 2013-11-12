@@ -124,6 +124,16 @@ package citrus.view {
 		 * A rectangle specifying the minimum and maximum area that the camera is allowed to follow the target in. 
 		 */
 		public var bounds:Rectangle;
+		
+		/**
+		 * defines a zone in the camera space where target will be able to move without the camera following it.
+		 * left to its default value (0,0,0,0) the camera will constantly try to move/ease to the target.
+		 * if set to 0,0,100,100, the target has to move 50px left or 50px right (in camera space) for horizontal tracking to start,
+		 * the same vertically. 
+		 * 
+		 * the deadZone's rectangle x and y values are not used.
+		 */
+		public var deadZone:Rectangle = new Rectangle();
 
 		/**
 		 * The width of the visible game screen. This will usually be the same as your stage width unless your game has a border.
@@ -303,6 +313,9 @@ package citrus.view {
 			var oldEasing:Point = easing.clone();
 			easing.setTo(1, 1);
 			
+			var oldDeadZone:Rectangle = deadZone.clone();
+			deadZone.setTo(0, 0, 0, 0);
+			
 			target = moveTarget;
 				
 			var switchTo:Function = function(e:Event):void
@@ -321,6 +334,7 @@ package citrus.view {
 					_ce.removeEventListener(Event.ENTER_FRAME, arguments.callee);
 					target = newTarget;
 					easing = oldEasing;
+					deadZone = oldDeadZone;
 					if (onComplete != null)
 						onComplete();
 				}
@@ -345,12 +359,16 @@ package citrus.view {
 			var oldEasing:Point = easing.clone();
 			easing.setTo(1, 1);
 			
+			var oldDeadZone:Rectangle = deadZone.clone();
+			deadZone.setTo(0, 0, 0, 0);
+			
 			target = moveTarget;
 			
 			var eaze:EazeTween = new EazeTween(moveTarget, false).to(duration, { x:newTarget.x, y:newTarget.y } ).onComplete(function():void
 			{
 				target = newTarget;
 				easing = oldEasing;
+				deadZone = oldDeadZone;
 				if (onComplete != null)
 					onComplete();
 			});

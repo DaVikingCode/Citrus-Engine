@@ -146,9 +146,12 @@ package citrus.view.spriteview {
 			
 			if (_target && followTarget)
 			{
-				_targetPos.x = _target.x;
-				_targetPos.y = _target.y;
+				if (_target.x <= camPos.x - (deadZone.width * .5) / _camProxy.scale || _target.x >= camPos.x + (deadZone.width * .5) / _camProxy.scale )
+					_targetPos.x = _target.x;			
 				
+				if (_target.y <= camPos.y - (deadZone.height * .5) / _camProxy.scale || _target.y >= camPos.y + (deadZone.height * .5) / _camProxy.scale)
+					_targetPos.y = _target.y;				
+					
 				_ghostTarget.x += (_targetPos.x - _ghostTarget.x) * easing.x;
 				_ghostTarget.y += (_targetPos.y - _ghostTarget.y) * easing.y;
 				
