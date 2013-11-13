@@ -24,16 +24,8 @@ package citrus.core.away3d {
 			
 			super();
 		}
-		
-		override protected function handleAddedToStage(e:Event):void 
-		{
-			super.handleAddedToStage(e);
-			stage.addEventListener(Event.RESIZE, _onResize);
-		}
 
 		override public function destroy():void {
-			
-			stage.removeEventListener(Event.RESIZE, _onResize);
 			
 			if (_away3D.stage3DProxy)				
 				_away3D.stage3DProxy.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
@@ -127,8 +119,9 @@ package citrus.core.away3d {
 				
 			super.handleEnterFrame(e);
 		}
-		
-		protected function _onResize(evt:Event):void {
+			
+		override protected function handleStageResize(e:Event):void {
+			super.handleStageResize(e);
 			
 			_away3D.width = stage.stageWidth;
 			_away3D.height = stage.stageHeight;
