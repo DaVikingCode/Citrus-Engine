@@ -458,7 +458,6 @@ package citrus.view.starlingview {
 				evt.target.loader.content is Bitmap))
 			{
 				throw new Error("StarlingArt: Loaded content for "+(_citrusObject as CitrusObject).name+" can only be a MovieClip or a Bitmap");
-				return;
 			}
 			
 			if (_content && _content.parent)

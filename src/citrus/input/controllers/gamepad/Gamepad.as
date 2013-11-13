@@ -296,7 +296,6 @@ package citrus.input.controllers.gamepad
 			if (!(name in _buttons))
 			{
 				throw new Error(this + " cannot set button control, " + name + " is not registered.");
-				return;
 			}
 			
 			(_buttons[name] as ButtonController).action = action;

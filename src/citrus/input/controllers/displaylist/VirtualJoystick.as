@@ -156,7 +156,7 @@ package citrus.input.controllers.displaylist {
 		
 		public function get visible():Boolean
 		{
-			return _visible = graphic.visible;;
+			return _visible = graphic.visible;
 		}
 		
 		public function set visible(value:Boolean):void
