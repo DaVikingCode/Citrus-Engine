@@ -249,14 +249,15 @@ package citrus.view {
 		}
 		
 		/**
-		 * This is a non-critical helper function that allows you to quickly set all the available camera properties in one place. 
+		 * This is a non-critical helper function that allows you to quickly set available camera properties in one place.
+		 * if center and easing are set to null, the default values are used.
 		 * @param target object with x and y properties that will be tracked by the camera
 		 * @param center values between 0 and 1 - x/y components will be multiplied to the cameraLensWidth/cameraLensHeight value to determine the position of the camera center.
 		 * @param bounds rectangle that determines the area the camera is allowed to move in
 		 * @param easing values between 0 and 1 - that specifies by how much distance from the target the camera should move on each update
 		 * @return this The Instance of the ACitrusCamera.
 		 */		
-		public function setUp(target:Object = null,bounds:Rectangle = null, center:Point = null , easing:Point = null):ACitrusCamera
+		public function setUp(target:Object,bounds:Rectangle = null, center:Point = null , easing:Point = null):ACitrusCamera
 		{
 			if (target)
 			{
