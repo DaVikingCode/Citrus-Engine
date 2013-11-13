@@ -28,7 +28,7 @@ package citrus.core.away3d {
 		override public function destroy():void {
 			
 			if (_away3D.stage3DProxy)				
-				_away3D.stage3DProxy.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+				_away3D.stage3DProxy.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
 			
 			super.destroy();
 		}
