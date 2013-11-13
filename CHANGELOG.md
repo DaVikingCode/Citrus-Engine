@@ -1,5 +1,5 @@
-V3.1.8, Work In Progress
-------------------------
+V3.1.8, 11 13 2013
+------------------
 - Starling updated on 1.4.1
 - Feathers updated on 1.1.1
 - DragonBones updated to 2.4
