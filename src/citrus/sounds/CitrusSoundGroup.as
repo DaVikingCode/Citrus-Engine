@@ -52,6 +52,14 @@ package citrus.sounds
 			return _sounds.slice();
 		}
 		
+		public function preloadSounds():void
+		{
+			var s:CitrusSound;
+			for each(s in _sounds)
+				if(!s.loaded)	
+					s.load();
+		}
+		
 		internal function removeSound(s:CitrusSound):void
 		{
 			var si:String;
