@@ -45,6 +45,10 @@ package citrus.view.blittingview {
 		 */
 		public var updateArtEnabled:Boolean = true;
 		
+		
+		public var content:Object;
+		public var loader:Object;
+		
 		/**
 		 * This is the graphical representation of your CitrusObject when using the Blitting view. a BlittingArt object
 		 * should contain one or more AnimationSequences. If your object is does not need to animate (such as a background),

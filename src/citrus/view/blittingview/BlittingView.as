@@ -9,6 +9,7 @@ package citrus.view.blittingview
 	import citrus.view.ACitrusView;
 	import citrus.view.ISpriteView;
 	import citrus.view.spriteview.SpriteDebugArt;
+	import flash.geom.Matrix;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -39,27 +40,28 @@ package citrus.view.blittingview
 		private var _canvas:BitmapData;
 		private var _spriteOrder:Array = [];
 		private var _spritesAdded:uint = 0;
-		private var _cameraPosition:MathVector = new MathVector();
+		private var _cameraPosition:Point = new Point();
 		
 		private var _debuggerPhysicsObject:Object;
 		private var _usePhysicsEngine:Boolean = false;
 		private var _useSimpleCitrusSolver:Boolean = false;
 		private var _tabSpriteDebugArt:Array = [[], []];
 		
+		private var _ce:CitrusEngine;
+		
 		public function BlittingView(root:Sprite) 
 		{
 			super(root, ISpriteView);
+			_ce = CitrusEngine.getInstance();
 			
-			var ce:CitrusEngine = CitrusEngine.getInstance();
-			
-			_canvas = new BitmapData(ce.stage.stageWidth, ce.stage.stageHeight, true, backgroundColor);
+			_canvas = new BitmapData(_ce.stage.stageWidth, _ce.stage.stageHeight, true, backgroundColor);
 			_canvasBitmap = new Bitmap(_canvas);
 			root.addChild(_canvasBitmap);
 			
 			camera = new BlittingCamera(_cameraPosition);
 		}
 		
-		public function get cameraPosition():MathVector
+		public function get cameraPosition():Point
 		{
 			return _cameraPosition;
 		}
@@ -67,12 +69,6 @@ package citrus.view.blittingview
 		override public function update(timeDelta:Number):void
 		{
 			super.update(timeDelta);
-			
-			if(camera.enabled)
-				camera.update();			
-				
-			(_debugView as IDebugView).update();
-			(_debugView as IDebugView).transformMatrix.translate(-_cameraPosition.x, -_cameraPosition.y);
 			
 			if (_useSimpleCitrusSolver) {
 				var tabLength:uint = _tabSpriteDebugArt[0].length;
@@ -91,6 +87,9 @@ package citrus.view.blittingview
 					updateArt(_spriteOrder[j].citrusObject, _spriteOrder[j]);
 			}
 			_canvas.unlock();
+			
+			if(camera.enabled)
+				camera.update();	
 		}
 		
 		public function updateCanvas():void
@@ -115,7 +114,8 @@ package citrus.view.blittingview
 			}
 			else if (citrusObject is APhysicsEngine && !_usePhysicsEngine && !_useSimpleCitrusSolver)
 			{
-				new (citrusObject as APhysicsEngine).view();
+				_debugView = new (citrusObject as APhysicsEngine).realDebugView() as IDebugView;
+				_debugView.initialize();
 				_usePhysicsEngine = true;
 				_debuggerPhysicsObject = citrusObject;	
 			}
@@ -168,12 +168,22 @@ package citrus.view.blittingview
 				_tabSpriteDebugArt[0].splice(i, 1);
 				_tabSpriteDebugArt[1].splice(i, 1);
 			}
+			
+			if (_debugView is IDebugView)
+				_debugView.destroy();
 		}
 		
 		override protected function updateArt(citrusObject:Object, art:Object):void
 		{
 			var bart:BlittingArt = art as BlittingArt;
 			var object:ISpriteView = citrusObject as ISpriteView;
+			
+			if (object is APhysicsEngine)
+			{
+				(_debugView as IDebugView).update();
+				(_debugView as IDebugView).transformMatrix = camera.transformMatrix;
+				return;
+			}
 			
 			//shortcut
 			var ca:AnimationSequence = bart.currAnimation;
@@ -184,8 +194,11 @@ package citrus.view.blittingview
 			bart.play(object.animation);
 			
 			var position:Point = new Point();
-			position.x = (object.x - _cameraPosition.x) * object.parallaxX;
-			position.y = (object.y - _cameraPosition.y) * object.parallaxY;
+			position.x = object.x + ( (camera.camProxy.x - object.x) * (1 - object.parallaxX)) + object.offsetX;
+			position.y = object.y +  ( (camera.camProxy.y - object.y) * (1 - object.parallaxY)) + object.offsetY;
+			
+			position.x -= cameraPosition.x;
+			position.y -= cameraPosition.y;
 			
 			//handle registration
 			if (bart.registration == "center")
