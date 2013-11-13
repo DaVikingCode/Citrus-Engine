@@ -103,9 +103,9 @@ package citrus.view {
 		
 		/**
 		 * This defines the camera "center" position as a factor of the camera lens dimensions.
-		 * if center is (0.5,0.5) then the target will appear at the center of the screen.
-		 * 
-		 * x and y value of the center point must be between 0 and 1.
+		 * x and y components will be multiplied to cameraLensWidth/cameraLensHeight
+		 * to determine the position of the camera center.
+		 * values must be between 0 and 1.
 		 */
 		public var center:Point = new Point(0.5, 0.5);
 		
@@ -116,7 +116,7 @@ package citrus.view {
 
 		/**
 		 * A value between 0 and 1 that specifies the speed at which the camera catches up to the target.
-		 * 0 makes the camera not follow the target at all and 1 makes the camera follow the target exactly. 
+		 * 0 makes the camera not follow the target at all and 1 makes the camera follow the target exactly.
 		 */
 		public var easing:Point = new Point(0.25, 0.05);
 
@@ -250,11 +250,10 @@ package citrus.view {
 		
 		/**
 		 * This is a non-critical helper function that allows you to quickly set all the available camera properties in one place. 
-		 * @param target The thing that the camera should follow.
-		 * @param offset The distance from the upper-left corner that you want the camera to be offset from the target.
-		 * @param bounds The rectangular bounds that the camera should not extend beyond.
-		 * @param easing The x and y percentage of distance that the camera will travel toward the target per tick. Lower numbers are slower. The number should not go beyond 1.
-		 * @param cameraLens The width and height of the visible game screen. Default is the same as your stage width and height.
+		 * @param target object with x and y properties that will be tracked by the camera
+		 * @param center values between 0 and 1 - x/y components will be multiplied to the cameraLensWidth/cameraLensHeight value to determine the position of the camera center.
+		 * @param bounds rectangle that determines the area the camera is allowed to move in
+		 * @param easing values between 0 and 1 - that specifies by how much distance from the target the camera should move on each update
 		 * @return this The Instance of the ACitrusCamera.
 		 */		
 		public function setUp(target:Object = null,bounds:Rectangle = null, center:Point = null , easing:Point = null):ACitrusCamera
@@ -266,7 +265,14 @@ package citrus.view {
 				_ghostTarget.y = target.y;
 			}
 			if (center)
+			{
+				if (center.x > 1) center.x = 1;
+				if (center.x < 0) center.x = 0;
+				if (center.y > 1) center.y = 1;
+				if (center.y < 0) center.y = 0;
+				
 				this.center = center;
+			}
 			if (bounds)
 				this.bounds = bounds;
 			if (easing)
@@ -438,15 +444,20 @@ package citrus.view {
 		 * Getters and setters
 		 */
 		
+		/**
+		 * object with x and y properties that will be tracked by the camera
+		 */
 		public function set target(o:Object):void {	
 			_manualPosition = null;
 			_target = o;
 		}
-		
 		public function get target():Object {	
 			return _target;
 		}
 		
+		/**
+		 * the camera center position in state coordinates
+		 */
 		public function get camPos():Point {
 			return _camPos;
 		}
