@@ -71,6 +71,7 @@ package citrus.sounds
 			
 			if (sound)
 			{
+				this.sound = sound;
 				soundName = sound.name;
 				loadedRatio = sound.loadedRatio;
 				loaded = sound.loaded;

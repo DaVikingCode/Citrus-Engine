@@ -150,7 +150,7 @@ package citrus.sounds
 			if (_loadedRatio == 1)
 			{
 				_loaded = true;
-				_ce.sound.soundLoaded(this);
+				dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_LOADED,this,null));
 			}
 		}
 		
@@ -304,7 +304,6 @@ package citrus.sounds
 				soundInstance.stop();
 				
 			removeAllEventListeners();
-			
 			_ce.sound.removeDispatchChild(this);
 		}
 		

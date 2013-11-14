@@ -1,10 +1,11 @@
 package citrus.sounds 
 {
+	import citrus.events.CitrusEventDispatcher;
 	import citrus.math.MathUtils;
 	/**
 	 * CitrusSoundGroup represents a volume group with its groupID and has mute control as well.
 	 */
-	public class CitrusSoundGroup 
+	public class CitrusSoundGroup extends CitrusEventDispatcher
 	{
 		
 		public static const BGM:String = "BGM";
@@ -36,6 +37,7 @@ package citrus.sounds
 				(s.group as CitrusSoundGroup).removeSound(s);
 			s.setGroup(this);
 			_sounds.push(s);
+			s.addEventListener(CitrusSoundEvent.SOUND_LOADED, handleSoundLoaded);
 		}
 		
 		internal function isadded(sound:CitrusSound):Boolean
@@ -63,12 +65,15 @@ package citrus.sounds
 		internal function removeSound(s:CitrusSound):void
 		{
 			var si:String;
+			var cs:CitrusSound;
 			for (si in _sounds)
 			{
 				if (_sounds[si] == s)
 				{
-					CitrusSound(_sounds[si]).setGroup(null);
-					CitrusSound(_sounds[si]).refreshSoundTransform();
+					cs = _sounds[si];
+					cs.setGroup(null);
+					cs.refreshSoundTransform();
+					cs.removeEventListener(CitrusSoundEvent.SOUND_LOADED, handleSoundLoaded);
 					_sounds.splice(uint(si), 1);
 					break;
 				}
@@ -88,6 +93,17 @@ package citrus.sounds
 		{
 			var index:uint = MathUtils.randomInt(0, _sounds.length - 1);
 			return _sounds[index];
+		}
+		
+		protected function handleSoundLoaded(e:CitrusSoundEvent):void
+		{
+			var cs:CitrusSound;
+			for each(cs in _sounds)
+			{
+				if (!cs.loaded)
+					return;
+			}
+			dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.ALL_SOUNDS_LOADED, e.sound, null));
 		}
 		
 		public function set mute(val:Boolean):void

@@ -33,6 +33,8 @@ package citrus.sounds {
 			soundGroups.push(new SFXGroup());
 			soundGroups.push(new UIGroup());
 			
+			addEventListener(CitrusSoundEvent.SOUND_LOADED, handleSoundLoaded);
+			
 		}
 
 		public static function getInstance():SoundManager {
@@ -405,14 +407,13 @@ package citrus.sounds {
 			tweenVolume(fadeInId, 1, tweenDuration);
 		}
 		
-		internal function soundLoaded(s:CitrusSound):void
+		protected function handleSoundLoaded(e:CitrusSoundEvent):void
 		{
-			dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.SOUND_LOADED,s,null));
 			var cs:CitrusSound;
 			for each(cs in soundsDic)
 				if (!cs.loaded)
 					return;
-			dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.ALL_SOUNDS_LOADED, s,null));
+			dispatchEvent(new CitrusSoundEvent(CitrusSoundEvent.ALL_SOUNDS_LOADED, e.sound,null));
 		}
 	}
 }
