@@ -174,7 +174,7 @@ package citrus.events
 		/**
 		 * remove all event listeners (clears lists)
 		 */
-		public function removeAllEventListeners():void
+		public function removeEventListeners():void
 		{
 			listeners = new Dictionary();
 		}

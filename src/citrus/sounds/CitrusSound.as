@@ -303,7 +303,7 @@ package citrus.sounds
 			for each (soundInstance in soundInstances)
 				soundInstance.stop();
 				
-			removeAllEventListeners();
+			removeEventListeners();
 			_ce.sound.removeDispatchChild(this);
 		}
 		

@@ -278,7 +278,7 @@ package citrus.sounds
 			data = null;
 			soundChannel = null;
 			
-			removeAllEventListeners();
+			removeEventListeners();
 			
 			_destroyed = true;
 		}

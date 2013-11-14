@@ -56,7 +56,7 @@ package citrus.sounds {
 			soundsDic = null;
 			_instance = null;
 			
-			removeAllEventListeners();
+			removeEventListeners();
 		}
 		
 		/**
