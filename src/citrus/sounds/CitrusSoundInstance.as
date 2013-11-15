@@ -380,6 +380,11 @@ package citrus.sounds
 			_soundChannel = channel;
 		}
 		
+		public function getSoundChannel():SoundChannel
+		{
+			return _soundChannel;
+		}
+		
 		internal function get soundChannel():SoundChannel
 		{
 			return _soundChannel;

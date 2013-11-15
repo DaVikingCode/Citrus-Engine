@@ -21,7 +21,6 @@ package citrus.core.away3d {
 		protected var _away3D:View3D;
 		
 		protected var _antiAliasing:Number = 1;
-		protected var _enableDepthAndStencil:Boolean = false;
 
 		public function Away3DCitrusEngine() {
 			
@@ -126,7 +125,6 @@ package citrus.core.away3d {
 			super.handleStageResize(evt);
 			if (_away3D)
 			{
-				_away3D.stage3DProxy.configureBackBuffer(stage.stageWidth, stage.stageHeight, _antiAliasing, _enableDepthAndStencil);
 				_away3D.stage3DProxy.viewPort.width = _away3D.width = stage.stageWidth;
 				_away3D.stage3DProxy.viewPort.height = _away3D.height = stage.stageHeight;
 			}
