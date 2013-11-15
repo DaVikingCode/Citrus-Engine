@@ -136,8 +136,8 @@ package citrus.input.controllers.displaylist {
 				//update knob graphic
 				if (_grabbed)
 				{
-					knob.x = _knobX;
-					knob.y = _knobY;
+					knob.x = _targetPosition.x;
+					knob.y = _targetPosition.y;
 				}
 				else if (!_centered && !((knob.x > -0.5 && knob.x < 0.5) && (knob.y > -0.5 && knob.y < 0.5)))
 				{
@@ -150,8 +150,20 @@ package citrus.input.controllers.displaylist {
 				}
 				else
 					_centered = true;
+					
+				if (_grabbed)
+					graphic.alpha = activeAlpha;
+				else
+					graphic.alpha = inactiveAlpha;
 				
 			}
+		}
+		
+		override protected function reset():void
+		{
+			super.reset();
+			graphic.x = _x;
+			graphic.y = _y;
 		}
 		
 		public function get visible():Boolean

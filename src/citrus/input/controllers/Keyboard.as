@@ -42,7 +42,6 @@ package citrus.input.controllers {
 			addKeyAction("up", Keyboard.UP);
 			addKeyAction("right", Keyboard.RIGHT);
 			addKeyAction("down", Keyboard.DOWN);
-			addKeyAction("duck", Keyboard.DOWN);
 			addKeyAction("jump", Keyboard.SPACE);
 			
 			_ce.stage.addEventListener(KeyboardEvent.KEY_DOWN, handleKeyDown);

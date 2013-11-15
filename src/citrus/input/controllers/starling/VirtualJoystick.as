@@ -1,6 +1,9 @@
 package citrus.input.controllers.starling {
 
+	import citrus.core.starling.StarlingState;
 	import citrus.input.controllers.AVirtualJoystick;
+	import citrus.view.starlingview.StarlingView;
+	import flash.geom.Point;
 
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -117,16 +120,18 @@ package citrus.input.controllers.starling {
 				tempBitmapData2 = null;
 			}
 			
-			back.pivotX = back.pivotY = back.width / 2;
+			back.alignPivot();
 			graphic.addChild(back);
 			
-			knob.pivotX = knob.pivotY = knob.width / 2;
+			knob.alignPivot();
 			graphic.addChild(knob);
 			
 			//move joystick
 			graphic.alignPivot();
 			graphic.x = _x;
 			graphic.y = _y;
+			
+			graphic.alpha = inactiveAlpha;
 			
 			//Add graphic
 			Starling.current.stage.addChild(graphic);
@@ -138,8 +143,11 @@ package citrus.input.controllers.starling {
 		private function handleTouch(e:TouchEvent):void
 		{
 			var t:Touch = e.getTouch(graphic);
+				
 			if (!t)
 				return;
+				
+			t.getLocation(graphic,_realTouchPosition);
 			
 			if (t.phase == TouchPhase.ENDED)
 			{
@@ -157,10 +165,7 @@ package citrus.input.controllers.starling {
 			if (!_grabbed)
 				return;
 			
-			var relativeX:int = t.globalX - graphic.x;
-			var relativeY:int = t.globalY - graphic.y;
-			
-			handleGrab(relativeX, relativeY);
+			handleGrab(_realTouchPosition.x, _realTouchPosition.y);
 		
 		}
 		
@@ -177,8 +182,8 @@ package citrus.input.controllers.starling {
 				//update knob graphic
 				if (_grabbed)
 				{
-					knob.x = _knobX;
-					knob.y = _knobY;
+					knob.x = _targetPosition.x;
+					knob.y = _targetPosition.y;
 				}
 				else if (!_centered && !((knob.x > -0.5 && knob.x < 0.5) && (knob.y > -0.5 && knob.y < 0.5)))
 				{
@@ -191,8 +196,20 @@ package citrus.input.controllers.starling {
 				}
 				else
 					_centered = true;
+					
+				if (_grabbed)
+					graphic.alpha = activeAlpha;
+				else
+					graphic.alpha = inactiveAlpha;
 				
 			}
+		}
+		
+		override protected function reset():void
+		{
+			super.reset();
+			graphic.x = _x;
+			graphic.y = _y;
 		}
 		
 		public function get visible():Boolean

@@ -1,6 +1,9 @@
 package citrus.input.controllers {
 
 	import citrus.input.InputController;
+	import citrus.math.MathVector;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 
 	public class AVirtualJoystick extends InputController
 	{
@@ -8,8 +11,8 @@ package citrus.input.controllers {
 		protected var _x:int;
 		protected var _y:int;
 		
-		protected var _knobX:int = 0;
-		protected var _knobY:int = 0;
+		protected var _realTouchPosition:Point = new Point();
+		protected var _targetPosition:MathVector = new MathVector();
 		
 		protected var _visible:Boolean = true;
 		
@@ -30,7 +33,19 @@ package citrus.input.controllers {
 		protected var _centered:Boolean = true;
 		
 		//Optional properties
-		public var circularBounds:Boolean = false;
+		public var circularBounds:Boolean = true;
+		
+		/**
+		 * if the virtual joystick had a fixed center and always displayed,
+		 * or if it appears on the first touch of the player, centered on that touch, the disappears when touch ends.
+		 */
+		public var inactiveAlpha:Number = 0.3;
+		public var activeAlpha:Number = 1;
+		
+		/**
+		 * distance from the center at which no action will be fired.
+		 */
+		public var threshold:Number = 0.1;
 		
 		public function AVirtualJoystick(name:String, params:Object = null)
 		{
@@ -111,42 +126,39 @@ package citrus.input.controllers {
 				var dist:Number = relativeX*relativeX + relativeY*relativeY ;
 				if (dist <= _innerradius*_innerradius)
 				{
-					_knobX = relativeX;
-					_knobY = relativeY;
+					_targetPosition.setTo(relativeX, relativeY);
 				}
 				else
 				{
-					var angl:Number = Math.atan2(-relativeX, -relativeY);
-					_knobX = Math.cos(-angl - Math.PI/2) * _innerradius;
-					_knobY = Math.sin(-angl - Math.PI/2) * _innerradius;
+					_targetPosition.setTo(relativeX, relativeY);
+					_targetPosition.length = _innerradius;
 				}
 			}
 			else
 			{
 				if (relativeX < _innerradius && relativeX > -_innerradius)
-					_knobX = relativeX;
+					_targetPosition.x = relativeX;
 				else if (relativeX > _innerradius)
-					_knobX = _innerradius;
+					_targetPosition.x = _innerradius;
 				else if (relativeX < -_innerradius)
-					_knobX = -_innerradius;
+					_targetPosition.x = -_innerradius;
 				
 				if (relativeY < _innerradius && relativeY > -_innerradius)
-					_knobY = relativeY;
+					_targetPosition.y = relativeY;
 				else if (relativeY > _innerradius)
-					_knobY = _innerradius;
+					_targetPosition.y = _innerradius;
 				else if (relativeY < -_innerradius)
-					_knobY = -_innerradius;
+					_targetPosition.y = -_innerradius;
 			}
 			
 			//normalize x and y axes value.
 			
-			_xAxis = _knobX / _innerradius;
-			_yAxis = _knobY / _innerradius;
+			_xAxis = _targetPosition.x / _innerradius;
+			_yAxis = _targetPosition.y / _innerradius;
 			
 			// Check registered actions on both axes
 			
-			if ((_xAxis >= -0.1 && _xAxis <= 0.1) || (_yAxis >= -0.1 && _yAxis <= 0.1))
-				//threshold of Axis values where no actions will be fired // actions will turned off.
+			if (_targetPosition.length <= threshold)
 				_input.stopActionsOf(this);
 			else
 			{
@@ -181,8 +193,7 @@ package citrus.input.controllers {
 		
 		protected function reset():void
 		{
-			_knobX = 0;
-			_knobY = 0;
+			_targetPosition.setTo();
 			_xAxis = 0;
 			_yAxis = 0;
 			_input.stopActionsOf(this);
@@ -212,18 +223,20 @@ package citrus.input.controllers {
 		
 		public function set x(value:int):void
 		{
-			if (!_initialized)
-				_x = value;
-			else
-				trace("Warning: you can only set " + this + " x through graphic.x after instanciation.");
+			if (value == _x)
+				return;
+			
+			_x = value;
+			reset();
 		}
 		
 		public function set y(value:int):void
 		{
-			if (!_initialized)
-				_y = value;
-			else
-				trace("Warning: you can only set " + this + " y through graphic.y after instanciation.");
+			if (value == _y)
+				return;
+			
+			_y = value;
+			reset();
 		}
 		
 		public function get radius():int
