@@ -283,7 +283,11 @@ package citrus.objects {
 			_rotation = value * Math.PI / 180;
 			
 			if (_body)
-				_body.SetTransform(new b2Transform(_body.GetPosition(), b2Mat22.FromAngle(_rotation)));
+			{
+				var tr:b2Transform = _body.GetTransform();
+				tr.R = b2Mat22.FromAngle(_rotation);
+				_body.SetTransform(tr);
+			}
 		}
 		
 		/**
