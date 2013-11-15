@@ -1,14 +1,16 @@
-package citrus.math {
-
+package citrus.math
+{
+	
 	import flash.display.DisplayObject;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	
-	public class MathUtils {
+	public class MathUtils
+	{
 		
-		public static function DistanceBetweenTwoPoints(x1:Number, x2:Number, y1:Number, y2:Number):Number {
+		public static function DistanceBetweenTwoPoints(x1:Number, x2:Number, y1:Number, y2:Number):Number
+		{
 			
 			var dx:Number = x1 - x2;
 			var dy:Number = y1 - y2;
@@ -16,7 +18,8 @@ package citrus.math {
 			return Math.sqrt(dx * dx + dy * dy);
 		}
 		
-		public static function RotateAroundInternalPoint(object:DisplayObject, pointToRotateAround:Point, rotation:Number):void {
+		public static function RotateAroundInternalPoint(object:DisplayObject, pointToRotateAround:Point, rotation:Number):void
+		{
 			
 			// Thanks : http://blog.open-design.be/2009/02/05/rotate-a-movieclipdisplayobject-around-a-point/
 			
@@ -28,7 +31,8 @@ package citrus.math {
 			RotateAroundExternalPoint(object, point, rotation);
 		}
 		
-		public static function RotateAroundExternalPoint(object:DisplayObject, pointToRotateAround:Point, rotation:Number):void {
+		public static function RotateAroundExternalPoint(object:DisplayObject, pointToRotateAround:Point, rotation:Number):void
+		{
 			
 			var m:Matrix = object.transform.matrix;
 			
@@ -40,19 +44,19 @@ package citrus.math {
 		}
 		
 		/**
-		 * Rotates x,y around Origin (like MathVector.rotate() ) 
+		 * Rotates x,y around Origin (like MathVector.rotate() )
 		 * if resultPoint is define, will set resultPoint to new values, otherwise, it will return a new point.
 		 * @param	p flash.geom.Point
 		 * @param	a angle in radians
 		 * @return	returns a new rotated point.
 		 */
-		public static  function rotatePoint(x:Number,y:Number, a:Number , resultPoint:Point = null):Point
+		public static function rotatePoint(x:Number, y:Number, a:Number, resultPoint:Point = null):Point
 		{
 			var c:Number = Math.cos(a);
 			var s:Number = Math.sin(a);
 			if (resultPoint)
 			{
-				resultPoint.setTo(x * c + y * s , -x * s + y * c );
+				resultPoint.setTo(x * c + y * s, -x * s + y * c);
 				return null;
 			}
 			else
@@ -63,12 +67,13 @@ package citrus.math {
 		 * Get the linear equation from two points.
 		 * @return an object, m is the slope and b a constant term.
 		 */
-		public static function lineEquation(p0:Point, p1:Point):Object{
+		public static function lineEquation(p0:Point, p1:Point):Object
+		{
 			
 			var a:Number = (p1.y - p0.y) / (p1.x - p0.x);
 			var b:Number = p0.y - a * p0.x;
 			
-			return {m:a, b:b}; 
+			return {m: a, b: b};
 		}
 		
 		/**
@@ -78,7 +83,7 @@ package citrus.math {
 		 * @param	ratio interpolation amount
 		 * @return
 		 */
-		public static function lerp(a:Number,b:Number,ratio:Number):Number
+		public static function lerp(a:Number, b:Number, ratio:Number):Number
 		{
 			return a + (b - a) * ratio;
 		}
@@ -90,13 +95,14 @@ package citrus.math {
 		 * @param a angle of rotation around the topLeft point in radian
 		 * @return flash.geom.Rectangle
 		 */
-		public static function createAABB(x:Number, y:Number, w:Number, h:Number, a:Number = 0):Rectangle {
+		public static function createAABB(x:Number, y:Number, w:Number, h:Number, a:Number = 0):Rectangle
+		{
 			
 			var aabb:Rectangle = new Rectangle(x, y, w, h);
 			
 			if (a == 0)
 				return aabb;
-				
+			
 			var c:Number = Math.cos(a);
 			var s:Number = Math.sin(a);
 			var cpos:Boolean;
@@ -129,7 +135,7 @@ package citrus.math {
 		
 		/**
 		 * Creates the axis aligned bounding box for a rotated rectangle
-		 * and offsetX , offsetY which is simply the x and y position of 
+		 * and offsetX , offsetY which is simply the x and y position of
 		 * the aabb relative to the rotated rectangle. the rectangle and the offset values are returned through an object.
 		 * such object can be re-used by passing it through the last argument.
 		 * @param w width of the rotated rectangle
@@ -138,11 +144,12 @@ package citrus.math {
 		 * @param aabbdata the object to store the results in.
 		 * @return {rect:flash.geom.Rectangle,offsetX:Number,offsetY:Number}
 		 */
-		public static function createAABBData(x:Number, y:Number, w:Number, h:Number, a:Number = 0, aabbdata:Object = null):Object {
+		public static function createAABBData(x:Number, y:Number, w:Number, h:Number, a:Number = 0, aabbdata:Object = null):Object
+		{
 			
 			if (aabbdata == null)
 			{
-				aabbdata = {offsetX:0,offsetY:0,rect:new Rectangle() };
+				aabbdata = {offsetX: 0, offsetY: 0, rect: new Rectangle()};
 			}
 			
 			aabbdata.rect.setTo(x, y, w, h);
@@ -155,14 +162,14 @@ package citrus.math {
 				aabbdata.offsetY = 0;
 				return aabbdata;
 			}
-				
+			
 			var c:Number = Math.cos(a);
 			var s:Number = Math.sin(a);
 			var cpos:Boolean;
 			var spos:Boolean;
 			
-			if (s < 0) { s = -s; spos = false; } else { spos = true; }
-			if (c < 0) { c = -c; cpos = false; } else { cpos = true; }
+			if (s < 0)
+			if (c < 0)
 			
 			aabbdata.rect.width = h * s + w * c;
 			aabbdata.rect.height = h * c + w * s;
@@ -193,7 +200,8 @@ package citrus.math {
 		 * check if angle is between angle a and b
 		 * thanks to http://www.xarg.org/2010/06/is-an-angle-between-two-other-angles/
 		 */
-		public static function  angleBetween(angle:Number, a:Number, b:Number):Boolean {
+		public static function angleBetween(angle:Number, a:Number, b:Number):Boolean
+		{
 			var mod:Number = Math.PI * 2;
 			angle = (mod + (angle % mod)) % mod;
 			a = (mod * 100 + a) % mod;
@@ -204,9 +212,66 @@ package citrus.math {
 		}
 		
 		/**
+		 * Checks for intersection of Segment if asSegments is true.
+		 * Checks for intersection of Lines if asSegments is false.
+		 * 
+		 * http://keith-hair.net/blog/2008/08/04/find-intersection-point-of-two-lines-in-as3/
+		 * 
+		 * @param	A point 1 of segment 1
+		 * @param	B point 2 of segment 1
+		 * @param	E point 1 of segment 2
+		 * @param	F point 2 of segment 2
+		 * @param	asSegments
+		 * @return the intersection point of segment AB and EF or null if they don't intersect.
+		 */
+		public static function linesIntersection(A:Point, B:Point, E:Point, F:Point, asSegments:Boolean = true):Point
+		{
+			var ip:Point;
+			var a1:Number, a2:Number, b1:Number, b2:Number, c1:Number, c2:Number;
+			
+			a1 = B.y - A.y;
+			b1 = A.x - B.x;
+			c1 = B.x * A.y - A.x * B.y;
+			a2 = F.y - E.y;
+			b2 = E.x - F.x;
+			c2 = F.x * E.y - E.x * F.y;
+			
+			var denom:Number = a1 * b2 - a2 * b1;
+			if (denom == 0)
+				return null;
+				
+			ip = new Point();
+			ip.x = (b1 * c2 - b2 * c1) / denom;
+			ip.y = (a2 * c1 - a1 * c2) / denom;
+			
+			//---------------------------------------------------
+			//Do checks to see if intersection to endpoints
+			//distance is longer than actual Segments.
+			//Return null if it is with any.
+			//---------------------------------------------------
+			if (asSegments)
+			{
+				if (pow2(ip.x - B.x) + pow2(ip.y - B.y) > pow2(A.x - B.x) + pow2(A.y - B.y))
+					return null;
+				if (pow2(ip.x - A.x) + pow2(ip.y - A.y) > pow2(A.x - B.x) + pow2(A.y - B.y))
+					return null;
+				if (pow2(ip.x - F.x) + pow2(ip.y - F.y) > pow2(E.x - F.x) + pow2(E.y - F.y))
+					return null;
+				if (pow2(ip.x - E.x) + pow2(ip.y - E.y) > pow2(E.x - F.x) + pow2(E.y - F.y))
+					return null;
+			}
+			return ip;
+		}
+		
+		public static function pow2(value:Number):Number
+		{
+			return value * value;
+		}
+		
+		/**
 		 * return random int between min and max
 		 */
-		public static function randomInt(min:int,max:int):int
+		public static function randomInt(min:int, max:int):int
 		{
 			return Math.floor(Math.random() * (1 + max - min)) + min;
 		}
