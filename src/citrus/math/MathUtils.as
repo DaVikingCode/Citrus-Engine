@@ -217,24 +217,28 @@ package citrus.math
 		 * 
 		 * http://keith-hair.net/blog/2008/08/04/find-intersection-point-of-two-lines-in-as3/
 		 * 
-		 * @param	A point 1 of segment 1
-		 * @param	B point 2 of segment 1
-		 * @param	E point 1 of segment 2
-		 * @param	F point 2 of segment 2
+		 * @param	x1 x of point 1 of segment 1
+		 * @param	y1 y of point 1 of segment 1
+		 * @param	x2 x of point 2 of segment 1
+		 * @param	y2 y of point 2 of segment 1
+		 * @param	x3 x of point 3 of segment 2
+		 * @param	y3 y of point 3 of segment 2
+		 * @param	x4 x of point 4 of segment 2
+		 * @param	y4 y of point 4 of segment 2
 		 * @param	asSegments
-		 * @return the intersection point of segment AB and EF or null if they don't intersect.
+		 * @return the intersection point of segment 1 and 2 or null if they don't intersect.
 		 */
-		public static function linesIntersection(A:Point, B:Point, E:Point, F:Point, asSegments:Boolean = true):Point
+		public static function linesIntersection(x1:Number,y1:Number,x2:Number,y2:Number,x3:Number,y3:Number,x4:Number,y4:Number, asSegments:Boolean = true):Point
 		{
 			var ip:Point;
 			var a1:Number, a2:Number, b1:Number, b2:Number, c1:Number, c2:Number;
 			
-			a1 = B.y - A.y;
-			b1 = A.x - B.x;
-			c1 = B.x * A.y - A.x * B.y;
-			a2 = F.y - E.y;
-			b2 = E.x - F.x;
-			c2 = F.x * E.y - E.x * F.y;
+			a1 = y2 - y1;
+			b1 = x1 - x2;
+			c1 = x2 * y1 - x1 * y2;
+			a2 = y4 - y3;
+			b2 = x3 - x4;
+			c2 = x4 * y3 - x3 * y4;
 			
 			var denom:Number = a1 * b2 - a2 * b1;
 			if (denom == 0)
@@ -251,13 +255,13 @@ package citrus.math
 			//---------------------------------------------------
 			if (asSegments)
 			{
-				if (pow2(ip.x - B.x) + pow2(ip.y - B.y) > pow2(A.x - B.x) + pow2(A.y - B.y))
+				if (pow2(ip.x - x2) + pow2(ip.y - y2) > pow2(x1 - x2) + pow2(y1 - y2))
 					return null;
-				if (pow2(ip.x - A.x) + pow2(ip.y - A.y) > pow2(A.x - B.x) + pow2(A.y - B.y))
+				if (pow2(ip.x - x1) + pow2(ip.y - y1) > pow2(x1 - x2) + pow2(y1 - y2))
 					return null;
-				if (pow2(ip.x - F.x) + pow2(ip.y - F.y) > pow2(E.x - F.x) + pow2(E.y - F.y))
+				if (pow2(ip.x - x4) + pow2(ip.y - y4) > pow2(x3 - x4) + pow2(y3 - y4))
 					return null;
-				if (pow2(ip.x - E.x) + pow2(ip.y - E.y) > pow2(E.x - F.x) + pow2(E.y - F.y))
+				if (pow2(ip.x - x3) + pow2(ip.y - y3) > pow2(x3 - x4) + pow2(y3 - y4))
 					return null;
 			}
 			return ip;
