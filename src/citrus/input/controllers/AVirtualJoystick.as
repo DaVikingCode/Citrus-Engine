@@ -32,14 +32,20 @@ package citrus.input.controllers {
 		protected var _grabbed:Boolean = false;
 		protected var _centered:Boolean = true;
 		
-		//Optional properties
+		/**
+		 * wether to restrict the knob's movement in a circle or in a square
+		 * hint: square allows for extreme values on both axis when dragged in a corner.
+		 */
 		public var circularBounds:Boolean = true;
 		
 		/**
-		 * if the virtual joystick had a fixed center and always displayed,
-		 * or if it appears on the first touch of the player, centered on that touch, the disappears when touch ends.
+		 * alpha to use when the joystick is not active
 		 */
 		public var inactiveAlpha:Number = 0.3;
+		
+		/**
+		 * alpha to use when the joystick is active (being dragged)
+		 */
 		public var activeAlpha:Number = 1;
 		
 		/**
