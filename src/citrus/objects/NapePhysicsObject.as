@@ -251,7 +251,7 @@ package citrus.objects {
 			_rotation = value * Math.PI / 180;
 			
 			if (_body)
-				_body.rotate(new Vec2(_x, _y), _rotation);
+				_body.rotation = _rotation;
 		}
 		
 		/**
