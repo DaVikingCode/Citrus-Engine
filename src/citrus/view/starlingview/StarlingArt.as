@@ -12,6 +12,7 @@ package citrus.view.starlingview {
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
 	import flash.geom.Matrix;
+	import flash.geom.Rectangle;
 
 	import dragonBones.Armature;
 	import dragonBones.animation.WorldClock;
@@ -200,6 +201,21 @@ package citrus.view.starlingview {
 				_content.x = -_content.width / 2;
 				_content.y = -_content.height / 2;
 			}
+		}
+		
+		/**
+		 * align suggestion wip
+		 */
+		private static var rectBounds:Rectangle = new Rectangle();
+		public function align(mulX:Number = .5, mulY:Number = .5,offX:Number = 0,offY:Number = 0):void
+		{
+			if(_content.parent == this)
+				_content.getBounds(this, rectBounds);
+			else
+				rectBounds.setTo(0, 0, 0, 0);
+				
+			_content.x = -rectBounds.x - rectBounds.width*mulX + offX;
+			_content.y = -rectBounds.y - rectBounds.width*mulY + offY;
 		}
 
 		public function get registration():String {
