@@ -215,7 +215,7 @@ package citrus.view.starlingview {
 				rectBounds.setTo(0, 0, 0, 0);
 				
 			_content.x = -rectBounds.x - rectBounds.width*mulX + offX;
-			_content.y = -rectBounds.y - rectBounds.width*mulY + offY;
+			_content.y = -rectBounds.y - rectBounds.height*mulY + offY;
 		}
 
 		public function get registration():String {
