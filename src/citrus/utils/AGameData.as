@@ -85,7 +85,10 @@ package citrus.utils {
 				data[name] = value;
 			}
 			else
+			{
 				data[name] = value;
+				return;
+			}
 			
 			onDataChanged.dispatch(name, value);
 		}
