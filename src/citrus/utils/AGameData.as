@@ -1,65 +1,97 @@
 package citrus.utils {
 
+	import flash.utils.Dictionary;
 	import org.osflash.signals.Signal;
 	
 	/**
-	 * This is an (optional) abstract class to store your game's data such as lives, score, levels...
+	 * This is an (optional) abstract class to store your game's data such as lives, score, levels or even complex objects...
+	 * identified by strings.
 	 * 
-	 * <p>You should extend this class and instantiate it into your main class using the gameData variable.
-	 * You can dispatch a signal, <code>dataChanged</code>, if you update one of your data.
-	 * For more information, watch the example below.</p> 
+	 * define properties with setProperty("name",value) and get them with getProperty("name")
+	 * the dataChanged signal is dispatched when any property changes with its name and value as arguments.
+	 * 
+	 * if typeVerification is set to true, you will get an error thrown when you try to change a property with a value of different type.
+	 * 
+	 * you can extend AGameData to synchronize your data with a shared object or a server for example
+	 * (keep operations on shared objects/server to a strict minimum by "flushing" and "reading" values from them only
+	 * when necessary...)
 	 */
 	dynamic public class AGameData {
 		
-		public var dataChanged:Signal;
+		/**
+		 * dispatched when a property is defined or changed.
+		 */
+		public var onDataChanged:Signal;
 		
-		protected var _lives:int = 3;
-		protected var _score:int = 0;
-		protected var _timeleft:int = 300;
+		/**
+		 * throw an argument error when trying to change a property with a value of a different type.
+		 */
+		public var typeVerification:Boolean = true;
 		
-		protected var _levels:Array;
+		/**
+		 * dictionnary holding the properties indexed by property name
+		 */
+		protected var data:Dictionary;
 		
 		public function AGameData() {
-			
-			dataChanged = new Signal(String, Object);
+			data = new Dictionary();
+			onDataChanged = new Signal(String, Object);
 		}
-
-		public function get lives():int {
-			return _lives;
+		
+		/**
+		 * returns the value of a property or throws an error if it is not registered in this gameData instance.
+		 * @param	name property name
+		 * @return value object
+		 */
+		public function getProperty(name:String):Object
+		{
+			if (name in data)
+				return data[name];
+			else
+				throw new ArgumentError("[AGameData] property "+ name+ " doesn't exist... initialize it with a value with setData(\"" + name + "\",defaultValue)");
+			return null;
 		}
-
-		public function set lives(lives:int):void {
-			
-			_lives = lives;
-			
-			dataChanged.dispatch("lives", _lives);
+		
+		/**
+		 * tells if a property is defined.
+		 * @param	name property name
+		 */
+		public function hasProperty(name:String):Boolean
+		{
+			return (name in data);
 		}
-
-		public function get score():int {
-			return _score;
-		}
-
-		public function set score(score:int):void {
+		
+		/**
+		 * set a property with a value. (it registers a new property/value pair if it doesn't exist, on changes an existing one if it does.
+		 * @param	name property name
+		 * @param	value object
+		 */
+		public function setProperty(name:String, value:Object):void
+		{
+			if (name in data)
+			{
+				if (typeVerification)
+				{
+					var type1:Class = Object(value).constructor;
+					var type2:Class = Object(data[name]).constructor;
+					if (!( type1 === type2 ) )
+						throw new ArgumentError("[AGameData] you're trying to set '" + name + "'s value of type "+ type2 + " to a new value of type " + type1);
+				}
+				
+				if (value === data[name])
+					return;
+					
+				data[name] = value;
+			}
+			else
+				data[name] = value;
 			
-			_score = score;
-			
-			dataChanged.dispatch("score", _score);
-		}
-
-		public function get timeleft():int {
-			return _timeleft;
-		}
-
-		public function set timeleft(timeleft:int):void {
-			
-			_timeleft = timeleft;
-			
-			dataChanged.dispatch("timeleft", _timeleft);
+			onDataChanged.dispatch(name, value);
 		}
 		
 		public function destroy():void {
-			
-			dataChanged.removeAll();
+			data = null;
+			onDataChanged.removeAll();
 		}
 	}
 }
