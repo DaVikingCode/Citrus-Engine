@@ -14,7 +14,8 @@ package citrus.utils {
 	 * 
 	 * you can extend AGameData to synchronize your data with a shared object or a server for example
 	 * (keep operations on shared objects/server to a strict minimum by "flushing" and "reading" values from them only
-	 * when necessary...)
+	 * when necessary...) 
+	 * or simply extend it to setup initial values with setProperty in your custom AGameData constructor.
 	 */
 	dynamic public class AGameData {
 		
