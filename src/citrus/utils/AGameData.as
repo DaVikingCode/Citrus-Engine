@@ -37,6 +37,13 @@ package citrus.utils {
 		public function AGameData() {
 			data = new Dictionary();
 			onDataChanged = new Signal(String, Object);
+			init();
+		}
+		
+		/**
+		 * override to init your properties
+		 */
+		public function init():void {
 		}
 		
 		/**
