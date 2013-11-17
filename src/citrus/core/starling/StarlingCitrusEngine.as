@@ -94,14 +94,12 @@ package citrus.core.starling {
 				{
 					if (success)
 					{
-						if(debugMode)
-							trace("[StarlingCitrusEngine] Context3DProfile -", profile, "is supported! setting up starling...");
+						trace("[StarlingCitrusEngine] Context3DProfile -", profile, "is supported! setting up starling...");
 						starlingInit(profile);
 						return;
 					}
 					
-					if(debugMode)
-							trace("[StarlingCitrusEngine] Context3DProfile -", profile, "is not supported...");
+					trace("[StarlingCitrusEngine] Context3DProfile -", profile, "is not supported...");
 					
 					if (profiletests.length > 0)
 					{
@@ -110,11 +108,10 @@ package citrus.core.starling {
 						else
 							setTimeout(Context3DUtil.supportsProfile,_context3DProfileTestDelay,stage, profiletests.shift(), testProfiles);
 					}else if (profiletests.length == 0)
-						throw new ArgumentError("[StarlingCitrusEngine] Failed to create any Context3D with a profile from this list : " + String(_context3DProfiles) + ". check the render mode?");
+						throw new ArgumentError("[StarlingCitrusEngine] Failed to create any Context3D with a profile from this list : " + String(_context3DProfiles) + ". check the render mode / wmode first (should be \"direct\"), then the delay used for the test as _context3DProfileTestDelay.");
 				}
 				
-				if(debugMode)
-						trace("[StarlingCitrusEngine] Context3DProfile - testing :", profiletests, "with delay:"+_context3DProfileTestDelay+"ms ...");
+				trace("[StarlingCitrusEngine] Context3DProfile - testing :", profiletests, "with delay:"+_context3DProfileTestDelay+"ms ...");
 				Context3DUtil.supportsProfile(stage, profiletests.shift(), testProfiles);
 			
 			}
