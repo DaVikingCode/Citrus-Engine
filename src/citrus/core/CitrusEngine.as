@@ -190,7 +190,6 @@ package citrus.core {
 		/**
 		 * Runs and pauses the game loop. Assign this to false to pause the game and stop the
 		 * <code>update()</code> methods from being called.
-		 * pauses and resumes all EazeTween instances.
 		 * Dispatch the Signal onPlayingChange with the value
 		 */
 		public function set playing(value:Boolean):void
@@ -198,12 +197,6 @@ package citrus.core {
 			_playing = value;
 			if (_playing)
 				_gameTime = new Date().time;
-				
-			if (!_playing)
-				EazeTween.pauseAllTweens();
-			else
-				EazeTween.resumeAllTweens();
-			
 			onPlayingChange.dispatch(_playing);
 		}
 		
