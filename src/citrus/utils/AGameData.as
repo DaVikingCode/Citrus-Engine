@@ -22,7 +22,7 @@ package citrus.utils {
 		/**
 		 * dispatched when a property is defined or changed.
 		 */
-		public var onDataChanged:Signal;
+		public var dataChanged:Signal;
 		
 		/**
 		 * throw an argument error when trying to change a property with a value of a different type.
@@ -36,7 +36,7 @@ package citrus.utils {
 		
 		public function AGameData() {
 			data = new Dictionary();
-			onDataChanged = new Signal(String, Object);
+			dataChanged = new Signal(String, Object);
 			init();
 		}
 		
@@ -97,12 +97,12 @@ package citrus.utils {
 				return;
 			}
 			
-			onDataChanged.dispatch(name, value);
+			dataChanged.dispatch(name, value);
 		}
 		
 		public function destroy():void {
 			data = null;
-			onDataChanged.removeAll();
+			dataChanged.removeAll();
 		}
 	}
 }
