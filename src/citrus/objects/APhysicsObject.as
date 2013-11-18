@@ -112,6 +112,10 @@ package citrus.objects {
 			return _animation;
 		}
 		
+		public function set animation(value:String):void {
+			_animation = value;
+		}
+		
 		/**
 		 * You can easily change if an object is visible or not. It hasn't any impact on physics computation.
 		 */
