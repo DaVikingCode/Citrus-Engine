@@ -1,7 +1,8 @@
 package citrus.utils {
 
-	import flash.utils.Dictionary;
 	import org.osflash.signals.Signal;
+
+	import flash.utils.Dictionary;
 	
 	/**
 	 * This is an (optional) abstract class to store your game's data such as lives, score, levels or even complex objects...
@@ -55,9 +56,8 @@ package citrus.utils {
 		{
 			if (name in data)
 				return data[name];
-			else
-				throw new ArgumentError("[AGameData] property "+ name+ " doesn't exist... initialize it with a value with setData(\"" + name + "\",defaultValue)");
-			return null;
+				
+			throw new ArgumentError("[AGameData] property "+ name+ " doesn't exist... initialize it with a value with setData(\"" + name + "\",defaultValue)");
 		}
 		
 		/**
