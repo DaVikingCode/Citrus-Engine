@@ -170,7 +170,7 @@ package citrus.utils.objectmakers {
 				for each (var tileSet:TmxTileSet in tmx.tileSets) {
 					
 					pathSplit = tileSet.imageSource.split("/");
-					tilesetImageName  = pathSplit[pathSplit.length - 1]);
+					tilesetImageName  = pathSplit[pathSplit.length - 1];
 
 					for each (var image:Bitmap in images) {
 						
