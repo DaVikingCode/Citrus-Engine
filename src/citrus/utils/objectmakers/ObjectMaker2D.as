@@ -153,6 +153,9 @@ package citrus.utils.objectmakers {
 			
 			var mapTilesX:uint, mapTilesY:uint;
 			
+			var pathSplit:Array;
+			var tilesetImageName:String;
+			
 			// working on each Tiled drawing layer
 			
 			for (var layer_num:uint = 0; layer_num < tmx.layers_ordered.length; ++layer_num) {
@@ -165,12 +168,15 @@ package citrus.utils.objectmakers {
 				layerBmp = new BitmapData(tmx.width * tmx.tileWidth, tmx.height * tmx.tileHeight, true, 0);
 
 				for each (var tileSet:TmxTileSet in tmx.tileSets) {
+					
+					pathSplit = tileSet.imageSource.split("/");
+					tilesetImageName  = pathSplit[pathSplit.length - 1]);
 
 					for each (var image:Bitmap in images) {
 						
 						var flag:Boolean = false;
 						
-						if (tileSet.imageSource == image.name) {
+						if (tilesetImageName == image.name) {
 							flag = true;
 							bmp = image;
 							break;
