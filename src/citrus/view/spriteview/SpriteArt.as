@@ -227,9 +227,9 @@ package citrus.view.spriteview
 					
 				if (_content)
 				{
-					_citrusObject.handleArtReady(this as ICitrusArt);
 					moveRegistrationPoint(_citrusObject.registration);
 					addChild(_content);
+					_citrusObject.handleArtReady(this as ICitrusArt);
 				}
 					
 			}
@@ -342,10 +342,9 @@ package citrus.view.spriteview
 				var anim:String = _animation; _animation = null; animation = anim;
 			}
 				
-			_citrusObject.handleArtReady(this as ICitrusArt);
-			
 			moveRegistrationPoint(_citrusObject.registration);
 			addChild(_content);
+			_citrusObject.handleArtReady(this as ICitrusArt);
 		}
 		
 		private function handleContentIOError(e:IOErrorEvent):void 

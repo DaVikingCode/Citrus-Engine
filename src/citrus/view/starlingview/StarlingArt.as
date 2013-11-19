@@ -359,10 +359,9 @@ package citrus.view.starlingview {
 					
 					if (_content.hasOwnProperty("initialize"))
 					_content["initialize"](_citrusObject);
+					addChild(_content);
 					
 					_citrusObject.handleArtReady(this as ICitrusArt);
-					
-					addChild(_content);
 				}
 					
 			}
@@ -488,8 +487,8 @@ package citrus.view.starlingview {
 				_content = new Image(_texture = Texture.fromBitmap(evt.target.loader.content, false, false, _ce.scaleFactor));
 			
 			moveRegistrationPoint(_citrusObject.registration);
-			_citrusObject.handleArtReady(this as ICitrusArt);
 			addChild(_content);
+			_citrusObject.handleArtReady(this as ICitrusArt);
 		}
 		
 		/**
@@ -505,8 +504,8 @@ package citrus.view.starlingview {
 			_content = new Image(_texture);
 			
 			moveRegistrationPoint(_citrusObject.registration);
-			_citrusObject.handleArtReady(this as ICitrusArt);
 			addChild(_content);
+			_citrusObject.handleArtReady(this as ICitrusArt);
 		}
 
 		private function handleContentIOError(evt:IOErrorEvent):void {
