@@ -134,7 +134,8 @@ package citrus.view.starlingview {
 		}
 
 		/**
-		 * Called by StarlingArt, managed the MC's animations.
+		 * Called by StarlingArt, managed the MC's animations. If your object is a CitrusObject you should 
+		 * manage its animation via object's <code>animation</code> variable.
 		 * @param animation the MC's animation
 		 * @param animLoop true if the MC is a loop
 		 */
