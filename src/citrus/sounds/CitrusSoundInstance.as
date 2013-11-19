@@ -90,8 +90,10 @@ package citrus.sounds
 		
 		protected static var _maxChannels:uint = SoundChannelUtil.maxAvailableChannels();
 		public static function get maxChannels():uint { return _maxChannels; };
+		
 		{
-		trace("[CitrusSoundInstance] maximum number of concurrent SoundChannels for this instance of CitrusEngine :", maxChannels);
+			if(maxChannels < 32)
+				trace("[CitrusSoundInstance] maximum number of concurrent SoundChannels for this instance of CitrusEngine :", maxChannels);
 		}
 		
 		public function CitrusSoundInstance(parentsound:CitrusSound, autoplay:Boolean = true, autodestroy:Boolean = true)
