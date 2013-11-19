@@ -302,10 +302,8 @@ package citrus.objects {
 		{
 			_width = value / _box2D.scale;
 			
-			if (_initialized)
-			{
+			if (_initialized && !hideParamWarnings)
 				trace("Warning: You cannot set " + this + " width after it has been created. Please set it in the constructor.");
-			}
 		}
 		
 		/**
@@ -320,10 +318,8 @@ package citrus.objects {
 		{
 			_height = value / _box2D.scale;
 			
-			if (_initialized)
-			{
+			if (_initialized && !hideParamWarnings)
 				trace("Warning: You cannot set " + this + " height after it has been created. Please set it in the constructor.");
-			}
 		}
 		
 		/**
