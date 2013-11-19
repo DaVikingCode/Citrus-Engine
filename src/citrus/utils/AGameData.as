@@ -126,10 +126,7 @@ package citrus.utils
 				__dict[name] = value;
 			}
 			else
-			{
 				__dict[name] = value;
-				return;
-			}
 			
 			dataChanged.dispatch(String(name), value);
 		}
