@@ -256,7 +256,6 @@ package citrus.core {
 		protected function handleStageFullscreen(e:FullScreenEvent):void
 		{
 			_fullScreen = e.fullScreen;
-			resetScreenSize();
 		}
 		
 		protected function handleStageResize(e:Event):void
@@ -271,16 +270,8 @@ package citrus.core {
 		 */
 		protected function resetScreenSize():void
 		{	
-			if (_fullScreen)
-			{
-				_screenWidth = stage.fullScreenWidth;
-				_screenHeight = stage.fullScreenHeight;
-			}
-			else
-			{
-				_screenWidth = stage.stageWidth;
-				_screenHeight = stage.stageHeight;
-			}
+			_screenWidth = stage.stageWidth;
+			_screenHeight = stage.stageHeight;
 		}
 		
 		/**
