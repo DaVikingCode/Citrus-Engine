@@ -57,11 +57,16 @@ package citrus.view.spriteview
 			_ce = CitrusEngine.getInstance();
 			_mc = mc;
 			anims = new Dictionary();
-			setupMCActions();
-			_mc.gotoAndStop(0);
+			
+			if (_mc.totalFrames != 1)
+			{
+				onAnimationComplete = new Signal(String);
+				setupMCActions();
+				_mc.gotoAndStop(0);
+				_ce.stage.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+			}
+			
 			addChild(_mc);
-			onAnimationComplete = new Signal(String);
-			_ce.stage.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
 		}
 		
 		protected function handleEnterFrame(e:Event):void
