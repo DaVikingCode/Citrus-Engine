@@ -36,7 +36,9 @@ package citrus.view.spriteview
 		protected var _mc:MovieClip;
 		protected var anims:Dictionary;
 		
-		protected var _currentAnim:String;
+		protected var time:int = 0;
+		
+		protected var _currentAnim:AnimationSequenceData;
 		protected var _currentFrame:int = 0;
 		protected var _looping:Boolean = false;
 		protected var _playing:Boolean = false;
@@ -45,18 +47,20 @@ package citrus.view.spriteview
 		
 		public var onAnimationComplete:Signal;
 		
+		/**
+		 * if fpsRatio = .5, the animations will go 1/2 slower than the stage fps.
+		 */
+		public var fpsRatio:Number = 1;
+		
 		public function AnimationSequence(mc:MovieClip) 
 		{
 			_ce = CitrusEngine.getInstance();
 			_mc = mc;
-			_mc["onAnimationComplete"] = new Signal();
 			anims = new Dictionary();
 			setupMCActions();
-			_mc["onAnimationComplete"].add(handleAnimationComplete);
 			_mc.gotoAndStop(0);
 			addChild(_mc);
 			onAnimationComplete = new Signal(String);
-			
 			_ce.stage.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
 		}
 		
@@ -67,23 +71,22 @@ package citrus.view.spriteview
 			
 			if (_playing)
 			{
-				_mc.gotoAndStop(_currentFrame);
-				_currentFrame++;
+				if(fpsRatio == 1 || (time%((1/fpsRatio)<<0) == 0))
+					_mc.nextFrame();
+				time++;
+				
+				if (_mc.currentFrame == _currentAnim.endFrame)
+					handleAnimationComplete();	
 			}
 		}
 		
 		protected function handleAnimationComplete():void
 		{
-			if (_currentAnim)
-			{
-				onAnimationComplete.dispatch(_currentAnim);
-				if (_looping)
-					changeAnimation(_currentAnim, _looping);
-				else
-				{
-					_playing = false;
-				}
-			}
+			onAnimationComplete.dispatch(_currentAnim.name);
+			if (_looping && _playing)
+				changeAnimation(_currentAnim.name, _looping);
+			else
+				_playing = false;
 		}
 		
 		protected function setupMCActions():void
@@ -97,33 +100,24 @@ package citrus.view.spriteview
 				name = anim.name;
 				frame = anim.frame;
 				
-				if (!_currentAnim)
-					_currentAnim = name;
-				
 				if (name in anim)
 					continue;
 					
-				anims[name] = anim;
+				anims[name] = new AnimationSequenceData(name, frame);
+				
+				if (!_currentAnim)
+					_currentAnim = anims[name];
 			}
 			
 			var previousAnimation:String;
 			
-			var f:Function = function():void
-			{
-				_mc.onAnimationComplete.dispatch();
-			};
-			
 			for each (anim in _mc.currentLabels)
 			{
-				if (anim.frame != 1 && (anim.name != previousAnimation))
-				{
-					_mc.addFrameScript(anim.frame-1, f);
-				}
-				
+				if(previousAnimation)
+					AnimationSequenceData(anims[previousAnimation]).endFrame = anim.frame-1;
 				previousAnimation = anim.name;
 			}
-			
-			_mc.addFrameScript(_mc.totalFrames,f);
+			AnimationSequenceData(anims[previousAnimation]).endFrame = _mc.totalFrames-1;
 		}
 		
 		public function pause():void
@@ -139,26 +133,17 @@ package citrus.view.spriteview
 		public function changeAnimation(name:String, loop:Boolean  = false):void
 		{
 			_looping = loop;
-		
 			if (name in anims)
 			{
-				var frameLabel:FrameLabel = anims[name];
-				_currentAnim = frameLabel.name;
-				_currentFrame = frameLabel.frame;
+				_currentAnim = anims[name];
+				_mc.gotoAndStop(_currentAnim.startFrame);
 				_playing = true;
-				_mc.gotoAndStop(_currentFrame);
 			}
 		}
 		
 		public function hasAnimation(animation:String):Boolean
 		{
-			for each (var anim:FrameLabel in _mc.currentLabels)
-			{
-				if (anim.name == animation)
-					return true;
-			}
-			
-			return false;
+			return anims[animation];
 		}
 		
 		public function destroy():void
@@ -171,4 +156,17 @@ package citrus.view.spriteview
 		
 	}
 
+}
+
+internal class AnimationSequenceData 
+{
+	internal var startFrame:int;
+	internal var endFrame:int;
+	internal var name:String;
+	public function AnimationSequenceData(name:String,startFrame:int = -1,endFrame:int = -1)
+	{
+		this.name = name;
+		this.startFrame = startFrame;
+		this.endFrame = endFrame;
+	}
 }

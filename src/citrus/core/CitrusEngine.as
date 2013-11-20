@@ -343,6 +343,7 @@ package citrus.core {
 			}
 			
 			sound.pauseAll();
+			_input.resetActions();
 		}
 		
 		protected function handleStageActivated(e:Event):void
@@ -351,6 +352,7 @@ package citrus.core {
 			stage.removeEventListener(Event.ACTIVATE, handleStageActivated);
 			
 			sound.resumeAll();
+			_input.resetActions();
 		}
 		
 		private function handleShowConsole():void
