@@ -23,11 +23,6 @@ package citrus.view.spriteview
 	 * The MC already starts stopped (so you don't need to call stop() ).
 	 * In fact you should not control the timeline yourself through actionscript in the fla, AnimationSequence will
 	 * take care of looping animations that need looping, going back and forth or stopping as well as pause/resume.
-	 * 
-	 * AnimationSequence adds scripts on frames.
-	 * if all animations are correctly in sequence and all labeled keeframes are "connected" without gaps,
-	 * AnimationSequence will make the MC dispatch a signal the frame before the main timeline should go to a different label
-	 * so it automatically loops back or stops.
 	 */
 	public class AnimationSequence extends Sprite
 	{
