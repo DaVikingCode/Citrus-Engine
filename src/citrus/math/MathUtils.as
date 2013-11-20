@@ -168,8 +168,8 @@ package citrus.math
 			var cpos:Boolean;
 			var spos:Boolean;
 			
-			if (s < 0)
-			if (c < 0)
+			if (s < 0) { s = -s; spos = false; } else { spos = true; }
+			if (c < 0) { c = -c; cpos = false; } else { cpos = true; }
 			
 			aabbdata.rect.width = h * s + w * c;
 			aabbdata.rect.height = h * c + w * s;
