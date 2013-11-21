@@ -1,6 +1,7 @@
 package citrus.events 
 {
 	import flash.utils.Dictionary;
+	import citrus.core.citrus_internal;
 
 	/**
 	 * experimental event dispatcher (wip)
@@ -11,6 +12,8 @@ package citrus.events
 	
 	public class CitrusEventDispatcher 
 	{
+		use namespace citrus_internal;
+		
 		protected var listeners:Dictionary;
 		
 		protected var dispatchParent:CitrusEventDispatcher;
@@ -21,7 +24,7 @@ package citrus.events
 			listeners = new Dictionary();
 		}
 		
-		public function addDispatchChild(child:CitrusEventDispatcher):CitrusEventDispatcher
+		citrus_internal function addDispatchChild(child:CitrusEventDispatcher):CitrusEventDispatcher
 		{
 			if (!dispatchChildren)
 				dispatchChildren = new Vector.<CitrusEventDispatcher>();
@@ -31,7 +34,7 @@ package citrus.events
 			return child;
 		}
 		
-		public function removeDispatchChild(child:CitrusEventDispatcher):void
+		citrus_internal function removeDispatchChild(child:CitrusEventDispatcher):void
 		{
 			var index:int = dispatchChildren.indexOf(child);
 			if (index < 0)
@@ -43,7 +46,7 @@ package citrus.events
 				dispatchChildren = null;
 		}
 		
-		public function removeDispatchChildren():void
+		citrus_internal function removeDispatchChildren():void
 		{
 			var child:CitrusEventDispatcher;
 			for each(child in dispatchChildren)

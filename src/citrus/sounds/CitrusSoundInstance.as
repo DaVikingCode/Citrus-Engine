@@ -8,6 +8,7 @@ package citrus.sounds
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
+	import citrus.core.citrus_internal;
 	
 	/**
 	 * CitrusSoundInstance
@@ -20,6 +21,8 @@ package citrus.sounds
 	 */
 	public class CitrusSoundInstance extends CitrusEventDispatcher
 	{
+		use namespace citrus_internal;
+		
 		public var data:Object = { };
 		
 		protected var _ID:uint = 0;

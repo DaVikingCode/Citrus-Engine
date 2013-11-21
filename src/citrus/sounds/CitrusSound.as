@@ -10,9 +10,13 @@ package citrus.sounds
 	import flash.media.Sound;
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
+	
+	import citrus.core.citrus_internal;
 
 	public class CitrusSound extends CitrusEventDispatcher
 	{
+		use namespace citrus_internal;
+		
 		public var hideParamWarnings:Boolean = false;
 		
 		protected var _name:String;
