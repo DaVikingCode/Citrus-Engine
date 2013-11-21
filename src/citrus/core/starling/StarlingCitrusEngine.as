@@ -213,7 +213,6 @@ package citrus.core.starling {
 				transformMatrix.identity();
 				transformMatrix.scale(_starling.contentScaleFactor,_starling.contentScaleFactor);
 				transformMatrix.translate(_viewport.x,_viewport.y);
-				trace(transformMatrix);
 			}
 			
 			return _viewport;
