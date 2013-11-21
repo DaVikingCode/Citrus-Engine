@@ -123,11 +123,13 @@ package citrus.view.spriteview
 		public function pause():void
 		{
 			_paused = true;
+			_ce.stage.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
 		}
 		
 		public function resume():void
 		{
 			_paused = false;
+			_ce.stage.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
 		}
 		
 		public function changeAnimation(name:String, loop:Boolean  = false):void
