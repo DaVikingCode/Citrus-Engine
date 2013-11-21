@@ -139,6 +139,7 @@ package citrus.sounds
 			for each(s in _sounds)
 				removeSound(s);
 			_sounds.length = 0;
+			removeEventListeners();
 		}
 		
 	}
