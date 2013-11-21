@@ -1,6 +1,7 @@
 package citrus.sounds 
 {
 	import citrus.events.CitrusEventDispatcher;
+	import citrus.events.CitrusSoundEvent;
 	import citrus.math.MathUtils;
 	/**
 	 * CitrusSoundGroup represents a volume group with its groupID and has mute control as well.

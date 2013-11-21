@@ -1,6 +1,7 @@
 package citrus.sounds 
 {
 	import citrus.core.CitrusEngine;
+	import citrus.events.CitrusSoundEvent;
 	import citrus.math.MathUtils;
 	import citrus.math.MathVector;
 	import citrus.view.ISpriteView;

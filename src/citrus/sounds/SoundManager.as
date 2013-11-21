@@ -2,6 +2,7 @@ package citrus.sounds {
 
 	import aze.motion.eaze;
 	import citrus.events.CitrusEvent;
+	import citrus.events.CitrusSoundEvent;
 	import citrus.events.CitrusEventDispatcher;
 
 	import citrus.sounds.groups.BGMGroup;

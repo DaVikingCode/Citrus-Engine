@@ -1,6 +1,8 @@
-package citrus.sounds 
+package citrus.events 
 {
 	import citrus.events.CitrusEvent;
+	import citrus.sounds.CitrusSound;
+	import citrus.sounds.CitrusSoundInstance;
 
 	public class CitrusSoundEvent extends CitrusEvent
 	{

@@ -4,6 +4,7 @@ package citrus.sounds
 	import citrus.core.CitrusEngine;
 	import citrus.events.CitrusEvent;
 	import citrus.events.CitrusEventDispatcher;
+	import citrus.events.CitrusSoundEvent;
 	import flash.events.ErrorEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
