@@ -5,6 +5,7 @@ package citrus.core {
 	import citrus.sounds.SoundManager;
 	import citrus.utils.AGameData;
 	import citrus.utils.LevelManager;
+	import flash.geom.Matrix;
 
 	import org.osflash.signals.Signal;
 
@@ -49,6 +50,17 @@ package citrus.core {
 		 * You may use the Citrus Engine's level manager if you have several levels to handle. Take a look on its class for more information.
 		 */
 		public var levelManager:LevelManager;
+		
+		/**
+		 * the matrix that describes the transformation required to go from state container space to flash stage space.
+		 * note : this does not include the camera's transformation.
+		 * the transformation required to go from flash stage to in state space when a camera is active would be obtained with
+		 * var m:Matrix = camera.transformMatrix.clone();
+		 * m.concat(_ce.transformMatrix);
+		 * 
+		 * using flash only, the state container is aligned and of the same scale as the flash stage, so this is not required.
+		 */
+		public const transformMatrix:Matrix = new Matrix();
 		
 		protected var _state:IState;
 		protected var _newState:IState;

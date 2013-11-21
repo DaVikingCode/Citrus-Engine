@@ -4,6 +4,7 @@ package citrus.sounds
 	import citrus.view.ACitrusCamera;
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
@@ -93,7 +94,12 @@ package citrus.sounds
 			}
 			
 			if (_visible)
-				_debugArt.transform.matrix = _camera.transformMatrix.clone();
+			{
+				var m:Matrix = _debugArt.transform.matrix;
+				m.copyFrom(_camera.transformMatrix);
+				m.concat(_ce.transformMatrix);
+				_debugArt.transform.matrix = m;
+			}
 		}
 		
 		protected function updateObject(object:CitrusSoundObject):void
