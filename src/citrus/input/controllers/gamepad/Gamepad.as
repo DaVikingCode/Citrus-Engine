@@ -40,7 +40,7 @@ package citrus.input.controllers.gamepad
 		/**
 		 * will trace information on the gamepad at runtime.
 		 */
-		public var debug:Boolean = false;
+		public static var debug:Boolean = false;
 		
 		/**
 		 * if set to true, all 'children controllers' will send an action with their controller name when active (value != 0) 
@@ -146,7 +146,7 @@ package citrus.input.controllers.gamepad
 				_usedControls[controlid] = new Vector.<Icontrol>();
 			
 			if(debug)
-				trace("Binding", control.id, "to", controller, controlid in _usedControls);
+				trace("Binding", control.id, "to", controller);
 			
 			(_usedControls[controlid] as Vector.<Icontrol>).push(controller);
 		}
