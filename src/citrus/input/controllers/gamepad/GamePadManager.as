@@ -118,7 +118,8 @@ package citrus.input.controllers.gamepad
 					gp.useMap(devicesMapDictionary[substr]);
 					return;
 				}
-			//nothing found, use _defaultMap.
+			if (Gamepad.debug)
+				trace("[GamePadManager] No default map found in GamePadManager.devicesMapDictionary for", gp, ", trying to use defaultMap specified in the constructor.");
 			gp.useMap(_defaultMap);
 		}
 		
