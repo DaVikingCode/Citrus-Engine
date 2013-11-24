@@ -270,7 +270,7 @@ package citrus.input.controllers.gamepad
 		{
 			if (!(name in _sticks))
 			{
-				trace(this,"cannot set joystick control,",name,"is not registered.");
+				throw new Error(this + "cannot set joystick control, "+name+" is not registered.");
 				return;
 			}
 			
