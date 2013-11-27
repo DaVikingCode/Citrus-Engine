@@ -128,6 +128,16 @@ package citrus.ui.starling.basic
 				_content = null;
 			}
 		}
+
+		public function get content():DisplayObject
+		{
+			return _content;
+		}
+
+		public function set content(content:DisplayObject):void
+		{
+			_content = content;
+		}
 		
 	}
 
