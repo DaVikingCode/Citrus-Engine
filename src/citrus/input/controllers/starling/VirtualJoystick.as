@@ -33,6 +33,9 @@ package citrus.input.controllers.starling {
 			
 			super(name, params);
 			
+			_radius = (_radius * .5) * Starling.current.contentScaleFactor;
+			_knobradius = (_knobradius * .5) * Starling.current.contentScaleFactor;
+			
 			_innerradius = _radius - _knobradius;
 			
 			_x = _x ? _x : 2*_innerradius / Starling.current.contentScaleFactor;
@@ -62,6 +65,10 @@ package citrus.input.controllers.starling {
 				var m:int = 15; // margin
 				var w:int = 30; // width
 				var h:int = 40; // height
+				
+				m = (m * .5) * Starling.current.contentScaleFactor;
+				w = (w * .5) * Starling.current.contentScaleFactor;
+				h = (h * .5) * Starling.current.contentScaleFactor;
 				
 				tempSprite.graphics.clear();
 				tempSprite.graphics.beginFill(0x000000, 0.2);
