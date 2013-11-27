@@ -177,7 +177,7 @@ package citrus.utils.objectmakers {
 									if (tileProps != null) break;
 								}
 								name = tileProps["name"];
-								// TODO : look into an other atlas if the texture isn't found.
+								
 								texture = atlas.getTexture(name);
 
 								var image:Image = new Image(texture);
