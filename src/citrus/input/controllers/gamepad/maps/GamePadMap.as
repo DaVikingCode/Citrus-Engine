@@ -37,6 +37,11 @@ package citrus.input.controllers.gamepad.maps
 		}
 		
 		/**
+		 * force GamePadMap to use a certain platform when running : WIN,MAC,LNX,AND
+		 */
+		public static function set devPlatform(value:String):void { _platform = value; }
+		
+		/**
 		 * override those functions to set up a gamepad for different OS's by default,
 		 * or override setup() to define your own way.
 		 */
