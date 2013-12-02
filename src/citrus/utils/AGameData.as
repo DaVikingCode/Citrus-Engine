@@ -114,8 +114,8 @@ package citrus.utils
 			{
 				if (typeVerification)
 				{
-					var type1:Class = Object(value).constructor;
-					var type2:Class = Object(__dict[name]).constructor;
+					var type1:Class = value.constructor;
+					var type2:Class = __dict[name].constructor;
 					if (!(type1 === type2))
 						throw new ArgumentError("[AGameData] you're trying to set '" + name + "'s value of type " + type2 + " to a new value of type " + type1);
 				}
