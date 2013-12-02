@@ -99,7 +99,7 @@ package citrus.utils.objectmakers {
 						}
 					}
 					
-					if (params.view) {
+					if (params.view && !(params.view is Image)) {
 					
 						var suffix:String = params.view.substring(params.view.length - 4).toLowerCase();
 						if (!(suffix == ".swf" || suffix == ".png" || suffix == ".gif" || suffix == ".jpg")) {
@@ -177,7 +177,7 @@ package citrus.utils.objectmakers {
 									if (tileProps != null) break;
 								}
 								name = tileProps["name"];
-								// TODO : look into an other atlas if the texture isn't found.
+								
 								texture = atlas.getTexture(name);
 
 								var image:Image = new Image(texture);
