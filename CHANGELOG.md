@@ -1,6 +1,7 @@
 V3.1.9, Work In Progress
 ------------------------
 - Feathers updated on 1.2.0
+- LevelManager enables SWF caching, very useful on iOS. Set the new property enableSwfCaching to true.
 
 V3.1.8, 11 13 2013
 ------------------
