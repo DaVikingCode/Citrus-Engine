@@ -99,7 +99,7 @@ package citrus.utils.objectmakers {
 						}
 					}
 					
-					if (params.view) {
+					if (params.view && !(params.view is Image)) {
 					
 						var suffix:String = params.view.substring(params.view.length - 4).toLowerCase();
 						if (!(suffix == ".swf" || suffix == ".png" || suffix == ".gif" || suffix == ".jpg")) {
