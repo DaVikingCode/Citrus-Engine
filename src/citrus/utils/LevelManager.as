@@ -66,14 +66,23 @@ package citrus.utils {
 		public var levels:Array;
 		public var currentLevel:Object;
 		
+		/**
+		 * If set to true, and the level comes from an SWF, the SWF is only loaded once, then cached.
+		 * Enable this if you plan to deliver an IOS app, since IOS does not support SWF reloading
+		 * in AOT (build) mode.
+		 */
+		public var enableSwfCaching:Boolean = false;
+		
 		private var _ALevel:Class;
 		private var _currentIndex:uint;		
+		private var _levelData:Array;
 
 		public function LevelManager(ALevel:Class) {
 
 			_instance = this;
 			
 			_ALevel = ALevel;
+			_levelData = new Array();
 
 			onLevelChanged = new Signal(_ALevel);
 			_currentIndex = 0;
@@ -149,18 +158,31 @@ package citrus.utils {
 					
 				} else {
 					
-					var loader:Loader = new Loader();
-					var loaderContext:LoaderContext = new LoaderContext(checkPolicyFile, applicationDomain, securityDomain);
-					loader.load(new URLRequest(levels[_currentIndex][1]), loaderContext);
-					loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _levelLoaded);
-					loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _handleLoaderError);
+					if (enableSwfCaching && _levelData.length > _currentIndex && _levelData[_currentIndex] != null) {
+						// Use already loaded (cached) SWF content:
+						createLevelFromCache();
+					} else {
+						// load SWF from file:
+						var loader:Loader = new Loader();
+						var loaderContext:LoaderContext = new LoaderContext(checkPolicyFile, applicationDomain, securityDomain);
+						loader.load(new URLRequest(levels[_currentIndex][1]), loaderContext);
+						loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _levelLoaded);
+						loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _handleLoaderError);
+					}
 				}
 			}
 		}
 
 		private function _levelLoaded(evt:Event):void {
+			if (evt.target is URLLoader) {
+				currentLevel = _ALevel(new levels[_currentIndex][0](XML(evt.target.data)));
+			} else {
+				if (enableSwfCaching) {
+					_levelData[_currentIndex] = evt.target.loader.content;
+				}
 			
-			currentLevel = (evt.target is URLLoader) ? _ALevel(new levels[_currentIndex][0](XML(evt.target.data))) : currentLevel = _ALevel(new levels[_currentIndex][0](evt.target.loader.content));
+				currentLevel = _ALevel(new levels[_currentIndex][0](evt.target.loader.content));
+			}
 			
 			currentLevel.lvlEnded.add(_onLevelEnded);
 			onLevelChanged.dispatch(currentLevel);
@@ -171,10 +193,21 @@ package citrus.utils {
 				evt.target.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, _handleLoaderError);
 				evt.target.loader.unloadAndStop();		
 					
-			} else if (evt.target is URLLoader)
+			} else if (evt.target is URLLoader) {
 				evt.target.removeEventListener(Event.COMPLETE, _levelLoaded);
+			}
 		}
-
+		
+		/**
+		 * Creates a level form a cached object. Used when enableSwfCache is set to true,
+		 * to prevent SWF-reloading, which is not possible on IOS builds (AOT mode).
+		 */
+		private function createLevelFromCache():void {
+			currentLevel = _ALevel(new levels[_currentIndex][0](_levelData[_currentIndex]));
+			currentLevel.lvlEnded.add(_onLevelEnded);
+			onLevelChanged.dispatch(currentLevel);
+		}
+		
 		private function _onLevelEnded():void {
 
 		}
