@@ -25,8 +25,12 @@ package citrus.input.controllers.starling {
 		public function VirtualButton(name:String, params:Object = null) {
 			graphic = new starling.display.Sprite();
 			super(name, params);
-			_x = _x ? _x : Starling.current.stage.stageWidth - (_margin + 2*_buttonradius)/ Starling.current.contentScaleFactor ;
-			_y = _y ? _y : Starling.current.stage.stageHeight - 2*_buttonradius/ Starling.current.contentScaleFactor;
+			
+			_buttonradius = (_buttonradius * .5) * Starling.current.contentScaleFactor;
+			_margin = (_margin * .5) * Starling.current.contentScaleFactor;
+			
+			_x = _x ? _x : Starling.current.stage.stageWidth - (_margin + _buttonradius)/ Starling.current.contentScaleFactor;
+			_y = _y ? _y : Starling.current.stage.stageHeight - (2*_buttonradius)/ Starling.current.contentScaleFactor;
 			
 			initGraphics();
 		}
