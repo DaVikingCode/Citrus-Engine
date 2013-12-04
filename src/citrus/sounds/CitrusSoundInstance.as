@@ -463,6 +463,9 @@ package citrus.sounds
 		
 		internal function resetSoundTransform():SoundTransform
 		{
+			if (_isPaused)
+				return _soundTransform;
+				
 			var st:SoundTransform = _parentsound.refreshSoundTransform();
 			st.volume *= _volume;
 			st.pan = _panning;
