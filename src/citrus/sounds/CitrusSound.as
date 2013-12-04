@@ -159,7 +159,7 @@ package citrus.sounds
 			}
 		}
 		
-		internal function refreshSoundTransform():SoundTransform
+		internal function refreshSoundTransform(refreshSoundInstances:Boolean = false):SoundTransform
 		{
 			if (_soundTransform == null)
 				_soundTransform = new SoundTransform();
@@ -173,6 +173,13 @@ package citrus.sounds
 			{
 				_soundTransform.volume = (_mute || _ce.sound.masterMute) ? 0 : _volume * _ce.sound.masterVolume;
 				_soundTransform.pan =  _panning;
+			}
+			
+			if (refreshSoundInstances)
+			{
+				var soundInstance:CitrusSoundInstance;
+				for each (soundInstance in soundInstances)
+					soundInstance.resetSoundTransform();
 			}
 			
 			return _soundTransform;
@@ -246,11 +253,7 @@ package citrus.sounds
 			if (_volume != val)
 			{
 				_volume = val;
-				refreshSoundTransform();
-				
-				var soundInstance:CitrusSoundInstance;
-				for each (soundInstance in soundInstances)
-					soundInstance.resetSoundTransform();
+				refreshSoundTransform(true);
 			}
 		}
 		
@@ -259,11 +262,7 @@ package citrus.sounds
 			if (_panning != val)
 			{
 				_panning = val;
-				refreshSoundTransform();
-				
-				var soundInstance:CitrusSoundInstance;
-				for each (soundInstance in soundInstances)
-					soundInstance.resetSoundTransform();
+				refreshSoundTransform(true);
 			}
 		}
 		
@@ -272,11 +271,7 @@ package citrus.sounds
 			if (_mute != val)
 			{
 				_mute = val;
-				refreshSoundTransform();
-				
-				var soundInstance:CitrusSoundInstance;
-				for each (soundInstance in soundInstances)
-					soundInstance.resetSoundTransform();
+				refreshSoundTransform(true);
 			}
 		}
 		
