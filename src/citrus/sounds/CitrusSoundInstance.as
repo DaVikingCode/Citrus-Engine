@@ -104,7 +104,7 @@ package citrus.sounds
 		{
 			_parentsound = parentsound;
 			_permanent = _parentsound.permanent;
-			_soundTransform = _parentsound.refreshSoundTransform();
+			_soundTransform = _parentsound.resetSoundTransform();
 			
 			_ID = last_id++;
 			
@@ -199,12 +199,12 @@ package citrus.sounds
 			
 			_isActive = true;
 			
-			soundChannel = (_parentsound.sound as Sound).play(position, (_loops < 0) ? int.MAX_VALUE : 0, null);
-				
-			resetSoundTransform();
+			soundChannel = (_parentsound.sound as Sound).play(position, (_loops < 0) ? int.MAX_VALUE : 0);
 				
 			_isPlaying = true;
 			_isPaused = false;
+			
+			resetSoundTransform();
 			
 			_list.unshift(this);
 			
@@ -225,10 +225,13 @@ package citrus.sounds
 			_last_position = _soundChannel.position;
 			
 			_soundChannel.stop();
-			soundChannel = _parentsound.sound.play(0, int.MAX_VALUE, SoundChannelUtil.silentST);
+			
+			soundChannel = _parentsound.sound.play(0, int.MAX_VALUE);
 			
 			_isPlaying = false;
 			_isPaused = true;
+			
+			resetSoundTransform();
 			
 			dispatcher(CitrusSoundEvent.SOUND_PAUSE);
 		}
@@ -239,10 +242,12 @@ package citrus.sounds
 				return;
 			
 			_soundChannel.stop();
-			soundChannel = _parentsound.sound.play(_last_position, 0, _soundTransform = resetSoundTransform());
+			soundChannel = _parentsound.sound.play(_last_position, 0);
 			
 			_isPlaying = true;
 			_isPaused = false;
+			
+			resetSoundTransform()
 			
 			dispatcher(CitrusSoundEvent.SOUND_RESUME);
 		}
@@ -295,7 +300,7 @@ package citrus.sounds
 			
 			if (_isPaused)
 			{
-				soundChannel = _parentsound.sound.play(0, int.MAX_VALUE, SoundChannelUtil.silentST);
+				soundChannel = _parentsound.sound.play(0, int.MAX_VALUE);
 				return;
 			}
 			
@@ -304,14 +309,16 @@ package citrus.sounds
 			if (_loops < 0)
 			{
 				_soundChannel.stop();
-				soundChannel = (_parentsound.sound as Sound).play(startPositionOffset, int.MAX_VALUE, resetSoundTransform());
+				soundChannel = (_parentsound.sound as Sound).play(startPositionOffset, int.MAX_VALUE);
+				resetSoundTransform()
 			}
 			else if (_loopCount > _loops)
 				stop();
 			else
 			{
 				_soundChannel.stop();
-				soundChannel = (_parentsound.sound as Sound).play(startPositionOffset, 0, resetSoundTransform());
+				soundChannel = (_parentsound.sound as Sound).play(startPositionOffset, 0);
+				resetSoundTransform();
 				dispatcher(CitrusSoundEvent.SOUND_LOOP);
 			}
 		}
@@ -319,8 +326,7 @@ package citrus.sounds
 		public function set volume(value:Number):void
 		{
 			_volume = value;
-			if (_soundChannel)
-				_soundTransform = resetSoundTransform();
+			resetSoundTransform();
 		}
 		
 		public function get volume():Number
@@ -331,8 +337,7 @@ package citrus.sounds
 		public function set panning(value:Number):void
 		{
 			_panning = value;
-			if (_soundChannel)
-				_soundTransform = resetSoundTransform();
+			resetSoundTransform();
 		}
 		
 		public function get panning():Number
@@ -461,18 +466,19 @@ package citrus.sounds
 			return _destroyed;
 		}
 		
-		internal function resetSoundTransform():SoundTransform
+		internal function resetSoundTransform(parentSoundTransformReset:Boolean = true):SoundTransform
 		{
-			if (_isPaused)
-				return _soundTransform;
-				
-			var st:SoundTransform = _parentsound.refreshSoundTransform();
-			st.volume *= _volume;
-			st.pan = _panning;
+			_soundTransform = parentSoundTransformReset ? _parentsound.resetSoundTransform() : _parentsound.soundTransform;
+			_soundTransform.volume *= _volume;
+			_soundTransform.pan = _panning;
+			
 			if (_soundChannel)
-				return _soundTransform = _soundChannel.soundTransform = st;
+				if (_isPaused)
+					return _soundChannel.soundTransform = SoundChannelUtil.silentST;
+				else
+					return _soundChannel.soundTransform = _soundTransform;
 			else
-				return _soundTransform = st;
+				return _soundTransform;
 		}
 		
 		public function toString():String

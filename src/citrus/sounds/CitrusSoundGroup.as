@@ -29,7 +29,7 @@ package citrus.sounds
 		{
 			var s:CitrusSound;
 			for each(s in _sounds)
-				s.refreshSoundTransform(true);
+				s.resetSoundTransform(true);
 		}
 		
 		internal function addSound(s:CitrusSound):void
@@ -73,7 +73,7 @@ package citrus.sounds
 				{
 					cs = _sounds[si];
 					cs.setGroup(null);
-					cs.refreshSoundTransform(true);
+					cs.resetSoundTransform(true);
 					cs.removeEventListener(CitrusSoundEvent.SOUND_LOADED, handleSoundLoaded);
 					_sounds.splice(uint(si), 1);
 					break;
