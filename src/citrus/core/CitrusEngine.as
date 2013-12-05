@@ -93,7 +93,9 @@ package citrus.core {
 			_instance = this;
 			
 			onPlayingChange = new Signal(Boolean);
-			onStageResize = new Signal(int,int);
+			onStageResize = new Signal(int, int);
+			
+			onPlayingChange.add(handlePlayingChange);
 			
 			//Set up console
 			_console = new Console(9); //Opens with tab key by default
@@ -103,8 +105,7 @@ package citrus.core {
 			addChild(_console);
 			
 			//timekeeping
-			_startTime = new Date().time;
-			_gameTime = _startTime;
+			_gameTime = _startTime = new Date().time;
 			
 			//Set up input
 			_input = new Input();
@@ -202,7 +203,11 @@ package citrus.core {
 		/**
 		 * Runs and pauses the game loop. Assign this to false to pause the game and stop the
 		 * <code>update()</code> methods from being called.
-		 * Dispatch the Signal onPlayingChange with the value
+		 * Dispatch the Signal onPlayingChange with the value.
+		 * CitrusEngine calls its own handlePlayingChange listener to
+		 * 1.reset all input actions when "playing" changes
+		 * 2.pause or resume all sounds.
+		 * override handlePlayingChange to override all or any of these behaviors.
 		 */
 		public function set playing(value:Boolean):void
 		{
@@ -210,9 +215,6 @@ package citrus.core {
 			if (_playing)
 				_gameTime = new Date().time;
 			onPlayingChange.dispatch(_playing);
-			
-			if(_input)
-				_input.resetActions();
 		}
 		
 		/**
@@ -287,6 +289,22 @@ package citrus.core {
 		}
 		
 		/**
+		 * called when the value of 'playing' changes.
+		 * resets input actions , pauses/resumes all sounds by default.
+		 */
+		protected function handlePlayingChange(value:Boolean):void
+		{
+			if(input)
+				input.resetActions();
+			
+			if (sound)
+				if(value)
+					sound.resumeAll();
+				else
+					sound.pauseAll();
+		}
+		
+		/**
 		 * This is the game loop. It switches states if necessary, then calls update on the current state.
 		 */		
 		//TODO The CE updates use the timeDelta to keep consistent speed during slow framerates. However, Box2D becomes unstable when changing timestep. Why?
@@ -327,8 +345,7 @@ package citrus.core {
 			if (_state && _playing)
 			{
 				var nowTime:Number = new Date().time;
-				var timeSinceLastFrame:Number = nowTime - _gameTime;
-				var timeDelta:Number = timeSinceLastFrame * 0.001;
+				var timeDelta:Number = (nowTime - _gameTime) * 0.001;
 				_gameTime = nowTime;
 				
 				_state.update(timeDelta);
@@ -347,16 +364,12 @@ package citrus.core {
 				playing = false;
 				stage.addEventListener(Event.ACTIVATE, handleStageActivated);
 			}
-			
-			sound.pauseAll();
 		}
 		
 		protected function handleStageActivated(e:Event):void
 		{
 			playing = true;
 			stage.removeEventListener(Event.ACTIVATE, handleStageActivated);
-			
-			sound.resumeAll();
 		}
 		
 		private function handleShowConsole():void
