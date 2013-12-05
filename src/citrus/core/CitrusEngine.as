@@ -265,6 +265,14 @@ package citrus.core {
 			resetScreenSize();
 			
 			_input.initialize();
+			
+			this.initialize();
+		}
+		
+		/**
+		 * called when CitrusEngine is added to the stage and ready to run.
+		 */
+		public function initialize():void {
 		}
 		
 		protected function handleStageFullscreen(e:FullScreenEvent):void
