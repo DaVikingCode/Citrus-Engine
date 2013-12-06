@@ -110,6 +110,9 @@ package citrus.input.controllers.gamepad
 		
 		protected function onChange(e:Event):void
 		{
+			if (!_enabled)
+				return;
+				
 			if (!(e.currentTarget.id in _usedControls))
 			{
 				if(debug)
