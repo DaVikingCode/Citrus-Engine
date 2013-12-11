@@ -40,6 +40,7 @@
 		}
 		public function set display(value:Object):void
 		{
+			/*
 			if (_display is Image && value is Image)
 			{
 				var from:Image = _display as Image;
@@ -63,6 +64,7 @@
 				from.readjustSize();
 				return;
 			}
+			*/
 			
 			if (_display == value)
 			{
@@ -78,6 +80,7 @@
 				}
 				removeDisplay();
 			}
+			/*
 			else if(value is Image && !_imageBackup)
 			{
 				_imageBackup = value as Image;
@@ -85,6 +88,7 @@
 				_pivotXBackup = _imageBackup.pivotX;
 				_pivotYBackup = _imageBackup.pivotY;
 			}
+			*/
 			_display = value;
 			addDisplay(parent, index);
 		}

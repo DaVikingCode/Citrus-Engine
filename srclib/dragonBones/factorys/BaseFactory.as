@@ -323,6 +323,12 @@ package dragonBones.factorys
 						}
 					}
 				}
+				
+				var armatureDataCopy:ArmatureData = data.getArmatureData(animationName);
+				if(armatureDataCopy)
+				{
+					var skinDataCopy:SkinData = armatureDataCopy.getSkinData("");
+				}
 			}
 			
 			if(animationArmatureData)
@@ -367,7 +373,21 @@ package dragonBones.factorys
 					switch(displayData.type)
 					{
 						case DisplayData.ARMATURE:
-							childArmature = buildArmature(displayData.name, null, _currentDataName, _currentTextureAtlasName);
+							
+							if(skinDataCopy)
+							{
+								var slotDataCopy:SlotData = skinDataCopy.getSlotData(slotData.name);
+								if(slotDataCopy)
+								{
+									var displayDataCopy:DisplayData = slotDataCopy.displayDataList[i];
+								}
+							}
+							else
+							{
+								displayDataCopy = null;
+							}
+							
+							childArmature = buildArmature(displayData.name, displayDataCopy?displayDataCopy.name:null, _currentDataName, _currentTextureAtlasName);
 							if(childArmature)
 							{
 								helpArray[i] = childArmature;

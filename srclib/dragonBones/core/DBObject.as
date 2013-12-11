@@ -1,9 +1,13 @@
-package dragonBones.core {
-
+package dragonBones.core
+{
 	import dragonBones.Armature;
 	import dragonBones.Bone;
+	import dragonBones.animation.AnimationState;
+	import dragonBones.animation.TimelineState;
+	import dragonBones.core.dragonBones_internal;
 	import dragonBones.objects.DBTransform;
-
+	import dragonBones.objects.Frame;
+	
 	import flash.geom.Matrix;
 	
 	use namespace dragonBones_internal;
