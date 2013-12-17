@@ -211,6 +211,9 @@ package citrus.core {
 		 */
 		public function set playing(value:Boolean):void
 		{
+			if (value == _playing)
+				return;
+				
 			_playing = value;
 			if (_playing)
 				_gameTime = new Date().time;
@@ -367,17 +370,12 @@ package citrus.core {
 		
 		protected function handleStageDeactivated(e:Event):void
 		{
-			if (_playing)
-			{
-				playing = false;
-				stage.addEventListener(Event.ACTIVATE, handleStageActivated);
-			}
+			playing = false;
 		}
 		
 		protected function handleStageActivated(e:Event):void
 		{
 			playing = true;
-			stage.removeEventListener(Event.ACTIVATE, handleStageActivated);
 		}
 		
 		private function handleShowConsole():void
