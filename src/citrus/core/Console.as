@@ -272,7 +272,8 @@ package citrus.core {
 			_inputField.y = 4;
 			_inputField.x = 4;
 			
-			stage.addEventListener(KeyboardEvent.KEY_UP, onToggleKeyPress);
+			if (_enabled)
+				stage.addEventListener(KeyboardEvent.KEY_UP, onToggleKeyPress);
 		}
 		
 		private function onConsoleFocusOut(event:FocusEvent):void
