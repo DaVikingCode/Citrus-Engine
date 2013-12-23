@@ -160,6 +160,7 @@ package citrus.view.starlingview {
 						
 						
 						var bmp:Bitmap;
+						var texture:Texture;
 						var tile:StarlingTile = new StarlingTile();
 						tile.isInRAM = false;
 						
@@ -172,6 +173,15 @@ package citrus.view.starlingview {
 							tile.y = bmp.height * r;
 							tile.width = bmp.width;
 							tile.height = bmp.height;
+
+						// check to see if we're loading a Bitmap, a Class or a ByteArray
+						} else if (row[c] as Texture) {
+							texture = row[c];
+							tile.myTexture = texture;
+							tile.x = texture.width * c;
+							tile.y = texture.height * r;
+							tile.width = texture.width;
+							tile.height = texture.height;
 							
 						} else {
 							
@@ -281,24 +291,25 @@ package citrus.view.starlingview {
 		public function loadAll():void {
 			for each (var tile:StarlingTile in _liveTiles) {
 				tile.isInRAM = true;
-				if (atf) {
-					tile.myTexture = Texture.fromAtfData(tile.myATF);
-				} else {
-					// if we have used this botmap before, then just reuse the texture we already created, otherwise, create a new texture from thie bitmap
-					if (assetCache.itemExists(tile.myBitmap)) {
-						tile.myTexture = assetCache.getItem(tile.myBitmap);
+				if (tile.myTexture == null) {
+					if (atf) {
+						tile.myTexture = Texture.fromAtfData(tile.myATF);
 					} else {
-						
-						var compression:String = Context3DTextureFormat.COMPRESSED_ALPHA;
-						
-						if (Mobile.isAndroid() || Mobile.isIOS())
-							compression = Context3DTextureFormat["BGRA_PACKED"] ? Context3DTextureFormat["BGRA_PACKED"] : Context3DTextureFormat.BGRA;
-						
-						tile.myTexture = Texture.fromBitmap(tile.myBitmap, false, false, 1, compression);
-						assetCache.add(tile.myBitmap, tile.myTexture);
+						// if we have used this botmap before, then just reuse the texture we already created, otherwise, create a new texture from thie bitmap
+						if (assetCache.itemExists(tile.myBitmap)) {
+							tile.myTexture = assetCache.getItem(tile.myBitmap);
+						} else {
+							
+							var compression:String = Context3DTextureFormat.COMPRESSED_ALPHA;
+							
+							if (Mobile.isAndroid() || Mobile.isIOS())
+								compression = Context3DTextureFormat["BGRA_PACKED"] ? Context3DTextureFormat["BGRA_PACKED"] : Context3DTextureFormat.BGRA;
+							
+							tile.myTexture = Texture.fromBitmap(tile.myBitmap, false, false, 1, compression);
+							assetCache.add(tile.myBitmap, tile.myTexture);
+						}
 					}
 				}
-				
 				var img:Image = new Image(tile.myTexture);
 				img.x = tile.x;
 				img.y = tile.y;
@@ -319,10 +330,10 @@ package citrus.view.starlingview {
 				removeChild(tile.myImage);
 				
 				tile.myImage.dispose();
-				tile.myTexture.dispose();
+				//tile.myTexture.dispose();
 				
 				tile.myImage = null;
-				tile.myTexture = null;
+				//tile.myTexture = null;
 			}
 		}
 		
