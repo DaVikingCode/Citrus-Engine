@@ -272,7 +272,7 @@ package citrus.core.starling {
 							_state.destroy();
 							_starling.stage.removeChild(_state as StarlingState, true);
 
-						} else {
+						} else if(_newState is StarlingState) {
 
 							_state.destroy();
 							removeChild(_state as State);
