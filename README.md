@@ -49,7 +49,7 @@ Repository Setup
 - src : Citrus Engine's source code.
 - srclib : as3 files of some libraries.
 
-[API](http://citrusengine.com/api/)
+[Wiki](http://wiki.starling-framework.org/citrus/start) & [API](http://citrusengine.com/api/)
 
-The Citrus Engine is proudly supported by:
+The [Citrus Engine](http://citrusengine.com/) is proudly supported by:
 [![FDT](http://aymericlamboley.fr/blog/wp-content/uploads/2013/12/fdt.png)](http://fdt.powerflasher.com/)[![Jetbrains](http://aymericlamboley.fr/blog/wp-content/uploads/2013/12/jetbrains.png)](http://www.jetbrains.com/)
