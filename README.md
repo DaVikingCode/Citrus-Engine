@@ -51,5 +51,14 @@ Repository Setup
 
 [Wiki](http://wiki.starling-framework.org/citrus/start) & [API](http://citrusengine.com/api/)
 
+Support
+-------
 The [Citrus Engine](http://citrusengine.com/) is proudly supported by:
 [![FDT](http://aymericlamboley.fr/blog/wp-content/uploads/2013/12/fdt.png)](http://fdt.powerflasher.com/)[![Jetbrains](http://aymericlamboley.fr/blog/wp-content/uploads/2013/12/jetbrains.png)](http://www.jetbrains.com/)
+If you have any questions on the engine or need some help, we suggest to ask directly on the [forum](http://forum.starling-framework.org/forum/citrus-engine). However for people and companies desiring a strong support, a freelance game developer, or special features you may contact us directly: citrusengine[dot]framework[at]gmail[dot]com
+We will make a pricing plan depending on your need.
+
+Donations
+---------
+The [Citrus Engine](http://citrusengine.com/) requested lots of work to become the most advanced Open-Source & free AS3 game engine. You can show us your love making a donation. It will be divided fairly between contributors.
+[Donate](http://citrusengine.com/support/)]
