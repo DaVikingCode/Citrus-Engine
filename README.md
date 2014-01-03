@@ -61,4 +61,4 @@ We will make a pricing plan depending on your need.
 Donations
 ---------
 The [Citrus Engine](http://citrusengine.com/) requested lots of work to become the most advanced Open-Source & free AS3 game engine. You can show us your love making a donation. It will be divided fairly between contributors.
-[Donate](http://citrusengine.com/support/)]
+[Donate](http://citrusengine.com/support/)
