@@ -311,7 +311,7 @@ package citrus.core.starling {
 		override protected function handleStageDeactivated(e:flash.events.Event):void {
 
 			if (_playing && _starling)
-				_starling.stop();
+				_starling.stop(true);
 
 			super.handleStageDeactivated(e);
 		}
