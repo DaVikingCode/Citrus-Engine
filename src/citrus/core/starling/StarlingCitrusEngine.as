@@ -29,10 +29,11 @@ package citrus.core.starling {
 		protected var _assetSizes:Array = [1];
 		protected var _baseWidth:int = -1;
 		protected var _baseHeight:int = -1;
-		protected var _viewportBaseRatioWidth:Number = 1;
-		protected var _viewportBaseRatioHeight:Number = 1;
 		protected var _viewportMode:String = ViewportMode.LEGACY;
 		protected var _viewport:Rectangle;
+		
+		private var _viewportBaseRatioWidth:Number = 1;
+		private var _viewportBaseRatioHeight:Number = 1;
 		
 		/**
 		 * context3D profiles to test for in Ascending order (the more important first).
