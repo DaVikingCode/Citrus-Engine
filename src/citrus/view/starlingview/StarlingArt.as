@@ -410,6 +410,12 @@ package citrus.view.starlingview {
 			if (_content is StarlingPhysicsDebugView) {
 
 				var physicsDebugArt:IDebugView = (_content as StarlingPhysicsDebugView).debugView as IDebugView; 
+				/**
+				 * INFO :
+				 * can be replaced with (stateView as StarlingView).viewRoot as Sprite).getTransformationMatrix(Starling.current.stage)
+				 * or using transform.concatenatedMatrix in SpriteArt . This would solve any issues with moved root sprite, state sprite,
+				 * or any further parents added by the user that we don't know of.
+				 */
 				_m.copyFrom(stateView.camera.transformMatrix);
 				_m.concat(_ce.transformMatrix);
 				physicsDebugArt.transformMatrix = _m;
