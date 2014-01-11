@@ -80,9 +80,18 @@ package citrus.input.controllers {
 		protected var _playbackDelay:Number = 0;
 		protected var _delayedFunc:Function;
 		
+		protected var _routeActions:Boolean;
+		protected var _replayActions:Boolean;
+		
 		protected var _manualMode:Boolean = false;
 		
-		public function TimeShifter(bufferInSeconds:uint)
+		/**
+		 * read the docs for _Buffer to understand how to setup recordings.
+		 * @param	bufferInSeconds how long in the past should the TimeShifter record
+		 * @param	replayActions should the actions be recorded then replayed
+		 * @param	routeActions should the actions be routed automatically when the time shifter is active
+		 */
+		public function TimeShifter(bufferInSeconds:uint, replayActions:Boolean = false,routeActions:Boolean = true)
 		{
 			super("TimeShifter Controller");
 			_updateEnabled = true;
@@ -95,6 +104,9 @@ package citrus.input.controllers {
 			_BufferSets = new Vector.<Object>();
 			
 			_easeFunc = Tween_easeOut;
+			
+			_replayActions = replayActions;
+			_routeActions = routeActions;
 			
 			onSpeedChanged = new Signal();
 			onActivated = new Signal();
@@ -146,7 +158,8 @@ package citrus.input.controllers {
 			_nextBufferIndex = 1;
 			_active = true;
 			onActivated.dispatch();
-			_input.startRouting(defaultChannel);
+			if(_routeActions)
+				_input.startRouting(defaultChannel);
 		}
 		
 		protected function rewind():void
@@ -155,8 +168,9 @@ package citrus.input.controllers {
 			_nextBufferIndex = _bufferLength - 2;
 			_active = true;
 			onActivated.dispatch();
-			_input.startRouting(defaultChannel);
-		}
+			if(_routeActions)
+				_input.startRouting(defaultChannel);
+		}	
 		
 		public function pause():void
 		{
@@ -174,7 +188,8 @@ package citrus.input.controllers {
 			_nextBufferIndex =_Buffer.length - 2;
 			_active = true;
 			onActivated.dispatch();
-			_input.startRouting(defaultChannel);
+			if(_routeActions)
+				_input.startRouting(defaultChannel);
 			_currentSpeed = startSpeed;
 			onSpeedChanged.dispatch(startSpeed);
 		}
@@ -216,7 +231,8 @@ package citrus.input.controllers {
 			var obj:Object;
 			var continuous:Object;
 			var discrete:Object;
-			var abuff:Vector.<InputAction> = _input.getActionsSnapshot();
+			if(_replayActions)
+				var abuff:Vector.<InputAction> = _input.getActionsSnapshot();
 			var wbuff:Vector.<Object> = new Vector.<Object>();
 			var ic:Object;
 			var id:Object;
@@ -251,7 +267,12 @@ package citrus.input.controllers {
 				
 			}
 			
-			_Buffer.push({actionbuffer: abuff, watchbuffer: wbuff});
+			var buff:Object = { };
+			buff["watchbuffer"] = wbuff;
+			if(_replayActions)
+				buff["actionbuffer"] = abuff;
+			
+			_Buffer.push(buff);
 			_bufferLength++;
 			
 			if (_bufferLength > _maxBufferLength)
@@ -328,8 +349,9 @@ package citrus.input.controllers {
 				}
 			}
 			
-			for each (obj in _previousBufferFrame.actionbuffer)
-				_input.addOrSetAction(obj as InputAction);
+			if(_replayActions)
+				for each (obj in _previousBufferFrame.actionbuffer)
+					_input.addOrSetAction(obj as InputAction);
 			
 		}
 		
@@ -442,7 +464,8 @@ package citrus.input.controllers {
 			_doDelay = false;
 			
 			_input.resetActions();
-			_input.stopRouting();
+			if(_routeActions)
+				_input.stopRouting();
 		}
 		
 		override public function destroy():void
