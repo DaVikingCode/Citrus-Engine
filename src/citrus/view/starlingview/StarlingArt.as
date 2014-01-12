@@ -285,7 +285,7 @@ package citrus.view.starlingview {
 							var artClass:Class = getDefinitionByName(classString) as Class;
 						}catch (e:Error)
 						{
-							throw new Error("StarlingArt could not find class definition for \"" + String(classString) + "\". \n Make sure that you compile it with the project or that its the right classpath.");
+							throw new Error("[StarlingArt] could not find class definition for \"" + String(classString) + "\". \n Make sure that you compile it with the project or that its the right classpath.");
 						}
 							
 						tmpObj = new artClass();
@@ -302,6 +302,8 @@ package citrus.view.starlingview {
 						else if(tmpObj is starling.display.DisplayObject) {
 							_content = tmpObj;						
 						}
+						else
+							throw new Error("[StarlingArt] class" + String(classString) + " does not define a DisplayObject.");
 
 					}
 

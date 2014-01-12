@@ -179,6 +179,7 @@ package citrus.view.spriteview
 			
 			if (_view)
 			{				
+				var tmpObj:* ;
 				
 				if (_view is String)
 				{
@@ -195,17 +196,30 @@ package citrus.view.spriteview
 					// view property is a fully qualified class name in string form.
 					else
 					{
-						var artClass:Class = getDefinitionByName(classString) as Class;
-						if (artClass is MovieClip)
-						_content = new AnimationSequence(artClass as MovieClip);
+						try
+						{
+							var artClass:Class = getDefinitionByName(classString) as Class;
+						}catch (e:Error)
+						{
+							throw new Error("[SpriteArt] could not find class definition for \"" + String(classString) + "\". \n Make sure that you compile it with the project or that its the right classpath.");
+						}
+						tmpObj = new artClass();
+						if (tmpObj is MovieClip)
+						_content = new AnimationSequence(tmpObj as MovieClip);
+						else if(tmpObj is DisplayObject)
+						_content = tmpObj;
 						else
-						_content = new artClass();
+						throw new Error("[SpriteArt] class" + String(classString) + " does not define a DisplayObject.");
 					}
 				}
 				else if (_view is Class)
 				{
+					tmpObj = new _view();
 					//view property is a class reference
-					_content = new citrusObject.view();
+					if(tmpObj is DisplayObject)
+						_content = tmpObj;
+					else
+						throw new Error("[SpriteArt] " + String(_view) + " does not define a DisplayObject.");
 				}
 				else if (_view is DisplayObject)
 				{
