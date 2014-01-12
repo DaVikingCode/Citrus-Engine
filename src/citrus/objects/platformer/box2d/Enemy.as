@@ -66,6 +66,8 @@ package citrus.objects.platformer.box2d {
 		protected var _rightSensorFixture:b2Fixture;
 		protected var _sensorFixtureDef:b2FixtureDef;
 		
+		public var animationAliases:Object = {walk:"walk", die:"die"};
+		
 		public function Enemy(name:String, params:Object=null)
 		{
 			updateCallEnabled = true;
@@ -207,7 +209,7 @@ package citrus.objects.platformer.box2d {
 		
 		protected function updateAnimation():void
 		{
-			_animation = _hurt ? "die" : "walk";	
+			_animation = _hurt ? animationAliases["die"] : animationAliases["walk"];	
 		}
 		
 		/**
