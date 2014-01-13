@@ -1,10 +1,6 @@
 package citrus.input.controllers.starling {
 
-	import citrus.core.starling.StarlingState;
 	import citrus.input.controllers.AVirtualJoystick;
-	import citrus.view.starlingview.StarlingView;
-	import flash.geom.Point;
-
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Touch;
@@ -26,6 +22,8 @@ package citrus.input.controllers.starling {
 		//separate joystick elements
 		public var back:Image;
 		public var knob:Image;
+		private var _scaleFactor:Number;
+		private var _margin:int;
 		
 		public function VirtualJoystick(name:String, params:Object = null)
 		{
@@ -33,10 +31,14 @@ package citrus.input.controllers.starling {
 			
 			super(name, params);
 			
+			_scaleFactor = Starling.current.contentScaleFactor;
+			_radius = 65 * _scaleFactor;
+			_knobradius = 25 * _scaleFactor;
 			_innerradius = _radius - _knobradius;
-			
-			_x = _x ? _x : 2*_innerradius / Starling.current.contentScaleFactor;
-			_y = _y ? _y : Starling.current.stage.stageHeight - 2*_innerradius/ Starling.current.contentScaleFactor ;
+			_margin = 20 * _scaleFactor;
+						
+			_x = _x ? _x : ((_radius + _margin) / _scaleFactor);//2*_innerradius / _scaleFactor;
+			_y = _y ? _y : (Starling.current.stage.stageHeight - ((_radius + _margin) / _scaleFactor));//2 / _scaleFactor;
 			
 			initActionRanges();
 			initGraphics();
@@ -59,9 +61,9 @@ package citrus.input.controllers.starling {
 				
 				//draw arrows
 				
-				var m:int = 15; // margin
-				var w:int = 30; // width
-				var h:int = 40; // height
+				var m:int = 7.5 * _scaleFactor; // margin 15
+				var w:int = 15 * _scaleFactor; // width 30
+				var h:int = 20 * _scaleFactor; // height 40
 				
 				tempSprite.graphics.clear();
 				tempSprite.graphics.beginFill(0x000000, 0.2);
@@ -96,7 +98,7 @@ package citrus.input.controllers.starling {
 				tempSprite.graphics.endFill();
 				tempBitmapData.draw(tempSprite);
 				
-				back = new Image(Texture.fromBitmapData(tempBitmapData,true,false,Starling.current.contentScaleFactor));
+				back = new Image(Texture.fromBitmapData(tempBitmapData,true,false,_scaleFactor));
 				
 				tempSprite = null;
 				tempBitmapData = null;
@@ -114,7 +116,7 @@ package citrus.input.controllers.starling {
 				tempBitmapData2 = new BitmapData(_knobradius * 2, _knobradius * 2, true, 0x00FFFFFF);
 				tempBitmapData2.draw(tempSprite2);
 				
-				knob = new Image(Texture.fromBitmapData(tempBitmapData2,true,false,Starling.current.contentScaleFactor));
+				knob = new Image(Texture.fromBitmapData(tempBitmapData2,true,false,_scaleFactor));
 				
 				tempSprite2 = null;
 				tempBitmapData2 = null;

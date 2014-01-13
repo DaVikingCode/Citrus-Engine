@@ -21,12 +21,24 @@ package citrus.input.controllers.starling {
 
 		public var buttonUpTexture:Texture;
 		public var buttonDownTexture:Texture;
+		private var _scaleFactor:Number;
+		private var _radius:Number;
 
 		public function VirtualButton(name:String, params:Object = null) {
 			graphic = new starling.display.Sprite();
 			super(name, params);
-			_x = _x ? _x : Starling.current.stage.stageWidth - (_margin + 2*_buttonradius)/ Starling.current.contentScaleFactor ;
-			_y = _y ? _y : Starling.current.stage.stageHeight - 2*_buttonradius/ Starling.current.contentScaleFactor;
+			
+			_scaleFactor = Starling.current.contentScaleFactor;
+			_radius = 65 * _scaleFactor;
+			_margin = 20 * _scaleFactor;
+			_buttonradius = 25 * _scaleFactor;
+			
+			
+			//_x = _x ? _x : Starling.current.stage.stageWidth - (_margin + 2*_buttonradius)/ Starling.current.contentScaleFactor ;
+			//_y = _y ? _y : Starling.current.stage.stageHeight - 2*_buttonradius/ Starling.current.contentScaleFactor;
+
+			_x = _x ? _x : (Starling.current.stage.stageWidth - ((_radius + _margin) / _scaleFactor));//2*_innerradius / _scaleFactor;
+			_y = _y ? _y : (Starling.current.stage.stageHeight - ((_radius + _margin) / _scaleFactor));//2 / _scaleFactor;
 			
 			initGraphics();
 		}
@@ -42,7 +54,7 @@ package citrus.input.controllers.starling {
 				tempSprite.graphics.drawCircle(_buttonradius, _buttonradius, _buttonradius);
 				tempSprite.graphics.endFill();
 				tempBitmapData.draw(tempSprite);
-				buttonUpTexture = Texture.fromBitmapData(tempBitmapData,true,false,Starling.current.contentScaleFactor);
+				buttonUpTexture = Texture.fromBitmapData(tempBitmapData,true,false,_scaleFactor);
 				tempSprite = null;
 				tempBitmapData = null;
 			}
@@ -56,17 +68,19 @@ package citrus.input.controllers.starling {
 				tempSprite2.graphics.drawCircle(_buttonradius, _buttonradius, _buttonradius);
 				tempSprite2.graphics.endFill();
 				tempBitmapData2.draw(tempSprite2);
-				buttonDownTexture = Texture.fromBitmapData(tempBitmapData2,true,false,Starling.current.contentScaleFactor);
+				buttonDownTexture = Texture.fromBitmapData(tempBitmapData2,true,false,_scaleFactor);
 				tempSprite2 = null;
 				tempBitmapData2 = null;
 			}
 
 			button = new Image(buttonUpTexture);
-			button.pivotX = button.pivotY = _buttonradius;
+			//button.pivotX = button.pivotY = _buttonradius;
+			button.alignPivot();
 
 			tempSprite = null;
 			tempBitmapData = null;
-
+			
+			graphic.alignPivot();
 			graphic.x = _x;
 			graphic.y = _y;
 
