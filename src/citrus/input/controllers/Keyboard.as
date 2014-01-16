@@ -3,7 +3,6 @@ package citrus.input.controllers {
 	import citrus.input.InputController;
 	import org.osflash.signals.Signal;
 
-	import flash.ui.Keyboard;
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
 	
@@ -39,11 +38,11 @@ package citrus.input.controllers {
 			
 			//default arrow keys + space bar jump
 			
-			addKeyAction("left", flash.ui.Keyboard.LEFT);
-			addKeyAction("up", flash.ui.Keyboard.UP);
-			addKeyAction("right", flash.ui.Keyboard.RIGHT);
-			addKeyAction("down", flash.ui.Keyboard.DOWN);
-			addKeyAction("jump", flash.ui.Keyboard.SPACE);
+			addKeyAction("left", LEFT);
+			addKeyAction("up", UP);
+			addKeyAction("right", RIGHT);
+			addKeyAction("down", DOWN);
+			addKeyAction("jump", SPACE);
 			
 			_ce.stage.addEventListener(KeyboardEvent.KEY_DOWN, handleKeyDown);
 			_ce.stage.addEventListener(KeyboardEvent.KEY_UP, handleKeyUp);
