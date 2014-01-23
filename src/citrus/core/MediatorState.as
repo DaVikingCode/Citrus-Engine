@@ -2,6 +2,7 @@ package citrus.core {
 
 	import citrus.datastructures.PoolObject;
 	import citrus.objects.APhysicsObject;
+	import citrus.system.Component;
 	import citrus.system.Entity;
 	import citrus.system.components.ViewComponent;
 	import citrus.view.ACitrusView;
@@ -67,10 +68,12 @@ package citrus.core {
 			// Search objects to destroy
 			var garbage:Array = [];
 			var n:uint = _objects.length;
+			
+			var object:CitrusObject;
 
 			for (var i:uint = 0; i < n; ++i) {
 
-				var object:CitrusObject = _objects[i];
+				object = _objects[i];
 
 				if (object.kill)
 					garbage.push(object);
@@ -81,12 +84,18 @@ package citrus.core {
 			// Destroy all objects marked for destroy
 			// TODO There might be a limit on the number of Box2D bodies that you can destroy in one tick?
 			n = garbage.length;
+			var garbageObject:CitrusObject;
 			for (i = 0; i < n; ++i) {
-				var garbageObject:CitrusObject = garbage[i];
+				garbageObject = garbage[i];
 				_objects.splice(_objects.indexOf(garbageObject), 1);
 
 				if (garbageObject is Entity)
-					_view.removeArt((garbageObject as Entity).components["view"]);
+				{
+					var views:Vector.<Component> = (garbageObject as Entity).lookupComponentsByType(ViewComponent);
+						if (views.length > 0)
+							for each(var view:ViewComponent in views)
+								_view.removeArt(view);
+				}
 				else
 					_view.removeArt(garbageObject);
 
@@ -126,17 +135,23 @@ package citrus.core {
 		/**
 		 * Call this method to add an Entity to this state. All entities will need to be created
 		 * and added via this method so that they can be properly created, managed, updated, and destroyed.
-		 * @param view an Entity is designed for complex objects, most of the time they have a view component.
 		 * @return The Entity that you passed in. Useful for linking commands together.
 		 */
-		public function addEntity(entity:Entity, view:ViewComponent = null):Entity {
+		public function addEntity(entity:Entity):Entity {
 			
 			for each (var objectAdded:CitrusObject in objects)
 				if (entity == objectAdded)
 					throw new Error(entity.name + " is already added to the state.");
 			
 			_objects.push(entity);
-			_view.addArt(view);
+			
+			var views:Vector.<Component> = entity.lookupComponentsByType(ViewComponent);
+			if (views.length > 0)
+				for each(var view:ViewComponent in views)
+				{
+					_view.addArt(view);
+				}
+					
 			return entity;
 		}
 
