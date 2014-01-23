@@ -19,7 +19,7 @@ package citrus.core {
 		
 		function add(object:CitrusObject):CitrusObject;
 		
-		function addEntity(entity:Entity, view:ViewComponent = null):Entity;
+		function addEntity(entity:Entity):Entity;
 		
 		function remove(object:CitrusObject):void;
 		

@@ -76,12 +76,11 @@ package citrus.core {
 		/**
 		 * Call this method to add an Entity to this state. All entities will need to be created
 		 * and added via this method so that they can be properly created, managed, updated, and destroyed.
-		 * @param view an Entity is designed for complex objects, most of the time they have a view component.
 		 * @return The Entity that you passed in. Useful for linking commands together.
 		 */
-		public function addEntity(entity:Entity, view:ViewComponent = null):Entity {
+		public function addEntity(entity:Entity):Entity {
 
-			return _realState.addEntity(entity, view);
+			return _realState.addEntity(entity);
 		}
 
 		/**
