@@ -92,7 +92,7 @@ package citrus.core {
 				if (garbageObject is Entity)
 				{
 					var views:Vector.<Component> = (garbageObject as Entity).lookupComponentsByType(ViewComponent);
-						if (views.length > 1)
+						if (views.length > 0)
 							for each(var view:ViewComponent in views)
 								_view.removeArt(view);
 				}
@@ -146,9 +146,11 @@ package citrus.core {
 			_objects.push(entity);
 			
 			var views:Vector.<Component> = entity.lookupComponentsByType(ViewComponent);
-			if (views.length > 1)
+			if (views.length > 0)
 				for each(var view:ViewComponent in views)
+				{
 					_view.addArt(view);
+				}
 					
 			return entity;
 		}

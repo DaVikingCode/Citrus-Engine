@@ -25,7 +25,7 @@ package citrus.system.components {
 		protected var _animation:String = "";
 		protected var _visible:Boolean = true;
 		protected var _touchable:Boolean = false;
-		protected var _view:* = MovieClip;
+		protected var _view:* = 0xFF0000;
 		
 		private var _group:uint = 0;
 		private var _offsetX:Number = 0;
