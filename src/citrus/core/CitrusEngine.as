@@ -446,6 +446,8 @@ package citrus.core {
 				stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 			else
 				stage.displayState = StageDisplayState.NORMAL;
+			
+			resetScreenSize();
 		}
 		
 		public function get screenWidth():int
