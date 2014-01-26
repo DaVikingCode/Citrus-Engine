@@ -273,7 +273,7 @@ package citrus.core {
 		}
 		
 		/**
-		 * called when CitrusEngine is added to the stage and ready to run.
+		 * Called when CitrusEngine is added to the stage and ready to run.
 		 */
 		public function initialize():void {
 		}
