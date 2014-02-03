@@ -274,10 +274,12 @@ package citrus.view.spriteview
 			
 			_animation = value;
 			
+			var animLoop:Boolean = _loopAnimation[_animation];
+			
 			if (_content is AnimationSequence)
-				(_content as AnimationSequence).changeAnimation(_animation, _animation in _loopAnimation ? true : false);
+				(_content as AnimationSequence).changeAnimation(_animation, animLoop);
 			else if (_view is Armature)
-				(_view as Armature).animation.gotoAndPlay(value);
+				(_view as Armature).animation.gotoAndPlay(value, -1, -1, animLoop ? 0 : 1);
 		}
 		
 		public function get citrusObject():ISpriteView
