@@ -156,6 +156,10 @@ package citrus.view.spriteview
 			removeChild(_mc);
 		}
 		
+		public function get mc():MovieClip {
+			return _mc;
+		}
+		
 	}
 
 }
