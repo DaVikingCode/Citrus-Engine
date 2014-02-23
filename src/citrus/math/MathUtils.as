@@ -285,6 +285,12 @@ package citrus.math
 			return num < 0 ? -num : num;
 		}
 		
+		//robert penner's formula for a log of variable base
+		public static function logx(val:Number, base:Number = 10):Number
+		{
+			return Math.log(val) / Math.log(base)
+		}
+		
 		/**
 		 * http://www.robertpenner.com/easing/
 		 * t current time
