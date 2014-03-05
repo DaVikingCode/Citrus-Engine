@@ -15,6 +15,7 @@ It offers many options, you may use :
 
 Games References
 ----------------
+[![Tap The Pixel](http://aymericlamboley.fr/blog/wp-content/uploads/2014/03/tappixel.png)](https://itunes.apple.com/en/app/tap-the-pixel/id688562779?mt=8)
 [![Once Upon a Light](http://aymericlamboley.fr/blog/wp-content/uploads/2013/12/once-upon.png)](http://www.onceuponalight.com)
 [![Battlewars](http://aymericlamboley.fr/blog/wp-content/uploads/2013/11/Battlewars.png)](http://www.newgrounds.com/portal/view/627927)
 [![Snailboy](http://aymericlamboley.fr/blog/wp-content/uploads/2013/09/snailboy.png)](http://www.thoopid.com/snailboy-presskit)
