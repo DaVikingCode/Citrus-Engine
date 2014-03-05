@@ -1,17 +1,16 @@
-package dragonBones.textures
-{
+package dragonBones.textures {
+	import dragonBones.core.dragonBones_internal;
+	import dragonBones.objects.DataParser;
+
+	import flash.display.BitmapData;
+	import flash.display.MovieClip;
+	import flash.geom.Rectangle;
 	/**
 	* Copyright 2012-2013. DragonBones. All Rights Reserved.
 	* @playerversion Flash 10.0, Flash 10
 	* @langversion 3.0
 	* @version 2.0
-	*/
-	import dragonBones.core.dragonBones_internal;
-	import dragonBones.objects.DataParser;
-	
-	import flash.display.BitmapData;
-	import flash.display.MovieClip;
-	import flash.geom.Rectangle;
+	 */
 	
 	use namespace dragonBones_internal;
 	

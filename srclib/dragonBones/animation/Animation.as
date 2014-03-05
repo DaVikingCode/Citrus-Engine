@@ -1,19 +1,18 @@
-﻿package dragonBones.animation
-{
-	/**
-	 * Copyright 2012-2013. DragonBones. All Rights Reserved.
-	 * @playerversion Flash 10.0
-	 * @langversion 3.0
-	 * @version 2.0
-	 */
-	import flash.geom.Point;
-	
+package dragonBones.animation {
 	import dragonBones.Armature;
 	import dragonBones.Bone;
 	import dragonBones.Slot;
 	import dragonBones.core.dragonBones_internal;
 	import dragonBones.objects.AnimationData;
 	import dragonBones.objects.DBTransform;
+
+	import flash.geom.Point;
+	/**
+	 * Copyright 2012-2013. DragonBones. All Rights Reserved.
+	 * @playerversion Flash 10.0
+	 * @langversion 3.0
+	 * @version 2.0
+	 */
 	
 	use namespace dragonBones_internal;
 	

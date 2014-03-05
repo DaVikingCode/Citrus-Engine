@@ -1,12 +1,9 @@
-﻿package dragonBones.animation
-{
+package dragonBones.animation {
 	import dragonBones.Armature;
 	import dragonBones.Bone;
-	import dragonBones.Slot;
 	import dragonBones.core.dragonBones_internal;
 	import dragonBones.events.AnimationEvent;
 	import dragonBones.objects.AnimationData;
-	import dragonBones.objects.DBTransform;
 	import dragonBones.objects.Frame;
 	import dragonBones.objects.TransformTimeline;
 	

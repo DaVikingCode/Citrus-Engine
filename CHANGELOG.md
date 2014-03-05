@@ -1,8 +1,23 @@
-V3.1.9, Work In Progress
-------------------------
+V3.1.9, 03 05 2014
+------------------
 - Feathers updated on 1.2.0
 - DrabonBones updated on 2.4.1
+- CitrusEngine.handlePlayingChange can be overriden to modify the default behavior of CE (input resetting as well as audio pause/resume).
 - LevelManager enables SWF caching, very useful on iOS. Set the new property enableSwfCaching to true.
+- GamePadMap.devPlatform : force a platform value to use on setups (to simulate other platforms such as WIN/MAC/LNX/AND)
+- Gamepad.debug is a static boolean.
+- CitrusSoundEvents moved to citrus.events package and fixed.
+- Introducing CitrusEngine.transformMatrix which when using StarlingCitrusEngine describes the transformation matrix necessary to go from native stage to starling stage (includes viewport translation as well as starling stage scale). Concatenated with the camera transform matrix, its possible to simply project a point from/to the game space to/from native stage.
+- Input's action lists reset when playing changes.
+- in a flash State , .swf views become spriteview.AnimationSequences
+- ISpriteView.handleArtReady receives newly created art (*Art object) after view assigned or loaded from url, handleArtChanged similarly  after view changes during the game.
+- APhysicsObject now has a public "animation" setter.
+- AGameData is a flash Proxy class so properties can be created anytime without having to extend it (and a signal is still fired on data change). AgGameData init can be used to reset values.
+- Actions : removed "duck" action for "down".
+- MathUtils - added log of base N, line/segment intersection function
+- Fixed/Optimized Box2DPhysicsObject's rotation
+- Camera.setUp signature changed + offset became center (see wiki)
+- many fixes.
 
 V3.1.8, 11 13 2013
 ------------------

@@ -1,11 +1,10 @@
-package dragonBones.factorys
-{
+package dragonBones.factorys {
 	import dragonBones.Armature;
 	import dragonBones.Slot;
 	import dragonBones.display.NativeDisplayBridge;
 	import dragonBones.textures.ITextureAtlas;
 	import dragonBones.textures.NativeTextureAtlas;
-	
+
 	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.display.Sprite;

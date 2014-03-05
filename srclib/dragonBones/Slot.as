@@ -1,11 +1,10 @@
-package dragonBones
-{
-	import flash.geom.Matrix;
-	
+package dragonBones {
 	import dragonBones.core.DBObject;
 	import dragonBones.core.dragonBones_internal;
 	import dragonBones.display.IDisplayBridge;
 	import dragonBones.objects.DisplayData;
+
+	import flash.geom.Matrix;
 	
 	use namespace dragonBones_internal;
 	

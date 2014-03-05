@@ -1,9 +1,6 @@
 package citrus.input.controllers.starling {
 
-	import citrus.core.starling.StarlingState;
 	import citrus.input.controllers.AVirtualJoystick;
-	import citrus.view.starlingview.StarlingView;
-	import flash.geom.Point;
 
 	import starling.core.Starling;
 	import starling.display.Image;

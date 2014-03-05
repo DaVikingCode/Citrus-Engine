@@ -1,9 +1,4 @@
-﻿package dragonBones
-{
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.geom.ColorTransform;
-	
+package dragonBones {
 	import dragonBones.animation.Animation;
 	import dragonBones.animation.AnimationState;
 	import dragonBones.animation.IAnimatable;
@@ -14,8 +9,10 @@
 	import dragonBones.events.FrameEvent;
 	import dragonBones.events.SoundEvent;
 	import dragonBones.events.SoundEventManager;
-	import dragonBones.objects.DBTransform;
 	import dragonBones.objects.Frame;
+
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	
 	use namespace dragonBones_internal;
 	

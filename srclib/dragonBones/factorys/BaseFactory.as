@@ -1,10 +1,8 @@
-package dragonBones.factorys
-{
+package dragonBones.factorys {
 	import dragonBones.Armature;
 	import dragonBones.Bone;
 	import dragonBones.Slot;
 	import dragonBones.core.dragonBones_internal;
-	import dragonBones.objects.AnimationData;
 	import dragonBones.objects.ArmatureData;
 	import dragonBones.objects.BoneData;
 	import dragonBones.objects.DataParser;
@@ -14,8 +12,7 @@ package dragonBones.factorys
 	import dragonBones.objects.SkinData;
 	import dragonBones.objects.SlotData;
 	import dragonBones.textures.ITextureAtlas;
-	import dragonBones.utils.BytesType;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.display.MovieClip;

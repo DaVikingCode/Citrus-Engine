@@ -1,5 +1,7 @@
-package dragonBones.display
-{
+package dragonBones.display {
+	import dragonBones.objects.DBTransform;
+
+	import flash.geom.Matrix;
 	/**
 	* Copyright 2012-2013. DragonBones. All Rights Reserved.
 	* @playerversion Flash 10.0
@@ -7,10 +9,6 @@ package dragonBones.display
 	* @version 2.0
 	*/
 	
-	import dragonBones.objects.DBTransform;
-	
-	import flash.geom.ColorTransform;
-	import flash.geom.Matrix;
 	
 	/**
 	 * Provides an interface for display classes that can be used in this DragonBones animation system.

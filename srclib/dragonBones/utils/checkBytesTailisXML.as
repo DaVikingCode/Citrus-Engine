@@ -1,5 +1,4 @@
-package dragonBones.utils
-{
+package dragonBones.utils {
 	import flash.utils.ByteArray;
 	
 	public function checkBytesTailisXML(bytes:ByteArray):Boolean

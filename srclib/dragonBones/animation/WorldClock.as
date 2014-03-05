@@ -1,14 +1,11 @@
-﻿package dragonBones.animation
-{
+package dragonBones.animation {
+	import flash.utils.getTimer;
 	/**
 	* Copyright 2012-2013. DragonBones. All Rights Reserved.
 	* @playerversion Flash 10.0, Flash 10
 	* @langversion 3.0
 	* @version 2.0
-	*/
-	import dragonBones.Armature;
-	
-	import flash.utils.getTimer;
+	 */
 	/**
 	 * A WorldClock instance lets you conveniently update many number of Armature instances at once. You can add/remove Armature instance and set a global timescale that will apply to all registered Armature instance animations.
 	 * @example

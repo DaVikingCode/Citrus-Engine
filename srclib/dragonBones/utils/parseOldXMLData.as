@@ -1,7 +1,6 @@
-package dragonBones.utils
-{
-	import dragonBones.objects.SkeletonData;
+package dragonBones.utils {
 	import dragonBones.objects.ArmatureData;
+	import dragonBones.objects.SkeletonData;
 
 	public function parseOldXMLData(rawData:XML):SkeletonData
 	{

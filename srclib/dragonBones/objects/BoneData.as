@@ -1,6 +1,4 @@
-package dragonBones.objects
-{
-	import flash.geom.Point;
+package dragonBones.objects {
 
 	final public class BoneData
 	{

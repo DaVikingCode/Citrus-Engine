@@ -1,5 +1,10 @@
-package dragonBones.display
-{
+package dragonBones.display {
+	import dragonBones.objects.DBTransform;
+
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
+	import flash.geom.ColorTransform;
+	import flash.geom.Matrix;
 	/**
 	* Copyright 2012-2013. DragonBones. All Rights Reserved.
 	* @playerversion Flash 10.0
@@ -8,13 +13,6 @@ package dragonBones.display
 	*/
 
 	
-	import dragonBones.objects.DBTransform;
-	
-	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
-	import flash.display.Shape;
-	import flash.geom.ColorTransform;
-	import flash.geom.Matrix;
 	
 	/**
 	 * The NativeDisplayBridge class is an implementation of the IDisplayBridge interface for traditional flash.display.DisplayObject.

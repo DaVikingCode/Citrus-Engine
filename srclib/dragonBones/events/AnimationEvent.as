@@ -1,15 +1,14 @@
-﻿package dragonBones.events
-{
+package dragonBones.events {
+	import dragonBones.Armature;
+	import dragonBones.animation.AnimationState;
+
+	import flash.events.Event;
 	/**
 	* Copyright 2012-2013. DragonBones. All Rights Reserved.
 	* @playerversion Flash 10.0, Flash 10
 	* @langversion 3.0
 	* @version 2.0
-	*/
-	import dragonBones.Armature;
-	import dragonBones.animation.AnimationState;
-	
-	import flash.events.Event;
+	 */
 	
 	/**
 	 * The AnimationEvent provides and defines all events dispatched during an animation.

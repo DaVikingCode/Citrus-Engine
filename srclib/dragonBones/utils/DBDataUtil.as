@@ -1,7 +1,4 @@
-package dragonBones.utils
-{
-	import flash.geom.Point;
-	
+package dragonBones.utils {
 	import dragonBones.animation.TimelineState;
 	import dragonBones.objects.AnimationData;
 	import dragonBones.objects.ArmatureData;
@@ -13,6 +10,8 @@ package dragonBones.utils
 	import dragonBones.objects.SlotData;
 	import dragonBones.objects.TransformFrame;
 	import dragonBones.objects.TransformTimeline;
+
+	import flash.geom.Point;
 	
 	/** @private */
 	public final class DBDataUtil

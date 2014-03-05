@@ -1,28 +1,26 @@
-﻿package dragonBones.factorys
-{
-	/**
-	* Copyright 2012-2013. DragonBones. All Rights Reserved.
-	* @playerversion Flash 10.0, Flash 10
-	* @langversion 3.0
-	* @version 2.0
-	*/
+package dragonBones.factorys {
 	import dragonBones.Armature;
-	import dragonBones.Bone;
 	import dragonBones.Slot;
 	import dragonBones.core.dragonBones_internal;
 	import dragonBones.display.StarlingDisplayBridge;
 	import dragonBones.textures.ITextureAtlas;
 	import dragonBones.textures.StarlingTextureAtlas;
-	
-	import flash.display.BitmapData;
-	import flash.display.MovieClip;
-	
+
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.textures.SubTexture;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
+
+	import flash.display.BitmapData;
+	import flash.display.MovieClip;
+	/**
+	* Copyright 2012-2013. DragonBones. All Rights Reserved.
+	* @playerversion Flash 10.0, Flash 10
+	* @langversion 3.0
+	* @version 2.0
+	 */
 
 	use namespace dragonBones_internal;
 	

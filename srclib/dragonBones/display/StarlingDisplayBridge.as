@@ -1,5 +1,12 @@
-﻿package dragonBones.display
-{
+package dragonBones.display {
+	import dragonBones.objects.DBTransform;
+
+	import starling.display.DisplayObject;
+	import starling.display.Image;
+	import starling.display.Quad;
+	import starling.textures.Texture;
+
+	import flash.geom.Matrix;
 	/**
 	* Copyright 2012-2013. DragonBones. All Rights Reserved.
 	* @playerversion Flash 10.0
@@ -8,16 +15,6 @@
 	*/
 
 	
-	import dragonBones.objects.DBTransform;
-	
-	import flash.geom.ColorTransform;
-	import flash.geom.Matrix;
-	
-	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
-	import starling.display.Image;
-	import starling.display.Quad;
-	import starling.textures.Texture;
 	
 	/**
 	 * The StarlingDisplayBridge class is an implementation of the IDisplayBridge interface for starling.display.DisplayObject.

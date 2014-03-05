@@ -1,7 +1,6 @@
 package citrus.core {
 
 	import citrus.system.Entity;
-	import citrus.system.components.ViewComponent;
 	import citrus.view.ACitrusView;
 	
 	/**
