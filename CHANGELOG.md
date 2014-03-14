@@ -1,7 +1,11 @@
+V3.1.10, Work In Progress
+-------------------------
+- Nape updated on 2.0.16
+
 V3.1.9, 03 05 2014
 ------------------
 - Feathers updated on 1.2.0
-- DrabonBones updated on 2.4.1
+- DragonBones updated on 2.4.1
 - CitrusEngine.handlePlayingChange can be overriden to modify the default behavior of CE (input resetting as well as audio pause/resume).
 - LevelManager enables SWF caching, very useful on iOS. Set the new property enableSwfCaching to true.
 - GamePadMap.devPlatform : force a platform value to use on setups (to simulate other platforms such as WIN/MAC/LNX/AND)
