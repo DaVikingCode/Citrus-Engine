@@ -34,7 +34,9 @@ package citrus.view.spriteview {
 				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
 		}
 		
-		
+		/**
+		 * @inheritDoc
+		 */
 		override public function zoomFit(width:Number,height:Number,storeInBaseZoom:Boolean = false):Number
 		{
 			if (_allowZoom)
@@ -95,11 +97,17 @@ package citrus.view.spriteview {
 				throw(new Error(this+"is not allowed to zoom. please set allowZoom to true."));
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function getZoom():Number
 		{
 			return _zoom;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function getRotation():Number
 		{
 			return _rotation;
@@ -306,11 +314,17 @@ package citrus.view.spriteview {
 			return _allowZoom;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function get allowRotation():Boolean
 		{
 			return _allowRotation;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function set allowZoom(value:Boolean):void
 		{
 			if (!value)
@@ -321,6 +335,9 @@ package citrus.view.spriteview {
 			_allowZoom = value;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function set allowRotation(value:Boolean):void
 		{
 			if (!value)

@@ -76,6 +76,8 @@ package citrus.core {
 		
 		private var _startTime:Number;
 		private var _gameTime:Number;
+		private var _nowTime:Number;
+		protected var _timeDelta:Number;
 		
 		private var _sound:SoundManager;
 		private var _console:Console;
@@ -355,13 +357,13 @@ package citrus.core {
 			//Update the state
 			if (_state && _playing)
 			{
-				var nowTime:Number = new Date().time;
-				var timeDelta:Number = (nowTime - _gameTime) * 0.001;
-				_gameTime = nowTime;
+				_nowTime = new Date().time;
+				_timeDelta = (_nowTime - _gameTime) * 0.001;
+				_gameTime = _nowTime;
 				
-				_state.update(timeDelta);
+				_state.update(_timeDelta);
 				if (_futureState)
-					_futureState.update(timeDelta);
+					_futureState.update(_timeDelta);
 			}
 			
 			_input.citrus_internal::update();

@@ -25,6 +25,7 @@ package citrus.core.starling {
 		public var scaleFactor:Number = 1;
 
 		protected var _starling:Starling;
+		protected var _juggler:CitrusStarlingJuggler;
 		
 		protected var _assetSizes:Array = [1];
 		protected var _baseWidth:int = -1;
@@ -46,19 +47,31 @@ package citrus.core.starling {
 			super();
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function destroy():void {
 
 			super.destroy();
+			
+			_juggler.purge();
 
 			if (_state) {
 
 				if (_starling) {
-
 					_starling.stage.removeChild(_state as StarlingState);
 					_starling.root.dispose();
 					_starling.dispose();
 				}
 			}
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function handlePlayingChange(value:Boolean):void
+		{
+			_juggler.paused = !value;
 		}
 
 		/**
@@ -219,6 +232,9 @@ package citrus.core.starling {
 			return _viewport;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function resetScreenSize():void
 		{
 			super.resetScreenSize();
@@ -242,6 +258,8 @@ package citrus.core.starling {
 			if (!_starling.isStarted)
 				_starling.start();
 				
+			_juggler = new CitrusStarlingJuggler();
+				
 			_starling.addEventListener(starling.events.Event.ROOT_CREATED, function():void
 			{
 				_starling.removeEventListener(starling.events.Event.ROOT_CREATED, arguments.callee);
@@ -259,7 +277,10 @@ package citrus.core.starling {
 		public function get starling():Starling {
 			return _starling;
 		}
-
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function handleEnterFrame(e:flash.events.Event):void {
 
 			if (_starling && _starling.isStarted && _starling.context) {
@@ -307,8 +328,15 @@ package citrus.core.starling {
 			}
 
 			super.handleEnterFrame(e);
+			
+			if(_juggler)
+				_juggler.advanceTime(_timeDelta);
+			
 		}
-
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function handleStageDeactivated(e:flash.events.Event):void {
 
 			if (_playing && _starling)
@@ -316,7 +344,10 @@ package citrus.core.starling {
 
 			super.handleStageDeactivated(e);
 		}
-
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function handleStageActivated(e:flash.events.Event):void {
 
 			if (_starling && !_starling.isStarted)
@@ -333,6 +364,11 @@ package citrus.core.starling {
 		public function get baseHeight():int
 		{
 			return _baseHeight;
+		}
+		
+		public function get juggler():CitrusStarlingJuggler
+		{
+			return _juggler;
 		}
 
 	}

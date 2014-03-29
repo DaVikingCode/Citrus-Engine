@@ -3,7 +3,6 @@ package citrus.view.starlingview {
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingCitrusEngine;
 
-	import starling.core.Starling;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -28,6 +27,7 @@ package citrus.view.starlingview {
 		 */
 		public var onAnimationComplete:Signal;
 
+		private var _ce:StarlingCitrusEngine;
 		private var _textureAtlas:*;
 		private var _animations:Array;
 		private var _firstAnimation:String;
@@ -49,6 +49,8 @@ package citrus.view.starlingview {
 		public function AnimationSequence(textureAtlas:*, animations:Array, firstAnimation:String, animFps:Number = 30, firstAnimLoop:Boolean = false, smoothing:String = "bilinear") {
 
 			super();
+			
+			_ce = CitrusEngine.getInstance() as StarlingCitrusEngine;
 
 			onAnimationComplete = new Signal(String);
 
@@ -64,7 +66,7 @@ package citrus.view.starlingview {
 			addTextureAtlasWithAnimations(_textureAtlas, _animations);
 
 			addChild(_mcSequences[_firstAnimation]);
-			Starling.juggler.add(_mcSequences[_firstAnimation]);
+			_ce.juggler.add(_mcSequences[_firstAnimation]);
 			_mcSequences[_firstAnimation].loop = _firstAnimLoop;
 
 			_previousAnimation = _firstAnimation;
@@ -145,10 +147,10 @@ package citrus.view.starlingview {
 				throw new Error(this.parent.name + " doesn't have the " + animation + " animation set up in its animations' array");
 
 			removeChild(_mcSequences[_previousAnimation]);
-			Starling.juggler.remove(_mcSequences[_previousAnimation]);
+			_ce.juggler.remove(_mcSequences[_previousAnimation]);
 
 			addChild(_mcSequences[animation]);
-			Starling.juggler.add(_mcSequences[animation]);
+			_ce.juggler.add(_mcSequences[animation]);
 			_mcSequences[animation].loop = animLoop;
 			_mcSequences[animation].currentFrame = 0;
 
@@ -160,7 +162,7 @@ package citrus.view.starlingview {
 		 */
 		public function pauseAnimation(value:Boolean):void {
 
-			value ? Starling.juggler.add(_mcSequences[_previousAnimation]) : Starling.juggler.remove(_mcSequences[_previousAnimation]);
+			value ? _ce.juggler.add(_mcSequences[_previousAnimation]) : _ce.juggler.remove(_mcSequences[_previousAnimation]);
 		}
 
 		public function destroy():void {
@@ -168,7 +170,7 @@ package citrus.view.starlingview {
 			onAnimationComplete.removeAll();
 
 			removeChild(_mcSequences[_previousAnimation]);
-			Starling.juggler.remove(_mcSequences[_previousAnimation]);
+			_ce.juggler.remove(_mcSequences[_previousAnimation]);
 
 			removeAllAnimations();
 
