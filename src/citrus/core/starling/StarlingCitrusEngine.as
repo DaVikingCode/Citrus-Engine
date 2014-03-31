@@ -45,6 +45,8 @@ package citrus.core.starling {
 		
 		public function StarlingCitrusEngine() {
 			super();
+			
+			_juggler = new CitrusStarlingJuggler();
 		}
 
 		/**
@@ -257,8 +259,6 @@ package citrus.core.starling {
 			
 			if (!_starling.isStarted)
 				_starling.start();
-				
-			_juggler = new CitrusStarlingJuggler();
 				
 			_starling.addEventListener(starling.events.Event.ROOT_CREATED, function():void
 			{
