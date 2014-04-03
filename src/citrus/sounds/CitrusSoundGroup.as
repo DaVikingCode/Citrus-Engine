@@ -63,6 +63,13 @@ package citrus.sounds
 					s.load();
 		}
 		
+		public function stopAllSounds():void
+		{
+			var s:CitrusSound;
+			for each(s in _sounds)
+				s.stop();
+		}
+		
 		internal function removeSound(s:CitrusSound):void
 		{
 			var si:String;
