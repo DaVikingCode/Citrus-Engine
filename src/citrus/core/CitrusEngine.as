@@ -1,11 +1,9 @@
 package citrus.core {
 
-	import aze.motion.EazeTween;
 	import citrus.input.Input;
 	import citrus.sounds.SoundManager;
 	import citrus.utils.AGameData;
 	import citrus.utils.LevelManager;
-	import flash.geom.Matrix;
 
 	import org.osflash.signals.Signal;
 
@@ -15,6 +13,8 @@ package citrus.core {
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.FullScreenEvent;
+	import flash.geom.Matrix;
+	import flash.media.SoundMixer;
 	
 	/**
 	 * CitrusEngine is the top-most class in the library. When you start your project, you should make your
@@ -98,6 +98,10 @@ package citrus.core {
 			onStageResize = new Signal(int, int);
 			
 			onPlayingChange.add(handlePlayingChange);
+			
+			// on iOS if the physical button is off, mute the sound
+			if (SoundMixer.audioPlaybackMode)
+				SoundMixer.audioPlaybackMode = "ambient";
 			
 			//Set up console
 			_console = new Console(9); //Opens with tab key by default
