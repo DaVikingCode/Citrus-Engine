@@ -545,8 +545,11 @@ package citrus.view {
 		}
 		
 		/**
-		 * Check is the given rectangle in state space is fully contained within the camera.
+		 * Check is the given rectangle is fully contained within the camera.
 		 * will return false even if partially visible, collision with borders included.
+		 * 
+		 * The rectangle *must* be in the same space as the camera's rectangle, this means in the starling stage if in a StarlingState,
+		 * or the flash native stage if in a normal State.
 		 * 
 		 * set the area argument to define a different area of the screen, for example if you want to check
 		 * further left/right/up/down than the camera's default rectangle which is : (0,0,cameraLensWidth,cameraLensHeight)
@@ -559,15 +562,17 @@ package citrus.view {
 				_rect.setTo(0, 0, cameraLensWidth, cameraLensHeight);
 			else
 				_rect.copyFrom(area);
-			
-			_p.copyFrom(_m.transformPoint(_p));
+				
 			_r.setTo(_p.x - rectangle.width * .5, _p.y - rectangle.height * .5, rectangle.width, rectangle.height);
 			return _rect.containsRect(_r);
 		}
 		
 		/**
-		 * Check is the given rectangle in state space intersects with the camera rectangle.
+		 * Check is the given rectangle intersects with the camera rectangle.
 		 * (if its partially visible, true will be returned.
+		 * 
+		 * The rectangle *must* be in the same space as the camera's rectangle, this means in the starling stage if in a StarlingState,
+		 * or the flash native stage if in a normal State.
 		 * 
 		 * set the area argument to define a different area of the screen, for example if you want to check
 		 * further left/right/up/down than the camera's default rectangle which is : (0,0,cameraLensWidth,cameraLensHeight)
@@ -580,8 +585,7 @@ package citrus.view {
 				_rect.setTo(0, 0, cameraLensWidth, cameraLensHeight);
 			else
 				_rect.copyFrom(area);
-			
-			_p.copyFrom(_m.transformPoint(_p));
+				
 			_r.setTo(_p.x - rectangle.width * .5, _p.y - rectangle.height * .5, rectangle.width, rectangle.height);
 			return _rect.intersects(_r);
 		}
