@@ -10,6 +10,7 @@ package citrus.core.starling {
 	import starling.utils.RectangleUtil;
 	import starling.utils.ScaleMode;
 
+	import flash.display.Stage3D;
 	import flash.display3D.Context3DProfile;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
@@ -83,8 +84,9 @@ package citrus.core.starling {
 		 * @param antiAliasing The antialiasing value allows you to set the anti-aliasing (0 - 16), generally a value of 1 is totally acceptable.
 		 * @param viewPort Starling's viewport, default is (0, 0, stage.stageWidth, stage.stageHeight, change to (0, 0, stage.fullScreenWidth, stage.fullScreenHeight) for mobile.
 		 * @param profile The Context3DProfile that should be requested <a href="http://wiki.starling-framework.org/manual/constrained_stage3d_profile">More informations</a>. if set to "auto", then CitrusEngine will figure out the right one according to the scaleFactor value.
+		 * @param stage3D The reference to the Stage3D, useful for sharing a 3D context. <a href="http://wiki.starling-framework.org/tutorials/combining_starling_with_other_stage3d_frameworks">More informations</a>.
 		 */
-		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewPort:Rectangle = null, profile:String = "auto"):void {
+		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewPort:Rectangle = null, profile:String = "auto", stage3D:Stage3D = null):void {
 
 			if (Mobile.isAndroid())
 				Starling.handleLostContext = true;
@@ -95,7 +97,7 @@ package citrus.core.starling {
 				
 			var starlingInit:Function = function(profile:String):void
 			{
-				_starling = new Starling(RootClass, stage, null, null, "auto", profile);
+				_starling = new Starling(RootClass, stage, null, stage3D, "auto", profile);
 				_starling.antiAliasing = antiAliasing;
 				_starling.showStats = debugMode;
 				_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
