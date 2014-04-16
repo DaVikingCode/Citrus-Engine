@@ -74,6 +74,8 @@ package citrus.core.starling {
 		 */
 		override protected function handlePlayingChange(value:Boolean):void
 		{
+			super.handlePlayingChange(value);
+			
 			_juggler.paused = !value;
 		}
 
