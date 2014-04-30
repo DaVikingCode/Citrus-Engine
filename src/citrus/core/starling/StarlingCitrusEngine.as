@@ -2,7 +2,6 @@ package citrus.core.starling {
 
 	import citrus.core.CitrusEngine;
 	import citrus.core.State;
-	import citrus.utils.Context3DUtil;
 	import citrus.utils.Mobile;
 
 	import starling.core.Starling;
@@ -11,10 +10,8 @@ package citrus.core.starling {
 	import starling.utils.ScaleMode;
 
 	import flash.display.Stage3D;
-	import flash.display3D.Context3DProfile;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
-	import flash.utils.setTimeout;
 
 	/**
 	 * Extends this class if you create a Starling based game. Don't forget to call <code>setUpStarling</code> function.
@@ -39,9 +36,9 @@ package citrus.core.starling {
 		
 		/**
 		 * context3D profiles to test for in Ascending order (the more important first).
-		 * reset this array to a single entry to force one specific profile.
+		 * reset this array to a single entry to force one specific profile. <a href="http://wiki.starling-framework.org/manual/constrained_stage3d_profile">More informations</a>.
 		 */
-		protected var _context3DProfiles:Array = [Context3DProfile.BASELINE_EXTENDED,Context3DProfile.BASELINE,Context3DProfile.BASELINE_CONSTRAINED];
+		protected var _context3DProfiles:Array = ["baselineExtended", "baseline", "baselineConstrained"];
 		protected var _context3DProfileTestDelay:int = 100;
 		
 		public function StarlingCitrusEngine() {
@@ -85,10 +82,9 @@ package citrus.core.starling {
 		 * @param debugMode If true, display a Stats class instance.
 		 * @param antiAliasing The antialiasing value allows you to set the anti-aliasing (0 - 16), generally a value of 1 is totally acceptable.
 		 * @param viewPort Starling's viewport, default is (0, 0, stage.stageWidth, stage.stageHeight, change to (0, 0, stage.fullScreenWidth, stage.fullScreenHeight) for mobile.
-		 * @param profile The Context3DProfile that should be requested <a href="http://wiki.starling-framework.org/manual/constrained_stage3d_profile">More informations</a>. if set to "auto", then CitrusEngine will figure out the right one according to the scaleFactor value.
 		 * @param stage3D The reference to the Stage3D, useful for sharing a 3D context. <a href="http://wiki.starling-framework.org/tutorials/combining_starling_with_other_stage3d_frameworks">More informations</a>.
 		 */
-		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewPort:Rectangle = null, profile:String = "auto", stage3D:Stage3D = null):void {
+		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewPort:Rectangle = null, stage3D:Stage3D = null):void {
 
 			if (Mobile.isAndroid())
 				Starling.handleLostContext = true;
@@ -96,50 +92,10 @@ package citrus.core.starling {
 			if (viewPort)
 				_viewport = viewPort;
 				
-				
-			var starlingInit:Function = function(profile:String):void
-			{
-				_starling = new Starling(RootClass, stage, null, stage3D, "auto", profile);
-				_starling.antiAliasing = antiAliasing;
-				_starling.showStats = debugMode;
-				_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
-			}
-				
-			if (profile == "auto")
-			{
-					
-				var profiletests:Array = _context3DProfiles.slice();
-				
-				var testProfiles:Function = function(profile:String, success:Boolean):void
-				{
-					if (success)
-					{
-						trace("[StarlingCitrusEngine] Context3DProfile -", profile, "is supported! setting up starling...");
-						starlingInit(profile);
-						return;
-					}
-					
-					trace("[StarlingCitrusEngine] Context3DProfile -", profile, "is not supported...");
-					
-					if (profiletests.length > 0)
-					{
-						if (_context3DProfileTestDelay == 0)
-							Context3DUtil.supportsProfile(stage, profiletests.shift(), testProfiles);
-						else
-							setTimeout(Context3DUtil.supportsProfile,_context3DProfileTestDelay,stage, profiletests.shift(), testProfiles);
-					}else if (profiletests.length == 0)
-						throw new ArgumentError("[StarlingCitrusEngine] Failed to create any Context3D with a profile from this list : " + String(_context3DProfiles) + ". check the render mode / wmode first (should be \"direct\"), then the delay used for the test as _context3DProfileTestDelay.");
-				}
-				
-				trace("[StarlingCitrusEngine] Context3DProfile - testing :", profiletests, "with delay:"+_context3DProfileTestDelay+"ms ...");
-				Context3DUtil.supportsProfile(stage, profiletests.shift(), testProfiles);
-			
-			}
-			else
-			{
-				starlingInit(profile);
-			}
-			
+			_starling = new Starling(RootClass, stage, null, stage3D, "auto", _context3DProfiles);
+			_starling.antiAliasing = antiAliasing;
+			_starling.showStats = debugMode;
+			_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);			
 		}
 		
 		/**
