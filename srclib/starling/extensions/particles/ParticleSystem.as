@@ -39,6 +39,8 @@ package starling.extensions.particles
     
     public class ParticleSystem extends DisplayObject implements IAnimatable
     {
+        public static const MAX_NUM_PARTICLES:int = 16383;
+        
         private var mTexture:Texture;
         private var mParticles:Vector.<Particle>;
         private var mFrameTime:Number;
@@ -67,7 +69,7 @@ package starling.extensions.particles
         protected var mSmoothing:String;
         
         public function ParticleSystem(texture:Texture, emissionRate:Number, 
-                                       initialCapacity:int=128, maxCapacity:int=8192,
+                                       initialCapacity:int=128, maxCapacity:int=16383,
                                        blendFactorSource:String=null, blendFactorDest:String=null)
         {
             if (texture == null) throw new ArgumentError("texture must not be null");
@@ -81,7 +83,7 @@ package starling.extensions.particles
             mEmissionTime = 0.0;
             mFrameTime = 0.0;
             mEmitterX = mEmitterY = 0;
-            mMaxCapacity = Math.min(8192, maxCapacity);
+            mMaxCapacity = Math.min(MAX_NUM_PARTICLES, maxCapacity);
             mSmoothing = TextureSmoothing.BILINEAR;
             
             mBlendFactorDestination = blendFactorDest || Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA;
@@ -440,7 +442,10 @@ package starling.extensions.particles
         public function get numParticles():int { return mNumParticles; }
         
         public function get maxCapacity():int { return mMaxCapacity; }
-        public function set maxCapacity(value:int):void { mMaxCapacity = Math.min(8192, value); }
+        public function set maxCapacity(value:int):void
+        {
+            mMaxCapacity = Math.min(MAX_NUM_PARTICLES, value);
+        }
         
         public function get emissionRate():Number { return mEmissionRate; }
         public function set emissionRate(value:Number):void { mEmissionRate = value; }
@@ -458,7 +463,19 @@ package starling.extensions.particles
         public function set blendFactorDestination(value:String):void { mBlendFactorDestination = value; }
         
         public function get texture():Texture { return mTexture; }
-        public function set texture(value:Texture):void { mTexture = value; createProgram(); }
+        public function set texture(value:Texture):void
+        {
+            mTexture = value;
+            createProgram();
+            for (var i:int = mVertexData.numVertices - 4; i >= 0; i -= 4)
+            {
+                mVertexData.setTexCoords(i + 0, 0.0, 0.0);
+                mVertexData.setTexCoords(i + 1, 1.0, 0.0);
+                mVertexData.setTexCoords(i + 2, 0.0, 1.0);
+                mVertexData.setTexCoords(i + 3, 1.0, 1.0);
+                mTexture.adjustVertexData(mVertexData, i, 4);
+            }
+        }
         
         public function get smoothing():String { return mSmoothing; }
         public function set smoothing(value:String):void { mSmoothing = value; }
