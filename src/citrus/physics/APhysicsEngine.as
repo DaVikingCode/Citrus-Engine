@@ -13,6 +13,8 @@ package citrus.physics {
 		protected var _group:uint = 1;
 		protected var _view:*;
 		protected var _realDebugView:*;
+		
+		protected var _art:ICitrusArt;
 
 		public function APhysicsEngine(name:String, params:Object = null) {
 			
@@ -78,6 +80,14 @@ package citrus.physics {
 		
 		public function set view(value:*):void {
 			_view = value;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get art():ICitrusArt
+		{
+			return _art;
 		}
 		
 		public function get x():Number {
@@ -165,6 +175,7 @@ package citrus.physics {
 		}
 		
 		public function handleArtReady(citrusArt:ICitrusArt):void {
+			_art = citrusArt;
 		}
 		
 		public function handleArtChanged(citrusArt:ICitrusArt):void {

@@ -1,5 +1,6 @@
 V3.1.10, Work In Progress
 -------------------------
+- Starling updated on 1.5
 - Nape updated on 2.0.16
 - Feathers updated 1.3.0
 - Set up SoundMixer.audioPlaybackMode to "ambient" (on iOS if the physical button is off, mute the sound).
