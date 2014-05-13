@@ -1,16 +1,17 @@
-package dragonBones.textures {
-	import dragonBones.core.dragonBones_internal;
-	import dragonBones.objects.DataParser;
-
-	import flash.display.BitmapData;
-	import flash.display.MovieClip;
-	import flash.geom.Rectangle;
+package dragonBones.textures
+{
 	/**
 	* Copyright 2012-2013. DragonBones. All Rights Reserved.
 	* @playerversion Flash 10.0, Flash 10
 	* @langversion 3.0
 	* @version 2.0
-	 */
+	*/
+	import flash.display.BitmapData;
+	import flash.display.MovieClip;
+	import flash.geom.Rectangle;
+	
+	import dragonBones.core.dragonBones_internal;
+	import dragonBones.objects.DataParser;
 	
 	use namespace dragonBones_internal;
 	
@@ -26,7 +27,7 @@ package dragonBones.textures {
 		/**
 		 * @private
 		 */
-		protected var _isDifferentXML:Boolean;
+		protected var _isDifferentConfig:Boolean;
 		/**
 		 * @private
 		 */
@@ -67,15 +68,15 @@ package dragonBones.textures {
 		}
 		/**
 		 * Creates a new NativeTextureAtlas instance. 
-		 * @param	texture A MovieClip or Bitmap.
-		 * @param	textureAtlasXML The textureAtlas xml.
-		 * @param	textureScale A scale value (x and y axis)
-		 * @param	isDifferentXML 
+		 * @param texture A MovieClip or Bitmap.
+		 * @param textureAtlasRawData The textureAtlas config data.
+		 * @param textureScale A scale value (x and y axis)
+		 * @param isDifferentConfig 
 		 */
-		public function NativeTextureAtlas(texture:Object, textureAtlasRawData:Object, textureScale:Number = 1, isDifferentXML:Boolean = false)
+		public function NativeTextureAtlas(texture:Object, textureAtlasRawData:Object, textureScale:Number = 1, isDifferentConfig:Boolean = false)
 		{
 			_scale = textureScale;
-			_isDifferentXML = isDifferentXML;
+			_isDifferentConfig = isDifferentConfig;
 			if (texture is BitmapData)
 			{
 				_bitmapData = texture as BitmapData;
@@ -101,17 +102,34 @@ package dragonBones.textures {
 		}
 		/**
 		 * The area occupied by all assets related to that name.
-		 * @param	name The name of these assets.
+		 * @param name The name of these assets.
 		 * @return Rectangle The area occupied by all assets related to that name.
 		 */
 		public function getRegion(name:String):Rectangle
 		{
-			return _subTextureDataDic[name];
+			var textureData:TextureData = _subTextureDataDic[name] as TextureData;
+			if(textureData)
+			{
+				return textureData.region;
+			}
+			
+			return null;
+		}
+		
+		public function getFrame(name:String):Rectangle
+		{
+			var textureData:TextureData = _subTextureDataDic[name] as TextureData;
+			if(textureData)
+			{
+				return textureData.frame;
+			}
+			
+			return null;
 		}
 		
 		protected function parseData(textureAtlasRawData:Object):void
 		{
-			_subTextureDataDic = DataParser.parseTextureAtlas(textureAtlasRawData, _isDifferentXML ? _scale : 1);
+			_subTextureDataDic = DataParser.parseTextureAtlas(textureAtlasRawData, _isDifferentConfig ? _scale : 1);
 			_name = _subTextureDataDic.__name;
 			
 			delete _subTextureDataDic.__name;

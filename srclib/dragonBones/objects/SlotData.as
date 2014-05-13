@@ -18,7 +18,6 @@ package dragonBones.objects
 		{
 			_displayDataList = new Vector.<DisplayData>(0, true);
 			zOrder = 0;
-            blendMode = "normal";
 		}
 		
 		public function dispose():void

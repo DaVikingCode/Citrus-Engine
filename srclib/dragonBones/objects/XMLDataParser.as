@@ -1,20 +1,34 @@
-package dragonBones.objects {
-	import dragonBones.core.DragonBones;
-	import dragonBones.core.dragonBones_internal;
-	import dragonBones.utils.ConstValues;
-	import dragonBones.utils.DBDataUtil;
-	import dragonBones.utils.parseOldXMLData;
-
+﻿package dragonBones.objects
+{
+	/**
+	 * Copyright 2012-2013. DragonBones. All Rights Reserved.
+	 * @playerversion Flash 10.0, Flash 10
+	 * @langversion 3.0
+	 * @version 2.0
+	 */
+	
 	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	/**
-	* Copyright 2012-2013. DragonBones. All Rights Reserved.
-	* @playerversion Flash 10.0, Flash 10
-	* @langversion 3.0
-	* @version 2.0
-	*/
 	
+	import dragonBones.core.DragonBones;
+	import dragonBones.core.dragonBones_internal;
+	import dragonBones.objects.AnimationData;
+	import dragonBones.objects.ArmatureData;
+	import dragonBones.objects.BoneData;
+	import dragonBones.objects.DBTransform;
+	import dragonBones.objects.DisplayData;
+	import dragonBones.objects.Frame;
+	import dragonBones.objects.SkeletonData;
+	import dragonBones.objects.SkinData;
+	import dragonBones.objects.SlotData;
+	import dragonBones.objects.Timeline;
+	import dragonBones.objects.TransformFrame;
+	import dragonBones.objects.TransformTimeline;
+	import dragonBones.textures.TextureData;
+	import dragonBones.utils.ConstValues;
+	import dragonBones.utils.DBDataUtil;
+	import dragonBones.utils.TransformUtil;
 	
 	use namespace dragonBones_internal;
 	
@@ -27,16 +41,35 @@ package dragonBones.objects {
 		{
 			var textureAtlasData:Object = {};
 			textureAtlasData.__name = rawData.@[ConstValues.A_NAME];
+			var subTextureFrame:Rectangle;
 			for each (var subTextureXML:XML in rawData[ConstValues.SUB_TEXTURE])
 			{
 				var subTextureName:String = subTextureXML.@[ConstValues.A_NAME];
-				var subTextureData:Rectangle = new Rectangle();
-				subTextureData.x = int(subTextureXML.@[ConstValues.A_X]) / scale;
-				subTextureData.y = int(subTextureXML.@[ConstValues.A_Y]) / scale;
-				subTextureData.width = int(subTextureXML.@[ConstValues.A_WIDTH]) / scale;
-				subTextureData.height = int(subTextureXML.@[ConstValues.A_HEIGHT]) / scale;
 				
-				textureAtlasData[subTextureName] = subTextureData;
+				var subTextureRegion:Rectangle = new Rectangle();
+				subTextureRegion.x = int(subTextureXML.@[ConstValues.A_X]) / scale;
+				subTextureRegion.y = int(subTextureXML.@[ConstValues.A_Y]) / scale;
+				subTextureRegion.width = int(subTextureXML.@[ConstValues.A_WIDTH]) / scale;
+				subTextureRegion.height = int(subTextureXML.@[ConstValues.A_HEIGHT]) / scale;
+				var rotated:Boolean = subTextureXML.@[ConstValues.A_ROTATED] == "true";
+				
+				var frameWidth:Number = int(subTextureXML.subTextureXML.@[ConstValues.A_FRAME_WIDTH]) / scale;
+				var frameHeight:Number = int(subTextureXML.subTextureXML.@[ConstValues.A_FRAME_HEIGHT]) / scale;
+				
+				if(frameWidth > 0 && frameHeight > 0)
+				{
+					subTextureFrame = new Rectangle();
+					subTextureFrame.x = int(subTextureXML.@[ConstValues.A_FRAME_X]) / scale;
+					subTextureFrame.y = int(subTextureXML.@[ConstValues.A_FRAME_Y]) / scale;
+					subTextureFrame.width = frameWidth;
+					subTextureFrame.height = frameHeight;
+				}
+				else
+				{
+					subTextureFrame = null;
+				}
+				
+				textureAtlasData[subTextureName] = new TextureData(subTextureRegion, subTextureFrame, rotated);
 			}
 			
 			return textureAtlasData;
@@ -44,7 +77,7 @@ package dragonBones.objects {
 		
 		/**
 		 * Parse the SkeletonData.
-		 * @param	xml The SkeletonData xml to parse.
+		 * @param xml The SkeletonData xml to parse.
 		 * @return A SkeletonData instance.
 		 */
 		public static function parseSkeletonData(rawData:XML):SkeletonData
@@ -56,15 +89,13 @@ package dragonBones.objects {
 			var version:String = rawData.@[ConstValues.A_VERSION];
 			switch (version)
 			{
-				case "1.5":
-				case "2.0":
-				case "2.1":
-				case "2.1.1":
-				case "2.1.2":
-				case "2.2":
-					return parseOldXMLData(rawData as XML);
+				case "2.3":
+					//Update2_3To3_0.format(rawData as XML);
+					break;
+				
 				case DragonBones.DATA_VERSION:
 					break;
+				
 				default:
 					throw new Error("Nonsupport version!");
 			}
@@ -113,26 +144,8 @@ package dragonBones.objects {
 			boneData.name = boneXML.@[ConstValues.A_NAME];
 			boneData.parent = boneXML.@[ConstValues.A_PARENT];
 			boneData.length = Number(boneXML.@[ConstValues.A_LENGTH]);
-			var inheritScale:String = boneXML.@[ConstValues.A_SCALE_MODE];
-			if (inheritScale)
-			{
-				boneData.scaleMode = parseInt(inheritScale);
-			}
-			
-			var fixedRotation:String = boneXML.@[ConstValues.A_FIXED_ROTATION][0];
-			switch (fixedRotation)
-			{
-				case "0":
-				case "false":
-				case "no":
-				case "":
-				case null:
-					boneData.fixedRotation = false;
-					break;
-				default:
-					boneData.fixedRotation = true;
-					break;
-			}
+			boneData.inheritRotation = getBoolean(boneXML, ConstValues.A_INHERIT_ROTATION, true);
+			boneData.inheritScale = getBoolean(boneXML, ConstValues.A_SCALE_MODE, false);
 			
 			parseTransform(boneXML[ConstValues.TRANSFORM][0], boneData.global);
 			boneData.transform.copy(boneData.global);
@@ -159,11 +172,7 @@ package dragonBones.objects {
 			slotData.name = slotXML.@[ConstValues.A_NAME];
 			slotData.parent = slotXML.@[ConstValues.A_PARENT];
 			slotData.zOrder = Number(slotXML.@[ConstValues.A_Z_ORDER]);
-            slotData.blendMode = slotXML.@[ConstValues.A_BLENDMODE];
-            if(!slotData.blendMode)
-            {
-                slotData.blendMode = "normal";
-            }
+			slotData.blendMode = slotXML.@[ConstValues.A_BLENDMODE];
 			for each(var displayXML:XML in slotXML[ConstValues.DISPLAY])
 			{
 				slotData.addDisplayData(parseDisplayData(displayXML, data));
@@ -195,22 +204,30 @@ package dragonBones.objects {
 			var animationData:AnimationData = new AnimationData();
 			animationData.name = animationXML.@[ConstValues.A_NAME];
 			animationData.frameRate = frameRate;
-			animationData.loop = int(animationXML.@[ConstValues.A_LOOP]);
-			animationData.fadeInTime = Number(animationXML.@[ConstValues.A_FADE_IN_TIME]);
-			animationData.duration = Number(animationXML.@[ConstValues.A_DURATION]) / frameRate;
-			animationData.scale = Number(animationXML.@[ConstValues.A_SCALE]);
-			animationData.tweenEasing = Number(animationXML.@[ConstValues.A_TWEEN_EASING]);
+			animationData.playTimes = int(animationXML.@[ConstValues.A_LOOP]);
+			animationData.fadeTime = Number(animationXML.@[ConstValues.A_FADE_IN_TIME]);
+			animationData.duration = (Number(animationXML.@[ConstValues.A_DURATION]) || 1) / frameRate;
+			animationData.scale = getNumber(animationXML, ConstValues.A_SCALE, 1) || 0;
+			//use frame tweenEase, NaN
+			//overwrite frame tweenEase, [-1, 0):ease in, 0:line easing, (0, 1]:ease out, (1, 2]:ease in out
+			animationData.tweenEasing = getNumber(animationXML, ConstValues.A_TWEEN_EASING, NaN);
+			animationData.autoTween = getBoolean(animationXML, ConstValues.A_AUTO_TWEEN, true);
 			
 			parseTimeline(animationXML, animationData, parseMainFrame, frameRate);
 			
-			var timeline:TransformTimeline;
-			var timelineName:String;
+			var lastFrameDuration:Number = animationData.duration;
 			for each(var timelineXML:XML in animationXML[ConstValues.TIMELINE])
 			{
-				timeline = parseTransformTimeline(timelineXML, animationData.duration, frameRate);
-				timelineName = timelineXML.@[ConstValues.A_NAME];
-				animationData.addTimeline(timeline, timelineName);
+				var timeline:TransformTimeline = parseTransformTimeline(timelineXML, animationData.duration, frameRate);
+				lastFrameDuration = Math.min(lastFrameDuration, timeline.frameList[timeline.frameList.length - 1].duration);
+				animationData.addTimeline(timeline);
 			}
+			
+			if(animationData.frameList.length > 0)
+			{
+				lastFrameDuration = Math.min(lastFrameDuration, animationData.frameList[animationData.frameList.length - 1].duration);
+			}
+			animationData.lastFrameDuration = lastFrameDuration;
 			
 			DBDataUtil.addHideTimeline(animationData, armatureData);
 			DBDataUtil.transformAnimationData(animationData, armatureData);
@@ -238,19 +255,19 @@ package dragonBones.objects {
 		private static function parseTransformTimeline(timelineXML:XML, duration:Number, frameRate:uint):TransformTimeline
 		{
 			var timeline:TransformTimeline = new TransformTimeline();
+			timeline.name = timelineXML.@[ConstValues.A_NAME];
 			timeline.duration = duration;
+			timeline.scale = getNumber(timelineXML, ConstValues.A_SCALE, 1) || 0;
+			timeline.offset = getNumber(timelineXML, ConstValues.A_OFFSET, 0) || 0;
 			
 			parseTimeline(timelineXML, timeline, parseTransformFrame, frameRate);
-			
-			timeline.scale = Number(timelineXML.@[ConstValues.A_SCALE]);
-			timeline.offset = Number(timelineXML.@[ConstValues.A_OFFSET]);
 			
 			return timeline;
 		}
 		
 		private static function parseFrame(frameXML:XML, frame:Frame, frameRate:uint):void
 		{
-			frame.duration = Number(frameXML.@[ConstValues.A_DURATION]) / frameRate;
+			frame.duration = (Number(frameXML.@[ConstValues.A_DURATION]) || 1) / frameRate;
 			frame.action = frameXML.@[ConstValues.A_ACTION];
 			frame.event = frameXML.@[ConstValues.A_EVENT];
 			frame.sound = frameXML.@[ConstValues.A_SOUND];
@@ -268,12 +285,16 @@ package dragonBones.objects {
 			var frame:TransformFrame = new TransformFrame();
 			parseFrame(frameXML, frame, frameRate);
 			
-			frame.visible = uint(frameXML.@[ConstValues.A_HIDE]) != 1;
-			frame.tweenEasing = Number(frameXML.@[ConstValues.A_TWEEN_EASING]);
+			frame.visible = !getBoolean(frameXML, ConstValues.A_HIDE, false);
+			
+			//NaN:no tween, [-1, 0):ease in, 0:line easing, (0, 1]:ease out, (1, 2]:ease in out
+			frame.tweenEasing = getNumber(frameXML, ConstValues.A_TWEEN_EASING, 0);
 			frame.tweenRotate = Number(frameXML.@[ConstValues.A_TWEEN_ROTATE]);
+			frame.tweenScale = getBoolean(frameXML, ConstValues.A_TWEEN_SCALE, true);
 			frame.displayIndex = Number(frameXML.@[ConstValues.A_DISPLAY_INDEX]);
-			//
-			frame.zOrder = Number(frameXML.@[ConstValues.A_Z_ORDER][0]);
+			
+			//如果为NaN，则说明没有改变过zOrder
+			frame.zOrder = getNumber(frameXML, ConstValues.A_Z_ORDER, NaN);
 			
 			parseTransform(frameXML[ConstValues.TRANSFORM][0], frame.global, frame.pivot);
 			frame.transform.copy(frame.global);
@@ -302,19 +323,89 @@ package dragonBones.objects {
 			{
 				if(transform)
 				{
-					transform.x = Number(transformXML.@[ConstValues.A_X]);
-					transform.y = Number(transformXML.@[ConstValues.A_Y]);
-					transform.skewX = Number(transformXML.@[ConstValues.A_SKEW_X]) * ConstValues.ANGLE_TO_RADIAN;
-					transform.skewY = Number(transformXML.@[ConstValues.A_SKEW_Y]) * ConstValues.ANGLE_TO_RADIAN;
-					transform.scaleX = Number(transformXML.@[ConstValues.A_SCALE_X]);
-					transform.scaleY = Number(transformXML.@[ConstValues.A_SCALE_Y]);
+					transform.x = Number(transformXML.@[ConstValues.A_X]) || 0;
+					transform.y = Number(transformXML.@[ConstValues.A_Y]) || 0;
+					transform.skewX = Number(transformXML.@[ConstValues.A_SKEW_X]) * ConstValues.ANGLE_TO_RADIAN || 0;
+					transform.skewY = Number(transformXML.@[ConstValues.A_SKEW_Y]) * ConstValues.ANGLE_TO_RADIAN || 0;
+					transform.scaleX = getNumber(transformXML, ConstValues.A_SCALE_X, 1) || 0;
+					transform.scaleY = getNumber(transformXML, ConstValues.A_SCALE_Y, 1) || 0;
 				}
 				if(pivot)
 				{
-					pivot.x = Number(transformXML.@[ConstValues.A_PIVOT_X]);
-					pivot.y = Number(transformXML.@[ConstValues.A_PIVOT_Y]);
+					pivot.x = Number(transformXML.@[ConstValues.A_PIVOT_X]) || 0;
+					pivot.y = Number(transformXML.@[ConstValues.A_PIVOT_Y]) || 0;
 				}
 			}
 		}
+		
+		private static function getBoolean(data:XML, key:String, defaultValue:Boolean):Boolean
+		{
+			if(data.@[key].length() > 0)
+			{
+				switch(String(data.@[key]))
+				{
+					case "0":
+					case "NaN":
+					case "":
+					case "false":
+					case "null":
+					case "undefined":
+						return false;
+						
+					case "1":
+					case "true":
+					default:
+						return true;
+				}
+			}
+			return defaultValue;
+		}
+		
+		private static function getNumber(data:XML, key:String, defaultValue:Number):Number
+		{
+			if(data.@[key].length() > 0)
+			{
+				switch(String(data.@[key]))
+				{
+					case "NaN":
+					case "":
+					case "false":
+					case "null":
+					case "undefined":
+						return NaN;
+						
+					default:
+						return Number(data.@[key]);
+				}
+			}
+			
+			return defaultValue;
+		}
 	}
 }
+
+/*
+import dragonBones.utils.ConstValues;
+
+class Update2_3To3_0
+{
+	public static function format(skeleton:XML):void
+	{
+		//删除两个旧属性
+		for each(var boneXML:XML in skeleton[ConstValues.ARMATURE][ConstValues.BONE])
+		{
+			if(String(boneXML.@[ConstValues.A_FIXED_ROTATION]) == "true")
+			{
+				boneXML.@[ConstValues.A_INHERIT_ROTATION] = 0;
+			}
+			delete boneXML.@[ConstValues.A_FIXED_ROTATION];
+			
+			if(String(boneXML.@[ConstValues.A_SCALE_MODE]) == "2")
+			{
+				boneXML.@[ConstValues.A_INHERIT_SCALE] = 1;
+			}
+			delete boneXML.@[ConstValues.A_SCALE_MODE];
+		}
+	}
+}
+*/

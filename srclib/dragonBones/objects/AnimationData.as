@@ -2,66 +2,81 @@ package dragonBones.objects
 {
 	final public class AnimationData extends Timeline
 	{
-		public var frameRate:uint;
 		public var name:String;
-		public var loop:int;
+		public var frameRate:uint;
+		public var fadeTime:Number;
+		public var playTimes:int;
+		//use frame tweenEase, NaN
+		//overwrite frame tweenEase, [-1, 0):ease in, 0:line easing, (0, 1]:ease out, (1, 2]:ease in out
 		public var tweenEasing:Number;
+		public var autoTween:Boolean;
+		public var lastFrameDuration:Number;
 		
-		private var _timelines:Object;
-		public function get timelines():Object
-		{
-			return _timelines;
-		}
+		//string map
+		public var hideTimelineNameMap:Object;
 		
-		private var _fadeTime:Number;
-		public function get fadeInTime():Number
+		private var _timelineList:Vector.<TransformTimeline>;
+		public function get timelineList():Vector.<TransformTimeline>
 		{
-			return _fadeTime;
-		}
-		public function set fadeInTime(value:Number):void
-		{
-			if(isNaN(value))
-			{
-				value = 0;
-			}
-			_fadeTime = value;
+			return _timelineList;
 		}
 		
 		public function AnimationData()
 		{
 			super();
-			loop = 0;
+			fadeTime = 0;
+			playTimes = 0;
+			autoTween = true;
 			tweenEasing = NaN;
+			hideTimelineNameMap = {};
 			
-			_timelines = {};
-			
-			_fadeTime = 0;
+			_timelineList = new Vector.<TransformTimeline>;
+			_timelineList.fixed = true;
 		}
 		
 		override public function dispose():void
 		{
 			super.dispose();
 			
-			for(var timelineName:String in _timelines)
+			//clear
+			hideTimelineNameMap = null;
+			
+			_timelineList.fixed = false;
+			for each(var timeline:TransformTimeline in _timelineList)
 			{
-				(_timelines[timelineName] as TransformTimeline).dispose();
+				timeline.dispose();
 			}
-			_timelines = null;
+			_timelineList.fixed = false;
+			_timelineList.length = 0;
+			_timelineList = null;
 		}
 		
 		public function getTimeline(timelineName:String):TransformTimeline
 		{
-			return _timelines[timelineName] as TransformTimeline;
+			var i:int = _timelineList.length;
+			while(i --)
+			{
+				if(_timelineList[i].name == timelineName)
+				{
+					return _timelineList[i];
+				}
+			}
+			return null;
 		}
 		
-		public function addTimeline(timeline:TransformTimeline, timelineName:String):void
+		public function addTimeline(timeline:TransformTimeline):void
 		{
 			if(!timeline)
 			{
 				throw new ArgumentError();
 			}
 			
-			_timelines[timelineName] = timeline;
+			if(_timelineList.indexOf(timeline) < 0)
+			{
+				_timelineList.fixed = false;
+				_timelineList[_timelineList.length] = timeline;
+				_timelineList.fixed = true;
+			}
 		}
 	}
 }

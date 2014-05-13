@@ -1,5 +1,5 @@
-package dragonBones.objects {
-
+package dragonBones.objects
+{
 	final public class BoneData
 	{
 		public var name:String;
@@ -9,16 +9,16 @@ package dragonBones.objects {
 		public var global:DBTransform;
 		public var transform:DBTransform;
 		
-		public var scaleMode:int;
-		public var fixedRotation:Boolean;
+		public var inheritScale:Boolean;
+		public var inheritRotation:Boolean;
 		
 		public function BoneData()
 		{
 			length = 0;
 			global = new DBTransform();
 			transform = new DBTransform();
-			scaleMode = 1;
-			fixedRotation = false;
+			inheritRotation = true;
+			inheritScale = false;
 		}
 		
 		public function dispose():void

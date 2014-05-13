@@ -57,7 +57,7 @@ package dragonBones.objects
 		}
 		/**
 		 * Copy all properties from this DBTransform instance to the passed DBTransform instance.
-		 * @param	node
+		 * @param node
 		 */
 		public function copy(transform:DBTransform):void
 		{

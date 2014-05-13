@@ -1,47 +1,63 @@
-package dragonBones.objects {
+package dragonBones.objects
+{
 	import flash.geom.Point;
 	
 	public final class TransformTimeline extends Timeline
 	{
-		public static const HIDE_TIMELINE:TransformTimeline = new TransformTimeline();
-		
+		public var name:String;
 		public var transformed:Boolean;
 		
 		public var originTransform:DBTransform;
 		public var originPivot:Point;
 		
-		private var _offset:Number;
-		public function get offset():Number
-		{
-			return _offset;
-		}
-		public function set offset(value:Number):void
-		{
-			_offset = (value || 0) % 1;
-			if(_offset < 0)
-			{
-				_offset += 1;
-			}
-		}
+		public var offset:Number;
+		
+		public var timelineCached:TimelineCached;
+		
+		private var _slotTimelineCachedMap:Object;
 		
 		public function TransformTimeline()
 		{
 			super();
 			
+			_slotTimelineCachedMap = {};
+			
 			originTransform = new DBTransform();
 			originPivot = new Point();
-			_offset = 0;
+			offset = 0;
+			
+			timelineCached = new TimelineCached();
+		}
+		
+		public function getSlotTimelineCached(slotName:String):TimelineCached
+		{
+			var slotTimelineCached:TimelineCached = _slotTimelineCachedMap[slotName];
+			if(!slotTimelineCached)
+			{
+				_slotTimelineCachedMap[slotName] =
+					slotTimelineCached = new TimelineCached();
+			}
+			return slotTimelineCached;
 		}
 		
 		override public function dispose():void
 		{
-			if(this == HIDE_TIMELINE)
-			{
-				return;
-			}
 			super.dispose();
+			
+			timelineCached.dispose();
+			
+			for each(var slotTimelineCached:TimelineCached in _slotTimelineCachedMap)
+			{
+				slotTimelineCached.dispose();
+			}
+			//_slotTimelineCachedMap.clear();
+			
 			originTransform = null;
 			originPivot = null;
+			
+			timelineCached = null;
+			
+			_slotTimelineCachedMap = null;
 		}
 	}
 }
