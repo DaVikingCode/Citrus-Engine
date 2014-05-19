@@ -6,6 +6,11 @@ V3.1.10, Work In Progress
 - Feathers updated 1.3.0
 - Set up SoundMixer.audioPlaybackMode to "ambient" (on iOS if the physical button is off, mute the sound).
 - setUpStarling method has a stage3D argument, useful for shared context.
+- Citrus has its own pausable starling juggler, AnimationSequences will be attached to it by default. When CE is paused, starling keeps running but anything attached to the citrus juggler will be paused as expected.
+- CitrusSoundGroup : you can stop all sounds from a group with CitrusSoundGroup.stopAllSounds
+- Camera : fixed intersects/containsRect when using rotation/zoom.
+- All CitrusObjects with a view now have a reference to their actual art object.
+- setUpStarling : you can force starling to run on a specific stage3D with the stage3D argument of setupStarling (used in a shared context scenario)
 
 V3.1.9, 03 05 2014
 ------------------
