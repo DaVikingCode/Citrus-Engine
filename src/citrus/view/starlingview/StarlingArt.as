@@ -1,5 +1,4 @@
 package citrus.view.starlingview {
-
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
 	import citrus.core.IState;
@@ -11,8 +10,6 @@ package citrus.view.starlingview {
 	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
-	import flash.geom.Matrix;
-	import flash.geom.Rectangle;
 
 	import dragonBones.Armature;
 	import dragonBones.animation.WorldClock;
@@ -32,6 +29,8 @@ package citrus.view.starlingview {
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.geom.Matrix;
+	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
@@ -136,7 +135,7 @@ package citrus.view.starlingview {
 
 			if (_content is starling.display.MovieClip) {
 
-				Starling.juggler.remove(_content as starling.display.MovieClip);
+				_ce.juggler.remove(_content as starling.display.MovieClip);
 				_content.dispose();
 
 			} else if (_content is AnimationSequence) {
@@ -153,7 +152,7 @@ package citrus.view.starlingview {
 
 			} else if (_content is PDParticleSystem) {
 
-				Starling.juggler.remove(_content as PDParticleSystem);
+				_ce.juggler.remove(_content as PDParticleSystem);
 				(_content as PDParticleSystem).stop();
 				_content.dispose();
 
@@ -331,9 +330,9 @@ package citrus.view.starlingview {
 					_content = _view;
 					
 					if (_view is starling.display.MovieClip)
-						Starling.juggler.add(_content as starling.display.MovieClip);
+						_ce.juggler.add(_content as starling.display.MovieClip);
 					else if (_view is PDParticleSystem)
-						Starling.juggler.add(_content as PDParticleSystem);
+						_ce.juggler.add(_content as PDParticleSystem);
 
 				} else if (_view is Texture) {
 					_content = new Image(_view);
@@ -454,17 +453,10 @@ package citrus.view.starlingview {
 		}
 
 		/**
-		 * Remove or add to the Juggler if the Citrus Engine is playing or not
+		 * play/pause animation when "playing" changes. The citrus juggler is pausable so no need to add/remove anything to it here.
 		 */
 		private function _pauseAnimation(value:Boolean):void {
-
-			if (_content is starling.display.MovieClip)
-				value ? Starling.juggler.add(_content as starling.display.MovieClip) : Starling.juggler.remove(_content as starling.display.MovieClip);
-			else if (_content is AnimationSequence)
-				(_content as AnimationSequence).pauseAnimation(value);
-			else if (_content is PDParticleSystem)
-				value ? Starling.juggler.add(_content as PDParticleSystem) : Starling.juggler.remove(_content as PDParticleSystem);
-			else if (_view is Armature)
+			if (_view is Armature)
 				value ? (_view as Armature).animation.play() : (_view as Armature).animation.stop();
 		}
 
