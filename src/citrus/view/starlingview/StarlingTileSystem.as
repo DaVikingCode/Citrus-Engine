@@ -50,8 +50,9 @@ package citrus.view.starlingview {
 		public var loadInDistance:Number = 1.8;
 		public var unloadDistance:Number = 2.0;
 		
-		// timer to call updates, every second should be fine
-		private var _timer:Timer = new Timer(1000);
+		// timer to call updates
+		public var updateInterval:uint = 1000;
+		private var _timer:Timer;
 		
 		// test for maximum memory use
 		private var maxInRam:Number = 0;
@@ -95,6 +96,7 @@ package citrus.view.starlingview {
 				onTimer();
 				
 				// start up the timer
+				_timer = new Timer(updateInterval);
 				_timer.addEventListener(TimerEvent.TIMER, onTimer);
 				_timer.start();
 			} else {
