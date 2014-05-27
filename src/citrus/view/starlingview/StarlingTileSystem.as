@@ -31,6 +31,7 @@ package citrus.view.starlingview {
 		private var _followMe:ISpriteView; // the object that is tracked
 		
 		private var _imagesMC:MovieClip;
+		private var _imagesBitmap:Bitmap;
 		private var _imagesArray:Array;
 		private var _liveTiles:Array = [];
 		
@@ -67,6 +68,8 @@ package citrus.view.starlingview {
 			
 			if (images is MovieClip) {
 				_imagesMC = images;
+			} else if (images is Bitmap) {
+				_imagesBitmap = images;
 			} else if (images is Array) {
 				_imagesArray = images;
 			} else {
@@ -86,6 +89,8 @@ package citrus.view.starlingview {
 			
 			if (_imagesMC) {
 				tilesFromMovieclip(_imagesMC);
+			} else if (_imagesBitmap) {
+				tilesFromBitmap(_imagesBitmap);
 			} else if (_imagesArray) {
 				tilesFromArray(_imagesArray);
 			}
@@ -107,24 +112,28 @@ package citrus.view.starlingview {
 		* 
 		*/
 		private function tilesFromMovieclip(mc:MovieClip):void {
-						
-			//trace("getting from movieclip");
+			
 			var mcBitmapData:BitmapData = new BitmapData(mc.width, mc.height, true, 0x000000);
 			mcBitmapData.draw(mc);
 			
-			var numColumns:uint = Math.ceil(mc.width / tileWidth);
-			var numRows:uint = Math.ceil(mc.height / tileHeight);
+			tilesFromBitmapData(mcBitmapData, mc.width, mc.height);
+		}
+		
+		/*
+		 * gathers the tiles from a bitmap via BitmapData
+		 * 
+		 */
+		private function tilesFromBitmap(bitmap:Bitmap):void {
 			
-			var pWidth:Number = (numColumns * tileWidth) / numColumns;
-			var pHeight:Number = (numRows * tileHeight) / numRows;
+			tilesFromBitmapData(bitmap.bitmapData, bitmap.width, bitmap.height);
+		}
+		
+		private function tilesFromBitmapData(bitmapDataSource:BitmapData, width:uint, height:uint):void {
 			
-			//trace("mc:", mc.width, "x", mc.height);
-			//trace("rows:", numRows);
-			//trace("columns:", numColumns);
+			var numColumns:uint = Math.ceil(width / tileWidth);
+			var numRows:uint = Math.ceil(height / tileHeight);
 			
 			var bitmapData:BitmapData;
-			var bitmap:Bitmap;
-			var rect:Rectangle;
 			var array:Array = [];
 			
 			for (var ri:uint = 0; ri < numRows; ri ++) {
@@ -132,16 +141,16 @@ package citrus.view.starlingview {
 				array[ri] = [];
 				
 				for (var ci:uint = 0; ci < numColumns; ci ++) {
-					bitmapData = new BitmapData(pWidth, pHeight, true);
-					rect = new Rectangle(ci * pWidth, ri * pHeight, pWidth, pHeight);
-					bitmapData.copyPixels(mcBitmapData, rect, new Point(0, 0));
-					bitmap = new Bitmap(bitmapData);
-					array[ri][ci] = bitmap;
+				
+					bitmapData = new BitmapData(tileWidth, tileHeight, true);
+					bitmapData.copyPixels(bitmapDataSource, new Rectangle(ci * tileWidth, ri * tileHeight, tileWidth, tileHeight), new Point(0, 0));
+					array[ri][ci] = new Bitmap(bitmapData);
+					
 				}
 			}
 			
 			_imagesArray = array;
-
+			
 			tilesFromArray(_imagesArray);
 		}
 		
@@ -341,6 +350,7 @@ package citrus.view.starlingview {
 				_imagesArray = null;
 			}
 			_imagesMC = null;
+			_imagesBitmap = null;
 			_liveTiles.length = 0;
 			_liveTiles = null;
 			
