@@ -179,7 +179,7 @@ package citrus.view.starlingview {
 							if (atf) {
 								
 								// load in as bytearray
-								var byteArray:ByteArray = new row[c] as ByteArray;
+								var byteArray:ByteArray = row[c] as ByteArray;
 								if (byteArray) {
 									
 									tile.myATF = byteArray;
