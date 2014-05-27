@@ -1,6 +1,6 @@
 V3.1.10, Work In Progress
 -------------------------
-- Starling updated on 1.5
+- Starling updated on 1.5.1
 - DragonBones updated on 3.0
 - Nape updated on 2.0.16
 - Feathers updated 1.3.0
