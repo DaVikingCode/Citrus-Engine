@@ -206,6 +206,14 @@ package citrus.core.starling {
 			
 			resetViewport();
 			_starling.viewPort.copyFrom(_viewport);
+			
+			setupStats();
+		}
+		
+		public function setupStats(hAlign:String = "left",vAlign:String = "top",scale:Number = 1):void
+		{
+			if(_starling && _starling.showStats)
+					_starling.showStatsAt(hAlign, vAlign,scale/_starling.contentScaleFactor);
 		}
 
 		/**
@@ -224,6 +232,7 @@ package citrus.core.starling {
 			{
 				_starling.removeEventListener(starling.events.Event.ROOT_CREATED, arguments.callee);
 				handleStarlingReady();
+				setupStats();
 			});
 		}
 		
