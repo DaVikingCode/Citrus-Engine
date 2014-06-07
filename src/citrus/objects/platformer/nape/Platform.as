@@ -52,6 +52,11 @@ package citrus.objects.platformer.nape {
 			
 			_oneWay = value;
 			
+			// If the body hasn't been created yet stop here.
+			// The callback type and the listener will be added later by the "createConstraint"-method.
+			if (!_body)
+				return;
+			
 			if (_oneWay && !_preListener)
 			{
 				_preListener = new PreListener(InteractionType.COLLISION, Platform.ONEWAY_PLATFORM, CbType.ANY_BODY, handlePreContact,0,true);
