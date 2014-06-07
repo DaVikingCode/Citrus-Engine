@@ -235,10 +235,42 @@ package citrus.view.starlingview {
 		}
 
 		/**
-		 * Return a clone of the current AnimationSequence. Animations added via <code>addMovieClip</code> or <code>addTextureAtlasWithAnimations</code> aren't included.
+		 * Return a clone of the current AnimationSequence. Animations added via <code>addMovieClip</code> or <code>addTextureAtlasWithAnimations</code> aren't included. FPS settings added via <code>setAnimFps</code> aren't included too.
 		 */
 		public function clone():AnimationSequence {
 			return new AnimationSequence(_textureAtlas, _animations, _firstAnimation, _animFps, _firstAnimLoop, _smoothing);
+		}
+		
+		/**
+		 * Set the fps for animations individually.
+		 * @param animations an array with the object's animations as a String you would like to pick up.
+		 * @param animFps an array of numbers which determine the animation MC's fps.
+		 */
+		public function setAnimFps(animations:Array, animFps:Array):void
+		{	
+			var numberOfAnimations:uint = animations.length;
+			var numberOfFpsSettings:uint = animFps.length;
+			
+			// check the amount of the animation names and fps values
+			if (numberOfAnimations < 1 || numberOfFpsSettings < 1 || numberOfAnimations != numberOfFpsSettings)
+				throw new Error(this + " invalid input - animations: " + numberOfAnimations + ", fps settings: " + numberOfFpsSettings);
+			
+			for (var i:uint = 0; i < numberOfAnimations; i++)
+			{
+				if (typeof(animations[i]) != "string") {
+					throw new Error(this + " the animation-name " + animations[i] + " is set as " + typeof(animations[i]) + " instead of string");
+				}
+
+				if (typeof(animFps[i]) != "number") {
+					throw new Error(this + " the fps setting " + animFps[i] + " is set as " + typeof(animFps[i]) + " instead of number");
+				}
+
+				if (!(_mcSequences[animations[i]]))
+					throw new Error(this + " the " + animations[i] + " animation hasn't been set up");
+				
+				// set the fps for the animation
+				_mcSequences[animations[i]].fps = animFps[i];
+			}
 		}
 
 		private function _animationComplete(evt:Event):void {
