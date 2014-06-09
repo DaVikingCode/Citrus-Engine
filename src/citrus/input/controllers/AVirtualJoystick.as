@@ -163,7 +163,8 @@ package citrus.input.controllers {
 			_yAxis = _targetPosition.y / _innerradius;
 			
 			// Check registered actions on both axes
-			if (Math.sqrt((_xAxis * _xAxis) + (_yAxis * _yAxis)) <= threshold)
+			
+			if (_targetPosition.length <= threshold)
 				_input.stopActionsOf(this);
 			else
 			{
