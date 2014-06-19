@@ -1,5 +1,14 @@
-﻿package dragonBones.objects
-{
+package dragonBones.objects {
+
+	import dragonBones.core.DragonBones;
+	import dragonBones.core.dragonBones_internal;
+	import dragonBones.textures.TextureData;
+	import dragonBones.utils.ConstValues;
+	import dragonBones.utils.DBDataUtil;
+
+	import flash.geom.ColorTransform;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	/**
 	 * Copyright 2012-2013. DragonBones. All Rights Reserved.
 	 * @playerversion Flash 10.0, Flash 10
@@ -7,28 +16,6 @@
 	 * @version 2.0
 	 */
 	
-	import flash.geom.ColorTransform;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	
-	import dragonBones.core.DragonBones;
-	import dragonBones.core.dragonBones_internal;
-	import dragonBones.objects.AnimationData;
-	import dragonBones.objects.ArmatureData;
-	import dragonBones.objects.BoneData;
-	import dragonBones.objects.DBTransform;
-	import dragonBones.objects.DisplayData;
-	import dragonBones.objects.Frame;
-	import dragonBones.objects.SkeletonData;
-	import dragonBones.objects.SkinData;
-	import dragonBones.objects.SlotData;
-	import dragonBones.objects.Timeline;
-	import dragonBones.objects.TransformFrame;
-	import dragonBones.objects.TransformTimeline;
-	import dragonBones.textures.TextureData;
-	import dragonBones.utils.ConstValues;
-	import dragonBones.utils.DBDataUtil;
-	import dragonBones.utils.TransformUtil;
 	
 	use namespace dragonBones_internal;
 	

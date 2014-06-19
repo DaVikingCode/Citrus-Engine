@@ -1,8 +1,5 @@
-package dragonBones.animation
-{
-	import flash.geom.ColorTransform;
-	import flash.geom.Point;
-	
+package dragonBones.animation {
+
 	import dragonBones.Armature;
 	import dragonBones.Bone;
 	import dragonBones.Slot;
@@ -12,6 +9,9 @@ package dragonBones.animation
 	import dragonBones.objects.TransformFrame;
 	import dragonBones.objects.TransformTimeline;
 	import dragonBones.utils.TransformUtil;
+
+	import flash.geom.ColorTransform;
+	import flash.geom.Point;
 	
 	use namespace dragonBones_internal;
 	

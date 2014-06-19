@@ -1,13 +1,13 @@
-﻿package dragonBones
-{
-	import flash.errors.IllegalOperationError;
-	import flash.geom.Matrix;
-	
+package dragonBones {
+
 	import dragonBones.core.DBObject;
 	import dragonBones.core.dragonBones_internal;
 	import dragonBones.objects.DisplayData;
 	import dragonBones.objects.FrameCached;
 	import dragonBones.objects.TimelineCached;
+
+	import flash.errors.IllegalOperationError;
+	import flash.geom.Matrix;
 	
 	use namespace dragonBones_internal;
 	

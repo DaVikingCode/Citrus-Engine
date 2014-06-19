@@ -1,11 +1,8 @@
-﻿package dragonBones.objects
-{
-	import flash.utils.ByteArray;
-	
-	import dragonBones.objects.ObjectDataParser;
-	import dragonBones.objects.SkeletonData;
-	import dragonBones.objects.XMLDataParser;
+package dragonBones.objects {
+
 	import dragonBones.utils.BytesType;
+
+	import flash.utils.ByteArray;
 	
 	public final class DataParser
 	{

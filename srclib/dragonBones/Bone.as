@@ -1,8 +1,5 @@
-﻿package dragonBones
-{
-	import flash.geom.Matrix;
-	import flash.geom.Point;
-	
+package dragonBones {
+
 	import dragonBones.animation.AnimationState;
 	import dragonBones.animation.TimelineState;
 	import dragonBones.core.DBObject;
@@ -15,6 +12,9 @@
 	import dragonBones.objects.FrameCached;
 	import dragonBones.objects.TimelineCached;
 	import dragonBones.objects.TransformFrame;
+
+	import flash.geom.Matrix;
+	import flash.geom.Point;
 	
 	use namespace dragonBones_internal;
 	

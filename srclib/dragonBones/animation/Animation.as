@@ -1,5 +1,5 @@
-﻿package dragonBones.animation
-{
+package dragonBones.animation {
+
 	import dragonBones.Armature;
 	import dragonBones.Slot;
 	import dragonBones.core.dragonBones_internal;

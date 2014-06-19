@@ -1,16 +1,16 @@
-﻿package dragonBones.factorys
-{
-	import flash.display.MovieClip;
-	import flash.display.Shape;
-	import flash.display.Sprite;
-	import flash.geom.Rectangle;
-	
+package dragonBones.factorys {
+
 	import dragonBones.Armature;
 	import dragonBones.Slot;
 	import dragonBones.core.dragonBones_internal;
 	import dragonBones.display.NativeSlot;
 	import dragonBones.textures.ITextureAtlas;
 	import dragonBones.textures.NativeTextureAtlas;
+
+	import flash.display.MovieClip;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.geom.Rectangle;
 	
 	use namespace dragonBones_internal;
 	

@@ -1,5 +1,5 @@
-package dragonBones.objects
-{
+package dragonBones.objects {
+
 	import flash.geom.Matrix;
 	
 	/** @private */

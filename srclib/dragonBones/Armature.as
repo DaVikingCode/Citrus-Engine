@@ -1,8 +1,5 @@
-﻿package dragonBones
-{
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	
+package dragonBones {
+
 	import dragonBones.animation.Animation;
 	import dragonBones.animation.AnimationState;
 	import dragonBones.animation.IAnimatable;
@@ -15,6 +12,9 @@
 	import dragonBones.events.SoundEventManager;
 	import dragonBones.objects.ArmatureData;
 	import dragonBones.objects.Frame;
+
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 
 	use namespace dragonBones_internal;
 

@@ -115,7 +115,6 @@
 
 			<arg line="-include-sources ../src/citrus/utils/AGameData.as" />
 			<arg line="-include-sources ../src/citrus/utils/AssetCache.as" />
-			<arg line="-include-sources ../src/citrus/utils/Context3DUtil.as" />
 			<arg line="-include-sources ../src/citrus/utils/LevelManager.as" />
 			<arg line="-include-sources ../src/citrus/utils/LoadManager.as" />
 			<arg line="-include-sources ../src/citrus/utils/Mobile.as" />
@@ -134,12 +133,14 @@
 			<arg line="-include-sources ../srclib/dragonBones/core" />
 			<arg line="-include-sources ../srclib/dragonBones/display/IDisplayBridge.as" />
 			<arg line="-include-sources ../srclib/dragonBones/display/NativeDisplayBridge.as" />
+			<arg line="-include-sources ../srclib/dragonBones/display/NativeSlot.as" />
 			<arg line="-include-sources ../srclib/dragonBones/events" />
 			<arg line="-include-sources ../srclib/dragonBones/factorys/BaseFactory.as" />
 			<arg line="-include-sources ../srclib/dragonBones/factorys/NativeFactory.as" />
 			<arg line="-include-sources ../srclib/dragonBones/objects" />
 			<arg line="-include-sources ../srclib/dragonBones/textures/ITextureAtlas.as" />
 			<arg line="-include-sources ../srclib/dragonBones/textures/NativeTextureAtlas.as" />
+			<arg line="-include-sources ../srclib/dragonBones/textures/TextureData.as" />
 			<arg line="-include-sources ../srclib/dragonBones/utils" />
 			<arg line="-include-sources ../srclib/dragonBones/Armature.as" />
 			<arg line="-include-sources ../srclib/dragonBones/Bone.as" />

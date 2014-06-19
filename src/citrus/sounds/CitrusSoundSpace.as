@@ -238,6 +238,10 @@ package citrus.sounds
 			return "topLeft";
 		}
 		
+		public function get art():ICitrusArt {
+			return null;
+		}
+		
 		public function handleArtReady(citrusArt:ICitrusArt):void {
 		}
 		

@@ -1,5 +1,5 @@
-package dragonBones.events
-{
+package dragonBones.events {
+
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	

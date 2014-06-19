@@ -1,5 +1,5 @@
-package dragonBones.objects
-{
+package dragonBones.objects {
+
 	import flash.geom.Point;
 	
 	public final class TransformTimeline extends Timeline
