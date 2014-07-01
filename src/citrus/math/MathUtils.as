@@ -280,6 +280,19 @@ package citrus.math
 			return Math.floor(Math.random() * (1 + max - min)) + min;
 		}
 		
+		public static function getRandomItemFromArray(arr:Array):*
+		{
+			return arr[randomInt(0, arr.length-1)];
+		}
+		
+		public static function getRandomPastel(minLum:uint = 0x48):uint
+		{
+			var r:uint = MathUtils.randomInt(minLum, 0xFF);
+			var g:uint = MathUtils.randomInt(minLum, 0xFF);
+			var b:uint = MathUtils.randomInt(minLum, 0xFF);
+			return r << 16  | g << 8 | b;
+		}
+		
 		public static function abs(num:Number):Number
 		{
 			return num < 0 ? -num : num;
