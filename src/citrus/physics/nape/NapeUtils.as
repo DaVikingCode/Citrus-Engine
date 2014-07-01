@@ -1,6 +1,10 @@
 package citrus.physics.nape {
 
 	import citrus.objects.NapePhysicsObject;
+	import nape.dynamics.Arbiter;
+	import nape.phys.Body;
+	import nape.phys.Interactor;
+	import nape.shape.Shape;
 
 	import nape.callbacks.InteractionCallback;
 
@@ -29,6 +33,44 @@ package citrus.physics.nape {
 		 */
 		static public function CollisionGetSelf(self:NapePhysicsObject, callback:InteractionCallback):NapePhysicsObject {
 			return self == callback.int1.userData.myData ? callback.int1.userData.myData : callback.int2.userData.myData;
+		}
+		
+		/**
+		 * get the Interactor object in which self is NOT involved.
+		 * @param	self
+		 * @param	callback
+		 * @return
+		 */
+		static public function getOtherInteractor(self:NapePhysicsObject, callback:InteractionCallback):Interactor {
+			return self == callback.int1.userData.myData ? callback.int2 : callback.int1;
+		}
+		
+		/**
+		 * get the Interactor object in which self is involved.
+		 * @param	self
+		 * @param	callback
+		 * @return
+		 */
+		static public function getSelfInteractor(self:NapePhysicsObject, callback:InteractionCallback):Interactor {
+			return self == callback.int1.userData.myData ? callback.int1 : callback.int2;
+		}
+		
+		/**
+		 * Return the shape involved in the a arbiter that is part of body.
+		 * return null if body is not involved in the arbiter or if neither shape belongs to the body.
+		 * @param	body
+		 * @param	a
+		 * @return
+		 */
+		static public function getShapeFromArbiter(body:Body, a:Arbiter):Shape
+		{
+			if (a.body1 == body || a.body2 == body)
+				if (a.shape1 && a.shape1.body == body)
+					return a.shape1;
+				else if (a.shape2 && a.shape2.body == body)
+					return a.shape2;
+					
+			return null;
 		}
 		
 		/**

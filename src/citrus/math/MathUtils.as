@@ -291,15 +291,20 @@ package citrus.math
 		}
 		
 		/**
-		 * returns a random color. set minLum to 0x48 to get some pretty pastels!
+		 * returns a random color in given range.
+		 * 
 		 * @param	minLum minimum for the r, g and b values.
+		 * @param	maxLum maximum for the r, g and b values.
 		 * @return
 		 */
-		public static function getRandomColor(minLum:uint = 0):uint
+		public static function getRandomColor(minLum:uint = 0, maxLum:uint = 0xFF):uint
 		{
-			var r:uint = MathUtils.randomInt(minLum, 0xFF);
-			var g:uint = MathUtils.randomInt(minLum, 0xFF);
-			var b:uint = MathUtils.randomInt(minLum, 0xFF);
+			maxLum = maxLum > 0xFF ? 0xFF : maxLum;
+			minLum = minLum > 0xFF ? 0xFF : minLum;
+			
+			var r:uint = MathUtils.randomInt(minLum, maxLum);
+			var g:uint = MathUtils.randomInt(minLum, maxLum);
+			var b:uint = MathUtils.randomInt(minLum, maxLum);
 			return r << 16  | g << 8 | b;
 		}
 		
