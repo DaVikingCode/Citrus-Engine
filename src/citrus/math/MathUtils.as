@@ -280,12 +280,22 @@ package citrus.math
 			return Math.floor(Math.random() * (1 + max - min)) + min;
 		}
 		
-		public static function getRandomItemFromArray(arr:Array):*
+		/**
+		 * get a random item from an array with an almost uniform distribution of probabilities using randomInt.
+		 * @param	arr
+		 * @return 
+		 */
+		public static function getArrayRandomItem(arr:Array):*
 		{
 			return arr[randomInt(0, arr.length-1)];
 		}
 		
-		public static function getRandomPastel(minLum:uint = 0x48):uint
+		/**
+		 * returns a random color. set minLum to 0x48 to get some pretty pastels!
+		 * @param	minLum minimum for the r, g and b values.
+		 * @return
+		 */
+		public static function getRandomColor(minLum:uint = 0):uint
 		{
 			var r:uint = MathUtils.randomInt(minLum, 0xFF);
 			var g:uint = MathUtils.randomInt(minLum, 0xFF);
