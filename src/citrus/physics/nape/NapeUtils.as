@@ -1,6 +1,7 @@
 package citrus.physics.nape {
 
 	import citrus.objects.NapePhysicsObject;
+	import nape.callbacks.PreCallback;
 	import nape.dynamics.Arbiter;
 	import nape.phys.Body;
 	import nape.phys.Interactor;
@@ -32,6 +33,26 @@ package citrus.physics.nape {
 		 * @return the collided.
 		 */
 		static public function CollisionGetSelf(self:NapePhysicsObject, callback:InteractionCallback):NapePhysicsObject {
+			return self == callback.int1.userData.myData ? callback.int1.userData.myData : callback.int2.userData.myData;
+		}
+		
+		/**
+		 * Similar to CollisionGetOther but for PreCallbacks.
+		 * @param self in CE's code, we give this. In your code it will be your hero, a sensor, ...
+		 * @param callback the PreCallback.
+		 * @return the collider.
+		 */
+		static public function PreCollisionGetOther(self:NapePhysicsObject, callback:PreCallback):NapePhysicsObject {
+			return self == callback.int1.userData.myData ? callback.int2.userData.myData : callback.int1.userData.myData;
+		}
+		
+		/**
+		 * Similar to CollisionGetSelf but for PreCallbacks.
+		 * @param self in CE's code, we give this. In your code it will be your hero, a sensor, ...
+		 * @param callback the PreCallback.
+		 * @return the collided.
+		 */
+		static public function PreCollisionGetSelf(self:NapePhysicsObject, callback:PreCallback):NapePhysicsObject {
 			return self == callback.int1.userData.myData ? callback.int1.userData.myData : callback.int2.userData.myData;
 		}
 		
