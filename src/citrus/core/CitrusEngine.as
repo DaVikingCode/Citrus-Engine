@@ -132,6 +132,7 @@ package citrus.core {
 		public function destroy():void {
 			
 			onPlayingChange.removeAll();
+			onStageResize.removeAll();
 			
 			stage.removeEventListener(Event.ACTIVATE, handleStageActivated);
 			stage.removeEventListener(Event.DEACTIVATE, handleStageDeactivated);
@@ -303,7 +304,7 @@ package citrus.core {
 		 * it can be overriden to update other values that depend on the values of _screenWidth/_screenHeight.
 		 */
 		protected function resetScreenSize():void
-		{	
+		{
 			_screenWidth = stage.stageWidth;
 			_screenHeight = stage.stageHeight;
 		}

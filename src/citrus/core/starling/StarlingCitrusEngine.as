@@ -59,6 +59,7 @@ package citrus.core.starling {
 			if (_state) {
 
 				if (_starling) {
+					_starling.stage.removeEventListener(starling.events.Event.RESIZE, handleStarlingStageResize);
 					_starling.stage.removeChild(_state as StarlingState);
 					_starling.root.dispose();
 					_starling.dispose();
@@ -95,7 +96,13 @@ package citrus.core.starling {
 			_starling = new Starling(RootClass, stage, null, stage3D, "auto", _context3DProfiles);
 			_starling.antiAliasing = antiAliasing;
 			_starling.showStats = debugMode;
-			_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);			
+			_starling.addEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
+			_starling.stage.addEventListener(starling.events.Event.RESIZE, handleStarlingStageResize);
+		}
+
+		protected function handleStarlingStageResize(evt:starling.events.Event):void {
+			
+			resetScreenSize();
 		}
 		
 		/**
@@ -115,6 +122,7 @@ package citrus.core.starling {
 			for each (f in arr)
 				if (!closest || Math.abs(f - scaleF) < Math.abs(closest - scaleF))
 					closest = f;
+			
 			return closest;
 		}
 		
