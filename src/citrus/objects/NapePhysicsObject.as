@@ -119,10 +119,10 @@ package citrus.objects {
 		 */
 		protected function createBody():void {
 			
-			_body = new Body(_bodyType, new Vec2(_x, _y));
+			_body = new Body(_bodyType, Vec2.weak(_x, _y));
 			_body.userData.myData = this;
 			
-			_body.rotate(new Vec2(_x, _y), _rotation);
+			_body.rotate(Vec2.weak(_x, _y), _rotation);
 		}
 		
 		/**
@@ -146,7 +146,7 @@ package citrus.objects {
 				var verts:Vec2List = new Vec2List();
 
 				for each (var point:Object in points)
-					verts.push(new Vec2(point.x as Number, point.y as Number));
+					verts.push(Vec2.weak(point.x as Number, point.y as Number));
 
 				var polygon:Polygon = new Polygon(verts, _material);
 				var validation:ValidationResult = polygon.validity();
