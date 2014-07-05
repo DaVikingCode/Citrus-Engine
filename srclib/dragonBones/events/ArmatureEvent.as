@@ -1,4 +1,5 @@
 package dragonBones.events {
+
 	import flash.events.Event;
 	/**
 	* Copyright 2012-2013. DragonBones. All Rights Reserved.

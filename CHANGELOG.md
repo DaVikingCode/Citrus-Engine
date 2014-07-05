@@ -1,7 +1,21 @@
+V3.1.10, Work In Progress
+-------------------------
+- Starling updated on 1.5.1
+- DragonBones updated on 3.0
+- Nape updated on 2.0.16
+- Feathers updated 1.3.0
+- Set up SoundMixer.audioPlaybackMode to "ambient" (on iOS if the physical button is off, mute the sound).
+- setUpStarling method has a stage3D argument, useful for shared context.
+- Citrus has its own pausable starling juggler, AnimationSequences will be attached to it by default. When CE is paused, starling keeps running but anything attached to the citrus juggler will be paused as expected.
+- CitrusSoundGroup : you can stop all sounds from a group with CitrusSoundGroup.stopAllSounds
+- Camera : fixed intersects/containsRect when using rotation/zoom.
+- All CitrusObjects with a view now have a reference to their actual art object.
+- setUpStarling : you can force starling to run on a specific stage3D with the stage3D argument of setupStarling (used in a shared context scenario)
+
 V3.1.9, 03 05 2014
 ------------------
 - Feathers updated on 1.2.0
-- DrabonBones updated on 2.4.1
+- DragonBones updated on 2.4.1
 - CitrusEngine.handlePlayingChange can be overriden to modify the default behavior of CE (input resetting as well as audio pause/resume).
 - LevelManager enables SWF caching, very useful on iOS. Set the new property enableSwfCaching to true.
 - GamePadMap.devPlatform : force a platform value to use on setups (to simulate other platforms such as WIN/MAC/LNX/AND)

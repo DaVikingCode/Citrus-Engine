@@ -23,6 +23,9 @@ package citrus.view.starlingview {
 			super(viewRoot);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function initialize():void {
 			super.initialize();// setup camera lens normally
 			
@@ -33,6 +36,9 @@ package citrus.view.starlingview {
 			_m = (_viewRoot as starling.display.Sprite).transformationMatrix;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function onResize(w:Number, h:Number):void
 		{
 			cameraLensWidth = (_ce as StarlingCitrusEngine).starling.stage.stageWidth;
@@ -51,6 +57,9 @@ package citrus.view.starlingview {
 				throw(new Error(this+" is not allowed to zoom. please set allowZoom to true."));
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function zoomFit(width:Number,height:Number,storeInBaseZoom:Boolean = false):Number
 		{
 			if (_allowZoom)
@@ -111,11 +120,17 @@ package citrus.view.starlingview {
 				throw(new Error(this+" is not allowed to zoom. please set allowZoom to true."));
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function getZoom():Number
 		{
 			return _zoom;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function getRotation():Number
 		{
 			return _rotation;
@@ -155,6 +170,9 @@ package citrus.view.starlingview {
 			 
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function update():void
 		{
 			super.update();
@@ -468,16 +486,25 @@ package citrus.view.starlingview {
 			return (_viewRoot as starling.display.Sprite).localToGlobal(p);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function get allowZoom():Boolean
 		{
 			return _allowZoom;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function get allowRotation():Boolean
 		{
 			return _allowRotation;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function set allowZoom(value:Boolean):void
 		{
 			if (!value)
@@ -488,6 +515,9 @@ package citrus.view.starlingview {
 			_allowZoom = value;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function set allowRotation(value:Boolean):void
 		{
 			if (!value)

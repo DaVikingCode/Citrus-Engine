@@ -1,10 +1,10 @@
 package dragonBones.utils {
+
 	import dragonBones.animation.TimelineState;
 	import dragonBones.objects.AnimationData;
 	import dragonBones.objects.ArmatureData;
 	import dragonBones.objects.BoneData;
 	import dragonBones.objects.DBTransform;
-	import dragonBones.objects.DisplayData;
 	import dragonBones.objects.Frame;
 	import dragonBones.objects.SkinData;
 	import dragonBones.objects.SlotData;
@@ -23,14 +23,13 @@ package dragonBones.utils {
 		{
 			var boneDataList:Vector.<BoneData> = armatureData.boneDataList;
 			var i:int = boneDataList.length;
-			var boneData:BoneData;
-			var parentBoneData:BoneData;
+			
 			while(i --)
 			{
-				boneData = boneDataList[i];
+				var boneData:BoneData = boneDataList[i];
 				if(boneData.parent)
 				{
-					parentBoneData = armatureData.getBoneData(boneData.parent);
+					var parentBoneData:BoneData = armatureData.getBoneData(boneData.parent);
 					if(parentBoneData)
 					{
 						boneData.transform.copy(boneData.global);
@@ -57,28 +56,16 @@ package dragonBones.utils {
 			var slotDataList:Vector.<SlotData> = skinData.slotDataList;
 			var i:int = boneDataList.length;
 			
-			var boneData:BoneData;
-			var timeline:TransformTimeline;
-			var slotData:SlotData;
-			var displayData:DisplayData
-			var parentTimeline:TransformTimeline;
-			var frameList:Vector.<Frame>;
-			var originTransform:DBTransform;
-			var originPivot:Point;
-			var prevFrame:TransformFrame;
-			var frameListLength:uint;
-			var frame:TransformFrame;
-			
 			while(i --)
 			{
-				boneData = boneDataList[i];
-				timeline = animationData.getTimeline(boneData.name);
+				var boneData:BoneData = boneDataList[i];
+				var timeline:TransformTimeline = animationData.getTimeline(boneData.name);
 				if(!timeline)
 				{
 					continue;
 				}
 				
-				slotData = null;
+				var slotData:SlotData = null;
 				for each(slotData in slotDataList)
 				{
 					if(slotData.parent == boneData.name)
@@ -87,17 +74,17 @@ package dragonBones.utils {
 					}
 				}
 				
-				parentTimeline = boneData.parent?animationData.getTimeline(boneData.parent):null;
+				var parentTimeline:TransformTimeline = boneData.parent?animationData.getTimeline(boneData.parent):null;
 				
-				frameList = timeline.frameList;
+				var frameList:Vector.<Frame> = timeline.frameList;
 				
-				originTransform = null;
-				originPivot = null;
-				prevFrame = null;
-				frameListLength = frameList.length;
+				var originTransform:DBTransform = null;
+				var originPivot:Point = null;
+				var prevFrame:TransformFrame = null;
+				var frameListLength:uint = frameList.length;
 				for(var j:int = 0;j < frameListLength;j ++)
 				{
-					frame = frameList[j] as TransformFrame;
+					var frame:TransformFrame = frameList[j] as TransformFrame;
 					if(parentTimeline)
 					{
 						//tweenValues to transform.
@@ -208,29 +195,25 @@ package dragonBones.utils {
 			var frameList:Vector.<Frame> = timeline.frameList;
 			var i:int = frameList.length;
 			
-			var currentFrame:TransformFrame;
-			var tweenEasing:Number;
-			var progress:Number;
-			var nextFrame:TransformFrame;
 			while(i --)
 			{
-				currentFrame = frameList[i] as TransformFrame;
+				var currentFrame:TransformFrame = frameList[i] as TransformFrame;
 				if(currentFrame.position <= position && currentFrame.position + currentFrame.duration > position)
 				{
-					tweenEasing = currentFrame.tweenEasing;
-					if(i == frameList.length - 1 || isNaN(tweenEasing) || position == currentFrame.position)
+					var tweenEasing:Number = currentFrame.tweenEasing;
+					if(i == frameList.length - 1 || tweenEasing == -2 || position == currentFrame.position)
 					{
 						retult.copy(currentFrame.global);
 					}
 					else
 					{
-						progress = (position - currentFrame.position) / currentFrame.duration;
-						if(tweenEasing)
+						var progress:Number = (position - currentFrame.position) / currentFrame.duration;
+						if(tweenEasing > 0)
 						{
 							progress = TimelineState.getEaseValue(progress, tweenEasing);
 						}
 						
-						nextFrame = frameList[i + 1] as TransformFrame;
+						var nextFrame:TransformFrame = frameList[i + 1] as TransformFrame;
 						
 						retult.x = currentFrame.global.x +  (nextFrame.global.x - currentFrame.global.x) * progress;
 						retult.y = currentFrame.global.y +  (nextFrame.global.y - currentFrame.global.y) * progress;
@@ -249,15 +232,13 @@ package dragonBones.utils {
 			var boneDataList:Vector.<BoneData> =armatureData.boneDataList;
 			var i:int = boneDataList.length;
 			
-			var boneData:BoneData;
-			var boneName:String;
 			while(i --)
 			{
-				boneData = boneDataList[i];
-				boneName = boneData.name;
+				var boneData:BoneData = boneDataList[i];
+				var boneName:String = boneData.name;
 				if(!animationData.getTimeline(boneName))
 				{
-					animationData.addTimeline(TransformTimeline.HIDE_TIMELINE, boneName);
+					animationData.hideTimelineNameMap[boneName] = true;
 				}
 			}
 		}

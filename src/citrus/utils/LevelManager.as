@@ -124,9 +124,6 @@ package citrus.utils {
 		 */
 		public function gotoLevel(index:uint = 0):void {
 
-			if (currentLevel != null)
-				currentLevel.lvlEnded.remove(_onLevelEnded);
-
 			if (index != 0)
 				_currentIndex = index - 1;
 
@@ -134,7 +131,6 @@ package citrus.utils {
 			if (levels[_currentIndex][0] == undefined) {
 
 				currentLevel = _ALevel(new levels[_currentIndex]);
-				currentLevel.lvlEnded.add(_onLevelEnded);
 
 				onLevelChanged.dispatch(currentLevel);
 				
@@ -142,7 +138,6 @@ package citrus.utils {
 			} else if (levels[_currentIndex][1] is Class || levels[_currentIndex][1] is XML) {
 				
 				currentLevel = (levels[_currentIndex][1] is Class) ? _ALevel(new levels[_currentIndex][0](new levels[_currentIndex][1]())) : _ALevel(new levels[_currentIndex][0](levels[_currentIndex][1]));
-				currentLevel.lvlEnded.add(_onLevelEnded);
 				
 				onLevelChanged.dispatch(currentLevel);				
 				
@@ -184,7 +179,6 @@ package citrus.utils {
 				currentLevel = _ALevel(new levels[_currentIndex][0](evt.target.loader.content));
 			}
 			
-			currentLevel.lvlEnded.add(_onLevelEnded);
 			onLevelChanged.dispatch(currentLevel);
 			
 			if (evt.target is Loader) {
@@ -204,12 +198,7 @@ package citrus.utils {
 		 */
 		private function createLevelFromCache():void {
 			currentLevel = _ALevel(new levels[_currentIndex][0](_levelData[_currentIndex]));
-			currentLevel.lvlEnded.add(_onLevelEnded);
 			onLevelChanged.dispatch(currentLevel);
-		}
-		
-		private function _onLevelEnded():void {
-
 		}
 		
 		private function _handleLoaderError(evt:IOErrorEvent):void {

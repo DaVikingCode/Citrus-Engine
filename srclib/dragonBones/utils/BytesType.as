@@ -1,4 +1,5 @@
 package dragonBones.utils {
+
 	import flash.utils.ByteArray;
 	
 	/** @private */

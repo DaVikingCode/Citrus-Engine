@@ -130,6 +130,12 @@ package citrus.view
 		function get view():*;
 		
 		/**
+		 * The object's associated art (Away3DArt, SpriteArt or StarlingArt)
+		 * will be set only when the art is ready (loaded/created.) and after being added to the state.
+		 */
+		function get art():ICitrusArt;
+		
+		/**
 		 * A string representing the current animation state that your object is in, such as "run", "jump", "attack", etc.
 		 * The SpriteView checks this property every frame and, if your graphic is a SWF, attempts to "gotoAndPlay()" to a
 		 * label with the name of the <code>animation</code> property.

@@ -26,6 +26,7 @@ package citrus.system.components {
 		protected var _visible:Boolean = true;
 		protected var _touchable:Boolean = false;
 		protected var _view:* = 0xFF0000;
+		protected var _art:ICitrusArt;
 		
 		private var _group:uint = 0;
 		private var _offsetX:Number = 0;
@@ -65,6 +66,7 @@ package citrus.system.components {
 		override public function destroy():void {
 			
 			onAnimationChange.removeAll();
+			_art = null;
 			
 			super.destroy();
 		}
@@ -171,6 +173,14 @@ package citrus.system.components {
 		public function set view(value:*):void
 		{
 			_view = value;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get art():ICitrusArt
+		{
+			return _art;
 		}
 		
 		public function get animation():String

@@ -1,4 +1,5 @@
 package dragonBones.utils {
+
 	import dragonBones.objects.ArmatureData;
 	import dragonBones.objects.SkeletonData;
 
@@ -189,8 +190,8 @@ function parseAnimationData(animationXML:XML, armatureData:ArmatureData, frameRa
 	var animationData:AnimationData = new AnimationData();
 	animationData.name = animationXML.@[A_NAME];
 	animationData.frameRate = frameRate;
-	animationData.loop = uint(animationXML.@[A_LOOP]) == 1?0:1;
-	animationData.fadeInTime = uint(animationXML.@[A_FADE_IN_TIME]) / frameRate;
+	animationData["loop"] = uint(animationXML.@[A_LOOP]) == 1?0:1;
+	animationData["fadeInTime"] = uint(animationXML.@[A_FADE_IN_TIME]) / frameRate;
 	animationData.duration = uint(animationXML.@[A_DURATION]) / frameRate;
 	var durationTween:Number = Number(animationXML.@[A_DURATION_TWEEN][0]);
 	if(isNaN(durationTween))
@@ -214,7 +215,7 @@ function parseAnimationData(animationXML:XML, armatureData:ArmatureData, frameRa
 	{
 		timeline = parseTransformTimeline(timelineXML, animationData.duration, frameRate);
 		timelineName = timelineXML.@[A_NAME];
-		animationData.addTimeline(timeline, timelineName);
+		animationData.addTimeline(timeline);
 		if(skinData)
 		{
 			slotData = skinData.getSlotData(timelineName);

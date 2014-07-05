@@ -1,4 +1,5 @@
 package dragonBones.objects {
+
 	import flash.utils.ByteArray;
 	/**
 	* Copyright 2012-2013. DragonBones. All Rights Reserved.
@@ -29,9 +30,9 @@ package dragonBones.objects {
 		
 		/**
 		 * Creates a new DecompressedData instance.
-		 * @param	xml A xml for DragonBones data.
-		 * @param	textureAtlasXML A xml for atlas data.
-		 * @param	textureBytes The non parsed data map.
+		 * @param xml A xml for DragonBones data.
+		 * @param textureAtlasXML A xml for atlas data.
+		 * @param textureBytes The non parsed data map.
 		 */
 		public function DecompressedData(dragonBonesData:Object, textureAtlasData:Object, textureBytes:ByteArray)
 		{

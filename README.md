@@ -15,6 +15,9 @@ It offers many options, you may use :
 
 Games References
 ----------------
+[![Silly Family](http://aymericlamboley.fr/blog/wp-content/uploads/2014/04/silly-family.png)](http://rdrct.it/sillyfamily)
+[![Paint Over](http://aymericlamboley.fr/blog/wp-content/uploads/2014/04/paintover.png)](http://www.newgrounds.com/portal/view/637713)
+[![Revenge of Robots](http://aymericlamboley.fr/blog/wp-content/uploads/2014/04/revengeofrobots.png)](https://itunes.apple.com/us/app/revenge-of-robots/id855173133)
 [![Tap The Pixel](http://aymericlamboley.fr/blog/wp-content/uploads/2014/03/tappixel.png)](https://itunes.apple.com/en/app/tap-the-pixel/id688562779?mt=8)
 [![Once Upon a Light](http://aymericlamboley.fr/blog/wp-content/uploads/2013/12/once-upon.png)](http://www.onceuponalight.com)
 [![Battlewars](http://aymericlamboley.fr/blog/wp-content/uploads/2013/11/Battlewars.png)](http://www.newgrounds.com/portal/view/627927)

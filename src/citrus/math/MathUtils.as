@@ -280,6 +280,34 @@ package citrus.math
 			return Math.floor(Math.random() * (1 + max - min)) + min;
 		}
 		
+		/**
+		 * get a random item from an array with an almost uniform distribution of probabilities using randomInt.
+		 * @param	arr
+		 * @return 
+		 */
+		public static function getArrayRandomItem(arr:Array):*
+		{
+			return arr[randomInt(0, arr.length-1)];
+		}
+		
+		/**
+		 * returns a random color in given range.
+		 * 
+		 * @param	minLum minimum for the r, g and b values.
+		 * @param	maxLum maximum for the r, g and b values.
+		 * @return
+		 */
+		public static function getRandomColor(minLum:uint = 0, maxLum:uint = 0xFF):uint
+		{
+			maxLum = maxLum > 0xFF ? 0xFF : maxLum;
+			minLum = minLum > 0xFF ? 0xFF : minLum;
+			
+			var r:uint = MathUtils.randomInt(minLum, maxLum);
+			var g:uint = MathUtils.randomInt(minLum, maxLum);
+			var b:uint = MathUtils.randomInt(minLum, maxLum);
+			return r << 16  | g << 8 | b;
+		}
+		
 		public static function abs(num:Number):Number
 		{
 			return num < 0 ? -num : num;

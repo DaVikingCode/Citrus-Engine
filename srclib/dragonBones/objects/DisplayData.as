@@ -1,4 +1,5 @@
 package dragonBones.objects {
+
 	import flash.geom.Point;
 	
 	/** @private */

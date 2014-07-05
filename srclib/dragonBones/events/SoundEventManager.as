@@ -1,11 +1,12 @@
 package dragonBones.events {
+
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	
 	[Event(name="sound",type="dragonBones.events.SoundEvent")]
 	
 	/**
-	 * @private
+	 * 全局声音管理，通过监听SoundEventManager的SoundEvent事件得到动画的声音触发时间和声音的名字
 	 */
 	public final class SoundEventManager extends EventDispatcher
 	{

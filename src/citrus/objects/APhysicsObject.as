@@ -11,6 +11,7 @@ package citrus.objects {
 	public class APhysicsObject extends CitrusObject {
 		
 		protected var _view:* = MovieClip;
+		protected var _art:ICitrusArt;
 		protected var _inverted:Boolean = false;
 		protected var _parallaxX:Number = 1;
 		protected var _parallaxY:Number = 1;
@@ -43,6 +44,7 @@ package citrus.objects {
 		 * @param	citrusArt the art
 		 */
 		public function handleArtReady(citrusArt:ICitrusArt):void {	
+			_art = citrusArt;
 		}
 		
 		/**
@@ -74,6 +76,7 @@ package citrus.objects {
 		 * Destroy your physics objects!
 		 */
 		override public function destroy():void {
+			_art = null;
 			super.destroy();
 		}
 		
@@ -96,6 +99,14 @@ package citrus.objects {
 		public function set view(value:*):void
 		{
 			_view = value;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get art():ICitrusArt
+		{
+			return _art;
 		}
 		
 		/**

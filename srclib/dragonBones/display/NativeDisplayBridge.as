@@ -1,4 +1,5 @@
 package dragonBones.display {
+
 	import dragonBones.objects.DBTransform;
 
 	import flash.display.DisplayObject;

@@ -1,4 +1,5 @@
 package dragonBones.events {
+
 	import dragonBones.Armature;
 	import dragonBones.Bone;
 	import dragonBones.animation.AnimationState;
@@ -56,8 +57,8 @@ package dragonBones.events {
 		
 		/**
 		 * Creates a new FrameEvent instance.
-		 * @param	type
-		 * @param	cancelable
+		 * @param type
+		 * @param cancelable
 		 */
 		public function FrameEvent(type:String, cancelable:Boolean = false)
 		{

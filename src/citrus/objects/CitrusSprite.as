@@ -39,6 +39,7 @@ package citrus.objects {
 		protected var _visible:Boolean = true;
 		protected var _touchable:Boolean = false;
 		protected var _view:* = SpriteDebugArt;
+		protected var _art:ICitrusArt;
 		protected var _inverted:Boolean = false;
 		protected var _animation:String = "";
 		protected var _offsetX:Number = 0;
@@ -52,16 +53,14 @@ package citrus.objects {
 		}
 		
 		/**
-		 * called when the art is created (and loaded if loading is required)
-		 * @param	citrusArt the art
+		 * @inheritDoc
 		 */
 		public function handleArtReady(citrusArt:ICitrusArt):void {	
+			_art = citrusArt;
 		}
 		
 		/**
-		 * called when the art changes. the argument is the art with its previous content
-		 * so that you can remove event listeners from it for example.
-		 * @param	citrusArt the art
+		 * @inheritDoc
 		 */
 		public function handleArtChanged(oldArt:ICitrusArt):void {	
 		}
@@ -72,6 +71,7 @@ package citrus.objects {
 			onPersist.removeAll();
 			onSeparate.removeAll();
 			collisions = null;
+			_art = null;
 			
 			super.destroy();
 		}
@@ -219,6 +219,14 @@ package citrus.objects {
 		public function set view(value:*):void
 		{
 			_view = value;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get art():ICitrusArt
+		{
+			return _art;
 		}
 		
 		/**

@@ -21,6 +21,12 @@
 		public static const TEXTURE_ATLAS:String = "TextureAtlas";
 		public static const SUB_TEXTURE:String = "SubTexture";
 		
+		public static const A_ROTATED:String = "rotated";
+		public static const A_FRAME_X:String = "frameX";
+		public static const A_FRAME_Y:String = "frameY";
+		public static const A_FRAME_WIDTH:String = "frameWidth";
+		public static const A_FRAME_HEIGHT:String = "frameHeight";
+		
 		public static const A_VERSION:String = "version";
 		public static const A_IMAGE_PATH:String = "imagePath";
 		public static const A_FRAME_RATE:String = "frameRate";
@@ -37,15 +43,17 @@
 		public static const A_SOUND:String = "sound";
 		public static const A_ACTION:String = "action";
 		public static const A_HIDE:String = "hide";
+		public static const A_AUTO_TWEEN:String ="autoTween";
 		public static const A_TWEEN_EASING:String = "tweenEasing";
 		public static const A_TWEEN_ROTATE:String = "tweenRotate";
+		public static const A_TWEEN_SCALE:String = "tweenScale";
 		public static const A_DISPLAY_INDEX:String = "displayIndex";
 		public static const A_Z_ORDER:String = "z";
         public static const A_BLENDMODE:String = "blendMode";
 		public static const A_WIDTH:String = "width";
 		public static const A_HEIGHT:String = "height";
-		public static const A_SCALE_MODE:String = "scaleMode";
-		public static const A_FIXED_ROTATION:String = "fixedRotation";
+		public static const A_INHERIT_SCALE:String = "inheritScale";
+		public static const A_INHERIT_ROTATION:String = "inheritRotation";
 		public static const A_X:String = "x";
 		public static const A_Y:String = "y";
 		public static const A_SKEW_X:String = "skX";
@@ -62,6 +70,9 @@
 		public static const A_RED_MULTIPLIER:String = "rM";
 		public static const A_GREEN_MULTIPLIER:String = "gM";
 		public static const A_BLUE_MULTIPLIER:String = "bM";
+		
+		public static const A_SCALE_MODE:String = "scaleMode";
+		public static const A_FIXED_ROTATION:String = "fixedRotation";
 	}
 
 }

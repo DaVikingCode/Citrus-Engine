@@ -1,6 +1,6 @@
 package dragonBones.objects {
+
 	import dragonBones.utils.BytesType;
-	import dragonBones.utils.checkBytesTailisXML;
 
 	import flash.utils.ByteArray;
 	
@@ -8,9 +8,9 @@ package dragonBones.objects {
 	{
 		/**
 		 * Compress all data into a ByteArray for serialization.
-		 * @param	The DragonBones data.
-		 * @param	The TextureAtlas data.
-		 * @param	The ByteArray representing the map.
+		 * @param The DragonBones data.
+		 * @param The TextureAtlas data.
+		 * @param The ByteArray representing the map.
 		 * @return ByteArray. A DragonBones compatible ByteArray.
 		 */
 		public static function compressData(dragonBonesData:Object, textureAtlasData:Object, textureDataBytes:ByteArray):ByteArray
@@ -39,7 +39,7 @@ package dragonBones.objects {
 		
 		/**
 		 * Decompress a compatible DragonBones data.
-		 * @param	compressedByteArray The ByteArray to decompress.
+		 * @param compressedByteArray The ByteArray to decompress.
 		 * @return A DecompressedData instance.
 		 */
 		public static function decompressData(bytes:ByteArray):DecompressedData
@@ -47,10 +47,12 @@ package dragonBones.objects {
 			var dataType:String = BytesType.getType(bytes);
 			switch (dataType)
 			{
-				case BytesType.SWF: 
-				case BytesType.PNG: 
-				case BytesType.JPG: 
-				case BytesType.ATF: 
+				case BytesType.SWF:
+				case BytesType.PNG:
+				case BytesType.JPG:
+				case BytesType.ATF:
+					var dragonBonesData:Object;
+					var textureAtlasData:Object;
 					try
 					{
 						var bytesCopy:ByteArray = new ByteArray();
@@ -66,15 +68,7 @@ package dragonBones.objects {
 						dataBytes.uncompress();
 						bytes.length = position;
 						
-						var dragonBonesData:Object;
-						if(checkBytesTailisXML(dataBytes))
-						{
-							dragonBonesData = XML(dataBytes.readUTFBytes(dataBytes.length));
-						}
-						else
-						{
-							dragonBonesData = dataBytes.readObject();
-						}
+						dragonBonesData = dataBytes.readObject();
 						
 						bytes.position = bytes.length - 4;
 						strSize = bytes.readInt();
@@ -85,15 +79,7 @@ package dragonBones.objects {
 						dataBytes.uncompress();
 						bytes.length = position;
 						
-						var textureAtlasData:Object;
-						if(checkBytesTailisXML(dataBytes))
-						{
-							textureAtlasData = XML(dataBytes.readUTFBytes(dataBytes.length));
-						}
-						else
-						{
-							textureAtlasData = dataBytes.readObject();
-						}
+						textureAtlasData = dataBytes.readObject();
 					}
 					catch (e:Error)
 					{
@@ -103,8 +89,10 @@ package dragonBones.objects {
 					var decompressedData:DecompressedData = new DecompressedData(dragonBonesData, textureAtlasData, bytes);
 					decompressedData.textureBytesDataType = dataType;
 					return decompressedData;
+					
 				case BytesType.ZIP:
 					throw new Error("Can not decompress zip!");
+					
 				default: 
 					throw new Error("Nonsupport data!");
 			}

@@ -1,11 +1,9 @@
 package citrus.core {
 
-	import aze.motion.EazeTween;
 	import citrus.input.Input;
 	import citrus.sounds.SoundManager;
 	import citrus.utils.AGameData;
 	import citrus.utils.LevelManager;
-	import flash.geom.Matrix;
 
 	import org.osflash.signals.Signal;
 
@@ -15,6 +13,8 @@ package citrus.core {
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.FullScreenEvent;
+	import flash.geom.Matrix;
+	import flash.media.SoundMixer;
 	
 	/**
 	 * CitrusEngine is the top-most class in the library. When you start your project, you should make your
@@ -76,6 +76,8 @@ package citrus.core {
 		
 		private var _startTime:Number;
 		private var _gameTime:Number;
+		private var _nowTime:Number;
+		protected var _timeDelta:Number;
 		
 		private var _sound:SoundManager;
 		private var _console:Console;
@@ -96,6 +98,13 @@ package citrus.core {
 			onStageResize = new Signal(int, int);
 			
 			onPlayingChange.add(handlePlayingChange);
+			
+			// on iOS if the physical button is off, mute the sound
+			if ("audioPlaybackMode" in SoundMixer)
+				try { SoundMixer.audioPlaybackMode = "ambient"; }
+					catch(e:ArgumentError) {
+							trace("[CitrusEngine] could not set SoundMixer.audioPlaybackMode to ambient.");
+						}
 			
 			//Set up console
 			_console = new Console(9); //Opens with tab key by default
@@ -123,6 +132,7 @@ package citrus.core {
 		public function destroy():void {
 			
 			onPlayingChange.removeAll();
+			onStageResize.removeAll();
 			
 			stage.removeEventListener(Event.ACTIVATE, handleStageActivated);
 			stage.removeEventListener(Event.DEACTIVATE, handleStageDeactivated);
@@ -294,7 +304,7 @@ package citrus.core {
 		 * it can be overriden to update other values that depend on the values of _screenWidth/_screenHeight.
 		 */
 		protected function resetScreenSize():void
-		{	
+		{
 			_screenWidth = stage.stageWidth;
 			_screenHeight = stage.stageHeight;
 		}
@@ -355,13 +365,13 @@ package citrus.core {
 			//Update the state
 			if (_state && _playing)
 			{
-				var nowTime:Number = new Date().time;
-				var timeDelta:Number = (nowTime - _gameTime) * 0.001;
-				_gameTime = nowTime;
+				_nowTime = new Date().time;
+				_timeDelta = (_nowTime - _gameTime) * 0.001;
+				_gameTime = _nowTime;
 				
-				_state.update(timeDelta);
+				_state.update(_timeDelta);
 				if (_futureState)
-					_futureState.update(timeDelta);
+					_futureState.update(_timeDelta);
 			}
 			
 			_input.citrus_internal::update();

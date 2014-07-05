@@ -1,4 +1,5 @@
 package dragonBones.events {
+
 	import dragonBones.Armature;
 	import dragonBones.animation.AnimationState;
 
@@ -34,8 +35,8 @@ package dragonBones.events {
 		
 		/**
 		 * Creates a new SoundEvent instance.
-		 * @param	type
-		 * @param	cancelable
+		 * @param type
+		 * @param cancelable
 		 */
 		public function SoundEvent(type:String, cancelable:Boolean = false)
 		{

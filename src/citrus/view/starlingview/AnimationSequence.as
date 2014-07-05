@@ -3,7 +3,6 @@ package citrus.view.starlingview {
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingCitrusEngine;
 
-	import starling.core.Starling;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -28,6 +27,7 @@ package citrus.view.starlingview {
 		 */
 		public var onAnimationComplete:Signal;
 
+		private var _ce:StarlingCitrusEngine;
 		private var _textureAtlas:*;
 		private var _animations:Array;
 		private var _firstAnimation:String;
@@ -49,6 +49,8 @@ package citrus.view.starlingview {
 		public function AnimationSequence(textureAtlas:*, animations:Array, firstAnimation:String, animFps:Number = 30, firstAnimLoop:Boolean = false, smoothing:String = "bilinear") {
 
 			super();
+			
+			_ce = CitrusEngine.getInstance() as StarlingCitrusEngine;
 
 			onAnimationComplete = new Signal(String);
 
@@ -64,7 +66,7 @@ package citrus.view.starlingview {
 			addTextureAtlasWithAnimations(_textureAtlas, _animations);
 
 			addChild(_mcSequences[_firstAnimation]);
-			Starling.juggler.add(_mcSequences[_firstAnimation]);
+			_ce.juggler.add(_mcSequences[_firstAnimation]);
 			_mcSequences[_firstAnimation].loop = _firstAnimLoop;
 
 			_previousAnimation = _firstAnimation;
@@ -145,10 +147,10 @@ package citrus.view.starlingview {
 				throw new Error(this.parent.name + " doesn't have the " + animation + " animation set up in its animations' array");
 
 			removeChild(_mcSequences[_previousAnimation]);
-			Starling.juggler.remove(_mcSequences[_previousAnimation]);
+			_ce.juggler.remove(_mcSequences[_previousAnimation]);
 
 			addChild(_mcSequences[animation]);
-			Starling.juggler.add(_mcSequences[animation]);
+			_ce.juggler.add(_mcSequences[animation]);
 			_mcSequences[animation].loop = animLoop;
 			_mcSequences[animation].currentFrame = 0;
 
@@ -160,7 +162,7 @@ package citrus.view.starlingview {
 		 */
 		public function pauseAnimation(value:Boolean):void {
 
-			value ? Starling.juggler.add(_mcSequences[_previousAnimation]) : Starling.juggler.remove(_mcSequences[_previousAnimation]);
+			value ? _ce.juggler.add(_mcSequences[_previousAnimation]) : _ce.juggler.remove(_mcSequences[_previousAnimation]);
 		}
 
 		public function destroy():void {
@@ -168,7 +170,7 @@ package citrus.view.starlingview {
 			onAnimationComplete.removeAll();
 
 			removeChild(_mcSequences[_previousAnimation]);
-			Starling.juggler.remove(_mcSequences[_previousAnimation]);
+			_ce.juggler.remove(_mcSequences[_previousAnimation]);
 
 			removeAllAnimations();
 
@@ -233,10 +235,42 @@ package citrus.view.starlingview {
 		}
 
 		/**
-		 * Return a clone of the current AnimationSequence. Animations added via <code>addMovieClip</code> or <code>addTextureAtlasWithAnimations</code> aren't included.
+		 * Return a clone of the current AnimationSequence. Animations added via <code>addMovieClip</code> or <code>addTextureAtlasWithAnimations</code> aren't included. FPS settings added via <code>setAnimFps</code> aren't included too.
 		 */
 		public function clone():AnimationSequence {
 			return new AnimationSequence(_textureAtlas, _animations, _firstAnimation, _animFps, _firstAnimLoop, _smoothing);
+		}
+		
+		/**
+		 * Set the fps for animations individually.
+		 * @param animations an array with the object's animations as a String you would like to pick up.
+		 * @param animFps an array of numbers which determine the animation MC's fps.
+		 */
+		public function setAnimFps(animations:Array, animFps:Array):void
+		{	
+			var numberOfAnimations:uint = animations.length;
+			var numberOfFpsSettings:uint = animFps.length;
+			
+			// check the amount of the animation names and fps values
+			if (numberOfAnimations < 1 || numberOfFpsSettings < 1 || numberOfAnimations != numberOfFpsSettings)
+				throw new Error(this + " invalid input - animations: " + numberOfAnimations + ", fps settings: " + numberOfFpsSettings);
+			
+			for (var i:uint = 0; i < numberOfAnimations; i++)
+			{
+				if (typeof(animations[i]) != "string") {
+					throw new Error(this + " the animation-name " + animations[i] + " is set as " + typeof(animations[i]) + " instead of string");
+				}
+
+				if (typeof(animFps[i]) != "number") {
+					throw new Error(this + " the fps setting " + animFps[i] + " is set as " + typeof(animFps[i]) + " instead of number");
+				}
+
+				if (!(_mcSequences[animations[i]]))
+					throw new Error(this + " the " + animations[i] + " animation hasn't been set up");
+				
+				// set the fps for the animation
+				_mcSequences[animations[i]].fps = animFps[i];
+			}
 		}
 
 		private function _animationComplete(evt:Event):void {

@@ -1,6 +1,6 @@
 package citrus.input.controllers {
-
 	import citrus.input.InputController;
+
 	import org.osflash.signals.Signal;
 
 	import flash.events.KeyboardEvent;
@@ -17,16 +17,60 @@ package citrus.input.controllers {
 		protected var _keyActions:Dictionary;
 		
 		/**
-		 * dispatches keyCode and keyLocation on key up.
-		 * utility signal to not bother with event listeners and share the one the keyboard controller already has on stage
-		 * helps handling keys such as ENTER/BACK/HOME instantly rather than going through the action system.
+		 * on native keyboard key up, dispatches keyCode and keyLocation as well as a 'vars' object which you can use to prevent default or stop immediate propagation of the native event.
+		 * see the code below :
+		 * 
+		 * <code>
+		 * public function onSoftKeys(keyCode:int,keyLocation:int,vars:Object):void
+		 *	{
+		 *		switch (keyCode)
+		 *		{ 
+		 *			case Keyboard.BACK: 
+		 *				vars.prevent = true;
+		 *	 			trace("back button, default prevented.");
+		 *				break; 
+		 *			case Keyboard.MENU: 
+		 *				trace("menu");
+		 *				break; 
+		 *			case Keyboard.SEARCH: 
+		 *				trace("search");
+		 *				break; 
+		 * 			case Keyboard.ENTER:
+		 * 				vars.stop = true;
+		 *				trace("enter, will not go through the input system because propagation was stopped.");
+		 *				break; 
+		 *		}
+		 *	}
+		 * </code>
 		 */
 		public var onKeyUp:Signal;
 		
 		/**
-		 * dispatches keyCode and keyLocation on key down.
-		 * utility signal to not bother with event listeners and share the one the keyboard controller already has on stage
-		 * helps handling keys such as ENTER/BACK/HOME  instantly rather than going through the action system.
+		 * on native keyboard key down, dispatches keyCode and keyLocation as well as a 'vars' object which you can use to prevent default or stop immediate propagation of the native event.
+		 * see the code below :
+		 * 
+		 * <code>
+		 * public function onSoftKeys(keyCode:int,keyLocation:int,vars:Object):void
+		 *	{
+		 *		switch (keyCode)
+		 *		{ 
+		 *			case Keyboard.BACK: 
+		 *				vars.prevent = true;
+		 *	 			trace("back button, default prevented.");
+		 *				break; 
+		 *			case Keyboard.MENU: 
+		 *				trace("menu");
+		 *				break; 
+		 *			case Keyboard.SEARCH: 
+		 *				trace("search");
+		 *				break; 
+		 * 			case Keyboard.ENTER:
+		 * 				vars.stop = true;
+		 *				trace("enter, will not go through the input system because propagation was stopped.");
+		 *				break; 
+		 *		}
+		 *	}
+		 * </code>
 		 */
 		public var onKeyDown:Signal;
 		
@@ -47,14 +91,24 @@ package citrus.input.controllers {
 			_ce.stage.addEventListener(KeyboardEvent.KEY_DOWN, handleKeyDown);
 			_ce.stage.addEventListener(KeyboardEvent.KEY_UP, handleKeyUp);
 			
-			onKeyUp = new Signal(uint,int);
-			onKeyDown = new Signal(uint,int);
+			onKeyUp = new Signal(uint,int,Object);
+			onKeyDown = new Signal(uint,int,Object);
 		}
 		
 		private function handleKeyDown(e:KeyboardEvent):void
 		{
 			if (onKeyDown.numListeners > 0)
-				onKeyDown.dispatch(e.keyCode, e.keyLocation);
+			{
+				var vars:Object = { prevent:false, stop:false };
+				onKeyDown.dispatch(e.keyCode, e.keyLocation, vars );
+				if (vars.prevent)
+					e.preventDefault();
+				if (vars.stop)
+				{
+					e.stopImmediatePropagation();
+					return;
+				}
+			}
 				
 			if (_keyActions[e.keyCode])
 			{
@@ -69,7 +123,17 @@ package citrus.input.controllers {
 		private function handleKeyUp(e:KeyboardEvent):void
 		{
 			if (onKeyUp.numListeners > 0)
-				onKeyUp.dispatch(e.keyCode, e.keyLocation);
+			{
+				var vars:Object = { prevent:false, stop:false };
+				onKeyUp.dispatch(e.keyCode, e.keyLocation, vars );
+				if (vars.prevent)
+					e.preventDefault();
+				if (vars.stop)
+				{
+					e.stopImmediatePropagation();
+					return;
+				}
+			}
 				
 			if (_keyActions[e.keyCode])
 			{
@@ -324,6 +388,11 @@ package citrus.input.controllers {
 		
 		public static const LEFT_BRACKET:uint = 219;
 		public static const RIGHT_BRACKET:uint = 221;
+		
+		public static const AUDIO:uint = 0x01000017;
+		public static const BACK:uint = 0x01000016;
+		public static const MENU:uint =  0x01000012;
+		public static const SEARCH:uint =  0x0100001F;
 		
 		//HELPER FOR AZERTY ----------------------------------
 		public static const SQUARE:uint = 222; // ²
