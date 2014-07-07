@@ -272,12 +272,31 @@ package citrus.math
 			return value * value;
 		}
 		
+		public static function clamp01(value:Number):Number
+		{
+			return value < 0 ? 0 : (value > 1 ? 1 : value);
+		}
+		
 		/**
 		 * return random int between min and max
 		 */
 		public static function randomInt(min:int, max:int):int
 		{
 			return Math.floor(Math.random() * (1 + max - min)) + min;
+		}
+		
+		/**
+		 * best fits the rect Rectangle into the into Rectangle, and returns what scale factor applied to into was necessary to do so.
+		 * @param	rect
+		 * @param	into
+		 * @return
+		 */
+		public static function getBestFitRatio(rect:Rectangle, into:Rectangle):Number
+		{
+			if (into.height / into.width > rect.height / rect.width)
+				return into.width / rect.width;
+			else
+				return into.height / rect.height;
 		}
 		
 		/**
