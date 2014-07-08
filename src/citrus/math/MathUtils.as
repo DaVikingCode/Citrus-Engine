@@ -310,6 +310,34 @@ package citrus.math
 		}
 		
 		/**
+		 * gets the next element in an array based on the currentElement's position, cyclically.
+		 * - so if currentElement is the last element, you'll get the first in the array.
+		 * @param	currentElement
+		 * @param	array
+		 */
+		public static function getNextInArray(currentElement:*, array:Array):*
+		{
+			var currIndex:int = array.lastIndexOf(currentElement) + 1;
+			if (currIndex >= array.length)
+				currIndex = 0;
+			return array[currIndex];
+		}
+		
+		/**
+		 * gets the previous element in an array based on the currentElement's position, cyclically.
+		 * - so if currentElement is the first element, you'll get the last in the array.
+		 * @param	currentElement
+		 * @param	array
+		 */
+		public static function getPreviousInArray(currentElement:*, array:Array):*
+		{
+			var currIndex:int = array.lastIndexOf(currentElement) - 1;
+			if (currIndex < 0)
+				currIndex = array.length - 1;
+			return array[currIndex];
+		}
+		
+		/**
 		 * returns a random color in given range.
 		 * 
 		 * @param	minLum minimum for the r, g and b values.
