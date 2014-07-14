@@ -42,11 +42,31 @@ package citrus.input.controllers.gamepad
 		 */
 		public static var debug:Boolean = false;
 		
+		public static var activityChannel:int = 100;
+		
 		/**
 		 * if set to true, all 'children controllers' will send an action with their controller name when active (value != 0) 
 		 * helps figuring out which button someone touches for remapping in game for example.
 		 */
-		public var triggerActivity:Boolean = true;
+		public var _triggerActivity:Boolean = false;
+		
+		public function get triggerActivity():Boolean
+		{
+			return _triggerActivity;
+		}
+		
+		public function set triggerActivity(val:Boolean):void
+		{
+			if (_triggerActivity == val)
+				return;
+				
+			_triggerActivity = val;
+			
+			/*for each (var b:ButtonController in _buttons)
+				_input.stopActionsOf(b);
+			for each (var s:StickController in _sticks)
+				_input.stopActionsOf(s);*/
+		}
 		
 		public function Gamepad(name:String, device:GameInputDevice, map:Class = null, params:Object = null)
 		{

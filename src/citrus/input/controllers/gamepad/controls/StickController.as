@@ -160,9 +160,9 @@ package citrus.input.controllers.gamepad.controls
 			else
 			{
 				if (val)
-					triggerCHANGE(name, 1, null, _gamePad.defaultChannel);
+					triggerCHANGE(name, 1, null, Gamepad.activityChannel);
 				else
-					triggerOFF(name, 1, null, _gamePad.defaultChannel);
+					triggerOFF(name, 0, null, Gamepad.activityChannel);
 				
 				_stickActive = val;
 			}

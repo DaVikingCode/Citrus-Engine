@@ -26,6 +26,7 @@ package citrus.input.controllers.gamepad
 		protected var _route:Boolean;
 		protected var _removeActions:Boolean;
 		protected var _gamePadManager:GamePadManager;
+		protected var _gamePads:Vector.<Gamepad>;
 		protected var _gamePadIndex:int;
 		protected var _gamePad:Gamepad;
 		protected var _timeOut:int;
@@ -48,10 +49,11 @@ package citrus.input.controllers.gamepad
 			_gamePadIndex = gamePadIndex;
 			
 			_gamePadManager = GamePadManager.getInstance();
-			if (!_gamePadManager)
+			_gamePads = new Vector.<Gamepad>();
+			for (var i:int = 0; i < _gamePadManager.numGamePads; i++)
 			{
-				trace("WHAT.");
-				destroy();
+				var gp:Gamepad = _gamePadManager.getGamePadAt(i);
+				_gamePads.push(gp);
 			}
 				
 			onDone = new Signal(Boolean);
@@ -64,11 +66,8 @@ package citrus.input.controllers.gamepad
 				 _gamePad.triggerActivity = true;
 			}
 			else
-			for (var i:int = 0; i < _gamePadManager.numGamePads; i++)
-			{
-				var gp:Gamepad = _gamePadManager.getGamePadAt(i);
+			for each (var gp:Gamepad in _gamePads)
 				gp.triggerActivity = true;
-			}
 			
 			if (_route)
 				_input.startRouting(999);
@@ -127,14 +126,12 @@ package citrus.input.controllers.gamepad
 				_gamePad.triggerActivity = false;
 				_gamePad = null;
 			}
-			
-			if(_gamePadManager)
-			for (var i:int = 0; i < _gamePadManager.numGamePads; i++)
-			{
-				var gp:Gamepad = _gamePadManager.getGamePadAt(i);
+			else
+			for each (var gp:Gamepad in _gamePads)
 				gp.triggerActivity = false;
-			}
 			
+			_gamePads.length = 0;
+				
 			if(_route)
 				_input.stopRouting();
 			_input.resetActions();

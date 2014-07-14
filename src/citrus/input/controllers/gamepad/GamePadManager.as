@@ -48,8 +48,6 @@ package citrus.input.controllers.gamepad
 			
 			_maxDevices = maxPlayers;
 			
-			_instance = this;
-			
 			if (!GameInput.isSupported)
 			{
 				trace(this, "GameInput is not supported.");
@@ -83,6 +81,8 @@ package citrus.input.controllers.gamepad
 						trace(this, "tried to get a device at", i, "and it returned null. please reference or initialize the GamePadManager sooner in your app!");
 				}
 			}
+			
+			_instance = this;
 		}
 		
 		public static function getInstance():GamePadManager
@@ -153,7 +153,14 @@ package citrus.input.controllers.gamepad
 		
 		public function getGamePadAt(index:int = 0):Gamepad
 		{
-			return _gamePads[index] as Gamepad;
+			var c:int = 0;
+			for (var k:* in _gamePads)
+			{
+				if (c == index)
+					return _gamePads[k] as Gamepad;
+				c++;
+			}
+			return null;
 		}
 		
 		protected var numDevicesAdded:int = 0;
@@ -180,9 +187,9 @@ package citrus.input.controllers.gamepad
 			
 			numDevicesAdded++;
 				
-			if (_gamePads.length < _lastChannel)
+			if (numGamePads < _lastChannel)
 			{
-				pad.defaultChannel = _lastChannel - _gamePads.length;
+				pad.defaultChannel = _lastChannel -  numGamePads;
 			}
 			else
 			{
@@ -219,9 +226,12 @@ package citrus.input.controllers.gamepad
 			_gameInput.removeEventListener(GameInputEvent.DEVICE_REMOVED, handleDeviceRemoved);
 			
 			var gp:Gamepad;
-			for each(gp in _gamePads)
+			for (var name:String in _gamePads)
+			{
+				gp = _gamePads[name];
+				delete _gamePads[name];
 				gp.destroy();
-			_gamePads.length = 0;
+			}
 			devicesMapDictionary = null;
 			_defaultMap = null;
 			onControllerAdded.removeAll();
@@ -236,7 +246,10 @@ package citrus.input.controllers.gamepad
 		
 		public function get numGamePads():int
 		{
-			return _gamePads.length;
+			var count:int = 0;
+			for (var k:* in _gamePads)
+				count++;
+			return count;
 		}
 		
 		public static const GAMEPAD_ADDED_ACTION:String = "GAMEPAD_ADDED_ACTION";

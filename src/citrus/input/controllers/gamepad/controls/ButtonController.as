@@ -35,14 +35,17 @@ package citrus.input.controllers.gamepad.controls
 		
 		public function updateControl(control:String, value:Number):void
 		{
-			if (_action)
+			if (_action || _gamePad.triggerActivity)
 			{
 				value = value * (inverted ? -1 : 1);
 				_prevValue = _value;
 				value = ((value * precision) >> 0) / precision;
 				_value = ( value <= threshold && value >= -threshold ) ? 0 : value ;
 				_value = digital ? _value >> 0 : _value;
-				
+			}
+			
+			if (_action)
+			{
 				if (_prevValue != _value)
 				{
 					if (_value > 0)
@@ -60,15 +63,13 @@ package citrus.input.controllers.gamepad.controls
 		{
 			if (val == _active)
 				return;
+			
+			if (val)
+				triggerCHANGE(name, _value, null, Gamepad.activityChannel);
 			else
-			{
-				if (val)
-					triggerCHANGE(name, 1, null, _gamePad.defaultChannel);
-				else
-					triggerOFF(name, 1, null, _gamePad.defaultChannel);
-				
-				_active = val;
-			}
+				triggerOFF(name, 0, null, Gamepad.activityChannel);
+			
+			_active = val;
 		}
 		
 		public function hasControl(id:String):Boolean
