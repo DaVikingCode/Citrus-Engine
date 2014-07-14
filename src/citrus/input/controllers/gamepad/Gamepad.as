@@ -10,6 +10,7 @@ package citrus.input.controllers.gamepad
 	import flash.ui.GameInputDevice;
 	import flash.utils.describeType;
 	import flash.utils.Dictionary;
+	import org.osflash.signals.Signal;
 	
 	public class Gamepad extends InputController
 	{
@@ -303,6 +304,60 @@ package citrus.input.controllers.gamepad
 			}
 			
 			(_buttons[name] as ButtonController).action = action;
+		}
+		
+		public function swapButtonActions(button1Name:String, button2Name:String):void
+		{
+			var b1:ButtonController = getButton(button1Name);
+			var b2:ButtonController = getButton(button2Name);
+			if (!b1 || !b2)
+				return;
+			var action1:String = b1.action;
+			b1.action = b2.action;
+			b2.action = action1;
+		}
+		
+		public function removeActionFromControllers(actionName:String):void
+		{
+			removeActionFromButtons(actionName);
+			removeActionFromSticks(actionName);
+		}
+		
+		public function removeActionFromButtons(actionName:String):void
+		{	
+			for each (var button:ButtonController in _buttons)
+				if (button.action == actionName )
+					button.action = null;
+		}
+		
+		public function removeActionFromSticks(actionName:String):void
+		{
+			for each (var stick:StickController in _sticks)
+			{
+				if (stick.upAction == actionName)
+				{
+					stick.upAction = null;
+					continue;
+				}
+				
+				if (stick.rightAction == actionName)
+				{
+					stick.rightAction = null;
+					continue;
+				}
+				
+				if (stick.downAction == actionName)
+				{
+					stick.downAction = null;
+					continue;
+				}
+				
+				if (stick.leftAction == actionName)
+				{
+					stick.leftAction = null;
+					continue;
+				}
+			}
 		}
 		
 		/**
