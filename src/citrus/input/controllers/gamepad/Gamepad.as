@@ -10,7 +10,6 @@ package citrus.input.controllers.gamepad
 	import flash.ui.GameInputDevice;
 	import flash.utils.describeType;
 	import flash.utils.Dictionary;
-	import org.osflash.signals.Signal;
 	
 	public class Gamepad extends InputController
 	{
