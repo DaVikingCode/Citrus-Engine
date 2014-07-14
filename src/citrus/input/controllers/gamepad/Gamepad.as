@@ -156,19 +156,20 @@ package citrus.input.controllers.gamepad
 		
 		protected function unbindControl(controlid:String, controller:Icontrol):void
 		{
-			if (!(controlid in _usedControls))
+			if (controlid in _usedControls)
 			{
 				if (_usedControls[controlid] is Vector.<Icontrol>)
 				{
 					var controls:Vector.<Icontrol> = _usedControls[controlid];
 					var icontrol:Icontrol;
 					var i:String;
+					
 					for (i in controls)
 					{
-						icontrol = controls[int(i)];
+						icontrol = controls[i];
 						if (icontrol == controller)
 						{
-							controls.splice(int(i), 1);
+							controls.splice(parseInt(i), 1);
 							break;
 						}
 					}
@@ -177,8 +178,8 @@ package citrus.input.controllers.gamepad
 					{
 						delete _usedControls[controlid];
 						
-						if (_controls[controlid].hasEventListener(Event.CHANGE, onChange))
-							_controls[controlid].removeEventListener(Event.CHANGE, onChange);
+						if (_controls[controlid].hasEventListener(Event.CHANGE))
+							_controls[controlid].removeEventListener(Event.CHANGE,onChange);
 					}
 				}
 			}
