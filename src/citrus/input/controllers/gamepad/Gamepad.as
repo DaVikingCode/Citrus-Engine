@@ -105,7 +105,30 @@ package citrus.input.controllers.gamepad
 		}
 		
 		/**
-		 * apply GamepadMap
+		 * This will parse all control names for substr, and if substr if present then will register is as a ButtonController
+		 * if its not already registered.
+		 * additionally its name will be prefixed with prefix (helps prevent confusion when triggerActivity is true for example).
+		 * 
+		 * guessUnregisteredButtons is called by default when trying to apply a map that is either null, or not extending GamePadMap.
+		 * @param	substr
+		 * @param	prefix
+		 */
+		public function guessUnregisteredButtons(substr:String = "BUTTON_",prefix:String = "UNMAPPED_"):void
+		{
+			var name:String;
+			for each(var control:GameInputControl in _controls)
+			{
+				name = control.id;
+				if (name in _usedControls)
+					continue;
+				if (name.indexOf(substr) > -1)
+					registerButton(prefix + name, name);
+			}
+		}
+		
+		/**
+		 * apply GamepadMap.
+		 * calls guessUnregisteredButtons when the map is null or not extending GamePadMap.
 		 * @param	map
 		 */
 		public function useMap(map:Class):void
@@ -122,8 +145,18 @@ package citrus.input.controllers.gamepad
 					trace(name, "using map", map);
 				}
 				else if (debug)
+				{
 					trace(this, "unable to use the ", map, "map.");
+					trace(this, "will force default button registering");
+					guessUnregisteredButtons();
+				}
 			}
+			else
+			{
+				trace(this, "will force default button registering");
+				guessUnregisteredButtons();
+			}
+				
 			
 			stopAllActions();
 		}
@@ -133,14 +166,15 @@ package citrus.input.controllers.gamepad
 			if (!_enabled)
 				return;
 				
-			if (!(e.currentTarget.id in _usedControls))
+			var id:String = (e.currentTarget as GameInputControl).id;
+				
+			if (!(id in _usedControls))
 			{
 				if(debug)
 					trace(e.target.id, "seems to not be bound to any controls for", this);
 				return;
 			}
 			
-			var id:String = (e.currentTarget as GameInputControl).id;
 			var value:Number = (e.currentTarget as GameInputControl).value;
 			
 			var icontrols:Vector.<Icontrol> = _usedControls[id];
