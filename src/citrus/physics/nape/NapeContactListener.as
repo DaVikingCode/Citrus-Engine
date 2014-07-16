@@ -59,8 +59,6 @@ package citrus.physics.nape {
 		
 		public function set enabled(value:Boolean):void {
 			
-			trace(_enabled,value);
-			
 			if (_enabled == value)
 				return;
 				
