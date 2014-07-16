@@ -13,13 +13,19 @@ package citrus.physics.nape {
 	public class NapeContactListener {
 		
 		private var _space:Space;
+		private var _enabled:Boolean = false;
+		
+		private var _beginInteractionListener:InteractionListener;
+		private var _endInteractionListener:InteractionListener;
 		
 		public function NapeContactListener(space:Space) {
 			
 			_space = space;
 			
-			_space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, onInteractionBegin));
-			_space.listeners.add(new InteractionListener(CbEvent.END, InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, onInteractionEnd));
+			_beginInteractionListener = new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, onInteractionBegin);
+			_endInteractionListener = new InteractionListener(CbEvent.END, InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, onInteractionEnd);
+			
+			enabled = true;
 		}
 		
 		public function destroy():void {
@@ -49,6 +55,28 @@ package citrus.physics.nape {
 				
 			if (b.endContactCallEnabled)
 				b.handleEndContact(interactionCallback);
+		}
+		
+		public function set enabled(value:Boolean):void {
+			
+			trace(_enabled,value);
+			
+			if (_enabled == value)
+				return;
+				
+			_enabled = value;
+				
+			if(_enabled) {
+				_space.listeners.add(_beginInteractionListener);
+				_space.listeners.add(_endInteractionListener);
+			} else {
+				_space.listeners.remove(_beginInteractionListener);
+				_space.listeners.remove(_endInteractionListener);
+			}
+		}
+		
+		public function get enabled():Boolean {
+			return _enabled;
 		}
 	}
 }
