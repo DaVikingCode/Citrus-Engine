@@ -125,12 +125,12 @@ package citrus.utils.objectmakers {
 		 */
 		public static function FromTiledMap(levelXML:XML, images:Array, addToCurrentState:Boolean = true):Array {
 			var objects:Array = [];
-			var tmx:TmxMap = new TmxMap(levelXML);
+			var map:TmxMap = new TmxMap(levelXML);
 			
-			for each(var layer:Object in tmx.layers_ordered) {
+			for each(var layer:Object in map.layers_ordered) {
 				if (layer is TmxLayer) {
 					trace('Adding tile layer ', layer.name);
-					addTiledLayer(tmx, layer as TmxLayer, images, objects);
+					addTiledLayer(map, layer as TmxLayer, images, objects);
 				}else if (layer is TmxObjectGroup) {
 					trace('Adding object layer ', layer.name);
 					addTiledObjectgroup(layer as TmxObjectGroup, objects);
@@ -149,7 +149,7 @@ package citrus.utils.objectmakers {
 			return objects;
 		}
 		
-		static private function addTiledLayer(tmx:TmxMap, layer:TmxLayer, images:Array, objects:Array):void {
+		static private function addTiledLayer(map:TmxMap, layer:TmxLayer, images:Array, objects:Array):void {
 			// Bits on the far end of the 32-bit global tile ID are used for tile flags
 			const FLIPPED_DIAGONALLY_FLAG:uint = 0x20000000;
 			const FLIPPED_VERTICALLY_FLAG:uint = 0x40000000;
@@ -162,26 +162,25 @@ package citrus.utils.objectmakers {
 			var bmp:Bitmap;
 			var useBmpSmoothing:Boolean;
 			
-			var tileRect:Rectangle = new Rectangle;
-			tileRect.width = tmx.tileWidth;
-			tileRect.height = tmx.tileHeight;
+			const tileRect:Rectangle = new Rectangle;
+			tileRect.width = map.tileWidth;
+			tileRect.height = map.tileHeight;
 			
-			var mapTiles:Array = layer.tileGIDs;
+			const mapTiles:Array = layer.tileGIDs;
+			const rows:uint = mapTiles.length;
+			var columns:uint;
 			
-			var mapTilesX:uint = mapTiles.length;
-			var mapTilesY:uint;
+			const flipMatrix:Matrix = new Matrix;
+			const flipBmp:BitmapData = new BitmapData(map.tileWidth, map.tileHeight, true, 0);
+			const flipBmpRect:Rectangle = new Rectangle(0, 0, map.tileWidth, map.tileHeight);
 			
-			var flipMatrix:Matrix = new Matrix;
-			var flipBmp:BitmapData = new BitmapData(tmx.tileWidth, tmx.tileHeight, true, 0);
-			var flipBmpRect:Rectangle = new Rectangle(0, 0, tmx.tileWidth, tmx.tileHeight);
-			
-			var tileDestInLayer:Point = new Point;
+			const tileDestInLayer:Point = new Point;
 			var pathSplit:Array;
 			var tilesetImageName:String;
 			
-			var layerBmp:BitmapData = new BitmapData(tmx.width * tmx.tileWidth, tmx.height * tmx.tileHeight, true, 0);
+			const layerBmp:BitmapData = new BitmapData(map.width * map.tileWidth, map.height * map.tileHeight, true, 0);
 			
-			for each (var tileSet:TmxTileSet in tmx.tileSets) {
+			for each (var tileSet:TmxTileSet in map.tileSets) {
 				
 				pathSplit = tileSet.imageSource.split("/");
 				tilesetImageName = pathSplit[pathSplit.length - 1];
@@ -197,20 +196,21 @@ package citrus.utils.objectmakers {
 					}
 				}
 				
-				if (!flag || bmp == null)
+				if (!flag || bmp == null) {
 					throw new Error("ObjectMaker didn't find an image name corresponding to the tileset imagesource name: " + tileSet.imageSource + ", add its name to your bitmap.");
+				}
 				
 				useBmpSmoothing ||= bmp.smoothing;
 				
 				tileSet.image = bmp.bitmapData;
 				
-				for (var layerCol:uint = 0; layerCol < mapTilesX; ++layerCol) {
+				for (var layerRow:uint = 0; layerRow < rows; ++layerRow) {
 					
-					mapTilesY = mapTiles[layerCol].length;
+					columns = mapTiles[layerRow].length;
 					
-					for (var layerRow:uint = 0; layerRow < mapTilesY; ++layerRow) {
+					for (var layerColumn:uint = 0; layerColumn < columns; ++layerColumn) {
 						
-						var tileGID:uint = mapTiles[layerCol][layerRow];
+						var tileGID:uint = mapTiles[layerRow][layerColumn];
 						
 						// Read out the flags
 						var flipped_horizontally:Boolean = (tileGID & FLIPPED_HORIZONTALLY_FLAG) != 0;
@@ -225,17 +225,16 @@ package citrus.utils.objectmakers {
 							var tilemapRow:int = (tileGID - 1) / tileSet.numCols;
 							var tilemapCol:int = (tileGID - 1) % tileSet.numCols;
 							
-							tileRect.x = tilemapCol * tmx.tileWidth;
-							tileRect.y = tilemapRow * tmx.tileHeight;
+							tileRect.x = tilemapCol * map.tileWidth;
+							tileRect.y = tilemapRow * map.tileHeight;
 							
-							tileDestInLayer.x = layerRow * tmx.tileWidth; // FIXME: this is weird.   "Row * tileWitdh" and "Col * tileHeight"?
-							tileDestInLayer.y = layerCol * tmx.tileHeight; // it seems the correct is "Col * tileWitdh" and "Row * tileHeight"
-							// But why it does not work if we change? The problem must be in "mapTilesX" and "mapTilesY" or "mapTiles[layerCol][layerRow]"
+							tileDestInLayer.x = layerColumn * map.tileWidth;
+							tileDestInLayer.y = layerRow * map.tileHeight;
+
 							// Handle flipped tiles
-							
 							if (flipped_diagonally || flipped_horizontally || flipped_vertically) {
-								// We will flip the tilemap image using the center of the current tile
 								
+								// We will flip the tilemap image using the center of the current tile
 								var tileCenterX:Number = tileRect.x + tileRect.width * 0.5;
 								var tileCenterY:Number = tileRect.y + tileRect.height * 0.5;
 								
@@ -245,23 +244,23 @@ package citrus.utils.objectmakers {
 								if (flipped_diagonally) {
 									if (flipped_horizontally) {
 										flipMatrix.rotate(_90degInRad);
-										if (flipped_vertically)
+										if (flipped_vertically) {
 											flipMatrix.scale(1, -1);
-									}
-									else
-									{
+										}
+									} else {
 										flipMatrix.rotate(-_90degInRad);
-										if (!flipped_vertically)
+										if (!flipped_vertically) {
 											flipMatrix.scale(1, -1);
+										}
 									}
-								}
-								else
-								{
-									if (flipped_horizontally)
+								} else {
+									if (flipped_horizontally) {
 										flipMatrix.scale(-1, 1);
+									}
 									
-									if (flipped_vertically)
+									if (flipped_vertically) {
 										flipMatrix.scale(1, -1);
+									}
 								}
 								
 								flipMatrix.translate(tileCenterX, tileCenterY);
@@ -272,9 +271,7 @@ package citrus.utils.objectmakers {
 								flipBmp.draw(bmp.bitmapData, flipMatrix, null, null, flipBmpRect);
 								
 								layerBmp.copyPixels(flipBmp, flipBmpRect, tileDestInLayer);
-							}
-							else
-							{
+							} else {
 								layerBmp.copyPixels(bmp.bitmapData, tileRect, tileDestInLayer);
 							}
 						}
@@ -319,8 +316,7 @@ package citrus.utils.objectmakers {
 				params.rotation = objectTmx.rotation;
 				
 				// Polygon/Polyline support
-				if (objectTmx.shapeType != null) {
-					//params.shapeType = objectTmx.shapeType;
+				if (objectTmx.points != null) {
 					params.points = objectTmx.points;
 				}
 				

@@ -18,6 +18,7 @@ package citrus.utils.objectmakers.tmx {
 		public var height:int;
 		public var opacity:Number;
 		public var visible:Boolean;
+		// tileGIDs[row][column]
 		public var tileGIDs:Array;
 		public var properties:TmxPropertySet = null;
 

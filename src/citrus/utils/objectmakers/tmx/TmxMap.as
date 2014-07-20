@@ -3,6 +3,10 @@
  * This content is released under the MIT License.
  * Questions? Mail me at lithander at gmx.de!
  ******************************************************************************/
+/**
+ * Modified in 2014 by fdufafa:
+	 * Layers from tmx, including object layers, are available as ordered in TiledMapEditor.
+ */
 package citrus.utils.objectmakers.tmx {
 	
 	public class TmxMap {
