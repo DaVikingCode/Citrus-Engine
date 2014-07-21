@@ -38,7 +38,7 @@ package citrus.view.starlingview {
 			
 		override public function destroy():void {
 			
-			_viewRoot.dispose();
+			_viewRoot.removeFromParent(true);
 			
 			super.destroy();
 		}
