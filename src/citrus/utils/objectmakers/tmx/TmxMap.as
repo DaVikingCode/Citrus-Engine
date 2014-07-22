@@ -3,24 +3,29 @@
  * This content is released under the MIT License.
  * Questions? Mail me at lithander at gmx.de!
  ******************************************************************************/
+/**
+ * Modified in 2014 by fdufafa:
+	 * Layers from tmx, including object layers, are available as ordered in TiledMapEditor.
+ */
 package citrus.utils.objectmakers.tmx {
 	
 	public class TmxMap {
-
+		
 		public var version:String;
 		public var orientation:String;
 		public var width:uint;
 		public var height:uint;
 		public var tileWidth:uint;
 		public var tileHeight:uint;
-
-		public var properties:TmxPropertySet = null;
-		public var layers:Object = {};
-		public var tileSets:Object = {};
-		public var objectGroups:Object = {};
 		
-		public var layers_ordered:Vector.<String>;
-
+		public var properties:TmxPropertySet = null;
+		public var tileSets:Object = {};
+		
+		public var layers_ordered:Array = [];
+		
+		static private const TILE_LAYER_NAME:String = 'layer';
+		static private const OBJECT_LAYER_NAME:String = 'objectgroup';
+		
 		public function TmxMap(source:XML) {
 			// map header
 			version = source.@version ? source.@version : "unknown";
@@ -31,38 +36,29 @@ package citrus.utils.objectmakers.tmx {
 			tileHeight = source.@tileheight;
 			
 			// read properties
-			for each (node in source.properties)
+			for each (var node:XML in source.properties) {
 				properties = properties ? properties.extend(node) : new TmxPropertySet(node);
-				
-			// load tilesets
-			var node:XML = null;
-			for each (node in source.tileset)
-				tileSets[node.@name] = new TmxTileSet(node, this);
-				
-			// load layers
-			layers_ordered = new Vector.<String>();
-			for each (node in source.layer) {
-				layers[node.@name] = new TmxLayer(node, this);
-				layers_ordered.push(node.@name);
 			}
 			
-			// load object group
-			for each (node in source.objectgroup)
-				objectGroups[node.@name] = new TmxObjectGroup(node, this);
+			// load tilesets
+			for each (node in source.tileset) {
+				tileSets[node.@name] = new TmxTileSet(node, this);
+			}
+			
+			// load layers of the map in order
+			for each (node in source.children()) {
+				if (node.name() == TILE_LAYER_NAME) {
+					layers_ordered.push(new TmxLayer(node, this));
+				}else if (node.name() == OBJECT_LAYER_NAME) {
+					layers_ordered.push(new TmxObjectGroup(node, this));
+				}
+			}
 		}
-
+		
 		public function getTileSet(name:String):TmxTileSet {
 			return tileSets[name] as TmxTileSet;
 		}
-
-		public function getLayer(name:String):TmxLayer {
-			return layers[name] as TmxLayer;
-		}
-
-		public function getObjectGroup(name:String):TmxObjectGroup {
-			return objectGroups[name] as TmxObjectGroup;
-		}
-
+		
 		// works only after TmxTileSet has been initialized with an image...
 		public function getGidOwner(gid:int):TmxTileSet {
 			for each (var tileSet:TmxTileSet in tileSets) {

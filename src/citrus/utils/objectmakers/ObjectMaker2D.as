@@ -1,9 +1,10 @@
 package citrus.utils.objectmakers {
-
+	
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
 	import citrus.core.IState;
 	import citrus.objects.CitrusSprite;
+	import citrus.utils.objectmakers.tmx.TmxLayer;
 	import citrus.utils.objectmakers.tmx.TmxMap;
 	import citrus.utils.objectmakers.tmx.TmxObject;
 	import citrus.utils.objectmakers.tmx.TmxObjectGroup;
@@ -15,8 +16,7 @@ package citrus.utils.objectmakers {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
-
-
+	
 	/**
 	 * The ObjectMaker is a factory utility class for quickly and easily batch-creating a bunch of CitrusObjects.
 	 * Usually the ObjectMaker is used if you laid out your level in a level editor or an XML file.
@@ -27,10 +27,10 @@ package citrus.utils.objectmakers {
 	 * by your level editor.</p>
 	 */
 	public class ObjectMaker2D {
-
+		
 		public function ObjectMaker2D() {
 		}
-
+		
 		/**
 		 * You can pass a custom-created MovieClip object into this method to auto-create CitrusObjects.
 		 * This method looks at all the children of the MovieClip you passed in, and creates a CitrusObject with the
@@ -66,50 +66,54 @@ package citrus.utils.objectmakers {
 				if (child) {
 					if (!child.className)
 						continue;
-
+					
 					var objectClass:Class = getDefinitionByName(child.className) as Class;
 					var params:Object = {};
-
+					
 					if (child.params)
 						params = child.params;
-
+					
 					params.x = child.x;
 					params.y = child.y;
-
+					
 					// We need to unrotate the object to get its true width/height. Then rotate it back.
 					var rotation:Number = child.rotation;
 					child.rotation = 0;
 					params.width = child.width;
 					params.height = child.height;
 					child.rotation = rotation;
-
+					
 					params.rotation = child.rotation;
-
+					
 					// Adding properties from the component inspector
 					for (var metatags:String in child) {
 						if (metatags != "componentInspectorSetting" && metatags != "className") {
 							params[metatags] = child[metatags];
 						}
 					}
-
+					
 					var object:CitrusObject = new objectClass(child.name, params);
 					a.push(object);
 				}
 			}
-
+			
 			if (addToCurrentState) {
 				var ce:CitrusEngine = CitrusEngine.getInstance();
-				for each (object in a) ce.state.add(object);
+				for each (object in a)
+					ce.state.add(object);
 			}
-
+			
 			return a;
 		}
-
+		
 		/**
 		 * The Citrus Engine supports <a href="http://www.mapeditor.org/">the Tiled Map Editor</a>.
-		 * <p>It supports different layers, objects creation and a Tilesets.</p>
+		 * <p>It supports different layers, objects creation and Tilesets.</p>
 		 *
-		 * <p>You can add properties inside layers (group, parallax...), they are processed as Citrus Sprite.</p>
+		 * <p>You can add properties inside layers (group, parallax...), they are processed as Citrus Sprite.
+		 * The property as defined by TiledOrderedLayer.Z_PARAM_KEY can be used to explicitly order the layers
+		 * in the TiledMap Editor. This should be done, if object layers are used, since Object Layers don't
+		 * have any ordering in the tmx file.</p>
 		 *
 		 * <p>For the objects, you can add their name and don't forget their types : package name + class name.
 		 * It also supports properties.</p>
@@ -120,208 +124,205 @@ package citrus.utils.objectmakers {
 		 * @see CitrusObject
 		 */
 		public static function FromTiledMap(levelXML:XML, images:Array, addToCurrentState:Boolean = true):Array {
-
+			var objects:Array = [];
+			var map:TmxMap = new TmxMap(levelXML);
+			
+			for each(var layer:Object in map.layers_ordered) {
+				if (layer is TmxLayer) {
+					addTiledLayer(map, layer as TmxLayer, images, objects);
+				}else if (layer is TmxObjectGroup) {
+					addTiledObjectgroup(layer as TmxObjectGroup, objects);
+				}else {
+					throw new Error('Found layer type not supported.');
+				}
+			}		
+			
+			const ce:CitrusEngine = CitrusEngine.getInstance();
+			if (addToCurrentState) {
+				for each (var object:CitrusObject in objects) {
+					ce.state.add(object);
+				}
+			}
+			
+			return objects;
+		}
+		
+		static private function addTiledLayer(map:TmxMap, layer:TmxLayer, images:Array, objects:Array):void {
 			// Bits on the far end of the 32-bit global tile ID are used for tile flags
-			const FLIPPED_DIAGONALLY_FLAG:uint   = 0x20000000;
-			const FLIPPED_VERTICALLY_FLAG:uint   = 0x40000000;
+			const FLIPPED_DIAGONALLY_FLAG:uint = 0x20000000;
+			const FLIPPED_VERTICALLY_FLAG:uint = 0x40000000;
 			const FLIPPED_HORIZONTALLY_FLAG:uint = 0x80000000;
 			const FLIPPED_FLAGS_MASK:uint = ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG);
 			const _90degInRad:Number = Math.PI * 0.5;
-		
-			var ce:CitrusEngine = CitrusEngine.getInstance();
+			
 			var params:Object;
-
-			var objects:Array = [];
-
-			var tmx:TmxMap = new TmxMap(levelXML);
-
+			
 			var bmp:Bitmap;
-			var layerBmp:BitmapData;
 			var useBmpSmoothing:Boolean;
-
-			var mapTiles:Array;
-
-			var tileRect:Rectangle = new Rectangle;
-			tileRect.width = tmx.tileWidth;
-			tileRect.height = tmx.tileHeight;
-
-			var flipMatrix:Matrix = new Matrix;
-			var flipBmp:BitmapData = new BitmapData(tmx.tileWidth, tmx.tileHeight, true, 0);
-			var flipBmpRect:Rectangle = new Rectangle(0, 0, tmx.tileWidth, tmx.tileHeight);
 			
-			var tileDestInLayer:Point = new Point;
+			const tileRect:Rectangle = new Rectangle;
+			tileRect.width = map.tileWidth;
+			tileRect.height = map.tileHeight;
 			
-			var mapTilesX:uint, mapTilesY:uint;
+			const mapTiles:Array = layer.tileGIDs;
+			const rows:uint = mapTiles.length;
+			var columns:uint;
 			
+			const flipMatrix:Matrix = new Matrix;
+			const flipBmp:BitmapData = new BitmapData(map.tileWidth, map.tileHeight, true, 0);
+			const flipBmpRect:Rectangle = new Rectangle(0, 0, map.tileWidth, map.tileHeight);
+			
+			const tileDestInLayer:Point = new Point;
 			var pathSplit:Array;
 			var tilesetImageName:String;
 			
-			// working on each Tiled drawing layer
+			const layerBmp:BitmapData = new BitmapData(map.width * map.tileWidth, map.height * map.tileHeight, true, 0);
 			
-			for (var layer_num:uint = 0; layer_num < tmx.layers_ordered.length; ++layer_num) {
+			for each (var tileSet:TmxTileSet in map.tileSets) {
 				
-				var layer:String = tmx.layers_ordered[layer_num];
-				mapTiles = tmx.getLayer(layer).tileGIDs;
-
-				mapTilesX = mapTiles.length;
-
-				layerBmp = new BitmapData(tmx.width * tmx.tileWidth, tmx.height * tmx.tileHeight, true, 0);
-
-				for each (var tileSet:TmxTileSet in tmx.tileSets) {
+				pathSplit = tileSet.imageSource.split("/");
+				tilesetImageName = pathSplit[pathSplit.length - 1];
+				
+				for each (var image:Bitmap in images) {
 					
-					pathSplit = tileSet.imageSource.split("/");
-					tilesetImageName  = pathSplit[pathSplit.length - 1];
-
-					for each (var image:Bitmap in images) {
-						
-						var flag:Boolean = false;
-						
-						if (tilesetImageName == image.name) {
-							flag = true;
-							bmp = image;
-							break;
-						}
+					var flag:Boolean = false;
+					
+					if (tilesetImageName == image.name) {
+						flag = true;
+						bmp = image;
+						break;
 					}
+				}
+				
+				if (!flag || bmp == null) {
+					throw new Error("ObjectMaker didn't find an image name corresponding to the tileset imagesource name: " + tileSet.imageSource + ", add its name to your bitmap.");
+				}
+				
+				useBmpSmoothing ||= bmp.smoothing;
+				
+				tileSet.image = bmp.bitmapData;
+				
+				for (var layerRow:uint = 0; layerRow < rows; ++layerRow) {
 					
-					if (!flag || bmp == null)
-						throw new Error("ObjectMaker didn't find an image name corresponding to the tileset imagesource name: " + tileSet.imageSource + ", add its name to your bitmap.");
+					columns = mapTiles[layerRow].length;
 					
-					useBmpSmoothing ||= bmp.smoothing;
-					
-					tileSet.image = bmp.bitmapData;
-
-					for (var layerCol:uint = 0; layerCol < mapTilesX; ++layerCol) {
-
-						mapTilesY = mapTiles[layerCol].length;
-
-						for (var layerRow:uint = 0; layerRow < mapTilesY; ++layerRow) {
-
-							var tileGID:uint = mapTiles[layerCol][layerRow];
+					for (var layerColumn:uint = 0; layerColumn < columns; ++layerColumn) {
 						
-							// Read out the flags
-							var flipped_horizontally:Boolean = (tileGID & FLIPPED_HORIZONTALLY_FLAG) != 0;
-							var flipped_vertically:Boolean   = (tileGID & FLIPPED_VERTICALLY_FLAG)   != 0;
-							var flipped_diagonally:Boolean   = (tileGID & FLIPPED_DIAGONALLY_FLAG)   != 0;
+						var tileGID:uint = mapTiles[layerRow][layerColumn];
+						
+						// Read out the flags
+						var flipped_horizontally:Boolean = (tileGID & FLIPPED_HORIZONTALLY_FLAG) != 0;
+						var flipped_vertically:Boolean = (tileGID & FLIPPED_VERTICALLY_FLAG) != 0;
+						var flipped_diagonally:Boolean = (tileGID & FLIPPED_DIAGONALLY_FLAG) != 0;
+						
+						// Clear the flags
+						tileGID &= FLIPPED_FLAGS_MASK;
+						
+						if (tileGID != 0) {
 							
-							// Clear the flags
-							tileGID &= FLIPPED_FLAGS_MASK;
+							var tilemapRow:int = (tileGID - 1) / tileSet.numCols;
+							var tilemapCol:int = (tileGID - 1) % tileSet.numCols;
 							
-							if (tileGID != 0) {
+							tileRect.x = tilemapCol * map.tileWidth;
+							tileRect.y = tilemapRow * map.tileHeight;
+							
+							tileDestInLayer.x = layerColumn * map.tileWidth;
+							tileDestInLayer.y = layerRow * map.tileHeight;
+
+							// Handle flipped tiles
+							if (flipped_diagonally || flipped_horizontally || flipped_vertically) {
 								
-								var tilemapRow:int = (tileGID - 1) / tileSet.numCols;
-								var tilemapCol:int = (tileGID - 1) % tileSet.numCols;
+								// We will flip the tilemap image using the center of the current tile
+								var tileCenterX:Number = tileRect.x + tileRect.width * 0.5;
+								var tileCenterY:Number = tileRect.y + tileRect.height * 0.5;
 								
-								tileRect.x = tilemapCol * tmx.tileWidth;
-								tileRect.y = tilemapRow * tmx.tileHeight;
+								flipMatrix.identity();
+								flipMatrix.translate(-tileCenterX, -tileCenterY);
 								
-								tileDestInLayer.x = layerRow * tmx.tileWidth;	// FIXME: this is weird.   "Row * tileWitdh" and "Col * tileHeight"?
-								tileDestInLayer.y = layerCol * tmx.tileHeight;	// it seems the correct is "Col * tileWitdh" and "Row * tileHeight"
-																				// But why it does not work if we change? The problem must be in "mapTilesX" and "mapTilesY" or "mapTiles[layerCol][layerRow]"
-								// Handle flipped tiles
-								
-								if (flipped_diagonally || flipped_horizontally || flipped_vertically)
-								{
-									// We will flip the tilemap image using the center of the current tile
-									
-									var tileCenterX:Number = tileRect.x + tileRect.width  * 0.5;
-									var tileCenterY:Number = tileRect.y + tileRect.height * 0.5;
-									
-									flipMatrix.identity();
-									flipMatrix.translate(-tileCenterX, -tileCenterY);
-									
-									if (flipped_diagonally)
-									{
-										if (flipped_horizontally)
-										{
-											flipMatrix.rotate(_90degInRad);
-											if (flipped_vertically)
-												flipMatrix.scale(1, -1);
-										}
-										else
-										{
-											flipMatrix.rotate(-_90degInRad);
-											if (!flipped_vertically)
-												flipMatrix.scale(1, -1);
-										}
-									}
-									else
-									{
-										if (flipped_horizontally)
-											flipMatrix.scale(-1, 1);
-											
-										if (flipped_vertically)
+								if (flipped_diagonally) {
+									if (flipped_horizontally) {
+										flipMatrix.rotate(_90degInRad);
+										if (flipped_vertically) {
 											flipMatrix.scale(1, -1);
+										}
+									} else {
+										flipMatrix.rotate(-_90degInRad);
+										if (!flipped_vertically) {
+											flipMatrix.scale(1, -1);
+										}
+									}
+								} else {
+									if (flipped_horizontally) {
+										flipMatrix.scale(-1, 1);
 									}
 									
-									flipMatrix.translate(tileCenterX, tileCenterY);
-									flipMatrix.translate(-tileRect.x, -tileRect.y);
-									
-									// clear the buffer and draw
-									flipBmp.fillRect(flipBmpRect, 0);
-									flipBmp.draw(bmp.bitmapData, flipMatrix, null, null, flipBmpRect);
-									
-									layerBmp.copyPixels(flipBmp, flipBmpRect, tileDestInLayer);
+									if (flipped_vertically) {
+										flipMatrix.scale(1, -1);
+									}
 								}
-								else
-								{
-									layerBmp.copyPixels(bmp.bitmapData, tileRect, tileDestInLayer);
-								}
+								
+								flipMatrix.translate(tileCenterX, tileCenterY);
+								flipMatrix.translate(-tileRect.x, -tileRect.y);
+								
+								// clear the buffer and draw
+								flipBmp.fillRect(flipBmpRect, 0);
+								flipBmp.draw(bmp.bitmapData, flipMatrix, null, null, flipBmpRect);
+								
+								layerBmp.copyPixels(flipBmp, flipBmpRect, tileDestInLayer);
+							} else {
+								layerBmp.copyPixels(bmp.bitmapData, tileRect, tileDestInLayer);
 							}
 						}
 					}
 				}
-				
-				var bmpFinal:Bitmap = new Bitmap(layerBmp);
-				bmpFinal.smoothing = useBmpSmoothing;
-				
-				params = {};
-				params.view = bmpFinal;
-
-				for (var param:String in tmx.getLayer(layer).properties)
-					params[param] = tmx.getLayer(layer).properties[param];
-
-				objects.push(new CitrusSprite(layer, params));
 			}
-
+			
+			var bmpFinal:Bitmap = new Bitmap(layerBmp);
+			bmpFinal.smoothing = useBmpSmoothing;
+			
+			params = {};
+			params.view = bmpFinal;
+			
 			flipBmp.dispose();
-
+			
+			for (var param:String in layer.properties) {
+				params[param] = layer.properties[param];
+			}
+			
+			objects.push(new CitrusSprite(layer.name, params));
+		}
+		
+		static private function addTiledObjectgroup(group:TmxObjectGroup, objects:Array):void {
 			var objectClass:Class;
 			var object:CitrusObject;
-
-			for each (var group:TmxObjectGroup in tmx.objectGroups) {
-
-				for each (var objectTmx:TmxObject in group.objects) {
-
-					objectClass = getDefinitionByName(objectTmx.type) as Class;
-
-					params = {};
-
-					for (param in objectTmx.custom)
-						params[param] = objectTmx.custom[param];
-
-					params.x = objectTmx.x + objectTmx.width * 0.5;
-					params.y = objectTmx.y + objectTmx.height * 0.5;
-					params.width = objectTmx.width;
-					params.height = objectTmx.height;
-					params.rotation = objectTmx.rotation;
-					
-					// Polygon/Polyline support
-					if (objectTmx.shapeType != null) {
-						//params.shapeType = objectTmx.shapeType;
-						params.points = objectTmx.points;
-					}
-
-					object = new objectClass(objectTmx.name, params);
-					objects.push(object);
+			var params:Object;
+			
+			for each (var objectTmx:TmxObject in group.objects) {
+				
+				objectClass = getDefinitionByName(objectTmx.type) as Class;
+				
+				params = {};
+				
+				for (var param:String in objectTmx.custom) {
+					params[param] = objectTmx.custom[param];
 				}
+				
+				params.x = objectTmx.x + objectTmx.width * 0.5;
+				params.y = objectTmx.y + objectTmx.height * 0.5;
+				params.width = objectTmx.width;
+				params.height = objectTmx.height;
+				params.rotation = objectTmx.rotation;
+				
+				// Polygon/Polyline support
+				if (objectTmx.points != null) {
+					params.points = objectTmx.points;
+				}
+				
+				object = new objectClass(objectTmx.name, params);
+				objects.push(object);
 			}
-
-			if (addToCurrentState)
-				for each (object in objects) ce.state.add(object);
-
-			return objects;
 		}
-
+		
 		/**
 		 * This batch-creates CitrusObjects from an XML file generated by the level editor GLEED2D. If you would like to
 		 * use GLEED2D as a level editor for your Citrus Engine game, call this function to parse your GLEED2D level.
@@ -368,7 +369,7 @@ package citrus.utils.objectmakers {
 					// Top for primitives, center for textures
 					var y:Number = itemXML.Position.Y.toString();
 					// Left for primitives, center for textures
-
+					
 					// See if this object has a texture
 					var viewString:String = itemXML.texture_filename.toString();
 					if (viewString != "") {
@@ -376,7 +377,7 @@ package citrus.utils.objectmakers {
 						var originX:Number = itemXML.Origin.X.toString();
 						var originY:Number = itemXML.Origin.Y.toString();
 						var rotation:Number = Number(itemXML.Rotation.toString()) * 180 / Math.PI;
-						object = {x:x, y:y, width:originX * 2, height:originY * 2, rotation:rotation, registration:"center"};
+						object = {x: x, y: y, width: originX * 2, height: originY * 2, rotation: rotation, registration: "center"};
 						viewString = Replace(viewString, "\\", "/");
 						// covert backslashes to forward slashes
 						object.view = viewString;
@@ -384,14 +385,14 @@ package citrus.utils.objectmakers {
 						// Create known params for a GLEED2D "primitive"
 						var width:Number = itemXML.Width.toString();
 						var height:Number = itemXML.Height.toString();
-
-						object = {x:x + (width / 2), y:y + (height / 2), width:width, height:height};
+						
+						object = {x: x + (width / 2), y: y + (height / 2), width: width, height: height};
 					}
-
+					
 					// Covert GLEED layer index to a property on the object.
 					if (layerIndexProperty)
 						object[layerIndexProperty] = layerIndex;
-
+					
 					// Add the custom properties
 					var className:String = defaultClassName;
 					for each (var customPropXML:XML in itemXML.CustomProperties.Property) {
@@ -400,20 +401,20 @@ package citrus.utils.objectmakers {
 						else
 							object[customPropXML.@Name.toString()] = customPropXML.string.toString();
 					}
-
+					
 					// Make the CitrusObject and add it to the current state.
 					var citrusClass:Class = getDefinitionByName(className) as Class;
 					var citrusObject:CitrusObject = new citrusClass(objectName, object);
 					if (addToCurrentState)
 						ce.state.add(citrusObject);
-
+					
 					items.push(citrusObject);
 				}
 				layerIndex++;
 			}
 			return items;
 		}
-
+		
 		/**
 		 * This function batch-creates Citrus Engine game objects from an XML file generated by the Level Architect.
 		 * If you are using the Level Architect as your level editor, call this function to parse the objects in
@@ -425,14 +426,13 @@ package citrus.utils.objectmakers {
 		 */
 		public static function FromLevelArchitect(levelData:XML, addToCurrentState:Boolean = true):Array {
 			var array:Array = [];
-
+			
 			var state:IState = CitrusEngine.getInstance().state;
 			for each (var objectXML:XML in levelData.CitrusObject) {
 				var params:Object = {};
 				for each (var paramXML:XML in objectXML.Property) {
 					params[paramXML.@name] = paramXML.toString();
-				}
-				var className:String = objectXML.@className;
+				}var className:String = objectXML.@className;
 				try {
 					var theClass:Class = getDefinitionByName(className) as Class;
 				} catch (e:Error) {
@@ -447,10 +447,10 @@ package citrus.utils.objectmakers {
 				if (addToCurrentState)
 					state.add(theObject);
 			}
-
+			
 			return array;
 		}
-
+		
 		private static function Replace(str:String, fnd:String, rpl:String):String {
 			return str.split(fnd).join(rpl);
 		}
