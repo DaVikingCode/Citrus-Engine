@@ -129,10 +129,8 @@ package citrus.utils.objectmakers {
 			
 			for each(var layer:Object in map.layers_ordered) {
 				if (layer is TmxLayer) {
-					trace('Adding tile layer ', layer.name);
 					addTiledLayer(map, layer as TmxLayer, images, objects);
 				}else if (layer is TmxObjectGroup) {
-					trace('Adding object layer ', layer.name);
 					addTiledObjectgroup(layer as TmxObjectGroup, objects);
 				}else {
 					throw new Error('Found layer type not supported.');
