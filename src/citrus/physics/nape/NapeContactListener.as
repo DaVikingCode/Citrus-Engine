@@ -56,10 +56,10 @@ package citrus.physics.nape {
 			if (!a || !b)
 				return;
 				
-			if (a &&a.endContactCallEnabled)
+			if (a.endContactCallEnabled)
 				a.handleEndContact(interactionCallback);
 				
-			if (b && b.endContactCallEnabled)
+			if (b.endContactCallEnabled)
 				b.handleEndContact(interactionCallback);
 		}
 		

@@ -299,16 +299,6 @@ package citrus.math
 				return into.height / rect.height;
 		}
 		
-		public static function getFillHeightRatio(rect:Rectangle, into:Rectangle):Number
-		{
-			return into.height / rect.height;
-		}
-		
-		public static function getFillWidthRatio(rect:Rectangle, into:Rectangle):Number
-		{
-			return into.width / rect.width;
-		}
-		
 		/**
 		 * get a random item from an array with an almost uniform distribution of probabilities using randomInt.
 		 * @param	arr
