@@ -80,13 +80,13 @@ package citrus.objects {
 			createConstraint();
 		}
 		
-		override public function destroy():void {
-			
+		override public function destroy():void {	
 			_nape.space.bodies.remove(_body);
-			//_nape = null;
-			
-			//_body.userData.myData = null;
-			
+			_body.userData.myData = null;
+			_body = null;
+			_material = null;
+			_shape = null;
+			_nape = null;
 			super.destroy();
 		}
 		

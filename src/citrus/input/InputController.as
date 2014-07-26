@@ -152,6 +152,7 @@ package citrus.input {
 		public function destroy():void
 		{
 			_input.removeController(this);
+			action = null;
 		}
 		
 		public function toString():String

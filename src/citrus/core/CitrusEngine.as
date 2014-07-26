@@ -29,6 +29,8 @@ package citrus.core {
 				
 		private static var _instance:CitrusEngine;
 		
+		public static var DEBUG:Boolean = false;
+		
 		/**
 		 * Used to pause animations in SpriteArt and StarlingArt.
 		 */

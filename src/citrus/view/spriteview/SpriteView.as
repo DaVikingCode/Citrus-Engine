@@ -34,6 +34,15 @@ package citrus.view.spriteview {
 		{
 			return _viewRoot;
 		}
+		
+		override public function destroy():void
+		{
+			_viewRoot.removeChildren();
+			if (_viewRoot.parent)
+				_viewRoot.parent.removeChild(_viewRoot);
+			_viewRoot = null;
+			super.destroy();
+		}
 			
 		override public function update(timeDelta:Number):void
 		{

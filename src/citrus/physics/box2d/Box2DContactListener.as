@@ -10,14 +10,20 @@ package citrus.physics.box2d {
 	 * Used to report the contact's interaction between objects. It calls function in Box2dPhysicsObject.
 	 */
 	public class Box2DContactListener extends b2ContactListener {
+		
+		private var _worldManifold:b2WorldManifold;
 
 		public function Box2DContactListener() {
+			_worldManifold = new b2WorldManifold();
 		}
 
 		override public function BeginContact(contact:b2Contact):void {
 			
 			var a:IBox2DPhysicsObject = contact.GetFixtureA().GetBody().GetUserData();
 			var b:IBox2DPhysicsObject = contact.GetFixtureB().GetBody().GetUserData();
+			
+			if (!a || !b)
+				return;
 			
 			_contactGetWorldManifoldValues(contact);
 			
@@ -33,6 +39,9 @@ package citrus.physics.box2d {
 			var a:IBox2DPhysicsObject = contact.GetFixtureA().GetBody().GetUserData();
 			var b:IBox2DPhysicsObject = contact.GetFixtureB().GetBody().GetUserData();
 			
+			if (!a || !b)
+				return;
+			
 			_contactGetWorldManifoldValues(contact);
 			
 			if (a.endContactCallEnabled)
@@ -46,6 +55,9 @@ package citrus.physics.box2d {
 			
 			var a:IBox2DPhysicsObject = contact.GetFixtureA().GetBody().GetUserData();
 			var b:IBox2DPhysicsObject = contact.GetFixtureB().GetBody().GetUserData();
+			
+			if (!a || !b)
+				return;
 			
 			_contactGetWorldManifoldValues(contact);
 			
@@ -61,6 +73,9 @@ package citrus.physics.box2d {
 			var a:IBox2DPhysicsObject = contact.GetFixtureA().GetBody().GetUserData();
 			var b:IBox2DPhysicsObject = contact.GetFixtureB().GetBody().GetUserData();
 			
+			if (!a || !b)
+				return;
+			
 			_contactGetWorldManifoldValues(contact);
 			
 			if (a.postContactCallEnabled)
@@ -71,12 +86,9 @@ package citrus.physics.box2d {
 		}
 		
 		private function _contactGetWorldManifoldValues(contact:b2Contact):void {
-			
-			var worldManifold:b2WorldManifold = new b2WorldManifold();
-			contact.GetWorldManifold(worldManifold);
-			
-			contact.normal = worldManifold.m_normal;
-			contact.contactPoints = worldManifold.m_points;
+			contact.GetWorldManifold(_worldManifold);
+			contact.normal = _worldManifold.m_normal;
+			contact.contactPoints = _worldManifold.m_points;
 		}
 
 	}

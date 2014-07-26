@@ -35,6 +35,7 @@ package citrus.core {
 		 */
 		public function destroy():void {
 			_realState.destroy();
+			_realState = null;
 		}
 
 		/**

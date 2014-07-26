@@ -85,7 +85,12 @@ package citrus.objects {
 		override public function destroy():void
 		{
 			_box2D.world.DestroyBody(_body);
-			
+			_body.SetUserData(null);
+			_shape = null;
+			_bodyDef = null;
+			_fixtureDef = null;
+			_fixture = null;
+			_box2D = null;
 			super.destroy();
 		}
 		

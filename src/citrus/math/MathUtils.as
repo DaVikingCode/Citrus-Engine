@@ -299,6 +299,16 @@ package citrus.math
 				return into.height / rect.height;
 		}
 		
+		public static function getFillHeightRatio(rect:Rectangle, into:Rectangle):Number
+		{
+			return into.height / rect.height;
+		}
+		
+		public static function getFillWidthRatio(rect:Rectangle, into:Rectangle):Number
+		{
+			return into.width / rect.width;
+		}
+		
 		/**
 		 * get a random item from an array with an almost uniform distribution of probabilities using randomInt.
 		 * @param	arr
@@ -353,6 +363,32 @@ package citrus.math
 			var g:uint = MathUtils.randomInt(minLum, maxLum);
 			var b:uint = MathUtils.randomInt(minLum, maxLum);
 			return r << 16  | g << 8 | b;
+		}
+		
+		/**
+		 * http://snipplr.com/view/12514/as3-interpolate-color/
+		 * @param	fromColor
+		 * @param	toColor
+		 * @param	t a number from 0 to 1
+		 * @return
+		 */
+		public static function colorLerp(fromColor:uint, toColor:uint, t:Number):uint
+		{
+			var q:Number = 1-t;
+			var fromA:uint = (fromColor >> 24) & 0xFF;
+			var fromR:uint = (fromColor >> 16) & 0xFF;
+			var fromG:uint = (fromColor >> 8) & 0xFF;
+			var fromB:uint = fromColor & 0xFF;
+			var toA:uint = (toColor >> 24) & 0xFF;
+			var toR:uint = (toColor >> 16) & 0xFF;
+			var toG:uint = (toColor >> 8) & 0xFF;
+			var toB:uint = toColor & 0xFF;
+			var resultA:uint = fromA*q + toA*t;
+			var resultR:uint = fromR*q + toR*t;
+			var resultG:uint = fromG*q + toG*t;
+			var resultB:uint = fromB*q + toB*t;
+			var resultColor:uint = resultA << 24 | resultR << 16 | resultG << 8 | resultB;
+			return resultColor;
 		}
 		
 		public static function abs(num:Number):Number

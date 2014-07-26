@@ -97,7 +97,8 @@ package citrus.core
 		public function destroy():void
 		{
 			citrus_internal::data = null;
-			_initialized = false;			
+			_initialized = false;	
+			_params = null;
 		}
 		
 		/**

@@ -44,6 +44,10 @@ package citrus.core {
 			_poolObjects.length = 0;
 
 			_view.destroy();
+			
+			_objects = null;
+			_poolObjects = null;
+			_view = null;
 		}
 
 		/**

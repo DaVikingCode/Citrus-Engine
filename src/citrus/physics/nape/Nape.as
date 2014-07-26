@@ -65,8 +65,10 @@ package citrus.physics.nape {
 		override public function destroy():void {
 			
 			_contactListener.destroy();
+			_contactListener = null;
 			_space.clear();
-			
+			_space = null;
+			_gravity.dispose();
 			super.destroy();
 		}
 

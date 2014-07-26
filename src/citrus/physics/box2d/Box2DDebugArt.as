@@ -52,6 +52,8 @@ package citrus.physics.box2d {
 		public function destroy():void
 		{
 			_ce.stage.removeChild(_sprite);
+			_debugDrawer = null;
+			_box2D = null;
 		}
 		
 		public function debugMode(flags:uint):void {

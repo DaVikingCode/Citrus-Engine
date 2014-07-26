@@ -38,9 +38,10 @@ package citrus.view.starlingview {
 			
 		override public function destroy():void {
 			
+			_viewRoot.removeChildren(); //any remaining children.
 			_viewRoot.removeFromParent(true);
-			
 			super.destroy();
+			_viewRoot = null;
 		}
 
 		override public function update(timeDelta:Number):void {

@@ -111,6 +111,7 @@ package citrus.physics.nape {
 			flags.destroy();
 			_ce.onStageResize.remove(resize);
 			_ce.stage.removeChild(_debugDrawer.display);
+			_debugDrawer = null;
 		}
 		
 		public function debugMode(flags:uint):void {
