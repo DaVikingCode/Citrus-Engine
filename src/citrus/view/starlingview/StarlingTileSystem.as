@@ -339,8 +339,12 @@ package citrus.view.starlingview {
 		
 		public function destroy():void {
 			
-			_timer.removeEventListener(TimerEvent.TIMER, onTimer);
-			_timer.reset();
+			if (_timer) {
+			
+				_timer.removeEventListener(TimerEvent.TIMER, onTimer);
+				_timer.reset();
+			}
+			
 			removeEventListeners();
 			removeAll();
 			removeChildren(0, -1, true);
