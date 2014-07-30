@@ -222,9 +222,11 @@ package citrus.sounds
 			if (!_isActive)
 				return;
 			
-			_last_position = _soundChannel.position;
-			
-			_soundChannel.stop();
+			if (_soundChannel)
+			{
+				_last_position = _soundChannel.position;
+				_soundChannel.stop();
+			}
 			
 			soundChannel = _parentsound.sound.play(0, int.MAX_VALUE);
 			
