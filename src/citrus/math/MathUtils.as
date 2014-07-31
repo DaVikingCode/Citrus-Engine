@@ -300,6 +300,22 @@ package citrus.math
 		}
 		
 		/**
+		 * use to get the ratio required for one rectangle to fill the other. 
+		 * Either the width, the height, or both will fill fill the into rectangle.
+		 * Useful to make a background take up all the screen space even though the background
+		 * will be cropped if the aspect ratio is not the same.
+		 * @param	rect
+		 * @param	into
+		 */
+		public static function getFillRatio(rect:Rectangle, into:Rectangle):Number
+		{
+			if (into.height / into.width > rect.height / rect.width)
+				return into.height / rect.height;
+			else
+				return into.width / rect.width;
+		}
+		
+		/**
 		 * get a random item from an array with an almost uniform distribution of probabilities using randomInt.
 		 * @param	arr
 		 * @return 
