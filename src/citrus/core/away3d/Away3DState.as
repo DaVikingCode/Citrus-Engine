@@ -105,6 +105,16 @@ package citrus.core.away3d {
 		public function remove(object:CitrusObject):void {
 			_realState.remove(object);
 		}
+		
+		/**
+		 * removeImmediately instaneously destroys and remove the object from the state.
+		 * 
+		 * While using remove() is recommended, there are specific case where this is needed.
+		 * please use with care.
+		 */
+		public function removeImmediately(object:CitrusObject):void {
+			_realState.removeImmediately(object);
+		}
 
 		/**
 		 * Gets a reference to a CitrusObject by passing that object's name in.

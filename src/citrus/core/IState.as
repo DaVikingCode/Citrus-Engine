@@ -22,6 +22,8 @@ package citrus.core {
 		
 		function remove(object:CitrusObject):void;
 		
+		function removeImmediately(object:CitrusObject):void;
+		
 		function getObjectByName(name:String):CitrusObject;
 		
 		function getFirstObjectByType(type:Class):CitrusObject;

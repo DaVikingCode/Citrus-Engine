@@ -177,11 +177,20 @@ package citrus.core {
 		}
 
 		/**
-		 * When you are ready to remove an object from getting updated, viewed, and generally being existent, call this method.
-		 * Alternatively, you can just set the object's kill property to true. That's all this method does at the moment. 
+		 * removeImmediately instaneously destroys and remove the object from the state.
+		 * 
+		 * While using remove() is recommended, there are specific case where this is needed.
+		 * please use with care.
 		 */
 		public function remove(object:CitrusObject):void {
 			object.kill = true;
+		}
+		
+		public function removeImmediately(object:CitrusObject):void {
+			object.kill = true;
+			_objects.splice(_objects.indexOf(object), 1);
+			object.destroy();
+			_view.removeArt(object);
 		}
 
 		/**
