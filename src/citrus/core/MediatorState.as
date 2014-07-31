@@ -28,7 +28,12 @@ package citrus.core {
 		 * Called by the Citrus Engine.
 		 */
 		public function destroy():void {
-			// Call destroy on all objects, and remove all art from the stage.
+			
+			for each (var poolObject:PoolObject in _poolObjects)
+				poolObject.destroy();
+
+			_poolObjects.length = 0;
+			
 			var n:uint = _objects.length;
 			for (var i:int = n - 1; i >= 0; --i) {
 				var object:CitrusObject = _objects[i];
@@ -37,11 +42,6 @@ package citrus.core {
 				_view.removeArt(object);
 			}
 			_objects.length = 0;
-
-			for each (var poolObject:PoolObject in _poolObjects)
-				poolObject.destroy();
-
-			_poolObjects.length = 0;
 
 			_view.destroy();
 			
