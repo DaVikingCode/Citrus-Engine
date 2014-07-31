@@ -29,7 +29,11 @@ package citrus.core {
 				
 		private static var _instance:CitrusEngine;
 		
-		public static var DEBUG:Boolean = false;
+		/**
+		 * DEBUG is not used by CitrusEngine, it is there for your own convenience
+		 * so you can access it wherever the _ce 'shortcut' is. defaults to false.
+		 */
+		public var DEBUG:Boolean = false;
 		
 		/**
 		 * Used to pause animations in SpriteArt and StarlingArt.

@@ -301,7 +301,7 @@ package citrus.math
 		
 		/**
 		 * use to get the ratio required for one rectangle to fill the other. 
-		 * Either the width, the height, or both will fill fill the into rectangle.
+		 * Either the width, the height, or both will fill the into rectangle.
 		 * Useful to make a background take up all the screen space even though the background
 		 * will be cropped if the aspect ratio is not the same.
 		 * @param	rect
