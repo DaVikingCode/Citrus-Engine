@@ -314,6 +314,7 @@ package citrus.core.starling {
 		/**
 		 * @inheritDoc
 		 * We stop Starling. Be careful, if you use AdMob you will need to override this function and set Starling stop to <code>true</code>!
+		 * If you encounter issues with AdMob, you may override <code>handleStageDeactivated</code> and <code>handleStageActivated</code> and use <code>NativeApplication.nativeApplication</code> instead.
 		 */
 		override protected function handleStageDeactivated(e:flash.events.Event):void {
 
