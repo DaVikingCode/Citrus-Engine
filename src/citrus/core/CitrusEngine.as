@@ -384,11 +384,17 @@ package citrus.core {
 			
 		}
 		
+		/**
+		 * Set CitrusEngine's playing to false. Every update methods aren't anymore called.
+		 */
 		protected function handleStageDeactivated(e:Event):void
 		{
 			playing = false;
 		}
 		
+		/**
+		 * Set CitrusEngine's playing to true. The main loop is performed.
+		 */
 		protected function handleStageActivated(e:Event):void
 		{
 			playing = true;
