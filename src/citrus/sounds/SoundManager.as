@@ -1,15 +1,13 @@
 package citrus.sounds {
 
 	import aze.motion.eaze;
-	import citrus.events.CitrusEvent;
-	import citrus.events.CitrusSoundEvent;
-	import citrus.events.CitrusEventDispatcher;
 
+	import citrus.events.CitrusEventDispatcher;
+	import citrus.events.CitrusSoundEvent;
 	import citrus.sounds.groups.BGMGroup;
 	import citrus.sounds.groups.SFXGroup;
 	import citrus.sounds.groups.UIGroup;
 
-	import flash.events.EventDispatcher;
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
 	import flash.utils.Dictionary;
@@ -314,13 +312,21 @@ package citrus.sounds {
 		}
 		
 		/**
-		 * Cut the SoundMixer. No sound will be heard.
+		 * Mute/unmute Flash' SoundMixer. No sound will be heard but they're still playing.
 		 */
 		public function muteFlashSound(mute:Boolean = true):void {
 			
 			var s:SoundTransform = SoundMixer.soundTransform;
 			s.volume = mute ? 0 : 1;
 			SoundMixer.soundTransform = s;
+		}
+		
+		/**
+		 * Return true if Flash' SoundMixer is muted.
+		 */
+		public function isFlashSoundMuted():Boolean {
+			
+			return SoundMixer.soundTransform.volume == 0;
 		}
 
 		/**
