@@ -92,6 +92,11 @@ package citrus.objects.common
 		 */
 		public var emitAreaHeight:Number = 0;
 		
+		/**
+		 * The group is similar to a z-index sorting. Default is 0, 1 is over.
+		 */
+    	public var group:uint = 0;
+		
 		private var _particles:Vector.<EmitterParticle> = new Vector.<EmitterParticle>();
 		private var _recycle:Array = [];
 		private var _graphic:*;
@@ -138,12 +143,13 @@ package citrus.objects.common
 									maxImpulseY:Number,
 									emitterLifeSpan:Number = -1,
 									emitAreaWidth:Number = 0,
-									emitAreaHeight:Number = 0):Emitter
+									emitAreaHeight:Number = 0,
+									group:uint = 0):Emitter
 		{
 			return new Emitter(name, { 	graphic: graphic, x: x, y: y, emitFrequency: emitFrequency, emitAmount: emitAmount, particleLifeSpan: particleLifeSpan,
 										gravityX: gravityX, gravityY: gravityY, dampingX: dampingX, dampingY: dampingY, minImpulseX: minImpulseX,
 										maxImpulseX: maxImpulseX, minImpulseY: minImpulseY, maxImpulseY: maxImpulseY, emitterLifeSpan: emitterLifeSpan,
-										emitAreaWidth: emitAreaWidth, emitAreaHeight: emitAreaHeight} );
+										emitAreaWidth: emitAreaWidth, emitAreaHeight: emitAreaHeight, group: group} );
 		}
 		
 		public function Emitter(name:String, params:Object = null) 
@@ -267,6 +273,7 @@ package citrus.objects.common
 			particle.velocityX = Math.random() * (maxImpulseX - minImpulseX) + minImpulseX;
 			particle.velocityY = Math.random() * (maxImpulseY - minImpulseY) + minImpulseY;
 			particle.birthTime = birthTime;
+			particle.group = group;
 			particle.visible = true;
 			
 			return particle;
