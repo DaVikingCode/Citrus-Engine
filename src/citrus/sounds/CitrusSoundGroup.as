@@ -20,6 +20,8 @@ package citrus.sounds
 		
 		protected var _sounds:Vector.<CitrusSound>;
 		
+		public var polyphonic:Boolean = true;
+		
 		public function CitrusSoundGroup() 
 		{
 			_sounds = new Vector.<CitrusSound>();

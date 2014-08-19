@@ -136,6 +136,9 @@ package citrus.sounds
 				
 			var soundInstance:CitrusSoundInstance;
 			
+			if (_parentsound.group && !_parentsound.group.polyphonic)
+				CitrusSoundGroup(_parentsound.group).stopAllSounds();
+			
 			//check if the same CitrusSound is already playing and is permanent (if so, no need to play a second one)
 			if (_permanent)
 				for each(soundInstance in _list)
