@@ -103,6 +103,7 @@ package citrus.core.starling {
 		protected function handleStarlingStageResize(evt:starling.events.Event):void {
 			
 			resetScreenSize();
+			onStageResize.dispatch(_screenWidth, _screenHeight);
 		}
 		
 		/**
@@ -239,6 +240,9 @@ package citrus.core.starling {
 			_starling.addEventListener(starling.events.Event.ROOT_CREATED, function():void
 			{
 				_starling.removeEventListener(starling.events.Event.ROOT_CREATED, arguments.callee);
+				
+				stage.removeEventListener(flash.events.Event.RESIZE, handleStageResize);
+				
 				handleStarlingReady();
 				setupStats();
 			});
