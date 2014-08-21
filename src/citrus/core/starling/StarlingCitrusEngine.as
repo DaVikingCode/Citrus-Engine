@@ -12,6 +12,7 @@ package citrus.core.starling {
 	import flash.display.Stage3D;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
+	import flash.system.Capabilities;
 
 	/**
 	 * Extends this class if you create a Starling based game. Don't forget to call <code>setUpStarling</code> function.
@@ -87,7 +88,7 @@ package citrus.core.starling {
 		 */
 		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewPort:Rectangle = null, stage3D:Stage3D = null):void {
 
-			if (Mobile.isAndroid())
+			if (Mobile.isAndroid() || Capabilities.version.substr(0, 3) == "WIN")
 				Starling.handleLostContext = true;
 				
 			if (viewPort)
