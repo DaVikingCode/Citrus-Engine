@@ -346,9 +346,23 @@ package citrus.core.starling {
 			return _baseWidth;
 		}
 		
+		public function set baseWidth(value:int):void {
+			
+			_baseWidth = value;
+			
+			resetViewport();
+		}
+		
 		public function get baseHeight():int
 		{
 			return _baseHeight;
+		}
+		
+		public function set baseHeight(value:int):void {
+			
+			_baseHeight = value;
+			
+			resetViewport();
 		}
 		
 		public function get juggler():CitrusStarlingJuggler
