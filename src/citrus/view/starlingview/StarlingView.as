@@ -47,9 +47,6 @@ package citrus.view.starlingview {
 		override public function update(timeDelta:Number):void {
 			
 			super.update(timeDelta);
-			
-			if(camera.enabled)
-				camera.update();
 
 			// Update art positions
 			for each (var sprite:StarlingArt in _viewObjects) {
@@ -61,6 +58,9 @@ package citrus.view.starlingview {
 			}
 			
 			WorldClock.clock.advanceTime(timeDelta);
+			
+			if (camera.enabled)
+				camera.update();
 		}
 
 		override protected function createArt(citrusObject:Object):Object {

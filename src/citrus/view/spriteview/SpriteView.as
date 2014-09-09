@@ -48,9 +48,6 @@ package citrus.view.spriteview {
 		{
 			super.update(timeDelta);
 			
-			if(camera.enabled)
-				camera.update();
-			
 			//Update art positions
 			for each (var sprite:SpriteArt in _viewObjects)
 			{
@@ -62,6 +59,9 @@ package citrus.view.spriteview {
 			}
 			
 			WorldClock.clock.advanceTime(timeDelta);
+			
+			if (camera.enabled)
+				camera.update();
 		}
 			
 		override protected function createArt(citrusObject:Object):Object

@@ -54,8 +54,6 @@ package citrus.view.away3dview {
 		override public function update(timeDelta:Number):void {
 
 			super.update(timeDelta);
-			
-			camera.update();
 
 			// Update art positions
 			for each (var sprite:Away3DArt in _viewObjects) {
@@ -66,6 +64,8 @@ package citrus.view.away3dview {
 				if (sprite.updateArtEnabled)
 					sprite.update(this);
 			}
+			
+			camera.update();
 		}
 		
 		override protected function createArt(citrusObject:Object):Object {

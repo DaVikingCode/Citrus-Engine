@@ -88,7 +88,7 @@ package citrus.view.blittingview
 			}
 			_canvas.unlock();
 			
-			if(camera.enabled)
+			if (camera.enabled)
 				camera.update();	
 		}
 		
