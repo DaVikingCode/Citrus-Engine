@@ -11,10 +11,9 @@ package citrus.objects
 	
 	public class Box2DObjectPool extends PoolObject
 	{		
+		use namespace citrus_internal;
 		private static var activationQueue:Vector.<Object>;
-		
-		private static var stateView:ACitrusView;
-		
+
 		public function Box2DObjectPool(pooledType:Class,defaultParams:Object, poolGrowthRate:uint = 1) 
 		{
 			super(pooledType, defaultParams, poolGrowthRate, true);
@@ -24,8 +23,7 @@ package citrus.objects
 			
 			if(!activationQueue)
 			activationQueue = new Vector.<Object>();
-			
-			stateView = CitrusEngine.getInstance().state.view;
+
 		}
 		
 		override protected function _create(node:DoublyLinkedListNode, params:Object = null):void
@@ -52,9 +50,9 @@ package citrus.objects
 			onCreate.dispatch(bp, params);
 			bp.addPhysics();
 			bp.body.SetActive(false);
-			stateView.addArt(bp);
+			state.view.addArt(bp);
 			bp.citrus_internal::data["updateCall"] = bp.updateCallEnabled;
-			bp.citrus_internal::data["updateArt"] = (stateView.getArt(bp) as ICitrusArt).updateArtEnabled;
+			bp.citrus_internal::data["updateArt"] = (state.view.getArt(bp) as ICitrusArt).updateArtEnabled;
 		}
 		
 		override protected function _recycle(node:DoublyLinkedListNode, params:Object = null):void
@@ -66,7 +64,7 @@ package citrus.objects
 				bp.view.pauseAnimation(true);
 			bp.visible = true;
 			bp.updateCallEnabled = bp.citrus_internal::data["updateCall"] as Boolean;
-			(stateView.getArt(bp) as ICitrusArt).updateArtEnabled = bp.citrus_internal::data["updateArt"] as Boolean;
+			(state.view.getArt(bp) as ICitrusArt).updateArtEnabled = bp.citrus_internal::data["updateArt"] as Boolean;
 			super._recycle(node, params);
 		}
 		
@@ -79,9 +77,9 @@ package citrus.objects
 				bp.view.pauseAnimation(false);
 			bp.visible = false;
 			bp.updateCallEnabled = false;
-			(stateView.getArt(bp) as ICitrusArt).updateArtEnabled = false;
+			(state.view.getArt(bp) as ICitrusArt).updateArtEnabled = false;
 			super._dispose(node);
-			(stateView.getArt(bp) as ICitrusArt).update(stateView);
+			(state.view.getArt(bp) as ICitrusArt).update(state.view);
 		}
 		
 		override public function updatePhysics(timeDelta:Number):void
@@ -104,7 +102,7 @@ package citrus.objects
 			updateBodies();
 			activationQueue.length = 0;
 			var bp:Box2DPhysicsObject = node.data as Box2DPhysicsObject;
-			stateView.removeArt(bp);
+			state.view.removeArt(bp);
 			bp.destroy();
 			super._destroy(node);
 		}

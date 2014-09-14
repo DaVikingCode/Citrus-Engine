@@ -27,7 +27,7 @@ package citrus.core {
 			
 			_ce = CitrusEngine.getInstance();
 
-			_realState = new MediatorState();
+			_realState = new MediatorState(this);
 		}
 
 		/**

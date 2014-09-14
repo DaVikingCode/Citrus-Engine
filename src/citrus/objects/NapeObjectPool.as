@@ -12,16 +12,14 @@ package citrus.objects
 	
 	public class NapeObjectPool extends PoolObject
 	{
-		private static var stateView:ACitrusView;
-		
+		use namespace citrus_internal;
 		public function NapeObjectPool(pooledType:Class,defaultParams:Object, poolGrowthRate:uint = 1) 
 		{	
 			super(pooledType, defaultParams, poolGrowthRate, true);
 			
 			if (!(describeType(pooledType).factory.extendsClass.(@type == "citrus.objects::NapePhysicsObject").length() > 0))
 				throw new Error("NapePoolObject: " + String(pooledType) + " is not a NapePhysicsObject");
-				
-			stateView = CitrusEngine.getInstance().state.view;
+
 		}
 		
 		override protected function _create(node:DoublyLinkedListNode, params:Object = null):void
@@ -48,23 +46,23 @@ package citrus.objects
 			onCreate.dispatch((node.data as _poolType), params);
 			np.addPhysics();
 			np.body.space = null;
- 			stateView.addArt(np);
+ 			state.view.addArt(np);
 			
 			np.citrus_internal::data["updateCall"] = np.updateCallEnabled;
 			
-			np.citrus_internal::data["updateArt"] = (stateView.getArt(np) as ICitrusArt).updateArtEnabled;
+			np.citrus_internal::data["updateArt"] = (state.view.getArt(np) as ICitrusArt).updateArtEnabled;
 		}
 		
 		override protected function _recycle(node:DoublyLinkedListNode, params:Object = null):void
 		{
 			var np:NapePhysicsObject = node.data as NapePhysicsObject;
 			np.initialize(params);
-			np.body.space = (CitrusEngine.getInstance().state.getFirstObjectByType(Nape) as Nape).space;
+			np.body.space = (state.getFirstObjectByType(Nape) as Nape).space;
 			if ("pauseAnimation" in np.view)
 				np.view.pauseAnimation(true);
 			np.visible = true;
 			np.updateCallEnabled = np.citrus_internal::data["updateCall"] as Boolean;
-			(stateView.getArt(np) as ICitrusArt).updateArtEnabled = np.citrus_internal::data["updateArt"] as Boolean;
+			(state.view.getArt(np) as ICitrusArt).updateArtEnabled = np.citrus_internal::data["updateArt"] as Boolean;
 			super._recycle(node, params);
 		}
 		
@@ -76,15 +74,15 @@ package citrus.objects
 				np.view.pauseAnimation(false);
 			np.visible = false;
 			np.updateCallEnabled = false;
-			(stateView.getArt(np) as ICitrusArt).updateArtEnabled = false;
+			(state.view.getArt(np) as ICitrusArt).updateArtEnabled = false;
 			super._dispose(node);
-			(stateView.getArt(np) as ICitrusArt).update(stateView);
+			(state.view.getArt(np) as ICitrusArt).update(state.view);
 		}
 		
 		override protected function _destroy(node:DoublyLinkedListNode):void
 		{
 			var np:NapePhysicsObject = node.data as NapePhysicsObject;
-			stateView.removeArt(np);
+			state.view.removeArt(np);
 			np.destroy();
 			super._destroy(node);
 		}

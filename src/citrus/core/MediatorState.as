@@ -20,8 +20,10 @@ package citrus.core {
 		private var _objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 		private var _poolObjects:Vector.<PoolObject> = new Vector.<PoolObject>();
 		private var _view:ACitrusView;
+		private var _istate:IState;
 
-		public function MediatorState() {
+		public function MediatorState(istate:IState) {
+			_istate = istate;
 		}
 
 		/**
@@ -168,7 +170,7 @@ package citrus.core {
 		public function addPoolObject(poolObject:PoolObject):PoolObject {
 
 			if (poolObject.isCitrusObjectPool) {
-
+				poolObject.citrus_internal::state = _istate;
 				_poolObjects.push(poolObject);
 
 				return poolObject;

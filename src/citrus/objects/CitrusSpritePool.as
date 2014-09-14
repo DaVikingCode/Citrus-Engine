@@ -10,8 +10,7 @@ package citrus.objects
 	
 	public class CitrusSpritePool extends PoolObject
 	{
-		private static var stateView:ACitrusView;
-		
+		use namespace citrus_internal;
 		public function CitrusSpritePool(pooledType:Class,defaultParams:Object, poolGrowthRate:uint = 1) 
 		{
 			super(pooledType, defaultParams, poolGrowthRate, true);
@@ -22,8 +21,6 @@ package citrus.objects
 			{ test.kill = true; test = null; }
 			else
 				throw new Error("CitrusSpritePool: " + String(pooledType) + " is not a CitrusSprite");
-				
-			stateView = CitrusEngine.getInstance().state.view;
 		}
 		
 		override protected function _create(node:DoublyLinkedListNode, params:Object = null):void
@@ -34,10 +31,10 @@ package citrus.objects
 			var cs:CitrusSprite = node.data = new _poolType("aPoolObject", params) as CitrusSprite;
 			cs.initialize(params);
 			onCreate.dispatch((node.data as _poolType), params);
- 			stateView.addArt(cs);
+ 			state.view.addArt(cs);
 			
 			cs.citrus_internal::data["updateCall"] = cs.updateCallEnabled;
-			cs.citrus_internal::data["updateArt"] = (stateView.getArt(cs) as ICitrusArt).updateArtEnabled;
+			cs.citrus_internal::data["updateArt"] = (state.view.getArt(cs) as ICitrusArt).updateArtEnabled;
 		}
 		
 		override protected function _recycle(node:DoublyLinkedListNode, params:Object = null):void
@@ -48,7 +45,7 @@ package citrus.objects
 				cs.view.pauseAnimation(true);
 			cs.visible = true;
 			cs.updateCallEnabled = cs.citrus_internal::data["updateCall"] as Boolean;
-			(stateView.getArt(cs) as ICitrusArt).updateArtEnabled = cs.citrus_internal::data["updateArt"] as Boolean;
+			(state.view.getArt(cs) as ICitrusArt).updateArtEnabled = cs.citrus_internal::data["updateArt"] as Boolean;
 			super._recycle(node, params);
 		}
 		
@@ -59,15 +56,15 @@ package citrus.objects
 				cs.view.pauseAnimation(false);
 			cs.visible = false;
 			cs.updateCallEnabled = false;
-			(stateView.getArt(cs) as ICitrusArt).updateArtEnabled = false;
+			(state.view.getArt(cs) as ICitrusArt).updateArtEnabled = false;
 			super._dispose(node);
-			(stateView.getArt(cs) as ICitrusArt).update(stateView);
+			(state.view.getArt(cs) as ICitrusArt).update(state.view);
 		}
 		
 		override protected function _destroy(node:DoublyLinkedListNode):void
 		{
 			var cs:CitrusSprite = node.data as CitrusSprite;
-			stateView.removeArt(cs);
+			state.view.removeArt(cs);
 			cs.destroy();
 			super._destroy(node);
 		}

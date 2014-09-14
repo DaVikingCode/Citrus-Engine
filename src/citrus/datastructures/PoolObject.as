@@ -1,6 +1,8 @@
 package citrus.datastructures {
 
+	import citrus.core.citrus_internal;
 	import citrus.core.CitrusObject;
+	import citrus.core.IState;
 	import citrus.view.ACitrusView;
 
 	import org.osflash.signals.Signal;
@@ -15,12 +17,14 @@ package citrus.datastructures {
 	 * - destroy all your objects and set them to null at the end of your level (garbage collector will work).
 	 */
 	public class PoolObject extends DoublyLinkedList {
-
+		
 		protected var _poolType:Class;
 		protected var _defaultParams:Object;
 		protected var _poolSize:uint = 0;
 		protected var _poolGrowthRate:uint = 0;
 		protected var _isCitrusObjectPool:Boolean;
+		
+		citrus_internal var state:IState;
 		
 		/**
 		 * dispatches a Signal with a newly created object of type _pooType.

@@ -31,7 +31,7 @@ package citrus.core.away3d {
 			
 			_ce = CitrusEngine.getInstance();
 
-			_realState = new MediatorState();
+			_realState = new MediatorState(this);
 		}
 
 		/**
