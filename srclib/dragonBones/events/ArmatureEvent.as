@@ -1,12 +1,12 @@
-package dragonBones.events {
-
-	import flash.events.Event;
+package dragonBones.events
+{
 	/**
 	* Copyright 2012-2013. DragonBones. All Rights Reserved.
 	* @playerversion Flash 10.0, Flash 10
 	* @langversion 3.0
 	* @version 2.0
-	 */
+	*/
+	import flash.events.Event;
 	/**
 	 * The ArmatureEvent provides and defines all events dispatched directly by an Armature instance.
 	 *

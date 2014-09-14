@@ -3,8 +3,8 @@ package dragonBones.objects
 	/** @private */
 	public class Frame
 	{
-		public var position:Number;
-		public var duration:Number;
+		public var position:int;
+		public var duration:int;
 		
 		public var action:String;
 		public var event:String;

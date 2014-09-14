@@ -1,5 +1,8 @@
-package dragonBones {
-
+﻿package dragonBones
+{
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	
 	import dragonBones.animation.Animation;
 	import dragonBones.animation.AnimationState;
 	import dragonBones.animation.IAnimatable;
@@ -12,9 +15,6 @@ package dragonBones {
 	import dragonBones.events.SoundEventManager;
 	import dragonBones.objects.ArmatureData;
 	import dragonBones.objects.Frame;
-
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
 
 	use namespace dragonBones_internal;
 
@@ -91,8 +91,6 @@ package dragonBones {
 		/** @private Store event needed to dispatch in current frame. When advanceTime execute complete, dispath them.*/
 		dragonBones_internal var _eventList:Vector.<Event>;
 		
-		/** @private */
-		dragonBones_internal var _armatureData:ArmatureData;
 		
 		/** @private Store slots based on slots' zOrder*/
 		protected var _slotList:Vector.<Slot>;
@@ -102,6 +100,17 @@ package dragonBones {
 		
 		private var _delayDispose:Boolean;
 		private var _lockDispose:Boolean;
+		
+		/** @private */
+		dragonBones_internal var _armatureData:ArmatureData;
+		/**
+		 * ArmatureData.
+		 * @see dragonBones.objects.ArmatureData.
+		 */
+		public function get armatureData():ArmatureData
+		{
+			return _armatureData;
+		}
 
 		/** @private */
 		protected var _display:Object;

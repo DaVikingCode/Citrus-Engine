@@ -1,13 +1,13 @@
-package dragonBones {
-
+﻿package dragonBones
+{
+	import flash.errors.IllegalOperationError;
+	import flash.geom.Matrix;
+	
 	import dragonBones.core.DBObject;
 	import dragonBones.core.dragonBones_internal;
 	import dragonBones.objects.DisplayData;
 	import dragonBones.objects.FrameCached;
 	import dragonBones.objects.TimelineCached;
-
-	import flash.errors.IllegalOperationError;
-	import flash.geom.Matrix;
 	
 	use namespace dragonBones_internal;
 	
@@ -261,8 +261,11 @@ package dragonBones {
 			
 			var parentMatrix:Matrix = this._parent._globalTransformMatrix;
 			
-			this._globalTransformMatrix.tx = this._global.x = parentMatrix.a * x + parentMatrix.c * y + parentMatrix.tx;
-			this._globalTransformMatrix.ty = this._global.y = parentMatrix.d * y + parentMatrix.b * x + parentMatrix.ty;
+			//this._globalTransformMatrix.tx = this._global.x = parentMatrix.a * x + parentMatrix.c * y + parentMatrix.tx;
+			//this._globalTransformMatrix.ty = this._global.y = parentMatrix.d * y + parentMatrix.b * x + parentMatrix.ty;
+			
+			this._globalTransformMatrix.tx = this._global.x = parentMatrix.a * x * this._parent._global.scaleX + parentMatrix.c * y * this._parent._global.scaleY + parentMatrix.tx;
+			this._globalTransformMatrix.ty = this._global.y = parentMatrix.d * y * this._parent._global.scaleY + parentMatrix.b * x * this._parent._global.scaleX + parentMatrix.ty;
 			
 			if(inheritRotation)
 			{

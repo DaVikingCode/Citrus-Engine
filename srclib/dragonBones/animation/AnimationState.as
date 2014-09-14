@@ -1,5 +1,5 @@
-package dragonBones.animation {
-
+﻿package dragonBones.animation
+{
 	import dragonBones.Armature;
 	import dragonBones.Bone;
 	import dragonBones.core.dragonBones_internal;
@@ -115,12 +115,14 @@ package dragonBones.animation {
 		}
 		
 		private var _armature:Armature;
-		private var _currentFrame:Frame;
 		private var _timelineStateList:Vector.<TimelineState>;
 		private var _mixingTransforms:Object;
 		
 		private var _isPlaying:Boolean;
-		private var _time:Number;
+		private var _time:int;
+		private var _currentFrameIndex:int;
+		private var _currentFramePosition:int;
+		private var _currentFrameDuration:int;
 		
 		private var _pausePlayheadInFade:Boolean;
 		private var _isFadeOut:Boolean;
@@ -192,22 +194,22 @@ package dragonBones.animation {
 			return _currentPlayTimes;
 		}
 		
-		private var _totalTime:Number;
+		private var _totalTime:int;
 		/**
 		 * The length of the animation clip in seconds.
 		 */
 		public function get totalTime():Number
 		{
-			return _totalTime;
+			return _totalTime * 0.001;
 		}
 		
-		private var _currentTime:Number;
+		private var _currentTime:int;
 		/**
 		 * The current time of the animation.
 		 */
 		public function get currentTime():Number
 		{
-			return _currentTime;
+			return _currentTime * 0.001;
 		}
 		public function setCurrentTime(value:Number):AnimationState
 		{
@@ -215,7 +217,7 @@ package dragonBones.animation {
 			{
 				value = 0;
 			}
-			_currentTime = value;
+			_currentTime = value * 1000;
 			_time = _currentTime;
 			return this;
 		}
@@ -266,13 +268,12 @@ package dragonBones.animation {
 		}
 		public function setPlayTimes(value:int):AnimationState
 		{
-			if(Math.round(_totalTime * _clip.frameRate) < 2)
+			if(Math.round(_totalTime * 0.001 * _clip.frameRate) < 2)
 			{
 				_playTimes = value < 0?-1:1;
 			}
 			else
 			{
-				_timeScale = timeScale;
 				_playTimes = value < 0?-value:value;
 			}
 			autoFadeOut = value < 0?true:false;
@@ -300,14 +301,14 @@ package dragonBones.animation {
 			autoTween = _clip.autoTween;
 			
 			//clear
-			_currentFrame = null;
+			_currentFrameIndex = -1;
 			_mixingTransforms = null;
 			
 			//reset
 			_isComplete = false;
 			_time = 0;
 			_currentPlayTimes = 0;
-			if(Math.round(_totalTime * _clip.frameRate) < 2 || timeScale == Infinity)
+			if(Math.round(_totalTime * 0.001 * _clip.frameRate) < 2 || timeScale == Infinity)
 			{
 				_currentTime = _totalTime;
 			}
@@ -646,7 +647,7 @@ package dragonBones.animation {
 						fadeStartFlg = true;
 					}
 					
-					//(_fadeState == -1 || _fadeState == 0) && fadeState == -1
+					//(_fadeState == -1 || _fadeState == 0) && fadeState == 1
 					if(fadeState == 1)
 					{
 						fadeCompleteFlg = true;
@@ -708,19 +709,31 @@ package dragonBones.animation {
 		{
 			if(_isPlaying && !_pausePlayheadInFade)
 			{
-				_time += passedTime;
+				_time += passedTime * 1000;
 			}
 			
 			var startFlg:Boolean = false;
 			var completeFlg:Boolean = false;
 			var loopCompleteFlg:Boolean = false;
 			
-			var currentTime:Number = _time;
+			var currentTime:int = _time;
 			var currentPlayTimes:int;
 			var isThisComplete:Boolean;
-			if(_playTimes != 0)
+			if(_playTimes == 0)
 			{
-				var totalTimes:Number = _playTimes * _totalTime;
+				isThisComplete = false;
+				currentPlayTimes = Math.ceil(Math.abs(currentTime) / _totalTime) || 1;
+				//currentTime -= Math.floor(currentTime / _totalTime) * _totalTime;
+				currentTime -= int(currentTime / _totalTime) * _totalTime;
+				
+				if(currentTime < 0)
+				{
+					currentTime += _totalTime;
+				}
+			}
+			else
+			{
+				var totalTimes:int = _playTimes * _totalTime;
 				if(currentTime >= totalTimes)
 				{
 					currentTime = totalTimes;
@@ -741,25 +754,13 @@ package dragonBones.animation {
 					currentTime += totalTimes;
 				}
 				
-				currentPlayTimes = Math.ceil(currentTime/_totalTime) || 1;
-				//currentTime -= Math.floor(currentTime/_totalTime) * _totalTime;
-				currentTime -= int(currentTime/_totalTime) * _totalTime;
+				currentPlayTimes = Math.ceil(currentTime / _totalTime) || 1;
+				//currentTime -= Math.floor(currentTime / _totalTime) * _totalTime;
+				currentTime -= int(currentTime / _totalTime) * _totalTime;
 				
 				if(isThisComplete)
 				{
 					currentTime = _totalTime;
-				}
-			}
-			else
-			{
-				isThisComplete = false;
-				currentPlayTimes = Math.ceil(Math.abs(currentTime)/_totalTime) || 1;
-				//currentTime -= Math.floor(currentTime/_totalTime) * _totalTime;
-				currentTime -= int(currentTime/_totalTime) * _totalTime;
-				
-				if(currentTime < 0)
-				{
-					currentTime += _totalTime;
 				}
 			}
 			
@@ -795,13 +796,14 @@ package dragonBones.animation {
 				}
 				
 				_currentTime = currentTime;
-				
+				/*
 				if(isThisComplete)
 				{
-					currentTime = _totalTime * 0.99999999;
+					currentTime = _totalTime * 0.999999;
 				}
 				//[0, _totalTime)
-				updateMainTimeline(currentTime);
+				*/
+				updateMainTimeline(isThisComplete);
 			}
 			
 			var event:AnimationEvent;
@@ -839,54 +841,71 @@ package dragonBones.animation {
 			}
 		}
 		
-		private function updateMainTimeline(currentTime:Number):void
+		private function updateMainTimeline(isThisComplete:Boolean):void
 		{
 			var frameList:Vector.<Frame> = _clip.frameList;
 			if(frameList.length > 0)
 			{
-				var isArrivedAtNewFrame:Boolean = false;
-				var frameIndex:int = 0;
-				while(!_currentFrame || currentTime > _currentFrame.position + _currentFrame.duration || currentTime < _currentFrame.position)
+				var prevFrame:Frame;
+				var currentFrame:Frame;
+				while(true)
 				{
-					if(isArrivedAtNewFrame)
+					if(_currentFrameIndex < 0)
 					{
-						_armature.arriveAtFrame(_currentFrame, null, this, true);
+						_currentFrameIndex = 0;
+						currentFrame = frameList[_currentFrameIndex];
 					}
-					if(_currentFrame)
+					else if(_currentTime >= _currentFramePosition + _currentFrameDuration)
 					{
-						frameIndex = frameList.indexOf(_currentFrame);
-						frameIndex ++;
-						if(frameIndex >= frameList.length)
+						_currentFrameIndex ++;
+						if(_currentFrameIndex >= frameList.length)
 						{
-							frameIndex = 0;
+							if(isThisComplete)
+							{
+								_currentFrameIndex --;
+								break;
+							}
+							else
+							{
+								_currentFrameIndex = 0;
+							}
 						}
-						_currentFrame = frameList[frameIndex];
+						currentFrame = frameList[_currentFrameIndex];
+					}
+					else if(_currentTime < _currentFramePosition)
+					{
+						_currentFrameIndex --;
+						if(_currentFrameIndex < 0)
+						{
+							_currentFrameIndex = frameList.length - 1;
+						}
+						currentFrame = frameList[_currentFrameIndex];
 					}
 					else
 					{
-						_currentFrame = frameList[0];
-					}
-					if(_currentFrame)
-					{
-						isArrivedAtNewFrame = true;
-					}
-					else
-					{
-						isArrivedAtNewFrame = false;
 						break;
 					}
+					
+					if(prevFrame)
+					{
+						_armature.arriveAtFrame(prevFrame, null, this, true);
+					}
+					
+					_currentFrameDuration = currentFrame.duration;
+					_currentFramePosition = currentFrame.position;
+					prevFrame = currentFrame;
 				}
 				
-				if(isArrivedAtNewFrame)
+				if(currentFrame)
 				{
-					_armature.arriveAtFrame(_currentFrame, null, this, false);
+					_armature.arriveAtFrame(currentFrame, null, this, false);
 				}
 			}
 		}
 		
 		private function hideBones():void
 		{
-			for(var timelineName:String in _clip.hideTimelineNameMap)
+			for each(var timelineName:String in _clip.hideTimelineNameMap)
 			{
 				var bone:Bone = _armature.getBone(timelineName);
 				if(bone)
@@ -898,15 +917,14 @@ package dragonBones.animation {
 		
 		private function clear():void
 		{
-			
-			for each(var timelineState:TimelineState in _timelineStateList)
+			var i:int = _timelineStateList.length;
+			while(i --)
 			{
-				TimelineState.returnObject(timelineState);
+				removeTimelineState(_timelineStateList[i]);
 			}
 			_timelineStateList.length = 0;
 			
 			_armature = null;
-			_currentFrame = null;
 			_clip = null;
 			_mixingTransforms = null;
 		}

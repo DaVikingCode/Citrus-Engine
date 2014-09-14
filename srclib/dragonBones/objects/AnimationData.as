@@ -10,10 +10,9 @@ package dragonBones.objects
 		//overwrite frame tweenEase, [-1, 0):ease in, 0:line easing, (0, 1]:ease out, (1, 2]:ease in out
 		public var tweenEasing:Number;
 		public var autoTween:Boolean;
-		public var lastFrameDuration:Number;
+		public var lastFrameDuration:int;
 		
-		//string map
-		public var hideTimelineNameMap:Object;
+		public var hideTimelineNameMap:Vector.<String>;
 		
 		private var _timelineList:Vector.<TransformTimeline>;
 		public function get timelineList():Vector.<TransformTimeline>
@@ -28,7 +27,8 @@ package dragonBones.objects
 			playTimes = 0;
 			autoTween = true;
 			tweenEasing = NaN;
-			hideTimelineNameMap = {};
+			hideTimelineNameMap = new Vector.<String>;
+			hideTimelineNameMap.fixed = true;
 			
 			_timelineList = new Vector.<TransformTimeline>;
 			_timelineList.fixed = true;
@@ -38,7 +38,8 @@ package dragonBones.objects
 		{
 			super.dispose();
 			
-			//clear
+			hideTimelineNameMap.fixed = false;
+			hideTimelineNameMap.length = 0;
 			hideTimelineNameMap = null;
 			
 			_timelineList.fixed = false;

@@ -1,21 +1,22 @@
-﻿package dragonBones.objects
+package dragonBones.objects
 {
 	import flash.geom.Point;
 	
-	/** @private */
-	final public class DisplayData
+	public final class RectangleData implements IAreaData
 	{
-		public static const ARMATURE:String = "armature";
-		public static const IMAGE:String = "image";
-		
 		public var name:String;
-		public var type:String;
+		
+		public var width:Number;
+		public var height:Number;
 		public var transform:DBTransform;
 		public var pivot:Point;
 		
-		public function DisplayData()
+		public function RectangleData()
 		{
+			width = 0;
+			height = 0;
 			transform = new DBTransform();
+			pivot = new Point();
 		}
 		
 		public function dispose():void

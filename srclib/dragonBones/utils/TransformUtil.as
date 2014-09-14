@@ -1,8 +1,8 @@
-package dragonBones.utils {
-
-	import dragonBones.objects.DBTransform;
-
+package dragonBones.utils
+{
 	import flash.geom.Matrix;
+	
+	import dragonBones.objects.DBTransform;
 	
 	/** @private */
 	final public class TransformUtil
@@ -27,19 +27,31 @@ package dragonBones.utils {
 			transform.skewY = formatRadian(transform.skewY - parent.skewY);
 		}
 		
-		public static function transformToMatrix(transform:DBTransform, matrix:Matrix):void
+		public static function transformToMatrix(transform:DBTransform, matrix:Matrix, keepScale:Boolean = false):void
 		{
-			matrix.a = transform.scaleX * Math.cos(transform.skewY)
-			matrix.b = transform.scaleX * Math.sin(transform.skewY)
-			matrix.c = -transform.scaleY * Math.sin(transform.skewX);
-			matrix.d = transform.scaleY * Math.cos(transform.skewX);
-			matrix.tx = transform.x;
-			matrix.ty = transform.y;
+			if(keepScale)
+			{
+				matrix.a = transform.scaleX * Math.cos(transform.skewY)
+				matrix.b = transform.scaleX * Math.sin(transform.skewY)
+				matrix.c = -transform.scaleY * Math.sin(transform.skewX);
+				matrix.d = transform.scaleY * Math.cos(transform.skewX);
+				matrix.tx = transform.x;
+				matrix.ty = transform.y;
+			}
+			else
+			{
+				matrix.a = Math.cos(transform.skewY)
+				matrix.b = Math.sin(transform.skewY)
+				matrix.c = -Math.sin(transform.skewX);
+				matrix.d = Math.cos(transform.skewX);
+				matrix.tx = transform.x;
+				matrix.ty = transform.y;
+			}
 		}
 		
 		public static function formatRadian(radian:Number):Number
 		{
-			radian %= DOUBLE_PI;
+			//radian %= DOUBLE_PI;
 			if (radian > Math.PI)
 			{
 				radian -= DOUBLE_PI;

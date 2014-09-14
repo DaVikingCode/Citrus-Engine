@@ -1,14 +1,27 @@
-package dragonBones.objects {
-
+﻿package dragonBones.objects
+{
 	import dragonBones.core.DragonBones;
 	import dragonBones.core.dragonBones_internal;
+	import dragonBones.objects.AnimationData;
+	import dragonBones.objects.ArmatureData;
+	import dragonBones.objects.BoneData;
+	import dragonBones.objects.DBTransform;
+	import dragonBones.objects.DisplayData;
+	import dragonBones.objects.Frame;
+	import dragonBones.objects.SkeletonData;
+	import dragonBones.objects.SkinData;
+	import dragonBones.objects.SlotData;
+	import dragonBones.objects.Timeline;
+	import dragonBones.objects.TransformFrame;
+	import dragonBones.objects.TransformTimeline;
 	import dragonBones.textures.TextureData;
 	import dragonBones.utils.ConstValues;
 	import dragonBones.utils.DBDataUtil;
-
+	
 	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 	
 	use namespace dragonBones_internal;
 	
@@ -52,7 +65,7 @@ package dragonBones.objects {
 			return textureAtlasData;
 		}
 		
-		public static function parseSkeletonData(rawData:Object):SkeletonData
+		public static function parseSkeletonData(rawData:Object, ifSkipAnimationData:Boolean=false, outputAnimationDictionary:Dictionary = null):SkeletonData
 		{
 			if(!rawData)
 			{
@@ -80,13 +93,13 @@ package dragonBones.objects {
 			
 			for each(var armatureObject:Object in rawData[ConstValues.ARMATURE])
 			{
-				data.addArmatureData(parseArmatureData(armatureObject, data, frameRate));
+				data.addArmatureData(parseArmatureData(armatureObject, data, frameRate, ifSkipAnimationData, outputAnimationDictionary));
 			}
 			
 			return data;
 		}
 		
-		private static function parseArmatureData(armatureObject:Object, data:SkeletonData, frameRate:uint):ArmatureData
+		private static function parseArmatureData(armatureObject:Object, data:SkeletonData, frameRate:uint, ifSkipAnimationData:Boolean, outputAnimationDictionary:Dictionary):ArmatureData
 		{
 			var armatureData:ArmatureData = new ArmatureData();
 			armatureData.name = armatureObject[ConstValues.A_NAME];
@@ -104,9 +117,44 @@ package dragonBones.objects {
 			DBDataUtil.transformArmatureData(armatureData);
 			armatureData.sortBoneDataList();
 			
-			for each(var animationObject:Object in armatureObject[ConstValues.ANIMATION])
+			var animationObject:Object;
+			if(ifSkipAnimationData)
 			{
-				armatureData.addAnimationData(parseAnimationData(animationObject, armatureData, frameRate));
+				if(outputAnimationDictionary!= null)
+				{
+					outputAnimationDictionary[armatureData.name] = new Dictionary();
+				}
+				
+				var index:int = 0;
+				for each(animationObject in armatureObject[ConstValues.ANIMATION])
+				{
+					if(index == 0)
+					{
+						armatureData.addAnimationData(parseAnimationData(animationObject, armatureData, frameRate));
+					}
+					else if(outputAnimationDictionary != null)
+					{
+						outputAnimationDictionary[armatureData.name][animationObject[ConstValues.A_NAME]] = animationObject;
+					}
+					index++;
+				}
+			}
+			else
+			{
+				for each(animationObject in armatureObject[ConstValues.ANIMATION])
+				{
+					armatureData.addAnimationData(parseAnimationData(animationObject, armatureData, frameRate));
+				}
+			}
+			
+			for each(var rectangleObject:Object in armatureObject[ConstValues.RECTANGLE])
+			{
+				armatureData.addAreaData(parseRectangleData(rectangleObject));
+			}
+			
+			for each(var ellipseObject:Object in armatureObject[ConstValues.ELLIPSE])
+			{
+				armatureData.addAreaData(parseEllipseData(ellipseObject));
 			}
 			
 			return armatureData;
@@ -124,7 +172,41 @@ package dragonBones.objects {
 			parseTransform(boneObject[ConstValues.TRANSFORM], boneData.global);
 			boneData.transform.copy(boneData.global);
 			
+			for each(var rectangleObject:Object in boneObject[ConstValues.RECTANGLE])
+			{
+				boneObject.addAreaData(parseRectangleData(rectangleObject));
+			}
+			
+			for each(var ellipseObject:Object in boneObject[ConstValues.ELLIPSE])
+			{
+				boneObject.addAreaData(parseEllipseData(ellipseObject));
+			}
+			
 			return boneData;
+		}
+		
+		private static function parseRectangleData(rectangleObject:Object):RectangleData
+		{
+			var rectangleData:RectangleData = new RectangleData();
+			rectangleData.name = rectangleObject[ConstValues.A_NAME];
+			rectangleData.width = Number(rectangleObject[ConstValues.A_WIDTH]);
+			rectangleData.height = Number(rectangleObject[ConstValues.A_HEIGHT]);
+			
+			parseTransform(rectangleObject[ConstValues.TRANSFORM], rectangleData.transform, rectangleData.pivot);
+			
+			return rectangleData;
+		}
+		
+		private static function parseEllipseData(ellipseObject:Object):EllipseData
+		{
+			var ellipseData:EllipseData = new EllipseData();
+			ellipseData.name = ellipseObject[ConstValues.A_NAME];
+			ellipseData.width = Number(ellipseObject[ConstValues.A_WIDTH]);
+			ellipseData.height = Number(ellipseObject[ConstValues.A_HEIGHT]);
+			
+			parseTransform(ellipseObject[ConstValues.TRANSFORM], ellipseData.transform, ellipseData.pivot);
+			
+			return ellipseData;
 		}
 		
 		private static function parseSkinData(skinObject:Object, data:SkeletonData):SkinData
@@ -173,14 +255,15 @@ package dragonBones.objects {
 			return displayData;
 		}
 		
-		private static function parseAnimationData(animationObject:Object, armatureData:ArmatureData, frameRate:uint):AnimationData
+		/** @private */
+		dragonBones_internal static function parseAnimationData(animationObject:Object, armatureData:ArmatureData, frameRate:uint):AnimationData
 		{
 			var animationData:AnimationData = new AnimationData();
 			animationData.name = animationObject[ConstValues.A_NAME];
 			animationData.frameRate = frameRate;
 			animationData.playTimes = int(animationObject[ConstValues.A_LOOP]);
 			animationData.fadeTime = Number(animationObject[ConstValues.A_FADE_IN_TIME]);
-			animationData.duration = (Number(animationObject[ConstValues.A_DURATION]) || 1)/ frameRate;
+			animationData.duration = Math.round((Number(animationObject[ConstValues.A_DURATION]) || 1) / frameRate * 1000);
 			animationData.scale = getNumber(animationObject, ConstValues.A_SCALE, 1) || 0;
 			//use frame tweenEase, NaN
 			//overwrite frame tweenEase, [-1, 0):ease in, 0:line easing, (0, 1]:ease out, (1, 2]:ease in out
@@ -189,7 +272,7 @@ package dragonBones.objects {
 			
 			parseTimeline(animationObject, animationData, parseMainFrame, frameRate);
 			
-			var lastFrameDuration:Number = animationData.duration;
+			var lastFrameDuration:int = animationData.duration;
 			for each(var timelineObject:Object in animationObject[ConstValues.TIMELINE])
 			{
 				var timeline:TransformTimeline = parseTransformTimeline(timelineObject, animationData.duration, frameRate);
@@ -211,7 +294,7 @@ package dragonBones.objects {
 		
 		private static function parseTimeline(timelineObject:Object, timeline:Timeline, frameParser:Function, frameRate:uint):void
 		{
-			var position:Number = 0;
+			var position:int = 0;
 			var frame:Frame;
 			for each(var frameObject:Object in timelineObject[ConstValues.FRAME])
 			{
@@ -226,7 +309,7 @@ package dragonBones.objects {
 			}
 		}
 		
-		private static function parseTransformTimeline(timelineObject:Object, duration:Number, frameRate:uint):TransformTimeline
+		private static function parseTransformTimeline(timelineObject:Object, duration:int, frameRate:uint):TransformTimeline
 		{
 			var timeline:TransformTimeline = new TransformTimeline();
 			timeline.name = timelineObject[ConstValues.A_NAME];
@@ -241,7 +324,7 @@ package dragonBones.objects {
 		
 		private static function parseFrame(frameObject:Object, frame:Frame, frameRate:uint):void
 		{
-			frame.duration = (Number(frameObject[ConstValues.A_DURATION]) || 1) / frameRate;
+			frame.duration = Math.round((Number(frameObject[ConstValues.A_DURATION]) || 1) / frameRate * 1000);
 			frame.action = frameObject[ConstValues.A_ACTION];
 			frame.event = frameObject[ConstValues.A_EVENT];
 			frame.sound = frameObject[ConstValues.A_SOUND];
@@ -261,8 +344,8 @@ package dragonBones.objects {
 			
 			frame.visible = !getBoolean(frameObject, ConstValues.A_HIDE, false);
 			
-			//NaN:no tween, [-1, 0):ease in, 0:line easing, (0, 1]:ease out, (1, 2]:ease in out
-			frame.tweenEasing = getNumber(frameObject, ConstValues.A_TWEEN_EASING, 0);
+			//NaN:no tween, 10:auto tween, [-1, 0):ease in, 0:line easing, (0, 1]:ease out, (1, 2]:ease in out
+			frame.tweenEasing = getNumber(frameObject, ConstValues.A_TWEEN_EASING, 10);
 			frame.tweenRotate = Number(frameObject[ConstValues.A_TWEEN_ROTATE]);
 			frame.tweenScale = getBoolean(frameObject, ConstValues.A_TWEEN_SCALE, true);
 			frame.displayIndex = Number(frameObject[ConstValues.A_DISPLAY_INDEX]);
@@ -272,6 +355,9 @@ package dragonBones.objects {
 			
 			parseTransform(frameObject[ConstValues.TRANSFORM], frame.global, frame.pivot);
 			frame.transform.copy(frame.global);
+			
+			frame.scaleOffset.x = getNumber(frameObject, ConstValues.A_SCALE_X_OFFSET, 0);
+			frame.scaleOffset.y = getNumber(frameObject, ConstValues.A_SCALE_Y_OFFSET, 0);
 			
 			var colorTransformObject:Object = frameObject[ConstValues.COLOR_TRANSFORM];
 			if(colorTransformObject)
@@ -356,33 +442,3 @@ package dragonBones.objects {
 		}
 	}
 }
-
-/*
-import dragonBones.utils.ConstValues;
-
-class Update2_3To3_0
-{
-	public static function format(skeleton:Object):void
-	{
-		//删除为NaN的TweenEasing, 未设置tweenEasing的animation则使用auto tween
-		for each(var armatureObject:Object in skeleton[ConstValues.ARMATURE])
-		{
-			//删除两个旧属性
-			for each(var boneObject:Object in armatureObject[ConstValues.BONE])
-			{
-				if(String(boneObject[ConstValues.A_FIXED_ROTATION]) == "true")
-				{
-					boneObject[ConstValues.A_INHERIT_ROTATION] = 0;
-				}
-				delete boneObject[ConstValues.A_FIXED_ROTATION];
-				
-				if(String(boneObject[ConstValues.A_SCALE_MODE]) == "2")
-				{
-					boneObject[ConstValues.A_INHERIT_SCALE] = 1;
-				}
-				delete boneObject[ConstValues.A_SCALE_MODE];
-			}
-		}
-	}
-}
-*/

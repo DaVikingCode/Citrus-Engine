@@ -8,7 +8,7 @@ package dragonBones.objects
 			return _frameList;
 		}
 		
-		public var duration:Number;
+		public var duration:int;
 		public var scale:Number;
 		
 		public function Timeline()

@@ -1,16 +1,16 @@
-package dragonBones.display {
-
+package dragonBones.display
+{
+	import flash.display.BlendMode;
+	import flash.geom.Matrix;
+	
 	import dragonBones.Armature;
 	import dragonBones.Slot;
 	import dragonBones.core.dragonBones_internal;
-
+	
 	import starling.display.BlendMode;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Quad;
-
-	import flash.display.BlendMode;
-	import flash.geom.Matrix;
 	
 	use namespace dragonBones_internal;
 	

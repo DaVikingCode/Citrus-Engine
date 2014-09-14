@@ -1,5 +1,5 @@
-package dragonBones.animation {
-
+﻿package dragonBones.animation
+{
 	import flash.utils.getTimer;
 	
 	/**

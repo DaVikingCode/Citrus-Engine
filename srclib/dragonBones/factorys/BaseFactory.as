@@ -1,5 +1,5 @@
-package dragonBones.factorys {
-
+package dragonBones.factorys
+{
 	import dragonBones.Armature;
 	import dragonBones.Bone;
 	import dragonBones.Slot;
@@ -13,7 +13,7 @@ package dragonBones.factorys {
 	import dragonBones.objects.SkinData;
 	import dragonBones.objects.SlotData;
 	import dragonBones.textures.ITextureAtlas;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.display.MovieClip;
@@ -26,6 +26,7 @@ package dragonBones.factorys {
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	
 	use namespace dragonBones_internal;
 	
@@ -254,10 +255,6 @@ package dragonBones.factorys {
 			}
 			
 			skinData = armatureData.getSkinData(skinName);
-			if(!skinData)
-			{
-				throw new ArgumentError();
-			}
 			
 			var armature:Armature = generateArmature();
 			armature.name = armatureName;
@@ -276,12 +273,24 @@ package dragonBones.factorys {
 			buildBones(armature, armatureData);
 			
 			//
-			buildSlots(armature, armatureData, skinData, skinDataCopy);
+			if(skinData)
+			{
+				buildSlots(armature, armatureData, skinData, skinDataCopy);
+			}
 			
 			//
 			armature.advanceTime(0);
-			
 			return armature;
+		}
+		
+		/**
+		 * Add a new animation to armature.
+		 * @param animationRawData (XML, JSON).
+		 * @param target armature.
+		 */
+		public function addAnimationToArmature(animationRawData:Object, armature:Armature):void
+		{
+			armature._armatureData.addAnimationData(DataParser.parseAnimationDataByAnimationRawData(animationRawData,armature._armatureData));
 		}
 		
 		/**
@@ -399,6 +408,7 @@ package dragonBones.factorys {
 								helpArray[i] = childArmature;
 							}
 							break;
+						
 						case DisplayData.IMAGE:
 						default:
 							helpArray[i] = generateDisplay(_textureAtlasDic[_currentTextureAtlasName], displayData.name, displayData.pivot.x, displayData.pivot.y);
@@ -492,9 +502,11 @@ package dragonBones.factorys {
 		 * </listing>
 		 * @param ByteArray. Represents the raw data for the whole DragonBones system.
 		 * @param String. (optional) The SkeletonData instance name.
+		 * @param Boolean. (optional) flag if delay animation data parsing. Delay animation data parsing can reduce the data paring time to improve loading performance.
+		 * @param Dictionary. (optional) output parameter. If it is not null, and ifSkipAnimationData is true, it will be fulfilled animationData, so that developers can parse it later.
 		 * @return A SkeletonData instance.
 		 */
-		public function parseData(bytes:ByteArray, dataName:String = null):SkeletonData
+		public function parseData(bytes:ByteArray, dataName:String = null, ifSkipAnimationData:Boolean = false, outputAnimationDictionary:Dictionary = null):SkeletonData
 		{
 			if(!bytes)
 			{
@@ -502,7 +514,7 @@ package dragonBones.factorys {
 			}
 			var decompressedData:DecompressedData = DataParser.decompressData(bytes);
 			
-			var data:SkeletonData = DataParser.parseData(decompressedData.dragonBonesData);
+			var data:SkeletonData = DataParser.parseData(decompressedData.dragonBonesData, ifSkipAnimationData, outputAnimationDictionary);
 			
 			dataName = dataName || data.name;
 			addSkeletonData(data, dataName);

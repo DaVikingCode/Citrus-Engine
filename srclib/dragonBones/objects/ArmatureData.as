@@ -23,11 +23,19 @@ package dragonBones.objects
 			return _animationDataList;
 		}
 		
+		private var _areaDataList:Vector.<IAreaData>;
+		public function get areaDataList():Vector.<IAreaData>
+		{
+			return _areaDataList;
+		}
+		
 		public function ArmatureData()
 		{
 			_boneDataList = new Vector.<BoneData>(0, true);
 			_skinDataList = new Vector.<SkinData>(0, true);
 			_animationDataList = new Vector.<AnimationData>(0, true);
+			
+			_areaDataList = new Vector.<IAreaData>(0, true);
 		}
 		
 		public function dispose():void
@@ -75,7 +83,7 @@ package dragonBones.objects
 		
 		public function getSkinData(skinName:String):SkinData
 		{
-			if(!skinName)
+			if(!skinName && _skinDataList.length > 0)
 			{
 				return _skinDataList[0];
 			}
@@ -185,6 +193,38 @@ package dragonBones.objects
 			while(i --)
 			{
 				_boneDataList[i] = helpArray[i][1];
+			}
+		}
+		
+		public function getAreaData(areaName:String):IAreaData
+		{
+			if(!areaName && _areaDataList.length > 0)
+			{
+				return _areaDataList[0];
+			}
+			var i:int = _areaDataList.length;
+			while(i --)
+			{
+				if(_areaDataList[i]["name"] == areaName)
+				{
+					return _areaDataList[i];
+				}
+			}
+			return null;
+		}
+		
+		public function addAreaData(areaData:IAreaData):void
+		{
+			if(!areaData)
+			{
+				throw new ArgumentError();
+			}
+			
+			if(_areaDataList.indexOf(areaData) < 0)
+			{
+				_areaDataList.fixed = false;
+				_areaDataList[_areaDataList.length] = areaData;
+				_areaDataList.fixed = true;
 			}
 		}
 	}

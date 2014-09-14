@@ -1,5 +1,8 @@
-package dragonBones {
-
+﻿package dragonBones
+{
+	import flash.geom.Matrix;
+	import flash.geom.Point;
+	
 	import dragonBones.animation.AnimationState;
 	import dragonBones.animation.TimelineState;
 	import dragonBones.core.DBObject;
@@ -12,9 +15,6 @@ package dragonBones {
 	import dragonBones.objects.FrameCached;
 	import dragonBones.objects.TimelineCached;
 	import dragonBones.objects.TransformFrame;
-
-	import flash.geom.Matrix;
-	import flash.geom.Point;
 	
 	use namespace dragonBones_internal;
 	
@@ -421,10 +421,17 @@ package dragonBones {
 				this._global.skewY = this._origin.skewY + this._offset.skewY + _tween.skewY;
 			}
 			
+			/*
 			this._globalTransformMatrix.a = this._global.scaleX * Math.cos(this._global.skewY);
 			this._globalTransformMatrix.b = this._global.scaleX * Math.sin(this._global.skewY);
 			this._globalTransformMatrix.c = -this._global.scaleY * Math.sin(this._global.skewX);
 			this._globalTransformMatrix.d = this._global.scaleY * Math.cos(this._global.skewX);
+			*/
+			
+			this._globalTransformMatrix.a = this._offset.scaleX * Math.cos(this._global.skewY);
+			this._globalTransformMatrix.b = this._offset.scaleX * Math.sin(this._global.skewY);
+			this._globalTransformMatrix.c = -this._offset.scaleY * Math.sin(this._global.skewX);
+			this._globalTransformMatrix.d = this._offset.scaleY * Math.cos(this._global.skewX);
 			
 			if(_frameCachedDuration > 0)    // && _frameCachedPosition >= 0
 			{

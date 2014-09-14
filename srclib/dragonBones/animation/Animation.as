@@ -1,5 +1,5 @@
-package dragonBones.animation {
-
+﻿package dragonBones.animation
+{
 	import dragonBones.Armature;
 	import dragonBones.Slot;
 	import dragonBones.core.dragonBones_internal;
@@ -19,7 +19,7 @@ package dragonBones.animation {
 		public static const SAME_LAYER:String = "sameLayer";
 		public static const SAME_GROUP:String = "sameGroup";
 		public static const SAME_LAYER_AND_GROUP:String = "sameLayerAndGroup";
-		public static const ALL:String = "all";		
+		public static const ALL:String = "all";
 		
 		/**
 		* Unrecommended API. Recommend use animationList.
@@ -238,7 +238,6 @@ package dragonBones.animation {
 			{
 				return null;
 			}
-			
 			_isPlaying = true;
 			_isFading = true;
 			
@@ -251,13 +250,12 @@ package dragonBones.animation {
 			}
 			else
 			{
-				durationScale = duration / animationData.duration;
+				durationScale = duration * 0.001 / animationData.duration;
 			}
 			
 			playTimes = isNaN(playTimes)?animationData.playTimes:playTimes;
 			
 			var animationState:AnimationState;
-			var j:int;
 			switch(fadeOutMode)
 			{
 				case NONE:
@@ -328,6 +326,8 @@ package dragonBones.animation {
 					slot.childArmature.animation.gotoAndPlay(animationName, fadeInTime);
 				}
 			}
+			
+			_lastAnimationState.advanceTime(0);
 			
 			return _lastAnimationState;
 		}

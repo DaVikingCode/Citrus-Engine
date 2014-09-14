@@ -1,5 +1,5 @@
-package dragonBones.textures {
-
+package dragonBones.textures
+{
 	import flash.geom.Rectangle;
 
 	public final class TextureData
