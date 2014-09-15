@@ -50,9 +50,10 @@ package citrus.input.controllers.gamepad
 			
 			_gamePadManager = GamePadManager.getInstance();
 			_gamePads = new Vector.<Gamepad>();
+			var gp:Gamepad;
 			for (var i:int = 0; i < _gamePadManager.numGamePads; i++)
 			{
-				var gp:Gamepad = _gamePadManager.getGamePadAt(i);
+				gp = _gamePadManager.getGamePadAt(i);
 				_gamePads.push(gp);
 			}
 				
@@ -66,7 +67,7 @@ package citrus.input.controllers.gamepad
 				 _gamePad.triggerActivity = true;
 			}
 			else
-			for each (var gp:Gamepad in _gamePads)
+			for each (gp in _gamePads)
 				gp.triggerActivity = true;
 			
 			if (_route)

@@ -1,5 +1,5 @@
-V3.1.10, Work In Progress
--------------------------
+V3.1.10, 09 15 2014
+-------------------
 - Starling updated on 1.5.1
 - DragonBones updated on 3.0
 - Nape updated on 2.0.16

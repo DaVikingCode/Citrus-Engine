@@ -85,7 +85,6 @@
 			<arg line="-include-sources ../src/citrus/input/controllers/AVirtualButton.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/AVirtualJoystick.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/Keyboard.as" />
-			<arg line="-include-sources ../src/citrus/input/controllers/OUYAGamepad.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/TimeShifter.as" />
 			<arg line="-include-sources ../src/citrus/input/controllers/displaylist" />
 			<arg line="-include-sources ../src/citrus/input/controllers/gamepad" />
@@ -131,8 +130,6 @@
 			
 			<arg line="-include-sources ../srclib/dragonBones/animation" />
 			<arg line="-include-sources ../srclib/dragonBones/core" />
-			<arg line="-include-sources ../srclib/dragonBones/display/IDisplayBridge.as" />
-			<arg line="-include-sources ../srclib/dragonBones/display/NativeDisplayBridge.as" />
 			<arg line="-include-sources ../srclib/dragonBones/display/NativeSlot.as" />
 			<arg line="-include-sources ../srclib/dragonBones/events" />
 			<arg line="-include-sources ../srclib/dragonBones/factorys/BaseFactory.as" />
@@ -147,7 +144,6 @@
 			<arg line="-include-sources ../srclib/dragonBones/Slot.as" />
 			
 			<arg line="-include-libraries ../lib/EazeTween.swc" />
-			<arg line="-include-libraries ../lib/gameinputcontrolname.swc" />
 			<arg line="-include-libraries ../lib/gamepadLayout.swc" />
 			<arg line="-include-libraries ../lib/signals.swc" />
 			<!--<arg line="-external-library-path+=../lib/signals.swc"/>-->
