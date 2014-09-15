@@ -238,15 +238,17 @@ package citrus.core.starling {
 			if (!_starling.isStarted)
 				_starling.start();
 				
-			_starling.addEventListener(starling.events.Event.ROOT_CREATED, function():void
-			{
-				_starling.removeEventListener(starling.events.Event.ROOT_CREATED, arguments.callee);
+			_starling.addEventListener(starling.events.Event.ROOT_CREATED, _starlingRootCreated);
+		}
+		
+		protected function _starlingRootCreated(evt:starling.events.Event):void {
+			
+			_starling.removeEventListener(starling.events.Event.ROOT_CREATED, _starlingRootCreated);
 				
-				stage.removeEventListener(flash.events.Event.RESIZE, handleStageResize);
-				
-				handleStarlingReady();
-				setupStats();
-			});
+			stage.removeEventListener(flash.events.Event.RESIZE, handleStageResize);
+			
+			handleStarlingReady();
+			setupStats();
 		}
 		
 		/**

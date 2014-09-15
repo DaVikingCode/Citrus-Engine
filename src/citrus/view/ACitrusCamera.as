@@ -338,7 +338,7 @@ package citrus.view {
 				
 				if (MathUtils.DistanceBetweenTwoPoints(newTarget.x,moveTarget.x,newTarget.y,moveTarget.y) <= 0.1)
 				{
-					_ce.removeEventListener(Event.ENTER_FRAME, arguments.callee);
+					_ce.removeEventListener(Event.ENTER_FRAME, switchTo);
 					target = newTarget;
 					easing = oldEasing;
 					deadZone = oldDeadZone;
