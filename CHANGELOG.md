@@ -1,3 +1,7 @@
+V3.1.11, Work in progress
+------------------------
+- Feathers updated on 2.0 beta
+
 V3.1.10, 09 15 2014
 -------------------
 - Starling updated on 1.5.1
