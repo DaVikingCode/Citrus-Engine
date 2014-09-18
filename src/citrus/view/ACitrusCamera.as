@@ -4,12 +4,10 @@ package citrus.view {
 	import citrus.core.CitrusEngine;
 	import citrus.math.MathUtils;
 	import citrus.math.MathVector;
-	import flash.events.Event;
-
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.system.Capabilities;
+
 
 
 	/**
@@ -92,6 +90,13 @@ package citrus.view {
 		 * The camera position to be set manually if target is not set.
 		 */
 		protected var _manualPosition:Point;
+		
+		/**
+		 * list of functions/arguments to run in update call for camera sync.
+		 * object structure : {func:Function, args:Object}
+		 * function should return a boolean, if it returns true, the object is removed from the list.
+		 */
+		protected var _callOnUpdateQueue:Vector.<Object> = new Vector.<Object>();
 		
 		/**
 		 * decides wether the camera will be updated by citrus engine.
@@ -314,6 +319,7 @@ package citrus.view {
 		 */
 		public function switchToTarget(newTarget:Object, speed:Number = 10, onComplete:Function = null):void
 		{
+			trace(camPos.x, camPos.y);
 			var moveTarget:Point = new Point(camPos.x,camPos.y);
 			var vec:MathVector = new MathVector(0, 0);
 			
@@ -325,29 +331,33 @@ package citrus.view {
 			
 			target = moveTarget;
 				
-			var switchTo:Function = function(e:Event):void
-			{
-				if (!_ce.playing)
-					return;
-					
-				vec.setTo(newTarget.x - moveTarget.x, newTarget.y - moveTarget.y);
-				if(vec.length > speed)
-					vec.length = speed;
-				moveTarget.x += vec.x;
-				moveTarget.y += vec.y;
+			_callOnUpdateQueue.push({
+				func:switchToTargetUpdate, 
+				args: { newTarget:newTarget, speed:speed, onComplete:onComplete, moveTarget:moveTarget, vec:vec, oldEasing:oldEasing, oldDeadZone:oldDeadZone }
+			});
+		}
+		
+		
+		protected function switchToTargetUpdate(args:Object):Boolean
+		{
+			args.vec.setTo(args.newTarget.x - args.moveTarget.x, args.newTarget.y - args.moveTarget.y);
+			if(args.vec.length > args.speed)
+				args.vec.length = args.speed;
 				
-				if (MathUtils.DistanceBetweenTwoPoints(newTarget.x,moveTarget.x,newTarget.y,moveTarget.y) <= 0.1)
-				{
-					_ce.removeEventListener(Event.ENTER_FRAME, switchTo);
-					target = newTarget;
-					easing = oldEasing;
-					deadZone = oldDeadZone;
-					if (onComplete != null)
-						onComplete();
-				}
+			args.moveTarget.x += args.vec.x;
+			args.moveTarget.y += args.vec.y;
+			
+			if (MathUtils.DistanceBetweenTwoPoints(args.newTarget.x,args.moveTarget.x,args.newTarget.y,args.moveTarget.y) <= 0.1)
+			{
+				target = args.newTarget;
+				easing = args.oldEasing;
+				deadZone = args.oldDeadZone;
+				if (args.onComplete != null)
+					args.onComplete();
+				return true;
 			}
 			
-			_ce.addEventListener(Event.ENTER_FRAME, switchTo);
+			return false;
 		}
 		
 		/**
@@ -435,9 +445,15 @@ package citrus.view {
 		 * Update the camera.
 		 */
 		public function update():void {
+			if (_callOnUpdateQueue.length > 0)
+				for (var k:String in _callOnUpdateQueue) {
+					if ((_callOnUpdateQueue[k].func)(_callOnUpdateQueue[k].args))
+						_callOnUpdateQueue.splice(k as int, 1);
+				}
 		}
 		
 		public function destroy():void {
+			_callOnUpdateQueue.length = 0;
 			_ce.onStageResize.remove(onResize);
 		}
 		

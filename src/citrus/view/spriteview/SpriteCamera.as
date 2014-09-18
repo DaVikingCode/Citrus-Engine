@@ -285,7 +285,7 @@ package citrus.view.spriteview {
 			//offset
 			_m.translate(offset.x, offset.y);
 			
-			_camPos = _m.transformPoint(_p);
+			pointFromLocal(offset.x, offset.y, _camPos);
 			
 			(_viewRoot as Sprite).transform.matrix = _m;
 
