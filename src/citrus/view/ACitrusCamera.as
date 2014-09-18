@@ -91,11 +91,7 @@ package citrus.view {
 		 */
 		protected var _manualPosition:Point;
 		
-		/**
-		 * list of functions/arguments to run in update call for camera sync.
-		 * object structure : {func:Function, args:Object}
-		 * function should return a boolean, if it returns true, the object is removed from the list.
-		 */
+		
 		protected var _callOnUpdateQueue:Vector.<Object> = new Vector.<Object>();
 		
 		/**
@@ -486,6 +482,16 @@ package citrus.view {
 		
 		public function get manualPosition():Point {	
 			return _manualPosition;
+		}
+		
+		/**
+		 * list of functions/arguments to run in update call for camera sync.
+		 * object structure : {func:Function, args:Object}
+		 * function should return a boolean, if it returns true, the object is removed from the list.
+		 */
+		public function get callOnUpdateQueue():Vector.<Object>
+		{
+			return _callOnUpdateQueue;
 		}
 		
 		public function set allowRotation(value:Boolean):void {
