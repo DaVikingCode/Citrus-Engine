@@ -67,7 +67,7 @@ package citrus.sounds
 			_ce.sound.addDispatchChild(this);
 			
 			_name = name;
-			if (params["sound"] == null)
+            if (!("sound" in params) || params["sound"] == null)
 				throw new Error(String(String(this) + " sound "+ name+ " has no sound param defined."));
 				
 			soundInstances = new Vector.<CitrusSoundInstance>();
