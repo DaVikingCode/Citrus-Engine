@@ -22,6 +22,9 @@ package citrus.core {
 		private var _view:ACitrusView;
 		private var _istate:IState;
 
+		private var _garbage:Array = [];
+		private var _numObjects:uint = 0;
+
 		public function MediatorState(istate:IState) {
 			_istate = istate;
 		}
@@ -71,42 +74,26 @@ package citrus.core {
 		 */
 		public function update(timeDelta:Number):void {
 
-			// Search objects to destroy
-			var garbage:Array = [];
-			var n:uint = _objects.length;
+			_numObjects = _objects.length;
 			
 			var object:CitrusObject;
 
-			for (var i:uint = 0; i < n; ++i) {
-
-				object = _objects[i];
-
+			for (var i:uint = 0; i < _numObjects; ++i) { //run through objects from 'left' to 'right'
+				object = _objects.shift(); // get first object in list
 				if (object.kill)
-					garbage.push(object);
-				else if (object.updateCallEnabled)
-					object.update(timeDelta);
+					_garbage.push(object); // push object to garbage
+				else {
+					_objects.push(object); // re-insert object at the end of _objects
+					if (object.updateCallEnabled)
+						object.update(timeDelta);
+				}
 			}
 
 			// Destroy all objects marked for destroy
 			// TODO There might be a limit on the number of Box2D bodies that you can destroy in one tick?
-			n = garbage.length;
 			var garbageObject:CitrusObject;
-			for (i = 0; i < n; ++i) {
-				garbageObject = garbage[i];
-				_objects.splice(_objects.indexOf(garbageObject), 1);
-
-				if (garbageObject is Entity)
-				{
-					var views:Vector.<Component> = (garbageObject as Entity).lookupComponentsByType(ViewComponent);
-						if (views.length > 0)
-							for each(var view:ViewComponent in views)
-								_view.removeArt(view);
-				}
-				else
-					_view.removeArt(garbageObject);
-
-				garbageObject.destroy();
-			}
+			while((garbageObject = _garbage.shift()) != null)
+				removeImmediately(garbageObject);
 
 			for each (var poolObject:PoolObject in _poolObjects)
 				poolObject.updatePhysics(timeDelta);
@@ -191,8 +178,18 @@ package citrus.core {
 		public function removeImmediately(object:CitrusObject):void {
 			object.kill = true;
 			_objects.splice(_objects.indexOf(object), 1);
+			if (object is Entity)
+			{
+				var views:Vector.<Component> = (object as Entity).lookupComponentsByType(ViewComponent);
+				if (views.length > 0)
+					for each(var view:ViewComponent in views)
+						_view.removeArt(view);
+			}
+			else
+				_view.removeArt(object);
 			object.destroy();
-			_view.removeArt(object);
+
+			_numObjects--;
 		}
 
 		/**
