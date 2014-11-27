@@ -79,11 +79,15 @@ package citrus.core {
 			var object:CitrusObject;
 
 			for (var i:uint = 0; i < _numObjects; ++i) { //run through objects from 'left' to 'right'
+			
 				object = _objects.shift(); // get first object in list
+				
 				if (object.kill)
 					_garbage.push(object); // push object to garbage
+					
 				else {
 					_objects.push(object); // re-insert object at the end of _objects
+					
 					if (object.updateCallEnabled)
 						object.update(timeDelta);
 				}
@@ -176,20 +180,25 @@ package citrus.core {
 		}
 		
 		public function removeImmediately(object:CitrusObject):void {
+			
 			object.kill = true;
+			
 			_objects.splice(_objects.indexOf(object), 1);
-			if (object is Entity)
-			{
+			
+			if (object is Entity) {
+				
 				var views:Vector.<Component> = (object as Entity).lookupComponentsByType(ViewComponent);
+				
 				if (views.length > 0)
 					for each(var view:ViewComponent in views)
 						_view.removeArt(view);
-			}
-			else
+						
+			} else
 				_view.removeArt(object);
+			
 			object.destroy();
 
-			_numObjects--;
+			--_numObjects;
 		}
 
 		/**
