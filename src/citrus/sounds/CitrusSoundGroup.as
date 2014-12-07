@@ -138,6 +138,15 @@ package citrus.sounds
 			return _volume;
 		}
 		
+		public function get isPlaying():Boolean
+		{
+			for each(var s:CitrusSound in _sounds)
+				if(s.isPlaying)
+					return true;
+					
+			return false;
+		}
+		
 		public function get groupID():String
 		{
 			return _groupID;
