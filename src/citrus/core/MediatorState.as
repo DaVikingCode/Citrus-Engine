@@ -39,14 +39,11 @@ package citrus.core {
 
 			_poolObjects.length = 0;
 			
-			var n:uint = _objects.length;
-			for (var i:int = n - 1; i >= 0; --i) {
-				var object:CitrusObject = _objects[i];
-				object.destroy();
-
-				_view.removeArt(object);
-			}
-			_objects.length = 0;
+			_numObjects = _objects.length;
+			var co:CitrusObject;
+			while((co = _objects.shift()) != null)
+				removeImmediately(co);
+			_numObjects = _objects.length = 0;
 
 			_view.destroy();
 			
@@ -176,8 +173,17 @@ package citrus.core {
 		}
 		
 		public function removeImmediately(object:CitrusObject):void {
+			if(objects == null)
+				return;
+				
+			var i:uint = _objects.indexOf(object);
+			
+			if(i < 0)
+				return;
+				
 			object.kill = true;
-			_objects.splice(_objects.indexOf(object), 1);
+			_objects.splice(i, 1);
+			
 			if (object is Entity)
 			{
 				var views:Vector.<Component> = (object as Entity).lookupComponentsByType(ViewComponent);
@@ -187,6 +193,7 @@ package citrus.core {
 			}
 			else
 				_view.removeArt(object);
+				
 			object.destroy();
 
 			_numObjects--;
