@@ -1,5 +1,6 @@
 package citrus.core {
 
+	import citrus.physics.APhysicsEngine;
 	import citrus.datastructures.PoolObject;
 	import citrus.objects.APhysicsObject;
 	import citrus.system.Component;
@@ -41,7 +42,7 @@ package citrus.core {
 			
 			_numObjects = _objects.length;
 			var co:CitrusObject;
-			while((co = _objects.shift()) != null)
+			while((co = _objects.pop()) != null)
 				removeImmediately(co);
 			_numObjects = _objects.length = 0;
 
@@ -120,7 +121,11 @@ package citrus.core {
 			if (object is APhysicsObject)
 				(object as APhysicsObject).addPhysics();
 			
-			_objects.push(object);
+			if(object is APhysicsEngine)
+				_objects.unshift(object);
+			else
+				_objects.push(object);
+				
 			_view.addArt(object);
 			
 			return object;
