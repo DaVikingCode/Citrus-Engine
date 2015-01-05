@@ -360,15 +360,16 @@ package citrus.math
 		 * @param	maxLum maximum for the r, g and b values.
 		 * @return
 		 */
-		public static function getRandomColor(minLum:uint = 0, maxLum:uint = 0xFF):uint
+		public static function getRandomColor(minLum:uint = 0, maxLum:uint = 0xFF, randAlpha:Boolean = false):uint
 		{
 			maxLum = maxLum > 0xFF ? 0xFF : maxLum;
 			minLum = minLum > 0xFF ? 0xFF : minLum;
 			
+			var a:uint = randAlpha ? MathUtils.randomInt(0, 255) : 255;
 			var r:uint = MathUtils.randomInt(minLum, maxLum);
 			var g:uint = MathUtils.randomInt(minLum, maxLum);
 			var b:uint = MathUtils.randomInt(minLum, maxLum);
-			return r << 16  | g << 8 | b;
+			return a << 32 | r << 16  | g << 8 | b;
 		}
 		
 		/**

@@ -5,6 +5,7 @@ package citrus.input.controllers {
 
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
+	import flash.utils.describeType;
 	
 	/**
 	 *  The default Keyboard controller.
@@ -74,6 +75,8 @@ package citrus.input.controllers {
 		 */
 		public var onKeyDown:Signal;
 		
+		public var keyNames:Dictionary;
+		
 		public function Keyboard(name:String, params:Object = null)
 		{
 			super(name, params);
@@ -93,6 +96,23 @@ package citrus.input.controllers {
 			
 			onKeyUp = new Signal(uint,int,Object);
 			onKeyDown = new Signal(uint,int,Object);
+			
+			keyNames = new Dictionary();
+			var xmlDesc:XMLList = describeType(Keyboard).child("constant");
+			var constName:String;
+			var constVal:uint;
+			for each(var key:XML in xmlDesc)
+			{
+				constName = key.attribute("name");
+				constVal = Keyboard[constName];
+				
+				//don't register the azerty helper constants
+				if(constName.substr(0,7) == "AZERTY_")
+					continue;
+				
+				if(constVal is uint)
+					keyNames[constVal] = constName;
+			}
 		}
 		
 		private function handleKeyDown(e:KeyboardEvent):void
@@ -252,6 +272,34 @@ package citrus.input.controllers {
 				return null;
 		}
 		
+		/**
+		 * returns an array of all the names of the keys that will trigger the action.
+		 * @param channel filter by channel number, if -1, all key/action/channel combinations are considered
+		 */
+		public function getKeysFromAction(actionName:String, channel:int = -1):Array
+		{
+			var arr:Array = [];
+			for(var k:String in _keyActions)
+				for each(var o:Object in _keyActions[uint(k)])
+					if(o.name == actionName && ( channel > -1 ? o.channel > -1 ? o.channel == channel : true : true ) )
+						arr.push(keyNames[uint(k)]);
+						
+			return arr;
+		}
+		
+		/**
+		 * returns the name of the first found key that should trigger the action.
+		 * @param channel filter by channel number, if -1, all key/action/channel combinations are considered
+		 */
+		public function getKeyFromAction(actionName:String, channel:int = -1):String
+		{
+			var result:Array = getKeysFromAction(actionName,channel);
+			if(result && result.length > 0)
+				return result[0];
+			else
+				return null;
+		}
+		
 		override public function destroy():void
 		{
 			onKeyUp.removeAll();
@@ -395,13 +443,13 @@ package citrus.input.controllers {
 		public static const SEARCH:uint =  0x0100001F;
 		
 		//HELPER FOR AZERTY ----------------------------------
-		public static const SQUARE:uint = 222; // ²
-		public static const RIGHT_PARENTHESIS:uint = 219;
-		public static const CIRCUMFLEX:uint = 221; // ^
-		public static const DOLLAR_SIGN:uint = 186; // $
-		public static const U_GRAVE:uint = 192; // ù
-		public static const MULTIPLY:uint = 220; // *
-		public static const EXCLAMATION_MARK:uint = 223; // !
+		public static const AZERTY_SQUARE:uint = 222; // ²
+		public static const AZERTY_RIGHT_PARENTHESIS:uint = 219;
+		public static const AZERTY_CIRCUMFLEX:uint = 221; // ^
+		public static const AZERTY_DOLLAR_SIGN:uint = 186; // $
+		public static const AZERTY_U_GRAVE:uint = 192; // ù
+		public static const AZERTY_MULTIPLY:uint = 220; // *
+		public static const AZERTY_EXCLAMATION_MARK:uint = 223; // !
 	
 	}
 
