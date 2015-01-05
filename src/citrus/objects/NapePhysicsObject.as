@@ -148,7 +148,8 @@ package citrus.objects {
 				for each (var point:Object in points)
 					verts.push(Vec2.weak(point.x as Number, point.y as Number));
 
-				var polygon:Polygon = new Polygon(verts, _material);
+				var geomPoly:GeomPoly = new GeomPoly(verts);
+				var polygon:Polygon = new Polygon(geomPoly, _material);
 				var validation:ValidationResult = polygon.validity();
 
 				if (validation == ValidationResult.VALID)
@@ -156,11 +157,11 @@ package citrus.objects {
 					
 				else if (validation == ValidationResult.CONCAVE) {
 					
-					var concave:GeomPoly = new GeomPoly(verts);
-					var convex:GeomPolyList = concave.convexDecomposition();
+					var convex:GeomPolyList = geomPoly.convexDecomposition();
 					convex.foreach(function(p:GeomPoly):void {
 						_body.shapes.add(new Polygon(p));
 					});
+					
 					return;
 					
 				} else
