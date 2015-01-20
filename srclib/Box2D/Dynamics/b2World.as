@@ -825,7 +825,7 @@ public class b2World
 	 * </code>
 	 * Callback should return the new length of the ray as a fraction of the original length.
 	 * By returning 0, you immediately terminate.
-	 * By returning 1, you continue wiht the original ray.
+	 * By returning 1, you continue with the original ray.
 	 * By returning the current fraction, you proceed to find the closest point.
 	 * @param point1 the ray starting point
 	 * @param point2 the ray ending point
