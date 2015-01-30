@@ -30,13 +30,8 @@ package citrus.objects
 		override protected function _recycle(node:DoublyLinkedListNode, params:Object = null):void
 		{
 			var co:CitrusObject = node.data as CitrusObject;
+			co.initialize(params);
 			super._recycle(node, params);
-		}
-		
-		override protected function _dispose(node:DoublyLinkedListNode):void
-		{
-			var co:CitrusObject = node.data as CitrusObject;
-			super._dispose(node);
 		}
 		
 		override protected function _destroy(node:DoublyLinkedListNode):void
