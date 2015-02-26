@@ -131,7 +131,7 @@ package citrus.core
 				catch (e:Error)
 				{
 					if (!hideParamWarnings)
-						trace("Warning: The parameter " + param + " does not exist on " + this);
+						trace("Warning: The property " + param + " does not exist on " + this);
 				}
 			}
 			_initialized = true;
