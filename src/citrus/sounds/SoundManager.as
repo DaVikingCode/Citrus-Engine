@@ -1,12 +1,11 @@
 package citrus.sounds {
 
 	import aze.motion.eaze;
+	
+	import citrus.core.citrus_internal;
 
 	import citrus.events.CitrusEventDispatcher;
 	import citrus.events.CitrusSoundEvent;
-	import citrus.sounds.groups.BGMGroup;
-	import citrus.sounds.groups.SFXGroup;
-	import citrus.sounds.groups.UIGroup;
 
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
@@ -28,9 +27,9 @@ package citrus.sounds {
 			soundGroups = new Vector.<CitrusSoundGroup>();
 			
 			//default groups
-			soundGroups.push(new BGMGroup());
-			soundGroups.push(new SFXGroup());
-			soundGroups.push(new UIGroup());
+			createGroup(CitrusSoundGroup.BGM);
+			createGroup(CitrusSoundGroup.SFX);
+			createGroup(CitrusSoundGroup.UI);
 			
 			addEventListener(CitrusSoundEvent.SOUND_LOADED, handleSoundLoaded);
 			
@@ -81,9 +80,33 @@ package citrus.sounds {
 		/**
 		 * add your own custom CitrusSoundGroup here.
 		 */
-		public function addGroup(group:CitrusSoundGroup):void
+		public function addGroup(group:CitrusSoundGroup):CitrusSoundGroup
 		{
 			soundGroups.push(group);
+			return group;
+		}
+		
+		/**
+		 * create a CitrusSoundGroup with a group id.
+		 */
+		public function createGroup(groupID:String):CitrusSoundGroup
+		{
+			var group:CitrusSoundGroup;
+			
+			for each(var sg:CitrusSoundGroup in soundGroups)
+				if (sg.groupID == groupID)
+					group = sg;
+			
+			if (group != null)
+			{
+				trace("Sound Manager : trying to create group ", groupID, " but it already exists.");
+				return group;
+			}
+			
+			group = new CitrusSoundGroup();
+			group.citrus_internal::setGroupID(groupID);
+			soundGroups.push(group);
+			return group;
 		}
 		
 		/**

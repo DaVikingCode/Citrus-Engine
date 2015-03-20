@@ -3,6 +3,8 @@ package citrus.sounds
 	import citrus.events.CitrusEventDispatcher;
 	import citrus.events.CitrusSoundEvent;
 	import citrus.math.MathUtils;
+	
+	import citrus.core.citrus_internal;
 	/**
 	 * CitrusSoundGroup represents a volume group with its groupID and has mute control as well.
 	 */
@@ -145,6 +147,11 @@ package citrus.sounds
 					return true;
 					
 			return false;
+		}
+		
+		citrus_internal function setGroupID(value:String):void
+		{
+			_groupID = value;
 		}
 		
 		public function get groupID():String
