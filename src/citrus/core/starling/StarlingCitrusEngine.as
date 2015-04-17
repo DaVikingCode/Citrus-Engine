@@ -37,7 +37,7 @@ package citrus.core.starling {
 		 * context3D profiles to test for in Ascending order (the more important first).
 		 * reset this array to a single entry to force one specific profile. <a href="http://wiki.starling-framework.org/manual/constrained_stage3d_profile">More informations</a>.
 		 */
-		protected var _context3DProfiles:Array = ["baselineExtended", "baseline", "baselineConstrained"];
+		protected var _context3DProfiles:Array = ["standardExtended", "standard", "standardConstrained", "baselineExtended", "baseline", "baselineConstrained"];
 		
 		public function StarlingCitrusEngine() {
 			super();
