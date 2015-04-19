@@ -57,7 +57,11 @@ package citrus.utils.objectmakers {
 		 *
 		 * <p><code>var params={view: "Patch.swf", jumpHeight: 14};</code></p>
 		 */
-		public static function FromMovieClip(mc:MovieClip, addToCurrentState:Boolean = true):Array {
+		public static function FromMovieClip(mc:MovieClip, addToCurrentState:Boolean = true , forceFrame:uint = 1):Array {
+			
+			//force mc to given frame to avoid undefined properties defined in action frames.
+			mc.gotoAndStop(forceFrame);
+		
 			var a:Array = [];
 			var n:Number = mc.numChildren;
 			var child:MovieClip;

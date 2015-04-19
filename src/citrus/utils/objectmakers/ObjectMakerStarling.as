@@ -65,7 +65,11 @@ package citrus.utils.objectmakers {
 		 *
 		 * @param textureAtlas A TextureAtlas or an AssetManager object containing textures which are used in your level maker.
 		 */
-		public static function FromMovieClip(mc:MovieClip, textureAtlas:*, addToCurrentState:Boolean = true):Array {
+		public static function FromMovieClip(mc:MovieClip, textureAtlas:*, addToCurrentState:Boolean = true, forceFrame:uint = 1):Array {
+		
+			//force mc to given frame to avoid undefined properties defined in action frames.
+			mc.gotoAndStop(forceFrame);
+			
 			var a:Array = [];
 			var n:Number = mc.numChildren;
 			var child:MovieClip;
