@@ -70,7 +70,6 @@ package citrus.objects
 		
 		override protected function _dispose(node:DoublyLinkedListNode):void
 		{
-			trace("DISPOSED");
 			var bp:Box2DPhysicsObject = node.data as Box2DPhysicsObject;
 			activationQueue.unshift( { object:bp, activate:false } );
 			if ("pauseAnimation" in bp.view)
