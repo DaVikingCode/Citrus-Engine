@@ -58,20 +58,24 @@ package citrus.objects
 		override protected function _recycle(node:DoublyLinkedListNode, params:Object = null):void
 		{
 			var bp:Box2DPhysicsObject = node.data as Box2DPhysicsObject;
-			bp.initialize(params);
-			activationQueue.unshift( { object:bp, activate:true } );
-			if ("pauseAnimation" in bp.view)
-				bp.view.pauseAnimation(true);
-			bp.visible = true;
-			bp.updateCallEnabled = bp.citrus_internal::data["updateCall"] as Boolean;
-			(state.view.getArt(bp) as ICitrusArt).updateArtEnabled = bp.citrus_internal::data["updateArt"] as Boolean;
-			super._recycle(node, params);
+			
+			activationQueue.unshift( { object:bp, activate:true , func:function() {
+				bp.initialize(params);
+				if ("pauseAnimation" in bp.view)
+					bp.view.pauseAnimation(true);
+				bp.visible = true;
+				bp.updateCallEnabled = bp.citrus_internal::data["updateCall"] as Boolean;
+				(state.view.getArt(bp) as ICitrusArt).updateArtEnabled = bp.citrus_internal::data["updateArt"] as Boolean;
+				superRecycle(node,params);
+			}});
 		}
+		
+		protected function superRecycle(node:DoublyLinkedListNode,params:Object):void { super._recycle(node,params);}
 		
 		override protected function _dispose(node:DoublyLinkedListNode):void
 		{
 			var bp:Box2DPhysicsObject = node.data as Box2DPhysicsObject;
-			activationQueue.unshift( { object:bp, activate:false } );
+			activationQueue.unshift( { object:bp, activate:false} );
 			if ("pauseAnimation" in bp.view)
 				bp.view.pauseAnimation(false);
 			bp.visible = false;
@@ -91,8 +95,10 @@ package citrus.objects
 		{
 			var entry:Object;
 			
-			while((entry = activationQueue.pop()) != null)
+			while((entry = activationQueue.pop()) != null) {
 				entry.object.body.SetActive(entry.activate);
+				if(entry.activate) entry.func();
+			}
 			
 		}
 		
