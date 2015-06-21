@@ -356,20 +356,27 @@ package citrus.math
 		/**
 		 * returns a random color in given range.
 		 * 
-		 * @param	minLum minimum for the r, g and b values.
-		 * @param	maxLum maximum for the r, g and b values.
+		 * @param minLum minimum for the r, g and b values.
+		 * @param maxLum maximum for the r, g and b values.
+		 * @param b32 return color with alpha channel (ARGB)
+		 * @param randAlpha if format is ARGB, shall we set a random alpha value?
 		 * @return
 		 */
-		public static function getRandomColor(minLum:uint = 0, maxLum:uint = 0xFF, randAlpha:Boolean = false):uint
+		public static function getRandomColor(minLum:uint = 0, maxLum:uint = 0xFF, b32:Boolean = false, randAlpha:Boolean = false):uint
 		{
 			maxLum = maxLum > 0xFF ? 0xFF : maxLum;
 			minLum = minLum > 0xFF ? 0xFF : minLum;
 			
-			var a:uint = randAlpha ? MathUtils.randomInt(0, 255) : 255;
 			var r:uint = MathUtils.randomInt(minLum, maxLum);
 			var g:uint = MathUtils.randomInt(minLum, maxLum);
 			var b:uint = MathUtils.randomInt(minLum, maxLum);
-			return a << 32 | r << 16  | g << 8 | b;
+			
+			if(!b32)
+				return r << 16  | g << 8 | b;
+			else {
+				var a:uint = randAlpha ? MathUtils.randomInt(0, 255) : 255;
+				return a << 24 | r << 16  | g << 8 | b;
+			}
 		}
 		
 		/**
