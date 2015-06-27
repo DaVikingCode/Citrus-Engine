@@ -40,11 +40,11 @@ package citrus.physics
 		 */
 		public static function Add(categoryName:String):void
 		{
-			if (_numCategories == 15)
-				throw new Error("You can only have 15 categories.");
-			
 			if (_categoryNames[categoryName])
 				return;
+		
+			if (_numCategories == 15)
+				throw new Error("You can only have 15 categories.");
 			
 			_categoryNames[categoryName] = _categoryIndexes[_numCategories];
 			_allCategories |= _categoryIndexes[_numCategories];
