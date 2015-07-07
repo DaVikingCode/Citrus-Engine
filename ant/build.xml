@@ -23,7 +23,7 @@
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
 	<!-- Define the commands to generate a SWC library -->
-	<target name="CE-swc-global" depends="CE-swc-core,CE-swc-box2d,CE-swc-nape,CE-swc-starling-feathers,CE-swc-starling-feathers-box2d,CE-swc-starling-feathers-nape,CE-swc-away3d,CE-swc-away3d-box2d,CE-swc-away3d-nape,CE-swc-away3d-awayphysics" 
+	<target name="CE-swc-global" depends="asdoc-swc,CE-swc-core,CE-swc-box2d,CE-swc-nape,CE-swc-starling-feathers,CE-swc-starling-feathers-box2d,CE-swc-starling-feathers-nape,CE-swc-away3d,CE-swc-away3d-box2d,CE-swc-away3d-nape,CE-swc-away3d-awayphysics" 
 		description="Generates a single SWC library with everything included in.">
 
 		<echo>Generating Citrus Engine Global</echo>
@@ -53,7 +53,36 @@
 				<exclude name="overviews.xml" />
 			</zipfileset>
 		</zip>
+		
+		<!-- HTML Documentation -->
+		<java jar="${FLEX_HOME}/lib/legacy/asdoc.jar" fork="true" failonerror="true">
+			<arg value="+flexlib=${FLEX_HOME}/frameworks/"/>
+			<arg line='-source-path ../src'/>
+			<arg line='-doc-sources ../src'/>
+			<arg line='-output ../ce-asdoc'/>
+			<arg line='-library-path+="../lib"'/>
+			<arg line='-library-path+="../bin/libraries"'/>
+			<arg line='-library-path+="${FLEX_HOME}/frameworks/libs/air/airglobal.swc"'/>
+			<arg line='-main-title "Citrus Engine"'/>
+			<arg line='-lenient'/>
+		</java>
 
+	</target>
+	
+	<target name="asdoc-swc" description="generate the asdoc for documentation inside the swc">
+		<java jar="${FLEX_HOME}/lib/legacy/asdoc.jar" fork="true" failonerror="true">
+			<arg value="+flexlib=${FLEX_HOME}/frameworks/"/>
+			<arg line='-source-path ../src'/>
+			<arg line='-doc-sources ../src'/>
+			<arg line='-output ../ce-asdoc'/>
+			<arg line='-library-path+="../lib"'/>
+			<arg line='-library-path+="../bin/libraries"'/>
+			<arg line='-library-path+="${FLEX_HOME}/frameworks/libs/air/airglobal.swc"'/>
+			<arg line='-main-title "Citrus Engine"'/>
+			<arg line='-keep-xml=true'/>
+			<arg line='-skip-xsl=true'/>
+			<arg line='-lenient'/>
+		</java>
 	</target>
 
 	<target name="CE-swc-core" description="Generates the CE core's SWC">
@@ -381,4 +410,5 @@
 			<arg line="-include-libraries ../lib/away3d.swc" />
 		</exec>
 	</target>
+	
 </project>

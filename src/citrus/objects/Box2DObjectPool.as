@@ -59,7 +59,7 @@ package citrus.objects
 		{
 			var bp:Box2DPhysicsObject = node.data as Box2DPhysicsObject;
 			
-			activationQueue.unshift( { object:bp, activate:true , func:function() {
+			activationQueue.unshift( { object:bp, activate:true , func:function():void {
 				bp.initialize(params);
 				if ("pauseAnimation" in bp.view)
 					bp.view.pauseAnimation(true);
