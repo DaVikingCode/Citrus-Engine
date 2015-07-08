@@ -3,6 +3,8 @@ Build instructions
 
 The ant is configured to be built on a PC or a Mac.
 
+*The instructions below aren't useful anymore. The ant manages everything now.*
+
 Before running the script, you must generate the comments for the ASDoc using [ASDocr](http://gskinner.com/blog/archives/2010/05/asdocr_update_f_1.html).
 
 Take a look on the screenshot to know how to configure it:
