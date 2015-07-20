@@ -1,8 +1,9 @@
 V3.1.11, Work in progress
 -------------------------
 - Starling updated on 1.7
-- Feathers updated on 2.1.1
+- Feathers updated on 2.1.2
 - Starling.handleLostContext is always set to true
+- bug fix
 
 V3.1.10, 09 15 2014
 -------------------
