@@ -71,8 +71,6 @@ package starling.extensions.particles
             var emissionRate:Number = mMaxNumParticles / mLifespan;
             super(texture, emissionRate, mMaxNumParticles, mMaxNumParticles,
                   mBlendFactorSource, mBlendFactorDestination);
-            
-            mPremultipliedAlpha = false;
         }
         
         protected override function createParticle():Particle
@@ -264,6 +262,8 @@ package starling.extensions.particles
                 mLifespan = Math.max(0.01, getFloatValue(config.particleLifespan));
             if (isNaN(mLifespanVariance))
                 mLifespanVariance = getFloatValue(config.particleLifeSpanVariance);
+            if (isNaN(mMinRadiusVariance))
+                mMinRadiusVariance = 0.0;
             
             function getIntValue(element:XMLList):int
             {

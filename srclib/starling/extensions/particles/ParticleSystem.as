@@ -11,7 +11,7 @@
 package starling.extensions.particles
 {
     import com.adobe.utils.AGALMiniAssembler;
-    
+
     import flash.display3D.Context3D;
     import flash.display3D.Context3DBlendFactor;
     import flash.display3D.Context3DProgramType;
@@ -22,7 +22,7 @@ package starling.extensions.particles
     import flash.geom.Matrix;
     import flash.geom.Point;
     import flash.geom.Rectangle;
-    
+
     import starling.animation.IAnimatable;
     import starling.core.RenderSupport;
     import starling.core.Starling;
@@ -33,7 +33,7 @@ package starling.extensions.particles
     import starling.textures.TextureSmoothing;
     import starling.utils.MatrixUtil;
     import starling.utils.VertexData;
-    
+
     /** Dispatched when emission of particles is finished. */
     [Event(name="complete", type="starling.events.Event")]
     
@@ -63,8 +63,7 @@ package starling.extensions.particles
         
         protected var mEmitterX:Number;
         protected var mEmitterY:Number;
-        protected var mPremultipliedAlpha:Boolean;
-        protected var mBlendFactorSource:String;     
+        protected var mBlendFactorSource:String;
         protected var mBlendFactorDestination:String;
         protected var mSmoothing:String;
         
@@ -75,7 +74,6 @@ package starling.extensions.particles
             if (texture == null) throw new ArgumentError("texture must not be null");
             
             mTexture = texture;
-            mPremultipliedAlpha = texture.premultipliedAlpha;
             mParticles = new Vector.<Particle>(0, false);
             mVertexData = new VertexData(0);
             mIndices = new <uint>[];
@@ -85,19 +83,18 @@ package starling.extensions.particles
             mEmitterX = mEmitterY = 0;
             mMaxCapacity = Math.min(MAX_NUM_PARTICLES, maxCapacity);
             mSmoothing = TextureSmoothing.BILINEAR;
-            
-            mBlendFactorDestination = blendFactorDest || Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA;
-            mBlendFactorSource = blendFactorSource ||
-                (mPremultipliedAlpha ? Context3DBlendFactor.ONE : Context3DBlendFactor.SOURCE_ALPHA);
-            
+            mBlendFactorSource      = blendFactorSource || Context3DBlendFactor.ONE;
+            mBlendFactorDestination = blendFactorDest   || Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA;
+
             createProgram();
+            updatePremultipliedAlpha();
             raiseCapacity(initialCapacity);
-            
+
             // handle a lost device context
             Starling.current.stage3D.addEventListener(Event.CONTEXT3D_CREATE, 
                 onContextCreated, false, 0, true);
         }
-        
+
         public override function dispose():void
         {
             Starling.current.stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
@@ -112,6 +109,23 @@ package starling.extensions.particles
         {
             createProgram();
             raiseCapacity(0);
+        }
+
+        private function updatePremultipliedAlpha():void
+        {
+            var pma:Boolean = mTexture.premultipliedAlpha;
+
+            // Particle Designer uses special logic for a certain blend factor combination
+            if (mBlendFactorSource == Context3DBlendFactor.ONE &&
+                    mBlendFactorDestination == Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA)
+            {
+                mVertexData.premultipliedAlpha = mTexture.premultipliedAlpha;
+                if (!pma) mBlendFactorSource = Context3DBlendFactor.SOURCE_ALPHA;
+            }
+            else
+            {
+                mVertexData.premultipliedAlpha = false;
+            }
         }
         
         protected function createParticle():Particle
@@ -139,7 +153,7 @@ package starling.extensions.particles
         private function raiseCapacity(byAmount:int):void
         {
             var oldCapacity:int = capacity;
-            var newCapacity:int = Math.min(mMaxCapacity, capacity + byAmount);
+            var newCapacity:int = Math.min(mMaxCapacity, oldCapacity + byAmount);
             var context:Context3D = Starling.context;
             
             if (context == null) throw new MissingContextError();
@@ -169,6 +183,12 @@ package starling.extensions.particles
                 mIndices[int(numIndices+4)] = numVertices + 3;
                 mIndices[int(numIndices+5)] = numVertices + 2;
             }
+
+            if (newCapacity < oldCapacity)
+            {
+                mParticles.length = newCapacity;
+                mIndices.length = newCapacity * 6;
+            }
             
             mParticles.fixed = true;
             mIndices.fixed = true;
@@ -177,12 +197,15 @@ package starling.extensions.particles
             
             if (mVertexBuffer) mVertexBuffer.dispose();
             if (mIndexBuffer)  mIndexBuffer.dispose();
-            
-            mVertexBuffer = context.createVertexBuffer(newCapacity * 4, VertexData.ELEMENTS_PER_VERTEX);
-            mVertexBuffer.uploadFromVector(mVertexData.rawData, 0, newCapacity * 4);
-            
-            mIndexBuffer  = context.createIndexBuffer(newCapacity * 6);
-            mIndexBuffer.uploadFromVector(mIndices, 0, newCapacity * 6);
+
+            if (newCapacity > 0)
+            {
+                mVertexBuffer = context.createVertexBuffer(newCapacity * 4, VertexData.ELEMENTS_PER_VERTEX);
+                mVertexBuffer.uploadFromVector(mVertexData.rawData, 0, newCapacity * 4);
+
+                mIndexBuffer  = context.createIndexBuffer(newCapacity * 6);
+                mIndexBuffer.uploadFromVector(mIndices, 0, newCapacity * 6);
+            }
         }
         
         /** Starts the emitter for a certain time. @default infinite time */
@@ -249,9 +272,9 @@ package starling.extensions.particles
                     }
                     
                     --mNumParticles;
-                    
+
                     if (mNumParticles == 0 && mEmissionTime == 0)
-                        dispatchEvent(new Event(Event.COMPLETE));
+                        dispatchEventWith(Event.COMPLETE);
                 }
             }
             
@@ -285,8 +308,11 @@ package starling.extensions.particles
                 
                 if (mEmissionTime != Number.MAX_VALUE)
                     mEmissionTime = Math.max(0.0, mEmissionTime - passedTime);
+
+                if (mNumParticles == 0 && mEmissionTime == 0)
+                    dispatchEventWith(Event.COMPLETE);
             }
-            
+
             // update vertex data
             
             var vertexID:int = 0;
@@ -457,16 +483,28 @@ package starling.extensions.particles
         public function set emitterY(value:Number):void { mEmitterY = value; }
         
         public function get blendFactorSource():String { return mBlendFactorSource; }
-        public function set blendFactorSource(value:String):void { mBlendFactorSource = value; }
+        public function set blendFactorSource(value:String):void
+        {
+            mBlendFactorSource = value;
+            updatePremultipliedAlpha();
+        }
         
         public function get blendFactorDestination():String { return mBlendFactorDestination; }
-        public function set blendFactorDestination(value:String):void { mBlendFactorDestination = value; }
+        public function set blendFactorDestination(value:String):void
+        {
+            mBlendFactorDestination = value;
+            updatePremultipliedAlpha();
+        }
         
         public function get texture():Texture { return mTexture; }
         public function set texture(value:Texture):void
         {
+            if (value == null) throw new ArgumentError("Texture cannot be null");
+
             mTexture = value;
             createProgram();
+            updatePremultipliedAlpha();
+
             for (var i:int = mVertexData.numVertices - 4; i >= 0; i -= 4)
             {
                 mVertexData.setTexCoords(i + 0, 0.0, 0.0);
