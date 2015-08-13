@@ -1,4 +1,4 @@
-package dragonBones.display
+﻿package dragonBones.display
 {
 	import flash.display.BlendMode;
 	import flash.geom.Matrix;
@@ -100,8 +100,10 @@ package dragonBones.display
 				var pivotX:Number = _starlingDisplay.pivotX;
 				var pivotY:Number = _starlingDisplay.pivotY;
 				
+				
 				if(updateMatrix)
 				{
+					//_starlingDisplay.transformationMatrix setter 比较慢暂时走下面
 					_starlingDisplay.transformationMatrix = _globalTransformMatrix;
 					if(pivotX || pivotY)
 					{
@@ -134,7 +136,7 @@ package dragonBones.display
 		/** @private */
 		override dragonBones_internal function updateDisplayVisible(value:Boolean):void
 		{
-			if(_starlingDisplay)
+			if(_starlingDisplay && this._parent)
 			{
 				_starlingDisplay.visible = this._parent.visible && this._visible && value;
 			}
@@ -149,10 +151,12 @@ package dragonBones.display
 			aMultiplier:Number, 
 			rMultiplier:Number, 
 			gMultiplier:Number, 
-			bMultiplier:Number):void
+			bMultiplier:Number,
+			colorChanged:Boolean = false):void
 		{
 			if(_starlingDisplay)
 			{
+				super.updateDisplayColor(aOffset, rOffset, gOffset, bOffset, aMultiplier, rMultiplier, gMultiplier, bMultiplier,colorChanged);
 				_starlingDisplay.alpha = aMultiplier;
 				if (_starlingDisplay is Quad)
 				{

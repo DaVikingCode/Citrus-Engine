@@ -6,10 +6,6 @@ package dragonBones.objects
 		public var name:String;
 		
 		private var _slotDataList:Vector.<SlotData>;
-		public function get slotDataList():Vector.<SlotData>
-		{
-			return _slotDataList;
-		}
 		
 		public function SkinData()
 		{
@@ -58,6 +54,11 @@ package dragonBones.objects
 			{
 				throw new ArgumentError();
 			}
+		}
+		
+		public function get slotDataList():Vector.<SlotData>
+		{
+			return _slotDataList;
 		}
 	}
 }

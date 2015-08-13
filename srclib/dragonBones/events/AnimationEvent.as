@@ -6,10 +6,9 @@
 	* @langversion 3.0
 	* @version 2.0
 	*/
-	import dragonBones.Armature;
-	import dragonBones.animation.AnimationState;
-	
 	import flash.events.Event;
+	
+	import dragonBones.Armature;
 	
 	/**
 	 * The AnimationEvent provides and defines all events dispatched during an animation.
@@ -73,7 +72,7 @@
 		/**
 		 * The animationState instance.
 		 */
-		public var animationState:AnimationState;
+		public var animationState:Object;
 		
 		/**
 		 * The armature that is the taget of this event.

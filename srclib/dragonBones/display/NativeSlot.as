@@ -13,13 +13,11 @@ package dragonBones.display
 	public class NativeSlot extends Slot
 	{
 		private var _nativeDisplay:DisplayObject;
-		private var _colorTransform:ColorTransform;
 		
 		public function NativeSlot()
 		{
 			super(this);
 			_nativeDisplay = null;
-			_colorTransform = null;
 		}
 		
 		override public function dispose():void
@@ -27,7 +25,6 @@ package dragonBones.display
 			super.dispose();
 			
 			_nativeDisplay = null;
-			_colorTransform = null;
 		}
 		
 		
@@ -102,23 +99,13 @@ package dragonBones.display
 			aMultiplier:Number, 
 			rMultiplier:Number, 
 			gMultiplier:Number, 
-			bMultiplier:Number):void
+			bMultiplier:Number,
+			colorChanged:Boolean = false):void
 		{
 			if(_nativeDisplay)
 			{
-				if(!_colorTransform)
-				{
-					_colorTransform = new ColorTransform();
-				}
-				_colorTransform.alphaOffset = aOffset;
-				_colorTransform.redOffset = rOffset;
-				_colorTransform.greenOffset = gOffset;
-				_colorTransform.blueOffset = bOffset;
+				super.updateDisplayColor(aOffset, rOffset, gOffset, bOffset, aMultiplier, rMultiplier, gMultiplier, bMultiplier,colorChanged);
 				
-				_colorTransform.alphaMultiplier = aMultiplier;
-				_colorTransform.redMultiplier = rMultiplier;
-				_colorTransform.greenMultiplier = gMultiplier;
-				_colorTransform.blueMultiplier = bMultiplier;
 				
 				_nativeDisplay.transform.colorTransform = _colorTransform;
 			}

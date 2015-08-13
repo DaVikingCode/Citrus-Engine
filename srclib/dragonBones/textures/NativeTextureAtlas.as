@@ -129,7 +129,7 @@ package dragonBones.textures
 		
 		protected function parseData(textureAtlasRawData:Object):void
 		{
-			_subTextureDataDic = DataParser.parseTextureAtlas(textureAtlasRawData, _isDifferentConfig ? _scale : 1);
+			_subTextureDataDic = DataParser.parseTextureAtlasData(textureAtlasRawData, _isDifferentConfig ? _scale : 1);
 			_name = _subTextureDataDic.__name;
 			
 			delete _subTextureDataDic.__name;

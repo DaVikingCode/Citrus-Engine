@@ -1,16 +1,20 @@
-﻿package dragonBones.factorys
+﻿package dragonBones.factories
 {
-	import flash.display.MovieClip;
-	import flash.display.Shape;
-	import flash.display.Sprite;
-	import flash.geom.Rectangle;
-	
 	import dragonBones.Armature;
+	import dragonBones.display.NativeFastSlot;
+	import dragonBones.fast.FastArmature;
+	import dragonBones.fast.FastSlot;
 	import dragonBones.Slot;
 	import dragonBones.core.dragonBones_internal;
 	import dragonBones.display.NativeSlot;
 	import dragonBones.textures.ITextureAtlas;
 	import dragonBones.textures.NativeTextureAtlas;
+	
+	import flash.display.MovieClip;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.geom.Matrix;
+	import flash.geom.Rectangle;
 	
 	use namespace dragonBones_internal;
 	
@@ -53,6 +57,18 @@
 			return armature;
 		}
 		
+		override protected function generateFastArmature():FastArmature
+		{
+			var armature:FastArmature = new FastArmature(new Sprite());
+			return armature;
+		}
+		
+		override protected function generateFastSlot():FastSlot
+		{
+			var slot:FastSlot = new NativeFastSlot();
+			return slot;
+		}
+		
 		/** @private */
 		override protected function generateSlot():Slot
 		{
@@ -77,6 +93,7 @@
 					nativeTextureAtlas.movieClipToBitmapData();
 				}
 				
+				//TO DO 问春雷
 				if (!useBitmapDataTexture && movieClip && movieClip.totalFrames >= 3)
 				{
 					movieClip.gotoAndStop(movieClip.totalFrames);
@@ -102,10 +119,28 @@
 					if (subTextureRegion)
 					{
 						var subTextureFrame:Rectangle = nativeTextureAtlas.getFrame(fullName);
-						if(subTextureFrame)
+						
+						if (isNaN(pivotX) || isNaN(pivotX))
 						{
-							pivotX += subTextureFrame.x;
-							pivotY += subTextureFrame.y;
+							if (subTextureFrame)
+							{
+								pivotX = subTextureFrame.width / 2 + subTextureFrame.x;
+								pivotY = subTextureFrame.height / 2 + subTextureFrame.y;
+							}
+							else
+							{
+								pivotX = subTextureRegion.width / 2;
+								pivotY = subTextureRegion.height / 2;
+							}
+							
+						}
+						else
+						{
+							if(subTextureFrame)
+							{
+								pivotX += subTextureFrame.x;
+								pivotY += subTextureFrame.y;
+							}
 						}
 						
 						var displayShape:Shape = new Shape();

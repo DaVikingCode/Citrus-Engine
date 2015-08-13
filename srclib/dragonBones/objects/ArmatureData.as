@@ -6,36 +6,58 @@ package dragonBones.objects
 		public var name:String;
 		
 		private var _boneDataList:Vector.<BoneData>;
-		public function get boneDataList():Vector.<BoneData>
-		{
-			return _boneDataList;
-		}
-		
 		private var _skinDataList:Vector.<SkinData>;
-		public function get skinDataList():Vector.<SkinData>
-		{
-			return _skinDataList;
-		}
-		
+		private var _slotDataList:Vector.<SlotData>;
 		private var _animationDataList:Vector.<AnimationData>;
-		public function get animationDataList():Vector.<AnimationData>
-		{
-			return _animationDataList;
-		}
-		
-		private var _areaDataList:Vector.<IAreaData>;
-		public function get areaDataList():Vector.<IAreaData>
-		{
-			return _areaDataList;
-		}
 		
 		public function ArmatureData()
 		{
 			_boneDataList = new Vector.<BoneData>(0, true);
 			_skinDataList = new Vector.<SkinData>(0, true);
+			_slotDataList = new Vector.<SlotData>(0, true);
 			_animationDataList = new Vector.<AnimationData>(0, true);
 			
-			_areaDataList = new Vector.<IAreaData>(0, true);
+			//_areaDataList = new Vector.<IAreaData>(0, true);
+		}
+		
+		public function setSkinData(skinName:String):void
+		{
+			for (var i:int = 0, len:int = _slotDataList.length; i < len; i++)
+			{
+				_slotDataList[i].dispose();
+			}
+			var skinData:SkinData;
+			if(!skinName && _skinDataList.length > 0)
+			{
+				skinData = _skinDataList[0];
+			}
+			else
+			{
+				for (i = 0, len = _skinDataList.length; i < len; i++)
+				{
+					if (_skinDataList[i].name == skinName)
+					{
+						skinData = _skinDataList[i];
+						break;
+					}
+				}
+			}
+			
+			if (skinData)
+			{
+				var slotData:SlotData;
+				for (i = 0, len = skinData.slotDataList.length; i < len; i++)
+				{
+					slotData = getSlotData(skinData.slotDataList[i].name);
+					if (slotData)
+					{
+						for (var j:int = 0, jLen:int = skinData.slotDataList[i].displayDataList.length; j < jLen; j++)
+						{
+							slotData.addDisplayData(skinData.slotDataList[i].displayDataList[j]);
+						}
+					}
+				}
+			}
 		}
 		
 		public function dispose():void
@@ -50,6 +72,11 @@ package dragonBones.objects
 			{
 				_skinDataList[i].dispose();
 			}
+			i = _slotDataList.length;
+			while(i --)
+			{
+				_slotDataList[i].dispose();
+			}
 			i = _animationDataList.length;
 			while(i --)
 			{
@@ -60,11 +87,14 @@ package dragonBones.objects
 			_boneDataList.length = 0;
 			_skinDataList.fixed = false;
 			_skinDataList.length = 0;
+			_slotDataList.fixed = false;
+			_slotDataList.length = 0;
 			_animationDataList.fixed = false;
 			_animationDataList.length = 0;
 			//_animationsCached。clear();
 			_boneDataList = null;
 			_skinDataList = null;
+			_slotDataList = null;
 			_animationDataList = null;
 		}
 		
@@ -78,6 +108,24 @@ package dragonBones.objects
 					return _boneDataList[i];
 				}
 			}
+			return null;
+		}
+		
+		public function getSlotData(slotName:String):SlotData
+		{
+			if(!slotName && _slotDataList.length > 0)
+			{
+				return _slotDataList[0];
+			}
+			var i:int = _slotDataList.length;
+			while(i --)
+			{
+				if(_slotDataList[i].name == slotName)
+				{
+					return _slotDataList[i];
+				}
+			}
+			
 			return null;
 		}
 		
@@ -124,6 +172,25 @@ package dragonBones.objects
 				_boneDataList.fixed = false;
 				_boneDataList[_boneDataList.length] = boneData;
 				_boneDataList.fixed = true;
+			}
+			else
+			{
+				throw new ArgumentError();
+			}
+		}
+		
+		public function addSlotData(slotData:SlotData):void
+		{
+			if(!slotData)
+			{
+				throw new ArgumentError();
+			}
+			
+			if(_slotDataList.indexOf(slotData) < 0)
+			{
+				_slotDataList.fixed = false;
+				_slotDataList[_slotDataList.length] = slotData;
+				_slotDataList.fixed = true;
 			}
 			else
 			{
@@ -179,7 +246,7 @@ package dragonBones.objects
 				var boneData:BoneData = _boneDataList[i];
 				var level:int = 0;
 				var parentData:BoneData = boneData;
-				while(parentData && parentData.parent)
+				while(parentData)
 				{
 					level ++;
 					parentData = getBoneData(parentData.parent);
@@ -194,6 +261,31 @@ package dragonBones.objects
 			{
 				_boneDataList[i] = helpArray[i][1];
 			}
+		}
+		
+		public function get boneDataList():Vector.<BoneData>
+		{
+			return _boneDataList;
+		}
+		public function get skinDataList():Vector.<SkinData>
+		{
+			return _skinDataList;
+		}
+		public function get animationDataList():Vector.<AnimationData>
+		{
+			return _animationDataList;
+		}
+		
+		public function get slotDataList():Vector.<SlotData> 
+		{
+			return _slotDataList;
+		}
+		
+		/*
+		private var _areaDataList:Vector.<IAreaData>;
+		public function get areaDataList():Vector.<IAreaData>
+		{
+			return _areaDataList;
 		}
 		
 		public function getAreaData(areaName:String):IAreaData
@@ -227,5 +319,6 @@ package dragonBones.objects
 				_areaDataList.fixed = true;
 			}
 		}
+		*/
 	}
 }

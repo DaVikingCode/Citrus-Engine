@@ -1,51 +1,85 @@
 package dragonBones.objects
 {
-	/**
-	* Copyright 2012-2013. DragonBones. All Rights Reserved.
-	* @playerversion Flash 10.0, Flash 10
-	* @langversion 3.0
-	* @version 2.0
-	*/
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.Loader;
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.utils.ByteArray;
-	/**
-	 * The DecompressedData is a convenient class for storing animation related data (data, atlas, object).
-	 *
-	 * @see dragonBones.Armature
-	 */
-	public final class DecompressedData
+
+	/** Dispatched after a sucessful call to parseTextureAtlasBytes(). */
+	[Event(name="complete", type="flash.events.Event")]
+	public class DecompressedData extends EventDispatcher
 	{
+		/**
+		 * data name.
+		 */
+		public var name:String;
+		
 		public var textureBytesDataType:String;
 		/**
-		 * A xml for DragonBones data.
+		 * The xml or JSON for DragonBones data.
 		 */
 		public var dragonBonesData:Object;
-		/**
-		 * A xml for atlas data.
-		 */
-		public var textureAtlasData:Object;
-		/**
-		 * The non parsed data map.
-		 */
-		public var textureBytes:ByteArray;
 		
 		/**
-		 * Creates a new DecompressedData instance.
-		 * @param xml A xml for DragonBones data.
-		 * @param textureAtlasXML A xml for atlas data.
-		 * @param textureBytes The non parsed data map.
+		 * The xml or JSON for atlas data.
 		 */
-		public function DecompressedData(dragonBonesData:Object, textureAtlasData:Object, textureBytes:ByteArray)
+		public var textureAtlasData:Object;
+		
+		/**
+		 * The non parsed textureAtlas bytes.
+		 */
+		public var textureAtlasBytes:ByteArray;
+		
+		/**
+		 * TextureAtlas can be bitmap, movieclip, ATF etc.
+		 */
+		public var textureAtlas:Object;
+		
+		public function DecompressedData()
 		{
-			this.dragonBonesData = dragonBonesData;
-			this.textureAtlasData = textureAtlasData;
-			this.textureBytes = textureBytes;
 		}
 		
 		public function dispose():void
 		{
 			dragonBonesData = null;
 			textureAtlasData = null;
-			textureBytes = null;
+			textureAtlas = null;
+			textureAtlasBytes = null;
+		}
+		
+		public function parseTextureAtlasBytes():void
+		{
+			var loader:TextureAtlasByteArrayLoader = new TextureAtlasByteArrayLoader();
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loaderCompleteHandler);
+			loader.loadBytes(textureAtlasBytes);
+		}
+		
+		private function loaderCompleteHandler(e:Event):void
+		{
+			e.target.removeEventListener(Event.COMPLETE, loaderCompleteHandler);
+			var loader:Loader = e.target.loader;
+			var content:Object = e.target.content;
+			loader.unloadAndStop();
+			
+			if (content is Bitmap)
+			{
+				textureAtlas =  (content as Bitmap).bitmapData;
+			}
+			else if (content is Sprite)
+			{
+				textureAtlas = (content as Sprite).getChildAt(0) as MovieClip;
+			}
+			else
+			{
+				//ATF
+				textureAtlas = content;
+			}
+			
+			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 	}
 }

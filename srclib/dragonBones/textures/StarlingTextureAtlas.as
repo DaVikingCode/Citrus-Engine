@@ -104,7 +104,7 @@
 		 */
 		protected function parseData(textureAtlasRawData:Object):void
 		{
-			var textureAtlasData:Object = DataParser.parseTextureAtlas(textureAtlasRawData, _isDifferentConfig ? _scale : 1);
+			var textureAtlasData:Object = DataParser.parseTextureAtlasData(textureAtlasRawData, _isDifferentConfig ? _scale : 1);
 			_name = textureAtlasData.__name;
 			delete textureAtlasData.__name;
 			for(var subTextureName:String in textureAtlasData)

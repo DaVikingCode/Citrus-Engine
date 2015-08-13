@@ -2,14 +2,10 @@ package dragonBones.objects
 {
 	public class Timeline
 	{
-		private var _frameList:Vector.<Frame>;
-		public function get frameList():Vector.<Frame>
-		{
-			return _frameList;
-		}
-		
 		public var duration:int;
 		public var scale:Number;
+		
+		private var _frameList:Vector.<Frame>;
 		
 		public function Timeline()
 		{
@@ -48,6 +44,10 @@ package dragonBones.objects
 				throw new ArgumentError();
 			}
 		}
+		
+		public function get frameList():Vector.<Frame>
+		{
+			return _frameList;
+		}
 	}
-	
 }

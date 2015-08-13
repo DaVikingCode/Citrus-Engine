@@ -1,33 +1,18 @@
 package dragonBones.objects 
 {
 	import flash.geom.Point;
+	import flash.utils.Dictionary;
 
-	public class SkeletonData
+	public class DragonBonesData
 	{
 		public var name:String;
+		public var isGlobalData:Boolean;
 		
-		private var _subTexturePivots:Object;
+		private var _armatureDataList:Vector.<ArmatureData> = new Vector.<ArmatureData>(0, true);
+		private var _displayDataDictionary:Dictionary = new Dictionary();
 		
-		public function get armatureNames():Vector.<String>
+		public function DragonBonesData()
 		{
-			var nameList:Vector.<String> = new Vector.<String>;
-			for each(var armatureData:ArmatureData in _armatureDataList)
-			{
-				nameList[nameList.length] = armatureData.name;
-			}
-			return nameList;
-		}
-		
-		private var _armatureDataList:Vector.<ArmatureData>;
-		public function get armatureDataList():Vector.<ArmatureData>
-		{
-			return _armatureDataList;
-		}
-		
-		public function SkeletonData()
-		{
-			_armatureDataList = new Vector.<ArmatureData>(0, true);
-			_subTexturePivots = {};
 		}
 		
 		public function dispose():void
@@ -38,12 +23,18 @@ package dragonBones.objects
 			}
 			_armatureDataList.fixed = false;
 			_armatureDataList.length = 0;
-			
 			_armatureDataList = null;
-			_subTexturePivots = null;
+			
+			removeAllDisplayData();
+			_displayDataDictionary = null;
 		}
 		
-		public function getArmatureData(armatureName:String):ArmatureData
+		public function get armatureDataList():Vector.<ArmatureData>
+		{
+			return _armatureDataList;
+		}
+		
+		public function getArmatureDataByName(armatureName:String):ArmatureData
 		{
 			var i:int = _armatureDataList.length;
 			while(i --)
@@ -101,39 +92,26 @@ package dragonBones.objects
 			}
 		}
 		
-		public function getSubTexturePivot(subTextureName:String):Point
+		public function getDisplayDataByName(name:String):DisplayData
 		{
-			return _subTexturePivots[subTextureName];
+			return _displayDataDictionary[name];
 		}
 		
-		public function addSubTexturePivot(x:Number, y:Number, subTextureName:String):Point
+		public function addDisplayData(displayData:DisplayData):void
 		{
-			var point:Point = _subTexturePivots[subTextureName];
-			if(point)
-			{
-				point.x = x;
-				point.y = y;
-			}
-			else
-			{
-				_subTexturePivots[subTextureName] = point = new Point(x, y);
-			}
-			
-			return point;
+			_displayDataDictionary[displayData.name] = displayData;
 		}
 		
-		public function removeSubTexturePivot(subTextureName:String):void
+		public function removeDisplayDataByName(name:String):void
 		{
-			if(subTextureName)
+			delete _displayDataDictionary[name]
+		}
+		
+		public function removeAllDisplayData():void
+		{
+			for(var name:String in _displayDataDictionary)
 			{
-				delete _subTexturePivots[subTextureName];
-			}
-			else
-			{
-				for(subTextureName in _subTexturePivots)
-				{
-					delete _subTexturePivots[subTextureName];
-				}
+				delete _displayDataDictionary[name];
 			}
 		}
 	}

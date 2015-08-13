@@ -6,11 +6,9 @@ package dragonBones.events
 	* @langversion 3.0
 	* @version 2.0
 	*/
-	import dragonBones.Armature;
-	import dragonBones.Bone;
-	import dragonBones.animation.AnimationState;
-	
 	import flash.events.Event;
+	
+	import dragonBones.Armature;
 	
 	/**
 	 * The FrameEvent class provides and defines all events dispatched by an Animation or Bone instance entering a new frame.
@@ -40,7 +38,7 @@ package dragonBones.events
 		 */
 		public var frameLabel:String;
 		
-		public var bone:Bone;
+		public var bone:Object;
 		
 		/**
 		 * The armature that is the target of this event.
@@ -53,7 +51,7 @@ package dragonBones.events
 		/**
 		 * The animationState instance.
 		 */
-		public var animationState:AnimationState;
+		public var animationState:Object;
 		
 		/**
 		 * Creates a new FrameEvent instance.
@@ -75,6 +73,7 @@ package dragonBones.events
 			var event:FrameEvent = new FrameEvent(type, cancelable);
 			event.animationState = animationState;
 			event.bone = bone;
+			event.animationState = animationState;
 			event.frameLabel = frameLabel;
 			return event;
 		}

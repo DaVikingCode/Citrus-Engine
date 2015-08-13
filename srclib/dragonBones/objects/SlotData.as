@@ -7,12 +7,9 @@ package dragonBones.objects
 		public var parent:String;
 		public var zOrder:Number;
         public var blendMode:String;
+		public var displayIndex:int;
 		
 		private var _displayDataList:Vector.<DisplayData>;
-		public function get displayDataList():Vector.<DisplayData>
-		{
-			return _displayDataList;
-		}
 		
 		public function SlotData()
 		{
@@ -22,14 +19,8 @@ package dragonBones.objects
 		
 		public function dispose():void
 		{
-			var i:int = _displayDataList.length;
-			while(i --)
-			{
-				_displayDataList[i].dispose();
-			}
 			_displayDataList.fixed = false;
 			_displayDataList.length = 0;
-			_displayDataList = null;
 		}
 		
 		public function addDisplayData(displayData:DisplayData):void
@@ -62,6 +53,11 @@ package dragonBones.objects
 			}
 			
 			return null;
+		}
+		
+		public function get displayDataList():Vector.<DisplayData>
+		{
+			return _displayDataList;
 		}
 	}
 }

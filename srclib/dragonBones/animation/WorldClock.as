@@ -103,9 +103,9 @@
 			{
 				passedTime = getTimer() * 0.001 - _time;
 			}
-			passedTime *= _timeScale;
-			
 			_time += passedTime;
+			
+			passedTime *= _timeScale;
 			
 			var length:int = _animatableList.length;
 			if(length == 0)
@@ -114,7 +114,7 @@
 			}
 			var currentIndex:int = 0;
 			
-			for(var i:int = 0;i < length;i ++)
+			for(var i:int = 0;i < length; i++)
 			{
 				var animatable:IAnimatable = _animatableList[i];
 				if(animatable)

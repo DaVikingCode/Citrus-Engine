@@ -12,12 +12,6 @@ package dragonBones.objects
 		public var inheritScale:Boolean;
 		public var inheritRotation:Boolean;
 		
-		private var _areaDataList:Vector.<IAreaData>;
-		public function get areaDataList():Vector.<IAreaData>
-		{
-			return _areaDataList;
-		}
-		
 		public function BoneData()
 		{
 			length = 0;
@@ -26,14 +20,14 @@ package dragonBones.objects
 			inheritRotation = true;
 			inheritScale = false;
 			
-			_areaDataList = new Vector.<IAreaData>(0, true);
+			//_areaDataList = new Vector.<IAreaData>(0, true);
 		}
 		
 		public function dispose():void
 		{
 			global = null;
 			transform = null;
-			
+			/*
 			if(_areaDataList)
 			{
 				for each(var areaData:IAreaData in _areaDataList)
@@ -44,7 +38,16 @@ package dragonBones.objects
 				_areaDataList.length = 0;
 				_areaDataList = null;
 			}
+			*/
 		}
+		
+		/*
+		private var _areaDataList:Vector.<IAreaData>;
+		public function get areaDataList():Vector.<IAreaData>
+		{
+			return _areaDataList;
+		}
+		
 		
 		public function getAreaData(areaName:String):IAreaData
 		{
@@ -77,5 +80,6 @@ package dragonBones.objects
 				_areaDataList.fixed = true;
 			}
 		}
+		*/
 	}
 }

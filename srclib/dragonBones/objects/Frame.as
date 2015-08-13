@@ -9,6 +9,7 @@ package dragonBones.objects
 		public var action:String;
 		public var event:String;
 		public var sound:String;
+		public var curve:CurveData;
 		
 		public function Frame()
 		{

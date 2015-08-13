@@ -1,16 +1,16 @@
 package dragonBones.events
 {
 	/**
-	* Copyright 2012-2013. DragonBones. All Rights Reserved.
-	* @playerversion Flash 10.0
-	* @langversion 3.0
-	* @version 2.0
-	*/
+	 * Copyright 2012-2013. DragonBones. All Rights Reserved.
+	 * @playerversion Flash 10.0
+	 * @langversion 3.0
+	 * @version 2.0
+	 */
 	import dragonBones.Armature;
 	import dragonBones.animation.AnimationState;
 	
 	import flash.events.Event;
-
+	
 	/**
 	 * The SoundEvent provides and defines all sound related events dispatched during an animation.
 	 *
