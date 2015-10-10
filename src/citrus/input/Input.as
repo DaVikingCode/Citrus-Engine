@@ -303,6 +303,8 @@ package citrus.input {
 		public function removeController(controller:InputController):void
 		{
 			var i:int = _controllers.lastIndexOf(controller);
+			if(i < 0) 
+				return;
 			stopActionsOf(controller);
 			_controllers.splice(i, 1);
 		}
