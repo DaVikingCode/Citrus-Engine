@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Build Citrus Engine SWCs Library" default="CE-swc-global">
+
+	<!-- load user configuration properties -->
+	<property file="build.properties" />
+	
+	<condition property="FLEX_HOME" value="${FLEX_HOME_WINDOWS}">
+		   <os family="windows"/>
+		</condition>
+		<condition property="FLEX_HOME" value="${FLEX_HOME_UNIX}">
+		   <os family="unix"/>
+		</condition>
+
+	<!-- Don't change this (it's the path to the compiler to use) -->
+	<condition property="compc" value="${FLEX_HOME}/bin/compc.exe">
+	   <os family="windows"/>
+	</condition>
+	<condition property="compc" value="${FLEX_HOME}/bin/compc">
+	   <os family="unix"/>
+	</condition>
+	
+	<!-- Point Ant to the Flex installation -->
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+
+	<!-- Define the commands to generate a SWC library -->
+	<target name="CE-swc-global" depends="asdoc-swc,CE-swc-core,CE-swc-box2d,CE-swc-nape,CE-swc-starling-feathers,CE-swc-starling-feathers-box2d,CE-swc-starling-feathers-nape,CE-swc-away3d,CE-swc-away3d-box2d,CE-swc-away3d-nape,CE-swc-away3d-awayphysics" 
+		description="Generates a single SWC library with everything included in.">
+
+		<echo>Generating Citrus Engine Global</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/CE${VERSION}-ALL.swc" />
+			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../src" />
+			<arg line="-include-sources ../srclib" />
+
+			<arg line="-include-libraries ../lib/" />
+
+
+			<!-- Compile for Flash Player 10.0.0 and higher -->
+			<!-- <arg line="-target-player=10.0.0"/> -->
+
+			<!-- <arg line="-optimize=true" /> -->
+
+			<!-- Turn off strict mode -->
+			<!-- <arg line="-strict=false"/> -->
+		</exec>
+
+		<zip destfile="../bin/CE${VERSION}-ALL.swc" update="true">
+			<zipfileset dir="../ce-asdoc/tempdita" prefix="docs">
+				<include name="*.*" />
+				<exclude name="ASDoc_Config.xml" />
+				<exclude name="overviews.xml" />
+			</zipfileset>
+		</zip>
+		
+		<!-- HTML Documentation -->
+		<java jar="${FLEX_HOME}/lib/legacy/asdoc.jar" fork="true" failonerror="true">
+			<arg value="+flexlib=${FLEX_HOME}/frameworks/"/>
+			<arg line='-source-path ../src'/>
+			<arg line='-doc-sources ../src'/>
+			<arg line='-output ../ce-asdoc'/>
+			<arg line='-library-path+="../lib"'/>
+			<arg line='-library-path+="../bin/libraries"'/>
+			<arg line='-library-path+="${FLEX_HOME}/frameworks/libs/air/airglobal.swc"'/>
+			<arg line='-main-title "Citrus Engine"'/>
+			<arg line='-lenient'/>
+		</java>
+
+	</target>
+	
+	<target name="asdoc-swc" description="generate the asdoc for documentation inside the swc">
+		<java jar="${FLEX_HOME}/lib/legacy/asdoc.jar" fork="true" failonerror="true">
+			<arg value="+flexlib=${FLEX_HOME}/frameworks/"/>
+			<arg line='-source-path ../src'/>
+			<arg line='-doc-sources ../src'/>
+			<arg line='-output ../ce-asdoc'/>
+			<arg line='-library-path+="../lib"'/>
+			<arg line='-library-path+="../bin/libraries"'/>
+			<arg line='-library-path+="${FLEX_HOME}/frameworks/libs/air/airglobal.swc"'/>
+			<arg line='-main-title "Citrus Engine"'/>
+			<arg line='-keep-xml=true'/>
+			<arg line='-skip-xsl=true'/>
+			<arg line='-lenient'/>
+		</java>
+	</target>
+
+	<target name="CE-swc-core" description="Generates the CE core's SWC">
+
+		<echo>Generating Citrus Engine Core</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/CE${VERSION}-Core.swc" />
+
+			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../src/citrus/core/citrus_internal.as" />
+			<arg line="-include-sources ../src/citrus/core/MediatorState.as" />
+			<arg line="-include-sources ../src/citrus/core/CitrusEngine.as" />
+			<arg line="-include-sources ../src/citrus/core/CitrusGroup.as" />
+			<arg line="-include-sources ../src/citrus/core/CitrusObject.as" />
+			<arg line="-include-sources ../src/citrus/core/Console.as" />
+			<arg line="-include-sources ../src/citrus/core/IState.as" />
+			<arg line="-include-sources ../src/citrus/core/State.as" />
+
+			<arg line="-include-sources ../src/citrus/datastructures" />
+			
+			<arg line="-include-sources ../src/citrus/events" />
+
+			<arg line="-include-sources ../src/citrus/input/Input.as" />
+			<arg line="-include-sources ../src/citrus/input/InputAction.as" />
+			<arg line="-include-sources ../src/citrus/input/InputController.as" />
+			<arg line="-include-sources ../src/citrus/input/InputPhase.as" />
+			<arg line="-include-sources ../src/citrus/input/controllers/Accelerometer.as" />
+			<arg line="-include-sources ../src/citrus/input/controllers/AVirtualButton.as" />
+			<arg line="-include-sources ../src/citrus/input/controllers/AVirtualJoystick.as" />
+			<arg line="-include-sources ../src/citrus/input/controllers/Keyboard.as" />
+			<arg line="-include-sources ../src/citrus/input/controllers/TimeShifter.as" />
+			<arg line="-include-sources ../src/citrus/input/controllers/displaylist" />
+			<arg line="-include-sources ../src/citrus/input/controllers/gamepad" />
+
+			<arg line="-include-sources ../src/citrus/math" />
+
+			<arg line="-include-sources ../src/citrus/objects/APhysicsObject.as" />
+			<arg line="-include-sources ../src/citrus/objects/CitrusObjectPool.as" />
+			<arg line="-include-sources ../src/citrus/objects/CitrusSprite.as" />
+			<arg line="-include-sources ../src/citrus/objects/CitrusSpritePool.as" />
+			<arg line="-include-sources ../src/citrus/objects/common" />
+			<arg line="-include-sources ../src/citrus/objects/platformer/simple" />
+
+			<arg line="-include-sources ../src/citrus/physics/APhysicsEngine.as" />
+			<arg line="-include-sources ../src/citrus/physics/IDebugView.as" />
+			<arg line="-include-sources ../src/citrus/physics/PhysicsCollisionCategories.as" />
+			<arg line="-include-sources ../src/citrus/physics/simple" />
+			
+			<arg line="-include-sources ../src/citrus/sounds" />
+
+			<arg line="-include-sources ../src/citrus/system/Component.as" />
+			<arg line="-include-sources ../src/citrus/system/Entity.as" />
+			<arg line="-include-sources ../src/citrus/system/components/InputComponent.as" />
+			<arg line="-include-sources ../src/citrus/system/components/ViewComponent.as" />
+			
+			<arg line="-include-sources ../src/citrus/ui/inventory" />
+
+			<arg line="-include-sources ../src/citrus/utils/AGameData.as" />
+			<arg line="-include-sources ../src/citrus/utils/AssetCache.as" />
+			<arg line="-include-sources ../src/citrus/utils/LevelManager.as" />
+			<arg line="-include-sources ../src/citrus/utils/LoadManager.as" />
+			<arg line="-include-sources ../src/citrus/utils/Mobile.as" />
+			<arg line="-include-sources ../src/citrus/utils/SoundChannelUtil.as" />
+			<arg line="-include-sources ../src/citrus/utils/objectmakers/ObjectMaker2D.as" />
+			<arg line="-include-sources ../src/citrus/utils/objectmakers/tmx" />
+
+			<arg line="-include-sources ../src/citrus/view/ACitrusCamera.as" />
+			<arg line="-include-sources ../src/citrus/view/ACitrusView.as" />
+			<arg line="-include-sources ../src/citrus/view/ICitrusArt.as" />
+			<arg line="-include-sources ../src/citrus/view/ISpriteView.as" />
+			<arg line="-include-sources ../src/citrus/view/blittingview" />
+			<arg line="-include-sources ../src/citrus/view/spriteview" />
+			
+			<arg line="-include-sources ../srclib/dragonBones/animation" />
+			<arg line="-include-sources ../srclib/dragonBones/cache" />
+			<arg line="-include-sources ../srclib/dragonBones/core" />
+			<arg line="-include-sources ../srclib/dragonBones/display/NativeFastSlot.as" />
+			<arg line="-include-sources ../srclib/dragonBones/display/NativeSlot.as" />
+			<arg line="-include-sources ../srclib/dragonBones/events" />
+			<arg line="-include-sources ../srclib/dragonBones/factories/BaseFactory.as" />
+			<arg line="-include-sources ../srclib/dragonBones/factories/NativeFactory.as" />
+			<arg line="-include-sources ../srclib/dragonBones/fast" />
+			<arg line="-include-sources ../srclib/dragonBones/objects" />
+			<arg line="-include-sources ../srclib/dragonBones/textures/ITextureAtlas.as" />
+			<arg line="-include-sources ../srclib/dragonBones/textures/NativeTextureAtlas.as" />
+			<arg line="-include-sources ../srclib/dragonBones/textures/TextureData.as" />
+			<arg line="-include-sources ../srclib/dragonBones/utils" />
+			<arg line="-include-sources ../srclib/dragonBones/Armature.as" />
+			<arg line="-include-sources ../srclib/dragonBones/Bone.as" />
+			<arg line="-include-sources ../srclib/dragonBones/Slot.as" />
+			
+			<arg line="-include-libraries ../lib/EazeTween.swc" />
+			<arg line="-include-libraries ../lib/gamepadLayout.swc" />
+			<arg line="-include-libraries ../lib/signals.swc" />
+			<!--<arg line="-external-library-path+=../lib/signals.swc"/>-->
+			<!--<arg line="-runtime-shared-library-path="/> don't know if needed-->
+		</exec>
+
+		<!-- include the documentation for all SWCs build! -->
+		<zip destfile="../bin/CE${VERSION}-Core.swc" update="true">
+			<zipfileset dir="../ce-asdoc/tempdita" prefix="docs">
+				<include name="*.*" />
+				<exclude name="ASDoc_Config.xml" />
+				<exclude name="overviews.xml" />
+			</zipfileset>
+		</zip>
+
+	</target>
+
+	<target name="CE-swc-box2d" description="Generates the CE's SWC with Box2D">
+
+		<echo>Generating Citrus Engine Box2D</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/CE${VERSION}-Box2D.swc" />
+
+			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../src/citrus/objects/Box2DObjectPool.as" />
+			<arg line="-include-sources ../src/citrus/objects/Box2DPhysicsObject.as" />
+			<arg line="-include-sources ../src/citrus/objects/platformer/box2d" />
+
+			<arg line="-include-sources ../src/citrus/physics/box2d" />
+
+			<arg line="-include-sources ../src/citrus/system/components/box2d" />
+
+			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
+			<!--<arg line="-external-library-path+=../lib/signals.swc"/>-->
+
+			<arg line="-include-sources ../srclib/Box2D" />
+			<!--<arg line="-external-library-path+=../bin/libraries/Box2D.swc"/>-->
+		</exec>
+
+	</target>
+
+	<target name="CE-swc-nape" description="Generates the CE's SWC with Nape">
+
+		<echo>Generating Citrus Engine Nape</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/CE${VERSION}-Nape.swc" />
+
+			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../src/citrus/objects/NapeObjectPool.as" />
+			<arg line="-include-sources ../src/citrus/objects/NapePhysicsObject.as" />
+			<arg line="-include-sources ../src/citrus/objects/platformer/nape" />
+			<arg line="-include-sources ../src/citrus/objects/vehicle/nape" />
+
+			<arg line="-include-sources ../src/citrus/physics/nape" />
+
+			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
+
+			<arg line="-include-libraries ../lib/nape-release.swc" />
+		</exec>
+
+	</target>
+
+	<target name="CE-swc-starling-feathers" description="Generates the CE's SWC with Starling and Feathers included">
+
+		<echo>Generating Citrus Engine Starling</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/CE${VERSION}-Starling-Feathers.swc" />
+
+			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../src/citrus/core/starling" />
+
+			<arg line="-include-sources ../src/citrus/input/controllers/starling" />
+
+			<arg line="-include-sources ../src/citrus/ui/starling" />
+
+			<arg line="-include-sources ../src/citrus/utils/objectmakers/ObjectMakerStarling.as" />
+
+			<arg line="-include-sources ../src/citrus/view/starlingview" />
+
+			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
+			<arg line="-include-libraries ../lib/feathers.swc" />
+			<arg line="-include-libraries ../lib/starling.swc" />
+
+			<arg line="-include-sources ../srclib/starling" />
+			<arg line="-include-sources ../srclib/dragonBones" />
+		</exec>
+
+	</target>
+
+	<target name="CE-swc-starling-feathers-box2d" description="Generates the CE's SWC with Starling and Box2D">
+
+		<echo>Generating Citrus Engine Starling - Box2D</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/CE${VERSION}-Starling-Feathers-Box2D.swc" />
+
+			<arg line="-include-sources ../src/citrus/objects/complex/box2dstarling" />
+
+			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
+			<arg line="-include-libraries ../bin/CE${VERSION}-Box2D.swc" />
+			<arg line="-include-libraries ../bin/CE${VERSION}-Starling-Feathers.swc" />
+		</exec>
+
+	</target>
+
+	<target name="CE-swc-starling-feathers-nape" description="Generates the CE's SWC with Starling and Nape">
+
+		<echo>Generating Citrus Engine Starling - Nape</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/CE${VERSION}-Starling-Feathers-Nape.swc" />
+
+			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
+			<arg line="-include-libraries ../bin/CE${VERSION}-Nape.swc" />
+			<arg line="-include-libraries ../bin/CE${VERSION}-Starling-Feathers.swc" />
+		</exec>
+
+	</target>
+
+	<target name="CE-swc-away3d" description="Generates the CE's SWC with Away3D">
+
+		<echo>Generating Citrus Engine Away3D</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/CE${VERSION}-Away3D.swc" />
+
+			<!-- Include all of the AS3 files in LIBRARY -->
+
+			<arg line="-include-sources ../src/citrus/core/away3d" />
+
+			<!--<arg line="-include-sources ../src/citrus/utils/ObjectMaker3D.as" />-->
+
+			<arg line="-include-sources ../src/citrus/view/away3dview" />
+
+			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
+			<arg line="-include-libraries ../lib/away3d.swc" />
+		</exec>
+
+	</target>
+
+	<target name="CE-swc-away3d-box2d" description="Generates the CE's SWC with Away3D and Box2D">
+
+		<echo>Generating Citrus Engine Away3D - Box2D</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/CE${VERSION}-Away3D-Box2D.swc" />
+
+			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
+			<arg line="-include-libraries ../bin/CE${VERSION}-Away3D.swc" />
+			<arg line="-include-libraries ../bin/CE${VERSION}-Box2D.swc" />
+		</exec>
+
+	</target>
+
+	<target name="CE-swc-away3d-nape" description="Generates the CE's SWC with Away3D and Nape">
+
+		<echo>Generating Citrus Engine Away3D - Nape</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/CE${VERSION}-Away3D-Nape.swc" />
+
+			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
+			<arg line="-include-libraries ../bin/CE${VERSION}-Away3D.swc" />
+			<arg line="-include-libraries ../bin/CE${VERSION}-Nape.swc" />
+		</exec>
+
+	</target>
+
+	<target name="CE-swc-away3d-awayphysics" description="Generates the CE's SWC with Away3D and AwayPhysics">
+
+		<echo>Generating Citrus Engine Away3D - AwayPhysics</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/CE${VERSION}-Away3D-AwayPhysics.swc" />
+
+			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../src/citrus/objects/AwayPhysicsObject.as" />
+			<arg line="-include-sources ../src/citrus/objects/platformer/awayphysics" />
+
+			<arg line="-include-sources ../src/citrus/physics/awayphysics" />
+
+			<arg line="-include-sources ../src/citrus/utils/objectmakers/ObjectMaker3D.as" />
+
+			<arg line="-include-sources ../src/citrus/view/away3dview" />
+
+			<arg line="-include-libraries ../bin/CE${VERSION}-Core.swc" />
+			<arg line="-include-libraries ../bin/CE${VERSION}-Away3D.swc" />
+			<arg line="-include-libraries ../lib/AwayPhysics.swc" />
+
+			<arg line="-include-sources ../srclib/awayphysics" />
+		</exec>
+
+	</target>
+
+	<target name="Box2D SWC" description="Generates Box2D SWC">
+
+		<echo>Generating Box2D SWC</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/libraries/Box2D.swc" />
+
+			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../srclib/Box2D" />
+		</exec>
+	</target>
+
+	<target name="Starling + Feathers + DragonBones SWC" description="Generates Starling + Feathers + DragonBones SWC">
+
+		<echo>Generating Starling + Feathers + DragonBones SWC</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/libraries/Starling-Feathers-DragonBones.swc" />
+
+			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../srclib/starling" />
+			<arg line="-include-sources ../srclib/dragonBones" />
+			<arg line="-include-libraries ../lib/feathers.swc" />
+			<arg line="-include-libraries ../lib/starling.swc" />
+		</exec>
+	</target>
+
+	<target name="Away3D + AwayPhysics SWC" description="Generates Away3D + AwayPhysics SWC">
+
+		<echo>Generating Away3D + AwayPhysics SWC</echo>
+		<exec executable="${compc}">
+			<!-- Set the output path -->
+			<arg line="-output ../bin/libraries/Away3D-AwayPhysics.swc" />
+
+			<!-- Include all of the AS3 files in LIBRARY -->
+			<arg line="-include-sources ../srclib/awayphysics" />
+			<arg line="-include-libraries ../lib/AwayPhysics.swc" />
+			<arg line="-include-libraries ../lib/away3d.swc" />
+		</exec>
+	</target>
+	
+</project>
