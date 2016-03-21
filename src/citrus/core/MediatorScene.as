@@ -3,31 +3,28 @@ package citrus.core {
 	import citrus.physics.APhysicsEngine;
 	import citrus.datastructures.PoolObject;
 	import citrus.objects.APhysicsObject;
-	import citrus.system.Component;
-	import citrus.system.Entity;
-	import citrus.system.components.ViewComponent;
 	import citrus.view.ACitrusView;
 
 	/**
-	 * The MediatorState class is very important. It usually contains the logic for a particular state the game is in.
-	 * You should never instanciate/extend this class by your own. It's used via a wrapper: State or StarlingState or Away3DState.
-	 * There can only ever be one state running at a time. You should extend the State class
-	 * to create logic and scripts for your levels. You can build one state for each level, or
-	 * create a state that represents all your levels. You can get and set the reference to your active
-	 * state via the CitrusEngine class.
+	 * The MediatorScene class is very important. It usually contains the logic for a particular scene the game is in.
+	 * You should never instanciate/extend this class by your own. It's used via a wrapper: StarlingScene.
+	 * There can only ever be one scene running at a time. You should extend the Scene class
+	 * to create logic and scripts for your levels. You can build one scene for each level, or
+	 * create a scene that represents all your levels. You can get and set the reference to your active
+	 * scene via the CitrusEngine class.
 	 */
-	final public class MediatorState {
+	final public class MediatorScene {
 
 		private var _objects:Vector.<CitrusObject> = new Vector.<CitrusObject>();
 		private var _poolObjects:Vector.<PoolObject> = new Vector.<PoolObject>();
 		private var _view:ACitrusView;
-		private var _istate:IState;
+		private var _iscene:IScene;
 
 		private var _garbage:Array = [];
 		private var _numObjects:uint = 0;
 
-		public function MediatorState(istate:IState) {
-			_istate = istate;
+		public function MediatorScene(iscene:IScene) {
+			_iscene = iscene;
 		}
 
 		/**
@@ -54,7 +51,7 @@ package citrus.core {
 		}
 
 		/**
-		 * Gets a reference to this state's view manager. Take a look at the class definition for more information about this. 
+		 * Gets a reference to this scene's view manager. Take a look at the class definition for more information about this. 
 		 */
 		public function get view():ACitrusView {
 			return _view;
@@ -66,7 +63,7 @@ package citrus.core {
 		}
 
 		/**
-		 * This method calls update on all the CitrusObjects that are attached to this state.
+		 * This method calls update on all the CitrusObjects that are attached to this scene.
 		 * The update method also checks for CitrusObjects that are ready to be destroyed and kills them.
 		 * Finally, this method updates the View manager. 
 		 */
@@ -100,23 +97,20 @@ package citrus.core {
 			for each (var poolObject:PoolObject in _poolObjects)
 				poolObject.updatePhysics(timeDelta);
 
-			// Update the state's view
+			// Update the scene's view
 			_view.update(timeDelta);
 		}
 
 		/**
-		 * Call this method to add a CitrusObject to this state. All visible game objects and physics objects
+		 * Call this method to add a CitrusObject to this scene. All visible game objects and physics objects
 		 * will need to be created and added via this method so that they can be properly created, managed, updated, and destroyed. 
 		 * @return The CitrusObject that you passed in. Useful for linking commands together.
 		 */
 		public function add(object:CitrusObject):CitrusObject {
 			
-			if (object is Entity)
-				throw new Error("Object named: " + object.name + " is an entity and should be added to the state via addEntity method.");
-			
 			for each (var objectAdded:CitrusObject in objects) 
 				if (object == objectAdded)
-					throw new Error(object.name + " is already added to the state.");
+					throw new Error(object.name + " is already added to the scene.");
 			
 			if (object is APhysicsObject)
 				(object as APhysicsObject).addPhysics();
@@ -132,38 +126,15 @@ package citrus.core {
 		}
 
 		/**
-		 * Call this method to add an Entity to this state. All entities will need to be created
+		 * Call this method to add a PoolObject to this scene. All pool objects and  will need to be created 
 		 * and added via this method so that they can be properly created, managed, updated, and destroyed.
-		 * @return The Entity that you passed in. Useful for linking commands together.
-		 */
-		public function addEntity(entity:Entity):Entity {
-			
-			for each (var objectAdded:CitrusObject in objects)
-				if (entity == objectAdded)
-					throw new Error(entity.name + " is already added to the state.");
-			
-			_objects.push(entity);
-			
-			var views:Vector.<Component> = entity.lookupComponentsByType(ViewComponent);
-			if (views.length > 0)
-				for each(var view:ViewComponent in views)
-				{
-					_view.addArt(view);
-				}
-					
-			return entity;
-		}
-
-		/**
-		 * Call this method to add a PoolObject to this state. All pool objects and  will need to be created 
-		 * and added via this method so that they can be properly created, managed, updated, and destroyed.
-		 * @param poolObject The PoolObject isCitrusObjectPool's value must be true to be render through the State.
+		 * @param poolObject The PoolObject isCitrusObjectPool's value must be true to be render through the Scene.
 		 * @return The PoolObject that you passed in. Useful for linking commands together.
 		 */
 		public function addPoolObject(poolObject:PoolObject):PoolObject {
 
 			if (poolObject.isCitrusObjectPool) {
-				poolObject.citrus_internal::state = _istate;
+				poolObject.citrus_internal::scene = _iscene;
 				_poolObjects.push(poolObject);
 
 				return poolObject;
@@ -172,7 +143,7 @@ package citrus.core {
 		}
 
 		/**
-		 * removeImmediately instaneously destroys and remove the object from the state.
+		 * removeImmediately instaneously destroys and remove the object from the scene.
 		 * 
 		 * While using remove() is recommended, there are specific case where this is needed.
 		 * please use with care.
@@ -192,16 +163,8 @@ package citrus.core {
 				
 			object.kill = true;
 			_objects.splice(i, 1);
-
-			if (object is Entity) {
-				var views:Vector.<Component> = (object as Entity).lookupComponentsByType(ViewComponent);
-				
-				if (views.length > 0)
-					for each(var view:ViewComponent in views)
-						_view.removeArt(view);
-						
-			} else
-				_view.removeArt(object);
+			
+			_view.removeArt(object);
 
 			object.destroy();
 
@@ -279,7 +242,7 @@ package citrus.core {
 
 		/**
 		 * Returns the first instance of a CitrusObject that is of the class that you pass in. 
-		 * This is useful if you know that there is only one object of a certain time in your state (such as a "Hero").
+		 * This is useful if you know that there is only one object of a certain time in your scene (such as a "Hero").
 		 * @param type The class of the object you want to get a reference to.
 		 */
 		public function getFirstObjectByType(type:Class):CitrusObject {
@@ -349,7 +312,7 @@ package citrus.core {
 		}
 
 		/**
-		 * Destroy all the objects added to the State and not already killed.
+		 * Destroy all the objects added to the Scene and not already killed.
 		 * @param except CitrusObjects you want to save.
 		 */
 		public function killAllObjects(except:Array):void {
@@ -371,7 +334,7 @@ package citrus.core {
 		}
 
 		/**
-		 * Contains all the objects added to the State and not killed.
+		 * Contains all the objects added to the Scene and not killed.
 		 */
 		public function get objects():Vector.<CitrusObject> {
 			return _objects;

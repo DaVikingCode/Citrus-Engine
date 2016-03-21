@@ -21,7 +21,7 @@ package citrus.core {
 	 * document class extend this class unless you use Starling. In this case extends StarlingCitrusEngine.
 	 * 
 	 * <p>CitrusEngine is a singleton so that you can grab a reference to it anywhere, anytime. Don't abuse this power,
-	 * but use it wisely. With it, you can quickly grab a reference to the manager classes such as current State, Input and SoundManager.</p>
+	 * but use it wisely. With it, you can quickly grab a reference to the manager classes such as current Scene, Input and SoundManager.</p>
 	 */	
 	public class CitrusEngine extends MovieClip
 	{
@@ -58,21 +58,21 @@ package citrus.core {
 		public var levelManager:LevelManager;
 		
 		/**
-		 * the matrix that describes the transformation required to go from state container space to flash stage space.
+		 * the matrix that describes the transformation required to go from scene container space to flash stage space.
 		 * note : this does not include the camera's transformation.
-		 * the transformation required to go from flash stage to in state space when a camera is active would be obtained with
+		 * the transformation required to go from flash stage to in scene space when a camera is active would be obtained with
 		 * var m:Matrix = camera.transformMatrix.clone();
 		 * m.concat(_ce.transformMatrix);
 		 * 
-		 * using flash only, the state container is aligned and of the same scale as the flash stage, so this is not required.
+		 * using flash only, the scene container is aligned and of the same scale as the flash stage, so this is not required.
 		 */
 		public const transformMatrix:Matrix = new Matrix();
 		
-		protected var _state:IState;
-		protected var _newState:IState;
-		protected var _stateTransitionning:IState;
-		protected var _futureState:IState;
-		protected var _stateDisplayIndex:uint = 0;
+		protected var _scene:IScene;
+		protected var _newScene:IScene;
+		protected var _sceneTransitionning:IScene;
+		protected var _futureScene:IScene;
+		protected var _sceneDisplayIndex:uint = 0;
 		protected var _playing:Boolean = true;
 		protected var _input:Input;
 		
@@ -147,13 +147,8 @@ package citrus.core {
 			
 			removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
 			
-			if (_state) {
-				
-				_state.destroy();
-				
-				if (_state is State)
-					removeChild(_state as State);
-			}
+			if (_scene)
+				_scene.destroy();
 				
 			_console.destroy();
 			removeChild(_console);
@@ -163,49 +158,49 @@ package citrus.core {
 		}
 		
 		/**
-		 * A reference to the active game state. Actually, that's not entirely true. If you've recently changed states and a tick
-		 * hasn't occurred yet, then this will reference your new state; this is because actual state-changes only happen pre-tick.
-		 * That way you don't end up changing states in the middle of a state's tick, effectively fucking stuff up.
+		 * A reference to the active game scene. Actually, that's not entirely true. If you've recently changed scenes and a tick
+		 * hasn't occurred yet, then this will reference your new scene; this is because actual scene-changes only happen pre-tick.
+		 * That way you don't end up changing scenes in the middle of a scene's tick, effectively fucking stuff up.
 		 * 
-		 * If you had set up a futureState, accessing the state it wil return you the futureState to enable some objects instantiation 
+		 * If you had set up a futureScene, accessing the scene it wil return you the futureScene to enable some objects instantiation 
 		 * (physics, views, etc).
 		 */		
-		public function get state():IState
+		public function get scene():IScene
 		{
-			if (_futureState)
-				return _futureState;
+			if (_futureScene)
+				return _futureScene;
 						
-			else if (_newState)
-				return _newState;
+			else if (_newScene)
+				return _newScene;
 						
 			else 
-				return _state;
+				return _scene;
 		}
 		
 		/**
-		 * We only ACTUALLY change states on enter frame so that we don't risk changing states in the middle of a state update.
-		 * However, if you use the state getter, it will grab the new one for you, so everything should work out just fine.
+		 * We only ACTUALLY change scenes on enter frame so that we don't risk changing scenes in the middle of a scene update.
+		 * However, if you use the scene getter, it will grab the new one for you, so everything should work out just fine.
 		 */		
-		public function set state(value:IState):void
+		public function set scene(value:IScene):void
 		{
-			_newState = value;
+			_newScene = value;
 		}
 		
 		/**
-		 * Get a direct access to the futureState. Note that the futureState is really set up after an update so it isn't 
-		 * available via state getter before a state update.
+		 * Get a direct access to the futureScene. Note that the futureScene is really set up after an update so it isn't 
+		 * available via scene getter before a scene update.
 		 */
-		public function get futureState():IState {
-			return _futureState ? _futureState : _stateTransitionning;
+		public function get futureScene():IScene {
+			return _futureScene ? _futureScene : _sceneTransitionning;
 		}
 		
 		/**
-		 * The futureState variable is useful if you want to have two states running at the same time for making a transition. 
-		 * Note that the futureState is added with the same index than the state, so it will be behind unless the state runs 
-		 * on Starling and the futureState on the display list (which is absolutely doable).
+		 * The futureScene variable is useful if you want to have two scenes running at the same time for making a transition. 
+		 * Note that the futureScene is added with the same index than the scene, so it will be behind unless the scene runs 
+		 * on Starling and the futureScene on the display list (which is absolutely doable).
 		 */
-		public function set futureState(value:IState):void {
-			_stateTransitionning = value;
+		public function set futureScene(value:IScene):void {
+			_sceneTransitionning = value;
 		}
 		
 		/**
@@ -332,52 +327,21 @@ package citrus.core {
 		}
 		
 		/**
-		 * This is the game loop. It switches states if necessary, then calls update on the current state.
+		 * This is the game loop. It switches scenes if necessary, then calls update on the current scene.
 		 */		
 		//TODO The CE updates use the timeDelta to keep consistent speed during slow framerates. However, Box2D becomes unstable when changing timestep. Why?
 		protected function handleEnterFrame(e:Event):void
 		{
-			//Change states if it has been requested
-			if (_newState && _newState is State) {
-					
-				if (_state && _state is State) {
-					
-					_state.destroy();
-					removeChild(_state as State);
-				}
-				
-				_state = _newState;
-				_newState = null;
-				
-				if (_futureState)
-					_futureState = null;
-						
-				else {
-					addChildAt(_state as State, _stateDisplayIndex);
-					_state.initialize();
-				}
-							
-			}
-			
-			if (_stateTransitionning && _stateTransitionning is State) {
-					
-				_futureState = _stateTransitionning;
-				_stateTransitionning = null;
-				
-				addChildAt(_futureState as State, _stateDisplayIndex);
-				_futureState.initialize();
-			}
-			
-			//Update the state
-			if (_state && _playing)
+			//Update the scene
+			if (_scene && _playing)
 			{
 				_nowTime = new Date().time;
 				_timeDelta = (_nowTime - _gameTime) * 0.001;
 				_gameTime = _nowTime;
 				
-				_state.update(_timeDelta);
-				if (_futureState)
-					_futureState.update(_timeDelta);
+				_scene.update(_timeDelta);
+				if (_futureScene)
+					_futureScene.update(_timeDelta);
 			}
 			
 			_input.citrus_internal::update();
@@ -416,7 +380,7 @@ package citrus.core {
 		
 		private function handleConsoleSetCommand(objectName:String, paramName:String, paramValue:String):void
 		{
-			var object:CitrusObject = _state.getObjectByName(objectName);
+			var object:CitrusObject = _scene.getObjectByName(objectName);
 			
 			if (!object)
 			{
@@ -440,7 +404,7 @@ package citrus.core {
 		
 		private function handleConsoleGetCommand(objectName:String, paramName:String):void
 		{
-			var object:CitrusObject = _state.getObjectByName(objectName);
+			var object:CitrusObject = _scene.getObjectByName(objectName);
 			
 			if (!object)
 			{

@@ -2,7 +2,7 @@ package citrus.utils.objectmakers {
 	
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
-	import citrus.core.IState;
+	import citrus.core.IScene;
 	import citrus.objects.CitrusSprite;
 	import citrus.utils.objectmakers.tmx.TmxLayer;
 	import citrus.utils.objectmakers.tmx.TmxMap;
@@ -429,7 +429,7 @@ package citrus.utils.objectmakers {
 		public static function FromLevelArchitect(levelData:XML, addToCurrentState:Boolean = true):Array {
 			var array:Array = [];
 			
-			var state:IState = CitrusEngine.getInstance().state;
+			var state:IScene = CitrusEngine.getInstance().state;
 			for each (var objectXML:XML in levelData.CitrusObject) {
 				var params:Object = {};
 				for each (var paramXML:XML in objectXML.Property) {

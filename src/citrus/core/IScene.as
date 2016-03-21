@@ -1,12 +1,11 @@
 package citrus.core {
 
-	import citrus.system.Entity;
 	import citrus.view.ACitrusView;
 	
 	/**
-	 * Take a look on the 2 respective states to have some information on the functions.
+	 * Take a look on the 2 respective scenes to have some information on the functions.
 	 */
-	public interface IState {
+	public interface IScene {
 		
 		function destroy():void;
 		
@@ -17,8 +16,6 @@ package citrus.core {
 		function update(timeDelta:Number):void;
 		
 		function add(object:CitrusObject):CitrusObject;
-		
-		function addEntity(entity:Entity):Entity;
 		
 		function remove(object:CitrusObject):void;
 		

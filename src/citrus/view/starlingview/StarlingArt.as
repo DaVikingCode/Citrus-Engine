@@ -1,7 +1,7 @@
 package citrus.view.starlingview {
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
-	import citrus.core.IState;
+	import citrus.core.IScene;
 	import citrus.core.starling.StarlingCitrusEngine;
 	import citrus.physics.APhysicsEngine;
 	import citrus.physics.IDebugView;
@@ -105,7 +105,7 @@ package citrus.view.starlingview {
 
 			_ce.onPlayingChange.add(_pauseAnimation);
 
-			var ceState:IState = _ce.state;
+			var ceState:IScene = _ce.state;
 
 			if (_citrusObject is ViewComponent && ceState.getFirstObjectByType(APhysicsEngine) as APhysicsEngine)
 				_physicsComponent = (_citrusObject as ViewComponent).entity.lookupComponentByName("physics");

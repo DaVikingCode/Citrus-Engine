@@ -1,7 +1,6 @@
 package citrus.core.starling {
 
 	import citrus.core.CitrusEngine;
-	import citrus.core.State;
 
 	import starling.core.Starling;
 	import starling.events.Event;
@@ -55,11 +54,11 @@ package citrus.core.starling {
 			
 			_juggler.purge();
 
-			if (_state) {
+			if (_scene) {
 
 				if (_starling) {
 					_starling.stage.removeEventListener(starling.events.Event.RESIZE, handleStarlingStageResize);
-					_starling.stage.removeChild(_state as StarlingState);
+					_starling.stage.removeChild(_scene as StarlingScene);
 					_starling.root.dispose();
 					_starling.dispose();
 				}
@@ -78,7 +77,7 @@ package citrus.core.starling {
 
 		/**
 		 * You should call this function to create your Starling view. The RootClass is internal, it is never used elsewhere. 
-		 * StarlingState is added on the starling stage : <code>_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);</code>
+		 * StarlingScene is added on the starling stage : <code>_starling.stage.addChildAt(_scene as StarlingScene, _sceneDisplayIndex);</code>
 		 * @param debugMode If true, display a Stats class instance.
 		 * @param antiAliasing The antialiasing value allows you to set the anti-aliasing (0 - 16), generally a value of 1 is totally acceptable.
 		 * @param viewPort Starling's viewport, default is (0, 0, stage.stageWidth, stage.stageHeight, change to (0, 0, stage.fullScreenWidth, stage.fullScreenHeight) for mobile.
@@ -250,7 +249,7 @@ package citrus.core.starling {
 		
 		/**
 		 * This function is called when context3D is ready and the starling root is created.
-		 * the idea is to use this function for asset loading through the starling AssetManager and create the first state.
+		 * the idea is to use this function for asset loading through the starling AssetManager and create the first scene.
 		 */
 		public function handleStarlingReady():void {	
 		}
@@ -266,44 +265,44 @@ package citrus.core.starling {
 
 			if (_starling && _starling.isStarted && _starling.context) {
 
-				if (_newState) {
+				if (_newScene) {
 
-					if (_state) {
+					if (_scene) {
 
-						if (_state is StarlingState) {
+						if (_scene is StarlingScene) {
 
-							_state.destroy();
-							_starling.stage.removeChild(_state as StarlingState, true);
+							_scene.destroy();
+							_starling.stage.removeChild(_scene as StarlingScene, true);
 
-						} else if(_newState is StarlingState) {
+						} else if(_newScene is StarlingScene) {
 
-							_state.destroy();
-							removeChild(_state as State);
+							_scene.destroy();
+							removeChild(_scene as State);
 						}
 
 					}
 
-					if (_newState is StarlingState) {
+					if (_newScene is StarlingScene) {
 
-						_state = _newState;
-						_newState = null;
+						_scene = _newScene;
+						_newScene = null;
 
-						if (_futureState)
-							_futureState = null;
+						if (_futureScene)
+							_futureScene = null;
 						else {
-							_starling.stage.addChildAt(_state as StarlingState, _stateDisplayIndex);
-							_state.initialize();
+							_starling.stage.addChildAt(_scene as StarlingScene, _sceneDisplayIndex);
+							_scene.initialize();
 						}
 					}
 				}
 
-				if (_stateTransitionning && _stateTransitionning is StarlingState) {
+				if (_sceneTransitionning && _sceneTransitionning is StarlingScene) {
 
-					_futureState = _stateTransitionning;
-					_stateTransitionning = null;
+					_futureScene = _sceneTransitionning;
+					_sceneTransitionning = null;
 
-					starling.stage.addChildAt(_futureState as StarlingState, _stateDisplayIndex);
-					_futureState.initialize();
+					starling.stage.addChildAt(_futureScene as StarlingScene, _sceneDisplayIndex);
+					_futureScene.initialize();
 				}
 
 			}

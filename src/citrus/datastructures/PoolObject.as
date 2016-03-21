@@ -2,7 +2,7 @@ package citrus.datastructures {
 
 	import citrus.core.citrus_internal;
 	import citrus.core.CitrusObject;
-	import citrus.core.IState;
+	import citrus.core.IScene;
 	import citrus.view.ACitrusView;
 
 	import org.osflash.signals.Signal;
@@ -24,7 +24,7 @@ package citrus.datastructures {
 		protected var _poolGrowthRate:uint = 0;
 		protected var _isCitrusObjectPool:Boolean;
 		
-		citrus_internal var state:IState;
+		citrus_internal var scene:IScene;
 		
 		/**
 		 * dispatches a Signal with a newly created object of type _pooType.
@@ -258,12 +258,12 @@ package citrus.datastructures {
 			return false;
 		}
 		
-		public function updateArt(stateView:ACitrusView):void {
+		public function updateArt(sceneView:ACitrusView):void {
 
 			var tmpHead:DoublyLinkedListNode = head;
 
 			while (tmpHead != null) {
-				(tmpHead.data as _poolType).update(stateView);
+				(tmpHead.data as _poolType).update(sceneView);
 				tmpHead = tmpHead.next;
 			}
 
@@ -411,7 +411,7 @@ package citrus.datastructures {
 		
 		/**
 		 * Completely destroy all the content of the pool (the free objects)
-		 * and "unlink" from recycled object. (called automatically by the state)
+		 * and "unlink" from recycled object. (called automatically by the scene)
 		 */
 		public function clear():void {
 			
