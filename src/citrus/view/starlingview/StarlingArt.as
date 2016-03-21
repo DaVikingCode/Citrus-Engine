@@ -1,11 +1,9 @@
 package citrus.view.starlingview {
+
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
-	import citrus.core.IScene;
 	import citrus.core.starling.StarlingCitrusEngine;
-	import citrus.physics.APhysicsEngine;
 	import citrus.physics.IDebugView;
-	import citrus.system.components.ViewComponent;
 	import citrus.view.ACitrusCamera;
 	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
@@ -14,7 +12,6 @@ package citrus.view.starlingview {
 	import dragonBones.Armature;
 	import dragonBones.animation.WorldClock;
 
-	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -41,7 +38,7 @@ package citrus.view.starlingview {
 	import flash.utils.getDefinitionByName;
 
 	/**
-	 * This is the class that all art objects use for the StarlingView state view. If you are using the StarlingView (as opposed to the blitting view, for instance),
+	 * This is the class that all art objects use for the StarlingView scene view. If you are using the StarlingView (as opposed to the blitting view, for instance),
 	 * then all your graphics will be an instance of this class. 
 	 * <ul>There are 2 ways to manage MovieClip/animations :
 	 * <li>specify a "object.swf" in the view property of your object's creation.</li>
@@ -105,11 +102,6 @@ package citrus.view.starlingview {
 
 			_ce.onPlayingChange.add(_pauseAnimation);
 
-			var ceState:IScene = _ce.state;
-
-			if (_citrusObject is ViewComponent && ceState.getFirstObjectByType(APhysicsEngine) as APhysicsEngine)
-				_physicsComponent = (_citrusObject as ViewComponent).entity.lookupComponentByName("physics");
-
 			this.name = (_citrusObject as CitrusObject).name;
 
 			if (_loopAnimation["walk"] != true) {
@@ -156,10 +148,6 @@ package citrus.view.starlingview {
 				(_content as PDParticleSystem).stop();
 				_content.dispose();
 
-			} else if (_content is StarlingTileSystem) {
-				(_content as StarlingTileSystem).destroy();
-				_content.dispose();
-
 			} else if (_view is Armature) {
 				WorldClock.clock.remove(_view);
 				(_view as Armature).dispose();
@@ -185,7 +173,7 @@ package citrus.view.starlingview {
 		}
 
 		/**
-		 * Determines animations playing in loop. You can add one in your state class: <code>StarlingArt.setLoopAnimations(["walk", "climb"])</code>;
+		 * Determines animations playing in loop. You can add one in your scene class: <code>StarlingArt.setLoopAnimations(["walk", "climb"])</code>;
 		 */
 		static public function get loopAnimation():Dictionary {
 			return _loopAnimation;
@@ -338,7 +326,7 @@ package citrus.view.starlingview {
 					_content = new Image(_view);
 					
 				} else if (_view is Bitmap) {
-					// TODO : cut bitmap if size > 2048 * 2048, use StarlingTileSystem?
+					// TODO : cut bitmap if size > 2048 * 2048?
 					_content = new Image(_texture = Texture.fromBitmap(_view, false, false, _ce.scaleFactor));
 					
 				} else if (_view is Armature) {
@@ -396,7 +384,7 @@ package citrus.view.starlingview {
 			return _citrusObject;
 		}
 
-		public function update(stateView:ACitrusView):void {
+		public function update(sceneView:ACitrusView):void {
 			if (_citrusObject.inverted) {
 
 				if (scaleX > 0)
@@ -413,11 +401,11 @@ package citrus.view.starlingview {
 				var physicsDebugArt:IDebugView = (_content as StarlingPhysicsDebugView).debugView as IDebugView; 
 				/**
 				 * INFO :
-				 * can be replaced with (stateView as StarlingView).viewRoot as Sprite).getTransformationMatrix(Starling.current.stage)
-				 * or using transform.concatenatedMatrix in SpriteArt . This would solve any issues with moved root sprite, state sprite,
+				 * can be replaced with (sceneView as StarlingView).viewRoot as Sprite).getTransformationMatrix(Starling.current.stage)
+				 * or using transform.concatenatedMatrix in SpriteArt . This would solve any issues with moved root sprite, scene sprite,
 				 * or any further parents added by the user that we don't know of.
 				 */
-				_m.copyFrom(stateView.camera.transformMatrix);
+				_m.copyFrom(sceneView.camera.transformMatrix);
 				_m.concat(_ce.transformMatrix);
 				physicsDebugArt.transformMatrix = _m;
 				physicsDebugArt.visibility = _citrusObject.visible;
@@ -426,20 +414,20 @@ package citrus.view.starlingview {
 
 			} else if (_physicsComponent) {
 
-				x = _physicsComponent.x + ( (stateView.camera.camProxy.x - _physicsComponent.x) * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
-				y = _physicsComponent.y + ( (stateView.camera.camProxy.y - _physicsComponent.y) * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
+				x = _physicsComponent.x + ( (sceneView.camera.camProxy.x - _physicsComponent.x) * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
+				y = _physicsComponent.y + ( (sceneView.camera.camProxy.y - _physicsComponent.y) * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
 				rotation = deg2rad(_physicsComponent.rotation);
 
 			} else {
-				if (stateView.camera.parallaxMode == ACitrusCamera.PARALLAX_MODE_DEPTH)
+				if (sceneView.camera.parallaxMode == ACitrusCamera.PARALLAX_MODE_DEPTH)
 				{
-					x = _citrusObject.x + ( (stateView.camera.camProxy.x - _citrusObject.x) * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
-					y = _citrusObject.y + ( (stateView.camera.camProxy.y - _citrusObject.y) * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
+					x = _citrusObject.x + ( (sceneView.camera.camProxy.x - _citrusObject.x) * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
+					y = _citrusObject.y + ( (sceneView.camera.camProxy.y - _citrusObject.y) * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
 				}
 				else
 				{
-					x = _citrusObject.x + ( (stateView.camera.camProxy.x + stateView.camera.camProxy.offset.x) * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
-					y = _citrusObject.y + ( (stateView.camera.camProxy.y + stateView.camera.camProxy.offset.y) * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
+					x = _citrusObject.x + ( (sceneView.camera.camProxy.x + sceneView.camera.camProxy.offset.x) * (1 - _citrusObject.parallaxX)) + _citrusObject.offsetX * scaleX;
+					y = _citrusObject.y + ( (sceneView.camera.camProxy.y + sceneView.camera.camProxy.offset.y) * (1 - _citrusObject.parallaxY)) + _citrusObject.offsetY;
 				}
 				rotation = deg2rad(_citrusObject.rotation);
 			}

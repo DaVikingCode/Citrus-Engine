@@ -1,6 +1,6 @@
 package citrus.core {
 
-	import org.osflash.signals.Signal;
+	import ash.signals.Signal0;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -54,8 +54,8 @@ package citrus.core {
 		private var _enabled:Boolean = false;
 		
 		//events
-		private var _onShowConsole:Signal;
-		private var _onHideConsole:Signal;
+		private var _onShowConsole:Signal0;
+		private var _onHideConsole:Signal0;
 		
 		/**
 		 * Creates the instance of the console. This is a display object, so it is also added to the stage. 
@@ -94,8 +94,8 @@ package citrus.core {
 			
 			visible = false;
 			
-			_onShowConsole = new Signal();
-			_onHideConsole = new Signal();
+			_onShowConsole = new Signal0();
+			_onHideConsole = new Signal0();
 		}
 		
 		public function destroy():void {
@@ -109,7 +109,7 @@ package citrus.core {
 		/**
 		 * Gets dispatched when the console is shown. Handler accepts 0 params.
 		 */		
-		public function get onShowConsole():Signal
+		public function get onShowConsole():Signal0
 		{
 			return _onShowConsole;
 		}
@@ -117,7 +117,7 @@ package citrus.core {
 		/**
 		 * Gets dispatched when the console is hidden. Handler accepts 0 params.
 		 */		
-		public function get onHideConsole():Signal
+		public function get onHideConsole():Signal0
 		{
 			return _onHideConsole;
 		}

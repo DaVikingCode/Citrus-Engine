@@ -1,6 +1,6 @@
 package citrus.utils {
 
-	import org.osflash.signals.Signal;
+	import ash.signals.Signal1;
 
 	import flash.display.Loader;
 	import flash.events.Event;
@@ -53,7 +53,7 @@ package citrus.utils {
 
 		static private var _instance:LevelManager;
 
-		public var onLevelChanged:Signal;
+		public var onLevelChanged:Signal1;
 		
 		public var checkPolicyFile:Boolean = false;
 		
@@ -84,7 +84,7 @@ package citrus.utils {
 			_ALevel = ALevel;
 			_levelData = new Array();
 
-			onLevelChanged = new Signal(_ALevel);
+			onLevelChanged = new Signal1(_ALevel);
 			_currentIndex = 0;
 		}
 

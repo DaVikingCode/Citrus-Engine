@@ -1,11 +1,12 @@
 package citrus.core {
 
+	import ash.signals.Signal1;
+	import ash.signals.Signal2;
+
 	import citrus.input.Input;
 	import citrus.sounds.SoundManager;
 	import citrus.utils.AGameData;
 	import citrus.utils.LevelManager;
-
-	import org.osflash.signals.Signal;
 
 	import flash.display.MovieClip;
 	import flash.display.StageAlign;
@@ -38,13 +39,13 @@ package citrus.core {
 		/**
 		 * Used to pause animations in SpriteArt and StarlingArt.
 		 */
-		public var onPlayingChange:Signal;
+		public var onPlayingChange:Signal1;
 		
 		/**
 		 * called after a stage resize event
 		 * signal passes the new screenWidth and screenHeight as arguments.
 		 */
-		public var onStageResize:Signal;
+		public var onStageResize:Signal2;
 		
 		/**
 		 * You may use a class to store your game's data, this is already an abstract class made for that. 
@@ -100,8 +101,8 @@ package citrus.core {
 		{
 			_instance = this;
 			
-			onPlayingChange = new Signal(Boolean);
-			onStageResize = new Signal(int, int);
+			onPlayingChange = new Signal1(Boolean);
+			onStageResize = new Signal2(int, int);
 			
 			onPlayingChange.add(handlePlayingChange);
 			

@@ -123,7 +123,7 @@ package citrus.utils.objectmakers {
 			if (addToCurrentState) {
 				var ce:CitrusEngine = CitrusEngine.getInstance();
 				for each (object in a)
-					ce.state.add(object);
+					ce.scene.add(object);
 			}
 			
 			return a;
@@ -156,7 +156,7 @@ package citrus.utils.objectmakers {
 			const ce:CitrusEngine = CitrusEngine.getInstance();
 			if (addToCurrentState)
 				for each (var object:CitrusObject in objects)
-					ce.state.add(object);
+					ce.scene.add(object);
 			
 			return objects;
 		}
@@ -404,7 +404,7 @@ package citrus.utils.objectmakers {
 						citrusSprite = citrusObject as CitrusSprite;
 					}
 					
-					ce.state.add(citrusObject);
+					ce.scene.add(citrusObject);
 				}
 			}
 			

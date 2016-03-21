@@ -1,8 +1,10 @@
 package citrus.utils {
 
+	import ash.signals.Signal0;
+	import ash.signals.Signal2;
+
 	import citrus.core.CitrusObject;
 	import citrus.view.ICitrusArt;
-	import org.osflash.signals.Signal;
 
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -19,8 +21,8 @@ package citrus.utils {
 	 */
 	public class LoadManager {
 
-		public var onLoaded:Signal;
-		public var onLoadComplete:Signal;
+		public var onLoaded:Signal2;
+		public var onLoadComplete:Signal0;
 
 		private var _bytesLoaded:Dictionary;
 		private var _bytesTotal:Dictionary;
@@ -33,8 +35,8 @@ package citrus.utils {
 		 */
 		public function LoadManager() {
 			
-			onLoaded = new Signal(CitrusObject,ICitrusArt);
-			onLoadComplete = new Signal();
+			onLoaded = new Signal2(CitrusObject,ICitrusArt);
+			onLoadComplete = new Signal0();
 		}
 
 		public function destroy():void {

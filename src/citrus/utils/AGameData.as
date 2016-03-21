@@ -1,10 +1,11 @@
-package citrus.utils
-{
-	
+package citrus.utils {
+
+	import ash.signals.Signal2;
+
 	import flash.utils.Dictionary;
-	import flash.utils.flash_proxy;
 	import flash.utils.Proxy;
-	import org.osflash.signals.Signal;
+	import flash.utils.flash_proxy;
+	
 	
 	/**
 	 * This is an (optional) abstract class to store your game's data such as lives, score, levels or even complex objects...
@@ -25,7 +26,7 @@ package citrus.utils
 		/**
 		 * dispatched when a property is defined or changed.
 		 */
-		public var dataChanged:Signal;
+		public var dataChanged:Signal2;
 		
 		/**
 		 * throw an argument error when trying to change a property with a value of a different type.
@@ -41,7 +42,7 @@ package citrus.utils
 			__dict = new Dictionary();
 			__propNames = new Vector.<String>();
 			
-			dataChanged = new Signal(String, Object);
+			dataChanged = new Signal2(String, Object);
 		}
 		
 		override flash_proxy function callProperty(methodName:*, ... args):*
