@@ -281,10 +281,10 @@ package citrus.view.starlingview {
 							_content = AnimationSequence.fromMovieClip(tmpObj, _animation, 30);
 						} 
 						else if (tmpObj is flash.display.Bitmap) {
-							_content = new Image(_texture = Texture.fromBitmap(tmpObj, false, false, _ce.scaleFactor));
+							_content = new Image(_texture = Texture.fromBitmap(tmpObj, false, false, _ce.textureScaleFactor));
 						}
 						else if (tmpObj is BitmapData) {
-							_content = new Image(_texture = Texture.fromBitmapData(tmpObj, false, false, _ce.scaleFactor));
+							_content = new Image(_texture = Texture.fromBitmapData(tmpObj, false, false, _ce.textureScaleFactor));
 						}
 						else if(tmpObj is starling.display.DisplayObject) {
 							_content = tmpObj;						
@@ -301,10 +301,10 @@ package citrus.view.starlingview {
 						_content = AnimationSequence.fromMovieClip(tmpObj, _animation, 30);
 					} 
 					else if (tmpObj is flash.display.Bitmap) {
-						_content = new Image(_texture = Texture.fromBitmap(tmpObj, false, false, _ce.scaleFactor));
+						_content = new Image(_texture = Texture.fromBitmap(tmpObj, false, false, _ce.textureScaleFactor));
 					}
 					else if (tmpObj is BitmapData) {
-						_content = new Image(_texture = Texture.fromBitmapData(tmpObj, false, false, _ce.scaleFactor));
+						_content = new Image(_texture = Texture.fromBitmapData(tmpObj, false, false, _ce.textureScaleFactor));
 					}
 					else if(tmpObj is starling.display.DisplayObject) {
 						_content = tmpObj;						
@@ -327,7 +327,7 @@ package citrus.view.starlingview {
 					
 				} else if (_view is Bitmap) {
 					// TODO : cut bitmap if size > 2048 * 2048?
-					_content = new Image(_texture = Texture.fromBitmap(_view, false, false, _ce.scaleFactor));
+					_content = new Image(_texture = Texture.fromBitmap(_view, false, false, _ce.textureScaleFactor));
 					
 				} else if (_view is Armature) {
 					_content = (_view as Armature).display as Sprite;
@@ -470,7 +470,7 @@ package citrus.view.starlingview {
 			if (evt.target.loader.content is flash.display.MovieClip)
 				_content = AnimationSequence.fromMovieClip(evt.target.loader.content, _animation, 30);
 			else if (evt.target.loader.content is Bitmap)
-				_content = new Image(_texture = Texture.fromBitmap(evt.target.loader.content, false, false, _ce.scaleFactor));
+				_content = new Image(_texture = Texture.fromBitmap(evt.target.loader.content, false, false, _ce.textureScaleFactor));
 			
 			moveRegistrationPoint(_citrusObject.registration);
 			addChild(_content);
@@ -486,7 +486,7 @@ package citrus.view.starlingview {
 			
 			evt.target.removeEventListener(Event.COMPLETE, handleBinaryContentLoaded);
 			
-			_texture = Texture.fromAtfData(evt.target.data as ByteArray, _ce.scaleFactor, false);
+			_texture = Texture.fromAtfData(evt.target.data as ByteArray, _ce.textureScaleFactor, false);
 			_content = new Image(_texture);
 			
 			moveRegistrationPoint(_citrusObject.registration);

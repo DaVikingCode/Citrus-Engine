@@ -18,7 +18,7 @@ package citrus.core.starling {
 	 */
 	public class StarlingCitrusEngine extends CitrusEngine {
 		
-		public var scaleFactor:Number = 1;
+		public var textureScaleFactor:Number = 1;
 
 		protected var _starling:Starling;
 		protected var _juggler:CitrusStarlingJuggler;
@@ -110,7 +110,7 @@ package citrus.core.starling {
 		 * @param	assetSizes Array of numbers listing all asset sizes you use
 		 * @return
 		 */
-		protected function findScaleFactor(assetSizes:Array):Number
+		protected function findTextureScaleFactor(assetSizes:Array):Number
 		{
 			var arr:Array = assetSizes;
 			arr.sort(Array.NUMERIC);
@@ -188,7 +188,7 @@ package citrus.core.starling {
 					break;
 			}
 			
-			scaleFactor = findScaleFactor(_assetSizes);
+			textureScaleFactor = findTextureScaleFactor(_assetSizes);
 			
 			if (_starling)
 			{

@@ -202,7 +202,7 @@ package citrus.view.starlingview {
 		 */
 		public static function fromMovieClip(swf:flash.display.MovieClip,firstAnim:String = null, animFps:int = 30, firstAnimLoop:Boolean = true, smoothing:String = "bilinear"):AnimationSequence
 		{
-			var textureAtlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(swf, (CitrusEngine.getInstance() as StarlingCitrusEngine).scaleFactor, 0, true, true);
+			var textureAtlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(swf, (CitrusEngine.getInstance() as StarlingCitrusEngine).textureScaleFactor, 0, true, true);
 			var textureAtlasNames:Vector.<String> = textureAtlas.getNames();
 			
 			var sorter:Object = { };
