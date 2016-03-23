@@ -1,11 +1,12 @@
 package citrus.datastructures {
 
-	import citrus.core.citrus_internal;
+	import ash.signals.Signal1;
+	import ash.signals.Signal2;
+
 	import citrus.core.CitrusObject;
 	import citrus.core.IScene;
+	import citrus.core.citrus_internal;
 	import citrus.view.ACitrusView;
-
-	import org.osflash.signals.Signal;
 
 	/**
 	 * Object pooling is a data structure based on a simple observation : the ‘new’ operator is costly, 
@@ -29,19 +30,19 @@ package citrus.datastructures {
 		/**
 		 * dispatches a Signal with a newly created object of type _pooType.
 		 */
-		public var onCreate:Signal;
+		public var onCreate:Signal2;
 		/**
 		 * dispatches a Signal with the disposed object of type _pooType.
 		 */
-		public var onDispose:Signal;
+		public var onDispose:Signal1;
 		/**
 		 * dispatches a Signal with a recycled object of type _pooType.
 		 */
-		public var onRecycle:Signal;
+		public var onRecycle:Signal2;
 		/**
 		 * dispatches a Signal with an object of type _pooType before its destruction.
 		 */
-		public var onDestroy:Signal;
+		public var onDestroy:Signal1;
 
 		// Start of the list of free objects
 		protected var _freeListHead:DoublyLinkedListNode = null;
@@ -71,10 +72,10 @@ package citrus.datastructures {
 			_poolGrowthRate = poolGrowthRate;
 			_isCitrusObjectPool = isCitrusObjectPool;
 			
-			onCreate = new Signal(_poolType);
-			onDispose = new Signal(_poolType);
-			onRecycle = new Signal(_poolType);
-			onDestroy = new Signal(_poolType);
+			onCreate = new Signal2(_poolType, Object);
+			onDispose = new Signal1(_poolType);
+			onRecycle = new Signal2(_poolType, Object);
+			onDestroy = new Signal1(_poolType);
 			
 			gc = new Vector.<DoublyLinkedListNode>;
 			
