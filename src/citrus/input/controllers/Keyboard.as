@@ -1,7 +1,8 @@
 package citrus.input.controllers {
-	import citrus.input.InputController;
 
-	import org.osflash.signals.Signal;
+	import ash.signals.Signal3;
+
+	import citrus.input.InputController;
 
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
@@ -44,7 +45,7 @@ package citrus.input.controllers {
 		 *	}
 		 * </code>
 		 */
-		public var onKeyUp:Signal;
+		public var onKeyUp:Signal3;
 		
 		/**
 		 * on native keyboard key down, dispatches keyCode and keyLocation as well as a 'vars' object which you can use to prevent default or stop immediate propagation of the native event.
@@ -73,7 +74,7 @@ package citrus.input.controllers {
 		 *	}
 		 * </code>
 		 */
-		public var onKeyDown:Signal;
+		public var onKeyDown:Signal3;
 		
 		public var keyNames:Dictionary;
 		
@@ -94,8 +95,8 @@ package citrus.input.controllers {
 			_ce.stage.addEventListener(KeyboardEvent.KEY_DOWN, handleKeyDown);
 			_ce.stage.addEventListener(KeyboardEvent.KEY_UP, handleKeyUp);
 			
-			onKeyUp = new Signal(uint,int,Object);
-			onKeyDown = new Signal(uint,int,Object);
+			onKeyUp = new Signal3(uint,int,Object);
+			onKeyDown = new Signal3(uint,int,Object);
 			
 			keyNames = new Dictionary();
 			var xmlDesc:XMLList = describeType(Keyboard).child("constant");

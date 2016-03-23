@@ -1,12 +1,14 @@
 package citrus.objects {
 
+	import ash.signals.Signal2;
+	import ash.signals.Signal3;
+	import ash.signals.SignalAny;
+
 	import citrus.core.CitrusObject;
 	import citrus.math.MathVector;
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
-	import citrus.view.spriteview.SpriteDebugArt;
-
-	import org.osflash.signals.Signal;
+	import citrus.view.starlingview.StarlingSpriteDebugArt;
 
 	import flash.utils.Dictionary;
 
@@ -23,9 +25,9 @@ package citrus.objects {
 	{
 		public var collisions:Dictionary = new Dictionary();
 		
-		public var onCollide:Signal = new Signal(CitrusSprite, CitrusSprite, MathVector, Number);
-		public var onPersist:Signal = new Signal(CitrusSprite, CitrusSprite, MathVector);
-		public var onSeparate:Signal = new Signal(CitrusSprite, CitrusSprite);
+		public var onCollide:SignalAny = new SignalAny(CitrusSprite, CitrusSprite, MathVector, Number);
+		public var onPersist:Signal3 = new Signal3(CitrusSprite, CitrusSprite, MathVector);
+		public var onSeparate:Signal2 = new Signal2(CitrusSprite, CitrusSprite);
 		
 		protected var _x:Number = 0;
 		protected var _y:Number = 0;
@@ -38,7 +40,7 @@ package citrus.objects {
 		protected var _group:uint = 0;
 		protected var _visible:Boolean = true;
 		protected var _touchable:Boolean = false;
-		protected var _view:* = SpriteDebugArt;
+		protected var _view:* = StarlingSpriteDebugArt;
 		protected var _art:ICitrusArt;
 		protected var _inverted:Boolean = false;
 		protected var _animation:String = "";

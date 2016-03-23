@@ -3,7 +3,6 @@ package citrus.view.starlingview {
 	import citrus.physics.APhysicsEngine;
 	import citrus.view.ACitrusView;
 	import citrus.view.ISpriteView;
-	import citrus.view.spriteview.SpriteDebugArt;
 
 	import dragonBones.animation.WorldClock;
 
@@ -69,9 +68,6 @@ package citrus.view.starlingview {
 			
 			if (citrusObject is APhysicsEngine)
 				citrusObject.view = StarlingPhysicsDebugView;
-				
-			if (citrusObject.view == SpriteDebugArt)
-				citrusObject.view = StarlingSpriteDebugArt;
 				
 			if (citrusObject.view == flash.display.MovieClip)
 				citrusObject.view = starling.display.Sprite;

@@ -34,7 +34,7 @@ package citrus.sounds
 		public function CitrusSoundObject(citrusObject:ISpriteView) 
 		{
 			_ce = CitrusEngine.getInstance();
-			_space = _ce.state.getFirstObjectByType(CitrusSoundSpace) as CitrusSoundSpace;
+			_space = _ce.scene.getFirstObjectByType(CitrusSoundSpace) as CitrusSoundSpace;
 			if (!_space)
 				throw new Error("[CitrusSoundObject] for " + citrusObject["name"] + " couldn't find a CitrusSoundSpace.");
 				

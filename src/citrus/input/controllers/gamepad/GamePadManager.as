@@ -1,15 +1,18 @@
 package citrus.input.controllers.gamepad 
 {
+
+	import ash.signals.Signal1;
+
+	import citrus.input.InputController;
 	import citrus.input.controllers.gamepad.maps.FreeboxGamepadMap;
 	import citrus.input.controllers.gamepad.maps.OUYAGamepadMap;
 	import citrus.input.controllers.gamepad.maps.PS3GamepadMap;
 	import citrus.input.controllers.gamepad.maps.Xbox360GamepadMap;
-	import citrus.input.InputController;
+
 	import flash.events.GameInputEvent;
 	import flash.ui.GameInput;
 	import flash.ui.GameInputDevice;
 	import flash.utils.Dictionary;
-	import org.osflash.signals.Signal;
 	
 	public class GamePadManager extends InputController
 	{
@@ -36,11 +39,11 @@ package citrus.input.controllers.gamepad
 		/**
 		 * dispatches a newly created Gamepad object when a new GameInputDevice is added.
 		 */
-		public var onControllerAdded:Signal;
+		public var onControllerAdded:Signal1;
 		/**
 		 * dispatches the Gamepad object corresponding to the GameInputDevice that got removed.
 		 */
-		public var onControllerRemoved:Signal;
+		public var onControllerRemoved:Signal1;
 		
 		public function GamePadManager(maxPlayers:uint = 1, defaultMap:Class = null) 
 		{
@@ -60,8 +63,8 @@ package citrus.input.controllers.gamepad
 			
 			_gamePads = new Dictionary();
 			
-			onControllerAdded = new Signal(Gamepad);
-			onControllerRemoved = new Signal(Gamepad);
+			onControllerAdded = new Signal1(Gamepad);
+			onControllerRemoved = new Signal1(Gamepad);
 			
 			_gameInput.addEventListener(GameInputEvent.DEVICE_ADDED, handleDeviceAdded);
 			_gameInput.addEventListener(GameInputEvent.DEVICE_REMOVED, handleDeviceRemoved);

@@ -58,7 +58,7 @@ package citrus.sounds
 		
 		protected function updateCameraProperties():void
 		{
-			_camera = _ce.state.view.camera;
+			_camera = _ce.scene.view.camera;
 			camRect.copyFrom(_camera.getRect());
 			camCenter.setTo(camRect.x + camRect.width * 0.5, camRect.y + camRect.height * 0.5);
 			camRotation = _camera.getRotation();

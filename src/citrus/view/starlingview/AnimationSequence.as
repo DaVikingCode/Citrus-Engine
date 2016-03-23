@@ -1,5 +1,7 @@
 package citrus.view.starlingview {
 
+	import ash.signals.Signal1;
+
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingCitrusEngine;
 
@@ -8,8 +10,6 @@ package citrus.view.starlingview {
 	import starling.events.Event;
 	import starling.extensions.textureAtlas.DynamicAtlas;
 	import starling.textures.TextureAtlas;
-
-	import org.osflash.signals.Signal;
 
 	import flash.display.MovieClip;
 	import flash.utils.Dictionary;
@@ -25,7 +25,7 @@ package citrus.view.starlingview {
 		/**
 		 * The signal is dispatched each time an animation is completed, giving the animation name as argument.
 		 */
-		public var onAnimationComplete:Signal;
+		public var onAnimationComplete:Signal1;
 
 		private var _ce:StarlingCitrusEngine;
 		private var _textureAtlas:*;
@@ -52,7 +52,7 @@ package citrus.view.starlingview {
 			
 			_ce = CitrusEngine.getInstance() as StarlingCitrusEngine;
 
-			onAnimationComplete = new Signal(String);
+			onAnimationComplete = new Signal1(String);
 
 			_textureAtlas = textureAtlas;
 			_animations = animations;

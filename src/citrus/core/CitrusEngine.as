@@ -26,15 +26,9 @@ package citrus.core {
 	 */	
 	public class CitrusEngine extends MovieClip
 	{
-		public static const VERSION:String = "3.1.12";
+		public static const VERSION:String = "3.2.0";
 				
 		private static var _instance:CitrusEngine;
-		
-		/**
-		 * DEBUG is not used by CitrusEngine, it is there for your own convenience
-		 * so you can access it wherever the _ce 'shortcut' is. defaults to false.
-		 */
-		public var DEBUG:Boolean = false;
 		
 		/**
 		 * Used to pause animations in SpriteArt and StarlingArt.

@@ -1,10 +1,10 @@
 package citrus.input {
 
-	import citrus.core.citrus_internal;
-	import citrus.core.CitrusEngine;
-	import citrus.input.controllers.Keyboard;
+	import ash.signals.Signal1;
 
-	import org.osflash.signals.Signal;
+	import citrus.core.CitrusEngine;
+	import citrus.core.citrus_internal;
+	import citrus.input.controllers.Keyboard;
 	
 	/**
 	 * A class managing input of any controllers that is an InputController.
@@ -36,9 +36,9 @@ package citrus.input {
 		protected var _routeActions:Boolean = false;
 		protected var _routeChannel:uint;
 		
-		internal var actionON:Signal;
-		internal var actionOFF:Signal;
-		internal var actionCHANGE:Signal;
+		internal var actionON:Signal1;
+		internal var actionOFF:Signal1;
+		internal var actionCHANGE:Signal1;
 		
 		//easy access to the default keyboard
 		public var keyboard:Keyboard;
@@ -48,9 +48,9 @@ package citrus.input {
 			_controllers = new Vector.<InputController>();
 			_actions = new Vector.<InputAction>();
 			
-			actionON = new Signal(InputAction);
-			actionOFF = new Signal(InputAction);
-			actionCHANGE = new Signal(InputAction);
+			actionON = new Signal1(InputAction);
+			actionOFF = new Signal1(InputAction);
+			actionCHANGE = new Signal1(InputAction);
 			
 			actionON.add(doActionON);
 			actionOFF.add(doActionOFF);

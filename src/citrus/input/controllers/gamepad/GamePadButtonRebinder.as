@@ -1,11 +1,13 @@
-package citrus.input.controllers.gamepad
-{
-	import citrus.input.controllers.gamepad.controls.ButtonController;
+package citrus.input.controllers.gamepad {
+
+	import ash.signals.Signal1;
+
 	import citrus.input.InputAction;
 	import citrus.input.InputController;
+	import citrus.input.controllers.gamepad.controls.ButtonController;
+
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-	import org.osflash.signals.Signal;
 	
 	/**
 	 * Experimental InputController that waits for a new gamepad buttons pressed to assign a new button to it.
@@ -37,7 +39,7 @@ package citrus.input.controllers.gamepad
 		/**
 		 * dispatches true if rebound correctly, or false if timer is over.
 		 */
-		public var onDone:Signal;
+		public var onDone:Signal1;
 		
 		public function GamePadButtonRebinder(name:String, action:String, route:Boolean = true, removeActions:Boolean = true , timeOut:int = -1, gamePadIndex:int = -1)
 		{
@@ -57,7 +59,7 @@ package citrus.input.controllers.gamepad
 				_gamePads.push(gp);
 			}
 				
-			onDone = new Signal(Boolean);
+			onDone = new Signal1(Boolean);
 				
 			_timeOut = timeOut;
 				

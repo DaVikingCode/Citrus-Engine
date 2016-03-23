@@ -269,17 +269,8 @@ package citrus.core.starling {
 
 					if (_scene) {
 
-						if (_scene is StarlingScene) {
-
-							_scene.destroy();
-							_starling.stage.removeChild(_scene as StarlingScene, true);
-
-						} else if(_newScene is StarlingScene) {
-
-							_scene.destroy();
-							removeChild(_scene as State);
-						}
-
+						_scene.destroy();
+						_starling.stage.removeChild(_scene as StarlingScene, true);
 					}
 
 					if (_newScene is StarlingScene) {

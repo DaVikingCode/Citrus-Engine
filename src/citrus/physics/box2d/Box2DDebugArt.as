@@ -1,10 +1,11 @@
 package citrus.physics.box2d {
 
 	import Box2D.Dynamics.b2DebugDraw;
+
 	import citrus.core.CitrusEngine;
 	import citrus.physics.IDebugView;
+
 	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.geom.Matrix;
 	
 	/**
@@ -22,7 +23,7 @@ package citrus.physics.box2d {
 		{
 			_ce = CitrusEngine.getInstance();
 			
-			_box2D = _ce.state.getFirstObjectByType(Box2D) as Box2D;
+			_box2D = _ce.scene.getFirstObjectByType(Box2D) as Box2D;
 			
 			_debugDrawer = new b2DebugDraw();
 			

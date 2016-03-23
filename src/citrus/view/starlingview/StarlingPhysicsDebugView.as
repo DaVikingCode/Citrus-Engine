@@ -3,12 +3,9 @@ package citrus.view.starlingview {
 	import citrus.core.CitrusEngine;
 	import citrus.physics.APhysicsEngine;
 	import citrus.physics.IDebugView;
-	import flash.display.Sprite;
-	import starling.core.Starling;
+
 	import starling.display.Sprite;
 	import starling.events.Event;
-
-
 	
 	/**
 	 * A wrapper for Starling to display the debug view of the different physics engine.
@@ -20,7 +17,7 @@ package citrus.view.starlingview {
 		
 		public function StarlingPhysicsDebugView() {
 			
-			_physicsEngine = CitrusEngine.getInstance().state.getFirstObjectByType(APhysicsEngine) as APhysicsEngine;
+			_physicsEngine = CitrusEngine.getInstance().scene.getFirstObjectByType(APhysicsEngine) as APhysicsEngine;
 			_debugView = new _physicsEngine.realDebugView();
 			addEventListener(Event.ADDED_TO_STAGE, _addedToStage);
 		}

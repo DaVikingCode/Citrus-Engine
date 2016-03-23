@@ -63,7 +63,7 @@ package citrus.physics {
 		 * </code>
 		 */
 		public function get debugView():IDebugView {
-			var debugArt:* = _ce.state.view.getArt(this);
+			var debugArt:* = _ce.scene.view.getArt(this);
 			if(debugArt && debugArt.content)
 				return debugArt.content.debugView as IDebugView;
 			else

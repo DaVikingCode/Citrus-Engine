@@ -31,7 +31,7 @@ package citrus.input.controllers.starling
 			super(name, params);
 			
 			if (!_touchTarget)
-			_touchTarget = ((_ce.state.view as StarlingView).viewRoot as Sprite);
+			_touchTarget = ((_ce.scene.view as StarlingView).viewRoot as Sprite);
 			
 			_touchTarget.addEventListener(TouchEvent.TOUCH, _handleTouch);
 		}

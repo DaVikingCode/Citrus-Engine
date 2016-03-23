@@ -3,10 +3,10 @@ package citrus.physics.nape {
 	import citrus.core.CitrusEngine;
 	import citrus.datastructures.BitFlag;
 	import citrus.physics.IDebugView;
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.geom.Matrix;
+
 	import nape.util.ShapeDebug;
+
+	import flash.geom.Matrix;
 
 	/**
 	 * This displays Nape's debug graphics. It does so properly through Citrus Engine's view manager. Nape by default
@@ -39,7 +39,7 @@ package citrus.physics.nape {
 			
 			flags = new BitFlag(NapeDebugArt);
 			
-			_nape = _ce.state.getFirstObjectByType(Nape) as Nape;
+			_nape = _ce.scene.getFirstObjectByType(Nape) as Nape;
 			
 			_debugDrawer = new ShapeDebug(_ce.screenWidth, _ce.screenHeight);
 			
