@@ -16,11 +16,11 @@ package citrus.physics {
 		
 		protected var _art:ICitrusArt;
 
-		public function APhysicsEngine(name:String, params:Object = null) {
+		public function APhysicsEngine(params:Object = null) {
 			
 			updateCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 		}
 		
 		public function getBody():* {

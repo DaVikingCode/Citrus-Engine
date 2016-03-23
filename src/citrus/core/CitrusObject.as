@@ -56,9 +56,8 @@ package citrus.core
 		 * @param params Any public properties or setters can be assigned values via this object.
 		 * 
 		 */		
-		public function CitrusObject(name:String, params:Object = null)
+		public function CitrusObject(params:Object = null)
 		{
-			this.name = name;
 			
 			_ce = CitrusEngine.getInstance();
 			

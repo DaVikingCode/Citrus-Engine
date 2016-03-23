@@ -29,8 +29,8 @@ package citrus.objects {
 		private var _offsetY:Number = 0;
 		private var _registration:String = "center";
 
-		public function APhysicsObject(name:String, params:Object = null) {
-			super(name, params);
+		public function APhysicsObject(params:Object = null) {
+			super(params);
 		}
 		
 		/**
