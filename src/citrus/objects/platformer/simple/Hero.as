@@ -13,11 +13,11 @@ package citrus.objects.platformer.simple {
 		[Inspectable(defaultValue = "0")]
 		public var inputChannel:uint = 0;
 
-		public function Hero(name:String, params:Object = null) {
+		public function Hero(params:Object = null) {
 			
 			updateCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 		}
 			
 		override public function initialize(poolObjectParams:Object = null):void {

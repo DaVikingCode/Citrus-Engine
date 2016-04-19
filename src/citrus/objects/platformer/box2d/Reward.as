@@ -6,13 +6,13 @@ package citrus.objects.platformer.box2d
 	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
 
+	import ash.signals.Signal1;
+
 	import citrus.math.MathVector;
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.box2d.Box2DUtils;
 	import citrus.physics.box2d.IBox2DPhysicsObject;
-
-	import org.osflash.signals.Signal;
 
 	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;
@@ -65,7 +65,7 @@ package citrus.objects.platformer.box2d
 		/**
 		 * Dispatches when the reward gets collected. Also see <code>RewardBox.onRewardCollect</code> for a possibly more convenient event.
 		 */
-		public var onCollect:Signal;
+		public var onCollect:Signal1;
 		
 		protected var _collectFixtureDef:b2FixtureDef;
 		protected var _collectFixture:b2Fixture;
@@ -74,14 +74,14 @@ package citrus.objects.platformer.box2d
 		protected var _collectorClass:Class = Hero;
 		protected var _isNew:Boolean = true;
 		
-		public function Reward(name:String, params:Object = null) 
+		public function Reward(params:Object = null) 
 		{
 			updateCallEnabled = true;
 			_beginContactCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 			
-			onCollect = new Signal(Reward);
+			onCollect = new Signal1(Reward);
 		}
 		
 		override public function destroy():void

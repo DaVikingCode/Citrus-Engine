@@ -37,14 +37,14 @@ package citrus.physics.box2d {
 		/**
 		 * Creates and initializes a Box2D world. 
 		 */		
-		public function Box2D(name:String, params:Object = null)
+		public function Box2D(params:Object = null)
 		{
 			if (params && params.view == undefined)
 				params.view = Box2DDebugArt;
 			else if (params == null)
 				params = {view:Box2DDebugArt};
 			
-			super(name, params);
+			super(params);
 		}
 			
 		override public function initialize(poolObjectParams:Object = null):void {

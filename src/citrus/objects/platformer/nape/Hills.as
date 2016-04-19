@@ -48,11 +48,11 @@ package citrus.objects.platformer.nape {
 		protected var _slices:Vector.<Body>;
 		protected var _sliceVectorConstructor:Vector.<Vec2>;
 
-		public function Hills(name:String, params:Object = null) {
+		public function Hills(params:Object = null) {
 			
 			updateCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 		}
 			
 		override public function initialize(poolObjectParams:Object = null):void {
@@ -117,7 +117,7 @@ package citrus.objects.platformer.nape {
 		protected function _checkHills():void {
 			
 			if (!rider)
-				rider = _ce.state.getFirstObjectByType(Hero) as Hero;
+				rider = _ce.scene.getFirstObjectByType(Hero) as Hero;
 			
 			var length:uint = _slices.length;
 			

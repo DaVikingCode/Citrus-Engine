@@ -8,9 +8,9 @@ package citrus.objects.platformer.box2d
 	 */	
 	public class Crate extends Box2DPhysicsObject
 	{
-		public function Crate(name:String, params:Object=null)
+		public function Crate(params:Object=null)
 		{
-			super(name, params);
+			super(params);
 		}
 		
 		override protected function defineBody():void

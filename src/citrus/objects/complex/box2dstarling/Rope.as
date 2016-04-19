@@ -11,6 +11,8 @@ package citrus.objects.complex.box2dstarling {
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FixtureDef;
 
+	import ash.signals.Signal0;
+
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.box2d.Hero;
@@ -20,8 +22,6 @@ package citrus.objects.complex.box2dstarling {
 	import starling.textures.Texture;
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
-
-	import org.osflash.signals.Signal;
 
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
@@ -36,8 +36,8 @@ package citrus.objects.complex.box2dstarling {
 	 */
 	public class Rope extends Box2DPhysicsObject {
 		
-		public var onHang:Signal;
-		public var onHangEnd:Signal;
+		public var onHang:Signal0;
+		public var onHangEnd:Signal0;
 		
 		/**
 		 * The object where the rope is attached(centered)  
@@ -81,15 +81,15 @@ package citrus.objects.complex.box2dstarling {
 		private var up:Boolean;
 		private var moveTimer:Timer;
 		
-		public function Rope(name:String, params:Object = null) {
+		public function Rope(params:Object = null) {
 			
 			updateCallEnabled = true;
 			_preContactCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 			
-			onHang = new Signal();
-			onHangEnd = new Signal();
+			onHang = new Signal0();
+			onHangEnd = new Signal0();
 			
 			moveTimer = new Timer(50, 0);
 			moveTimer.addEventListener(TimerEvent.TIMER, onMoveTimer);
@@ -103,7 +103,7 @@ package citrus.objects.complex.box2dstarling {
 			var i:uint = 0;
 			for each (var bodyRope:b2Body in _vecBodyRope) {
 				_box2D.world.DestroyBody(bodyRope);
-				_ce.state.remove(_vecSprites[i]);
+				_ce.scene.remove(_vecSprites[i]);
 				++i;
 			}
 			super.destroy();
@@ -209,7 +209,7 @@ package citrus.objects.complex.box2dstarling {
 			else heroAnchorOffset.Multiply(1/30);
 			if (leaveImpulse == null) leaveImpulse = new b2Vec2(0, -100);
 			_body.SetActive(false);
-			hero = _ce.state.getFirstObjectByType(Hero) as Hero;
+			hero = _ce.scene.getFirstObjectByType(Hero) as Hero;
 			maxV = hero.maxVelocity;
 		}
 		
@@ -305,8 +305,8 @@ package citrus.objects.complex.box2dstarling {
 			for (var i:uint = 0; i < numSegments; ++i) {
 				var img:Image = new Image(segmentTexture);
 				img.scaleX = img.scaleY =  (heightSegment) * 2 / segmentTexture.width;
-				var image:CitrusSprite = new CitrusSprite(i.toString(), {group:2, width:heightSegment * 2, height:widthSegment * 2, view:img, registration:"center"});
-				_ce.state.add(image);
+				var image:CitrusSprite = new CitrusSprite({name:i.toString(), group:2, width:heightSegment * 2, height:widthSegment * 2, view:img, registration:"center"});
+				_ce.scene.add(image);
 				_vecSprites.push(image);
 			}
 		}

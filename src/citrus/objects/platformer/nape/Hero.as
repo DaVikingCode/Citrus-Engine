@@ -1,5 +1,7 @@
 package citrus.objects.platformer.nape {
 
+	import ash.signals.Signal0;
+
 	import citrus.objects.NapePhysicsObject;
 	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.nape.NapeUtils;
@@ -8,8 +10,6 @@ package citrus.objects.platformer.nape {
 	import nape.callbacks.InteractionCallback;
 	import nape.dynamics.InteractionFilter;
 	import nape.geom.Vec2;
-
-	import org.osflash.signals.Signal;
 
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
@@ -105,22 +105,22 @@ package citrus.objects.platformer.nape {
 		/**
 		 * Dispatched whenever the hero jumps. 
 		 */
-		public var onJump:Signal;
+		public var onJump:Signal0;
 
 		/**
 		 * Dispatched whenever the hero gives damage to an enemy. 
 		 */
-		public var onGiveDamage:Signal;
+		public var onGiveDamage:Signal0;
 
 		/**
 		 * Dispatched whenever the hero takes damage from an enemy. 
 		 */
-		public var onTakeDamage:Signal;
+		public var onTakeDamage:Signal0;
 
 		/**
 		 * Dispatched whenever the hero's animation changes. 
 		 */
-		public var onAnimationChange:Signal;
+		public var onAnimationChange:Signal0;
 
 		protected var _groundContacts:Array = [];// Used to determine if he's on ground or not.
 		protected var _enemyClass:Class = Enemy;
@@ -135,18 +135,18 @@ package citrus.objects.platformer.nape {
 		protected var _ducking:Boolean = false;
 		protected var _combinedGroundAngle:Number = 0;
 
-		public function Hero(name:String, params:Object = null) {
+		public function Hero(params:Object = null) {
 			
 			updateCallEnabled = true;
 			_beginContactCallEnabled = true;
 			_endContactCallEnabled = true;
 
-			super(name, params);
+			super(params);
 
-			onJump = new Signal();
-			onGiveDamage = new Signal();
-			onTakeDamage = new Signal();
-			onAnimationChange = new Signal();
+			onJump = new Signal0();
+			onGiveDamage = new Signal0();
+			onTakeDamage = new Signal0();
+			onAnimationChange = new Signal0();
 		}
 		
 		override protected function createConstraint():void {

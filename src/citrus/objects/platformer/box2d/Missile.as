@@ -5,12 +5,12 @@ package citrus.objects.platformer.box2d
 	import Box2D.Dynamics.Contacts.b2Contact;
 	import Box2D.Dynamics.b2FilterData;
 
+	import ash.signals.Signal2;
+
 	import citrus.objects.Box2DPhysicsObject;
 	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.box2d.Box2DUtils;
 	import citrus.physics.box2d.IBox2DPhysicsObject;
-
-	import org.osflash.signals.Signal;
 
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
@@ -63,7 +63,7 @@ package citrus.objects.platformer.box2d
 		 * 		1. The Missile (Missile)
 		 * 		2. The Object it exploded on (Box2DPhysicsObject)
 		 */
-		public var onExplode:Signal;
+		public var onExplode:Signal2;
 		
 		protected var _velocity:b2Vec2;
 		protected var _exploded:Boolean = false;
@@ -71,14 +71,14 @@ package citrus.objects.platformer.box2d
 		protected var _fuseDurationTimeoutID:uint = 0;
 		protected var _contact:IBox2DPhysicsObject;
 		
-		public function Missile(name:String, params:Object = null) 
+		public function Missile(params:Object = null) 
 		{
 			updateCallEnabled = true;
 			_beginContactCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 			
-			onExplode = new Signal(Missile, Box2DPhysicsObject);
+			onExplode = new Signal2(Missile, Box2DPhysicsObject);
 			
 			_velocity = new b2Vec2(speed, 0);
 			_velocity = Box2DUtils.Rotateb2Vec2(_velocity, angle * Math.PI / 180);

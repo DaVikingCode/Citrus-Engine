@@ -15,8 +15,8 @@ package citrus.objects.platformer.box2d {
 
 		protected var _collectorClass:Class = Hero;
 
-		public function Coin(name:String, params:Object = null) {
-			super(name, params);
+		public function Coin(params:Object = null) {
+			super(params);
 		}
 
 		/**

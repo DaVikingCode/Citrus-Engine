@@ -1,5 +1,7 @@
 package citrus.objects.platformer.nape {
 
+	import ash.signals.Signal2;
+
 	import citrus.objects.NapePhysicsObject;
 	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.nape.NapeUtils;
@@ -8,8 +10,6 @@ package citrus.objects.platformer.nape {
 	import nape.callbacks.InteractionCallback;
 	import nape.dynamics.InteractionFilter;
 	import nape.geom.Vec2;
-
-	import org.osflash.signals.Signal;
 
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
@@ -64,7 +64,7 @@ package citrus.objects.platformer.nape {
 		 * 		1. The Missile (Missile)
 		 * 		2. The Object it exploded on (PhysicsObject)
 		 */
-		public var onExplode:Signal;
+		public var onExplode:Signal2;
 		
 		protected var _velocity:Vec2;
 		protected var _exploded:Boolean = false;
@@ -72,14 +72,14 @@ package citrus.objects.platformer.nape {
 		protected var _fuseDurationTimeoutID:uint = 0;
 		protected var _contact:NapePhysicsObject;
 		
-		public function Missile(name:String, params:Object = null) {
+		public function Missile(params:Object = null) {
 			
 			updateCallEnabled = true;
 			_beginContactCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 			
-			onExplode = new Signal(Missile, NapePhysicsObject);
+			onExplode = new Signal2(Missile, NapePhysicsObject);
 			
 			_velocity = new Vec2(speed, 0);
 			_velocity.rotate(angle * Math.PI / 180);

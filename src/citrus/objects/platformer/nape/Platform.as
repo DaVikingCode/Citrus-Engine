@@ -26,9 +26,9 @@ package citrus.objects.platformer.nape {
 		private var _oneWay:Boolean = false;
 		private var _preListener:PreListener;
 
-		public function Platform(name:String, params:Object = null) {
+		public function Platform(params:Object = null) {
 			
-			super(name, params);
+			super(params);
 		}
 		
 		override public function destroy():void {

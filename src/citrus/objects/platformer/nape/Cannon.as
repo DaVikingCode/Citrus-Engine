@@ -1,8 +1,8 @@
 package citrus.objects.platformer.nape {
 
-	import citrus.objects.NapePhysicsObject;
+	import ash.signals.Signal1;
 
-	import org.osflash.signals.Signal;
+	import citrus.objects.NapePhysicsObject;
 
 	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
@@ -64,17 +64,17 @@ package citrus.objects.platformer.nape {
 		 * onGiveDamage - Dispatched when the missile explodes on a PhysicsObject. Passes one parameter:
 		 * 				  The Object it exploded on (PhysicsObject)
 		 */
-		public var onGiveDamage:Signal;
+		public var onGiveDamage:Signal1;
 
 		protected var _firing:Boolean = false;
 
 		protected var _timer:Timer;
 
-		public function Cannon(name:String, params:Object = null) {
+		public function Cannon(params:Object = null) {
 			
-			super(name, params);
+			super(params);
 			
-			onGiveDamage = new Signal(NapePhysicsObject);
+			onGiveDamage = new Signal1(NapePhysicsObject);
 		}
 		
 		override public function initialize(poolObjectParams:Object = null):void {
@@ -130,11 +130,11 @@ package citrus.objects.platformer.nape {
 			var missile:Missile;
 
 			if (startingDirection == "right")
-				missile = new Missile("Missile", {x:x + width, y:y, width:missileWidth, height:missileHeight, speed:missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:missileView});
+				missile = new Missile({name:"Missile", x:x + width, y:y, width:missileWidth, height:missileHeight, speed:missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:missileView});
 			else
-				missile = new Missile("Missile", {x:x - width, y:y, width:missileWidth, height:missileHeight, speed:-missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:missileView});
+				missile = new Missile({name:"Missile", x:x - width, y:y, width:missileWidth, height:missileHeight, speed:-missileSpeed, angle:missileAngle, explodeDuration:missileExplodeDuration, fuseDuration:missileFuseDuration, view:missileView});
 			
-			_ce.state.add(missile);
+			_ce.scene.add(missile);
 			missile.onExplode.addOnce(_damage);
 		}
 

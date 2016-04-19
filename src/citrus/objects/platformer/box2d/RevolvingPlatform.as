@@ -27,13 +27,13 @@ package citrus.objects.platformer.box2d {
 		protected var _center:MathVector = new MathVector();
 		protected var _passengers:Vector.<b2Body> = new Vector.<b2Body>();
 
-		public function RevolvingPlatform(name:String, params:Object = null) {
+		public function RevolvingPlatform(params:Object = null) {
 			
 			updateCallEnabled = true;
 			_beginContactCallEnabled = true;
 			_endContactCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 		}
 
 		override public function destroy():void {

@@ -3,20 +3,20 @@ package citrus.objects.platformer.box2d
 
 	import Box2D.Collision.b2Manifold;
 	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.Contacts.b2Contact;
+	import Box2D.Dynamics.b2Fixture;
+
+	import ash.signals.Signal0;
+
 	import citrus.objects.Box2DPhysicsObject;
+	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.box2d.Box2DShapeMaker;
 	import citrus.physics.box2d.Box2DUtils;
 	import citrus.physics.box2d.IBox2DPhysicsObject;
-	import citrus.physics.PhysicsCollisionCategories;
+
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;
-	import org.osflash.signals.Signal;
-
-
-
 	
 	/**
 	 * This is a common, simple, yet solid implementation of a side-scrolling Hero. 
@@ -106,22 +106,22 @@ package citrus.objects.platformer.box2d
 		/**
 		 * Dispatched whenever the hero jumps. 
 		 */
-		public var onJump:Signal;
+		public var onJump:Signal0;
 		
 		/**
 		 * Dispatched whenever the hero gives damage to an enemy. 
 		 */		
-		public var onGiveDamage:Signal;
+		public var onGiveDamage:Signal0;
 		
 		/**
 		 * Dispatched whenever the hero takes damage from an enemy. 
 		 */		
-		public var onTakeDamage:Signal;
+		public var onTakeDamage:Signal0;
 		
 		/**
 		 * Dispatched whenever the hero's animation changes. 
 		 */		
-		public var onAnimationChange:Signal;
+		public var onAnimationChange:Signal0;
 		
 		protected var _groundContacts:Array = [];//Used to determine if he's on ground or not.
 		protected var _enemyClass:Class = Enemy;
@@ -138,19 +138,19 @@ package citrus.objects.platformer.box2d
 		/**
 		 * Creates a new hero object.
 		 */		
-		public function Hero(name:String, params:Object = null)
+		public function Hero(params:Object = null)
 		{
 			updateCallEnabled = true;
 			_preContactCallEnabled = true;
 			_beginContactCallEnabled = true;
 			_endContactCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 			
-			onJump = new Signal();
-			onGiveDamage = new Signal();
-			onTakeDamage = new Signal();
-			onAnimationChange = new Signal();
+			onJump = new Signal0();
+			onGiveDamage = new Signal0();
+			onTakeDamage = new Signal0();
+			onAnimationChange = new Signal0();
 		}
 		
 		override public function destroy():void

@@ -61,11 +61,11 @@ package citrus.objects.platformer.box2d {
 		protected var _realHeight:Number = 240;
 		protected var _realWidth:Number = 0;
 		
-		public function Hills(name:String, params:Object = null) {
+		public function Hills(params:Object = null) {
 			
 			updateCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 		}
 		
 		override public function initialize(poolObjectParams:Object = null):void {
@@ -169,7 +169,7 @@ package citrus.objects.platformer.box2d {
 		protected function _checkHills():void {
 			
 			if (!rider)
-				rider = _ce.state.getFirstObjectByType(Hero) as Hero;
+				rider = _ce.scene.getFirstObjectByType(Hero) as Hero;
 			
 			var length:uint = _slices.length;
 			

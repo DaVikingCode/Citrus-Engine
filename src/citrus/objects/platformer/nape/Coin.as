@@ -13,9 +13,9 @@ package citrus.objects.platformer.nape {
 
 		protected var _collectorClass:Class = Hero;
 
-		public function Coin(name:String, params:Object = null) {
+		public function Coin(params:Object = null) {
 
-			super(name, params);
+			super(params);
 		}
 
 		/**

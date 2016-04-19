@@ -76,11 +76,11 @@ package citrus.objects.vehicle.nape {
 		
 		protected var _launched:Boolean = true;
 
-		public function Car(name:String, params:Object = null) {
+		public function Car(params:Object = null) {
 			
 			updateCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 		}
 			
 		override public function addPhysics():void {
@@ -97,17 +97,17 @@ package citrus.objects.vehicle.nape {
 			
 		override public function destroy():void {
 			
-			_ce.state.remove(_driver);
-			_ce.state.remove(_frontWheel);
-			_ce.state.remove(_backWheel);
+			_ce.scene.remove(_driver);
+			_ce.scene.remove(_frontWheel);
+			_ce.scene.remove(_backWheel);
 			
 			if (_particle)
-				_ce.state.remove(_particle);
+				_ce.scene.remove(_particle);
 				
 			if (_nuggets) {
 				
 				for each (var nugget:Nugget in _nuggets)
-					_ce.state.remove(nugget);
+					_ce.scene.remove(nugget);
 				
 				_nuggets.length = 0;
 			}
@@ -117,8 +117,8 @@ package citrus.objects.vehicle.nape {
 
 		protected function _addDriver():void {
 
-			_driver = new Driver("driver", {material:driverMaterial});
-			_ce.state.add(_driver);
+			_driver = new Driver({name:"driver", material:driverMaterial});
+			_ce.scene.add(_driver);
 
 			var driverJoint:WeldJoint = new WeldJoint(_body, _driver.body, new Vec2(posDriver.x, -posDriver.y), new Vec2(0, 0));
 			driverJoint.space = _nape.space;
@@ -126,14 +126,14 @@ package citrus.objects.vehicle.nape {
 
 		protected function _addWheels():void {
 
-			_frontWheel = new Wheel("front wheel", {view:frontWheelArt, group:wheelsGroup, material:wheelsMaterial, radius:wheelsRadius, x:x + posFrontWheel, y:y + distanceChassisPivot});
-			_ce.state.add(_frontWheel);
+			_frontWheel = new Wheel({name:"front wheel", view:frontWheelArt, group:wheelsGroup, material:wheelsMaterial, radius:wheelsRadius, x:x + posFrontWheel, y:y + distanceChassisPivot});
+			_ce.scene.add(_frontWheel);
 
 			_lineJoint1 = new LineJoint(_body, _frontWheel.body, new Vec2(posFrontWheel, distanceChassisPivot), new Vec2(0, 0), new Vec2(0, 1), distanceChassisPivot, distanceChassisPivot + heightDamper);
 			_lineJoint1.ignore = true;
 
-			_backWheel = new Wheel("back wheel", {view:backWheelArt, group:wheelsGroup, material:wheelsMaterial, radius:wheelsRadius, x:x + posBackWheel, y:y + distanceChassisPivot});
-			_ce.state.add(_backWheel);
+			_backWheel = new Wheel({name:"back wheel", view:backWheelArt, group:wheelsGroup, material:wheelsMaterial, radius:wheelsRadius, x:x + posBackWheel, y:y + distanceChassisPivot});
+			_ce.scene.add(_backWheel);
 
 			_lineJoint2 = new LineJoint(_body, _backWheel.body, new Vec2(posBackWheel, distanceChassisPivot), new Vec2(0, 0), new Vec2(0, 1), distanceChassisPivot, distanceChassisPivot + heightDamper);
 			_lineJoint2.ignore = true;
@@ -173,8 +173,8 @@ package citrus.objects.vehicle.nape {
 		protected function _addParticle():void {
 			
 			if (particleArt) {
-				_particle = new CitrusSprite("particle", {view:particleArt});
-				_ce.state.add(_particle);
+				_particle = new CitrusSprite({name:"particle", view:particleArt});
+				_ce.scene.add(_particle);
 			}
 		}
 		
@@ -186,9 +186,9 @@ package citrus.objects.vehicle.nape {
 				var nugget:Nugget;
 				for (var i:uint = 0; i < nmbrNuggets; ++i) {
 					
-					nugget = new Nugget("nugget" + i, {x:_x, y:_y - _body.bounds.height});
+					nugget = new Nugget({name:"nugget" + i, x:_x, y:_y - _body.bounds.height});
 					_nuggets.push(nugget);
-					_ce.state.add(nugget);
+					_ce.scene.add(nugget);
 				}
 			}
 		}

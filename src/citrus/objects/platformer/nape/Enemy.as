@@ -48,12 +48,12 @@ package citrus.objects.platformer.nape {
 		protected var _hurt:Boolean = false;
 		protected var _enemyClass:* = Hero;
 		
-		public function Enemy(name:String, params:Object=null) {
+		public function Enemy(params:Object=null) {
 			
 			updateCallEnabled = true;
 			_beginContactCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 			
 			if (startingDirection == "left")
 				_inverted = true;

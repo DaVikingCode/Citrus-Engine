@@ -36,14 +36,14 @@ package citrus.physics.nape {
 		/**
 		 * Creates and initializes a Nape space. 
 		 */
-		public function Nape(name:String, params:Object = null) {
+		public function Nape(params:Object = null) {
 			
 			if (params && params.view == undefined)
 				params.view = NapeDebugArt;
 			else if (params == null)
 				params = {view:NapeDebugArt};
 			
-			super(name, params);
+			super(params);
 		}
 			
 		override public function initialize(poolObjectParams:Object = null):void {

@@ -22,8 +22,8 @@ package citrus.objects.platformer.box2d {
 
 		private var _oneWay:Boolean = false;
 
-		public function Platform(name:String, params:Object = null) {
-			super(name, params);
+		public function Platform(params:Object = null) {
+			super(params);
 		}
 
 		/**

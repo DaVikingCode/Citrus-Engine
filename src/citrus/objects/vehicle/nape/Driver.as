@@ -1,13 +1,13 @@
 package citrus.objects.vehicle.nape {
 
+	import ash.signals.Signal0;
+
 	import citrus.objects.NapePhysicsObject;
 	import citrus.objects.platformer.nape.Hills;
 	import citrus.physics.nape.NapeUtils;
 
 	import nape.callbacks.InteractionCallback;
 	import nape.phys.Material;
-
-	import org.osflash.signals.Signal;
 
 	/**
 	 * Normally, in a car there is a driver right? This guy will prevent nuggets to fall (take a look on the physics debug view) 
@@ -18,17 +18,17 @@ package citrus.objects.vehicle.nape {
 		/**
 		 * If the driver touches the ground, this Signal is dispatched. Often it means that you crashed.
 		 */
-		public var onGroundTouched:Signal;
+		public var onGroundTouched:Signal0;
 		
 		public var material:Material = new Material(0, 2, 2, 2.2, 0.01);
 
-		public function Driver(name:String, params:Object = null) {
+		public function Driver(params:Object = null) {
 			
 			_beginContactCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 			
-			onGroundTouched = new Signal();
+			onGroundTouched = new Signal0();
 		}
 			
 		override public function destroy():void {

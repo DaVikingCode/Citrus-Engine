@@ -44,13 +44,13 @@ package citrus.objects.platformer.box2d {
 		protected var _forward:Boolean = true;
 		protected var _passengers:Vector.<b2Body> = new Vector.<b2Body>();
 		
-		public function MovingPlatform(name:String, params:Object=null)
+		public function MovingPlatform(params:Object=null)
 		{
 			updateCallEnabled = true;
 			_beginContactCallEnabled = true;
 			_endContactCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 		}
 		
 		override public function destroy():void

@@ -1,6 +1,8 @@
 package citrus.objects.platformer.nape 
 {
 
+	import ash.signals.Signal2;
+
 	import citrus.objects.NapePhysicsObject;
 
 	import nape.callbacks.CbType;
@@ -8,8 +10,6 @@ package citrus.objects.platformer.nape
 	import nape.geom.Vec2;
 	import nape.phys.Body;
 	import nape.phys.BodyList;
-
-	import org.osflash.signals.Signal;
 
 	import flash.display.MovieClip;
 	import flash.utils.clearTimeout;
@@ -60,7 +60,7 @@ package citrus.objects.platformer.nape
 		 * 		1. The Missile (Missile)
 		 * 		2. The Object it exploded on (PhysicsObject)
 		 */
-		public var onExplode:Signal;
+		public var onExplode:Signal2;
 		
 		private var _velocity:Vec2;
 		private var _exploded:Boolean = false;
@@ -71,13 +71,13 @@ package citrus.objects.platformer.nape
 		public static function Make(name:String, x:Number, y:Number, width:Number, height:Number, angle:Number, view:* = null, speed:Number = 200, fuseDuration:Number = 10000, explodeDuration:Number = 1000, useForce:Boolean = true):MissileWithExplosion
 		{
 			if (view == null) view = MovieClip;
-			return new MissileWithExplosion(name, { x: x, y: y, width: width, height: height, angle: angle, view: view, speed: speed, fuseDuration: fuseDuration, explodeDuration: explodeDuration, useForce:useForce } );
+			return new MissileWithExplosion({name:name, x: x, y: y, width: width, height: height, angle: angle, view: view, speed: speed, fuseDuration: fuseDuration, explodeDuration: explodeDuration, useForce:useForce } );
 		}
 		
-		public function MissileWithExplosion(name:String, params:Object = null) 
+		public function MissileWithExplosion( params:Object = null) 
 		{
-			super(name, params);
-			onExplode = new Signal(MissileWithExplosion, NapePhysicsObject);
+			super(params);
+			onExplode = new Signal2(MissileWithExplosion, NapePhysicsObject);
 		}
 			
 		override public function initialize(poolObjectParams:Object = null):void {

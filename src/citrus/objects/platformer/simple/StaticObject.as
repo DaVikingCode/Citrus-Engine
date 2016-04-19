@@ -7,8 +7,8 @@ package citrus.objects.platformer.simple {
 	 */
 	public class StaticObject extends CitrusSprite {
 
-		public function StaticObject(name:String, params:Object = null) {
-			super(name, params);
+		public function StaticObject(params:Object = null) {
+			super(params);
 		}
 	}
 }

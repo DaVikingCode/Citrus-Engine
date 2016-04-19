@@ -4,10 +4,11 @@ package citrus.objects.platformer.box2d
 	import Box2D.Dynamics.Contacts.b2Contact;
 	import Box2D.Dynamics.b2Body;
 
+	import ash.signals.Signal1;
+	import ash.signals.Signal2;
+
 	import citrus.math.MathVector;
 	import citrus.objects.Box2DPhysicsObject;
-
-	import org.osflash.signals.Signal;
 
 	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;
@@ -50,26 +51,26 @@ package citrus.objects.platformer.box2d
 		/**
 		 * Dispatched when the box gets "bumped" or used.
 		 */
-		public var onUse:Signal;
+		public var onUse:Signal1;
 		
 		/**
 		 * Dispatched when the reward that came out of the box is collected by the player.
 		 */
-		public var onRewardCollect:Signal;
+		public var onRewardCollect:Signal2;
 		
 		protected var _rewardClass:Class = Reward;
 		protected var _isUsed:Boolean = false;
 		protected var _createReward:Boolean = false;
 		
-		public function RewardBox(name:String, params:Object = null) 
+		public function RewardBox(params:Object = null) 
 		{
 			updateCallEnabled = true;
 			_beginContactCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 			
-			onUse = new Signal(RewardBox);
-			onRewardCollect = new Signal(RewardBox, Reward);
+			onUse = new Signal1(RewardBox);
+			onRewardCollect = new Signal2(RewardBox, Reward);
 		}
 		
 		override public function destroy():void
@@ -131,7 +132,7 @@ package citrus.objects.platformer.box2d
 					rewardObject.onCollect.addOnce(handleRewardCollected);
 					rewardObject.x = x;
 					rewardObject.y = y - ((height / 2) + (rewardObject.height / 2) + 1);
-					_ce.state.add(rewardObject);
+					_ce.scene.add(rewardObject);
 				}
 				
 				onUse.dispatch(this);

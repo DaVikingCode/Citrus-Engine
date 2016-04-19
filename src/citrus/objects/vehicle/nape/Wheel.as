@@ -11,8 +11,8 @@ package citrus.objects.vehicle.nape {
 
 		public var material:Material = new Material(0.15, 1, 2, 3, 2);
 
-		public function Wheel(name:String, params:Object = null) {
-			super(name, params);
+		public function Wheel(params:Object = null) {
+			super(params);
 		}
 
 		override protected function createMaterial():void {

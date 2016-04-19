@@ -50,13 +50,13 @@ package citrus.objects.platformer.nape {
         protected var _path:Path;
         protected var _pathIndex:int = 0;
 
-        public function MovingPlatform(name:String, params:Object = null)
+        public function MovingPlatform(params:Object = null)
         {
 			updateCallEnabled = true;
 			_beginContactCallEnabled = true;
 			_endContactCallEnabled = true;
 			
-            super(name, params);
+            super(params);
         }
 
         public function get path():Path

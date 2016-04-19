@@ -3,9 +3,9 @@ package citrus.objects.platformer.box2d {
 	import Box2D.Dynamics.Contacts.b2Contact;
 	import Box2D.Dynamics.b2Body;
 
-	import citrus.objects.Box2DPhysicsObject;
+	import ash.signals.Signal1;
 
-	import org.osflash.signals.Signal;
+	import citrus.objects.Box2DPhysicsObject;
 
 	/**
 	 * Sensors simply listen for when an object begins and ends contact with them. They dispatch a signal
@@ -30,20 +30,20 @@ package citrus.objects.platformer.box2d {
 		/**
 		 * Dispatches on first contact with the sensor.
 		 */
-		public var onBeginContact:Signal;
+		public var onBeginContact:Signal1;
 		/**
 		 * Dispatches when the object leaves the sensor.
 		 */
-		public var onEndContact:Signal;
+		public var onEndContact:Signal1;
 		
-		public function Sensor(name:String, params:Object=null)
+		public function Sensor(params:Object=null)
 		{
 			_beginContactCallEnabled = true;
 			_endContactCallEnabled = true;
 			
-			super(name, params);
-			onBeginContact = new Signal(b2Contact);
-			onEndContact = new Signal(b2Contact);
+			super(params);
+			onBeginContact = new Signal1(b2Contact);
+			onEndContact = new Signal1(b2Contact);
 		}
 		
 		override public function destroy():void

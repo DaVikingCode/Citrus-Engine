@@ -51,20 +51,19 @@ package citrus.objects.complex.box2dstarling {
 		private var _shapeSegment:b2Shape;
 		private var _vecSprites:Vector.<CitrusSprite>;
 
-		public function Bridge(name:String, params:Object = null) {
+		public function Bridge(params:Object = null) {
 			
 			updateCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 		}
-		
 		
 		override public function destroy():void
 		{
 			var i:uint = 0;
 			for each (var bodyChain:b2Body in _vecBodyBridge) {
 				_box2D.world.DestroyBody(bodyChain);
-				_ce.state.remove(_vecSprites[i]);
+				_ce.scene.remove(_vecSprites[i]);
 				++i;
 			}
 			super.destroy();
@@ -188,8 +187,8 @@ package citrus.objects.complex.box2dstarling {
 			for (var i:uint = 0; i < numSegments; ++i) {
 				var img:Image = new Image(segmentTexture);
 				img.scaleX = img.scaleY =  (widthSegment) * 2 / segmentTexture.width;
-				var image:CitrusSprite = new CitrusSprite(i.toString(), {group:2, width:_width * 2, height:_height * 2, view:img, registration:"center"});
-				_ce.state.add(image);
+				var image:CitrusSprite = new CitrusSprite({name:i.toString(), group:2, width:_width * 2, height:_height * 2, view:img, registration:"center"});
+				_ce.scene.add(image);
 				_vecSprites.push(image);
 			}
 		}

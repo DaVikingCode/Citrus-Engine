@@ -1,5 +1,7 @@
 package citrus.objects.vehicle.nape {
 
+	import ash.signals.Signal1;
+
 	import citrus.objects.NapePhysicsObject;
 	import citrus.objects.platformer.nape.Hills;
 	import citrus.physics.nape.NapeUtils;
@@ -7,8 +9,6 @@ package citrus.objects.vehicle.nape {
 	import nape.callbacks.InteractionCallback;
 	import nape.phys.Material;
 	import nape.shape.Polygon;
-
-	import org.osflash.signals.Signal;
 	
 	/**
 	 * In some games, like <a href="http://snuggletruck.com/">Snuggle Truck</a>, you carry some objects in your car and you've to reach 
@@ -19,19 +19,19 @@ package citrus.objects.vehicle.nape {
 		/**
 		 * Dispatches when a nugget falls from the car.
 		 */
-		public var onNuggetLost:Signal;
+		public var onNuggetLost:Signal1;
 		
 		protected var _driver:Driver;
 		protected var _lost:Boolean = false;
 
-		public function Nugget(name:String, params:Object = null) {
+		public function Nugget(params:Object = null) {
 			
 			_beginContactCallEnabled = true;
 			updateCallEnabled = true;
 
-			super(name, params);
+			super(params);
 			
-			onNuggetLost = new Signal(Nugget);
+			onNuggetLost = new Signal1(Nugget);
 		}
 		
 		override public function destroy():void {
@@ -70,7 +70,7 @@ package citrus.objects.vehicle.nape {
 			super.update(timeDelta);
 			
 			if (!_driver)
-				_driver = _ce.state.getFirstObjectByType(Driver) as Driver;
+				_driver = _ce.scene.getFirstObjectByType(Driver) as Driver;
 			
 			if (_lost && _driver.x > x + _ce.stage.stageWidth)
 				kill = true;

@@ -7,9 +7,9 @@ package citrus.objects.platformer.simple {
 	 */
 	public class DynamicObject extends CitrusSprite {
 
-		public function DynamicObject(name:String, params:Object = null) {
+		public function DynamicObject(params:Object = null) {
 			
-			super(name, params);
+			super(params);
 		}
 	}
 }

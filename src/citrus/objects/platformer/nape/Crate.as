@@ -7,8 +7,8 @@ package citrus.objects.platformer.nape {
 	 */
 	public class Crate extends NapePhysicsObject {
 
-		public function Crate(name:String, params:Object = null) {
-			super(name, params);
+		public function Crate(params:Object = null) {
+			super(params);
 		}
 
 		override protected function createBody():void {

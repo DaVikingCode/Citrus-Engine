@@ -1,12 +1,12 @@
 package citrus.objects.platformer.nape {
 
+	import ash.signals.Signal1;
+
 	import citrus.objects.NapePhysicsObject;
 
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
 	import nape.phys.BodyType;
-
-	import org.osflash.signals.Signal;
 
 	/**
 	 * Sensors simply listen for when an object begins and ends contact with them. They dispatch a signal
@@ -33,21 +33,21 @@ package citrus.objects.platformer.nape {
 		/**
 		 * Dispatches on first contact with the sensor.
 		 */
-		public var onBeginContact:Signal;
+		public var onBeginContact:Signal1;
 		/**
 		 * Dispatches when the object leaves the sensor.
 		 */
-		public var onEndContact:Signal;
+		public var onEndContact:Signal1;
 
-		public function Sensor(name:String, params:Object = null) {
+		public function Sensor(params:Object = null) {
 			
 			_beginContactCallEnabled = true;
 			_endContactCallEnabled = true;
 
-			super(name, params);
+			super(params);
 			
-			onBeginContact = new Signal(InteractionCallback);
-			onEndContact = new Signal(InteractionCallback);
+			onBeginContact = new Signal1(InteractionCallback);
+			onEndContact = new Signal1(InteractionCallback);
 		}
 
 		override public function destroy():void {

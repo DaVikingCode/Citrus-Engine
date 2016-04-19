@@ -27,9 +27,9 @@ package citrus.sounds
 		public var drawRadius:Boolean = false;
 		public var drawObject:Boolean = true;
 		
-		public function CitrusSoundSpace(name:String, params:Object = null) { 
+		public function CitrusSoundSpace(params:Object = null) { 
 			
-			super(name, params);
+			super(params);
 			updateCallEnabled = true;
 			touchable = false;
 			_soundManager = _ce.sound;

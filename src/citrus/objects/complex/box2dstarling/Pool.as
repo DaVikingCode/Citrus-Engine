@@ -57,17 +57,16 @@ package citrus.objects.complex.box2dstarling {
 		private var ws:int = 30;//worldscale
 		private var pool:b2Body;
 		private var poolFixtureDef:b2FixtureDef;
-		private var poolFixture:b2Fixture;
 		
 		private var buoyancyController:b2BuoyancyController = new b2BuoyancyController();
 		
-		public function Pool(name:String, params:Object=null)
+		public function Pool(params:Object=null)
 		{
 			
 			_beginContactCallEnabled = true;
 			_endContactCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 		}
 		
 		override public function destroy():void

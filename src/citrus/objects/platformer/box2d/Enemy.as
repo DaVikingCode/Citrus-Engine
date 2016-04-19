@@ -66,12 +66,12 @@ package citrus.objects.platformer.box2d {
 		protected var _rightSensorFixture:b2Fixture;
 		protected var _sensorFixtureDef:b2FixtureDef;
 		
-		public function Enemy(name:String, params:Object=null)
+		public function Enemy(params:Object=null)
 		{
 			updateCallEnabled = true;
 			_beginContactCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 			
 			if (startingDirection == "left")
 				_inverted = true;

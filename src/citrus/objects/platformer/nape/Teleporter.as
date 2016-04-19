@@ -1,10 +1,9 @@
 package citrus.objects.platformer.nape {
 
-	import nape.callbacks.InteractionCallback;
-
 	import citrus.objects.NapePhysicsObject;
-
 	import citrus.physics.nape.NapeUtils;
+
+	import nape.callbacks.InteractionCallback;
 
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
@@ -53,10 +52,10 @@ package citrus.objects.platformer.nape {
 		protected var _teleporting:Boolean = false;
 		protected var _teleportTimeoutID:uint;
  
-		public function Teleporter(name:String, params:Object = null) {
+		public function Teleporter(params:Object = null) {
 			updateCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 		}
  
 		override public function destroy():void {
