@@ -8,6 +8,7 @@ V2.0.0, Work in Progress
 - State class renamed in Scene class.
 - CE' scaleFactor renamed in textureScaleFactor.
 - Each CitrusObject doesn't require a name anymore.
+- Starling instance has skipUnchangedFrames property set to true.
 
 V3.1.12, 03 18 2016
 -------------------

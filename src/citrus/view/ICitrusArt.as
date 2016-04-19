@@ -6,7 +6,7 @@ package citrus.view
 		
 		function get updateArtEnabled():Boolean;
 		function set updateArtEnabled(val:Boolean):void;
-		function update(stateView:ACitrusView):void;
+		function update(sceneView:ACitrusView):void;
 		
 	}
 
