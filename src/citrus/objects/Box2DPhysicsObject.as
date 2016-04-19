@@ -52,12 +52,12 @@ package citrus.objects {
 		 * Creates an instance of a Box2DPhysicsObject. Natively, this object does not default to any graphical representation,
 		 * so you will need to set the "view" property in the params parameter.
 		 */		
-		public function Box2DPhysicsObject(name:String, params:Object=null)
+		public function Box2DPhysicsObject(params:Object=null)
 		{
 			_ce = CitrusEngine.getInstance();
-			_box2D = _ce.state.getFirstObjectByType(Box2D) as Box2D;
+			_box2D = _ce.scene.getFirstObjectByType(Box2D) as Box2D;
 				
-			super(name, params);
+			super(params);
 		}
 		
 		/**

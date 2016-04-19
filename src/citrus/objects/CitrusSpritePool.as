@@ -1,11 +1,9 @@
 package citrus.objects 
 {
 
-	import citrus.core.CitrusEngine;
 	import citrus.core.citrus_internal;
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
-	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
 	
 	public class CitrusSpritePool extends PoolObject
@@ -31,10 +29,10 @@ package citrus.objects
 			var cs:CitrusSprite = node.data = new _poolType("aPoolObject", params) as CitrusSprite;
 			cs.initialize(params);
 			onCreate.dispatch((node.data as _poolType), params);
- 			state.view.addArt(cs);
+ 			scene.view.addArt(cs);
 			
 			cs.citrus_internal::data["updateCall"] = cs.updateCallEnabled;
-			cs.citrus_internal::data["updateArt"] = (state.view.getArt(cs) as ICitrusArt).updateArtEnabled;
+			cs.citrus_internal::data["updateArt"] = (scene.view.getArt(cs) as ICitrusArt).updateArtEnabled;
 		}
 		
 		override protected function _recycle(node:DoublyLinkedListNode, params:Object = null):void
@@ -45,7 +43,7 @@ package citrus.objects
 				cs.view.pauseAnimation(true);
 			cs.visible = true;
 			cs.updateCallEnabled = cs.citrus_internal::data["updateCall"] as Boolean;
-			(state.view.getArt(cs) as ICitrusArt).updateArtEnabled = cs.citrus_internal::data["updateArt"] as Boolean;
+			(scene.view.getArt(cs) as ICitrusArt).updateArtEnabled = cs.citrus_internal::data["updateArt"] as Boolean;
 			super._recycle(node, params);
 		}
 		
@@ -56,15 +54,15 @@ package citrus.objects
 				cs.view.pauseAnimation(false);
 			cs.visible = false;
 			cs.updateCallEnabled = false;
-			(state.view.getArt(cs) as ICitrusArt).updateArtEnabled = false;
+			(scene.view.getArt(cs) as ICitrusArt).updateArtEnabled = false;
 			super._dispose(node);
-			(state.view.getArt(cs) as ICitrusArt).update(state.view);
+			(scene.view.getArt(cs) as ICitrusArt).update(scene.view);
 		}
 		
 		override protected function _destroy(node:DoublyLinkedListNode):void
 		{
 			var cs:CitrusSprite = node.data as CitrusSprite;
-			state.view.removeArt(cs);
+			scene.view.removeArt(cs);
 			cs.destroy();
 			super._destroy(node);
 		}

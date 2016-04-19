@@ -1,13 +1,12 @@
 package citrus.objects 
 {
 
-	import citrus.core.CitrusEngine;
 	import citrus.core.citrus_internal;
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
 	import citrus.physics.nape.Nape;
-	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
+
 	import flash.utils.describeType;
 	
 	public class NapeObjectPool extends PoolObject
@@ -46,23 +45,23 @@ package citrus.objects
 			onCreate.dispatch((node.data as _poolType), params);
 			np.addPhysics();
 			np.body.space = null;
- 			state.view.addArt(np);
+ 			scene.view.addArt(np);
 			
 			np.citrus_internal::data["updateCall"] = np.updateCallEnabled;
 			
-			np.citrus_internal::data["updateArt"] = (state.view.getArt(np) as ICitrusArt).updateArtEnabled;
+			np.citrus_internal::data["updateArt"] = (scene.view.getArt(np) as ICitrusArt).updateArtEnabled;
 		}
 		
 		override protected function _recycle(node:DoublyLinkedListNode, params:Object = null):void
 		{
 			var np:NapePhysicsObject = node.data as NapePhysicsObject;
 			np.initialize(params);
-			np.body.space = (state.getFirstObjectByType(Nape) as Nape).space;
+			np.body.space = (scene.getFirstObjectByType(Nape) as Nape).space;
 			if ("pauseAnimation" in np.view)
 				np.view.pauseAnimation(true);
 			np.visible = true;
 			np.updateCallEnabled = np.citrus_internal::data["updateCall"] as Boolean;
-			(state.view.getArt(np) as ICitrusArt).updateArtEnabled = np.citrus_internal::data["updateArt"] as Boolean;
+			(scene.view.getArt(np) as ICitrusArt).updateArtEnabled = np.citrus_internal::data["updateArt"] as Boolean;
 			super._recycle(node, params);
 		}
 		
@@ -74,15 +73,15 @@ package citrus.objects
 				np.view.pauseAnimation(false);
 			np.visible = false;
 			np.updateCallEnabled = false;
-			(state.view.getArt(np) as ICitrusArt).updateArtEnabled = false;
+			(scene.view.getArt(np) as ICitrusArt).updateArtEnabled = false;
 			super._dispose(node);
-			(state.view.getArt(np) as ICitrusArt).update(state.view);
+			(scene.view.getArt(np) as ICitrusArt).update(scene.view);
 		}
 		
 		override protected function _destroy(node:DoublyLinkedListNode):void
 		{
 			var np:NapePhysicsObject = node.data as NapePhysicsObject;
-			state.view.removeArt(np);
+			scene.view.removeArt(np);
 			np.destroy();
 			super._destroy(node);
 		}

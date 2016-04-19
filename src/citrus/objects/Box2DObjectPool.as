@@ -1,12 +1,11 @@
 package citrus.objects 
 {
 
-	import citrus.core.CitrusEngine;
 	import citrus.core.citrus_internal;
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
-	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
+
 	import flash.utils.describeType;
 	
 	public class Box2DObjectPool extends PoolObject
@@ -50,9 +49,9 @@ package citrus.objects
 			onCreate.dispatch(bp, params);
 			bp.addPhysics();
 			bp.body.SetActive(false);
-			state.view.addArt(bp);
+			scene.view.addArt(bp);
 			bp.citrus_internal::data["updateCall"] = bp.updateCallEnabled;
-			bp.citrus_internal::data["updateArt"] = (state.view.getArt(bp) as ICitrusArt).updateArtEnabled;
+			bp.citrus_internal::data["updateArt"] = (scene.view.getArt(bp) as ICitrusArt).updateArtEnabled;
 		}
 		
 		override protected function _recycle(node:DoublyLinkedListNode, params:Object = null):void
@@ -65,7 +64,7 @@ package citrus.objects
 					bp.view.pauseAnimation(true);
 				bp.visible = true;
 				bp.updateCallEnabled = bp.citrus_internal::data["updateCall"] as Boolean;
-				(state.view.getArt(bp) as ICitrusArt).updateArtEnabled = bp.citrus_internal::data["updateArt"] as Boolean;
+				(scene.view.getArt(bp) as ICitrusArt).updateArtEnabled = bp.citrus_internal::data["updateArt"] as Boolean;
 				superRecycle(node,params);
 			}});
 		}
@@ -80,9 +79,9 @@ package citrus.objects
 				bp.view.pauseAnimation(false);
 			bp.visible = false;
 			bp.updateCallEnabled = false;
-			(state.view.getArt(bp) as ICitrusArt).updateArtEnabled = false;
+			(scene.view.getArt(bp) as ICitrusArt).updateArtEnabled = false;
 			super._dispose(node);
-			(state.view.getArt(bp) as ICitrusArt).update(state.view);
+			(scene.view.getArt(bp) as ICitrusArt).update(scene.view);
 		}
 		
 		override public function updatePhysics(timeDelta:Number):void
@@ -107,7 +106,7 @@ package citrus.objects
 			updateBodies();
 			activationQueue.length = 0;
 			var bp:Box2DPhysicsObject = node.data as Box2DPhysicsObject;
-			state.view.removeArt(bp);
+			scene.view.removeArt(bp);
 			bp.destroy();
 			super._destroy(node);
 		}

@@ -512,7 +512,7 @@ package citrus.view.starlingview {
 		public function set updateArtEnabled(value:Boolean):void {
 			_updateArtEnabled = value;
 			
-			//TODO:
+			// flatten isn't required anymore in Starling 2.0
 			//_updateArtEnabled ? unflatten() : flatten();
 		}
 

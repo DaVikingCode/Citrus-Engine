@@ -1,9 +1,10 @@
 package citrus.objects {
 
+	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.nape.INapePhysicsObject;
 	import citrus.physics.nape.Nape;
-	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.view.ISpriteView;
+
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
 	import nape.callbacks.PreCallback;
@@ -20,7 +21,6 @@ package citrus.objects {
 	import nape.shape.Polygon;
 	import nape.shape.Shape;
 	import nape.shape.ValidationResult;
-
 
 	/**
 	 * You should extend this class to take advantage of Nape. This class provides template methods for defining
@@ -52,9 +52,9 @@ package citrus.objects {
 		 * Creates an instance of a NapePhysicsObject. Natively, this object does not default to any graphical representation,
 		 * so you will need to set the "view" property in the params parameter.
 		 */	
-		public function NapePhysicsObject(name:String, params:Object = null) {
+		public function NapePhysicsObject(params:Object = null) {
 			
-			super(name, params);
+			super(params);
 		}
 			
 		/**
@@ -66,7 +66,7 @@ package citrus.objects {
 		 */	
 		override public function addPhysics():void {
 			
-			_nape = _ce.state.getFirstObjectByType(Nape) as Nape;
+			_nape = _ce.scene.getFirstObjectByType(Nape) as Nape;
 			
 			if (!_nape)
 				throw new Error("Cannot create a NapePhysicsObject when a Nape object has not been added to the state.");

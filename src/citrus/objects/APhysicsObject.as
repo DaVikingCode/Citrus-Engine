@@ -20,7 +20,6 @@ package citrus.objects {
 		protected var _touchable:Boolean = false;
 		protected var _x:Number = 0;
 		protected var _y:Number = 0;
-		protected var _z:Number = 0;
 		protected var _rotation:Number = 0;
 		protected var _radius:Number = 0;
 
