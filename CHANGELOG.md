@@ -1,5 +1,13 @@
 V2.0.0, Work in Progress
 ------------------------
+- Starling updated on 2.0
+- Added Ash.
+- Removed Away3D & AwayPhysics.
+- Removed Blitting & display list support.
+- Removed Signals (available via Ash).
+- State class renamed in Scene class.
+- CE' scaleFactor renamed in textureScaleFactor.
+- Each CitrusObject doesn't require a name anymore.
 
 V3.1.12, 03 18 2016
 -------------------

@@ -511,7 +511,9 @@ package citrus.view.starlingview {
 		 */
 		public function set updateArtEnabled(value:Boolean):void {
 			_updateArtEnabled = value;
-			_updateArtEnabled ? unflatten() : flatten();
+			
+			//TODO:
+			//_updateArtEnabled ? unflatten() : flatten();
 		}
 
 	}

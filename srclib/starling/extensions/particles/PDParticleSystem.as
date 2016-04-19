@@ -11,66 +11,62 @@
 package starling.extensions.particles
 {
     import flash.display3D.Context3DBlendFactor;
-    
+
     import starling.textures.Texture;
     import starling.utils.deg2rad;
-    
+
     public class PDParticleSystem extends ParticleSystem
     {
-        private const EMITTER_TYPE_GRAVITY:int = 0;
-        private const EMITTER_TYPE_RADIAL:int  = 1;
+        public static const EMITTER_TYPE_GRAVITY:int = 0;
+        public static const EMITTER_TYPE_RADIAL:int  = 1;
         
         // emitter configuration                            // .pex element name
-        private var mEmitterType:int;                       // emitterType
-        private var mEmitterXVariance:Number;               // sourcePositionVariance x
-        private var mEmitterYVariance:Number;               // sourcePositionVariance y
+        private var _emitterType:int;                       // emitterType
+        private var _emitterXVariance:Number;               // sourcePositionVariance x
+        private var _emitterYVariance:Number;               // sourcePositionVariance y
         
         // particle configuration
-        private var mMaxNumParticles:int;                   // maxParticles
-        private var mLifespan:Number;                       // particleLifeSpan
-        private var mLifespanVariance:Number;               // particleLifeSpanVariance
-        private var mStartSize:Number;                      // startParticleSize
-        private var mStartSizeVariance:Number;              // startParticleSizeVariance
-        private var mEndSize:Number;                        // finishParticleSize
-        private var mEndSizeVariance:Number;                // finishParticleSizeVariance
-        private var mEmitAngle:Number;                      // angle
-        private var mEmitAngleVariance:Number;              // angleVariance
-        private var mStartRotation:Number;                  // rotationStart
-        private var mStartRotationVariance:Number;          // rotationStartVariance
-        private var mEndRotation:Number;                    // rotationEnd
-        private var mEndRotationVariance:Number;            // rotationEndVariance
+        private var _lifespan:Number;                       // particleLifeSpan
+        private var _lifespanVariance:Number;               // particleLifeSpanVariance
+        private var _startSize:Number;                      // startParticleSize
+        private var _startSizeVariance:Number;              // startParticleSizeVariance
+        private var _endSize:Number;                        // finishParticleSize
+        private var _endSizeVariance:Number;                // finishParticleSizeVariance
+        private var _emitAngle:Number;                      // angle
+        private var _emitAngleVariance:Number;              // angleVariance
+        private var _startRotation:Number;                  // rotationStart
+        private var _startRotationVariance:Number;          // rotationStartVariance
+        private var _endRotation:Number;                    // rotationEnd
+        private var _endRotationVariance:Number;            // rotationEndVariance
         
         // gravity configuration
-        private var mSpeed:Number;                          // speed
-        private var mSpeedVariance:Number;                  // speedVariance
-        private var mGravityX:Number;                       // gravity x
-        private var mGravityY:Number;                       // gravity y
-        private var mRadialAcceleration:Number;             // radialAcceleration
-        private var mRadialAccelerationVariance:Number;     // radialAccelerationVariance
-        private var mTangentialAcceleration:Number;         // tangentialAcceleration
-        private var mTangentialAccelerationVariance:Number; // tangentialAccelerationVariance
+        private var _speed:Number;                          // speed
+        private var _speedVariance:Number;                  // speedVariance
+        private var _gravityX:Number;                       // gravity x
+        private var _gravityY:Number;                       // gravity y
+        private var _radialAcceleration:Number;             // radialAcceleration
+        private var _radialAccelerationVariance:Number;     // radialAccelerationVariance
+        private var _tangentialAcceleration:Number;         // tangentialAcceleration
+        private var _tangentialAccelerationVariance:Number; // tangentialAccelerationVariance
         
         // radial configuration 
-        private var mMaxRadius:Number;                      // maxRadius
-        private var mMaxRadiusVariance:Number;              // maxRadiusVariance
-        private var mMinRadius:Number;                      // minRadius
-        private var mMinRadiusVariance:Number;              // minRadiusVariance
-        private var mRotatePerSecond:Number;                // rotatePerSecond
-        private var mRotatePerSecondVariance:Number;        // rotatePerSecondVariance
+        private var _maxRadius:Number;                      // maxRadius
+        private var _maxRadiusVariance:Number;              // maxRadiusVariance
+        private var _minRadius:Number;                      // minRadius
+        private var _minRadiusVariance:Number;              // minRadiusVariance
+        private var _rotatePerSecond:Number;                // rotatePerSecond
+        private var _rotatePerSecondVariance:Number;        // rotatePerSecondVariance
         
         // color configuration
-        private var mStartColor:ColorArgb;                  // startColor
-        private var mStartColorVariance:ColorArgb;          // startColorVariance
-        private var mEndColor:ColorArgb;                    // finishColor
-        private var mEndColorVariance:ColorArgb;            // finishColorVariance
+        private var _startColor:ColorArgb;                  // startColor
+        private var _startColorVariance:ColorArgb;          // startColorVariance
+        private var _endColor:ColorArgb;                    // finishColor
+        private var _endColorVariance:ColorArgb;            // finishColorVariance
         
         public function PDParticleSystem(config:XML, texture:Texture)
         {
+            super(texture);
             parseConfig(config);
-            
-            var emissionRate:Number = mMaxNumParticles / mLifespan;
-            super(texture, emissionRate, mMaxNumParticles, mMaxNumParticles,
-                  mBlendFactorSource, mBlendFactorDestination);
         }
         
         protected override function createParticle():Particle
@@ -85,63 +81,67 @@ package starling.extensions.particles
             // for performance reasons, the random variances are calculated inline instead
             // of calling a function
             
-            var lifespan:Number = mLifespan + mLifespanVariance * (Math.random() * 2.0 - 1.0);
+            var lifespan:Number = _lifespan + _lifespanVariance * (Math.random() * 2.0 - 1.0);
+            var textureWidth:Number = texture ? texture.width : 16;
             
             particle.currentTime = 0.0;
             particle.totalTime = lifespan > 0.0 ? lifespan : 0.0;
             
             if (lifespan <= 0.0) return;
+
+            var emitterX:Number = this.emitterX;
+            var emitterY:Number = this.emitterY;
+
+            particle.x = emitterX + _emitterXVariance * (Math.random() * 2.0 - 1.0);
+            particle.y = emitterY + _emitterYVariance * (Math.random() * 2.0 - 1.0);
+            particle.startX = emitterX;
+            particle.startY = emitterY;
             
-            particle.x = mEmitterX + mEmitterXVariance * (Math.random() * 2.0 - 1.0);
-            particle.y = mEmitterY + mEmitterYVariance * (Math.random() * 2.0 - 1.0);
-            particle.startX = mEmitterX;
-            particle.startY = mEmitterY;
-            
-            var angle:Number = mEmitAngle + mEmitAngleVariance * (Math.random() * 2.0 - 1.0);
-            var speed:Number = mSpeed + mSpeedVariance * (Math.random() * 2.0 - 1.0);
+            var angle:Number = _emitAngle + _emitAngleVariance * (Math.random() * 2.0 - 1.0);
+            var speed:Number = _speed + _speedVariance * (Math.random() * 2.0 - 1.0);
             particle.velocityX = speed * Math.cos(angle);
             particle.velocityY = speed * Math.sin(angle);
             
-            var startRadius:Number = mMaxRadius + mMaxRadiusVariance * (Math.random() * 2.0 - 1.0);
-            var endRadius:Number   = mMinRadius + mMinRadiusVariance * (Math.random() * 2.0 - 1.0);
+            var startRadius:Number = _maxRadius + _maxRadiusVariance * (Math.random() * 2.0 - 1.0);
+            var endRadius:Number   = _minRadius + _minRadiusVariance * (Math.random() * 2.0 - 1.0);
             particle.emitRadius = startRadius;
             particle.emitRadiusDelta = (endRadius - startRadius) / lifespan;
-            particle.emitRotation = mEmitAngle + mEmitAngleVariance * (Math.random() * 2.0 - 1.0); 
-            particle.emitRotationDelta = mRotatePerSecond + mRotatePerSecondVariance * (Math.random() * 2.0 - 1.0); 
-            particle.radialAcceleration = mRadialAcceleration + mRadialAccelerationVariance * (Math.random() * 2.0 - 1.0);
-            particle.tangentialAcceleration = mTangentialAcceleration + mTangentialAccelerationVariance * (Math.random() * 2.0 - 1.0);
+            particle.emitRotation = _emitAngle + _emitAngleVariance * (Math.random() * 2.0 - 1.0);
+            particle.emitRotationDelta = _rotatePerSecond + _rotatePerSecondVariance * (Math.random() * 2.0 - 1.0);
+            particle.radialAcceleration = _radialAcceleration + _radialAccelerationVariance * (Math.random() * 2.0 - 1.0);
+            particle.tangentialAcceleration = _tangentialAcceleration + _tangentialAccelerationVariance * (Math.random() * 2.0 - 1.0);
             
-            var startSize:Number = mStartSize + mStartSizeVariance * (Math.random() * 2.0 - 1.0); 
-            var endSize:Number = mEndSize + mEndSizeVariance * (Math.random() * 2.0 - 1.0);
+            var startSize:Number = _startSize + _startSizeVariance * (Math.random() * 2.0 - 1.0);
+            var endSize:Number = _endSize + _endSizeVariance * (Math.random() * 2.0 - 1.0);
             if (startSize < 0.1) startSize = 0.1;
             if (endSize < 0.1)   endSize = 0.1;
-            particle.scale = startSize / texture.width;
-            particle.scaleDelta = ((endSize - startSize) / lifespan) / texture.width;
+            particle.scale = startSize / textureWidth;
+            particle.scaleDelta = ((endSize - startSize) / lifespan) / textureWidth;
             
             // colors
             
             var startColor:ColorArgb = particle.colorArgb;
             var colorDelta:ColorArgb = particle.colorArgbDelta;
             
-            startColor.red   = mStartColor.red;
-            startColor.green = mStartColor.green;
-            startColor.blue  = mStartColor.blue;
-            startColor.alpha = mStartColor.alpha;
+            startColor.red   = _startColor.red;
+            startColor.green = _startColor.green;
+            startColor.blue  = _startColor.blue;
+            startColor.alpha = _startColor.alpha;
             
-            if (mStartColorVariance.red != 0)   startColor.red   += mStartColorVariance.red   * (Math.random() * 2.0 - 1.0);
-            if (mStartColorVariance.green != 0) startColor.green += mStartColorVariance.green * (Math.random() * 2.0 - 1.0);
-            if (mStartColorVariance.blue != 0)  startColor.blue  += mStartColorVariance.blue  * (Math.random() * 2.0 - 1.0);
-            if (mStartColorVariance.alpha != 0) startColor.alpha += mStartColorVariance.alpha * (Math.random() * 2.0 - 1.0);
+            if (_startColorVariance.red != 0)   startColor.red   += _startColorVariance.red   * (Math.random() * 2.0 - 1.0);
+            if (_startColorVariance.green != 0) startColor.green += _startColorVariance.green * (Math.random() * 2.0 - 1.0);
+            if (_startColorVariance.blue != 0)  startColor.blue  += _startColorVariance.blue  * (Math.random() * 2.0 - 1.0);
+            if (_startColorVariance.alpha != 0) startColor.alpha += _startColorVariance.alpha * (Math.random() * 2.0 - 1.0);
             
-            var endColorRed:Number   = mEndColor.red;
-            var endColorGreen:Number = mEndColor.green;
-            var endColorBlue:Number  = mEndColor.blue;
-            var endColorAlpha:Number = mEndColor.alpha;
+            var endColorRed:Number   = _endColor.red;
+            var endColorGreen:Number = _endColor.green;
+            var endColorBlue:Number  = _endColor.blue;
+            var endColorAlpha:Number = _endColor.alpha;
 
-            if (mEndColorVariance.red != 0)   endColorRed   += mEndColorVariance.red   * (Math.random() * 2.0 - 1.0);
-            if (mEndColorVariance.green != 0) endColorGreen += mEndColorVariance.green * (Math.random() * 2.0 - 1.0);
-            if (mEndColorVariance.blue != 0)  endColorBlue  += mEndColorVariance.blue  * (Math.random() * 2.0 - 1.0);
-            if (mEndColorVariance.alpha != 0) endColorAlpha += mEndColorVariance.alpha * (Math.random() * 2.0 - 1.0);
+            if (_endColorVariance.red != 0)   endColorRed   += _endColorVariance.red   * (Math.random() * 2.0 - 1.0);
+            if (_endColorVariance.green != 0) endColorGreen += _endColorVariance.green * (Math.random() * 2.0 - 1.0);
+            if (_endColorVariance.blue != 0)  endColorBlue  += _endColorVariance.blue  * (Math.random() * 2.0 - 1.0);
+            if (_endColorVariance.alpha != 0) endColorAlpha += _endColorVariance.alpha * (Math.random() * 2.0 - 1.0);
             
             colorDelta.red   = (endColorRed   - startColor.red)   / lifespan;
             colorDelta.green = (endColorGreen - startColor.green) / lifespan;
@@ -150,8 +150,8 @@ package starling.extensions.particles
             
             // rotation
             
-            var startRotation:Number = mStartRotation + mStartRotationVariance * (Math.random() * 2.0 - 1.0); 
-            var endRotation:Number   = mEndRotation   + mEndRotationVariance   * (Math.random() * 2.0 - 1.0);
+            var startRotation:Number = _startRotation + _startRotationVariance * (Math.random() * 2.0 - 1.0);
+            var endRotation:Number   = _endRotation   + _endRotationVariance   * (Math.random() * 2.0 - 1.0);
             
             particle.rotation = startRotation;
             particle.rotationDelta = (endRotation - startRotation) / lifespan;
@@ -165,12 +165,12 @@ package starling.extensions.particles
             passedTime = restTime > passedTime ? passedTime : restTime;
             particle.currentTime += passedTime;
             
-            if (mEmitterType == EMITTER_TYPE_RADIAL)
+            if (_emitterType == EMITTER_TYPE_RADIAL)
             {
                 particle.emitRotation += particle.emitRotationDelta * passedTime;
                 particle.emitRadius   += particle.emitRadiusDelta   * passedTime;
-                particle.x = mEmitterX - Math.cos(particle.emitRotation) * particle.emitRadius;
-                particle.y = mEmitterY - Math.sin(particle.emitRotation) * particle.emitRadius;
+                particle.x = emitterX - Math.cos(particle.emitRotation) * particle.emitRadius;
+                particle.y = emitterY - Math.sin(particle.emitRotation) * particle.emitRadius;
             }
             else
             {
@@ -191,8 +191,8 @@ package starling.extensions.particles
                 tangentialX = -tangentialY * particle.tangentialAcceleration;
                 tangentialY = newY * particle.tangentialAcceleration;
                 
-                particle.velocityX += passedTime * (mGravityX + radialX + tangentialX);
-                particle.velocityY += passedTime * (mGravityY + radialY + tangentialY);
+                particle.velocityX += passedTime * (_gravityX + radialX + tangentialX);
+                particle.velocityY += passedTime * (_gravityY + radialY + tangentialY);
                 particle.x += particle.velocityX * passedTime;
                 particle.y += particle.velocityY * passedTime;
             }
@@ -211,60 +211,62 @@ package starling.extensions.particles
         
         private function updateEmissionRate():void
         {
-            emissionRate = mMaxNumParticles / mLifespan;
+            emissionRate = capacity / _lifespan;
         }
         
         private function parseConfig(config:XML):void
         {
-            mEmitterXVariance = parseFloat(config.sourcePositionVariance.attribute("x"));
-            mEmitterYVariance = parseFloat(config.sourcePositionVariance.attribute("y"));
-            mGravityX = parseFloat(config.gravity.attribute("x"));
-            mGravityY = parseFloat(config.gravity.attribute("y"));
-            mEmitterType = getIntValue(config.emitterType);
-            mMaxNumParticles = getIntValue(config.maxParticles);
-            mLifespan = Math.max(0.01, getFloatValue(config.particleLifeSpan));
-            mLifespanVariance = getFloatValue(config.particleLifespanVariance);
-            mStartSize = getFloatValue(config.startParticleSize);
-            mStartSizeVariance = getFloatValue(config.startParticleSizeVariance);
-            mEndSize = getFloatValue(config.finishParticleSize);
-            mEndSizeVariance = getFloatValue(config.FinishParticleSizeVariance);
-            mEmitAngle = deg2rad(getFloatValue(config.angle));
-            mEmitAngleVariance = deg2rad(getFloatValue(config.angleVariance));
-            mStartRotation = deg2rad(getFloatValue(config.rotationStart));
-            mStartRotationVariance = deg2rad(getFloatValue(config.rotationStartVariance));
-            mEndRotation = deg2rad(getFloatValue(config.rotationEnd));
-            mEndRotationVariance = deg2rad(getFloatValue(config.rotationEndVariance));
-            mSpeed = getFloatValue(config.speed);
-            mSpeedVariance = getFloatValue(config.speedVariance);
-            mRadialAcceleration = getFloatValue(config.radialAcceleration);
-            mRadialAccelerationVariance = getFloatValue(config.radialAccelVariance);
-            mTangentialAcceleration = getFloatValue(config.tangentialAcceleration);
-            mTangentialAccelerationVariance = getFloatValue(config.tangentialAccelVariance);
-            mMaxRadius = getFloatValue(config.maxRadius);
-            mMaxRadiusVariance = getFloatValue(config.maxRadiusVariance);
-            mMinRadius = getFloatValue(config.minRadius);
-            mMinRadiusVariance = getFloatValue(config.minRadiusVariance);
-            mRotatePerSecond = deg2rad(getFloatValue(config.rotatePerSecond));
-            mRotatePerSecondVariance = deg2rad(getFloatValue(config.rotatePerSecondVariance));
-            mStartColor = getColor(config.startColor);
-            mStartColorVariance = getColor(config.startColorVariance);
-            mEndColor = getColor(config.finishColor);
-            mEndColorVariance = getColor(config.finishColorVariance);
-            mBlendFactorSource = getBlendFunc(config.blendFuncSource);
-            mBlendFactorDestination = getBlendFunc(config.blendFuncDestination);
-            
+            _emitterXVariance = parseFloat(config.sourcePositionVariance.attribute("x"));
+            _emitterYVariance = parseFloat(config.sourcePositionVariance.attribute("y"));
+            _gravityX = parseFloat(config.gravity.attribute("x"));
+            _gravityY = parseFloat(config.gravity.attribute("y"));
+            _emitterType = getIntValue(config.emitterType);
+            _lifespan = Math.max(0.01, getFloatValue(config.particleLifeSpan));
+            _lifespanVariance = getFloatValue(config.particleLifespanVariance);
+            _startSize = getFloatValue(config.startParticleSize);
+            _startSizeVariance = getFloatValue(config.startParticleSizeVariance);
+            _endSize = getFloatValue(config.finishParticleSize);
+            _endSizeVariance = getFloatValue(config.FinishParticleSizeVariance);
+            _emitAngle = deg2rad(getFloatValue(config.angle));
+            _emitAngleVariance = deg2rad(getFloatValue(config.angleVariance));
+            _startRotation = deg2rad(getFloatValue(config.rotationStart));
+            _startRotationVariance = deg2rad(getFloatValue(config.rotationStartVariance));
+            _endRotation = deg2rad(getFloatValue(config.rotationEnd));
+            _endRotationVariance = deg2rad(getFloatValue(config.rotationEndVariance));
+            _speed = getFloatValue(config.speed);
+            _speedVariance = getFloatValue(config.speedVariance);
+            _radialAcceleration = getFloatValue(config.radialAcceleration);
+            _radialAccelerationVariance = getFloatValue(config.radialAccelVariance);
+            _tangentialAcceleration = getFloatValue(config.tangentialAcceleration);
+            _tangentialAccelerationVariance = getFloatValue(config.tangentialAccelVariance);
+            _maxRadius = getFloatValue(config.maxRadius);
+            _maxRadiusVariance = getFloatValue(config.maxRadiusVariance);
+            _minRadius = getFloatValue(config.minRadius);
+            _minRadiusVariance = getFloatValue(config.minRadiusVariance);
+            _rotatePerSecond = deg2rad(getFloatValue(config.rotatePerSecond));
+            _rotatePerSecondVariance = deg2rad(getFloatValue(config.rotatePerSecondVariance));
+            _startColor = getColor(config.startColor);
+            _startColorVariance = getColor(config.startColorVariance);
+            _endColor = getColor(config.finishColor);
+            _endColorVariance = getColor(config.finishColorVariance);
+            blendFactorSource = getBlendFunc(config.blendFuncSource);
+            blendFactorDestination = getBlendFunc(config.blendFuncDestination);
+            capacity = getIntValue(config.maxParticles);
+
             // compatibility with future Particle Designer versions
             // (might fix some of the uppercase/lowercase typos)
             
-            if (isNaN(mEndSizeVariance))
-                mEndSizeVariance = getFloatValue(config.finishParticleSizeVariance);
-            if (isNaN(mLifespan))
-                mLifespan = Math.max(0.01, getFloatValue(config.particleLifespan));
-            if (isNaN(mLifespanVariance))
-                mLifespanVariance = getFloatValue(config.particleLifeSpanVariance);
-            if (isNaN(mMinRadiusVariance))
-                mMinRadiusVariance = 0.0;
-            
+            if (isNaN(_endSizeVariance))
+                _endSizeVariance = getFloatValue(config.finishParticleSizeVariance);
+            if (isNaN(_lifespan))
+                _lifespan = Math.max(0.01, getFloatValue(config.particleLifespan));
+            if (isNaN(_lifespanVariance))
+                _lifespanVariance = getFloatValue(config.particleLifeSpanVariance);
+            if (isNaN(_minRadiusVariance))
+                _minRadiusVariance = 0.0;
+
+            updateEmissionRate();
+
             function getIntValue(element:XMLList):int
             {
                 return parseInt(element.attribute("value"));
@@ -305,115 +307,113 @@ package starling.extensions.particles
             }
         }
         
-        public function get emitterType():int { return mEmitterType; }
-        public function set emitterType(value:int):void { mEmitterType = value; }
+        public function get emitterType():int { return _emitterType; }
+        public function set emitterType(value:int):void { _emitterType = value; }
 
-        public function get emitterXVariance():Number { return mEmitterXVariance; }
-        public function set emitterXVariance(value:Number):void { mEmitterXVariance = value; }
+        public function get emitterXVariance():Number { return _emitterXVariance; }
+        public function set emitterXVariance(value:Number):void { _emitterXVariance = value; }
 
-        public function get emitterYVariance():Number { return mEmitterYVariance; }
-        public function set emitterYVariance(value:Number):void { mEmitterYVariance = value; }
+        public function get emitterYVariance():Number { return _emitterYVariance; }
+        public function set emitterYVariance(value:Number):void { _emitterYVariance = value; }
 
-        public function get maxNumParticles():int { return mMaxNumParticles; }
-        public function set maxNumParticles(value:int):void 
-        { 
-            maxCapacity = value;
-            mMaxNumParticles = maxCapacity; 
-            updateEmissionRate(); 
-        }
-
-        public function get lifespan():Number { return mLifespan; }
-        public function set lifespan(value:Number):void 
-        { 
-            mLifespan = Math.max(0.01, value);
+        override public function set capacity(value:int):void
+        {
+            super.capacity = value;
             updateEmissionRate();
         }
 
-        public function get lifespanVariance():Number { return mLifespanVariance; }
-        public function set lifespanVariance(value:Number):void { mLifespanVariance = value; }
+        public function get lifespan():Number { return _lifespan; }
+        public function set lifespan(value:Number):void 
+        { 
+            _lifespan = Math.max(0.01, value);
+            updateEmissionRate();
+        }
 
-        public function get startSize():Number { return mStartSize; }
-        public function set startSize(value:Number):void { mStartSize = value; }
+        public function get lifespanVariance():Number { return _lifespanVariance; }
+        public function set lifespanVariance(value:Number):void { _lifespanVariance = value; }
 
-        public function get startSizeVariance():Number { return mStartSizeVariance; }
-        public function set startSizeVariance(value:Number):void { mStartSizeVariance = value; }
+        public function get startSize():Number { return _startSize; }
+        public function set startSize(value:Number):void { _startSize = value; }
 
-        public function get endSize():Number { return mEndSize; }
-        public function set endSize(value:Number):void { mEndSize = value; }
+        public function get startSizeVariance():Number { return _startSizeVariance; }
+        public function set startSizeVariance(value:Number):void { _startSizeVariance = value; }
 
-        public function get endSizeVariance():Number { return mEndSizeVariance; }
-        public function set endSizeVariance(value:Number):void { mEndSizeVariance = value; }
+        public function get endSize():Number { return _endSize; }
+        public function set endSize(value:Number):void { _endSize = value; }
 
-        public function get emitAngle():Number { return mEmitAngle; }
-        public function set emitAngle(value:Number):void { mEmitAngle = value; }
+        public function get endSizeVariance():Number { return _endSizeVariance; }
+        public function set endSizeVariance(value:Number):void { _endSizeVariance = value; }
 
-        public function get emitAngleVariance():Number { return mEmitAngleVariance; }
-        public function set emitAngleVariance(value:Number):void { mEmitAngleVariance = value; }
+        public function get emitAngle():Number { return _emitAngle; }
+        public function set emitAngle(value:Number):void { _emitAngle = value; }
 
-        public function get startRotation():Number { return mStartRotation; } 
-        public function set startRotation(value:Number):void { mStartRotation = value; }
+        public function get emitAngleVariance():Number { return _emitAngleVariance; }
+        public function set emitAngleVariance(value:Number):void { _emitAngleVariance = value; }
+
+        public function get startRotation():Number { return _startRotation; }
+        public function set startRotation(value:Number):void { _startRotation = value; }
         
-        public function get startRotationVariance():Number { return mStartRotationVariance; } 
-        public function set startRotationVariance(value:Number):void { mStartRotationVariance = value; }
+        public function get startRotationVariance():Number { return _startRotationVariance; }
+        public function set startRotationVariance(value:Number):void { _startRotationVariance = value; }
         
-        public function get endRotation():Number { return mEndRotation; } 
-        public function set endRotation(value:Number):void { mEndRotation = value; }
+        public function get endRotation():Number { return _endRotation; }
+        public function set endRotation(value:Number):void { _endRotation = value; }
         
-        public function get endRotationVariance():Number { return mEndRotationVariance; } 
-        public function set endRotationVariance(value:Number):void { mEndRotationVariance = value; }
+        public function get endRotationVariance():Number { return _endRotationVariance; }
+        public function set endRotationVariance(value:Number):void { _endRotationVariance = value; }
         
-        public function get speed():Number { return mSpeed; }
-        public function set speed(value:Number):void { mSpeed = value; }
+        public function get speed():Number { return _speed; }
+        public function set speed(value:Number):void { _speed = value; }
 
-        public function get speedVariance():Number { return mSpeedVariance; }
-        public function set speedVariance(value:Number):void { mSpeedVariance = value; }
+        public function get speedVariance():Number { return _speedVariance; }
+        public function set speedVariance(value:Number):void { _speedVariance = value; }
 
-        public function get gravityX():Number { return mGravityX; }
-        public function set gravityX(value:Number):void { mGravityX = value; }
+        public function get gravityX():Number { return _gravityX; }
+        public function set gravityX(value:Number):void { _gravityX = value; }
 
-        public function get gravityY():Number { return mGravityY; }
-        public function set gravityY(value:Number):void { mGravityY = value; }
+        public function get gravityY():Number { return _gravityY; }
+        public function set gravityY(value:Number):void { _gravityY = value; }
 
-        public function get radialAcceleration():Number { return mRadialAcceleration; }
-        public function set radialAcceleration(value:Number):void { mRadialAcceleration = value; }
+        public function get radialAcceleration():Number { return _radialAcceleration; }
+        public function set radialAcceleration(value:Number):void { _radialAcceleration = value; }
 
-        public function get radialAccelerationVariance():Number { return mRadialAccelerationVariance; }
-        public function set radialAccelerationVariance(value:Number):void { mRadialAccelerationVariance = value; }
+        public function get radialAccelerationVariance():Number { return _radialAccelerationVariance; }
+        public function set radialAccelerationVariance(value:Number):void { _radialAccelerationVariance = value; }
 
-        public function get tangentialAcceleration():Number { return mTangentialAcceleration; }
-        public function set tangentialAcceleration(value:Number):void { mTangentialAcceleration = value; }
+        public function get tangentialAcceleration():Number { return _tangentialAcceleration; }
+        public function set tangentialAcceleration(value:Number):void { _tangentialAcceleration = value; }
 
-        public function get tangentialAccelerationVariance():Number { return mTangentialAccelerationVariance; }
-        public function set tangentialAccelerationVariance(value:Number):void { mTangentialAccelerationVariance = value; }
+        public function get tangentialAccelerationVariance():Number { return _tangentialAccelerationVariance; }
+        public function set tangentialAccelerationVariance(value:Number):void { _tangentialAccelerationVariance = value; }
 
-        public function get maxRadius():Number { return mMaxRadius; }
-        public function set maxRadius(value:Number):void { mMaxRadius = value; }
+        public function get maxRadius():Number { return _maxRadius; }
+        public function set maxRadius(value:Number):void { _maxRadius = value; }
 
-        public function get maxRadiusVariance():Number { return mMaxRadiusVariance; }
-        public function set maxRadiusVariance(value:Number):void { mMaxRadiusVariance = value; }
+        public function get maxRadiusVariance():Number { return _maxRadiusVariance; }
+        public function set maxRadiusVariance(value:Number):void { _maxRadiusVariance = value; }
 
-        public function get minRadius():Number { return mMinRadius; }
-        public function set minRadius(value:Number):void { mMinRadius = value; }
+        public function get minRadius():Number { return _minRadius; }
+        public function set minRadius(value:Number):void { _minRadius = value; }
 
-        public function get minRadiusVariance():Number { return mMinRadiusVariance; }
-        public function set minRadiusVariance(value:Number):void { mMinRadiusVariance = value; }
+        public function get minRadiusVariance():Number { return _minRadiusVariance; }
+        public function set minRadiusVariance(value:Number):void { _minRadiusVariance = value; }
 
-        public function get rotatePerSecond():Number { return mRotatePerSecond; }
-        public function set rotatePerSecond(value:Number):void { mRotatePerSecond = value; }
+        public function get rotatePerSecond():Number { return _rotatePerSecond; }
+        public function set rotatePerSecond(value:Number):void { _rotatePerSecond = value; }
 
-        public function get rotatePerSecondVariance():Number { return mRotatePerSecondVariance; }
-        public function set rotatePerSecondVariance(value:Number):void { mRotatePerSecondVariance = value; }
+        public function get rotatePerSecondVariance():Number { return _rotatePerSecondVariance; }
+        public function set rotatePerSecondVariance(value:Number):void { _rotatePerSecondVariance = value; }
 
-        public function get startColor():ColorArgb { return mStartColor; }
-        public function set startColor(value:ColorArgb):void { mStartColor = value; }
+        public function get startColor():ColorArgb { return _startColor; }
+        public function set startColor(value:ColorArgb):void { _startColor = value; }
 
-        public function get startColorVariance():ColorArgb { return mStartColorVariance; }
-        public function set startColorVariance(value:ColorArgb):void { mStartColorVariance = value; }
+        public function get startColorVariance():ColorArgb { return _startColorVariance; }
+        public function set startColorVariance(value:ColorArgb):void { _startColorVariance = value; }
 
-        public function get endColor():ColorArgb { return mEndColor; }
-        public function set endColor(value:ColorArgb):void { mEndColor = value; }
+        public function get endColor():ColorArgb { return _endColor; }
+        public function set endColor(value:ColorArgb):void { _endColor = value; }
 
-        public function get endColorVariance():ColorArgb { return mEndColorVariance; }
-        public function set endColorVariance(value:ColorArgb):void { mEndColorVariance = value; }
+        public function get endColorVariance():ColorArgb { return _endColorVariance; }
+        public function set endColorVariance(value:ColorArgb):void { _endColorVariance = value; }
     }
 }

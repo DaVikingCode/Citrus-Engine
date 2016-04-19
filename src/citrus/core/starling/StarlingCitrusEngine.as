@@ -84,8 +84,6 @@ package citrus.core.starling {
 		 * @param stage3D The reference to the Stage3D, useful for sharing a 3D context. <a href="http://wiki.starling-framework.org/tutorials/combining_starling_with_other_stage3d_frameworks">More informations</a>.
 		 */
 		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewPort:Rectangle = null, stage3D:Stage3D = null):void {
-
-			Starling.handleLostContext = true;
 				
 			if (viewPort)
 				_viewport = viewPort;
