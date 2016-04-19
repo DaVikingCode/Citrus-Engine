@@ -1,4 +1,4 @@
-**We recently reset this repository for working on a new version, at the moment we're making experiments. If you are looking for the old repository, find it [here](https://github.com/alamboley/Citrus-Engine).**
+**We recently reset this repository for working on a new version, at the moment we're making experiments. If you are looking for the old one, find it [here](https://github.com/DaVikingCode/Citrus-Engine-old).**
 
 [Get the examples here](https://github.com/alamboley/Citrus-Engine-Examples)
 
