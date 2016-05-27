@@ -162,7 +162,7 @@ package citrus.utils {
 			return _PLATFORM_SPECIFICS_IS_RETINA != 2 ? _PLATFORM_SPECIFICS_IS_RETINA : ( isIOS() && uint( !queryIphoneLegacy() ) && uint( !queryIpadLegacy() ) );
 		}
 
-		static private function isLandscape():Boolean {
+		static public function isLandscape():Boolean {
 			//skipping the query way.. as this can't just be checked once, as the value could change.
 
 			//stageValidate() - maybe a bit expensive/useless? here's why..
