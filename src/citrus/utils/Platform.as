@@ -276,7 +276,7 @@ package citrus.utils {
 	        // PRIVATE FINISHED SECTION - Used internally only.
 	        //     Results are stored in static vars.
 	        
-	        static public function stageValidate():void {
+	        static private function stageValidate():void {
 			var _wrapper:* = CitrusEngine.getInstance();
 	            
 			try {
