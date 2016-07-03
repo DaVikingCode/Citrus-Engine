@@ -109,316 +109,315 @@ package citrus.utils {
         
         
 		// PUBLIC FINISHED SECTION
-	    //     These methods should be called externally.
-	    //     'return value' explained: 0 = false, 1 = true, 2 = has not been queried(cached).
+		//     These methods should be called externally.
+		//     'return value' explained: 0 = false, 1 = true, 2 = has not been queried(cached).
 	        
-	    static public function isBrowser():uint {
-	        return _PLATFORM_IS_BROWSER != 2 ? _PLATFORM_IS_BROWSER : queryBrowser();
-	    }
+		static public function isBrowser():uint {
+			return _PLATFORM_IS_BROWSER != 2 ? _PLATFORM_IS_BROWSER : queryBrowser();
+		}
 	        
-	    static public function isDesktop():uint {
-	        return _PLATFORM_IS_DESKTOP != 2 ? _PLATFORM_IS_DESKTOP : queryDesktop();
-	    }
+		static public function isDesktop():uint {
+			return _PLATFORM_IS_DESKTOP != 2 ? _PLATFORM_IS_DESKTOP : queryDesktop();
+		}
 	        
-	     static public function isIOS():uint {
-	        return _PLATFORM_IS_IOS != 2 ? _PLATFORM_IS_IOS : queryIOS();
-	    }
+		static public function isIOS():uint {
+			return _PLATFORM_IS_IOS != 2 ? _PLATFORM_IS_IOS : queryIOS();
+		}
 	        
-	    static public function isAndroid():uint {
-	        return _PLATFORM_IS_AND != 2 ? _PLATFORM_IS_AND : queryAndroid();
-	    }
+		static public function isAndroid():uint {
+			return _PLATFORM_IS_AND != 2 ? _PLATFORM_IS_AND : queryAndroid();
+		}
 	        
-	    static public function isWindows():uint {
-	        return _PLATFORM_SPECIFICS_IS_WIN != 2 ? _PLATFORM_SPECIFICS_IS_WIN : queryWindows();
-	    }
+		static public function isWindows():uint {
+			return _PLATFORM_SPECIFICS_IS_WIN != 2 ? _PLATFORM_SPECIFICS_IS_WIN : queryWindows();
+		}
 	        
-	    static public function isMac():uint {
-	        return _PLATFORM_SPECIFICS_IS_MAC != 2 ? _PLATFORM_SPECIFICS_IS_MAC : queryMac();
-	    }
+		static public function isMac():uint {
+			return _PLATFORM_SPECIFICS_IS_MAC != 2 ? _PLATFORM_SPECIFICS_IS_MAC : queryMac();
+		}
 	        
-	    static public function isLinux():uint {
-	        return _PLATFORM_SPECIFICS_IS_LNX != 2 ? _PLATFORM_SPECIFICS_IS_LNX : queryLinux();
-	    }
+		static public function isLinux():uint {
+			return _PLATFORM_SPECIFICS_IS_LNX != 2 ? _PLATFORM_SPECIFICS_IS_LNX : queryLinux();
+		}
 	        
-	    static public function isIphoneLegacy():uint {
-	        return _PLATFORM_SPECIFICS_IS_IPHONE_LEGACY != 2 ? _PLATFORM_SPECIFICS_IS_IPHONE_LEGACY : queryIphoneLegacy();
-	    }
+		static public function isIphoneLegacy():uint {
+			return _PLATFORM_SPECIFICS_IS_IPHONE_LEGACY != 2 ? _PLATFORM_SPECIFICS_IS_IPHONE_LEGACY : queryIphoneLegacy();
+		}
 	        
-	    static public function isIphoneFour():uint {
-	        return _PLATFORM_SPECIFICS_IS_IPHONE_FOUR != 2 ? _PLATFORM_SPECIFICS_IS_IPHONE_FOUR : queryIphoneFour();
-	    }
+		static public function isIphoneFour():uint {
+			return _PLATFORM_SPECIFICS_IS_IPHONE_FOUR != 2 ? _PLATFORM_SPECIFICS_IS_IPHONE_FOUR : queryIphoneFour();
+		}
 	        
-	    static public function isIphoneFive():uint {
-	        return _PLATFORM_SPECIFICS_IS_IPHONE_FIVE != 2 ? _PLATFORM_SPECIFICS_IS_IPHONE_FIVE : queryIphoneFive();
-	    }
+		static public function isIphoneFive():uint {
+			return _PLATFORM_SPECIFICS_IS_IPHONE_FIVE != 2 ? _PLATFORM_SPECIFICS_IS_IPHONE_FIVE : queryIphoneFive();
+		}
 	        
-	    static public function isIphoneSix():uint {
-	        return _PLATFORM_SPECIFICS_IS_IPHONE_SIX != 2 ? _PLATFORM_SPECIFICS_IS_IPHONE_SIX : queryIphoneSix();
-	    }
+		static public function isIphoneSix():uint {
+			return _PLATFORM_SPECIFICS_IS_IPHONE_SIX != 2 ? _PLATFORM_SPECIFICS_IS_IPHONE_SIX : queryIphoneSix();
+		}
 	        
-	    static public function isIphoneSixPlus():uint {
-	        return _PLATFORM_SPECIFICS_IS_IPHONE_SIX_PLUS != 2 ? _PLATFORM_SPECIFICS_IS_IPHONE_SIX_PLUS : queryIphoneSixPlus();
-	    }
+		static public function isIphoneSixPlus():uint {
+			return _PLATFORM_SPECIFICS_IS_IPHONE_SIX_PLUS != 2 ? _PLATFORM_SPECIFICS_IS_IPHONE_SIX_PLUS : queryIphoneSixPlus();
+		}
 	        
-	    static public function isIpadLegacy():uint {
-	        return _PLATFORM_SPECIFICS_IS_IPAD_LEGACY != 2 ? _PLATFORM_SPECIFICS_IS_IPAD_LEGACY : queryIpadLegacy();
-	    }
+		static public function isIpadLegacy():uint {
+			return _PLATFORM_SPECIFICS_IS_IPAD_LEGACY != 2 ? _PLATFORM_SPECIFICS_IS_IPAD_LEGACY : queryIpadLegacy();
+		}
 	        
-	    static public function isIpadRetinaLegacy():uint {
-	        return _PLATFORM_SPECIFICS_IS_IPAD_RETINA_LEGACY != 2 ? _PLATFORM_SPECIFICS_IS_IPAD_RETINA_LEGACY : queryIpadRetinaLegacy();
-	    }
+		static public function isIpadRetinaLegacy():uint {
+			return _PLATFORM_SPECIFICS_IS_IPAD_RETINA_LEGACY != 2 ? _PLATFORM_SPECIFICS_IS_IPAD_RETINA_LEGACY : queryIpadRetinaLegacy();
+		}
 	        
-	    static public function isIpadRetinaPro():uint {
-	        return _PLATFORM_SPECIFICS_IS_IPAD_RETINA_PRO != 2 ? _PLATFORM_SPECIFICS_IS_IPAD_RETINA_PRO : queryIpadRetinaPro();
-	    }
+		static public function isIpadRetinaPro():uint {
+			return _PLATFORM_SPECIFICS_IS_IPAD_RETINA_PRO != 2 ? _PLATFORM_SPECIFICS_IS_IPAD_RETINA_PRO : queryIpadRetinaPro();
+		}
 	        
-	    static public function isIpad():uint {
-	        return _PLATFORM_SPECIFICS_IS_IPAD != 2 ? _PLATFORM_SPECIFICS_IS_IPAD : (isIpadLegacy() || isIpadRetinaLegacy() || isIpadRetinaPro());
-	    }
+		static public function isIpad():uint {
+			return _PLATFORM_SPECIFICS_IS_IPAD != 2 ? _PLATFORM_SPECIFICS_IS_IPAD : (isIpadLegacy() || isIpadRetinaLegacy() || isIpadRetinaPro());
+		}
 	        
-	    static public function isIphone():uint {
-	        return _PLATFORM_SPECIFICS_IS_IPHONE != 2 ? _PLATFORM_SPECIFICS_IS_IPHONE : (isIOS() && uint(!isIpad()));
-	    }
+		static public function isIphone():uint {
+			return _PLATFORM_SPECIFICS_IS_IPHONE != 2 ? _PLATFORM_SPECIFICS_IS_IPHONE : (isIOS() && uint(!isIpad()));
+		}
 	        
-	    static public function isRetina():uint {
-	        return _PLATFORM_SPECIFICS_IS_RETINA != 2 ? _PLATFORM_SPECIFICS_IS_RETINA : (isIOS() && uint(!queryIphoneLegacy()) && uint(!queryIpadLegacy()));
-	    }
+		static public function isRetina():uint {
+			return _PLATFORM_SPECIFICS_IS_RETINA != 2 ? _PLATFORM_SPECIFICS_IS_RETINA : (isIOS() && uint(!queryIphoneLegacy()) && uint(!queryIpadLegacy()));
+		}
 	        
-	    static public function isLandscape():uint {
-	        // Not using the query(cache) method.. this cannot be checked only once, the value can change at run-time.
-	        stageValidate();
+		static public function isLandscape():uint {
+		// Not using the query(cache) method.. this cannot be checked only once, the value can change at run-time.
+			stageValidate();
 			(_FLASH_STAGE.stageWidth == _FLASH_STAGE.stageHeight) ? _PLATFORM_SPECIFICS_IS_LANDSCAPE = 2 : (_PLATFORM_SPECIFICS_IS_LANDSCAPE = uint(_FLASH_STAGE.stageWidth >= _FLASH_STAGE.stageHeight) ? 1 : 0);
-	        return _PLATFORM_SPECIFICS_IS_LANDSCAPE;
-	    }
+			return _PLATFORM_SPECIFICS_IS_LANDSCAPE;
+		}
 	        
-	    static public function isFullscreen():uint {
-	        // Not using the query(cache) method.. this cannot be checked only once, the value can change at run-time.
-	        stageValidate();
+		static public function isFullscreen():uint {
+			// Not using the query(cache) method.. this cannot be checked only once, the value can change at run-time.
+			stageValidate();
 			(_FLASH_STAGE.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE) ? _PLATFORM_SPECIFICS_IS_FULLSCREEN = 2 : ((_FLASH_STAGE.displayState == StageDisplayState.FULL_SCREEN) ? _PLATFORM_SPECIFICS_IS_FULLSCREEN = 1 : _PLATFORM_SPECIFICS_IS_FULLSCREEN = 0);
 			return _PLATFORM_SPECIFICS_IS_FULLSCREEN;
-	    }
+		}
 	        
-	    static public function get iOS_STATUSBAR_HEIGHT():uint {
-	        if (!isIOS())
-	            throw Error(" Not an iOS device!");
-	        if (isIpadLegacy() || isIphoneLegacy()) {
-	            return _IOS_LEGACY_STATUSBAR_HEIGHT;
-	        } else if (isIphone() || isIpad()) {
-	            return _IOS_RETINA_STATUSBAR_HEIGHT;
-	        } else
-	            throw Error(" Unknown / New iOS device - Please request 'Platform.as' to be updated.");
-	    }
+		static public function get iOS_STATUSBAR_HEIGHT():uint {
+			if (!isIOS())
+				throw Error(" Not an iOS device!");
+			if (isIpadLegacy() || isIphoneLegacy()) {
+				return _IOS_LEGACY_STATUSBAR_HEIGHT;
+			} else if (isIphone() || isIpad()) {
+				return _IOS_RETINA_STATUSBAR_HEIGHT;
+			} else
+				throw Error(" Unknown / New iOS device - Please request 'Platform.as' to be updated.");
+		}
 	        
-	    static public function get iPHONE_WIDTH():uint {
-	        if (!isIOS())
-	            throw Error(" Not an iOS device!");
-	        if (isIphoneLegacy())
-	            return _IPHONE_LEGACY_WIDTH;
-	        else if (isIphoneFour())
-	            return _IPHONE_RETINA_FOUR_WIDTH;
-	        else if (isIphoneFive())
-	            return _IPHONE_RETINA_FIVE_WIDTH;
-	        else if (isIphoneSix())
-	            return _IPHONE_RETINA_SIX_WIDTH;
-	        else if (isIphoneSixPlus())
-	            return _IPHONE_RETINA_SIX_PLUS_WIDTH;
-	        else
-	            throw Error(" Unknown / New iOS device - Please request 'Platform.as' to be updated.");
-	    }
+		static public function get iPHONE_WIDTH():uint {
+			if (!isIOS())
+				throw Error(" Not an iOS device!");
+			if (isIphoneLegacy())
+				return _IPHONE_LEGACY_WIDTH;
+			else if (isIphoneFour())
+				return _IPHONE_RETINA_FOUR_WIDTH;
+			else if (isIphoneFive())
+				return _IPHONE_RETINA_FIVE_WIDTH;
+			else if (isIphoneSix())
+				return _IPHONE_RETINA_SIX_WIDTH;
+			else if (isIphoneSixPlus())
+				return _IPHONE_RETINA_SIX_PLUS_WIDTH;
+			else
+				throw Error(" Unknown / New iOS device - Please request 'Platform.as' to be updated.");
+		}
 	        
-	    static public function get iPHONE_HEIGHT():uint {
-	        if (!isIOS())
-	            throw Error(" Not an iOS device!");
+		static public function get iPHONE_HEIGHT():uint {
+			if (!isIOS())
+				throw Error(" Not an iOS device!");
 	            
-	        if (isIphoneLegacy())
-	            return _IPHONE_LEGACY_HEIGHT;
-	        else if (isIphoneFour())
-	            return _IPHONE_RETINA_FOUR_HEIGHT;
-	        else if (isIphoneFive())
-	            return _IPHONE_RETINA_FIVE_HEIGHT;
-	        else if (isIphoneSix())
-	            return _IPHONE_RETINA_SIX_HEIGHT;
-	        else if (isIphoneSixPlus())
-	            return _IPHONE_RETINA_SIX_PLUS_HEIGHT;
-	        else
-	            throw Error(" Unknown / New iOS device - Please request 'Platform.as' to be updated.");
-	    }
+			if (isIphoneLegacy())
+				return _IPHONE_LEGACY_HEIGHT;
+			else if (isIphoneFour())
+				return _IPHONE_RETINA_FOUR_HEIGHT;
+			else if (isIphoneFive())
+				return _IPHONE_RETINA_FIVE_HEIGHT;
+			else if (isIphoneSix())
+				return _IPHONE_RETINA_SIX_HEIGHT;
+			else if (isIphoneSixPlus())
+				return _IPHONE_RETINA_SIX_PLUS_HEIGHT;
+			else
+				throw Error(" Unknown / New iOS device - Please request 'Platform.as' to be updated.");
+		}
 	        
-	    static public function get iPAD_WIDTH():uint {
-	        if (!isIOS())
-	            throw Error(" Not an iOS device!");
+		static public function get iPAD_WIDTH():uint {
+			if (!isIOS())
+				throw Error(" Not an iOS device!");
 	            
-	        if (isIpadLegacy())
-	            return _IPAD_LEGACY_WIDTH;
-	        else if (isIpadRetinaLegacy())
-	            return _IPAD_RETINA_LEGACY_WIDTH;
-	        else if (isIpadRetinaPro())
-	            return _IPAD_RETINA_PRO_WIDTH;
-	        else
-	            throw Error(" Unknown / New iOS device - Please request 'Platform.as' to be updated.");
-	    }
+			if (isIpadLegacy())
+				return _IPAD_LEGACY_WIDTH;
+			else if (isIpadRetinaLegacy())
+				return _IPAD_RETINA_LEGACY_WIDTH;
+			else if (isIpadRetinaPro())
+				return _IPAD_RETINA_PRO_WIDTH;
+			else
+				throw Error(" Unknown / New iOS device - Please request 'Platform.as' to be updated.");
+		}
 	        
-	        static public function get iPAD_HEIGHT():uint {
-	            if (!isIOS())
-	                throw Error(" Not an iOS device!");
+		static public function get iPAD_HEIGHT():uint {
+			if (!isIOS())
+				throw Error(" Not an iOS device!");
 	            
-	            if (isIpadLegacy())
-	                return _IPAD_LEGACY_HEIGHT;
-	            else if (isIpadRetinaLegacy())
-	                return _IPAD_RETINA_LEGACY_HEIGHT;
-	            else if (isIpadRetinaPro())
-	                return _IPAD_RETINA_PRO_HEIGHT;
-	            else
-	                throw Error(" Unknown / New iOS device - Please request 'Platform.as' to be updated.");
+			if (isIpadLegacy())
+				return _IPAD_LEGACY_HEIGHT;
+			else if (isIpadRetinaLegacy())
+				return _IPAD_RETINA_LEGACY_HEIGHT;
+			else if (isIpadRetinaPro())
+				return _IPAD_RETINA_PRO_HEIGHT;
+			else
+				throw Error(" Unknown / New iOS device - Please request 'Platform.as' to be updated.");
 	        }
-			
+	
 	        
 	        // PRIVATE FINISHED SECTION - Used internally only.
 	        //     Results are stored in static vars.
 	        
 	        static public function stageValidate():void {
-	            var _wrapper:* = CitrusEngine.getInstance();
+			var _wrapper:* = CitrusEngine.getInstance();
 	            
-	            try {
-	                _FLASH_STAGE = _wrapper.stage;
-	            } catch (err:Error) {
-	                throw Error(" Wrapper is 'null'.      -->" + err.message);
-	            }
-	        
+			try {
+				_FLASH_STAGE = _wrapper.stage;
+			} catch (err:Error) {
+				throw Error(" Wrapper is 'null'.      -->" + err.message);
+			}
 	        }
 	        
 	        static private function queryDesktop():uint {
-	            _PLATFORM_SPECIFICS_IS_WIN = uint(_PLAYER_VERSION == "WIN");
-	            _PLATFORM_SPECIFICS_IS_MAC = uint(_PLAYER_VERSION == "MAC");
-	            _PLATFORM_SPECIFICS_IS_LNX = uint(_PLAYER_VERSION == "LNX");
-	            return (_PLATFORM_SPECIFICS_IS_WIN || _PLATFORM_SPECIFICS_IS_MAC || _PLATFORM_SPECIFICS_IS_LNX);
+			_PLATFORM_SPECIFICS_IS_WIN = uint(_PLAYER_VERSION == "WIN");
+			_PLATFORM_SPECIFICS_IS_MAC = uint(_PLAYER_VERSION == "MAC");
+			_PLATFORM_SPECIFICS_IS_LNX = uint(_PLAYER_VERSION == "LNX");
+			return (_PLATFORM_SPECIFICS_IS_WIN || _PLATFORM_SPECIFICS_IS_MAC || _PLATFORM_SPECIFICS_IS_LNX);
 	        }
 	        
 	        static private function queryWindows():uint {
-	            _PLATFORM_SPECIFICS_IS_WIN = uint(_PLAYER_VERSION == "WIN");
-	            return _PLATFORM_SPECIFICS_IS_WIN;
+			_PLATFORM_SPECIFICS_IS_WIN = uint(_PLAYER_VERSION == "WIN");
+			return _PLATFORM_SPECIFICS_IS_WIN;
 	        }
 	        
 	        static private function queryMac():uint {
-	            _PLATFORM_SPECIFICS_IS_MAC = uint(_PLAYER_VERSION == "MAC");
-	            return _PLATFORM_SPECIFICS_IS_MAC;
+			_PLATFORM_SPECIFICS_IS_MAC = uint(_PLAYER_VERSION == "MAC");
+			return _PLATFORM_SPECIFICS_IS_MAC;
 	        }
 	        
 	        static private function queryLinux():uint {
-	            _PLATFORM_SPECIFICS_IS_LNX = uint(_PLAYER_VERSION == "LNX");
-	            return _PLATFORM_SPECIFICS_IS_LNX;
+			_PLATFORM_SPECIFICS_IS_LNX = uint(_PLAYER_VERSION == "LNX");
+			return _PLATFORM_SPECIFICS_IS_LNX;
 	        }
 	        
 	        static private function queryIphoneLegacy():uint {
-	            if (queryIOS()) {
-	                stageValidate();
-	                if (isLandscape())
-	                    return (uint(_FLASH_STAGE.stageWidth == _IPHONE_LEGACY_HEIGHT) || uint(_FLASH_STAGE.stageWidth == (_IPHONE_LEGACY_HEIGHT - _IOS_LEGACY_STATUSBAR_HEIGHT)));
-	                else
-	                    return (uint(_FLASH_STAGE.stageWidth == _IPHONE_LEGACY_WIDTH) || uint(_FLASH_STAGE.stageWidth == (_IPHONE_LEGACY_WIDTH - _IOS_LEGACY_STATUSBAR_HEIGHT)));
-	            } else
-	                return 0;
+			if (queryIOS()) {
+				stageValidate();
+			if (isLandscape())
+				return (uint(_FLASH_STAGE.stageWidth == _IPHONE_LEGACY_HEIGHT) || uint(_FLASH_STAGE.stageWidth == (_IPHONE_LEGACY_HEIGHT - _IOS_LEGACY_STATUSBAR_HEIGHT)));
+			else
+				return (uint(_FLASH_STAGE.stageWidth == _IPHONE_LEGACY_WIDTH) || uint(_FLASH_STAGE.stageWidth == (_IPHONE_LEGACY_WIDTH - _IOS_LEGACY_STATUSBAR_HEIGHT)));
+			} else
+				return 0;
 	        }
 	        
 	        static private function queryIphoneFour():uint {
-	            if (queryIOS()) {
-	                stageValidate();
-	                if (isLandscape())
-	                    return (uint((_FLASH_STAGE.stageWidth == _IPHONE_RETINA_FOUR_HEIGHT) && (_FLASH_STAGE.stageHeight == _IPHONE_RETINA_FOUR_WIDTH)) || uint((_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_FOUR_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT) && (_FLASH_STAGE.stageHeight == (_IPHONE_RETINA_FOUR_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT)))));
-	                else
-	                    return (uint((_FLASH_STAGE.stageWidth == _IPHONE_RETINA_FOUR_WIDTH) && (_FLASH_STAGE.stageHeight == _IPHONE_RETINA_FOUR_HEIGHT)) || uint((_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_FOUR_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT) && (_FLASH_STAGE.stageHeight == (_IPHONE_RETINA_FOUR_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT)))));
-	            } else
-	                return 0;
+			if (queryIOS()) {
+				stageValidate();
+			if (isLandscape())
+				return (uint((_FLASH_STAGE.stageWidth == _IPHONE_RETINA_FOUR_HEIGHT) && (_FLASH_STAGE.stageHeight == _IPHONE_RETINA_FOUR_WIDTH)) || uint((_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_FOUR_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT) && (_FLASH_STAGE.stageHeight == (_IPHONE_RETINA_FOUR_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT)))));
+			else
+				return (uint((_FLASH_STAGE.stageWidth == _IPHONE_RETINA_FOUR_WIDTH) && (_FLASH_STAGE.stageHeight == _IPHONE_RETINA_FOUR_HEIGHT)) || uint((_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_FOUR_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT) && (_FLASH_STAGE.stageHeight == (_IPHONE_RETINA_FOUR_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT)))));
+			} else
+				return 0;
 	        }
 	        
 	        static private function queryIphoneFive():uint {
-	            if (queryIOS()) {
-	                stageValidate();
-	                if (isLandscape())
-	                    return (uint((_FLASH_STAGE.stageWidth == _IPHONE_RETINA_FIVE_HEIGHT) && (_FLASH_STAGE.stageHeight == _IPHONE_RETINA_FIVE_WIDTH)) || uint((_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_FIVE_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT) && (_FLASH_STAGE.stageHeight == (_IPHONE_RETINA_FIVE_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT)))));
-	                else
-	                    return (uint((_FLASH_STAGE.stageWidth == _IPHONE_RETINA_FIVE_WIDTH) && (_FLASH_STAGE.stageHeight == _IPHONE_RETINA_FIVE_HEIGHT)) || uint((_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_FIVE_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT) && (_FLASH_STAGE.stageHeight == (_IPHONE_RETINA_FIVE_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT)))));
-	            } else
-	                return 0;
+			if (queryIOS()) {
+				stageValidate();
+			if (isLandscape())
+				return (uint((_FLASH_STAGE.stageWidth == _IPHONE_RETINA_FIVE_HEIGHT) && (_FLASH_STAGE.stageHeight == _IPHONE_RETINA_FIVE_WIDTH)) || uint((_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_FIVE_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT) && (_FLASH_STAGE.stageHeight == (_IPHONE_RETINA_FIVE_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT)))));
+			else
+				return (uint((_FLASH_STAGE.stageWidth == _IPHONE_RETINA_FIVE_WIDTH) && (_FLASH_STAGE.stageHeight == _IPHONE_RETINA_FIVE_HEIGHT)) || uint((_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_FIVE_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT) && (_FLASH_STAGE.stageHeight == (_IPHONE_RETINA_FIVE_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT)))));
+			} else
+			return 0;
 	        }
 	        
 	        static private function queryIphoneSix():uint {
-	            if (queryIOS()) {
-	                stageValidate();
-	                if (isLandscape())
-	                    return (uint(_FLASH_STAGE.stageWidth == _IPHONE_RETINA_SIX_HEIGHT) || uint(_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_SIX_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT)));
-	                else
-	                    return (uint(_FLASH_STAGE.stageWidth == _IPHONE_RETINA_SIX_WIDTH) || uint(_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_SIX_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT)));
-	            } else
-	                return 0;
+			if (queryIOS()) {
+				stageValidate();
+			if (isLandscape())
+				return (uint(_FLASH_STAGE.stageWidth == _IPHONE_RETINA_SIX_HEIGHT) || uint(_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_SIX_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT)));
+			else
+				return (uint(_FLASH_STAGE.stageWidth == _IPHONE_RETINA_SIX_WIDTH) || uint(_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_SIX_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT)));
+			} else
+				return 0;
 	        }
 	        
 	        static private function queryIphoneSixPlus():uint {
-	            if (queryIOS()) {
-	                stageValidate();
-	                if (isLandscape())
-	                    return (uint(_FLASH_STAGE.stageWidth == _IPHONE_RETINA_SIX_PLUS_HEIGHT) || uint(_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_SIX_PLUS_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT)));
-	                else
-	                    return (uint(_FLASH_STAGE.stageWidth == _IPHONE_RETINA_SIX_PLUS_WIDTH) || uint(_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_SIX_PLUS_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT)));
-	            } else
-	                return 0;
+			if (queryIOS()) {
+				stageValidate();
+			if (isLandscape())
+				return (uint(_FLASH_STAGE.stageWidth == _IPHONE_RETINA_SIX_PLUS_HEIGHT) || uint(_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_SIX_PLUS_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT)));
+			else
+				return (uint(_FLASH_STAGE.stageWidth == _IPHONE_RETINA_SIX_PLUS_WIDTH) || uint(_FLASH_STAGE.stageWidth == (_IPHONE_RETINA_SIX_PLUS_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT)));
+			} else
+				return 0;
 	        }
 	        
 	        // ip1/ip2/ipm1
 	        static private function queryIpadLegacy():uint {
-	            if (queryIOS()) {
-	                if (isLandscape())
-	                    return (uint(_FLASH_STAGE.stageWidth == _IPAD_LEGACY_HEIGHT) || uint(_FLASH_STAGE.stageWidth == (_IPAD_LEGACY_HEIGHT - _IOS_LEGACY_STATUSBAR_HEIGHT)));
-	                else
-	                    return (uint(_FLASH_STAGE.stageWidth == _IPAD_LEGACY_WIDTH) || uint(_FLASH_STAGE.stageWidth == (_IPAD_LEGACY_WIDTH - _IOS_LEGACY_STATUSBAR_HEIGHT)));
-	            } else
-	                return 0;
+			if (queryIOS()) {
+				if (isLandscape())
+					return (uint(_FLASH_STAGE.stageWidth == _IPAD_LEGACY_HEIGHT) || uint(_FLASH_STAGE.stageWidth == (_IPAD_LEGACY_HEIGHT - _IOS_LEGACY_STATUSBAR_HEIGHT)));
+				else
+					return (uint(_FLASH_STAGE.stageWidth == _IPAD_LEGACY_WIDTH) || uint(_FLASH_STAGE.stageWidth == (_IPAD_LEGACY_WIDTH - _IOS_LEGACY_STATUSBAR_HEIGHT)));
+			} else
+				return 0;
 	        }
 	        
 	        // ip3/ip4/ipm2/ipm3/ipa1/ipa2
 	        static private function queryIpadRetinaLegacy():uint {
-	            if (queryIOS()) {
-	                if (isLandscape())
-	                    return (uint(_FLASH_STAGE.stageWidth == _IPAD_RETINA_LEGACY_HEIGHT) || uint(_FLASH_STAGE.stageWidth == (_IPAD_RETINA_LEGACY_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT)));
-	                else
-	                    return (uint(_FLASH_STAGE.stageWidth == _IPAD_RETINA_LEGACY_WIDTH) || uint(_FLASH_STAGE.stageWidth == (_IPAD_RETINA_LEGACY_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT)));
-	            } else
-	                return 0;
+			if (queryIOS()) {
+				if (isLandscape())
+					return (uint(_FLASH_STAGE.stageWidth == _IPAD_RETINA_LEGACY_HEIGHT) || uint(_FLASH_STAGE.stageWidth == (_IPAD_RETINA_LEGACY_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT)));
+				else
+					return (uint(_FLASH_STAGE.stageWidth == _IPAD_RETINA_LEGACY_WIDTH) || uint(_FLASH_STAGE.stageWidth == (_IPAD_RETINA_LEGACY_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT)));
+			} else
+				return 0;
 	        }
 	        
 	        static private function queryIpadRetinaPro():uint {
-	            if (queryIOS()) {
-	                if (isLandscape())
-	                    return (uint(_FLASH_STAGE.stageWidth == _IPAD_RETINA_PRO_HEIGHT) || uint(_FLASH_STAGE.stageWidth == (_IPAD_RETINA_PRO_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT)));
-	                else
-	                    return (uint(_FLASH_STAGE.stageWidth == _IPAD_RETINA_PRO_WIDTH) || uint(_FLASH_STAGE.stageWidth == (_IPAD_RETINA_PRO_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT)));
-	            } else
-	                return 0;
+			if (queryIOS()) {
+				if (isLandscape())
+					return (uint(_FLASH_STAGE.stageWidth == _IPAD_RETINA_PRO_HEIGHT) || uint(_FLASH_STAGE.stageWidth == (_IPAD_RETINA_PRO_HEIGHT - _IOS_RETINA_STATUSBAR_HEIGHT)));
+				else
+					return (uint(_FLASH_STAGE.stageWidth == _IPAD_RETINA_PRO_WIDTH) || uint(_FLASH_STAGE.stageWidth == (_IPAD_RETINA_PRO_WIDTH - _IOS_RETINA_STATUSBAR_HEIGHT)));
+			} else
+				return 0;
 	        }
 	        
 	        // It is indeed possible to get a more specific browser ( Result may not be accurate, this method has room for improvement ).
 	        static private function queryBrowser():uint {
-	            _PLATFORM_IS_BROWSER = (uint(_PLAYER_TYPE == "PlugIn") || uint(_PLAYER_TYPE == "ActiveX"));
-	            return _PLATFORM_IS_BROWSER;
+			_PLATFORM_IS_BROWSER = (uint(_PLAYER_TYPE == "PlugIn") || uint(_PLAYER_TYPE == "ActiveX"));
+			return _PLATFORM_IS_BROWSER;
 	        }
 	        
 	        // It is indeed possible to cache all device specifications in one call ( ( apart from isLandscape and isFullscreen ), this method has room for improvement ).
 	        static private function queryIOS():uint {
-	            _PLATFORM_IS_IOS = uint(_PLAYER_VERSION == "IOS");
-	            if (1 == _PLATFORM_IS_IOS) {
-	                // ...query everything for iOS
-	            }
-	            return _PLATFORM_IS_IOS;
+			_PLATFORM_IS_IOS = uint(_PLAYER_VERSION == "IOS");
+			if (1 == _PLATFORM_IS_IOS) {
+				// ...query everything for iOS
+			}
+			return _PLATFORM_IS_IOS;
 	        }
 			
 	        // It is indeed possible to cache all device specifications in one call ( ( apart from isLandscape and isFullscreen ), this method has room for improvement ).
 	        static private function queryAndroid():uint {
-	            _PLATFORM_IS_AND = uint(_PLAYER_VERSION == "AND");
-	            if (1 == _PLATFORM_IS_AND) {
-	                // ...query everything for Android
-	            }
-	            return _PLATFORM_IS_AND;
-	        }
+			_PLATFORM_IS_AND = uint(_PLAYER_VERSION == "AND");
+			if (1 == _PLATFORM_IS_AND) {
+				// ...query everything for Android
+			}
+			return _PLATFORM_IS_AND;
+		}
     
 		///.. eof
 	}
