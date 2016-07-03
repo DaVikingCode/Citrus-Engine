@@ -25,7 +25,6 @@ package citrus.utils {
 	*
 	* 
 	* 
-	*
 	* Notes:
 	*     +Methods 'isLandscape()' and 'isFullscreen()' can return three different values(0,1 and 2). 
 	*         Value '2' can be used to identify if using 'FULL_SCREEN_INTERACTIVE' or if the device's width is equal to the device's height.
