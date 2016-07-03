@@ -185,7 +185,7 @@ package citrus.utils {
 		}
 	        
 		static public function isLandscape():uint {
-		// Not using the query(cache) method.. this cannot be checked only once, the value can change at run-time.
+			// Not using the query(cache) method.. this cannot be checked only once, the value can change at run-time.
 			stageValidate();
 			(_FLASH_STAGE.stageWidth == _FLASH_STAGE.stageHeight) ? _PLATFORM_SPECIFICS_IS_LANDSCAPE = 2 : (_PLATFORM_SPECIFICS_IS_LANDSCAPE = uint(_FLASH_STAGE.stageWidth >= _FLASH_STAGE.stageHeight) ? 1 : 0);
 			return _PLATFORM_SPECIFICS_IS_LANDSCAPE;
