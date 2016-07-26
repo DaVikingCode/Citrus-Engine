@@ -1,6 +1,7 @@
 V3.2.0, Work in Progress
 ------------------------
 - Starling updated on 2.0.1
+- Feathers updated on 3.0.2
 - Added Ash.
 - Removed Away3D & AwayPhysics.
 - Removed Blitting & display list support.
