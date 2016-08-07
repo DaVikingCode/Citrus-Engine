@@ -13,7 +13,7 @@ package citrus.utils.objectmakers {
 	import citrus.utils.objectmakers.tmx.TmxTileSet;
 	
 	import starling.display.Image;
-	import starling.display.QuadBatch;
+	import starling.display.MeshBatch;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	import starling.utils.Color;
@@ -66,7 +66,7 @@ package citrus.utils.objectmakers {
 		 * @param textureAtlas A TextureAtlas or an AssetManager object containing textures which are used in your level maker.
 		 */
 		public static function FromMovieClip(mc:MovieClip, textureAtlas:*, addToCurrentState:Boolean = true, forceFrame:uint = 1):Array {
-		
+			trace("movieclip "+mc.name);
 			//force mc to given frame to avoid undefined properties defined in action frames.
 			mc.gotoAndStop(forceFrame);
 			
@@ -115,7 +115,7 @@ package citrus.utils.objectmakers {
 						}
 					}
 					
-					var object:CitrusObject = new objectClass(child.name, params);
+					var object:CitrusObject = new objectClass(params);
 					a.push(object);
 				}
 			}
@@ -171,7 +171,7 @@ package citrus.utils.objectmakers {
 			var name:String;
 			var texture:Texture;
 			
-			var qb:QuadBatch = new QuadBatch();
+			var qb:MeshBatch = new MeshBatch();
 			
 			for (var i:uint = 0; i < mapTilesX; ++i) {
 				
@@ -196,7 +196,7 @@ package citrus.utils.objectmakers {
 						image.x = j * tmx.tileWidth;
 						image.y = i * tmx.tileHeight;
 						
-						qb.addImage(image);
+						qb.addMesh(image);
 					}
 				}
 			}
@@ -208,7 +208,7 @@ package citrus.utils.objectmakers {
 				params[param] = layer.properties[param];
 			}
 			
-			objects.push(new CitrusSprite(layer.name, params));
+			objects.push(new CitrusSprite(params));
 		}
 		
 		static private function addTiledObjectgroup(tmx:TmxMap, atlas:*, group:TmxObjectGroup, objects:Array):void {
@@ -385,13 +385,13 @@ package citrus.utils.objectmakers {
 				
 				// We will bundle all TextureItems into single quadbatch
 				if (textureItems.length > 0) {
-					var qb:QuadBatch = new QuadBatch();
+					var qb:MeshBatch = new MeshBatch();
 					
 					for each (image in textureItems) {
-						qb.addImage(image);
+						qb.addMesh(image);
 					}
 					
-					var citrusSprite:CitrusSprite = new CitrusSprite(layer, { view: qb });
+					var citrusSprite:CitrusSprite = new CitrusSprite({ view: qb });
 					objects.push(citrusSprite);
 				}
 			}
