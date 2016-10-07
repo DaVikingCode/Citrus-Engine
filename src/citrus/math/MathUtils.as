@@ -410,6 +410,27 @@ package citrus.math {
 		public static function logx(val : Number, base : Number = 10) : Number {
 			return Math.log(val) / Math.log(base)
 		}
+		
+		/**
+		 * Evaluate quadratic curve ( f(x)=y ) for x = t
+		 * a = start
+		 * b = control
+		 * c = end
+		 */
+		public static function evaluateQuadraticCurve(a:Number,b:Number,c:Number,t:Number = 0):Number {
+			return (1 - t) * (1 - t) * a + 2 * (1 - t) * t * b + t * t * c;
+		}
+		
+		/**
+		 * Evaluate cubic curve ( f(x)=y ) for x = t
+		 * a = start
+		 * b = first control
+		 * c = second control
+		 * d = end
+		 */
+		public static function evaluateCubicCurve(a:Number,b:Number,c:Number,d:Number,t:Number = 0):Number {
+			return a + (-a * 3 + t * (3 * a - a * t)) * t + (3 * b + t * (-6 * b + b * 3 * t)) * t + (c * 3 - c * 3 * t) * t * t + d * t * t * t;
+		}
 
 		/**
 		 * http://www.robertpenner.com/easing/
