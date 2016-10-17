@@ -1,5 +1,6 @@
 package citrus.core.starling {
 
+	import starling.display.DisplayObjectContainer;
 	import citrus.core.CitrusEngine;
 
 	import starling.core.Starling;
@@ -32,6 +33,8 @@ package citrus.core.starling {
 		
 		private var _viewportBaseRatioWidth:Number = 1;
 		private var _viewportBaseRatioHeight:Number = 1;
+		
+		private var _starlingRoot:DisplayObjectContainer;
 		
 		/**
 		 * context3D profiles to test for in Ascending order (the more important first).
@@ -242,6 +245,8 @@ package citrus.core.starling {
 				
 			stage.removeEventListener(flash.events.Event.RESIZE, handleStageResize);
 			
+			_starlingRoot = _starling.root as DisplayObjectContainer;
+			
 			handleStarlingReady();
 			setupStats();
 		}
@@ -269,7 +274,7 @@ package citrus.core.starling {
 					if (_scene) {
 
 						_scene.destroy();
-						_starling.stage.removeChild(_scene as StarlingScene, true);
+						_starlingRoot.removeChild(_scene as StarlingScene, true);
 					}
 
 					if (_newScene is StarlingScene) {
@@ -280,7 +285,7 @@ package citrus.core.starling {
 						if (_futureScene)
 							_futureScene = null;
 						else {
-							_starling.stage.addChildAt(_scene as StarlingScene, _sceneDisplayIndex);
+							_starlingRoot.addChildAt(_scene as StarlingScene, _sceneDisplayIndex);
 							_scene.initialize();
 						}
 					}
@@ -291,7 +296,7 @@ package citrus.core.starling {
 					_futureScene = _sceneTransitionning;
 					_sceneTransitionning = null;
 
-					starling.stage.addChildAt(_futureScene as StarlingScene, _sceneDisplayIndex);
+					_starlingRoot.addChildAt(_futureScene as StarlingScene, _sceneDisplayIndex);
 					_futureScene.initialize();
 				}
 
