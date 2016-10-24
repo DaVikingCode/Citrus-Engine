@@ -1,9 +1,10 @@
 package citrus.core.starling {
-
-	import starling.display.DisplayObjectContainer;
 	import citrus.core.CitrusEngine;
+	import citrus.core.IScene;
+	import citrus.core.citrus_internal;
 
 	import starling.core.Starling;
+	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
 	import starling.utils.RectangleUtil;
 	import starling.utils.ScaleMode;
@@ -258,55 +259,33 @@ package citrus.core.starling {
 		public function handleStarlingReady():void {	
 		}
 
-		public function get starling():Starling {
+		public function get starling() : Starling {
 			return _starling;
 		}
-		
+
+		override citrus_internal function addSceneOver(value : IScene) : void {
+			if (_starling && _starling.stage)
+				_starlingRoot.addChild(value as StarlingScene);
+		}
+
+		override citrus_internal function addSceneUnder(value : IScene) : void {
+			if (_starling && _starling.stage)
+				_starlingRoot.addChildAt(value as StarlingScene, _sceneDisplayIndex);
+		}
+
+		override citrus_internal function removeScene(value : IScene) : void {
+			if (_starling && _starling.stage)
+				_starlingRoot.removeChild(value as StarlingScene, true);
+		}
+
 		/**
 		 * @inheritDoc
 		 */
-		override protected function handleEnterFrame(e:flash.events.Event):void {
-
-			if (_starling && _starling.isStarted && _starling.context) {
-
-				if (_newScene) {
-
-					if (_scene) {
-
-						_scene.destroy();
-						_starlingRoot.removeChild(_scene as StarlingScene, true);
-					}
-
-					if (_newScene is StarlingScene) {
-
-						_scene = _newScene;
-						_newScene = null;
-
-						if (_futureScene)
-							_futureScene = null;
-						else {
-							_starlingRoot.addChildAt(_scene as StarlingScene, _sceneDisplayIndex);
-							_scene.initialize();
-						}
-					}
-				}
-
-				if (_sceneTransitionning && _sceneTransitionning is StarlingScene) {
-
-					_futureScene = _sceneTransitionning;
-					_sceneTransitionning = null;
-
-					_starlingRoot.addChildAt(_futureScene as StarlingScene, _sceneDisplayIndex);
-					_futureScene.initialize();
-				}
-
-			}
+		override protected function handleEnterFrame(e : flash.events.Event) : void {
+			if (_juggler)
+				_juggler.advanceTime(_timeDelta);
 
 			super.handleEnterFrame(e);
-			
-			if(_juggler)
-				_juggler.advanceTime(_timeDelta);
-			
 		}
 		
 		/**
@@ -334,28 +313,35 @@ package citrus.core.starling {
 			super.handleStageActivated(e);
 		}
 		
-		public function get baseWidth():int
-		{
+		public function get baseWidth() : int {
 			return _baseWidth;
 		}
-		
-		public function set baseWidth(value:int):void {
-			
+
+		public function set baseWidth(value : int) : void {
 			_baseWidth = value;
-			
+
 			resetViewport();
 		}
-		
-		public function get baseHeight():int
-		{
+
+		public function get baseHeight() : int {
 			return _baseHeight;
 		}
-		
-		public function set baseHeight(value:int):void {
-			
+
+		public function set baseHeight(value : int) : void {
 			_baseHeight = value;
-			
+
 			resetViewport();
+		}
+
+		public function get viewportMode() : String {
+			return _viewportMode;
+		}
+
+		public function set viewportMode(value : String) : void {
+			if (_viewportMode != value) {
+				_viewportMode = value;
+				resetScreenSize();
+			}
 		}
 		
 		public function get juggler():CitrusStarlingJuggler

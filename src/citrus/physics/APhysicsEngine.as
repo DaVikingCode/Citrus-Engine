@@ -1,5 +1,4 @@
 package citrus.physics {
-
 	import citrus.core.CitrusObject;
 	import citrus.view.ICitrusArt;
 
@@ -17,9 +16,7 @@ package citrus.physics {
 		protected var _art:ICitrusArt;
 
 		public function APhysicsEngine(params:Object = null) {
-			
 			updateCallEnabled = true;
-			
 			super(params);
 		}
 		
@@ -63,7 +60,7 @@ package citrus.physics {
 		 * </code>
 		 */
 		public function get debugView():IDebugView {
-			var debugArt:* = _ce.scene.view.getArt(this);
+			var debugArt:* = _parentScene.view.getArt(this);
 			if(debugArt && debugArt.content)
 				return debugArt.content.debugView as IDebugView;
 			else

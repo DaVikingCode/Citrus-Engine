@@ -1,5 +1,4 @@
 package citrus.physics.nape {
-
 	import citrus.physics.APhysicsEngine;
 	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.view.ISpriteView;
@@ -42,8 +41,10 @@ package citrus.physics.nape {
 				params.view = NapeDebugArt;
 			else if (params == null)
 				params = {view:NapeDebugArt};
-			
+				
 			super(params);
+			
+			this.view = NapeDebugArt;
 		}
 			
 		override public function initialize(poolObjectParams:Object = null):void {

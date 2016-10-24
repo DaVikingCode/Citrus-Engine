@@ -1,6 +1,6 @@
 package citrus.physics {
-	
 	import flash.geom.Matrix;
+	
 	
 	/**
 	 * Interface for all the debug views

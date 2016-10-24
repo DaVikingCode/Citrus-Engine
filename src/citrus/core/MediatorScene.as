@@ -1,13 +1,12 @@
 package citrus.core {
-
-	import citrus.physics.APhysicsEngine;
 	import citrus.datastructures.PoolObject;
 	import citrus.objects.APhysicsObject;
+	import citrus.physics.APhysicsEngine;
 	import citrus.view.ACitrusView;
 
 	/**
 	 * The MediatorScene class is very important. It usually contains the logic for a particular scene the game is in.
-	 * You should never instanciate/extend this class by your own. It's used via a wrapper: StarlingScene.
+	 * You should never instanciate/extend this class by your own. It's used via a wrapper: Scene or StarlingScene or Away3DScene.
 	 * There can only ever be one scene running at a time. You should extend the Scene class
 	 * to create logic and scripts for your levels. You can build one scene for each level, or
 	 * create a scene that represents all your levels. You can get and set the reference to your active
@@ -43,7 +42,8 @@ package citrus.core {
 				removeImmediately(co);
 			_numObjects = _objects.length = 0;
 
-			_view.destroy();
+			if(_view != null)
+				_view.destroy();
 			
 			_objects = null;
 			_poolObjects = null;
@@ -77,19 +77,16 @@ package citrus.core {
 			
 				object = _objects.shift(); // get first object in list
 				
+				if (object.updateCallEnabled)
+						object.update(timeDelta);
+						
 				if (object.kill)
 					_garbage.push(object); // push object to garbage
-					
-				else {
+				else 
 					_objects.push(object); // re-insert object at the end of _objects
-					
-					if (object.updateCallEnabled)
-						object.update(timeDelta);
-				}
 			}
 
 			// Destroy all objects marked for destroy
-			// TODO There might be a limit on the number of Box2D bodies that you can destroy in one tick?
 			var garbageObject:CitrusObject;
 			while((garbageObject = _garbage.shift()) != null)
 				removeImmediately(garbageObject);
@@ -111,6 +108,11 @@ package citrus.core {
 			for each (var objectAdded:CitrusObject in objects) 
 				if (object == objectAdded)
 					throw new Error(object.name + " is already added to the scene.");
+					
+			object.citrus_internal::parentScene = _iscene;
+			
+			if(!object.initialized)
+				object.initialize();
 			
 			if (object is APhysicsObject)
 				(object as APhysicsObject).addPhysics();
@@ -121,6 +123,8 @@ package citrus.core {
 				_objects.push(object);
 				
 			_view.addArt(object);
+			
+			object.handleAddedToScene();
 			
 			return object;
 		}
@@ -163,7 +167,8 @@ package citrus.core {
 				
 			object.kill = true;
 			_objects.splice(i, 1);
-			
+			object.handleRemovedFromScene();
+
 			_view.removeArt(object);
 
 			object.destroy();

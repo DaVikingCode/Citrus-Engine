@@ -94,6 +94,8 @@ package citrus.view.starlingview {
 
 			if (object)
 				initialize(object);
+				
+			touchGroup = true;
 		}
 
 		public function initialize(object:ISpriteView):void {

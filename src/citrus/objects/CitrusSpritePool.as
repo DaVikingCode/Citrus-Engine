@@ -1,6 +1,5 @@
 package citrus.objects 
 {
-
 	import citrus.core.citrus_internal;
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
@@ -26,7 +25,8 @@ package citrus.objects
 			if (!params)
 				params = { };
 				
-			var cs:CitrusSprite = node.data = new _poolType("aPoolObject", params) as CitrusSprite;
+			var cs : CitrusSprite = node.data = new _poolType("aPoolObject", params) as CitrusSprite;
+			cs.citrus_internal::parentState = this.citrus_internal::state;
 			cs.initialize(params);
 			onCreate.dispatch((node.data as _poolType), params);
  			scene.view.addArt(cs);
@@ -45,6 +45,7 @@ package citrus.objects
 			cs.updateCallEnabled = cs.citrus_internal::data["updateCall"] as Boolean;
 			(scene.view.getArt(cs) as ICitrusArt).updateArtEnabled = cs.citrus_internal::data["updateArt"] as Boolean;
 			super._recycle(node, params);
+			cs.handleAddedToScene();
 		}
 		
 		override protected function _dispose(node:DoublyLinkedListNode):void
@@ -57,6 +58,7 @@ package citrus.objects
 			(scene.view.getArt(cs) as ICitrusArt).updateArtEnabled = false;
 			super._dispose(node);
 			(scene.view.getArt(cs) as ICitrusArt).update(scene.view);
+			cs.handleRemovedFromScene();
 		}
 		
 		override protected function _destroy(node:DoublyLinkedListNode):void

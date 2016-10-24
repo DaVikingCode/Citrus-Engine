@@ -1,5 +1,4 @@
 package citrus.physics.nape {
-
 	import nape.callbacks.InteractionCallback;
 	import nape.callbacks.PreCallback;
 	import nape.callbacks.PreFlag;
@@ -18,12 +17,14 @@ package citrus.physics.nape {
 		function set x(value:Number):void;
 		function get y():Number;
 		function set y(value:Number):void;
+		function get z():Number;
 		function get rotation():Number;
 		function set rotation(value:Number):void;
 		function get width():Number;
 		function set width(value:Number):void;
 		function get height():Number;
 		function set height(value:Number):void;
+		function get depth():Number;
 		function get radius():Number;
 		function set radius(value:Number):void;
 		function get body():Body;

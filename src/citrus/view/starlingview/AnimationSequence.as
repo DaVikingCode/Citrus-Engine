@@ -1,5 +1,4 @@
 package citrus.view.starlingview {
-
 	import ash.signals.Signal1;
 
 	import citrus.core.CitrusEngine;
@@ -86,7 +85,7 @@ package citrus.view.starlingview {
 			_mcSequences[animation] = mc;
 			_mcSequences[animation].name = animation;
 			_mcSequences[animation].addEventListener(Event.COMPLETE, _animationComplete);
-			_mcSequences[animation].textureSmoothing = _smoothing;
+			_mcSequences[animation].smoothing = _smoothing;
 			_mcSequences[animation].fps = _animFps;
 		}
 
@@ -107,7 +106,7 @@ package citrus.view.starlingview {
 
 				_mcSequences[animation].name = animation;
 				_mcSequences[animation].addEventListener(Event.COMPLETE, _animationComplete);
-				_mcSequences[animation].textureSmoothing = _smoothing;
+				_mcSequences[animation].smoothing = _smoothing;
 			}
 		}
 

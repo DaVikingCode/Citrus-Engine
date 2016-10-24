@@ -1,13 +1,12 @@
 package citrus.physics.nape {
-
 	import citrus.objects.NapePhysicsObject;
+
+	import nape.callbacks.InteractionCallback;
 	import nape.callbacks.PreCallback;
 	import nape.dynamics.Arbiter;
 	import nape.phys.Body;
 	import nape.phys.Interactor;
 	import nape.shape.Shape;
-
-	import nape.callbacks.InteractionCallback;
 
 	/**
 	 * This class provides some useful Nape functions.

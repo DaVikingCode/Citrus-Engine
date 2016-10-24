@@ -13,6 +13,9 @@ package citrus.core {
 		
 		function initialize():void;
 		
+		function get playing():Boolean;
+		function set playing(value:Boolean):void;
+		
 		function update(timeDelta:Number):void;
 		
 		function add(object:CitrusObject):CitrusObject;

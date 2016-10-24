@@ -1,5 +1,4 @@
 package citrus.physics.box2d {
-
 	import Box2D.Dynamics.b2DebugDraw;
 
 	import citrus.core.CitrusEngine;

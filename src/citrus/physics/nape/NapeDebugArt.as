@@ -1,5 +1,4 @@
 package citrus.physics.nape {
-
 	import citrus.core.CitrusEngine;
 	import citrus.datastructures.BitFlag;
 	import citrus.physics.IDebugView;

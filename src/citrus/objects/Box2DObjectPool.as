@@ -1,6 +1,5 @@
 package citrus.objects 
 {
-
 	import citrus.core.citrus_internal;
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
@@ -29,22 +28,11 @@ package citrus.objects
 		{
 			if (!params)
 				params = { };
-			else if (_defaultParams)
-			{
-				if (params["width"] != _defaultParams["width"])
-				{
-					trace(this, "you cannot change the default width of your object.");
-					params["width"] = _defaultParams["width"];
-				}
-				if (params["height"] != _defaultParams["height"])
-				{
-					trace(this, "you cannot change the default height of your object.");
-					params["height"] = _defaultParams["height"];
-				}
-			}
 			params["type"] = "aPhysicsObject";
-			node.data = new _poolType("aPoolObject", params);
+			params["name"] = "aPoolObject";
+			node.data = new _poolType(params);
 			var bp:Box2DPhysicsObject = node.data as Box2DPhysicsObject;
+			bp.citrus_internal::parentScene = this.citrus_internal::scene;
 			bp.initialize(params);
 			onCreate.dispatch(bp, params);
 			bp.addPhysics();
@@ -57,7 +45,6 @@ package citrus.objects
 		override protected function _recycle(node:DoublyLinkedListNode, params:Object = null):void
 		{
 			var bp:Box2DPhysicsObject = node.data as Box2DPhysicsObject;
-			
 			activationQueue.unshift( { object:bp, activate:true , func:function():void {
 				bp.initialize(params);
 				if ("pauseAnimation" in bp.view)
@@ -66,6 +53,7 @@ package citrus.objects
 				bp.updateCallEnabled = bp.citrus_internal::data["updateCall"] as Boolean;
 				(scene.view.getArt(bp) as ICitrusArt).updateArtEnabled = bp.citrus_internal::data["updateArt"] as Boolean;
 				superRecycle(node,params);
+				bp.handleAddedToScene();
 			}});
 		}
 		
@@ -82,6 +70,7 @@ package citrus.objects
 			(scene.view.getArt(bp) as ICitrusArt).updateArtEnabled = false;
 			super._dispose(node);
 			(scene.view.getArt(bp) as ICitrusArt).update(scene.view);
+			bp.handleAddedToScene();
 		}
 		
 		override public function updatePhysics(timeDelta:Number):void

@@ -1,9 +1,9 @@
 package citrus.objects 
 {
-
 	import citrus.core.CitrusObject;
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
+
 	import flash.utils.describeType;
 
 	/**

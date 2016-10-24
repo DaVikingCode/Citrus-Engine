@@ -1,65 +1,50 @@
-package citrus.core.starling {
-
-	import citrus.core.CitrusEngine;
-	import citrus.core.CitrusObject;
-	import citrus.core.IScene;
-	import citrus.core.MediatorScene;
+package citrus.core {
 	import citrus.datastructures.PoolObject;
 	import citrus.input.Input;
 	import citrus.view.ACitrusView;
-	import citrus.view.starlingview.StarlingCamera;
-	import citrus.view.starlingview.StarlingView;
+	import citrus.view.spriteview.SpriteView;
 
-	import starling.display.Sprite;
+	import flash.display.Sprite;
 
-	/**
-	 * StarlingScene class is just a wrapper for the AScene class. It's important to notice it extends Starling Sprite.
-	 */
-	public class StarlingScene extends Sprite implements IScene {
-		
+	public class Scene extends Sprite implements IScene {
+
 		/**
-		 * Get a direct references to the Citrus Engine in your Scene.
+		 * Get a direct references to the Citrus Engine in your State.
 		 */
-		protected var _ce:StarlingCitrusEngine;
-		
-		protected var _realScene:MediatorScene;
+		protected var _ce:CitrusEngine;
+
+		protected var _realState:MediatorScene;
 
 		protected var _input:Input;
 		
+		protected var _initialized:Boolean = false;
+		
 		protected var _playing:Boolean = false;
 
-		public function StarlingScene() {
+		public function Scene() {
 			
-			_ce = CitrusEngine.getInstance() as StarlingCitrusEngine;
-						
-			if (!(_ce as StarlingCitrusEngine) || !(_ce as StarlingCitrusEngine).starling)
-				throw new Error("Your Main " + _ce + " class doesn't extend StarlingCitrusEngine, or you didn't call its setUpStarling function");
+			_ce = CitrusEngine.getInstance();
 
-			_realScene = new MediatorScene(this);
+			_realState = new MediatorScene(this);
 		}
 
 		/**
 		 * Called by the Citrus Engine.
 		 */
 		public function destroy():void {
-			_realScene.destroy();
+			_realState.destroy();
+			_realState = null;
 		}
 
 		/**
-		 * Gets a reference to this scene's view manager. Take a look at the class definition for more information about this. 
+		 * Gets a reference to this state's view manager. Take a look at the class definition for more information about this. 
 		 */
 		public function get view():ACitrusView {
-			return _realScene.view;
+			return _realState.view;
 		}
-
-		/**
-		 * You'll most definitely want to override this method when you create your own Scene class. This is where you should
-		 * add all your CitrusObjects and pretty much make everything. Please note that you can't successfully call add() on a 
-		 * scene in the constructur. You should call it in this initialize() method. 
-		 */
-		public function initialize():void {
-			_realScene.view = createView();
-			_input = _ce.input;
+		
+		public function get initialized():Boolean {
+			return _initialized;
 		}
 		
 		public function get playing():Boolean {
@@ -74,33 +59,43 @@ package citrus.core.starling {
 		}
 
 		/**
-		 * This method calls update on all the CitrusObjects that are attached to this scene.
+		 * You'll most definitely want to override this method when you create your own State class. This is where you should
+		 * add all your CitrusObjects and pretty much make everything. Please note that you can't successfully call add() on a 
+		 * state in the constructur. You should call it in this initialize() method. 
+		 */
+		public function initialize():void {
+			_realState.view = createView();
+			_input = _ce.input;
+		}
+
+		/**
+		 * This method calls update on all the CitrusObjects that are attached to this state.
 		 * The update method also checks for CitrusObjects that are ready to be destroyed and kills them.
 		 * Finally, this method updates the View manager. 
 		 */
 		public function update(timeDelta:Number):void {
 
-			_realScene.update(timeDelta);
+			_realState.update(timeDelta);
 		}
 
 		/**
-		 * Call this method to add a CitrusObject to this scene. All visible game objects and physics objects
+		 * Call this method to add a CitrusObject to this state. All visible game objects and physics objects
 		 * will need to be created and added via this method so that they can be properly created, managed, updated, and destroyed. 
 		 * @return The CitrusObject that you passed in. Useful for linking commands together.
 		 */
 		public function add(object:CitrusObject):CitrusObject {
-			return _realScene.add(object);
+			return _realState.add(object);
 		}
-		
+
 		/**
-		 * Call this method to add a PoolObject to this scene. All pool objects and  will need to be created 
+		 * Call this method to add a PoolObject to this state. All pool objects and  will need to be created 
 		 * and added via this method so that they can be properly created, managed, updated, and destroyed.
-		 * @param poolObject The PoolObject isCitrusObjectPool's value must be true to be render through the Scene.
+		 * @param poolObject The PoolObject isCitrusObjectPool's value must be true to be render through the State.
 		 * @return The PoolObject that you passed in. Useful for linking commands together.
 		 */
 		public function addPoolObject(poolObject:PoolObject):PoolObject {
 
-			return _realScene.addPoolObject(poolObject);
+			return _realState.addPoolObject(poolObject);
 		}
 
 		/**
@@ -108,11 +103,11 @@ package citrus.core.starling {
 		 * Alternatively, you can just set the object's kill property to true. That's all this method does at the moment. 
 		 */
 		public function remove(object:CitrusObject):void {
-			_realScene.remove(object);
+			_realState.remove(object);
 		}
 		
 		/**
-		 * removeImmediately instaneously destroys and remove the object from the scene.
+		 * removeImmediately instaneously destroys and remove the object from the state.
 		 * 
 		 * While using remove() is recommended, there are specific case where this is needed.
 		 * please use with care.
@@ -122,9 +117,8 @@ package citrus.core.starling {
 		 * - effects unknown with nape.
 		 */
 		public function removeImmediately(object:CitrusObject):void {
-			_realScene.removeImmediately(object);
+			_realState.removeImmediately(object);
 		}
-
 
 		/**
 		 * Gets a reference to a CitrusObject by passing that object's name in.
@@ -133,7 +127,7 @@ package citrus.core.starling {
 		 */
 		public function getObjectByName(name:String):CitrusObject {
 
-			return _realScene.getObjectByName(name);
+			return _realState.getObjectByName(name);
 		}
 
 		/**
@@ -144,17 +138,17 @@ package citrus.core.starling {
 		 */
 		public function getObjectsByName(name:String):Vector.<CitrusObject> {
 
-			return _realScene.getObjectsByName(name);
+			return _realState.getObjectsByName(name);
 		}
 
 		/**
 		 * Returns the first instance of a CitrusObject that is of the class that you pass in. 
-		 * This is useful if you know that there is only one object of a certain time in your scene (such as a "Hero").
+		 * This is useful if you know that there is only one object of a certain time in your state (such as a "Hero").
 		 * @param type The class of the object you want to get a reference to.
 		 */
 		public function getFirstObjectByType(type:Class):CitrusObject {
 
-			return _realScene.getFirstObjectByType(type);
+			return _realState.getFirstObjectByType(type);
 		}
 
 		/**
@@ -165,35 +159,30 @@ package citrus.core.starling {
 		 */
 		public function getObjectsByType(type:Class):Vector.<CitrusObject> {
 
-			return _realScene.getObjectsByType(type);
+			return _realState.getObjectsByType(type);
 		}
 
 		/**
-		 * Destroy all the objects added to the Scene and not already killed.
+		 * Destroy all the objects added to the State and not already killed.
 		 * @param except CitrusObjects you want to save.
 		 */
 		public function killAllObjects(...except):void {
 
-			_realScene.killAllObjects(except);
+			_realState.killAllObjects(except);
 		}
 
 		/**
-		 * Contains all the objects added to the Scene and not killed.
+		 * Contains all the objects added to the State and not killed.
 		 */
 		public function get objects():Vector.<CitrusObject> {
-			return _realScene.objects;
+			return _realState.objects;
 		}
 
 		/**
-		 * Override this method if you want a scene to create an instance of a custom view. 
+		 * Override this method if you want a state to create an instance of a custom view. 
 		 */
 		protected function createView():ACitrusView {
-			return new StarlingView(this);
-		}
-		
-		public function get camera():StarlingCamera
-		{
-			return view.camera as StarlingCamera;
+			return new SpriteView(this);
 		}
 	}
 }

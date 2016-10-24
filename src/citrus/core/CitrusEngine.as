@@ -1,5 +1,5 @@
 package citrus.core {
-
+	import ash.signals.Signal0;
 	import ash.signals.Signal1;
 	import ash.signals.Signal2;
 
@@ -42,6 +42,11 @@ package citrus.core {
 		public var onStageResize:Signal2;
 		
 		/**
+		 * dispatched after all scene updates
+		 */
+		public var onPostUpdate : Signal0;
+		
+		/**
 		 * You may use a class to store your game's data, this is already an abstract class made for that. 
 		 * It's also a dynamic class, so you won't have problem to access information in its extended class.
 		 */
@@ -66,7 +71,6 @@ package citrus.core {
 		protected var _scene:IScene;
 		protected var _newScene:IScene;
 		protected var _sceneTransitionning:IScene;
-		protected var _futureScene:IScene;
 		protected var _sceneDisplayIndex:uint = 0;
 		protected var _playing:Boolean = true;
 		protected var _input:Input;
@@ -83,6 +87,9 @@ package citrus.core {
 		private var _sound:SoundManager;
 		private var _console:Console;
 		
+		protected var _sceneManager : SceneManager;
+		protected var _sceneManagerMode : String = SceneManagerMode.SINGLE_MODE;
+		
 		public static function getInstance():CitrusEngine
 		{
 			return _instance;
@@ -97,6 +104,7 @@ package citrus.core {
 			
 			onPlayingChange = new Signal1(Boolean);
 			onStageResize = new Signal2(int, int);
+			onPostUpdate = new Signal0();
 			
 			onPlayingChange.add(handlePlayingChange);
 			
@@ -117,6 +125,9 @@ package citrus.core {
 			//timekeeping
 			_gameTime = _startTime = new Date().time;
 			
+			// start scene manager before update starts
+			_sceneManager = new SceneManager(_sceneManagerMode);
+			
 			//Set up input
 			_input = new Input();
 			
@@ -134,6 +145,7 @@ package citrus.core {
 			
 			onPlayingChange.removeAll();
 			onStageResize.removeAll();
+			onPostUpdate.removeAll();
 			
 			stage.removeEventListener(Event.ACTIVATE, handleStageActivated);
 			stage.removeEventListener(Event.DEACTIVATE, handleStageDeactivated);
@@ -152,50 +164,36 @@ package citrus.core {
 			_sound.destroy();
 		}
 		
-		/**
-		 * A reference to the active game scene. Actually, that's not entirely true. If you've recently changed scenes and a tick
-		 * hasn't occurred yet, then this will reference your new scene; this is because actual scene-changes only happen pre-tick.
-		 * That way you don't end up changing scenes in the middle of a scene's tick, effectively fucking stuff up.
+		 /**
+		 * A reference to the active game state. Actually, that's not entirely true. If you've recently changed states and a tick
+		 * hasn't occurred yet, then this will reference your new state; this is because actual state-changes only happen pre-tick.
+		 * That way you don't end up changing states in the middle of a state's tick, effectively fucking stuff up.
 		 * 
-		 * If you had set up a futureScene, accessing the scene it wil return you the futureScene to enable some objects instantiation 
+		 * If you had set up a futureState, accessing the state it wil return you the futureState to enable some objects instantiation 
 		 * (physics, views, etc).
-		 */		
-		public function get scene():IScene
-		{
-			if (_futureScene)
-				return _futureScene;
-						
-			else if (_newScene)
-				return _newScene;
-						
-			else 
-				return _scene;
-		}
-		
-		/**
-		 * We only ACTUALLY change scenes on enter frame so that we don't risk changing scenes in the middle of a scene update.
-		 * However, if you use the scene getter, it will grab the new one for you, so everything should work out just fine.
-		 */		
-		public function set scene(value:IScene):void
-		{
-			_newScene = value;
-		}
-		
-		/**
-		 * Get a direct access to the futureScene. Note that the futureScene is really set up after an update so it isn't 
-		 * available via scene getter before a scene update.
 		 */
-		public function get futureScene():IScene {
-			return _futureScene ? _futureScene : _sceneTransitionning;
+		public function get scene() : IScene {
+			return _sceneManager.getCurrentScene();
 		}
 		
 		/**
-		 * The futureScene variable is useful if you want to have two scenes running at the same time for making a transition. 
-		 * Note that the futureScene is added with the same index than the scene, so it will be behind unless the scene runs 
-		 * on Starling and the futureScene on the display list (which is absolutely doable).
+		 * We only ACTUALLY change states on enter frame so that we don't risk changing states in the middle of a state update.
+		 * However, if you use the state getter, it will grab the new one for you, so everything should work out just fine.
 		 */
-		public function set futureScene(value:IScene):void {
-			_sceneTransitionning = value;
+		public function set state(value : IScene) : void {
+			_sceneManager.setCurrentScene(value);
+		}
+
+		citrus_internal function addSceneOver(value : IScene) : void {
+			addChild(value as Scene);
+		}
+
+		citrus_internal function addSceneUnder(value : IScene) : void {
+			addChildAt(value as Scene, _sceneDisplayIndex);
+		}
+
+		citrus_internal function removeScene(value : IScene) : void {
+			removeChild(value as Scene);
 		}
 		
 		/**
@@ -224,6 +222,10 @@ package citrus.core {
 			if (_playing)
 				_gameTime = new Date().time;
 			onPlayingChange.dispatch(_playing);
+		}
+		
+		public function get sceneManager() : SceneManager {
+			return _sceneManager;
 		}
 		
 		/**
@@ -327,18 +329,13 @@ package citrus.core {
 		//TODO The CE updates use the timeDelta to keep consistent speed during slow framerates. However, Box2D becomes unstable when changing timestep. Why?
 		protected function handleEnterFrame(e:Event):void
 		{
-			//Update the scene
-			if (_scene && _playing)
-			{
+			if (_playing) {
 				_nowTime = new Date().time;
 				_timeDelta = (_nowTime - _gameTime) * 0.001;
 				_gameTime = _nowTime;
-				
-				_scene.update(_timeDelta);
-				if (_futureScene)
-					_futureScene.update(_timeDelta);
+				_sceneManager.citrus_internal::update(_timeDelta);
 			}
-			
+
 			_input.citrus_internal::update();
 			
 		}

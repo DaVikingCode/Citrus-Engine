@@ -1,5 +1,4 @@
 package citrus.physics.box2d {
-
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2World;
 
@@ -43,8 +42,9 @@ package citrus.physics.box2d {
 				params.view = Box2DDebugArt;
 			else if (params == null)
 				params = {view:Box2DDebugArt};
-			
 			super(params);
+			
+			this.view = Box2DDebugArt;
 		}
 			
 		override public function initialize(poolObjectParams:Object = null):void {
@@ -110,6 +110,7 @@ package citrus.physics.box2d {
 			super.update(timeDelta);
 			
 			_world.Step(timeStep, velocityIterations, positionIterations);
+			_contactListener.processContacts();
 			_world.ClearForces();
 		}
 	}

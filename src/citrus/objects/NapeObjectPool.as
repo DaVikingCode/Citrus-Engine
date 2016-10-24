@@ -1,6 +1,5 @@
 package citrus.objects 
 {
-
 	import citrus.core.citrus_internal;
 	import citrus.datastructures.DoublyLinkedListNode;
 	import citrus.datastructures.PoolObject;
@@ -25,30 +24,17 @@ package citrus.objects
 		{
 			if (!params)
 				params = { };
-			else if (_defaultParams)
-			{
-				if (params["width"] != _defaultParams["width"])
-				{
-					trace(this, "you cannot change the default width of your object.");
-					params["width"] = _defaultParams["width"];
-				}
-				if (params["height"] != _defaultParams["height"])
-				{
-					trace(this, "you cannot change the default height of your object.");
-					params["height"] = _defaultParams["height"];
-				}
-			}
 			params["type"] = "aPhysicsObject";
-			node.data = new _poolType("aPoolObject", params);
+			params["name"] = "aPoolObject";
+			node.data = new _poolType(params);
 			var np:NapePhysicsObject = node.data as NapePhysicsObject;
+			np.citrus_internal::parentScene = this.citrus_internal::scene;
 			np.initialize(params);
 			onCreate.dispatch((node.data as _poolType), params);
 			np.addPhysics();
 			np.body.space = null;
  			scene.view.addArt(np);
-			
 			np.citrus_internal::data["updateCall"] = np.updateCallEnabled;
-			
 			np.citrus_internal::data["updateArt"] = (scene.view.getArt(np) as ICitrusArt).updateArtEnabled;
 		}
 		
@@ -63,6 +49,7 @@ package citrus.objects
 			np.updateCallEnabled = np.citrus_internal::data["updateCall"] as Boolean;
 			(scene.view.getArt(np) as ICitrusArt).updateArtEnabled = np.citrus_internal::data["updateArt"] as Boolean;
 			super._recycle(node, params);
+			np.handleAddedToScene();
 		}
 		
 		override protected function _dispose(node:DoublyLinkedListNode):void
@@ -76,6 +63,7 @@ package citrus.objects
 			(scene.view.getArt(np) as ICitrusArt).updateArtEnabled = false;
 			super._dispose(node);
 			(scene.view.getArt(np) as ICitrusArt).update(scene.view);
+			np.handleRemovedFromScene();
 		}
 		
 		override protected function _destroy(node:DoublyLinkedListNode):void

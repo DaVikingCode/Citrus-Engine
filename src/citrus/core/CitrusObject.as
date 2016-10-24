@@ -3,8 +3,8 @@ package citrus.core
 	/**
 	 * CitrusObject is simple. Too simple. Despite its simplicity, it is the foundational object that should
 	 * be used for all game objects logic you create, such as spaceships, enemies, coins, bosses.
-	 * CitrusObject is basically an abstract class that gets added to a State instance.
-	 * The current State calls update on all CitrusObjects. Also, CitrusObjects are useful because they can be
+	 * CitrusObject is basically an abstract class that gets added to a Scene instance.
+	 * The current Scene calls update on all CitrusObjects. Also, CitrusObjects are useful because they can be
 	 * initialized with a params object, which can be created via an object parser/factory. 
 	 */	
 	public class CitrusObject
@@ -15,7 +15,7 @@ package citrus.core
 		citrus_internal var data:Object = {ID:0};
 		citrus_internal static var last_id:uint = 0;
 		
-		public static var hideParamWarnings:Boolean = false;
+		public static var hideParamWarnings:Boolean = true;
 		
 		/**
 		 * A name to identify easily an objet. You may use duplicate name if you wish.
@@ -34,12 +34,13 @@ package citrus.core
 		public var updateCallEnabled:Boolean = false;
 		
 		/**
-		 * Added to the CE's render list via the State and the add method.
+		 * Added to the CE's render list via the Scene and the add method.
 		 */
 		public var type:String = "classicObject";
 		
 		protected var _initialized:Boolean = false;
 		protected var _ce:CitrusEngine;
+		protected var _parentScene : IScene;
 		
 		protected var _params:Object;
 		
@@ -58,25 +59,15 @@ package citrus.core
 		 */		
 		public function CitrusObject(params:Object = null)
 		{
-			
-			_ce = CitrusEngine.getInstance();
-			
-			_params = params;
-			
-			if (params) {
-				if (type == "classicObject" && !params["type"])
-					initialize();
-			} else
-				initialize();
-				
-			citrus_internal::data.ID = citrus_internal::last_id += 1;
+			this._params = params; // store initial params.
+			this._ce = CitrusEngine.getInstance(); // set shortcut to CE.
+
+			citrus_internal::data.ID = citrus_internal::last_id += 1; // set instance ID
+
+			if (!("name" in params))
+				this.name = "citrusObjectInstance_" + citrus_internal::data.ID;
 		}
 		
-		/**
-		 * Call in the constructor if the Object is added via the State and the add method.
-		 * <p>If it's a pool object or an entity initialize it yourself.</p>
-		 * <p>If it's a component, it should be call by the entity.</p>
-		 */
 		public function initialize(poolObjectParams:Object = null):void {
 			
 			if (poolObjectParams)
@@ -87,6 +78,21 @@ package citrus.core
 			else
 				_initialized = true;	
 				
+		}
+		
+		 /**
+		 * handleAddedToScene is called once the object is added to its parent scene.
+		 * at that time, everything necessary (such as the art object) for it to run, is setup.
+		 */
+		public function handleAddedToScene() : void {
+		}
+
+		/**
+		 * handleRemovedFromScene is called once the object is removed from its parent scene,
+		 * but before its destruction. if the object is a pool object, its called everytime the object
+		 * is disposed back to the pool.
+		 */
+		public function handleRemovedFromScene() : void {
 		}
 		
 		/**
@@ -134,6 +140,18 @@ package citrus.core
 				}
 			}
 			_initialized = true;
+		}
+		
+		citrus_internal function set parentScene(scene : IScene) : void {
+			_parentScene = scene;
+		}
+
+		public function get parentScene() : IScene {
+			return _parentScene;
+		}
+		
+		public function get initialized() : Boolean {
+			return _initialized;
 		}
 		
 		public function get ID():uint
