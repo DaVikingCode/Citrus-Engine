@@ -1,5 +1,16 @@
 V3.2.0, Work in Progress
 ------------------------
+
+- Box2D, process contacts after world step (so we can manipulate bodies in the listeners/handle*Contact)
+- CitrusObject names are optional and CitrusObject has a reference to the scene it was created from (_parentScene)
+- CitrusObject has handleAddedToScene and handleRemovedFromScene 'listeners'
+- SceneManager and default scene transitions
+- Concurrent scenes can be individually paused, physics engines are linked to their parent scene too.
+- includes EazeTween's source
+- a single EazeTween can be paused/resumed
+- fix for random color in MathUtils
+- dynamic ViewportMode change
+- StarlingArt: touchGroup = true by default (helps for basic touch control of CitrusObjects)
 - Starling updated on 2.0.1
 - Feathers updated on 3.0.4
 - Added Ash.
