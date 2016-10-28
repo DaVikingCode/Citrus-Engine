@@ -165,11 +165,11 @@ package citrus.core {
 		}
 		
 		 /**
-		 * A reference to the active game state. Actually, that's not entirely true. If you've recently changed states and a tick
-		 * hasn't occurred yet, then this will reference your new state; this is because actual state-changes only happen pre-tick.
-		 * That way you don't end up changing states in the middle of a state's tick, effectively fucking stuff up.
+		 * A reference to the active game scene. Actually, that's not entirely true. If you've recently changed scenes and a tick
+		 * hasn't occurred yet, then this will reference your new scene; this is because actual scene-changes only happen pre-tick.
+		 * That way you don't end up changing scenes in the middle of a scene's tick, effectively fucking stuff up.
 		 * 
-		 * If you had set up a futureState, accessing the state it wil return you the futureState to enable some objects instantiation 
+		 * If you had set up a futureState, accessing the scene it wil return you the futureState to enable some objects instantiation 
 		 * (physics, views, etc).
 		 */
 		public function get scene() : IScene {
@@ -177,10 +177,10 @@ package citrus.core {
 		}
 		
 		/**
-		 * We only ACTUALLY change states on enter frame so that we don't risk changing states in the middle of a state update.
-		 * However, if you use the state getter, it will grab the new one for you, so everything should work out just fine.
+		 * We only ACTUALLY change scenes on enter frame so that we don't risk changing scenes in the middle of a scene update.
+		 * However, if you use the scene getter, it will grab the new one for you, so everything should work out just fine.
 		 */
-		public function set state(value : IScene) : void {
+		public function set scene(value : IScene) : void {
 			_sceneManager.setCurrentScene(value);
 		}
 
