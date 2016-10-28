@@ -17,10 +17,30 @@ package citrus.physics {
 	 * platformer kit that comes with Citrus Engine.</p>
 	 */
 	public class PhysicsCollisionCategories {
-		private static var _allCategories : uint = 0;
-		private static var _numCategories : uint = 0;
+		
 		private static var _categoryIndexes : Array = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384];
-		private static var _categoryNames : Object = {};
+		
+		private static var _categoryNames : Array = new Array(15);
+		private static var _allCategories : uint = 0;
+		
+		private static function getEmptySlotIndex():int {
+			for(var i:int = 0; i < _categoryNames.length; i++)
+				if(_categoryNames[i] == null)
+					return i;
+					
+			return -1;
+		}
+		
+		/**
+		 * Get all valid category names
+		 */
+		public static function GetAllNames():Array {
+			var names:Array = [];
+			for each(var n:String in _categoryNames)
+				if(n != null)
+					names.push(n);
+			return names;
+		}
 
 		/**
 		 * Returns true if the categories in the first parameter contain the category(s) in the second parameter.
@@ -36,15 +56,17 @@ package citrus.physics {
 		 * @param	categoryName The name of the category.
 		 */
 		public static function Add(categoryName : String) : void {
-			if (_numCategories == 15)
+			
+			var lastEmptySlot:int = getEmptySlotIndex();
+			
+			if (lastEmptySlot < 0)
 				throw new Error("You can only have 15 categories.");
 
-			if (_categoryNames[categoryName])
+			if (_categoryNames.indexOf(categoryName) > -1)
 				return;
 
-			_categoryNames[categoryName] = _categoryIndexes[_numCategories];
-			_allCategories |= _categoryIndexes[_numCategories];
-			_numCategories++;
+			_categoryNames[lastEmptySlot] = categoryName;
+			_allCategories |= _categoryIndexes[lastEmptySlot];
 		}
 
 		/**
@@ -55,14 +77,36 @@ package citrus.physics {
 		public static function Get(...args) : uint {
 			var categories : uint = 0;
 			for each (var name : String in args) {
-				var category : uint = _categoryNames[name];
-				if (category == 0) {
+				var catIndex:int = _categoryNames.indexOf(name);
+				var category : uint = _categoryIndexes[catIndex];
+				
+				if (catIndex < 0) {
 					trace("Warning: " + name + " category does not exist.");
 					continue;
 				}
-				categories |= _categoryNames[name];
+				
+				categories |= category;
 			}
 			return categories;
+		}
+		
+		/**
+		 * Remove a single category
+		 */
+		public static function Remove(categoryName:String):void {
+			var catIndex:int = _categoryNames.indexOf(categoryName);
+			if(catIndex > -1) {
+				_categoryNames[catIndex] = null;
+				_allCategories &= (~_categoryIndexes[catIndex]);
+			}
+		}
+		
+		/**
+		 * Clear all categories
+		 */
+		public static function Clear():void {
+			_categoryNames = new Array(15);
+			_allCategories = 0;
 		}
 
 		/**
@@ -79,12 +123,12 @@ package citrus.physics {
 		public static function GetAllExcept(...args) : uint {
 			var categories : uint = _allCategories;
 			for each (var name : String in args) {
-				var category : uint = _categoryNames[name];
-				if (category == 0) {
+				var catIndex:int = _categoryNames.indexOf(name);
+				if (catIndex < 0) {
 					trace("Warning: " + name + " category does not exist.");
 					continue;
 				}
-				categories &= (~_categoryNames[name]);
+				categories &= (~_categoryIndexes[catIndex]);
 			}
 			return categories;
 		}
