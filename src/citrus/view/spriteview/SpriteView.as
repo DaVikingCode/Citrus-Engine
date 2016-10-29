@@ -58,9 +58,6 @@ package citrus.view.spriteview {
 			}
 			
 			WorldClock.clock.advanceTime(timeDelta);
-			
-			if (camera.enabled)
-				camera.update();
 		}
 			
 		override protected function createArt(citrusObject:Object):Object

@@ -18,12 +18,12 @@ package citrus.view {
 		/**
 		 * Is the camera allowed to Zoom?
 		 */
-		protected var _allowZoom:Boolean = false;
+		protected var _allowZoom:Boolean = true;
 		
 		/**
 		 * Is the camera allowed to Rotate?
 		 */
-		protected var _allowRotation:Boolean = false;
+		protected var _allowRotation:Boolean = true;
 		
 		/**
 		 * the targeted rotation value.
@@ -240,6 +240,7 @@ package citrus.view {
 			cameraLensWidth = _ce.screenWidth;
 			cameraLensHeight = _ce.screenHeight;
 			
+			_ce.onPostUpdate.add(update);
 			_ce.onStageResize.add(onResize);
 		}
 		
@@ -315,7 +316,6 @@ package citrus.view {
 		 */
 		public function switchToTarget(newTarget:Object, speed:Number = 10, onComplete:Function = null):void
 		{
-			trace(camPos.x, camPos.y);
 			var moveTarget:Point = new Point(camPos.x,camPos.y);
 			var vec:MathVector = new MathVector(0, 0);
 			
@@ -450,6 +450,7 @@ package citrus.view {
 		
 		public function destroy():void {
 			_callOnUpdateQueue.length = 0;
+			_ce.onPostUpdate.remove(update);
 			_ce.onStageResize.remove(onResize);
 		}
 		

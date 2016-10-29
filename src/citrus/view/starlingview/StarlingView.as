@@ -30,6 +30,7 @@ package citrus.view.starlingview {
 			root.addChild(_viewRoot);
 			
 			camera = new StarlingCamera(_viewRoot);
+			
 		}
 
 		public function get viewRoot():Sprite {
@@ -58,9 +59,6 @@ package citrus.view.starlingview {
 			}
 			
 			WorldClock.clock.advanceTime(timeDelta);
-			
-			if (camera.enabled)
-				camera.update();
 		}
 
 		override protected function createArt(citrusObject:Object):Object {
