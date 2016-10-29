@@ -1,4 +1,5 @@
 package citrus.core {
+	import citrus.utils.KeyboardFocusWatchdog;
 	import ash.signals.Signal0;
 	import ash.signals.Signal1;
 	import ash.signals.Signal2;
@@ -86,6 +87,8 @@ package citrus.core {
 		
 		private var _sound:SoundManager;
 		private var _console:Console;
+		
+		private var _keyboardFocusWatchdog:KeyboardFocusWatchdog;
 		
 		protected var _sceneManager : SceneManager;
 		protected var _sceneManagerMode : String = SceneManagerMode.SINGLE_MODE;
@@ -274,6 +277,8 @@ package citrus.core {
 			
 			_fullScreen = (stage.displayState == StageDisplayState.FULL_SCREEN || stage.displayState  == StageDisplayState.FULL_SCREEN_INTERACTIVE);
 			resetScreenSize();
+			
+			_keyboardFocusWatchdog = new KeyboardFocusWatchdog(this.stage);
 			
 			_input.initialize();
 			
