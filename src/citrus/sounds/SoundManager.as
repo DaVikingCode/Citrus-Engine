@@ -23,6 +23,8 @@ package citrus.sounds {
 
 		public function SoundManager() {
 			
+			CitrusSoundInstance.INIT();
+			
 			soundsDic = new Dictionary();
 			soundGroups = new Vector.<CitrusSoundGroup>();
 			
