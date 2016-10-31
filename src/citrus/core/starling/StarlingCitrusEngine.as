@@ -83,11 +83,11 @@ package citrus.core.starling {
 		 * You should call this function to create your Starling view. The RootClass is internal, it is never used elsewhere. 
 		 * StarlingScene is added on the starling stage : <code>_starling.stage.addChildAt(_scene as StarlingScene, _sceneDisplayIndex);</code>
 		 * @param debugMode If true, display a Stats class instance.
-		 * @param antiAliasing The antialiasing value allows you to set the anti-aliasing (0 - 16), generally a value of 1 is totally acceptable.
+		 * @param antiAliasing The antialiasing value allows you to set the anti-aliasing (0 - 4)
 		 * @param viewPort Starling's viewport, default is (0, 0, stage.stageWidth, stage.stageHeight, change to (0, 0, stage.fullScreenWidth, stage.fullScreenHeight) for mobile.
 		 * @param stage3D The reference to the Stage3D, useful for sharing a 3D context. <a href="http://wiki.starling-framework.org/tutorials/combining_starling_with_other_stage3d_frameworks">More informations</a>.
 		 */
-		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 1, viewPort:Rectangle = null, stage3D:Stage3D = null):void {
+		public function setUpStarling(debugMode:Boolean = false, antiAliasing:uint = 0, viewPort:Rectangle = null, stage3D:Stage3D = null):void {
 				
 			if (viewPort)
 				_viewport = viewPort;
