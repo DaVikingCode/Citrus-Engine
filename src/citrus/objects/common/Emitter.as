@@ -255,16 +255,8 @@ package citrus.objects.common
 			
 			if (!particle)
 			{
-				if (_ce.state.view is BlittingView)
-				{
-					particle = new EmitterParticle(name + "_" + _particlesCreated++, {view: new BlittingArt(graphic)});
-				}
-				else
-				{
 					particle = new EmitterParticle(name + "_" + _particlesCreated++, { view: graphic } );
-				}
-				
-				_ce.state.add(particle);
+				_ce.scene.add(particle);
 			}
 			
 			_particles.push(particle);

@@ -5,6 +5,8 @@ package ash.signals
 	 */
 	internal class ListenerNode
 	{
+		public function ListenerNode(){}
+		
 		public var previous : ListenerNode;
 		public var next : ListenerNode;
 		public var listener : Function;

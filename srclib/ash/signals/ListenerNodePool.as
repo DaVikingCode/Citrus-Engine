@@ -9,6 +9,8 @@ package ash.signals
 		private var tail : ListenerNode;
 		private var cacheTail : ListenerNode;
 		
+		public function ListenerNodePool(){}
+		
 		internal function get():ListenerNode
 		{
 			if( tail )

@@ -346,11 +346,11 @@ package citrus.utils.objectmakers {
 					
 					// If the item is just a TextureItem without any specified class, we will add it to the quadbatch which represents the layer
 					if (className == defaultClassName && type == "TextureItem" && assetString != "") {
-						var originX:Number = itemXML.Origin.X.toString();
-						var originY:Number = itemXML.Origin.Y.toString();
-						var scaleX:Number = itemXML.Scale.X.toString();
-						var scaleY:Number = itemXML.Scale.Y.toString();
-						var rotation:Number = Number(itemXML.Rotation.toString());
+						var originX:Number = parseFloat(itemXML.Origin.X.toString());
+						var originY:Number = parseFloat(itemXML.Origin.Y.toString());
+						var scaleX:Number = parseFloat(itemXML.Scale.X.toString());
+						var scaleY:Number = parseFloat(itemXML.Scale.Y.toString());
+						var rotation:Number = parseFloat(itemXML.Rotation.toString());
 						
 						// Flip
 						var flipHorizontally:String = itemXML.FlipHorizontally.toString();
@@ -361,10 +361,10 @@ package citrus.utils.objectmakers {
 							scaleY *= -1;
 						
 						// TintColor
-						var r:int = itemXML.TintColor.R.toString();
-						var g:int = itemXML.TintColor.G.toString();
-						var b:int = itemXML.TintColor.B.toString();
-						var a:int = itemXML.TintColor.A.toString();
+						var r:int = parseInt(itemXML.TintColor.R.toString());
+						var g:int = parseInt(itemXML.TintColor.G.toString());
+						var b:int = parseInt(itemXML.TintColor.B.toString());
+						var a:int = parseInt(itemXML.TintColor.A.toString());
 						
 						// Let's create the image that matches the asset string
 						var image:Image = new Image(textureAtlas.getTexture(assetString));
