@@ -95,7 +95,7 @@ package citrus.sounds
 		protected static var _maxChannels:uint = 0;
 		public static function get maxChannels():uint { return _maxChannels; };
 		
-		internal static function INIT() {
+		internal static function init():void {
 			_maxChannels = SoundChannelUtil.maxAvailableChannels();
 			
 			if(_maxChannels < 32)
