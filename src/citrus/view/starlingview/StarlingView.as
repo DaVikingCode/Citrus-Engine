@@ -23,9 +23,6 @@ package citrus.view.starlingview {
 
 			super(root, ISpriteView);
 			
-			if(root.alpha == 1.0)
-				root.alpha = 0.999; // Starling's simple trick to avoid the state changes.
-
 			_viewRoot = new Sprite();
 			root.addChild(_viewRoot);
 			
