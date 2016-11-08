@@ -112,12 +112,12 @@ package citrus.core {
 
 			if (onTransitionComplete != null)
 				sceneData.onTransitionComplete = onTransitionComplete;
-
+			
 			startsceneTransition(sceneData);
 		}
 		
 		public function setSceneArgs(name:String,args:Array):void {
-			var sceneData : SceneManagerSceneData = getSceneManagerSceneDataByName(name);
+			var sceneData : SceneManagerSceneData = getSceneManagerSceneDataByName(name,false);
 			if(sceneData != null) {
 				sceneData.args = args;
 			}
