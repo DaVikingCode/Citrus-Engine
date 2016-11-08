@@ -319,6 +319,10 @@ package citrus.core {
 		 * which is not necessarily the most visible one on screen as more than 2 scene could run at a time.
 		 */
 		public function getCurrentScene() : IScene {
+			
+			if (!lastCreatedscene)
+				return null;
+			
 			return lastCreatedscene.scene;
 		}
 
