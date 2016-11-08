@@ -115,6 +115,13 @@ package citrus.core {
 
 			startsceneTransition(sceneData);
 		}
+		
+		public function setSceneArgs(name:String,args:Array):void {
+			var sceneData : SceneManagerSceneData = getSceneManagerSceneDataByName(name);
+			if(sceneData != null) {
+				sceneData.args = args;
+			}
+		}
 
 		protected function getSceneManagerSceneDataByName(name : String, clone : Boolean = true) : SceneManagerSceneData {
 			for each (var sceneData : SceneManagerSceneData in definedscenes)
