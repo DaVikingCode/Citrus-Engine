@@ -1,5 +1,5 @@
-package citrus.math
-{
+package citrus.math {
+	import flash.geom.Point;
 	public class MathVector
 	{
 		public var x:Number;
@@ -20,6 +20,12 @@ package citrus.math
 		{
 			this.x = vector.x;
 			this.y = vector.y;
+		}
+		
+		public function copyFromPoint(point:Point):void
+		{
+			this.x = point.x;
+			this.y = point.y;
 		}
 		
 		public function setTo(x:Number = 0, y:Number = 0):void

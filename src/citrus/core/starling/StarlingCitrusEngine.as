@@ -22,6 +22,8 @@ package citrus.core.starling {
 		
 		public var textureScaleFactor:Number = 1;
 
+		protected var _debug:Boolean = false;
+		
 		protected var _starling:Starling;
 		protected var _juggler:CitrusStarlingJuggler;
 		
@@ -92,6 +94,7 @@ package citrus.core.starling {
 			if (viewPort)
 				_viewport = viewPort;
 				
+			_debug = debugMode;
 			_starling = new Starling(RootClass, stage, null, stage3D, "auto", _context3DProfiles);
 			_starling.antiAliasing = antiAliasing;
 			_starling.showStats = debugMode;

@@ -1,5 +1,4 @@
 package citrus.core.starling {
-
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
 	import citrus.core.IScene;
@@ -11,6 +10,7 @@ package citrus.core.starling {
 	import citrus.view.starlingview.StarlingView;
 
 	import starling.display.Sprite;
+	import starling.utils.AssetManager;
 
 	/**
 	 * StarlingScene class is just a wrapper for the AScene class. It's important to notice it extends Starling Sprite.
@@ -21,6 +21,8 @@ package citrus.core.starling {
 		 * Get a direct references to the Citrus Engine in your Scene.
 		 */
 		protected var _ce:StarlingCitrusEngine;
+		
+		protected var _sceneAssets:AssetManager;
 		
 		protected var _realScene:MediatorScene;
 
@@ -51,6 +53,17 @@ package citrus.core.starling {
 		public function get view():ACitrusView {
 			return _realScene.view;
 		}
+		
+		public function preload() : Boolean {
+			_realScene.view = createView();
+			_input = _ce.input;
+			return false;
+		}
+		
+		public function onPreloadComplete(event : *) : void {
+			initialize();
+			playing = true;
+		}
 
 		/**
 		 * You'll most definitely want to override this method when you create your own Scene class. This is where you should
@@ -58,8 +71,6 @@ package citrus.core.starling {
 		 * scene in the constructur. You should call it in this initialize() method. 
 		 */
 		public function initialize():void {
-			_realScene.view = createView();
-			_input = _ce.input;
 		}
 		
 		public function get playing():Boolean {
@@ -194,6 +205,10 @@ package citrus.core.starling {
 		public function get camera():StarlingCamera
 		{
 			return view.camera as StarlingCamera;
+		}
+		
+		public function get sceneAssets():AssetManager {
+			return _sceneAssets;
 		}
 	}
 }

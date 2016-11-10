@@ -153,7 +153,7 @@ package citrus.core {
 
 			if (scene == null)
 				return null;
-
+				
 			if (SceneTransition.exists(transition)) {
 				switch (transition) {
 					case SceneTransition.TRANSITION_FADEOUT :
@@ -262,11 +262,19 @@ package citrus.core {
 
 		protected function addsceneToCE(sceneData : SceneManagerSceneData) : void {
 			lastCreatedscene = sceneData;
-			if (sceneData.transitionTween != null)
-				sceneData.transitionTween.start();
+			
 			_ce.citrus_internal::addSceneOver(sceneData.scene);
-			sceneData.scene.initialize();
-			sceneData.scene.playing = true;
+			
+			if(sceneData.scene.preload()) {
+				sceneData.preloading = true;
+				sceneData.scene.playing = false;
+			}else {
+				if (sceneData.transitionTween != null)
+					sceneData.transitionTween.start();
+				sceneData.scene.initialize();
+				sceneData.scene.playing = true;
+			}
+			
 			onsceneAdded.dispatch(sceneData.scene);
 		}
 

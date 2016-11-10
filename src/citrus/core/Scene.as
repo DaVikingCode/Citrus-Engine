@@ -13,7 +13,7 @@ package citrus.core {
 		 */
 		protected var _ce:CitrusEngine;
 
-		protected var _realState:MediatorScene;
+		protected var _realScene:MediatorScene;
 
 		protected var _input:Input;
 		
@@ -25,22 +25,22 @@ package citrus.core {
 			
 			_ce = CitrusEngine.getInstance();
 
-			_realState = new MediatorScene(this);
+			_realScene = new MediatorScene(this);
 		}
 
 		/**
 		 * Called by the Citrus Engine.
 		 */
 		public function destroy():void {
-			_realState.destroy();
-			_realState = null;
+			_realScene.destroy();
+			_realScene = null;
 		}
 
 		/**
 		 * Gets a reference to this state's view manager. Take a look at the class definition for more information about this. 
 		 */
 		public function get view():ACitrusView {
-			return _realState.view;
+			return _realScene.view;
 		}
 		
 		public function get initialized():Boolean {
@@ -57,6 +57,17 @@ package citrus.core {
 				
 			_playing = value;
 		}
+		
+		public function preload() : Boolean {
+			_realScene.view = createView();
+			_input = _ce.input;
+			return false;
+		}
+		
+		public function onPreloadComplete(event : *) : void {
+			initialize();
+			playing = true;
+		}
 
 		/**
 		 * You'll most definitely want to override this method when you create your own State class. This is where you should
@@ -64,8 +75,6 @@ package citrus.core {
 		 * state in the constructur. You should call it in this initialize() method. 
 		 */
 		public function initialize():void {
-			_realState.view = createView();
-			_input = _ce.input;
 		}
 
 		/**
@@ -75,7 +84,7 @@ package citrus.core {
 		 */
 		public function update(timeDelta:Number):void {
 
-			_realState.update(timeDelta);
+			_realScene.update(timeDelta);
 		}
 
 		/**
@@ -84,7 +93,7 @@ package citrus.core {
 		 * @return The CitrusObject that you passed in. Useful for linking commands together.
 		 */
 		public function add(object:CitrusObject):CitrusObject {
-			return _realState.add(object);
+			return _realScene.add(object);
 		}
 
 		/**
@@ -95,7 +104,7 @@ package citrus.core {
 		 */
 		public function addPoolObject(poolObject:PoolObject):PoolObject {
 
-			return _realState.addPoolObject(poolObject);
+			return _realScene.addPoolObject(poolObject);
 		}
 
 		/**
@@ -103,7 +112,7 @@ package citrus.core {
 		 * Alternatively, you can just set the object's kill property to true. That's all this method does at the moment. 
 		 */
 		public function remove(object:CitrusObject):void {
-			_realState.remove(object);
+			_realScene.remove(object);
 		}
 		
 		/**
@@ -117,7 +126,7 @@ package citrus.core {
 		 * - effects unknown with nape.
 		 */
 		public function removeImmediately(object:CitrusObject):void {
-			_realState.removeImmediately(object);
+			_realScene.removeImmediately(object);
 		}
 
 		/**
@@ -127,7 +136,7 @@ package citrus.core {
 		 */
 		public function getObjectByName(name:String):CitrusObject {
 
-			return _realState.getObjectByName(name);
+			return _realScene.getObjectByName(name);
 		}
 
 		/**
@@ -138,7 +147,7 @@ package citrus.core {
 		 */
 		public function getObjectsByName(name:String):Vector.<CitrusObject> {
 
-			return _realState.getObjectsByName(name);
+			return _realScene.getObjectsByName(name);
 		}
 
 		/**
@@ -148,7 +157,7 @@ package citrus.core {
 		 */
 		public function getFirstObjectByType(type:Class):CitrusObject {
 
-			return _realState.getFirstObjectByType(type);
+			return _realScene.getFirstObjectByType(type);
 		}
 
 		/**
@@ -159,7 +168,7 @@ package citrus.core {
 		 */
 		public function getObjectsByType(type:Class):Vector.<CitrusObject> {
 
-			return _realState.getObjectsByType(type);
+			return _realScene.getObjectsByType(type);
 		}
 
 		/**
@@ -168,14 +177,14 @@ package citrus.core {
 		 */
 		public function killAllObjects(...except):void {
 
-			_realState.killAllObjects(except);
+			_realScene.killAllObjects(except);
 		}
 
 		/**
 		 * Contains all the objects added to the State and not killed.
 		 */
 		public function get objects():Vector.<CitrusObject> {
-			return _realState.objects;
+			return _realScene.objects;
 		}
 
 		/**
@@ -184,5 +193,6 @@ package citrus.core {
 		protected function createView():ACitrusView {
 			return new SpriteView(this);
 		}
+		
 	}
 }

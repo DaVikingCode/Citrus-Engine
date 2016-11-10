@@ -13,6 +13,7 @@ package citrus.core {
 		public var args : Array = null;
 		public var transition : String;
 		public var transitionTime : Number;
+		public var preloading:Boolean = false;
 		// set when scene is running
 		public var transitionTween : EazeTween;
 		public var onTransitionComplete : Function;

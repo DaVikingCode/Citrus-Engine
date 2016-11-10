@@ -11,6 +11,10 @@ package citrus.core {
 		
 		function get view():ACitrusView;
 		
+		function preload():Boolean;
+		
+		function onPreloadComplete(event:*):void;
+		
 		function initialize():void;
 		
 		function get playing():Boolean;
