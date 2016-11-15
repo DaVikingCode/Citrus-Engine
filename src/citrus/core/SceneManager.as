@@ -200,6 +200,10 @@ package citrus.core {
 			scenesToCreate.unshift(sceneData);
 			return scene;
 		}
+		
+		public function destroyPreviousScenes():void {
+			destroyAllButRunningExcept(lastCreatedscene);
+		}
 
 		/**
 		 * Destroy all but running scenes.

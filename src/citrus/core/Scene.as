@@ -66,6 +66,7 @@ package citrus.core {
 		
 		public function onPreloadComplete(event : *) : void {
 			initialize();
+			_ce.sceneManager.destroyPreviousScenes();
 			playing = true;
 		}
 
