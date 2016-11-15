@@ -20,6 +20,12 @@ package citrus.core.starling
 		public static const FULLSCREEN:String = "FULLSCREEN";
 		
 		/**
+		 * If FULLSCREEN is the SHOW_ALL of starling, this is its NO_BORDER counterpart so viewport will fill the flash stage,
+		 * and the starling stage is zoomed in so the rectangle of dimension baseWidth x baseHeight in the starling stage space fills the flash stage.
+		 */
+		public static const FILL:String = "FILL";
+		
+		/**
 		 * Legacy mode will make the viewport fill the screen as well as set the starling stage dimensions to the flash stage dimensions
 		 * as what used to happen by default in CE prior to 3.1.8.
 		 */

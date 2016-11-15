@@ -104,7 +104,6 @@ package citrus.core.starling {
 		}
 
 		protected function handleStarlingStageResize(evt:starling.events.Event):void {
-			
 			resetScreenSize();
 			onStageResize.dispatch(_screenWidth, _screenHeight);
 		}
@@ -161,6 +160,22 @@ package citrus.core.starling {
 					
 					_viewport.x = 0;
 					_viewport.y = 0;
+					
+					if (_starling)
+					{
+						_starling.stage.stageWidth = screenRect.width / _viewportBaseRatioWidth;
+						_starling.stage.stageHeight = screenRect.height / _viewportBaseRatioHeight;
+					}
+					
+					break;
+				case ViewportMode.FILL:
+					_viewport = RectangleUtil.fit(baseRect, screenRect, ScaleMode.NO_BORDER);
+					_viewportBaseRatioWidth = _viewport.width / baseRect.width;
+					_viewportBaseRatioHeight = _viewport.height / baseRect.height;
+					_viewport.copyFrom(screenRect);
+					
+					_viewport.x = _screenWidth * .5  - _viewport.width * .5;
+					_viewport.y  = _screenHeight * .5 - _viewport.height * .5;
 					
 					if (_starling)
 					{
@@ -344,6 +359,7 @@ package citrus.core.starling {
 			if (_viewportMode != value) {
 				_viewportMode = value;
 				resetScreenSize();
+				onStageResize.dispatch(_screenWidth, _screenHeight);
 			}
 		}
 		
