@@ -31,8 +31,11 @@ package citrus.core.starling {
 		protected var _baseWidth:int = -1;
 		protected var _baseHeight:int = -1;
 		protected var _viewportMode:String = ViewportMode.LEGACY;
-		protected var _viewport:Rectangle;
+		protected var _viewport:Rectangle = new Rectangle();
 		protected var _suspendRenderingOnDeactivate:Boolean = false;
+		
+		private var _baseRectangle:Rectangle = new Rectangle();
+		private var _screenRectangle:Rectangle = new Rectangle();
 		
 		private var _viewportBaseRatioWidth:Number = 1;
 		private var _viewportBaseRatioHeight:Number = 1;
@@ -134,17 +137,22 @@ package citrus.core.starling {
 			if (_baseHeight < 0)
 				_baseHeight = _screenHeight;
 			if (_baseWidth < 0)
-				_baseWidth = _screenWidth;	
+				_baseWidth = _screenWidth;
 				
-			var baseRect:Rectangle = new Rectangle(0, 0, _baseWidth, _baseHeight);
-			var screenRect:Rectangle = new Rectangle(0, 0, _screenWidth, _screenHeight);
+			_viewport.setEmpty();
+			
+			_baseRectangle.setTo(0, 0, _baseWidth, _baseHeight);
+			_screenRectangle.setTo(0, 0, _screenWidth, _screenHeight);
 			
 			switch(_viewportMode)
 			{
 				case ViewportMode.LETTERBOX:
-					_viewport = RectangleUtil.fit(baseRect, screenRect, ScaleMode.SHOW_ALL);
+					
+					RectangleUtil.fit(_baseRectangle, _screenRectangle, ScaleMode.SHOW_ALL,false,_viewport);
+					
 					_viewport.x = _screenWidth * .5 - _viewport.width * .5;
 					_viewport.y = _screenHeight * .5 - _viewport.height * .5;
+					
 					if (_starling)
 					{
 						_starling.stage.stageWidth = _baseWidth;
@@ -153,39 +161,28 @@ package citrus.core.starling {
 					
 					break;
 				case ViewportMode.FULLSCREEN:
-					_viewport = RectangleUtil.fit(baseRect, screenRect, ScaleMode.SHOW_ALL);
-					_viewportBaseRatioWidth = _viewport.width / baseRect.width;
-					_viewportBaseRatioHeight = _viewport.height / baseRect.height;
-					_viewport.copyFrom(screenRect);
-					
-					_viewport.x = 0;
-					_viewport.y = 0;
-					
-					if (_starling)
-					{
-						_starling.stage.stageWidth = screenRect.width / _viewportBaseRatioWidth;
-						_starling.stage.stageHeight = screenRect.height / _viewportBaseRatioHeight;
-					}
-					
-					break;
 				case ViewportMode.FILL:
-					_viewport = RectangleUtil.fit(baseRect, screenRect, ScaleMode.NO_BORDER);
-					_viewportBaseRatioWidth = _viewport.width / baseRect.width;
-					_viewportBaseRatioHeight = _viewport.height / baseRect.height;
-					_viewport.copyFrom(screenRect);
 					
-					_viewport.x = _screenWidth * .5  - _viewport.width * .5;
-					_viewport.y  = _screenHeight * .5 - _viewport.height * .5;
+					RectangleUtil.fit(_baseRectangle, _screenRectangle,_viewportMode == ViewportMode.FULLSCREEN ?  ScaleMode.SHOW_ALL : ScaleMode.NO_BORDER,false,_viewport);
+				
+					_viewportBaseRatioWidth = _viewport.width / _baseRectangle.width;
+					_viewportBaseRatioHeight = _viewport.height / _baseRectangle.height;
+					_viewport.copyFrom(_screenRectangle);
+					
+					_viewport.x = _screenWidth * .5 - _viewport.width * .5;
+					_viewport.y = _screenHeight * .5 - _viewport.height * .5;
 					
 					if (_starling)
 					{
-						_starling.stage.stageWidth = screenRect.width / _viewportBaseRatioWidth;
-						_starling.stage.stageHeight = screenRect.height / _viewportBaseRatioHeight;
+						_starling.stage.stageWidth = _screenRectangle.width / _viewportBaseRatioWidth;
+						_starling.stage.stageHeight = _screenRectangle.height / _viewportBaseRatioHeight;
 					}
 					
 					break;
+				
 				case ViewportMode.NO_SCALE:
-					_viewport = baseRect;
+					_viewport = _baseRectangle;
+					
 					_viewport.x = _screenWidth * .5 - _viewport.width * .5;
 					_viewport.y = _screenHeight * .5 - _viewport.height * .5;
 					
@@ -195,14 +192,18 @@ package citrus.core.starling {
 						_starling.stage.stageHeight = _baseHeight;
 					}
 					
+					_viewport = _screenRectangle.intersection(_viewport);
+					
 					break;
 				case ViewportMode.LEGACY:
-						_viewport = screenRect;
+						_viewport = _screenRectangle;
+						
 						if (_starling)
 						{
-							_starling.stage.stageWidth = screenRect.width;
-							_starling.stage.stageHeight = screenRect.height;
+							_starling.stage.stageWidth = _screenRectangle.width;
+							_starling.stage.stageHeight = _screenRectangle.height;
 						}
+					break;
 				case ViewportMode.MANUAL:
 					if(!_viewport)
 						_viewport = _starling.viewPort.clone();
@@ -215,8 +216,9 @@ package citrus.core.starling {
 			{
 				transformMatrix.identity();
 				transformMatrix.scale(_starling.contentScaleFactor,_starling.contentScaleFactor);
-				transformMatrix.translate(_viewport.x,_viewport.y);
 			}
+			
+			transformMatrix.translate(_viewport.x,_viewport.y);
 			
 			return _viewport;
 		}
@@ -231,8 +233,8 @@ package citrus.core.starling {
 			if (!_starling)
 				return;
 			
-			resetViewport();
-			_starling.viewPort.copyFrom(_viewport);
+			resetViewport(); 
+			_starling.viewPort = _viewport;
 			
 			setupStats();
 		}
@@ -250,8 +252,6 @@ package citrus.core.starling {
 
 			_starling.removeEventListener(starling.events.Event.CONTEXT3D_CREATE, _context3DCreated);
 			
-			resetScreenSize();
-			
 			if (!_starling.isStarted)
 				_starling.start();
 				
@@ -266,6 +266,7 @@ package citrus.core.starling {
 			
 			_starlingRoot = _starling.root as DisplayObjectContainer;
 			
+			resetScreenSize();
 			handleStarlingReady();
 			setupStats();
 		}
@@ -356,11 +357,9 @@ package citrus.core.starling {
 		}
 
 		public function set viewportMode(value : String) : void {
-			if (_viewportMode != value) {
-				_viewportMode = value;
-				resetScreenSize();
-				onStageResize.dispatch(_screenWidth, _screenHeight);
-			}
+			_viewportMode = value;
+			resetScreenSize();		
+			onStageResize.dispatch(_screenWidth, _screenHeight);
 		}
 		
 		public function get juggler():CitrusStarlingJuggler
