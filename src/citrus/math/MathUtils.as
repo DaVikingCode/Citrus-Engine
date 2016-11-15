@@ -281,9 +281,22 @@ package citrus.math {
 		public static function clamp(value : Number, min : Number, max : Number) : Number {
 			return Math.max(min, Math.min(max, value));
 		}
+		
+		protected static var _perlinNoise:PerlinNoise = new PerlinNoise(int(Math.random()*99999));
+		
+		public static function perlinNoise(x:Number,y:Number = 0,z:Number = 0):Number {
+			return _perlinNoise.Noise(x, y, z);
+		}
+		
+		/**
+		 * returns random Number between min and max
+		 */
+		public static function random(min:Number = 0, max:Number = 1):Number {
+			 return min + (max - min) * Math.random();
+		}
 
 		/**
-		 * return random int between min and max
+		 * returns random int between min and max
 		 */
 		public static function randomInt(min : int, max : int) : int {
 			return Math.floor(Math.random() * (1 + max - min)) + min;
@@ -404,6 +417,10 @@ package citrus.math {
 
 		public static function abs(num : Number) : Number {
 			return num < 0 ? -num : num;
+		}
+		
+		public static function sign(num:Number):Number {
+			return num < 0 ? -1 : 1; 
 		}
 
 		// robert penner's formula for a log of variable base
