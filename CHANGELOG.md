@@ -1,6 +1,8 @@
 V3.2.0, Work in Progress
 ------------------------
 
+- Citrus Engine's Keyboard controller : key code constants have been removed to prevent some compilation issues. citrus.input.controllers.Keyboard.as has been renamed to citrus.input.controllers.KeyboardController.as to avoid import conflicts when setting up the keyboard actions and using flash.ui.Keyboard's key codes.
+- ViewportMode.FILL
 - Box2D, process contacts after world step (so we can manipulate bodies in the listeners/handle*Contact)
 - CitrusObject names are optional and CitrusObject has a reference to the scene it was created from (_parentScene)
 - CitrusObject has handleAddedToScene and handleRemovedFromScene 'listeners'
