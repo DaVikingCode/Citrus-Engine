@@ -66,7 +66,7 @@ package citrus.objects {
 		 */	
 		override public function addPhysics():void {
 			
-			_nape = _ce.scene.getFirstObjectByType(Nape) as Nape;
+			_nape = _parentScene.getFirstObjectByType(Nape) as Nape;
 			
 			if (!_nape)
 				throw new Error("Cannot create a NapePhysicsObject when a Nape object has not been added to the state.");

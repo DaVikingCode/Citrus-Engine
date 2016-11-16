@@ -55,7 +55,7 @@ package citrus.objects {
 		public function Box2DPhysicsObject(params:Object=null)
 		{
 			_ce = CitrusEngine.getInstance();
-			_box2D = _ce.scene.getFirstObjectByType(Box2D) as Box2D;
+			_box2D = _parentScene.getFirstObjectByType(Box2D) as Box2D;
 				
 			super(params);
 		}

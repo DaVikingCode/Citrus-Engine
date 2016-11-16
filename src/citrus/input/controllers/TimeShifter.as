@@ -1,19 +1,19 @@
 package citrus.input.controllers {
+	import ash.signals.Signal0;
+	import ash.signals.Signal1;
 
 	import citrus.input.InputAction;
 	import citrus.input.InputController;
-
-	import org.osflash.signals.Signal;
 	
 	/**
 	 * Work In Progress.
 	 */
 	public class TimeShifter extends InputController
 	{
-		public var onSpeedChanged:Signal;
-		public var onActivated:Signal;
-		public var onDeactivated:Signal;
-		public var onEndOfBuffer:Signal;
+		public var onSpeedChanged:Signal1;
+		public var onActivated:Signal0;
+		public var onDeactivated:Signal0;
+		public var onEndOfBuffer:Signal0;
 		
 		protected var _paused:Boolean = false;
 		protected var _active:Boolean = false;
@@ -108,10 +108,10 @@ package citrus.input.controllers {
 			_replayActions = replayActions;
 			_routeActions = routeActions;
 			
-			onSpeedChanged = new Signal();
-			onActivated = new Signal();
-			onDeactivated = new Signal();
-			onEndOfBuffer = new Signal();
+			onSpeedChanged = new Signal1(Number);
+			onActivated = new Signal0();
+			onDeactivated = new Signal0();
+			onEndOfBuffer = new Signal0();
 			onSpeedChanged.add(onSpeedChange);
 		}
 		

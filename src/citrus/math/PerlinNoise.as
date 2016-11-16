@@ -32,7 +32,7 @@ import com.gskinner.utils.Rndm;
 		
 		private const GradientSizeTable:uint = 256;
         private  var _random:com.gskinner.utils.Rndm;
-        private var _gradients = new Array(GradientSizeTable * 3);
+        private var _gradients:Array = new Array(GradientSizeTable * 3);
         /* Borrowed from Darwyn Peachey (see references above).
            The gradient table is indexed with an XYZ triplet, which is first turned
            into a single random index using a lookup in this table. The table simply

@@ -329,7 +329,6 @@ package citrus.input.controllers.gamepad
 			if (!(name in _sticks))
 			{
 				throw new Error(this + "cannot set joystick control, "+name+" is not registered.");
-				return;
 			}
 			
 			var joy:StickController = _sticks[name] as StickController;

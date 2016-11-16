@@ -614,7 +614,7 @@ package citrus.view {
 		}
 		
 		/**
-		 * returns the camera's axis aligned bounding rectangle in State space.
+		 * returns the camera's axis aligned bounding rectangle in Scene space.
 		 */
 		public function getRect():Rectangle
 		{

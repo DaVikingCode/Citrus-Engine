@@ -4,7 +4,7 @@ package citrus.input {
 
 	import citrus.core.CitrusEngine;
 	import citrus.core.citrus_internal;
-	import citrus.input.controllers.Keyboard;
+	import citrus.input.controllers.KeyboardController;
 	
 	/**
 	 * A class managing input of any controllers that is an InputController.
@@ -41,7 +41,7 @@ package citrus.input {
 		internal var actionCHANGE:Signal1;
 		
 		//easy access to the default keyboard
-		public var keyboard:Keyboard;
+		public var keyboard:KeyboardController;
 		
 		public function Input()
 		{
@@ -65,7 +65,7 @@ package citrus.input {
 				return;
 			
 			//default keyboard
-			keyboard = new Keyboard("keyboard");
+			keyboard = new KeyboardController("keyboard");
 			
 			_initialized = true;
 		}
