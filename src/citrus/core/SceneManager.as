@@ -70,7 +70,7 @@ package citrus.core {
 			if (name == null || type == null)
 				return;
 
-			if (getSceneManagerSceneDataByName(name, false) != null)
+			if (getDefinedSceneDataByName(name, false) != null)
 				return;
 
 			var sceneData : SceneManagerSceneData = new SceneManagerSceneData(name, type);
@@ -97,7 +97,7 @@ package citrus.core {
 		 * by default, after a transition, every scene is destroyed except for the one who's transition is over.
 		 */
 		public function start(name : String, destroy : Boolean = true, transition : String = null, transitionTime : Number = Number.NaN, onTransitionComplete : Function = null) : void {
-			var sceneData : SceneManagerSceneData = getSceneManagerSceneDataByName(name);
+			var sceneData : SceneManagerSceneData = getDefinedSceneDataByName(name);
 			if (sceneData == null)
 				return;
 
@@ -116,19 +116,41 @@ package citrus.core {
 			startsceneTransition(sceneData);
 		}
 		
+		public function stop(name : String):void {
+			var sceneData : SceneManagerSceneData = getRunningSceneDataByName(name);
+			if (sceneData == null)
+				return;
+			
+			if(sceneData.scene != null)	
+				scenesToDestroy.unshift(sceneData);
+		}
+		
 		public function setSceneArgs(name:String,args:Array):void {
-			var sceneData : SceneManagerSceneData = getSceneManagerSceneDataByName(name,false);
+			var sceneData : SceneManagerSceneData = getDefinedSceneDataByName(name,false);
 			if(sceneData != null) {
 				sceneData.args = args;
 			}
 		}
 
-		protected function getSceneManagerSceneDataByName(name : String, clone : Boolean = true) : SceneManagerSceneData {
+		/**
+		 * get SceneManagerSceneData from the definedscenes list. (scene definition)
+		 */
+		protected function getDefinedSceneDataByName(name : String, clone : Boolean = true) : SceneManagerSceneData {
 			for each (var sceneData : SceneManagerSceneData in definedscenes)
 				if (sceneData.name == name)
 					if (clone)
 						return sceneData.clone();
 					else
+						return sceneData;
+			return null;
+		}
+		
+		/**
+		 * get SceneManagerSceneData from the running scenes list.
+		 */
+		protected function getRunningSceneDataByName(name : String) : SceneManagerSceneData {
+			for each (var sceneData : SceneManagerSceneData in runningscenes)
+				if (sceneData.name == name)
 						return sceneData;
 			return null;
 		}
