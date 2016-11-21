@@ -20,6 +20,8 @@ package citrus.core.starling {
 	 */
 	public class StarlingCitrusEngine extends CitrusEngine {
 		
+		use namespace citrus_internal;
+		
 		public var textureScaleFactor:Number = 1;
 
 		protected var _debug:Boolean = false;

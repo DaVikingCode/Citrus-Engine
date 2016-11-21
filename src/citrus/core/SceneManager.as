@@ -5,6 +5,9 @@ package citrus.core {
 	import aze.motion.easing.Linear;
 
 	public class SceneManager {
+		
+		use namespace citrus_internal;
+		
 		/**
 		 * Dispatched with a scene object, when that scene is added (visually) to CE.
 		 */
