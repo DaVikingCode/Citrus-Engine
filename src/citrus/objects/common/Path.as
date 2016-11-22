@@ -16,7 +16,7 @@ package citrus.objects.common {
 
         public function Path(name:String, params:Object = null)
         {
-            super(name, params);
+            super(params);
             _nodes = new Vector.<MathVector>;
         }
 			
