@@ -12,7 +12,7 @@ package citrus.objects.common
 		
 		public function EmitterParticle(name:String, params:Object = null) 
 		{
-			super(name, params);
+			super(params);
 			
 			if (birthTime == 0)
 				birthTime = new Date().time;
