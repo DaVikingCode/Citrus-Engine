@@ -156,7 +156,7 @@ package citrus.objects.common
 		{
 			updateCallEnabled = true;
 			
-			super(name, params);
+			super(params);
 			_ce = CitrusEngine.getInstance();
 		}
 		
