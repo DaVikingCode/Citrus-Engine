@@ -3,8 +3,6 @@ package citrus.objects.common
 
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
-	import citrus.view.blittingview.BlittingArt;
-	import citrus.view.blittingview.BlittingView;
 	
 	/**
 	 * An emitter creates particles at a specified rate with specified distribution properties. You can set the emitter's x and y
@@ -155,8 +153,8 @@ package citrus.objects.common
 		public function Emitter(name:String, params:Object = null) 
 		{
 			updateCallEnabled = true;
-			
-			super(name, params);
+			super(params);
+			//super(name, params);
 			_ce = CitrusEngine.getInstance();
 		}
 		
