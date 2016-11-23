@@ -14,7 +14,7 @@ V3.2.0, Work in Progress
 - dynamic ViewportMode change
 - StarlingArt: touchGroup = true by default (helps for basic touch control of CitrusObjects)
 - Starling updated on 2.1.0
-- Feathers updated on 3.1.0
+- Feathers updated on 3.1.1
 - Added Ash.
 - Removed Away3D & AwayPhysics.
 - Removed Blitting & display list support.
