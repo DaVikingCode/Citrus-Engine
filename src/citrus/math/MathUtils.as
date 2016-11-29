@@ -85,6 +85,38 @@ package citrus.math {
 				throw new ArgumentError("a argument must be different from b argument.");
 			}
 		}
+		
+		/**
+		 * maps value from ranges A to B with 
+		 * 
+		 * - range A : [minA,maxA] 
+		 * - range B : [minB,maxB]
+		 * 
+		 * if minB is 0 and maxB is 1, in other words if we want to map the value to the [0,1] range,
+		 * map will act like the InverseLerp function 
+		 * 
+		 * warning : return value is clamped withing range B.
+		 * 
+		 * example : 
+		 * 
+		 * input value is assumed to be withing the [-10,10] range.
+		 * required range is :[20,40].
+		 * 
+		 * map(-24,-10,10,20,40); // 20 (input value is out of range A, result is clamped)
+		 * map(-10,-10,10,20,40); // 20 (input is the minimum value of range A, so output  will be the minimum value of range B)
+		 * map(0,-10,10,20,40); // 30 (input is middle of range A, output is middle of range B)
+		 * map(10,-10,10,20,40); // 40(input is max of range A, so output is max of range B)
+		 * 
+		 * @param value value within range A
+		 * @param minA minimum value of range A
+		 * @param maxA maximum value of range A
+		 * @param minB minimum value of range B
+		 * @param maxB maximum value of range B
+		 */
+		public static function map(value:Number,minA:Number,maxA:Number,minB:Number=0,maxB:Number=1):Number {
+			var t:Number = clamp01(InverseLerp(minA, maxA, value));
+			return t*(maxB - minB) + minB;
+		}
 
 		/**
 		 * Creates the axis aligned bounding box for a rotated rectangle.
