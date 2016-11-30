@@ -99,10 +99,10 @@ package citrus.core {
 		 * if arguments for transition are set, this scene will come in via a transition,
 		 * by default, after a transition, every scene is destroyed except for the one who's transition is over.
 		 */
-		public function start(name : String, destroy : Boolean = true, transition : String = null, transitionTime : Number = Number.NaN, onTransitionComplete : Function = null) : void {
+		public function start(name : String, destroy : Boolean = true, transition : String = null, transitionTime : Number = Number.NaN, onTransitionComplete : Function = null) : IScene {
 			var sceneData : SceneManagerSceneData = getDefinedSceneDataByName(name);
 			if (sceneData == null)
-				return;
+				return null;
 
 			if (destroy)
 				destroyAllButRunning();
@@ -116,16 +116,18 @@ package citrus.core {
 			if (onTransitionComplete != null)
 				sceneData.onTransitionComplete = onTransitionComplete;
 			
-			startsceneTransition(sceneData);
+			return startsceneTransition(sceneData);
 		}
 		
-		public function stop(name : String):void {
+		public function stop(name : String):IScene {
 			var sceneData : SceneManagerSceneData = getRunningSceneDataByName(name);
 			if (sceneData == null)
-				return;
+				return null;
 			
 			if(sceneData.scene != null)	
 				scenesToDestroy.unshift(sceneData);
+				
+			return sceneData.scene;
 		}
 		
 		public function setSceneArgs(name:String,args:Array):void {
