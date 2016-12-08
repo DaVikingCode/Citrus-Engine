@@ -451,8 +451,22 @@ package citrus.math {
 			return num < 0 ? -num : num;
 		}
 		
+		/**
+		 * returns -1 for negative numbers, 1 for positive (zero included)
+		 */
 		public static function sign(num:Number):Number {
 			return num < 0 ? -1 : 1; 
+		}
+		
+		/**
+		 * quick and dirty wrap around. returns a positive value.
+		 */
+		public static function Repeat(value:Number,range:Number):Number {
+			var val:Number = value;
+			while(val < 0){
+				val += range;
+			};
+			return val % range;
 		}
 
 		// robert penner's formula for a log of variable base
