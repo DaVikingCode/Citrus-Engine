@@ -135,7 +135,7 @@ package aze.motion
 					isComplete = time >= t.endTime;
 					var k:Number = isComplete ? 1.0 : (time - t.startTime) / t._duration;
 					var ke:Number = t._ease(k || 0);
-					var target:Object = t.target;
+					var target:Object = t._target;
 					
 					// update
 					var p:EazeProperty = t.properties;
@@ -217,7 +217,7 @@ package aze.motion
 		private var rnext:EazeTween;
 		private var isDead:Boolean;
 		
-		private var target:Object;
+		private var _target:Object;
 		private var reversed:Boolean;
 		private var overwrite:Boolean;
 		private var autoStart:Boolean;
@@ -253,7 +253,7 @@ package aze.motion
 		{
 			if (!target) throw new ArgumentError("EazeTween: target can not be null");
 			
-			this.target = target;
+			this._target = target;
 			this.autoStart = autoStart;
 			_ease = defaultEasing;
 		}
@@ -274,7 +274,7 @@ package aze.motion
 				{
 					if (name == "alpha") { autoVisible = true; slowTween = true; }
 					else if (name == "alphaVisible") { name = "alpha"; autoVisible = false; }
-					else if (!(name in target))
+					else if (!(name in _target))
 					{
 						if (name == "scale")
 						{
@@ -283,17 +283,17 @@ package aze.motion
 						}
 						else
 						{
-							specials = new specialProperties[name](target, name, value, specials);
+							specials = new specialProperties[name](_target, name, value, specials);
 							slowTween = true;
 							continue;
 						}
 					}
 				}
-				if (value is Array && target[name] is Number)
+				if (value is Array && _target[name] is Number)
 				{
 					if ("__bezier" in specialProperties)
 					{
-						specials = new specialProperties["__bezier"](target, name, value, specials);
+						specials = new specialProperties["__bezier"](_target, name, value, specials);
 						slowTween = true;
 					}
 					continue;
@@ -318,7 +318,7 @@ package aze.motion
 			
 			// set values
 			if (reversed || _duration == 0) update(startTime);
-			if (autoVisible && _duration > 0) target.visible = true;
+			if (autoVisible && _duration > 0) _target.visible = true;
 			_started = true;
 			attach(overwrite);
 		}
@@ -330,7 +330,7 @@ package aze.motion
 			
 			// configure properties
 			var p:EazeProperty = properties;
-			while (p) { p.init(target, reversed); p = p.next; }
+			while (p) { p.init(_target, reversed); p = p.next; }
 			
 			var s:EazeSpecial = specials;
 			while (s) { s.init(reversed); s = s.next; }
@@ -442,17 +442,17 @@ package aze.motion
 		/// apply or append a special property tween
 		private function addSpecial(special:*, name:*, value:Object):void
 		{
-			if (special in specialProperties && target)
+			if (special in specialProperties && _target)
 			{
 				if ((!_inited || _duration == 0) && autoStart)
 				{
 					// apply
-					EazeSpecial(new specialProperties[special](target, name, value, null))
+					EazeSpecial(new specialProperties[special](_target, name, value, null))
 						.init(true);
 				}
 				else 
 				{
-					specials = new specialProperties[special](target, name, value, specials);
+					specials = new specialProperties[special](_target, name, value, specials);
 					if (_started) specials.init(reversed);
 					slowTween = true;
 				}
@@ -527,7 +527,7 @@ package aze.motion
 		 */
 		public function killTweens():EazeTween
 		{
-			EazeTween.killTweensOf(target);
+			EazeTween.killTweensOf(_target);
 			return this;
 		}
 		
@@ -565,8 +565,8 @@ package aze.motion
 		{
 			var parallel:EazeTween = null;
 			
-			if (overwrite) killTweensOf(target);
-			else parallel = running[target];
+			if (overwrite) killTweensOf(_target);
+			else parallel = running[_target];
 			
 			if (parallel)
 			{
@@ -583,19 +583,19 @@ package aze.motion
 				head = this;
 			}
 			
-			running[target] = this;			
+			running[_target] = this;			
 		}
 		
 		/// delete target/tween association in running Dictionnary
 		private function detach():void
 		{
-			if (target && _started)
+			if (_target && _started)
 			{
-				var targetTweens:EazeTween = running[target];
+				var targetTweens:EazeTween = running[_target];
 				if (targetTweens == this) 
 				{
-					if (rnext) running[target] = rnext;
-					else delete running[target];
+					if (rnext) running[_target] = rnext;
+					else delete running[_target];
 				}
 				else if (targetTweens)
 				{
@@ -621,7 +621,7 @@ package aze.motion
 		{
 			if (_started) 
 			{
-				target = null;
+				_target = null;
 				_onComplete = null;
 				_onCompleteArgs = null;
 				if (_chain)
@@ -719,7 +719,7 @@ package aze.motion
 		/// Create or chain a new tween
 		private function add(duration:*, state:Object, overwrite:Boolean, reversed:Boolean = false):EazeTween
 		{
-			if (isDead) return new EazeTween(target).add(duration, state, overwrite, reversed);
+			if (isDead) return new EazeTween(_target).add(duration, state, overwrite, reversed);
 			if (_configured) return chain().add(duration, state, overwrite, reversed);
 			configure(duration, state, reversed);
 			if (autoStart) start(overwrite);
@@ -732,7 +732,7 @@ package aze.motion
 		 */
 		public function chain(target:Object = null):EazeTween
 		{
-			var tween:EazeTween = new EazeTween(target || this.target, false);
+			var tween:EazeTween = new EazeTween(target || this._target, false);
 			if (!_chain) _chain = [];
 			_chain.push(tween);
 			return tween;
@@ -746,6 +746,9 @@ package aze.motion
 		
 		/** Tween is finished */
 		public function get isFinished():Boolean { return isDead; }
+		
+		/** object being tweened */
+		public function get target():Object {return _target; }
 	}
 
 }
