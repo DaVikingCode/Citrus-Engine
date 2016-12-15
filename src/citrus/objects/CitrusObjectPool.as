@@ -22,7 +22,10 @@ package citrus.objects
 		
 		override protected function _create(node:DoublyLinkedListNode, params:Object = null):void
 		{
-			var co:CitrusObject = node.data = new _poolType("aPoolObject", params);
+			if (!params)
+				params = { };
+			params["type"] = "aPoolObject";
+			var co:CitrusObject = node.data = new _poolType(params);
 			co.initialize(params);
 			onCreate.dispatch(co, params);
 		}

@@ -28,8 +28,7 @@ package citrus.objects
 		{
 			if (!params)
 				params = { };
-			params["type"] = "aPhysicsObject";
-			params["name"] = "aPoolObject";
+			params["type"] = "aPoolObject";
 			node.data = new _poolType(params);
 			var bp:Box2DPhysicsObject = node.data as Box2DPhysicsObject;
 			bp.citrus_internal::parentScene = this.citrus_internal::scene;

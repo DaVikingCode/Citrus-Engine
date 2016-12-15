@@ -24,8 +24,8 @@ package citrus.objects
 		{
 			if (!params)
 				params = { };
-				
-			var cs : CitrusSprite = node.data = new _poolType("aPoolObject", params) as CitrusSprite;
+			params["type"] = "aPoolObject";
+			var cs : CitrusSprite = node.data = new _poolType(params) as CitrusSprite;
 			cs.citrus_internal::parentState = this.citrus_internal::state;
 			cs.initialize(params);
 			onCreate.dispatch((node.data as _poolType), params);

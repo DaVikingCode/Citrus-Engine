@@ -24,8 +24,7 @@ package citrus.objects
 		{
 			if (!params)
 				params = { };
-			params["type"] = "aPhysicsObject";
-			params["name"] = "aPoolObject";
+			params["type"] = "aPoolObject";
 			node.data = new _poolType(params);
 			var np:NapePhysicsObject = node.data as NapePhysicsObject;
 			np.citrus_internal::parentScene = this.citrus_internal::scene;
