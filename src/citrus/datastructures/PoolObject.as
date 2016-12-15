@@ -108,7 +108,7 @@ package citrus.datastructures {
 				var node:DoublyLinkedListNode = new DoublyLinkedListNode();
 					
 				_create(node, params);
-				_dispose(node);
+				_dispose(node,false);
 
 				if (_freeListHead) {
 					_freeListHead.prev = node;
@@ -187,8 +187,9 @@ package citrus.datastructures {
 		 * @param	node
 		 * @param	params
 		 */
-		protected function _dispose(node:DoublyLinkedListNode):void {	
-			onDispose.dispatch((node.data as _poolType));
+		protected function _dispose(node:DoublyLinkedListNode,dispatch:Boolean = true):void {	
+			if(dispatch)
+				onDispose.dispatch((node.data as _poolType));
 			(node.data as _poolType).kill = false;
 		}
 		

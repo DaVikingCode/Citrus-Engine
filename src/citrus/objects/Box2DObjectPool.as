@@ -59,7 +59,7 @@ package citrus.objects
 		
 		protected function superRecycle(node:DoublyLinkedListNode,params:Object):void { super._recycle(node,params);}
 		
-		override protected function _dispose(node:DoublyLinkedListNode):void
+		override protected function _dispose(node:DoublyLinkedListNode,dispatch:Boolean = true):void
 		{
 			var bp:Box2DPhysicsObject = node.data as Box2DPhysicsObject;
 			activationQueue.unshift( { object:bp, activate:false} );
@@ -68,7 +68,7 @@ package citrus.objects
 			bp.visible = false;
 			bp.updateCallEnabled = false;
 			(scene.view.getArt(bp) as ICitrusArt).updateArtEnabled = false;
-			super._dispose(node);
+			super._dispose(node,dispatch);
 			(scene.view.getArt(bp) as ICitrusArt).update(scene.view);
 			bp.handleAddedToScene();
 		}

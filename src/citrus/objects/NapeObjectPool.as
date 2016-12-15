@@ -52,7 +52,7 @@ package citrus.objects
 			np.handleAddedToScene();
 		}
 		
-		override protected function _dispose(node:DoublyLinkedListNode):void
+		override protected function _dispose(node:DoublyLinkedListNode,dispatch:Boolean = true):void
 		{
 			var np:NapePhysicsObject = node.data as NapePhysicsObject;
 			np.body.space = null;
@@ -61,7 +61,7 @@ package citrus.objects
 			np.visible = false;
 			np.updateCallEnabled = false;
 			(scene.view.getArt(np) as ICitrusArt).updateArtEnabled = false;
-			super._dispose(node);
+			super._dispose(node,dispatch);
 			(scene.view.getArt(np) as ICitrusArt).update(scene.view);
 			np.handleRemovedFromScene();
 		}

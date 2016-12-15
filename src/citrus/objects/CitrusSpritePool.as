@@ -48,7 +48,7 @@ package citrus.objects
 			cs.handleAddedToScene();
 		}
 		
-		override protected function _dispose(node:DoublyLinkedListNode):void
+		override protected function _dispose(node:DoublyLinkedListNode,dispatch:Boolean = true):void
 		{
 			var cs:CitrusSprite = node.data as CitrusSprite;
 			if ("pauseAnimation" in cs.view)
@@ -56,7 +56,7 @@ package citrus.objects
 			cs.visible = false;
 			cs.updateCallEnabled = false;
 			(scene.view.getArt(cs) as ICitrusArt).updateArtEnabled = false;
-			super._dispose(node);
+			super._dispose(node,dispatch);
 			(scene.view.getArt(cs) as ICitrusArt).update(scene.view);
 			cs.handleRemovedFromScene();
 		}
