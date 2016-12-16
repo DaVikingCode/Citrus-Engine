@@ -1,8 +1,9 @@
 package citrus.view.starlingview {
-
 	import citrus.core.CitrusEngine;
 	import citrus.core.CitrusObject;
+	import citrus.core.IScene;
 	import citrus.core.starling.StarlingCitrusEngine;
+	import citrus.core.starling.StarlingScene;
 	import citrus.physics.IDebugView;
 	import citrus.view.ACitrusCamera;
 	import citrus.view.ACitrusView;
@@ -77,6 +78,9 @@ package citrus.view.starlingview {
 		private var _ce:StarlingCitrusEngine;
 
 		private var _citrusObject:ISpriteView;
+		
+		private var _scene:StarlingScene;
+		
 		private var _physicsComponent:*;
 		private var _registration:String;
 		private var _view:*;
@@ -88,10 +92,9 @@ package citrus.view.starlingview {
 		private var _viewHasChanged:Boolean = false; // when the view changed, the animation wasn't updated if it was the same name. This var fix that.
 		private var _updateArtEnabled:Boolean = true;
 
-		public function StarlingArt(object:ISpriteView = null) {
+		public function StarlingArt(object:ISpriteView) {
 			
 			_ce = CitrusEngine.getInstance() as StarlingCitrusEngine;
-
 			if (object)
 				initialize(object);
 				
@@ -101,6 +104,8 @@ package citrus.view.starlingview {
 		public function initialize(object:ISpriteView):void {
 
 			_citrusObject = object;
+			
+			_scene = StarlingScene(_citrusObject.parentScene);
 
 			_ce.onPlayingChange.add(_pauseAnimation);
 
@@ -129,7 +134,7 @@ package citrus.view.starlingview {
 
 			if (_content is starling.display.MovieClip) {
 
-				_ce.juggler.remove(_content as starling.display.MovieClip);
+				_scene.juggler.remove(_content as starling.display.MovieClip);
 				_content.dispose();
 
 			} else if (_content is AnimationSequence) {
@@ -146,7 +151,7 @@ package citrus.view.starlingview {
 
 			} else if (_content is PDParticleSystem) {
 
-				_ce.juggler.remove(_content as PDParticleSystem);
+				_scene.juggler.remove(_content as PDParticleSystem);
 				(_content as PDParticleSystem).stop();
 				_content.dispose();
 
@@ -320,9 +325,9 @@ package citrus.view.starlingview {
 					_content = _view;
 					
 					if (_view is starling.display.MovieClip)
-						_ce.juggler.add(_content as starling.display.MovieClip);
+						_scene.juggler.add(_content as starling.display.MovieClip);
 					else if (_view is PDParticleSystem)
-						_ce.juggler.add(_content as PDParticleSystem);
+						_scene.juggler.add(_content as PDParticleSystem);
 
 				} else if (_view is Texture) {
 					_content = new Image(_view);

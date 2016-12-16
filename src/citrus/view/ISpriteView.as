@@ -1,5 +1,5 @@
-package citrus.view
-{
+package citrus.view {
+	import citrus.core.IScene;
 	/**
 	 * The ISpriteView interface provides a common interface between a CitrusObject and the SpriteView view manager.
 	 * All objects that need to have graphical representations on screen need to implement this, if your
@@ -124,6 +124,8 @@ package citrus.view
 		 * will be set only when the art is ready (loaded/created.) and after being added to the state.
 		 */
 		function get art():ICitrusArt;
+		
+		function get parentScene():IScene;
 		
 		/**
 		 * A string representing the current animation state that your object is in, such as "run", "jump", "attack", etc.

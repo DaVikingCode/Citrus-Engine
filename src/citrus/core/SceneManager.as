@@ -316,8 +316,12 @@ package citrus.core {
 
 		citrus_internal function update(timeDelta : Number) : void {
 			for each (var sceneData : SceneManagerSceneData in runningscenes)
-				if (sceneData.scene != null && sceneData.scene.playing)
-					sceneData.scene.update(timeDelta);
+				if (sceneData.scene != null ){
+					if(sceneData.scene.playing)
+						sceneData.scene.update(timeDelta);
+					else
+						sceneData.scene.updatePause(timeDelta);
+				}
 
 			_ce.onPostUpdate.dispatch();
 

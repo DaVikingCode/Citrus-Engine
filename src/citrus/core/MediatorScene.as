@@ -97,6 +97,10 @@ package citrus.core {
 			// Update the scene's view
 			_view.update(timeDelta);
 		}
+		
+		public function updatePause(timeDelta:Number):void {
+			
+		}
 
 		/**
 		 * Call this method to add a CitrusObject to this scene. All visible game objects and physics objects

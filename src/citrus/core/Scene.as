@@ -84,8 +84,14 @@ package citrus.core {
 		 * Finally, this method updates the View manager. 
 		 */
 		public function update(timeDelta:Number):void {
-
 			_realScene.update(timeDelta);
+		}
+		
+		/**
+		 * This method is called when the Scene is paused (it does not update objects or views)
+		 */
+		public function updatePause(timeDelta:Number):void {
+			_realScene.updatePause(timeDelta);
 		}
 
 		/**

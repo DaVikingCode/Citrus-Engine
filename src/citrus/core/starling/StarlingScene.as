@@ -24,6 +24,8 @@ package citrus.core.starling {
 		
 		protected var _sceneAssets:AssetManager;
 		
+		protected var _juggler:CitrusStarlingJuggler;
+		
 		protected var _realScene:MediatorScene;
 
 		protected var _input:Input;
@@ -33,6 +35,9 @@ package citrus.core.starling {
 		public function StarlingScene() {
 			
 			_ce = CitrusEngine.getInstance() as StarlingCitrusEngine;
+			
+			_juggler = new CitrusStarlingJuggler();
+			_ce.juggler.add(_juggler);
 						
 			if (!(_ce as StarlingCitrusEngine) || !(_ce as StarlingCitrusEngine).starling)
 				throw new Error("Your Main " + _ce + " class doesn't extend StarlingCitrusEngine, or you didn't call its setUpStarling function");
@@ -44,6 +49,8 @@ package citrus.core.starling {
 		 * Called by the Citrus Engine.
 		 */
 		public function destroy():void {
+			_juggler.purge();
+			_ce.juggler.remove(_juggler);
 			_realScene.destroy();
 		}
 
@@ -82,6 +89,7 @@ package citrus.core.starling {
 				return;
 				
 			_playing = value;
+			_juggler.paused = !_playing;
 		}
 
 		/**
@@ -92,6 +100,13 @@ package citrus.core.starling {
 		public function update(timeDelta:Number):void {
 
 			_realScene.update(timeDelta);
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function updatePause(timeDelta:Number):void {
+			_realScene.updatePause(timeDelta);
 		}
 
 		/**
@@ -209,6 +224,10 @@ package citrus.core.starling {
 		
 		public function get sceneAssets():AssetManager {
 			return _sceneAssets;
+		}
+		
+		public function get juggler():CitrusStarlingJuggler {
+			return _juggler;
 		}
 	}
 }

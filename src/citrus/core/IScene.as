@@ -22,6 +22,8 @@ package citrus.core {
 		
 		function update(timeDelta:Number):void;
 		
+		function updatePause(timeDelta:Number):void;
+		
 		function add(object:CitrusObject):CitrusObject;
 		
 		function remove(object:CitrusObject):void;
