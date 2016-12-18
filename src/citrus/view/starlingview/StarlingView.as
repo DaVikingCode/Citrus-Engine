@@ -84,8 +84,10 @@ package citrus.view.starlingview {
 		override protected function destroyArt(citrusObject:Object):void {
 			
 			var starlingArt:StarlingArt = _viewObjects[citrusObject];
-			starlingArt.destroy();
-			starlingArt.parent.removeChild(starlingArt);
+			if(starlingArt != null) {
+				starlingArt.destroy();
+				starlingArt.parent.removeChild(starlingArt);
+			}
 		}
 
 		private function updateGroupForSprite(sprite:StarlingArt):void {

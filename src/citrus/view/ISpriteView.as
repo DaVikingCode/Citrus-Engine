@@ -91,6 +91,8 @@ package citrus.view {
 		 */
 		function get touchable():Boolean;
 		
+		function get mouseChildren():Boolean;
+		
 		/**
 		 * This is where you specify what your graphical representation of your CitrusObject will be.
 		 * 

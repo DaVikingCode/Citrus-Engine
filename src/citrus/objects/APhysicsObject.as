@@ -1,14 +1,14 @@
 package citrus.objects {
-
 	import citrus.core.CitrusObject;
 	import citrus.view.ICitrusArt;
+	import citrus.view.ISpriteView;
 
 	import flash.display.MovieClip;
 
 	/**
 	 * An abstract template used by every physics object.
 	 */
-	public class APhysicsObject extends CitrusObject {
+	public class APhysicsObject extends CitrusObject implements ISpriteView {
 		
 		protected var _view:* = MovieClip;
 		protected var _art:ICitrusArt;
@@ -18,8 +18,11 @@ package citrus.objects {
 		protected var _animation:String = "";
 		protected var _visible:Boolean = true;
 		protected var _touchable:Boolean = false;
+		protected var _mouseChildren:Boolean = false;
 		protected var _x:Number = 0;
 		protected var _y:Number = 0;
+		protected var _width:Number = 30;
+		protected var _height:Number = 30;
 		protected var _rotation:Number = 0;
 		protected var _radius:Number = 0;
 
@@ -52,6 +55,10 @@ package citrus.objects {
 		 * @param	citrusArt the art
 		 */
 		public function handleArtChanged(oldArt:ICitrusArt):void {	
+		}
+		
+		public function setActive(value:Boolean):void {
+			throw new Error("APhysicsObject.setActive() not implemented.");
 		}
 		
 		/**
@@ -213,6 +220,38 @@ package citrus.objects {
 		[Inspectable(defaultValue="center",enumeration="center,topLeft")]
 		public function set registration(value:String):void {
 			_registration = value;
+		}
+
+		public function get x() : Number {
+			return _x;
+		}
+
+		public function get y() : Number {
+			return _y;
+		}
+
+		public function get width() : Number {
+			return _width;
+		}
+
+		public function get height() : Number {
+			return _height;
+		}
+
+		public function get velocity() : Array {
+			return null;
+		}
+
+		public function get rotation() : Number {
+			return _rotation;
+		}
+		
+		public function set rotation(value : Number) : void {
+			_rotation = value;
+		}
+
+		public function get mouseChildren() : Boolean {
+			return _mouseChildren;
 		}
 	}
 }

@@ -27,7 +27,7 @@ package citrus.objects {
 	 * and creating Nape bodies, fixtures, shapes, and joints. If you are not familiar with Nape, you should first
 	 * learn about it via the <a href="http://napephys.com/help/manual.html">Nape Manual</a>.
 	 */	
-	public class NapePhysicsObject extends APhysicsObject implements ISpriteView, INapePhysicsObject {
+	public class NapePhysicsObject extends APhysicsObject implements INapePhysicsObject {
 		
 		public static const PHYSICS_OBJECT:CbType = new CbType();
 		
@@ -36,9 +36,6 @@ package citrus.objects {
 		protected var _body:Body;
 		protected var _material:Material;
 		protected var _shape:Shape;
-		
-		protected var _width:Number = 30;
-		protected var _height:Number = 30;
 		
 		protected var _beginContactCallEnabled:Boolean = false;
 		protected var _endContactCallEnabled:Boolean = false;
@@ -80,13 +77,21 @@ package citrus.objects {
 			createConstraint();
 		}
 		
+		override public function setActive(value:Boolean):void {
+			
+			_body.space = value ? _nape.space : null;
+			
+		}
+		
 		override public function destroy():void {	
-			_nape.space.bodies.remove(_body);
-			_body.userData.myData = null;
+			if(_nape) _nape.space.bodies.remove(_body);
+			if(_body) _body.userData.myData = null;
+				
 			_body = null;
 			_material = null;
 			_shape = null;
 			_nape = null;
+			
 			super.destroy();
 		}
 		
@@ -195,7 +200,7 @@ package citrus.objects {
 			_body.cbTypes.add(PHYSICS_OBJECT);
 		}
 		
-		public function get x():Number
+		override public function get x():Number
 		{
 			if (_body)
 				return _body.position.x;
@@ -215,7 +220,7 @@ package citrus.objects {
 			}
 		}
 			
-		public function get y():Number
+		override public function get y():Number
 		{
 			if (_body)
 				return _body.position.y;
@@ -235,11 +240,7 @@ package citrus.objects {
 			}
 		}
 		
-		public function get z():Number {
-			return 0;
-		}
-		
-		public function get rotation():Number
+		override public function get rotation():Number
 		{
 			if (_body)
 				return _body.rotation * 180 / Math.PI;
@@ -247,7 +248,7 @@ package citrus.objects {
 				return _rotation * 180 / Math.PI;
 		}
 		
-		public function set rotation(value:Number):void
+		override public function set rotation(value:Number):void
 		{
 			_rotation = value * Math.PI / 180;
 			
@@ -258,7 +259,7 @@ package citrus.objects {
 		/**
 		 * This can only be set in the constructor parameters. 
 		 */		
-		public function get width():Number
+		override public function get width():Number
 		{
 			return _width;
 		}
@@ -274,7 +275,7 @@ package citrus.objects {
 		/**
 		 * This can only be set in the constructor parameters. 
 		 */	
-		public function get height():Number
+		override public function get height():Number
 		{
 			return _height;
 		}
@@ -328,7 +329,7 @@ package citrus.objects {
 			return _body;
 		}
 		
-		public function get velocity():Array {
+		override public function get velocity():Array {
 			return [_body.velocity.x, _body.velocity.y, 0];
 		}
 		
@@ -362,6 +363,10 @@ package citrus.objects {
 		 */
 		public function set endContactCallEnabled(endContactCallEnabled:Boolean):void {
 			_endContactCallEnabled = endContactCallEnabled;
+		}
+
+		public function get z() : Number {
+			return 0;
 		}
 	}
 }

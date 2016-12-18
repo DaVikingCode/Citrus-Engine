@@ -40,6 +40,7 @@ package citrus.objects {
 		protected var _group:uint = 0;
 		protected var _visible:Boolean = true;
 		protected var _touchable:Boolean = false;
+		protected var _mouseChildren:Boolean = false;
 		protected var _view:* = StarlingSpriteDebugArt;
 		protected var _art:ICitrusArt;
 		protected var _inverted:Boolean = false;
@@ -293,6 +294,14 @@ package citrus.objects {
 			
 			x += (_velocity.x * timeDelta);
 			y += (_velocity.y * timeDelta);
+		}
+
+		public function get mouseChildren() : Boolean {
+			return _mouseChildren;
+		}
+		
+		public function set mouseChildren(value:Boolean):void {
+			_mouseChildren = value;
 		}
 	}
 }

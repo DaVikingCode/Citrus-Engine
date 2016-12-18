@@ -34,9 +34,6 @@ package citrus.objects {
 		protected var _fixtureDef:b2FixtureDef;
 		protected var _fixture:b2Fixture;
 		
-		protected var _width:Number = 1;
-		protected var _height:Number = 1;
-		
 		protected var _beginContactCallEnabled:Boolean = false;
 		protected var _endContactCallEnabled:Boolean = false;
 		protected var _preContactCallEnabled:Boolean = false;
@@ -55,7 +52,7 @@ package citrus.objects {
 		public function Box2DPhysicsObject(params:Object=null)
 		{
 			_ce = CitrusEngine.getInstance();
-			_box2D = _parentScene.getFirstObjectByType(Box2D) as Box2D;
+			_box2D = _ce.scene.getFirstObjectByType(Box2D) as Box2D;
 				
 			super(params);
 		}
@@ -82,10 +79,15 @@ package citrus.objects {
 			createJoint();
 		}
 		
+		override public function setActive(value:Boolean):void {
+			_body.SetActive(value);
+		}
+		
 		override public function destroy():void
 		{
-			_box2D.world.DestroyBody(_body);
-			_body.SetUserData(null);
+			if(_box2D) _box2D.world.DestroyBody(_body);
+			if(_body) _body.SetUserData(null);
+			
 			_shape = null;
 			_bodyDef = null;
 			_fixtureDef = null;
@@ -231,7 +233,7 @@ package citrus.objects {
 			vertices = [];
 		}
 		
-		public function get x():Number
+		override public function get x():Number
 		{
 			if (_body)
 				return _body.GetPosition().x * _box2D.scale;
@@ -251,7 +253,7 @@ package citrus.objects {
 			}
 		}
 			
-		public function get y():Number
+		override public function get y():Number
 		{
 			if (_body)
 				return _body.GetPosition().y * _box2D.scale;
@@ -275,7 +277,7 @@ package citrus.objects {
 			return 0;
 		}
 		
-		public function get rotation():Number
+		override public function get rotation():Number
 		{
 			if (_body)
 				return _body.GetAngle() * 180 / Math.PI;
@@ -283,7 +285,7 @@ package citrus.objects {
 				return _rotation * 180 / Math.PI;
 		}
 		
-		public function set rotation(value:Number):void
+		override public function set rotation(value:Number):void
 		{
 			_rotation = value * Math.PI / 180;
 			
@@ -298,7 +300,7 @@ package citrus.objects {
 		/**
 		 * This can only be set in the constructor parameters. 
 		 */		
-		public function get width():Number
+		override public function get width():Number
 		{
 			return _width * _box2D.scale;
 		}
@@ -314,7 +316,7 @@ package citrus.objects {
 		/**
 		 * This can only be set in the constructor parameters. 
 		 */	
-		public function get height():Number
+		override public function get height():Number
 		{
 			return _height * _box2D.scale;
 		}
@@ -368,7 +370,7 @@ package citrus.objects {
 			return _body;
 		}
 		
-		public function get velocity():Array {
+		override public function get velocity():Array {
 			return [_body.GetLinearVelocity().x, _body.GetLinearVelocity().y, 0];
 		}
 		
