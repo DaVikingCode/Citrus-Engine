@@ -69,9 +69,18 @@ package citrus.sounds
 		
 		public function stopAllSounds():void
 		{
-			var s:CitrusSound;
-			for each(s in _sounds)
+			for each(var s:CitrusSound in _sounds)
 				s.stop();
+		}
+		
+		public function pauseAll():void {
+			for each(var s:CitrusSound in _sounds)
+				s.pause();
+		}
+		
+		public function resumeAll():void {
+			for each(var s:CitrusSound in _sounds)
+				s.resume();
 		}
 		
 		internal function removeSound(s:CitrusSound):void
