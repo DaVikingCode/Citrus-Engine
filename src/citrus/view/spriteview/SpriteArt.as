@@ -8,10 +8,7 @@ package citrus.view.spriteview
 	import citrus.view.ACitrusView;
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
-
-	import dragonBones.Armature;
-	import dragonBones.animation.WorldClock;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
@@ -116,11 +113,7 @@ package citrus.view.spriteview
 				
 				CitrusEngine.getInstance().onPlayingChange.remove(_pauseAnimation);
 				
-				if (_view is Armature) {
-					
-					WorldClock.clock.remove(_view);
-					(_view as Armature).dispose();					
-				}
+				CitrusWorldClock.destroyView(_view);
 				
 				_view = null;
 			}
@@ -221,15 +214,15 @@ package citrus.view.spriteview
 					// view property is a Display Object reference
 					_content = _view;
 					
-				} else if (_view is Armature) {
-					
-					_content = (_view as Armature).display as Sprite;
-					WorldClock.clock.add(_view);
+				} 
+				else{
+					var isArma:Boolean;
+					CitrusWorldClock.setView(_view,_content);
+					if(!isArma){
+						throw new Error("SpriteArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
+					}
+				
 				}
-				else
-					throw new Error("SpriteArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
-				
-				
 				// Call the initialize function if it exists on the custom art class.
 				if (_content && _content.hasOwnProperty("initialize"))
 					_content["initialize"](_citrusObject);
@@ -273,8 +266,9 @@ package citrus.view.spriteview
 			
 			if (_content is AnimationSequence)
 				(_content as AnimationSequence).changeAnimation(_animation, animLoop);
-			else if (_view is Armature)
-				(_view as Armature).animation.gotoAndPlay(value, -1, -1, animLoop ? 0 : 1);
+			else {
+				CitrusWorldClock.setAnimation(_view,value,animLoop);
+			}
 		}
 		
 		public function get citrusObject():ISpriteView
