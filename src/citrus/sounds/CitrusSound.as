@@ -1,18 +1,18 @@
 package citrus.sounds 
 {
-
 	import citrus.core.CitrusEngine;
+	import citrus.core.citrus_internal;
 	import citrus.events.CitrusEvent;
 	import citrus.events.CitrusEventDispatcher;
 	import citrus.events.CitrusSoundEvent;
+
 	import flash.events.ErrorEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.media.Sound;
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
-	
-	import citrus.core.citrus_internal;
+	import flash.utils.getQualifiedClassName;
 
 	public class CitrusSound extends CitrusEventDispatcher
 	{
@@ -193,6 +193,7 @@ package citrus.sounds
 				_sound.removeEventListener(ProgressEvent.PROGRESS, onProgress);
 			}
 			
+			
 			if (val is String)
 			{
 				_urlReq = new URLRequest(val as String);
@@ -216,7 +217,13 @@ package citrus.sounds
 				_urlReq = val as URLRequest;
 				_sound = new Sound();
 			}
-			else
+			else if (getQualifiedClassName(val) == "flash.filesystem::File")
+            {
+                var url:String = decodeURI(val["url"]);
+				_urlReq = new URLRequest(url);
+				_sound = new Sound();
+				
+            }else
 				throw new Error("CitrusSound, " + val + "is not a valid sound paramater");
 		}
 		
