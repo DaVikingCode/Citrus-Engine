@@ -9,9 +9,6 @@ package citrus.view.starlingview {
 	import citrus.view.ICitrusArt;
 	import citrus.view.ISpriteView;
 
-	import dragonBones.Armature;
-	import dragonBones.animation.WorldClock;
-
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -150,15 +147,14 @@ package citrus.view.starlingview {
 				(_content as PDParticleSystem).stop();
 				_content.dispose();
 
-			} else if (_view is Armature) {
-				WorldClock.clock.remove(_view);
-				(_view as Armature).dispose();
-				_content.dispose();
-
-			} else if (_content is starling.display.DisplayObject) {
+			}  else if (_content is starling.display.DisplayObject) {
 									
 				_content.dispose();
+			} else {
+				CitrusWorldClock.destroyView(_view);
+				_content.dispose();
 			}
+			
 			
 			_viewHasChanged = false;
 		}
@@ -331,19 +327,17 @@ package citrus.view.starlingview {
 					// TODO : cut bitmap if size > 2048 * 2048?
 					_content = new Image(_texture = Texture.fromBitmap(_view, false, false, _ce.textureScaleFactor));
 					
-				} else if (_view is Armature) {
-					_content = (_view as Armature).display as Sprite;
-					WorldClock.clock.add(_view);
-					
-				} else if (_view is uint) {
+				}  else if (_view is uint) {
 					
 					// TODO : manage radius -> circle
 					_content = new Quad(_citrusObject.width, _citrusObject.height, _view);
-				} else
+				} else{
+					CitrusWorldClock.setView(_view,_content);
 					contentChanged = false;
-				
-				if(_content == null || contentChanged == false)
+				}
+				if(_content == null || contentChanged == false){
 					throw new Error("StarlingArt doesn't know how to create a graphic object from the provided CitrusObject " + citrusObject);
+				}
 				else
 				{
 					moveRegistrationPoint(_citrusObject.registration);
@@ -375,8 +369,10 @@ package citrus.view.starlingview {
 
 				if (_content is AnimationSequence)
 					(_content as AnimationSequence).changeAnimation(_animation, animLoop);
-				else if (_view is Armature)
-					(_view as Armature).animation.gotoAndPlay(value, -1, -1, animLoop ? 0 : 1);
+				else
+				{
+					CitrusWorldClock.setAnimation(_view,_animation,animLoop)
+				}
 			}
 
 			_viewHasChanged = false;
@@ -446,8 +442,7 @@ package citrus.view.starlingview {
 		 * play/pause animation when "playing" changes. The citrus juggler is pausable so no need to add/remove anything to it here.
 		 */
 		private function _pauseAnimation(value:Boolean):void {
-			if (_view is Armature)
-				value ? (_view as Armature).animation.play() : (_view as Armature).animation.stop();
+			CitrusWorldClock.pauseAnimation(_view, value);
 		}
 
 		private function handleContentLoaded(evt:Event):void {

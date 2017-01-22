@@ -73,3 +73,10 @@ Donations
 ---------
 The [Citrus Engine](http://citrusengine.com/) requested lots of work to become the most advanced Open-Source & free AS3 game engine. You can show us your love making a donation. It will be divided fairly between contributors.
 [Donate](http://citrusengine.com/support/)
+
+我的声明
+--------
+
+我想帮忙的但是我的技术有限，所以我先尝试翻译一些注释深入了解CitrusEngine，并且不断的学习编程直到我可以来提供帮助。
+I would like to help but my technique is limited, so I try to translate some notes to understand CitrusEngine, and continue to learn programming until I can help.
+

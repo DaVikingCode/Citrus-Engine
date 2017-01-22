@@ -1,40 +1,65 @@
-V3.2.0, Work in Progress
+V3.2.0, Work in Progress（V3.2.0版，工作在进展中）
 ------------------------
 
 - Citrus Engine's Keyboard controller : key code constants have been removed to prevent some compilation issues. citrus.input.controllers.Keyboard.as has been renamed to citrus.input.controllers.KeyboardController.as to avoid import conflicts when setting up the keyboard actions and using flash.ui.Keyboard's key codes.
+-CitrusEngine的Keyboard controller：键代码常量已被删除，以防止一些编译问题。citrus.input.controllers.keyboard.as改名为citrus.input.controllers.keyboardcontroller.as避免import冲突时设置键盘操作和使用flash.ui.Keyboard's 的键码。
 - ViewportMode.FILL
 - Box2D, process contacts after world step (so we can manipulate bodies in the listeners/handle*Contact)
+- Box2D，在world step 之后处理contacts（所以我们可以在监听器/处理*接触操纵物理体）
 - CitrusObject names are optional and CitrusObject has a reference to the scene it was created from (_parentScene)
+- CitrusObject名称是可选的，CitrusObject在创建它的场景（_parentscene）中具有一个引用
 - CitrusObject has handleAddedToScene and handleRemovedFromScene 'listeners'
+- CitrusObject有handleaddedtoscene和handleremovedfromscene 的监听器了
 - SceneManager and default scene transitions
+- 场景渲染 和默认的场景转换
 - Concurrent scenes can be individually paused, physics engines are linked to their parent scene too.
+- 并发场景可以单独暂停，物理引擎也是连接到他们的父场景了。
 - includes EazeTween's source
+- 加入EazeTweem's 源
 - a single EazeTween can be paused/resumed
+- 单个的EazeTween可以暂停/恢复
 - fix for random color in MathUtils
+- 修正了MathUtils中的随机色
 - dynamic ViewportMode change
+- 动态的ViewportMode 改变
 - StarlingArt: touchGroup = true by default (helps for basic touch control of CitrusObjects)
+- StarlingArt：touchgroup = true 为默认（有助于对citrusobjects 基本触控）
 - Starling updated on 2.1.0
+- 八哥更新2.1.0
 - Feathers updated on 3.1.0
+- 羽毛在3.1.0更新
 - Added Ash.
+- 添加了Ash
 - Removed Away3D & AwayPhysics.
+- 删除 Away3D与awayphysics。
 - Removed Blitting & display list support.
+- 删除 位图 和 显示列表 的支持。
 - Removed Signals (available via Ash).
+- 删除Signals（可通过Ash）
 - State class renamed in Scene class.
+- State类中重命名的Scene类。
 - CE' scaleFactor renamed in textureScaleFactor.
+- CE' scaleFactor 更名为 textureScaleFactor。
 - Each CitrusObject doesn't require a name anymore.
+- 每一个CitrusObject不再需要名字了。
 - Starling instance has skipUnchangedFrames property set to true.
+- Starling 实例 skipunchangedframes属性设置为true。
 
 V3.1.12, 03 18 2016
 -------------------
 - Starling updated on 1.8
+- Starling 1.8 更新
 - Feathers updated on 2.3.0
+- Feathers 更新2.3.0
 - DragonBones updated on 4.1
+- DragonBones 4.1更新
 
 V3.1.11, 07 24 2015
 -------------------
 - Starling updated on 1.7
 - Feathers updated on 2.1.2
 - Starling.handleLostContext is always set to true
+- starling.handlelostcontext总是设置为true
 - bug fix
 
 V3.1.10, 09 15 2014
@@ -44,12 +69,19 @@ V3.1.10, 09 15 2014
 - Nape updated on 2.0.16
 - Feathers updated 1.3.1
 - Set up SoundMixer.audioPlaybackMode to "ambient" (on iOS if the physical button is off, mute the sound).
+- 设置SoundMixer.audioPlaybackMode的“环境”（iOS如果物理按钮关闭，静音）。
 - setUpStarling method has a stage3D argument, useful for shared context.
+- setupstarling 方法具有stage3D 参数，用于共享的context。
 - Citrus has its own pausable starling juggler, AnimationSequences will be attached to it by default. When CE is paused, starling keeps running but anything attached to the citrus juggler will be paused as expected.
+- Citrus有自己可暂停的Starling juggler ，animationsequences默认会连接到它。当CE是停了下来，Starling保持运行但是附在citrus juggler中的就会按预期的暂停。
 - CitrusSoundGroup : you can stop all sounds from a group with CitrusSoundGroup.stopAllSounds
+- citrussoundgroup：你可以停止所有的声音从一个组 citrussoundgroup.stopallsounds
 - Camera : fixed intersects/containsRect when using rotation/zoom.
+- Camera ：固定 intersects/containsrect 当使用旋转和缩放时。
 - All CitrusObjects with a view now have a reference to their actual art object.
+- 所有带 view的citrusobjects 现在有一个引用以参考自己的实际艺术对象。
 - setUpStarling : you can force starling to run on a specific stage3D with the stage3D argument of setupStarling (used in a shared context scenario)
+- setupstarling ：你可以强迫Starling运行在一个特殊的stage3D 带有stage3D参数的setupstarling里（用于共享的context情景）
 
 V3.1.9, 03 05 2014
 ------------------

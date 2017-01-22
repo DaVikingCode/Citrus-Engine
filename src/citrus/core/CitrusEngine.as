@@ -119,8 +119,7 @@ package citrus.core {
 				catch(e:ArgumentError) {
 					trace("[CitrusEngine] could not set SoundMixer.audioPlaybackMode to ambient.");
 				}
-			}
-			
+			}	
 			//Set up console
 			_console = new Console(9); //Opens with tab key by default
 			_console.onShowConsole.add(handleShowConsole);
