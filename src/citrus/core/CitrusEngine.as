@@ -1,5 +1,4 @@
 package citrus.core {
-	import citrus.utils.KeyboardFocusWatchdog;
 	import ash.signals.Signal0;
 	import ash.signals.Signal1;
 	import ash.signals.Signal2;
@@ -7,6 +6,7 @@ package citrus.core {
 	import citrus.input.Input;
 	import citrus.sounds.SoundManager;
 	import citrus.utils.AGameData;
+	import citrus.utils.KeyboardFocusWatchdog;
 	import citrus.utils.LevelManager;
 
 	import flash.display.MovieClip;
@@ -27,6 +27,8 @@ package citrus.core {
 	 */	
 	public class CitrusEngine extends MovieClip
 	{
+		use namespace citrus_internal;
+		 
 		public static const VERSION:String = "3.2.0";
 				
 		private static var _instance:CitrusEngine;
@@ -114,11 +116,10 @@ package citrus.core {
 			// on iOS if the physical button is off, mute the sound
 			if ("audioPlaybackMode" in SoundMixer){
 				try { SoundMixer.audioPlaybackMode = "ambient"; }
-					catch(e:ArgumentError) {
-							trace("[CitrusEngine] could not set SoundMixer.audioPlaybackMode to ambient.");
-						}
+				catch(e:ArgumentError) {
+					trace("[CitrusEngine] could not set SoundMixer.audioPlaybackMode to ambient.");
 				}
-			
+			}	
 			//Set up console
 			_console = new Console(9); //Opens with tab key by default
 			_console.onShowConsole.add(handleShowConsole);

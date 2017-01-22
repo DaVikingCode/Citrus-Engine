@@ -20,6 +20,8 @@ package citrus.core.starling {
 	 */
 	public class StarlingCitrusEngine extends CitrusEngine {
 		
+		use namespace citrus_internal;
+		
 		public var textureScaleFactor:Number = 1;
 
 		protected var _debug:Boolean = false;
@@ -144,6 +146,7 @@ package citrus.core.starling {
 			_baseRectangle.setTo(0, 0, _baseWidth, _baseHeight);
 			_screenRectangle.setTo(0, 0, _screenWidth, _screenHeight);
 			
+			
 			switch(_viewportMode)
 			{
 				case ViewportMode.LETTERBOX:
@@ -153,17 +156,15 @@ package citrus.core.starling {
 					_viewport.x = _screenWidth * .5 - _viewport.width * .5;
 					_viewport.y = _screenHeight * .5 - _viewport.height * .5;
 					
-					if (_starling)
-					{
-						_starling.stage.stageWidth = _baseWidth;
-						_starling.stage.stageHeight = _baseHeight;
-					}
+					_starling.stage.stageWidth = _baseWidth;
+					_starling.stage.stageHeight = _baseHeight;
 					
 					break;
+					
 				case ViewportMode.FULLSCREEN:
 				case ViewportMode.FILL:
 					
-					RectangleUtil.fit(_baseRectangle, _screenRectangle,_viewportMode == ViewportMode.FULLSCREEN ?  ScaleMode.SHOW_ALL : ScaleMode.NO_BORDER,false,_viewport);
+					RectangleUtil.fit(_baseRectangle, _screenRectangle,_viewportMode == ViewportMode.FULLSCREEN ? ScaleMode.SHOW_ALL : ScaleMode.NO_BORDER,false,_viewport);
 				
 					_viewportBaseRatioWidth = _viewport.width / _baseRectangle.width;
 					_viewportBaseRatioHeight = _viewport.height / _baseRectangle.height;
@@ -172,11 +173,8 @@ package citrus.core.starling {
 					_viewport.x = _screenWidth * .5 - _viewport.width * .5;
 					_viewport.y = _screenHeight * .5 - _viewport.height * .5;
 					
-					if (_starling)
-					{
-						_starling.stage.stageWidth = _screenRectangle.width / _viewportBaseRatioWidth;
-						_starling.stage.stageHeight = _screenRectangle.height / _viewportBaseRatioHeight;
-					}
+					_starling.stage.stageWidth = _screenRectangle.width / _viewportBaseRatioWidth;
+					_starling.stage.stageHeight = _screenRectangle.height / _viewportBaseRatioHeight;
 					
 					break;
 				
@@ -186,11 +184,8 @@ package citrus.core.starling {
 					_viewport.x = _screenWidth * .5 - _viewport.width * .5;
 					_viewport.y = _screenHeight * .5 - _viewport.height * .5;
 					
-					if (_starling)
-					{
-						_starling.stage.stageWidth = _baseWidth;
-						_starling.stage.stageHeight = _baseHeight;
-					}
+					_starling.stage.stageWidth = _baseWidth;
+					_starling.stage.stageHeight = _baseHeight;
 					
 					_viewport = _screenRectangle.intersection(_viewport);
 					
@@ -198,11 +193,9 @@ package citrus.core.starling {
 				case ViewportMode.LEGACY:
 						_viewport = _screenRectangle;
 						
-						if (_starling)
-						{
-							_starling.stage.stageWidth = _screenRectangle.width;
-							_starling.stage.stageHeight = _screenRectangle.height;
-						}
+						_starling.stage.stageWidth = _screenRectangle.width;
+						_starling.stage.stageHeight = _screenRectangle.height;
+						
 					break;
 				case ViewportMode.MANUAL:
 					if(!_viewport)
@@ -210,14 +203,12 @@ package citrus.core.starling {
 					break;
 			}
 			
+			_starling.viewPort.copyFrom(_viewport);
+			
 			textureScaleFactor = findTextureScaleFactor(_assetSizes);
 			
-			if (_starling)
-			{
-				transformMatrix.identity();
-				transformMatrix.scale(_starling.contentScaleFactor,_starling.contentScaleFactor);
-			}
-			
+			transformMatrix.identity();
+			transformMatrix.scale(_starling.contentScaleFactor,_starling.contentScaleFactor);
 			transformMatrix.translate(_viewport.x,_viewport.y);
 			
 			return _viewport;
@@ -234,7 +225,6 @@ package citrus.core.starling {
 				return;
 			
 			resetViewport(); 
-			_starling.viewPort = _viewport;
 			
 			setupStats();
 		}
@@ -338,8 +328,7 @@ package citrus.core.starling {
 
 		public function set baseWidth(value : int) : void {
 			_baseWidth = value;
-
-			resetViewport();
+			resetScreenSize();
 		}
 
 		public function get baseHeight() : int {
@@ -348,8 +337,7 @@ package citrus.core.starling {
 
 		public function set baseHeight(value : int) : void {
 			_baseHeight = value;
-
-			resetViewport();
+			resetScreenSize();
 		}
 
 		public function get viewportMode() : String {
