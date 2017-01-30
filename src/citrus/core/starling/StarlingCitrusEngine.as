@@ -12,6 +12,8 @@ package citrus.core.starling {
 	import flash.display.Stage3D;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
+	
+	use namespace citrus_internal;
 
 	/**
 	 * Extends this class if you create a Starling based game. Don't forget to call <code>setUpStarling</code> function.
@@ -19,8 +21,6 @@ package citrus.core.starling {
 	 * <p>CitrusEngine can access to the Stage3D power thanks to the <a href="http://starling-framework.org/">Starling Framework</a>.</p>
 	 */
 	public class StarlingCitrusEngine extends CitrusEngine {
-		
-		use namespace citrus_internal;
 		
 		public var textureScaleFactor:Number = 1;
 

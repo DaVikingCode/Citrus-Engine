@@ -18,6 +18,8 @@ package citrus.core {
 	import flash.geom.Matrix;
 	import flash.media.SoundMixer;
 	
+	use namespace citrus_internal;
+	
 	/**
 	 * CitrusEngine is the top-most class in the library. When you start your project, you should make your
 	 * document class extend this class unless you use Starling. In this case extends StarlingCitrusEngine.
@@ -27,8 +29,6 @@ package citrus.core {
 	 */	
 	public class CitrusEngine extends MovieClip
 	{
-		use namespace citrus_internal;
-		 
 		public static const VERSION:String = "3.2.0";
 				
 		private static var _instance:CitrusEngine;
