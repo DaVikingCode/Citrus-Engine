@@ -9,6 +9,7 @@ package citrus.physics {
 		
 		protected var _visible:Boolean = false;
 		protected var _touchable:Boolean = false;
+		protected var _mouseChildren:Boolean = false;
 		protected var _group:uint = 1;
 		protected var _view:*;
 		protected var _realDebugView:*;
@@ -149,6 +150,14 @@ package citrus.physics {
 
 		public function set touchable(value:Boolean):void {
 			_touchable = value;
+		}
+		
+		public function get mouseChildren() : Boolean {
+			return _mouseChildren;
+		}
+		
+		public function set mouseChildren(value:Boolean):void {
+			_mouseChildren = value;
 		}
 		
 		public function get animation():String {
