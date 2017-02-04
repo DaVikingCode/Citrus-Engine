@@ -114,12 +114,12 @@ package citrus.core {
 			onPlayingChange.add(handlePlayingChange);
 			
 			// on iOS if the physical button is off, mute the sound
-			if ("audioPlaybackMode" in SoundMixer)
+			if ("audioPlaybackMode" in SoundMixer){
 				try { SoundMixer.audioPlaybackMode = "ambient"; }
 					catch(e:ArgumentError) {
 							trace("[CitrusEngine] could not set SoundMixer.audioPlaybackMode to ambient.");
 						}
-			
+			}
 			//Set up console
 			_console = new Console(9); //Opens with tab key by default
 			_console.onShowConsole.add(handleShowConsole);
