@@ -124,7 +124,7 @@ package citrus.core.starling {
 		{
 			var arr:Array = assetSizes;
 			arr.sort(Array.NUMERIC);
-			var scaleF:Number = Math.floor(starling.contentScaleFactor * 1000) / 1000;
+			var scaleF:Number = Math.floor(_starling.contentScaleFactor * 1000) / 1000;
 			var closest:Number;
 			var f:Number;
 			for each (f in arr)
