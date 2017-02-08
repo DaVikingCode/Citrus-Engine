@@ -26,7 +26,7 @@ package citrus.objects
 				params = { };
 			params["type"] = "aPoolObject";
 			var cs : CitrusSprite = node.data = new _poolType(params) as CitrusSprite;
-			cs.citrus_internal::parentState = this.citrus_internal::state;
+			cs.citrus_internal::parentScene = this.citrus_internal::scene;
 			cs.initialize(params);
 			onCreate.dispatch((node.data as _poolType), params);
  			scene.view.addArt(cs);
