@@ -321,8 +321,8 @@ package citrus.utils.objectmakers {
 				{
 					var object:Object = {};
 					var objectName:String = itemXML.@Name.toString();
-					var x:Number = itemXML.Position.X.toString();
-					var y:Number = itemXML.Position.Y.toString();
+					var x:Number = parseFloat(itemXML.Position.X);
+					var y:Number = parseFloat(itemXML.Position.Y);
 					var type:String = itemXML.@xsiNS::type.toString();
 					var assetString:String = itemXML.asset_name.toString();
 					var className:String = defaultClassName;

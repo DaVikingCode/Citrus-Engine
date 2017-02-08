@@ -247,6 +247,10 @@ package citrus.sounds
 		
 		public function handleArtChanged(citrusArt:ICitrusArt):void {
 		}
+
+		public function get mouseChildren() : Boolean {
+			return false;
+		}
 		
 		
 	}
