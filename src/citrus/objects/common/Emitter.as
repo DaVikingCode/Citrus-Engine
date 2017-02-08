@@ -144,13 +144,13 @@ package citrus.objects.common
 									emitAreaHeight:Number = 0,
 									group:uint = 0):Emitter
 		{
-			return new Emitter(name, { 	graphic: graphic, x: x, y: y, emitFrequency: emitFrequency, emitAmount: emitAmount, particleLifeSpan: particleLifeSpan,
+			return new Emitter({name:name, graphic: graphic, x: x, y: y, emitFrequency: emitFrequency, emitAmount: emitAmount, particleLifeSpan: particleLifeSpan,
 										gravityX: gravityX, gravityY: gravityY, dampingX: dampingX, dampingY: dampingY, minImpulseX: minImpulseX,
 										maxImpulseX: maxImpulseX, minImpulseY: minImpulseY, maxImpulseY: maxImpulseY, emitterLifeSpan: emitterLifeSpan,
 										emitAreaWidth: emitAreaWidth, emitAreaHeight: emitAreaHeight, group: group} );
 		}
 		
-		public function Emitter(name:String, params:Object = null) 
+		public function Emitter(params:Object = null) 
 		{
 			updateCallEnabled = true;
 			
@@ -253,7 +253,7 @@ package citrus.objects.common
 			
 			if (!particle)
 			{
-					particle = new EmitterParticle(name + "_" + _particlesCreated++, { view: graphic } );
+					particle = new EmitterParticle({name:name + "_" + _particlesCreated++, view: graphic } );
 				_ce.scene.add(particle);
 			}
 			

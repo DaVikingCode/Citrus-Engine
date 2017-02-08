@@ -10,7 +10,7 @@ package citrus.objects.common
 		public var birthTime:Number = 0;
 		public var canRecycle:Boolean = true;
 		
-		public function EmitterParticle(name:String, params:Object = null) 
+		public function EmitterParticle(params:Object = null) 
 		{
 			super(params);
 			if (birthTime == 0)
