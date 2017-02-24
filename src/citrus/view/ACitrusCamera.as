@@ -282,6 +282,7 @@ package citrus.view {
 				this.easing = easing;
 				
 			enabled = true;
+			reset();
 			return this;
 		}
 		

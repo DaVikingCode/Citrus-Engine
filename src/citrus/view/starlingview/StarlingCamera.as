@@ -173,6 +173,9 @@ package citrus.view.starlingview {
 		 */
 		override public function update():void
 		{
+			if(!enabled)
+				return;
+				
 			super.update();
 			
 			offset.setTo(cameraLensWidth * center.x, cameraLensHeight * center.y);
