@@ -563,7 +563,9 @@ package starling.extensions.textureAtlas {
 			xml.appendChild(charsNode);
 			
 			texture = Texture.fromBitmapData(canvasData);
-			TextField.registerBitmapFont(new BitmapFont(texture, xml));
+			
+			var bmpFont:BitmapFont = new BitmapFont(texture, xml);
+			TextField.registerCompositor(bmpFont, bmpFont.name);
 			
 			_items.length = 0;
 			_canvas.removeChildren();
