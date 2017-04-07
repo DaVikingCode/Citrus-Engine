@@ -1,6 +1,15 @@
 V3.2.0, Work in Progress
 ------------------------
 
+- Starling updated on 2.1.0
+- Feathers updated on 3.2.0
+- Added Ash.
+- Removed Away3D & AwayPhysics.
+- Removed Signals (available via Ash).
+- State class renamed in Scene class.
+- CE' scaleFactor renamed in textureScaleFactor.
+- Each CitrusObject doesn't require a name anymore.
+- Starling instance has skipUnchangedFrames property set to true.
 - Citrus Engine's Keyboard controller : key code constants have been removed to prevent some compilation issues. citrus.input.controllers.Keyboard.as has been renamed to citrus.input.controllers.KeyboardController.as to avoid import conflicts when setting up the keyboard actions and using flash.ui.Keyboard's key codes.
 - ViewportMode.FILL
 - Box2D, process contacts after world step (so we can manipulate bodies in the listeners/handle*Contact)
@@ -13,16 +22,7 @@ V3.2.0, Work in Progress
 - fix for random color in MathUtils
 - dynamic ViewportMode change
 - StarlingArt: touchGroup = true by default (helps for basic touch control of CitrusObjects)
-- Starling updated on 2.1.0
-- Feathers updated on 3.1.2
-- Added Ash.
-- Removed Away3D & AwayPhysics.
 - Removed Blitting & display list support.
-- Removed Signals (available via Ash).
-- State class renamed in Scene class.
-- CE' scaleFactor renamed in textureScaleFactor.
-- Each CitrusObject doesn't require a name anymore.
-- Starling instance has skipUnchangedFrames property set to true.
 
 V3.1.12, 03 18 2016
 -------------------
