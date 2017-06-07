@@ -84,6 +84,9 @@ package citrus.utils.objectmakers {
 					if (child.params)
 						params = child.params;
 					
+					if (child.name)
+						params.name = child.name;
+					
 					params.x = child.x;
 					params.y = child.y;
 					
