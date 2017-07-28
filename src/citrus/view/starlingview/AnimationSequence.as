@@ -1,17 +1,17 @@
 package citrus.view.starlingview {
+	import flash.display.MovieClip;
+	import flash.utils.Dictionary;
+	
 	import ash.signals.Signal1;
-
+	
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingCitrusEngine;
-
+	
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.extensions.textureAtlas.DynamicAtlas;
 	import starling.textures.TextureAtlas;
-
-	import flash.display.MovieClip;
-	import flash.utils.Dictionary;
 
 	/**
 	 * The Animation Sequence class represents all object animations in one sprite sheet. You have to create your texture atlas in your state class.
@@ -34,6 +34,8 @@ package citrus.view.starlingview {
 		private var _firstAnimLoop:Boolean;
 		private var _smoothing:String;
 
+		public var nextAnimationStartFrame:int = 0;
+		
 		private var _mcSequences:Dictionary;
 		private var _previousAnimation:String;
 
@@ -151,8 +153,10 @@ package citrus.view.starlingview {
 			addChild(_mcSequences[animation]);
 			_ce.juggler.add(_mcSequences[animation]);
 			_mcSequences[animation].loop = animLoop;
-			_mcSequences[animation].currentFrame = 0;
+			_mcSequences[animation].currentFrame = nextAnimationStartFrame;
 
+			nextAnimationStartFrame = 0; // reset
+			
 			_previousAnimation = animation;
 		}
 
