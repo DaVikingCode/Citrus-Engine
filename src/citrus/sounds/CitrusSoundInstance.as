@@ -88,6 +88,14 @@ package citrus.sounds
 		public static var startPositionOffset:Number = 0;
 		
 		/**
+		 * When set to true, a sound at volume 0 will play when this instance is paused to occupy
+		 * a Flash SoundChannel slot and make sure it is available again on when resumed. 
+		 * This was mostly for flash player instances and is now set to false.
+		 * this rarely occurs anyway.
+		 */
+		public static var keepChannelsAlive:Boolean = false;
+		
+		/**
 		 * trace all events dispatched from CitrusSoundInstances
 		 */
 		public static var eventVerbose:Boolean = false;
@@ -233,7 +241,8 @@ package citrus.sounds
 				_soundChannel.stop();
 			}
 			
-			soundChannel = _parentsound.sound.play(0, int.MAX_VALUE);
+			if(keepChannelsAlive)
+				soundChannel = _parentsound.sound.play(0, int.MAX_VALUE);
 			
 			_isPlaying = false;
 			_isPaused = true;
