@@ -1,7 +1,7 @@
 V3.2.0, Work in Progress
 ------------------------
-- Starling updated on 2.3
-- Feathers updated on 3.4.1
+- Starling updated on 2.4
+- Feathers updated on 3.5.0
 - Added Ash.
 - Removed Away3D & AwayPhysics.
 - Removed Signals (available via Ash).
