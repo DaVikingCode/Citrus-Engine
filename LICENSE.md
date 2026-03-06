@@ -1,9 +1,9 @@
 Citrus Engine - Flash ActionScript3 Game Engine
 -----------------------------------------------
 
-Authors: Eric Smith, Aymeric Lamboley, Thomas Lefevre.
+Authors: Eric Smith, Aymeric Lamboley, Tamsen Pozzolo.
 
-Copyright (c) Eric Smith, Aymeric Lamboley, Thomas Lefevre and contributors 2011 - 2016
+Copyright (c) Eric Smith, Aymeric Lamboley, Tamsen Pozzolo and contributors 2011 - 2016
 http://citrusengine.com/
 
 Licence Agreement (The MIT License)
